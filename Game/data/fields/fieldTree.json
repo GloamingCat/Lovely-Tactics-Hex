@@ -1,0 +1,31 @@
+{
+  "lastField": {
+    "index": 0
+  },
+  "lastLayers": {
+    "0": 2,
+    "1": 4,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0
+  },
+  "root": {
+    "children": [
+      {
+        "children": [],
+        "data": {
+          "name": "New Field",
+          "id": 0
+        }
+      },
+      {
+        "children": [],
+        "data": {
+          "name": "Battle Field",
+          "id": 1
+        }
+      }
+    ]
+  }
+}

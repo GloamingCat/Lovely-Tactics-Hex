@@ -1,0 +1,19 @@
+[
+  {
+    "name": "Mage Skills",
+    "nodes": [
+      {
+        "skillID": 2,
+        "cost": 10,
+        "requirements": []
+      },
+      {
+        "skillID": 3,
+        "cost": 20,
+        "requirements": [
+          2
+        ]
+      }
+    ]
+  }
+]

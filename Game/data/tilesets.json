@@ -1,0 +1,63 @@
+[
+  {
+    "name": "New Tileset",
+    "terrains": [
+      {
+        "id": 0,
+        "tags": []
+      },
+      {
+        "id": 1,
+        "tags": []
+      },
+      {
+        "id": 2,
+        "tags": []
+      }
+    ],
+    "obstacles": [
+      {
+        "id": 0,
+        "tags": []
+      },
+      {
+        "id": 2,
+        "tags": []
+      }
+    ],
+    "characters": [
+      {
+        "animID": 0,
+        "direction": 0,
+        "startID": -1,
+        "collisionID": -1,
+        "interactID": -1,
+        "id": 0,
+        "tags": []
+      },
+      {
+        "animID": 0,
+        "direction": 270,
+        "startID": 0,
+        "collisionID": -1,
+        "interactID": -1,
+        "id": 0,
+        "tags": []
+      }
+    ],
+    "regions": [
+      {
+        "id": 0,
+        "tags": []
+      },
+      {
+        "id": 1,
+        "tags": []
+      },
+      {
+        "id": 2,
+        "tags": []
+      }
+    ]
+  }
+]

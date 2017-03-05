@@ -1,0 +1,134 @@
+[
+  {
+    "name": "Blade Attack",
+    "description": "",
+    "icon": {
+      "imagePath": "Icon/Skills/Physical.png",
+      "x": 0,
+      "y": 0,
+      "width": 24,
+      "height": 24
+    },
+    "radius": 1,
+    "range": 1,
+    "script": {
+      "path": "skill/NormalAttack.lua",
+      "param": "(a.ATKP * 2 - b.DEFP) * math.random(0.8, 1.2)"
+    },
+    "energyCost": 0,
+    "timeCost": 50,
+    "restriction": 1,
+    "userAnim": "Attack",
+    "castAnimID": -1,
+    "centerAnimID": 3,
+    "individualAnimID": -1,
+    "elements": [
+      {
+        "id": 0,
+        "value": 100
+      }
+    ],
+    "tags": []
+  },
+  {
+    "name": "Magical Attack",
+    "description": "",
+    "icon": {
+      "imagePath": "Icon/Skills/Magical.png",
+      "x": 0,
+      "y": 0,
+      "width": 24,
+      "height": 24
+    },
+    "radius": 1,
+    "range": 4,
+    "script": {
+      "path": "skill/NormalAttack.lua",
+      "param": "(a.ATKP * 2 - b.DEFP) * math.random(0.8, 1.2)"
+    },
+    "energyCost": 0,
+    "timeCost": 50,
+    "restriction": 1,
+    "userAnim": "Attack",
+    "castAnimID": -1,
+    "centerAnimID": 0,
+    "individualAnimID": -1,
+    "elements": [
+      {
+        "id": 1,
+        "value": 100
+      }
+    ],
+    "tags": []
+  },
+  {
+    "name": "Super Fireball",
+    "description": "Attacks an area of 2 tiles of radius.",
+    "icon": {
+      "imagePath": "Icon/Skills/Magical.png",
+      "x": 0,
+      "y": 0,
+      "width": 24,
+      "height": 24
+    },
+    "radius": 2,
+    "range": 4,
+    "script": {
+      "path": "skill/NormalAttack.lua",
+      "param": "(a.ATKP * 2 - b.DEFP) * math.random(0.8, 1.2)"
+    },
+    "energyCost": 10,
+    "timeCost": 100,
+    "restriction": 1,
+    "userAnim": "Attack",
+    "castAnimID": -1,
+    "centerAnimID": 1,
+    "individualAnimID": -1,
+    "elements": [
+      {
+        "id": 1,
+        "value": 100
+      },
+      {
+        "id": 5,
+        "value": 100
+      }
+    ],
+    "tags": []
+  },
+  {
+    "name": "Blizzard",
+    "description": "Attacks an area of 3 radius.",
+    "icon": {
+      "imagePath": "Icon/Skills/Magical.png",
+      "x": 0,
+      "y": 0,
+      "width": 24,
+      "height": 24
+    },
+    "radius": 3,
+    "range": 4,
+    "script": {
+      "path": "skill/NormalAttack.lua",
+      "param": "(a.ATKP * 2 - b.DEFP) * math.random(0.8, 1.2)"
+    },
+    "energyCost": 20,
+    "timeCost": 100,
+    "restriction": 1,
+    "userAnim": "Attack",
+    "castAnimID": -1,
+    "centerAnimID": 2,
+    "individualAnimID": -1,
+    "elements": [
+      {
+        "id": 1,
+        "value": 100
+      },
+      {
+        "id": 6,
+        "value": 100
+      }
+    ],
+    "tags": []
+  }
+]

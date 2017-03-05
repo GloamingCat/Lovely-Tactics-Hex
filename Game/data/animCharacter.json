@@ -1,0 +1,466 @@
+[
+  {
+    "name": "Template/Idle",
+    "imagePath": "Animation/Character/Template/Idle.png",
+    "rows": 8,
+    "cols": 1,
+    "duration": 60,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 8,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Template/Walk",
+    "imagePath": "Animation/Character/Template/Walk.png",
+    "rows": 8,
+    "cols": 6,
+    "duration": 40,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 8,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Template/Dash",
+    "imagePath": "Animation/Character/Template/Dash.png",
+    "rows": 8,
+    "cols": 6,
+    "duration": 30,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 8,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Lancer/Idle",
+    "imagePath": "Animation\\Character/Lancer/idle.png",
+    "rows": 8,
+    "cols": 1,
+    "duration": 30,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 14,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Lancer/Dash",
+    "imagePath": "Animation\\Character/Lancer/dash.png",
+    "rows": 8,
+    "cols": 6,
+    "duration": 30,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 14,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Lancer/Cast",
+    "imagePath": "Animation\\Character/Lancer/cast.png",
+    "rows": 8,
+    "cols": 1,
+    "duration": 30,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 14,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Lancer/Skill1",
+    "imagePath": "Animation\\Character/Lancer/skill1.png",
+    "rows": 8,
+    "cols": 5,
+    "duration": 30,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 14,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Lancer/Damage",
+    "imagePath": "Animation\\Character/Lancer/damage.png",
+    "rows": 8,
+    "cols": 1,
+    "duration": 30,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 14,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Lancer/KO",
+    "imagePath": "Animation\\Character/Lancer/ko.png",
+    "rows": 8,
+    "cols": 1,
+    "duration": 30,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 14,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Mage/Idle",
+    "imagePath": "Animation\\Character/Mage/idle.png",
+    "rows": 8,
+    "cols": 1,
+    "duration": 60,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 8,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Mage/Dash",
+    "imagePath": "Animation\\Character/Mage/dash.png",
+    "rows": 8,
+    "cols": 6,
+    "duration": 40,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 8,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Mage/Cast",
+    "imagePath": "Animation\\Character/Mage/cast.png",
+    "rows": 8,
+    "cols": 1,
+    "duration": 30,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 8,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Mage/Skill1",
+    "imagePath": "Animation\\Character/Mage/skill1.png",
+    "rows": 8,
+    "cols": 1,
+    "duration": 30,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 8,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Mage/Skill2",
+    "imagePath": "Animation\\Character/Mage/skill2.png",
+    "rows": 8,
+    "cols": 1,
+    "duration": 30,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 8,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Mage/Damage",
+    "imagePath": "Animation\\Character/Mage/dmg.png",
+    "rows": 8,
+    "cols": 1,
+    "duration": 30,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 8,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  },
+  {
+    "name": "Mage/KO",
+    "imagePath": "Animation\\Character/Mage/ko.png",
+    "rows": 8,
+    "cols": 1,
+    "duration": 30,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 8,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
+  }
+]

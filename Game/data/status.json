@@ -1,0 +1,25 @@
+[
+  {
+    "name": "Sleep",
+    "icon": {
+      "imagePath": "Icon/Skills/Sleep.png",
+      "x": 0,
+      "y": 0,
+      "width": 1,
+      "height": 1
+    },
+    "scriptAI": {
+      "path": "",
+      "param": ""
+    },
+    "duration": -1,
+    "removeOnDamage": true,
+    "hpDrain": 0,
+    "mpDrain": 0,
+    "frequence": 0,
+    "percentage": false,
+    "attributes": [],
+    "elements": [],
+    "tags": []
+  }
+]

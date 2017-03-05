@@ -1,0 +1,125 @@
+[
+  {
+    "name": "Tree0",
+    "colliderHeight": 1,
+    "quad": {
+      "imagePath": "Obstacle/Tree0.png",
+      "x": 0,
+      "y": 0,
+      "width": 78,
+      "height": 105
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 8,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "tiles": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "rampID": -1,
+        "neighbors": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    ],
+    "tags": []
+  },
+  {
+    "name": "Sand",
+    "colliderHeight": 1,
+    "quad": {
+      "imagePath": "Obstacle/Rock2.png",
+      "x": 0,
+      "y": 0,
+      "width": 26,
+      "height": 19
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 8,
+      "offsetDepth": 5,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "tiles": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "rampID": -1,
+        "neighbors": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    ],
+    "tags": []
+  },
+  {
+    "name": "Ramp",
+    "colliderHeight": 1,
+    "quad": {
+      "imagePath": "Obstacle/Stairs0.png",
+      "x": 0,
+      "y": 0,
+      "width": 71,
+      "height": 53
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 6,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "tiles": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "rampID": -1,
+        "neighbors": [
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          false
+        ]
+      }
+    ],
+    "tags": []
+  }
+]

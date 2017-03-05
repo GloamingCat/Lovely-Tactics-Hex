@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Plain",
+    "passable": true,
+    "depth": 12,
+    "imagePath": "Terrain\\Plain.png",
+    "frameCount": 1,
+    "duration": 60,
+    "moveCost": 100,
+    "statusID": -1,
+    "removeOnExit": false,
+    "resetTime": true,
+    "lifeTime": -1,
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    },
+    "tags": []
+  },
+  {
+    "name": "Sand",
+    "passable": true,
+    "depth": 12,
+    "imagePath": "Terrain\\Sand.png",
+    "frameCount": 1,
+    "duration": 60,
+    "moveCost": 100,
+    "statusID": -1,
+    "removeOnExit": false,
+    "resetTime": true,
+    "lifeTime": -1,
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    },
+    "tags": []
+  },
+  {
+    "name": "Water",
+    "passable": false,
+    "depth": 12,
+    "imagePath": "Terrain\\Water.png",
+    "frameCount": 3,
+    "duration": 60,
+    "moveCost": 100,
+    "statusID": -1,
+    "removeOnExit": false,
+    "resetTime": true,
+    "lifeTime": -1,
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    },
+    "tags": []
+  }
+]

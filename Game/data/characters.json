@@ -1,0 +1,263 @@
+[
+  {
+    "name": "Template",
+    "portraitName": "",
+    "colliderHeight": 4,
+    "tiles": [
+      {
+        "dx": 0,
+        "dy": 0
+      }
+    ],
+    "startListeners": [],
+    "collisionListeners": [],
+    "interactListeners": [],
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 0,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "animations": [
+      {
+        "name": "Idle",
+        "id": 0
+      },
+      {
+        "name": "Walk",
+        "id": 1
+      },
+      {
+        "name": "Dash",
+        "id": 2
+      }
+    ],
+    "tags": []
+  },
+  {
+    "name": "Lancer",
+    "portraitName": "Lancer",
+    "colliderHeight": 4,
+    "tiles": [
+      {
+        "dx": 0,
+        "dy": 0
+      }
+    ],
+    "startListeners": [],
+    "collisionListeners": [],
+    "interactListeners": [],
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 0,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "animations": [
+      {
+        "name": "Idle",
+        "id": 3
+      },
+      {
+        "name": "Dash",
+        "id": 4
+      },
+      {
+        "name": "Damage",
+        "id": 7
+      },
+      {
+        "name": "KO",
+        "id": 8
+      },
+      {
+        "name": "Attack",
+        "id": 6
+      },
+      {
+        "name": "Cast",
+        "id": 5
+      }
+    ],
+    "tags": []
+  },
+  {
+    "name": "Mage",
+    "portraitName": "Mage",
+    "colliderHeight": 4,
+    "tiles": [
+      {
+        "dx": 0,
+        "dy": 0
+      }
+    ],
+    "startListeners": [],
+    "collisionListeners": [],
+    "interactListeners": [],
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 0,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "animations": [
+      {
+        "name": "Idle",
+        "id": 9
+      },
+      {
+        "name": "Dash",
+        "id": 10
+      },
+      {
+        "name": "Damage",
+        "id": 14
+      },
+      {
+        "name": "KO",
+        "id": 15
+      },
+      {
+        "name": "Attack",
+        "id": 12
+      },
+      {
+        "name": "Special",
+        "id": 13
+      },
+      {
+        "name": "Cast",
+        "id": 11
+      }
+    ],
+    "tags": []
+  },
+  {
+    "name": "Green Lancer",
+    "portraitName": "Green Lancer",
+    "colliderHeight": 4,
+    "tiles": [
+      {
+        "dx": 0,
+        "dy": 0
+      }
+    ],
+    "startListeners": [],
+    "collisionListeners": [],
+    "interactListeners": [],
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 0,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 0,
+      "green": 100,
+      "blue": 0,
+      "alpha": 100
+    },
+    "animations": [
+      {
+        "name": "Idle",
+        "id": 3
+      },
+      {
+        "name": "Dash",
+        "id": 4
+      },
+      {
+        "name": "Damage",
+        "id": 7
+      },
+      {
+        "name": "KO",
+        "id": 8
+      },
+      {
+        "name": "Attack",
+        "id": 6
+      },
+      {
+        "name": "Cast",
+        "id": 5
+      }
+    ],
+    "tags": []
+  },
+  {
+    "name": "Blue Mage",
+    "portraitName": "Blue Mage",
+    "colliderHeight": 4,
+    "tiles": [
+      {
+        "dx": 0,
+        "dy": 0
+      }
+    ],
+    "startListeners": [],
+    "collisionListeners": [],
+    "interactListeners": [],
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 0,
+      "offsetDepth": 0,
+      "scaleX": 100,
+      "scaleY": 100,
+      "rotation": 0,
+      "red": 0,
+      "green": 0,
+      "blue": 100,
+      "alpha": 100
+    },
+    "animations": [
+      {
+        "name": "Idle",
+        "id": 9
+      },
+      {
+        "name": "Dash",
+        "id": 10
+      },
+      {
+        "name": "Damage",
+        "id": 14
+      },
+      {
+        "name": "KO",
+        "id": 15
+      },
+      {
+        "name": "Attack",
+        "id": 12
+      },
+      {
+        "name": "Special",
+        "id": 13
+      },
+      {
+        "name": "Cast",
+        "id": 11
+      }
+    ],
+    "tags": []
+  }
+]

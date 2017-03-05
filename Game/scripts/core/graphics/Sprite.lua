@@ -1,0 +1,235 @@
+
+local Vector = require('core/math/Vector')
+local Quad = love.graphics.newQuad
+local round = math.round
+
+--[[===========================================================================
+
+A Sprite is a group of information the determines the way an image should
+be rendered. The image may be scaled, rotated, translated and coloured.
+Its position determines where on the screen it's going to be rendered
+(x and y axis, relative to the world's coordinate system) and the 
+depth/render order (z axis).
+
+=============================================================================]]
+
+local Sprite = require('core/class'):new()
+
+-- @param(texture : Texture) sprite's texture
+-- @param(quad : Quad) the piece of the texture to render
+-- @param(renderer : Renderer) the renderer that is going to handle this sprite
+function Sprite:init(texture, quad, renderer)
+  self.texture = texture
+  self.quad = quad
+  self.position = Vector(0, 0, 1)
+  self.rotation = 0
+  self.scaleX = 1
+  self.scaleY = 1
+  self.offsetX = 0
+  self.offsetY = 0
+  self.offsetDepth = 0
+  self.color = { red = 100, green = 100, blue = 100, alpha = 100 }
+  self.renderer = renderer
+  if quad ~= nil then
+    self:setQuad(quad:getViewport())
+  end
+  self:insertSelf(1)
+  self.visible = true
+end
+
+-- Checks if sprite is visible on screen.
+-- @ret(boolean) true if visible, false otherwise
+function Sprite:isVisible()
+  return self.visible
+end
+
+-- Sets if sprite is visible
+-- @param(value : boolean) if visible
+function Sprite:setVisible(value)
+  if value ~= self.visible then
+    self.renderer.needsRedraw = true
+  end
+  self.visible = value
+end
+
+-- Sets the texture and updates quad.
+-- @param(texture : Texture) the new texture
+function Sprite:setTexture(texture)
+  if texture ~= self.texture then
+    self.texture = texture
+    if self.quad then
+      self:setQuad(self.quad:getViewport())
+    end
+  end
+end
+
+-- Sets the quad based on texture.
+-- @param(x : number) quad's new x
+-- @param(y : number) quad's new y
+-- @param(w : number) quad's new width
+-- @param(h : number) quad's new height
+function Sprite:setQuad(x, y, w, h)
+  self.quad = Quad(x or 0, y or 0, 
+    w or self.texture:getWidth(), h or self.texture:getHeight(), 
+    self.texture:getWidth(), self.texture:getHeight())
+  self.renderer.needsRedraw = true
+end
+
+-- Sets sprite's offset, scale, rotation and color
+-- @param(data : table) transformation data
+function Sprite:setTransformation(data)
+  local x, y, w, h = self.quad:getViewport()
+  self:setOffset(w / 2 - data.offsetX, h - data.offsetY, data.offsetDepth)
+  self:setScale(data.scaleX / 100, data.scaleY / 100)
+  self:setRotation(math.rad(data.rotation or 0))
+  self:setRGB(data.red, data.green, data.blue, data.alpha)
+end
+
+-- Merges sprite's current transformation with a new one.
+-- @param(data : table) transformation data
+function Sprite:applyTransformation(data)
+  local x, y, w, h = self.quad:getViewport()
+  self:setOffset(data.offsetX + self.offsetX, self.offsetY - data.offsetY, 
+    data.offsetDepth + self.offsetDepth)
+  self:setScale(data.scaleX / 100 * self.scaleX, data.scaleY / 100 * self.scaleY)
+  self:setRotation(math.rad(data.rotation or 0 + self.rotation))
+  self:setRGB(data.red * self.color.red / 100, data.green * self.color.green / 100, 
+    data.blue * self.color.blue / 100, data.alpha * self.color.alpha / 100)
+end
+
+-- Sets the quad's offset from the top left corner.
+-- @param(ox : number) the X-axis offset
+-- @param(oy : number) the Y-axis offset
+function Sprite:setOffset(ox, oy, depth)
+  if ox ~= nil and ox ~= self.offsetX then
+    self.offsetX = ox
+    self.renderer.needsRedraw = true
+  end
+  if oy ~= nil and oy ~= self.offsetY then
+    self.offsetY = oy
+    self.renderer.needsRedraw = true
+  end
+  depth = math.round(depth or self.offsetDepth)
+  if self.offsetDepth ~= depth then
+    self:removeSelf()
+    self.offsetDepth = depth
+    self:insertSelf(self.position.z)
+  end
+end
+
+-- Sets the offset as the center of the image.
+function Sprite:setCenterOffset(offsetDepth)
+  local _, _, w, h = self.quad:getViewport()
+  self:setOffset(round(w / 2), round(h / 2), offsetDepth)
+end
+
+-- Sets the quad's scale.
+-- @param(sx : number) the X-axis scale
+-- @param(sy : number) the Y-axis scale
+function Sprite:setScale(sx, sy)
+  sx = sx or 1
+  sy = sy or 1
+  if self.scaleX ~= sx or self.scaleY ~= sy then
+    self.renderer.needsRedraw = true
+  end
+  self.scaleX = sx
+  self.scaleY = sy
+end
+
+-- Sets que quad's rotation
+-- @param(angle : number) the rotation's angle in degrees
+function Sprite:setRotation(angle)
+  if self.rotation ~= angle then
+    self.renderer.needsRedraw = true
+  end
+  self.rotation = angle
+end
+
+-- Sets sprite's color's rgb.
+-- @param(r : number) red component
+-- @param(g : number) green component
+-- @param(b : number) blue component
+-- @param(a : number) alpha component (optional)
+function Sprite:setRGB(r, g, b, a)
+  a = a or self.color.a
+  if r ~= self.color.red or g ~= self.color.green or b ~= self.color.blue or a ~= self.color.alpha then
+    self.renderer.needsRedraw = true
+  end
+  self.color.red = r or 255
+  self.color.green = g or 255
+  self.color.blue = b or 255
+  self.color.alpha = a or 255
+end
+
+-- Sets sprite's color's rgb.
+-- @param(color : table) a color table containing {red, green, blue, alpha} components
+function Sprite:setColor(color)
+  self:setRGB(color.red, color.green, color.blue, color.alpha)
+end
+
+-- Sets the sprite's pixel position the update's its position in the sprite list.
+-- @param(x : number) the pixel x of the image
+-- @param(y : number) the pixel y of the image
+-- @param(z : number) the pixel depth of the image
+function Sprite:setXYZ(x, y, z)
+  x = round(x or self.position.x)
+  y = round(y or self.position.y)
+  z = round(z or self.position.z)
+  if z ~= self.position.z then
+    self:removeSelf()
+    self:insertSelf(z)
+    self.position.z = z
+  end
+  if self.position.x ~= x or self.position.y ~= y then
+    self.position.x = x
+    self.position.y = y
+    self.renderer.needsRedraw = true
+  end  
+end
+
+-- Sets the sprite's pixel position the update's its position in the sprite list.
+-- @param(pos : Vector) the pixel position of the image
+function Sprite:setPosition(pos)
+  self:setXYZ(pos.x, pos.y, pos.z)
+end
+
+--Inserts sprite from its list.
+-- @param(i : number) the position in the list
+function Sprite:insertSelf(i)
+  i = i + self.offsetDepth
+  if self.renderer.list[i] then
+    table.insert(self.renderer.list[i], self)
+  else
+    self.renderer.list[i] = {}
+    self.renderer.list[i][1] = self
+  end
+  self.renderer.needsRedraw = true
+end
+
+-- Removes sprite from its list.
+function Sprite:removeSelf()
+  local depth = self.position.z + self.offsetDepth
+  local list = self.renderer.list[depth]
+  local n = #list
+  for i = 1, n do
+    if list[i] == self then
+      if n == 1 then
+        self.renderer.list[depth] = nil
+      else
+        table.remove(list, i)
+      end
+      return
+    end
+  end
+  self.renderer.needsRedraw = true
+end
+
+-- Deletes this sprite.
+function Sprite:dispose()
+  self:removeSelf()
+  self.quad = nil
+  self.texture = nil
+  self.renderer.needsRedraw = true
+end
+
+return Sprite

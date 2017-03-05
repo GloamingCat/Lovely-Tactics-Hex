@@ -1,0 +1,254 @@
+{
+  "name": "LTH Example",
+  "player": {
+    "pixelMovement": false,
+    "walkSpeed": 90,
+    "dashSpeed": 120,
+    "stopOnCollision": true,
+    "script": {
+      "path": "character/Player.lua",
+      "param": ""
+    },
+    "startPos": {
+      "fieldID": 0,
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "direction": 270
+    }
+  },
+  "party": {
+    "initialMembers": [
+      0,
+      1
+    ],
+    "maxBattleMembers": 6
+  },
+  "battle": {
+    "battlerTypes": [
+      {
+        "name": "Melee",
+        "code": "M"
+      },
+      {
+        "name": "Ranged",
+        "code": "R"
+      },
+      {
+        "name": "Healer",
+        "code": "H"
+      }
+    ],
+    "turnLimit": 2000,
+    "individualTurn": true,
+    "groupEscape": true,
+    "partyTileEscape": true,
+    "instantTurnTransition": true,
+    "attTurnID": 4,
+    "attHPID": 7,
+    "attSPID": 8,
+    "attStepsID": 5,
+    "attJumpID": 6
+  },
+  "gui": {
+    "cursorAnimID": 0,
+    "battleCursorAnimID": 1,
+    "tileAnimID": 2,
+    "tileHLAnimID": 3,
+    "disabledColor": {
+      "red": 128,
+      "green": 128,
+      "blue": 128
+    }
+  },
+  "tileW": 36,
+  "tileH": 22,
+  "tileB": 16,
+  "tileS": 0,
+  "pixelsPerHeight": 8,
+  "allNeighbors": false,
+  "sounds": {
+    "cursor": {
+      "path": "sfx/cursor.mp3",
+      "volume": 100,
+      "pitch": 150,
+      "speed": 150
+    },
+    "confirm": {
+      "path": "confirm.wav",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    },
+    "cancel": {
+      "path": "cancel.wav",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    },
+    "dialog": {
+      "path": "sfx/cursor.mp3",
+      "volume": 100,
+      "pitch": 75,
+      "speed": 200
+    }
+  },
+  "attributes": [
+    {
+      "name": "Strength",
+      "shortName": "STR",
+      "script": "",
+      "mutable": true
+    },
+    {
+      "name": "Magic",
+      "shortName": "MAG",
+      "script": "",
+      "mutable": true
+    },
+    {
+      "name": "Dexterity",
+      "shortName": "DEX",
+      "script": "",
+      "mutable": true
+    },
+    {
+      "name": "Resistance",
+      "shortName": "RES",
+      "script": "",
+      "mutable": true
+    },
+    {
+      "name": "Agility",
+      "shortName": "AGI",
+      "script": "",
+      "mutable": true
+    },
+    {
+      "name": "Movement",
+      "shortName": "MOV",
+      "script": "",
+      "mutable": false
+    },
+    {
+      "name": "Jump",
+      "shortName": "JMP",
+      "script": "",
+      "mutable": false
+    },
+    {
+      "name": "Health",
+      "shortName": "HP",
+      "script": "att:STR() * 20 + att:RES() * 20",
+      "mutable": false
+    },
+    {
+      "name": "Energy",
+      "shortName": "EP",
+      "script": "att:MAG() * 20 + att:DEX() * 20",
+      "mutable": false
+    },
+    {
+      "name": "Physical Attack",
+      "shortName": "ATKP",
+      "script": "att:STR() * 7 + att:DEX() * 3",
+      "mutable": false
+    },
+    {
+      "name": "Physical Defense",
+      "shortName": "DEFP",
+      "script": "att:STR() * 3 + att:RES() * 7",
+      "mutable": false
+    },
+    {
+      "name": "Magical Attack",
+      "shortName": "ATKM",
+      "script": "att:MAG() * 5 + att:DEX() * 5",
+      "mutable": false
+    },
+    {
+      "name": "Magical Defense",
+      "shortName": "DEFP",
+      "script": "att:MAG() * 5 + att:RES() * 5",
+      "mutable": false
+    },
+    {
+      "name": "Physical Precision",
+      "shortName": "PREP",
+      "script": "att:DEX() * 10",
+      "mutable": false
+    },
+    {
+      "name": "Physical Evade",
+      "shortName": "EVDP",
+      "script": "att:AGI() * 5 + att:DEX() * 5",
+      "mutable": false
+    },
+    {
+      "name": "Magical Precision",
+      "shortName": "PREM",
+      "script": "att:MAG() * 3 + att:DEX() * 7",
+      "mutable": false
+    },
+    {
+      "name": "Magical Evade",
+      "shortName": "EVDM",
+      "script": "att:AGI() * 5 + att:MAG() * 5",
+      "mutable": false
+    }
+  ],
+  "elements": [
+    "Physical",
+    "Magical",
+    "Human",
+    "Beast",
+    "Demon",
+    "Fire",
+    "Ice",
+    "Thunder"
+  ],
+  "itemTypes": [
+    "Accessory",
+    "Potion"
+  ],
+  "regions": [
+    {
+      "name": "Forest",
+      "rgb": {
+        "red": 0,
+        "green": 255,
+        "blue": 128
+      },
+      "battlers": [
+        2,
+        3
+      ]
+    },
+    {
+      "name": "Cave",
+      "rgb": {
+        "red": 128,
+        "green": 64,
+        "blue": 64
+      },
+      "battlers": []
+    },
+    {
+      "name": "Ice Field",
+      "rgb": {
+        "red": 128,
+        "green": 255,
+        "blue": 255
+      },
+      "battlers": []
+    }
+  ],
+  "atlases": [
+    {
+      "width": 40,
+      "height": 40,
+      "imagePath": "/Icon/Items/Weapons.png"
+    }
+  ],
+  "tags": []
+}

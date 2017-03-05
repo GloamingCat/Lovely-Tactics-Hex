@@ -1,0 +1,95 @@
+[
+  {
+    "name": "Hero Lancer",
+    "persistent": true,
+    "level": 3,
+    "typeID": 0,
+    "characterID": 1,
+    "attackID": 0,
+    "skillDagID": -1,
+    "money": 0,
+    "exp": 0,
+    "scriptAI": {
+      "path": "",
+      "param": ""
+    },
+    "build": {
+      "path": "build/Lancer.lua",
+      "param": ""
+    },
+    "attributes": [],
+    "items": [],
+    "elements": [],
+    "tags": []
+  },
+  {
+    "name": "Hero Mage",
+    "persistent": true,
+    "level": 3,
+    "typeID": 1,
+    "characterID": 2,
+    "attackID": 1,
+    "skillDagID": 0,
+    "money": 0,
+    "exp": 0,
+    "scriptAI": {
+      "path": "",
+      "param": ""
+    },
+    "build": {
+      "path": "build/Mage.lua",
+      "param": ""
+    },
+    "attributes": [],
+    "items": [],
+    "elements": [],
+    "skills": [2],
+    "tags": []
+  },
+  {
+    "name": "Green Lancer",
+    "persistent": false,
+    "level": 1,
+    "typeID": 0,
+    "characterID": 3,
+    "attackID": 0,
+    "skillDagID": -1,
+    "money": 0,
+    "exp": 5,
+    "scriptAI": {
+      "path": "",
+      "param": ""
+    },
+    "build": {
+      "path": "build/Lancer.lua",
+      "param": ""
+    },
+    "attributes": [],
+    "items": [],
+    "elements": [],
+    "tags": []
+  },
+  {
+    "name": "Blue Mage",
+    "persistent": false,
+    "level": 1,
+    "typeID": 1,
+    "characterID": 4,
+    "attackID": 1,
+    "skillDagID": -1,
+    "money": 0,
+    "exp": 5,
+    "scriptAI": {
+      "path": "",
+      "param": ""
+    },
+    "build": {
+      "path": "build/Mage.lua",
+      "param": ""
+    },
+    "attributes": [],
+    "items": [],
+    "elements": [],
+    "tags": []
+  }
+]

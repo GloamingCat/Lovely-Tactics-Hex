@@ -1,0 +1,57 @@
+[
+  {
+    "name": "Potion",
+    "description": "Cures 100HP.",
+    "icon": {
+      "imagePath": "Icon/Items/Potion.png",
+      "x": 0,
+      "y": 0,
+      "width": 24,
+      "height": 24
+    },
+    "skillID": -1,
+    "statusID": -1,
+    "price": 15,
+    "weight": 10,
+    "canSell": true,
+    "canConsume": true,
+    "canUse": true,
+    "canEquip": false,
+    "attributes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "tags": [
+      {
+        "name": "newTag",
+        "value": "hbgfx"
+      }
+    ]
+  },
+  {
+    "name": "Scythe",
+    "description": "nanananananannan BATMAN",
+    "icon": {
+      "imagePath": "/Icon/Items/Weapons.png",
+      "x": 0,
+      "y": 0,
+      "width": 40,
+      "height": 40
+    },
+    "skillID": 0,
+    "statusID": 0,
+    "price": 10,
+    "weight": 10,
+    "canSell": true,
+    "canConsume": true,
+    "canUse": true,
+    "canEquip": false,
+    "attributes": [],
+    "tags": []
+  }
+]
