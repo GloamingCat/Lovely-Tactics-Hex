@@ -111,9 +111,7 @@ end
 -- Focus on given tile.
 function BattleManager:selectTarget(tile)
   self.currentAction:selectTarget(tile)
-  FieldManager.callbackTree:fork(function()
-      FieldManager.renderer:moveToTile(tile)
-    end)
+  FieldManager.renderer:moveToTile(tile)
 end
 
 return BattleManager

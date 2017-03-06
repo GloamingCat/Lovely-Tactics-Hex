@@ -1,6 +1,5 @@
 
-local ButtonWindow = require('core/gui/ButtonWindow')
-local AttackAction = require('core/battle/action/AttackAction')
+local ActionWindow = require('custom/gui/battle/ActionWindow')
 local MoveAction = require('core/battle/action/MoveAction')
 local TradeAction = require('core/battle/action/TradeAction')
 local EscapeAction = require('core/battle/action/EscapeAction')
@@ -16,13 +15,108 @@ Result = 1 means that the turn ended.
 
 =============================================================================]]
 
-local TurnWindow = ButtonWindow:inherit()
+local TurnWindow = require('core/class'):inherit(ActionWindow)
+
+-- Overrides ButtonWindow:createButtons.
+function TurnWindow:createButtons()
+  self.backupBattlers = PartyManager:backupBattlers()
+  self:addButton('Attack', nil, self.onAttackAction, self.attackEnabled)
+  self:addButton('Move', nil, self.onMoveAction, self.moveEnabled)
+  self:addButton('Skill', nil, self.onSkill, self.skillEnabled)
+  self:addButton('Item', nil, self.onItem, self.itemEnabled)
+  self:addButton('Trade', nil, self.onTradeAction, self.tradeEnabled)
+  self:addButton('Escape', nil, self.onEscapeAction, self.escapeEnabled)
+  self:addButton('Wait', nil, self.onWait)
+  self:addButton('Call Ally', nil, self.onCallAllyAction, self.callAllyEnabled)
+  self.userCursor = BattleCursor()
+  self.content:add(self.userCursor)
+end
+
+-------------------------------------------------------------------------------
+-- Confirm callbacks
+-------------------------------------------------------------------------------
+
+-- "Attack" button callback.
+-- @param(button : Button) the button chosen
+function TurnWindow:onAttackAction(button)
+  local id = BattleManager.currentCharacter.battler.attackSkillID
+  local skill = Database.skills[id + 1]
+  print(skill.script.path)
+  self:selectSkill(skill)
+end
+
+-- "Move" button callback.
+-- @param(button : Button) the button chosen
+function TurnWindow:onMoveAction(button)
+  self:selectAction(MoveAction)
+end
+
+-- "Trade" button callback.
+-- @param(button : Button) the button chosen
+function TurnWindow:onTradeAction(button)
+  self:selectAction(TradeAction)
+end
+
+-- "Escape" button callback.
+-- @param(button : Button) the button chosen
+function TurnWindow:onEscapeAction(button)
+  self:selectAction(EscapeAction)
+end
+
+-- "Call Ally" button callback.
+-- @param(button : Button) the button chosen
+function TurnWindow:onCallAllyAction(button)
+  self:selectAction(CallAction)
+end
+
+-- "Wait" button callback. End turn.
+-- @param(button : Button) the button chosen
+function TurnWindow:onWait(button)
+  self.result = 1
+end
+
+-- "Skill" button callback. Opens Skill Window.
+-- @param(button : Button) the button chosen
+function TurnWindow:onSkill(button)
+  self:hide(true)
+  self.GUI.skillWindow:show(true)
+  self.GUI.skillWindow:activate()
+end
+
+-- "Item" button callback. Opens Item Window.
+-- @param(button : Button) the button chosen
+function TurnWindow:onItem(button)
+  self:hide(true)
+  self.GUI.itemWindow:show(true)
+  button.window.GUI.itemWindow:activate()
+end
 
 -------------------------------------------------------------------------------
 -- Enable Conditions
 -------------------------------------------------------------------------------
 
-local function moveEnabled()
+-- Attack condition. Enabled if there are tiles to move to or if there are any
+--  enemies that the skill can reach.
+function TurnWindow:attackEnabled(button)
+  if self:moveEnabled(button) then
+    return true
+  else
+    local user = BattleManager.currentCharacter
+    local range = user.battler:getAttackSkill().range
+    local tile = user:getTile()
+    local field = FieldManager.currentField
+    local iterator = mathf.radiusIterator(range, tile.x, tile.y, field.sizeX, field.sizeY)
+    for i, j in iterator do
+      if field:getObjectTile(i, j, tile.layer.height):hasEnemy(user.battler.party) then
+        return true
+      end
+    end
+  end
+  return false
+end
+
+-- Move condition. Enabled if there are any tiles for the character to move to.
+function TurnWindow:moveEnabled(button)
   local user = BattleManager.currentCharacter.battler
   if user.currentSteps <= 0 then
     return false
@@ -34,106 +128,33 @@ local function moveEnabled()
   end
   return false
 end
-local function attackEnabled()
-  if moveEnabled() then
-    return true
-  else
-    local user = BattleManager.currentCharacter
-    local range = user.battler:getAttackSkill().range
-    local tile = user:getTile()
-    local field = FieldManager.currentField
-    local iterator = mathf.radiusIterator(range, tile.x, tile.y, field.sizeX, field.sizeY)
-    for i, j in iterator do
-      if field:getObjectTile(i, j, tile.layer.height):hasEnemy(user.party) then
-        return true
-      end
-    end
-  end
-  return false
-end
-local function skillEnabled()
+
+-- Skill condition. Enabled if character has any skills to use.
+function TurnWindow:skillEnabled(button)
   local user = BattleManager.currentCharacter.battler
   return not user.skillList:isEmpty()
 end
-local function itemEnabled()
+
+-- Item condition. Enabled if character has any items to use.
+function TurnWindow:itemEnabled(button)
   local user = BattleManager.currentCharacter.battler
   return not user.inventory:isEmpty()
 end
-local function tradeEnabled()
-  return true
-end
-local function escapeEnabled()
-  return true
-end
-local function callAllyEnabled()
-  return true
+
+function TurnWindow:tradeEnabled()
+  return false
 end
 
--- Overrides ButtonWindow:createButtons.
-function TurnWindow:createButtons()
-  self:addButton('Attack', nil, self.onAttack, attackEnabled)
-  self:addButton('Move', nil, self.onMoveAction, moveEnabled)
-  self:addButton('Skill', nil, self.onSkill, skillEnabled)
-  self:addButton('Item', nil, self.onItem, itemEnabled)
-  self:addButton('Trade', nil, self.onTrade, tradeEnabled)
-  self:addButton('Escape', nil, self.onEscape, escapeEnabled)
-  self:addButton('Wait', nil, self.onWait)
-  self:addButton('Call Ally', nil, self.onCallAlly, callAllyEnabled)
-  self.userCursor = BattleCursor()
-  self.content:add(self.userCursor)
+-- Escape condition. Only escapes if the character is in a tile of their party.
+function TurnWindow:escapeEnabled()
+  local userParty = BattleManager.currentCharacter.battler.party
+  local tileParty = BattleManager.currentCharacter:getTile().party
+  return userParty == tileParty
 end
 
--------------------------------------------------------------------------------
--- Confirm callbacks
--------------------------------------------------------------------------------
-
-function TurnWindow:onAttack(button)
-  self:selectAction(AttackAction)
-end
-
-function TurnWindow:onMoveAction(button)
-  self:selectAction(MoveAction)
-end
-
-function TurnWindow:onTrade(button)
-  self:selectAction(TradeAction)
-end
-
-function TurnWindow:onEscape(button)
-  self:selectAction(EscapeAction)
-end
-
-function TurnWindow:onCallAlly(button)
-  self:selectAction(CallAction)
-end
-
-function TurnWindow:onWait(button)
-  self.result = 1
-end
-
-function TurnWindow:onSkill(button)
-  self:hide(true)
-  self.GUI.skillWindow:show(true)
-  self.GUI.skillWindow:activate()
-end
-
-function TurnWindow:onItem(button)
-  self:hide(true)
-  self.GUI.itemWindow:show(true)
-  button.window.GUI.itemWindow:activate()
-end
-
--- Select an action.
--- @param(actionType : class) the class of the action
---  (must inherit from BattleAction) 
-function TurnWindow:selectAction(actionType, ...)
-  -- Executes action grid selecting.
-  BattleManager:selectAction(actionType(...))
-  local result = GUIManager:showGUIForResult('battle/ActionGUI')
-  if result == 1 then
-    -- End of turn.
-    self.result = 1
-  end
+-- Call Ally condition. Enabled if there any any backup members.
+function TurnWindow:callAllyEnabled()
+  return not self.backupBattlers:isEmpty()
 end
 
 -------------------------------------------------------------------------------

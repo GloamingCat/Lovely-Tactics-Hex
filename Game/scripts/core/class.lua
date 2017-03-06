@@ -55,13 +55,13 @@ end
 
 local class = {}
 
-local function new(self,parent)
+local function new(self,parents)
   -- the new class to create
   local c = {}
   
   c.events = {}
-  if parent ~= nil then
-    for k,v in pairs(parent.events) do
+  for i = 1, #parents do
+    for k,v in pairs(parents[i].events) do
       c.events[k] = v
     end
   end
@@ -69,10 +69,10 @@ local function new(self,parent)
   local c_meta = {}
   
   function c_meta:__index(key)
-    if parent then
-      return parent[key]
-    else
-      return nil
+    local k
+    for i = #parents, 1, -1 do
+      k = parents[i][key]
+      if k then return k end
     end
   end
   
@@ -128,9 +128,9 @@ end
 -- Returns a new class for you to add methods to
 function class:new()
   local c = class
-  local newClass = new(self, nil)
+  local newClass = new(self, {})
   function newClass:inherit()
-    return new(c, self)
+    return new(c, {self})
   end
   local old_toString = newClass.__tostring
   function newClass:toString()
@@ -140,6 +140,10 @@ function class:new()
     return self:toString()
   end
   return newClass
+end
+
+function class:inherit(...)
+  return new(class, {...})
 end
 
 return class

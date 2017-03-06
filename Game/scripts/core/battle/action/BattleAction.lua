@@ -22,7 +22,7 @@ local BattleAction = require('core/class'):new()
 function BattleAction:init(initialTile, user)
   self.field = FieldManager.currentField
   self.user = user or BattleManager.currentCharacter
-  self.currentTarget = initialTile or self:firstTarget()
+  self.currentTarget = initialTile
 end
 
 -------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ end
 -- [Abstract] Updates the "selectable" field in all tiles for grid selecting.
 function BattleAction:onActionGUI(GUI)
   self:resetAllTiles(false)
-  GUI:startGridSelecting()
+  GUI:startGridSelecting(self:firstTarget())
 end
 
 -- [Abstract] Called when player chooses a target for the action.

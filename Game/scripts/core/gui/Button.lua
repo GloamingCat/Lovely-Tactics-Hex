@@ -138,7 +138,7 @@ function Button:show()
     return
   end
   if self.enableCondition then
-    local enabled = self:enableCondition()
+    local enabled = self.enableCondition(self.window, self)
     if not enabled then
       self:setEnabled(false)
     end

@@ -1,4 +1,5 @@
 
+local List = require('core/algorithm/List')
 local sort = table.sort
 
 --[[===========================================================================
@@ -25,7 +26,7 @@ function PriorityQueue:enqueue(element, p)
 end
 
 function PriorityQueue:dequeue()
-  assert(self.size > 0, 'Prioriry queue is empty!')
+  assert(self.size > 0, 'Priority queue is empty!')
   local pair = self[self.size]
   self[self.size] = nil
   self.size = self.size - 1
@@ -34,6 +35,15 @@ end
 
 function PriorityQueue:isEmpty()
   return self.size == 0
+end
+
+function PriorityQueue:toList()
+  local list = List()
+  while self.size > 0 do
+    local e = self:dequeue()
+    list:add(e)
+  end
+  return list
 end
 
 return PriorityQueue

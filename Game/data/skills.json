@@ -28,6 +28,7 @@
         "value": 100
       }
     ],
+    "type": "attack",
     "tags": []
   },
   {
@@ -59,6 +60,7 @@
         "value": 100
       }
     ],
+    "type": "attack",
     "tags": []
   },
   {
@@ -129,6 +131,7 @@
         "value": 100
       }
     ],
+    "type": "attack",
     "tags": []
   }
 ]

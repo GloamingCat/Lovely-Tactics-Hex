@@ -1,11 +1,16 @@
 
---[[
-@module
+local CharacterOnlyAction = require('core/battle/action/CharacterOnlyAction')
+
+--[[===========================================================================
 
 
 
-]]
+=============================================================================]]
 
-return function()
+local NormalAttack = CharacterOnlyAction:inherit()
 
+function NormalAttack:isCharacterSelectable(char)
+  return char.battler.party ~= self.user.battler.party
 end
+
+return NormalAttack

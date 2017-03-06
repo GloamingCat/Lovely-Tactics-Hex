@@ -1,11 +1,11 @@
 
 local List = require('core/algorithm/List')
 
---[[
+--[[===========================================================================
 
 
 
-]]
+=============================================================================]]
 
 local PartyManager = require('core/class'):new()
 
@@ -24,6 +24,7 @@ function PartyManager:currentBattlers()
 end
 
 -- Retuns the list of battlers that are not in battle.
+-- @ret(List) a list of battler tables
 function PartyManager:backupBattlers()
   local battlers = self:currentBattlers()
   battlers:conditionalRemove(function(b, battler)

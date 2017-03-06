@@ -72,10 +72,10 @@ function ActionGUI:createStepWindow()
 end
 
 -- Shows grid and cursor.
-function ActionGUI:startGridSelecting()
+function ActionGUI:startGridSelecting(target)
   FieldManager:showGrid()
-  BattleManager:selectTarget(self.action.currentTarget)
-  self.cursor:setTile(self.action.currentTarget)
+  BattleManager:selectTarget(target or self.action.currentTarget)
+  self.cursor:setTile(target or self.action.currentTarget)
 end
 
 -- Hides grid and cursor.

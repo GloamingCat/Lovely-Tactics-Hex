@@ -20,7 +20,7 @@ local MoveAction = BattleAction:inherit()
 function MoveAction:onActionGUI(GUI)
   self:resetAllTiles(false)
   self:resetMovableTiles(true)
-  GUI:startGridSelecting()
+  GUI:startGridSelecting(self:firstTarget())
   GUI:createStepWindow():show()
 end
 

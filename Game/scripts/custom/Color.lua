@@ -5,7 +5,7 @@ Color.tile_general = {red = 85, green = 30, blue = 85, alpha = 80}
 Color.tile_move = {red = 60, green = 60, blue = 100, alpha = 80}
 Color.tile_support = {red = 20, green = 100, blue = 20, alpha = 80}
 Color.tile_attack = {red = 100, green = 20, blue = 20, alpha = 80}
-Color.tile_nothing = {red = 200, green = 200, blue = 200, alpha = 80}
+Color.tile_nothing = {red = 70, green = 70, blue = 70, alpha = 70}
 
 Color.tile_general_off = {red = 85, green = 30, blue = 85, alpha = 20}
 Color.tile_move_off = {red = 20, green = 20, blue = 100, alpha = 20}

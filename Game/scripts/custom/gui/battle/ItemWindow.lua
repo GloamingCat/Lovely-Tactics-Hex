@@ -1,15 +1,16 @@
 
 local ListButtonWindow = require('core/gui/ListButtonWindow')
+local ActionWindow = require('custom/gui/battle/ActionWindow')
 local SkillAction = require('core/battle/action/SkillAction')
 local Vector = require('core/math/Vector')
 
 --[[===========================================================================
 
-The GUI that is open to choose a item from character's inventory.
+The GUI that is open to choose an item from character's inventory.
 
 =============================================================================]]
 
-local ItemWindow = ListButtonWindow:inherit()
+local ItemWindow = require('core/class'):inherit(ListButtonWindow, ActionWindow)
 
 local old_init = ItemWindow.init
 function ItemWindow:init(GUI, list)
@@ -29,18 +30,13 @@ end
 -- Called when player chooses an item.
 -- @param(button : Button) the button selected
 function ItemWindow:onConfirm(button)
-  local actionType = SkillAction
   local skill = Database.skills[button.item.skillID + 1]
-  if skill.script.path ~= '' then
-    actionType = require('custom/' .. skill.script.path)
-  end
-  -- Executes action grid selecting.
-  BattleManager:selectAction(actionType(skill, skill.script.param))
-  local result = GUIManager:showGUIForResult('battle/ActionGUI')
-  if result == 1 then
-    -- End of turn.
-    button.window.result = 1
-  end
+  self:selectSkill(skill)
+end
+
+-- Called when player cancels.
+function ItemWindow:onCancel()
+  self:changeWindow(self.GUI.turnWindow)
 end
 
 -- New button width.

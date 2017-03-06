@@ -290,6 +290,7 @@ end
 -- Sets color to the color with the given label.
 -- @param(name : string) color label
 function ObjectTile:setColor(name)
+  self.colorName = name
   if name == nil or name == '' then
     name = 'nothing'
   end
