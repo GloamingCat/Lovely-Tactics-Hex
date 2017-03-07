@@ -31,6 +31,7 @@ end
 
 -- [Abstract] Called when this action has been chosen.
 function BattleAction:onSelect()
+  FieldManager.renderer:moveToTile(self:firstTarget())
 end
 
 -- [Abstract] Updates the "selectable" field in all tiles for grid selecting.

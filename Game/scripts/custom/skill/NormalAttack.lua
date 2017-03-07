@@ -3,7 +3,7 @@ local CharacterOnlyAction = require('core/battle/action/CharacterOnlyAction')
 
 --[[===========================================================================
 
-
+A class for generic attack skills that targets enemies.
 
 =============================================================================]]
 

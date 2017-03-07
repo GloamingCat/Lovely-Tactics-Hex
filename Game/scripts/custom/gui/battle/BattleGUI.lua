@@ -27,11 +27,18 @@ function BattleGUI:createWindows()
   end
   
   self.turnWindow = TurnWindow(self)
-  self.turnWindow:setPosition(Vector(-ScreenManager.width / 2 + self.turnWindow.width / 2, 
-      -ScreenManager.height / 2 + self.turnWindow.height / 2))
+  self.turnWindow:setPosition(Vector(-ScreenManager.width / 2 + self.turnWindow.width / 2 + 8, 
+      -ScreenManager.height / 2 + self.turnWindow.height / 2 + 8))
   
   self.activeWindow = self.turnWindow
   self.windowList:add(self.turnWindow)
+end
+
+-- Overrides GUI:show.
+local old_show = BattleGUI.show
+function BattleGUI:show(...)
+  FieldManager.renderer:moveToObject(BattleManager.currentCharacter)
+  old_show(self, ...)
 end
 
 return BattleGUI

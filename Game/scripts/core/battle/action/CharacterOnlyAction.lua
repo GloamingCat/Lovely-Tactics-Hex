@@ -13,16 +13,52 @@ local PathFinder = require('core/algorithm/PathFinder')
 
 local CharacterOnlyAction = SkillAction:inherit()
 
+-- Overrides BattleAction:onSelect.
+local old_onSelect = CharacterOnlyAction.onSelect
+function CharacterOnlyAction:onSelect()
+  self.index = 1
+  self.selectableTiles = self:getSelectableTiles()
+end
+
+-- Gets the list of all tiles that have a character.
+-- @ret(List) the list of ObjectTiles
+function CharacterOnlyAction:getSelectableTiles()
+  local moveAction = SkillMoveAction(self.data.range, self.currentTarget, self.user)
+  local tempQueue = PriorityQueue()
+  for char in TroopManager.characterList:iterator() do
+    if self:isCharacterSelectable(char) then
+      local tile = char:getTile()
+      moveAction.currentTarget = tile
+      local path = PathFinder.findPath(moveAction, nil, true)
+      if path == nil then
+        tempQueue:enqueue(tile, math.huge)
+      else
+        tempQueue:enqueue(tile, path.totalCost)
+      end
+    end
+  end
+  return tempQueue:toList()
+end
+
+-------------------------------------------------------------------------------
+-- Event handlers
+-------------------------------------------------------------------------------
+
+-- Overrides BattleAction:onActionGUI.
 function CharacterOnlyAction:onActionGUI(GUI)
   self:resetAllTiles(false)
   self:resetTargetTiles(false, false)
   self:resetCharacterTiles()
-  self.index = 1
   GUI:startGridSelecting(self:firstTarget())
 end
 
+-------------------------------------------------------------------------------
+-- Selectable Tiles
+-------------------------------------------------------------------------------
+
+-- Overrides BattleAction:isSelectable.
 function CharacterOnlyAction:isSelectable(tile)
-  for _, char in tile.characterList:iterator() do
+  for char in tile.characterList:iterator() do
     if self:isCharacterSelectable(char) then
       return true
     end
@@ -30,25 +66,15 @@ function CharacterOnlyAction:isSelectable(tile)
   return false
 end
 
+-- Tells if the given character is selectable.
+-- @param(char : Character) the character to check
+-- @ret(boolean) true if selectable, false otherwise
+function CharacterOnlyAction:isCharacterSelectable(char)
+  return true
+end
+
+-- Sets all character tiles as selectable.
 function CharacterOnlyAction:resetCharacterTiles()
-  if not self.selectableTiles then
-    local moveAction = SkillMoveAction(self.data.range, self.currentTarget, self.user)
-    local tempQueue = PriorityQueue()
-    for _, char in TroopManager.characterList:iterator() do
-      if self:isCharacterSelectable(char) then
-        print(char:toString())
-        local tile = char:getTile()
-        moveAction.currentTarget = tile
-        local path = PathFinder.findPath(moveAction, nil, true)
-        if path == nil then
-          tempQueue:enqueue(tile, math.huge)
-        else
-          tempQueue:enqueue(tile, path.totalCost)
-        end
-      end
-    end
-    self.selectableTiles = tempQueue:toList()
-  end
   for i = 1, self.selectableTiles.size do
     local t = self.selectableTiles[i]
     t.selectable = true
@@ -56,10 +82,9 @@ function CharacterOnlyAction:resetCharacterTiles()
   end
 end
 
--- Tells if the given character is selectable.
-function CharacterOnlyAction:isCharacterSelectable(char)
-  return true
-end
+-------------------------------------------------------------------------------
+-- Grid selecting
+-------------------------------------------------------------------------------
 
 -- Overrides BattleAction:firstTarget.
 function CharacterOnlyAction:firstTarget()

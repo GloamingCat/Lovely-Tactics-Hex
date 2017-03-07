@@ -1,4 +1,5 @@
 
+local Callback = require('core/callback/Callback')
 local ButtonWindow = require('core/gui/ButtonWindow')
 local SkillAction = require('core/battle/action/SkillAction')
 
@@ -17,10 +18,14 @@ local ActionWindow = ButtonWindow:inherit()
 function ActionWindow:selectAction(actionType, ...)
   -- Executes action grid selecting.
   BattleManager:selectAction(actionType(...))
+  self.GUI:hide()
   local result = GUIManager:showGUIForResult('battle/ActionGUI')
   if result == 1 then
     -- End of turn.
     self.result = 1
+  else
+    FieldManager.renderer:moveToObject(BattleManager.currentCharacter)
+    self.GUI:show()
   end
 end
 

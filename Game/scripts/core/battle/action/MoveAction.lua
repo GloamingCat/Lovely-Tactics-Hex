@@ -27,7 +27,7 @@ end
 -- Overrides BattleAction:onConfirm.
 function MoveAction:onConfirm(GUI)
   GUI:endGridSelecting()
-  FieldManager.renderer:moveTo(self.user.position.x, self.user.position.y, true)
+  FieldManager.renderer:moveToObject(self.user, true)
   FieldManager.renderer.focusObject = self.user
   local path = PathFinder.findPath(self)
   if path.lastStep:isControlZone(self.user.battler) then

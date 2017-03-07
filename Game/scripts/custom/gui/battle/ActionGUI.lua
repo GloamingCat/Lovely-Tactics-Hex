@@ -1,4 +1,5 @@
 
+local Callback = require('core/callback/Callback')
 local Vector = require('core/math/Vector')
 local Animation = require('core/graphics/Animation')
 local GUI = require('core/gui/GUI')
@@ -66,13 +67,17 @@ function ActionGUI:createStepWindow()
   if not self.stepWindow then
     self.stepWindow = StepWindow(self)
     self.stepWindow:setVisible(false)
-    self.windowList:add(self.stepWindow)
   end
   return self.stepWindow
 end
 
 -- Shows grid and cursor.
 function ActionGUI:startGridSelecting(target)
+  if self.stepWindow then
+    Callback.current:fork(function()
+      self.stepWindow:show()
+    end)
+  end
   FieldManager:showGrid()
   BattleManager:selectTarget(target or self.action.currentTarget)
   self.cursor:setTile(target or self.action.currentTarget)
@@ -80,6 +85,11 @@ end
 
 -- Hides grid and cursor.
 function ActionGUI:endGridSelecting()
+  if self.stepWindow then
+    Callback.current:fork(function()
+      self.stepWindow:hide()
+    end)
+  end
   FieldManager:hideGrid()
   self.cursor:hide()
 end

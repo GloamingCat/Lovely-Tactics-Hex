@@ -15,9 +15,10 @@ function SkillMoveAction:init(range, target, user)
   self.range = range
 end
 
+-- Overrides MoveAction:isFinal.
 function SkillMoveAction:isFinal(tile)
   local cost = self:estimateCost(self.currentTarget, tile)
-  return cost <= self.range and not tile:hasColliders(self.user) 
+  return cost < self.range and not tile:hasColliders(self.user) 
 end
 
 return SkillMoveAction

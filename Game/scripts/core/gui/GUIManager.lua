@@ -63,7 +63,7 @@ end
 function GUIManager:showGUI(path, ...)
   if self.current then
     self.stack:push(self.current)
-    self.current:hide()
+    --self.current:hide()
   end
   local newGUI = require('custom/gui/' .. path)(...)
   self.current = newGUI
@@ -78,7 +78,7 @@ function GUIManager:returnGUI()
   lastGUI:destroy()
   if not self.stack:isEmpty() then
     self.current = self.stack:pop()
-    self.current:show()
+    --self.current:show()
   else
     self.current = nil
   end

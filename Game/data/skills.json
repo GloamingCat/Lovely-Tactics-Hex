@@ -13,7 +13,7 @@
     "range": 1,
     "script": {
       "path": "skill/NormalAttack.lua",
-      "param": "(a.ATKP * 2 - b.DEFP) * math.random(0.8, 1.2)"
+      "param": "(a:ATKP() * 2 - b:DEFP()) * math.random(0.8, 1.2)"
     },
     "energyCost": 0,
     "timeCost": 50,
@@ -28,7 +28,7 @@
         "value": 100
       }
     ],
-    "type": "attack",
+    "type": 0,
     "tags": []
   },
   {
@@ -45,7 +45,7 @@
     "range": 4,
     "script": {
       "path": "skill/NormalAttack.lua",
-      "param": "(a.ATKP * 2 - b.DEFP) * math.random(0.8, 1.2)"
+      "param": "(a:ATKP() * 2 - b:DEFP()) * math.random(0.8, 1.2)"
     },
     "energyCost": 0,
     "timeCost": 50,
@@ -60,7 +60,7 @@
         "value": 100
       }
     ],
-    "type": "attack",
+    "type": 0,
     "tags": []
   },
   {
@@ -76,8 +76,8 @@
     "radius": 2,
     "range": 4,
     "script": {
-      "path": "skill/NormalAttack.lua",
-      "param": "(a.ATKP * 2 - b.DEFP) * math.random(0.8, 1.2)"
+      "path": "",
+      "param": "(a:ATKP() * 2 - b:DEFP()) * math.random(0.8, 1.2)"
     },
     "energyCost": 10,
     "timeCost": 100,
@@ -96,6 +96,7 @@
         "value": 100
       }
     ],
+    "type": 0,
     "tags": []
   },
   {
@@ -111,8 +112,8 @@
     "radius": 3,
     "range": 4,
     "script": {
-      "path": "skill/NormalAttack.lua",
-      "param": "(a.ATKP * 2 - b.DEFP) * math.random(0.8, 1.2)"
+      "path": "",
+      "param": "(a:ATKP() * 2 - b:DEFP()) * math.random(0.8, 1.2)"
     },
     "energyCost": 20,
     "timeCost": 100,
@@ -131,7 +132,7 @@
         "value": 100
       }
     ],
-    "type": "attack",
+    "type": 0,
     "tags": []
   }
 ]

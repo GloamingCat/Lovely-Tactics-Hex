@@ -182,7 +182,6 @@ local old_show = TurnWindow.show
 function TurnWindow:show(add)
   local user = BattleManager.currentCharacter
   self.userCursor:setCharacter(user)
-  FieldManager.renderer:moveTo(user.position.x, user.position.y)
   old_show(self, add)
 end
 

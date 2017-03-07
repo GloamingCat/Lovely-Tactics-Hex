@@ -19,7 +19,7 @@ local old_init = FieldCamera.init
 function FieldCamera:init(size, minDepth, maxDepth)
   old_init(self, size, minDepth, maxDepth)
   self.focusObject = nil
-  self.moveSpeed = 360
+  self.moveSpeed = 400
   self.moveOrigX = nil
   self.moveOrigY = nil
   self.moveDestX = nil
@@ -33,7 +33,7 @@ function FieldCamera:update()
   if self.focusObject then
     self:setPosition(self.focusObject.position.x, self.focusObject.position.y)
   elseif self.moveTime < 1 then
-    local speed = (self.moveSpeed / 4 + self.moveDistance * 2)
+    local speed = (self.moveSpeed / 6 + self.moveDistance * 3)
     self.moveTime = self.moveTime + speed * time() / self.moveDistance
     if self.moveTime >= 1 then
       self:setPosition(self.moveDestX, self.moveDestY)
@@ -51,16 +51,23 @@ end
 
 -- [COROUTINE] Moves camera to the given tile.
 -- @param(tile : ObjectTile) the destionation tile
--- @param(wait : boolean) flag to wait until the moves finishes
+-- @param(wait : boolean) flag to wait until the move finishes
 function FieldCamera:moveToTile(tile, wait)
   local x, y, z = mathf.tile2Pixel(tile:coordinates())
   self:moveTo(x, y, wait)
 end
 
+-- [COROUTINE] Movec camera to the given object.
+-- @param(obj : Object) the destination object
+-- @param(wait : boolean) flag to wait until the move finishes
+function FieldCamera:moveToObject(obj, wait)
+  self:moveTo(obj.position.x, obj.position.y, wait)
+end
+
 -- [COROUTINE] Moves camera to (x, y).
 -- @param(x : number) the x coordinate in pixels
 -- @param(y : number) the y coordinate in pixels
--- @param(wait : boolean) flag to wait until the moves finishes
+-- @param(wait : boolean) flag to wait until the move finishes
 function FieldCamera:moveTo(x, y, wait)
   self.focusObject = nil
   self.moveOrigX, self.moveOrigY = self.x, self.y
