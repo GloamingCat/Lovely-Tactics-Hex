@@ -52,7 +52,7 @@ function Animation.fromData(data, renderer, sprite)
   local w, h = texture:getWidth(), texture:getHeight()
   local quad = love.graphics.newQuad(0, 0, w / data.cols, h / data.rows, w, h)
   if not sprite then
-    sprite = Sprite(texture, quad, renderer)
+    sprite = Sprite(renderer, texture, quad)
   end
   local AnimClass = Animation
   if data.script.path == '' then

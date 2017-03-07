@@ -19,11 +19,15 @@ function Matrix2:init(width, height, startValue)
 end
 
 function Matrix2:get(i, j)
-  return self[(j - 1) * self.width + i]
+  if i >= 1 and i <= self.width and j >= 1 and j <= self.height then
+    return self[(j - 1) * self.width + i]
+  end
 end
 
 function Matrix2:set(value, i, j)
-  self[(j - 1) * self.width + i] = value
+  if i >= 1 and i <= self.width and j >= 1 and j <= self.height then
+    self[(j - 1) * self.width + i] = value
+  end
 end
 
 function Matrix2:iterator()

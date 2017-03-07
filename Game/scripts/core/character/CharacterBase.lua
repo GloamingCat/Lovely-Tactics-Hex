@@ -86,7 +86,7 @@ function CharacterBase:initializeGraphics(animations, direction, animID, transfo
   self.transform = transform
   self.direction = direction
   self.animationData = {}
-  self.sprite = Sprite(nil, nil, FieldManager.renderer)
+  self.sprite = Sprite(FieldManager.renderer)
   for i = #animations, 1, -1 do
     self:addAnimation(animations[i].name, animations[i].id)
   end

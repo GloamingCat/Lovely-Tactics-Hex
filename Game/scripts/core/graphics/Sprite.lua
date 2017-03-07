@@ -17,10 +17,10 @@ depth/render order (z axis).
 
 local Sprite = require('core/class'):new()
 
+-- @param(renderer : Renderer) the renderer that is going to handle this sprite
 -- @param(texture : Texture) sprite's texture
 -- @param(quad : Quad) the piece of the texture to render
--- @param(renderer : Renderer) the renderer that is going to handle this sprite
-function Sprite:init(texture, quad, renderer)
+function Sprite:init(renderer, texture, quad)
   self.texture = texture
   self.quad = quad
   self.position = Vector(0, 0, 1)
@@ -32,9 +32,6 @@ function Sprite:init(texture, quad, renderer)
   self.offsetDepth = 0
   self.color = { red = 100, green = 100, blue = 100, alpha = 100 }
   self.renderer = renderer
-  if quad ~= nil then
-    self:setQuad(quad:getViewport())
-  end
   self:insertSelf(1)
   self.visible = true
 end

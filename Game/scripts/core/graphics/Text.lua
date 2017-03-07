@@ -33,7 +33,7 @@ local Text = Sprite:inherit()
 
 local old_init = Text.init
 function Text:init(data, renderer)
-  old_init(self, nil, nil, renderer)
+  old_init(self, renderer)
   self.isText = true
   self:setText(data)
 end
@@ -50,6 +50,7 @@ function Text:setText(data)
   local f = self:renderFrame()
   self.texture = f
   self.quad = lgraphics.newQuad(0, 0, f:getWidth(), f:getHeight(), f:getWidth(), f:getHeight())
+  print(f:getWidth(), f:getHeight())
   self.renderer.needsRedraw = true
 end
 
@@ -299,13 +300,10 @@ end
 function Text:renderFrame()
 	local renderWidth = (self.width + 1) * Font.size
 	local lines = doRender(self.parsedtext, renderWidth, self.hardwrap)
-	-- dirty hack, add half height of last line to bottom of height to ensure tails of y's and g's, etc fit in properly.
-	self.height = (self:calcHeight(lines) + math.floor((lines[#lines].height / 2) + 0.5) ) * Font.size
-	--local fbWidth = math.max(nextpo2(math.max(lgraphics.getWidth(), self.width)), 
-  --                         nextpo2(math.max(lgraphics.getHeight(), self.height)))
-  local fbWidth = math.max(nextpo2(math.max(lgraphics.getWidth(), self.width * ScreenManager.scaleX)), 
-                     nextpo2(math.max(lgraphics.getHeight(), self.height * ScreenManager.scaleY)))
-	local fbHeight = fbWidth
+  local halfHeight = math.floor((lines[#lines].height / 2) + 0.5)
+	self.height = (self:calcHeight(lines) + halfHeight ) * Font.size
+  local fbWidth = self.width * ScreenManager.scaleX
+  local fbHeight = self.height * ScreenManager.scaleY
   local frame = lgraphics.newCanvas(fbWidth, fbHeight)
   lgraphics.push()
   lgraphics.scale(ScreenManager.scaleX * self.scaleX / Font.size, 

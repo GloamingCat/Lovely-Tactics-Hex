@@ -1,11 +1,13 @@
 
 local List = require('core/algorithm/List')
+local Matrix2 = require('core/algorithm/Matrix2')
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local Button = require('core/gui/Button')
 local ButtonCursor = require('core/gui/ButtonCursor')
 local VSlider = require('core/gui/VSlider')
 local Window = require('core/gui/Window')
+local ceil = math.ceil
 
 --[[===========================================================================
 
@@ -18,11 +20,9 @@ local ButtonWindow = Window:inherit()
 -- Override.
 local old_createContent = ButtonWindow.createContent
 function ButtonWindow:createContent()
-  self.buttons = {{}}
-  self.buttonList = List()
-  self.lastRow = 1
-  self.lastCol = 0
+  self.buttonMatrix = Matrix2(self:colCount(), 1)
   self:createButtons()
+  self.buttonMatrix.height = ceil(#self.buttonMatrix / self:colCount())
   self.currentCol = 1
   self.currentRow = 1
   self.offsetCol = 0
@@ -37,8 +37,9 @@ function ButtonWindow:createContent()
   if button then
     button:setSelected(true)
   end
-  if self.lastRow > self:rowCount() then
-    self.vSlider = VSlider(self, Vector(self.width / 2 - self.paddingw,0), self.height - self.paddingh * 2)
+  if self.buttonMatrix.height > self:rowCount() then
+    self.vSlider = VSlider(self, Vector(self.width / 2 - self.paddingw,0), 
+      self.height - self.paddingh * 2)
   end
 end
 
@@ -100,30 +101,20 @@ end
 -- @param(enableCondition : function) function automatically enable/disable button
 -- @ret(Button) the button created
 function ButtonWindow:addButton(name, iconAnim, onConfirm, enableCondition)
-  if self.lastCol == self:colCount() then
-    self.lastCol = 1
-    self.lastRow = self.lastRow + 1
-    self.buttons[self.lastRow] = {}
-  else
-    self.lastCol = self.lastCol + 1
-  end
-  local button = Button(self, self.buttonList.size + 1, self.lastCol, self.lastRow, 
-    name, self.font, iconAnim, onConfirm, onCancel, nil, enableCondition)
-  self.buttonList:add(button)
-  self.buttons[self.lastRow][self.lastCol] = button
+  local buttonCount = #self.buttonMatrix + 1
+  local row = ceil(buttonCount / self:colCount())
+  local col = buttonCount - (row - 1) * self:colCount()
+  print(name, col, row)
+  local button = Button(self, buttonCount, col, row, 
+    name, self.font, iconAnim, onConfirm, nil, nil, enableCondition)
+  self.buttonMatrix[buttonCount] = button
   return button
-end
-
-function ButtonWindow:getButton(c, r)
-  if self.buttons[r] then
-    return self.buttons[r][c]
-  end
 end
 
 -- Gets current selected button.
 -- @ret(Button) the selected button
 function ButtonWindow:currentButton()
-  return self.buttons[self.currentRow][self.currentCol]
+  return self.buttonMatrix:get(self.currentCol, self.currentRow)
 end
 
 -------------------------------------------------------------------------------
@@ -194,7 +185,7 @@ end
 -- @ret(number) new row number
 -- @ret(boolean) true if visible buttons changed
 function ButtonWindow:movedCoordinates(c, r, dx, dy)
-  local button = self:getButton(c + dx, r - dy)
+  local button = self.buttonMatrix:get(c + dx, r - dy)
   if button then
     return c + dx, r - dy
   end
@@ -202,8 +193,10 @@ function ButtonWindow:movedCoordinates(c, r, dx, dy)
     if self.loopHorizontal then
       if dx > 0 then
         c = self:rightLoop(r)
+        print(c)
       else
         c = self:leftLoop(r)
+        print(c)
       end
     end
   else
@@ -220,8 +213,8 @@ end
 
 -- Loops row r to the right.
 function ButtonWindow:rightLoop(r)
-  local c = 0
-  while not self.buttons[r][c] do
+  local c = 1
+  while not self.buttonMatrix:get(c,r) do
     c = c + 1
   end
   return c
@@ -229,8 +222,8 @@ end
 
 -- Loops row r to the left.
 function ButtonWindow:leftLoop(r)
-  local c = self:colCount()
-  while not self.buttons[r][c] do
+  local c = self.buttonMatrix.width
+  while not self.buttonMatrix:get(c,r) do
     c = c - 1
   end
   return c
@@ -238,8 +231,8 @@ end
 
 -- Loops column c up.
 function ButtonWindow:upLoop(c)
-  local r = 0
-  while not (self.buttons[r] and self.buttons[r][c]) do
+  local r = 1
+  while not self.buttonMatrix:get(c,r) do
     r = r + 1
   end
   return r
@@ -247,8 +240,8 @@ end
 
 -- Loops column c down.
 function ButtonWindow:downLoop(c)
-  local r = self.lastRow + 1
-  while not (self.buttons[r] and self.buttons[r][c]) do
+  local r = self.buttonMatrix.height
+  while not self.buttonMatrix:get(c,r) do
     r = r - 1
   end
   return r
@@ -263,7 +256,7 @@ function ButtonWindow:updateViewport(c, r)
   if newOffsetCol ~= self.offsetCol or newOffsetRow ~= self.offsetRow then
     self.offsetCol = newOffsetCol
     self.offsetRow = newOffsetRow
-    for button in self.buttonList:iterator() do
+    for button in self.buttonMatrix:iterator() do
       button:hide()
       button:updatePosition(self.position)
       button:show()
@@ -276,15 +269,15 @@ end
 
 function ButtonWindow:newViewport(newc, newr)
   local c, r = self.offsetCol, self.offsetRow
-  if newr < self.offsetRow + 1 then
-    r = newr - 1
-  elseif newr > self.offsetRow + self:rowCount() then
-    r = newr - self:rowCount()
-  end
-  if newc < self.offsetCol + 1 then
+  if newc < c + 1 then
     c = newc - 1
-  elseif newc > self.offsetCol + self:colCount() then
+  elseif newc > c + self:colCount() then
     c = newc - self:colCount()
+  end
+  if newr < r + 1 then
+    r = newr - 1
+  elseif newr > r + self:rowCount() then
+    r = newr - self:rowCount()
   end
   return c, r
 end

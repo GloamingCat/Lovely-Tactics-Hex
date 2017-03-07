@@ -136,7 +136,7 @@ function Character:walkPath(path, collisionCheck)
     dx = nextTile.x - dx
     dy = nextTile.y - dy
     dh = nextTile.layer.height - dh
-    self:walkTiles(dx, dy, dh, false)
+    self:walkTiles(dx, dy, dh, collisionCheck)
     currentTile = nextTile
   end
 end

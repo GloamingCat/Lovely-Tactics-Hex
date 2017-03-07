@@ -181,7 +181,7 @@ function Window:createSkinData()
   end
   self.sprites = {}
   for i = 1, 9 do
-    self.sprites[i] = Sprite(self.skin, self.skinData[i].quad, GUIManager.renderer)
+    self.sprites[i] = Sprite(GUIManager.renderer, self.skin, self.skinData[i].quad)
   end
 end
 

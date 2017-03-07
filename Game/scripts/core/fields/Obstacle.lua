@@ -27,7 +27,7 @@ function Obstacle:init(data, tileData, group)
     local x, y = data.quad.x, data.quad.y
     local w, h = data.quad.width, data.quad.height
     local quad = love.graphics.newQuad(x, y, w, h, texture:getWidth(), texture:getHeight())
-    self.sprite = Sprite(texture, quad, FieldManager.renderer)
+    self.sprite = Sprite(FieldManager.renderer, texture, quad)
     self.sprite:setTransformation(data.transform)
   end
   self:initializeNeighbors(tileData.neighbors)

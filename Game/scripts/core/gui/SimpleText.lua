@@ -14,7 +14,9 @@ local SimpleText = require('core/class'):new()
 
 function SimpleText:init(text, relativePosition, width, font, align)
   font = font or Font.gui_default
-  self.sprite = Text({'{font}' .. text, width, align or 'left', font = font}, GUIManager.renderer)
+  align = aling or 'left'
+  --self.sprite = Sprite(GUIManager.renderer)
+  self.sprite = Text({'{font}' .. text, width, align, font = font}, GUIManager.renderer)
   self.text = text
   self.width = width
   self.align = align
@@ -23,7 +25,8 @@ function SimpleText:init(text, relativePosition, width, font, align)
 end
 
 function SimpleText:setText(text)
-  self.sprite:setText({'{font}' .. text, self.width, self.align or 'left', font = self.font})
+  self.sprite:setText({'{font}' .. text, self.width, 
+    self.align, font = self.font})
 end
 
 function SimpleText:update()
@@ -38,7 +41,8 @@ function SimpleText:hide()
 end
 
 function SimpleText:updatePosition(pos)
-  self.sprite:setPosition(pos + self.relativePosition)
+  local rpos = self.relativePosition
+  self.sprite:setXYZ(pos.x + rpos.y, pos.y + rpos.y, pos.z + rpos.z)
 end
 
 function SimpleText:destroy()

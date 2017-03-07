@@ -1,6 +1,5 @@
 
 local List = require('core/algorithm/List')
-local Sprite = require('core/graphics/Sprite')
 local lgraphics = love.graphics
 local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
 --local spriteShader = lgraphics.newShader('shaders/sprite.glsl')

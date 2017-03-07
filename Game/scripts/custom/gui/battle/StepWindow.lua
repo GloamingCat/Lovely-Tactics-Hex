@@ -1,6 +1,5 @@
 
 local Vector = require('core/math/Vector')
-local Sprite = require('core/graphics/Sprite')
 local Window = require('core/gui/Window')
 local SimpleText = require('core/gui/SimpleText')
 local Font = require('custom/Font')

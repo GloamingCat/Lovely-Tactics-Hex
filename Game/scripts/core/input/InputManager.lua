@@ -3,8 +3,7 @@ local GameKey = require('core/input/GameKey')
 local GameMouse = require('core/input/GameMouse')
 local max = math.max
 
---[[
-@module 
+--[[===========================================================================
 
 The InputManager stores relevant inputs for the game.
 key states:
@@ -13,7 +12,7 @@ key states:
 2 => pressing (with delay)
 3 => just pressed
 
-]]
+=============================================================================]]
 
 local InputManager = require('core/class'):new()
 

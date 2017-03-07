@@ -1,17 +1,17 @@
 
---[[
-@module 
+local dt = love.timer.getDelta
+local now = love.timer.getTime
+
+--[[===========================================================================
 
 Entity that represents an input key.
 
-]]
+=============================================================================]]
 
 local GameKey = require('core/class'):new()
 
 local defaultStartGap = 0.5
 local defaultRepreatGap = 0.05
-
-local timer = love.timer
 
 function GameKey:init()
   self.pressTime = 0
@@ -52,9 +52,9 @@ function GameKey:isPressingGap(startGap, repeatGap)
   end
   startGap = startGap or defaultStartGap
   repeatGap = repeatGap or defaultRepreatGap
-  local time = timer.getTime() - self.pressTime
+  local time = now() - self.pressTime
   if time >= startGap then
-    return time % repeatGap <= timer.getDelta()
+    return time % repeatGap <= dt()
   else
     return false
   end
@@ -66,7 +66,7 @@ function GameKey:onPress(isrepeat)
   if isrepeat then
     self.pressState = 1
   else
-    self.pressTime = timer.getTime()
+    self.pressTime = now()
     self.pressState = 2
   end
 end

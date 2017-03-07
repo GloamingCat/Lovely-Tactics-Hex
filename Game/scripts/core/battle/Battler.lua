@@ -2,6 +2,7 @@
 local List = require('core/algorithm/List')
 local Inventory = require('core/battle/Inventory')
 local ceil = math.ceil
+local elementCount = #Config.elements
 
 --[[===========================================================================
 
@@ -23,7 +24,17 @@ function Battler:init(data, party)
   self.attackSkillID = data.attackID
   self.inventory = Inventory(data.items)
   self.skillList = List(data.skills)
-  
+  -- Store elements
+  local e = {}
+  for i = 1, #data.elements do
+    e[data.elements[i].id + 1] = data.elements[i].value
+  end
+  for i = 1, elementCount do
+    if not e[i] then
+      e[i] = 0
+    end
+  end
+  self.elementFactors = e
   -- Create AI
   local ai = data.scriptAI
   if data.scriptAI.path ~= '' then
