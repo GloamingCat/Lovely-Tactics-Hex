@@ -15,7 +15,7 @@ function ParallelCallback:initializeCoroutine(arg)
   local player = FieldManager.player
   local event = arg[1]
   local cofunc = function()
-      self:fork(self.exec, self, unpack(arg))
+      self:fork(self.exec, unpack(arg))
   end
   self.coroutine = coroutine.create(cofunc)
 end

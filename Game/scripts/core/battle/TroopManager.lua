@@ -83,7 +83,7 @@ end
 --@ret(Character) the character that reached turn limit (nil if none did)
 function TroopManager:incrementTurnCount(turnLimit)
   local current = nil
-  for i, bc in self.characterList:iterator() do
+  for bc in self.characterList:iterator() do
     if bc.battler:incrementTurnCount(turnLimit) then
       if current == nil or current.battler.turnCount < bc.battler.turnCount then
         current = bc
@@ -98,7 +98,7 @@ end
 -- @ret(number) the number of characters
 function TroopManager:battlerCount(battler)
   local c = 0
-  for i, char in self.characterList:iterator() do
+  for char in self.characterList:iterator() do
     if char.battler.originalData == battler then
       c = c + 1
     end
@@ -110,7 +110,7 @@ end
 -- @ret(number) the number of the party. Returns nil if no one won yet
 function TroopManager:winnerParty()
   local currentParty = nil
-  for _, bc in self.characterList:iterator() do
+  for bc in self.characterList:iterator() do
     if bc.battler and bc.battler:isAlive() then
       if currentParty == nil then
         currentParty = bc.battler.party

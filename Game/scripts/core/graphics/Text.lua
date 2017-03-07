@@ -169,7 +169,7 @@ local function wrapText(parsedtext, fragment, lines, maxheight, x, width, i, fnt
 		lines[#lines].height = maxheight
 		maxheight = 0
 		x = 0
-		table.insert(lines, {})
+		lines[#lines + 1] = {}
 	end
 	
 	return maxheight, 0
@@ -200,7 +200,7 @@ local function renderText(parsedtext, fragment, lines, maxheight, x, width, i, h
 		lines[#lines].height = maxheight
 		maxheight = 0
 		x = 0
-		table.insert(lines, {})
+    lines[#lines + 1] = {}
 	end
 
 	local h = math.floor(fnt:getHeight(parsedtext[i]) * fnt:getLineHeight())
@@ -214,6 +214,7 @@ local function renderImage(fragment, lines, maxheight, x, width)
 		lines[#lines].height = maxheight
 		maxheight = 0
 		x = 0
+    lines[#lines + 1] = {}
 		table.insert(lines, {})
 	end
 	maxheight = math.max(maxheight, fragment.height)
@@ -224,7 +225,8 @@ local function doRender(parsedtext, width, hardwrap)
 	local x = 0
 	local lines = {{}}
 	local maxheight = 0
-	for i, fragment in ipairs(parsedtext) do -- prepare rendering
+	for i = 1, #parsedtext do -- prepare rendering
+    local fragment = parsedtext[i]
 		if type(fragment) == 'string' then
 			maxheight, x, fragment = renderText(parsedtext, fragment, lines, maxheight, x, width, i, hardwrap)
 		elseif fragment.type == 'img' then
@@ -236,15 +238,12 @@ local function doRender(parsedtext, width, hardwrap)
 			lines[#lines].height = maxheight
 			maxheight = 0
 			x = 0
-			table.insert(lines, {})
+      lines[#lines + 1] = {}
 			-- don't want nl inserted into line
 			fragment = ''
 		end
 		table.insert(lines[#lines], fragment)
 	end
---~	 for i,f in ipairs(parsedtext) do
---~		 print(f)
---~	 end
 	lines[#lines].height = maxheight
 	return lines
 end
@@ -252,9 +251,11 @@ end
 local function doDraw(lines, limit, align)
 	local y = 0
 	local colorr,colorg,colorb,colora = lgraphics.getColor()
-	for i, line in ipairs(lines) do -- do the actual rendering
+  for i = 1, #lines do -- do the actual rendering
+    local line = lines[i]
 		y = y + line.height
-		for j, fragment in ipairs(line) do
+		for j = 1, #line do
+      local fragment = line[j]
 			if fragment.type == 'string' then
 				-- remove leading spaces, but only at the begin of a new line
 				-- Note: the check for fragment 2 (j==2) is to avoid a sub for leading line space

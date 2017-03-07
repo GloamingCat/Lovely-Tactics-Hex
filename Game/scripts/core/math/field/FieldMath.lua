@@ -24,7 +24,7 @@ end
 function FieldMath.createFullNeighborShift()
   local s = {}
   local function put(x, y)
-    table.insert(s, Vector(x, y))
+    s[#s + 1] = Vector(x, y)
   end
   put(1, 0)
   put(1, 1)

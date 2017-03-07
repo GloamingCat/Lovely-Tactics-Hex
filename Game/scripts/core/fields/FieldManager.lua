@@ -34,7 +34,7 @@ function FieldManager:update()
     return
   end
   self.callbackTree:update()
-  for i, object in self.updateList:iterator() do
+  for object in self.updateList:iterator() do
     object:update()
   end
   self.renderer:update()
@@ -151,7 +151,7 @@ function FieldManager:loadPersistentData(id)
     persistentData = {}
     SaveManager.current.characterData[id] = persistentData
   end
-  for c, char in self.characterList:iterator() do
+  for char in self.characterList:iterator() do
     char:loadData(persistentData)
   end
 end
@@ -178,7 +178,7 @@ function FieldManager:loadTransition(transition)
     local script = self.currentField.startScript
     self.callbackTree:forkFromPath(script.path, {}, script.param)
   end
-  for c, char in self.characterList:iterator() do
+  for char in self.characterList:iterator() do
     if char.startListener ~= nil then
       char.callbackTree:forkFromPath(char.startListener.path, {character = char}, char.startListener.param)
     end
@@ -214,7 +214,7 @@ end
 -- @ret(List) list of all characters with the given name
 function FieldManager:search(name)
   local list = List()
-  for i, char in self.characterList:iterator() do
+  for char in self.characterList:iterator() do
     if char.name == name then
       list:add(char)
     end

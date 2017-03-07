@@ -42,7 +42,7 @@ end
 
 -- Updates all content elements.
 function Window:update()
-  for i, c in self.content:iterator() do
+  for c in self.content:iterator() do
     if c.update then
       c:update()
     end
@@ -54,7 +54,7 @@ function Window:destroy()
   for i = 1, 9 do
     self.sprites[i]:removeSelf()
   end
-  for _, c in self.content:iterator() do
+  for c in self.content:iterator() do
     c:destroy()
   end
 end
@@ -84,7 +84,7 @@ end
 function Window:setPosition(position)
   self.position = position
   self:updateSkinSprites()
-  for i, c in self.content:iterator() do
+  for c in self.content:iterator() do
     if c.updatePosition then
       c:updatePosition(position)
     end
@@ -111,7 +111,7 @@ end
 
 -- Shows all content elements.
 function Window:showContent()
-  for i, c in self.content:iterator() do
+  for c in self.content:iterator() do
     if c.updatePosition then
       c:updatePosition(self.position)
     end
@@ -121,7 +121,7 @@ end
 
 -- Hides all content elements.
 function Window:hideContent()
-  for i, c in self.content:iterator() do
+  for c in self.content:iterator() do
     c:hide()
   end
 end

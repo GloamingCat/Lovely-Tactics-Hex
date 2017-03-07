@@ -87,8 +87,8 @@ function CharacterBase:initializeGraphics(animations, direction, animID, transfo
   self.direction = direction
   self.animationData = {}
   self.sprite = Sprite(nil, nil, FieldManager.renderer)
-  for i, anim in ipairs(animations) do
-    self:addAnimation(anim.name, anim.id)
+  for i = #animations, 1, -1 do
+    self:addAnimation(animations[i].name, animations[i].id)
   end
   local first = animations[animID + 1].name
   local data = self.animationData[first]
@@ -173,8 +173,8 @@ function CharacterBase:instantMoveTo(position, collisionCheck)
   local tiledif = newCenter - Vector(center:coordinates())
   local tileChange = not tiledif:isZero()
   if collisionCheck and tileChange and not self.passable then
-    for i, t in ipairs(tiles) do
-      local collision = self:collision(t, tiledif)
+    for i = #tiles, 1, -1 do
+      local collision = self:collision(tiles[i], tiledif)
       if collision ~= nil then
         return collision
       end
@@ -238,24 +238,25 @@ end
 function CharacterBase:getAllTiles()
   local center = self:getTile()
   local x, y, z = center:coordinates()
-  local t = { }
+  local tiles = { }
   local last = 0
-  for i, s in ipairs(self.collisionTiles) do
-    local tile = FieldManager.currentField:getObjectTile(x + s.dx, y + s.dy, z)
+  for i = #self.collisionTiles, 1, -1 do
+    local n = self.collisionTiles[i]
+    local tile = FieldManager.currentField:getObjectTile(x + n.dx, y + n.dy, z)
     if tile ~= nil then
       last = last + 1
-      t[last] = tile
+      tiles[last] = tile
     end
   end
-  return t
+  return tiles
 end
 
 -- Adds this object from to tiles it's occuping.
 -- @param(tiles : table) the list of occuped tiles
 function CharacterBase:addToTiles(tiles)
   tiles = tiles or self:getAllTiles()
-  for i, t in ipairs(tiles) do
-    t.characterList:add(self)
+  for i = #tiles, 1, -1 do
+    tiles[i].characterList:add(self)
   end
 end
 
@@ -263,8 +264,8 @@ end
 -- @param(tiles : table) the list of occuped tiles
 function CharacterBase:removeFromTiles(tiles)
   tiles = tiles or self:getAllTiles()
-  for i, t in ipairs(tiles) do
-    t.characterList:removeElement(self)
+  for i = #tiles, 1, -1 do
+    tiles[i].characterList:removeElement(self)
   end
 end
 

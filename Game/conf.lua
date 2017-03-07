@@ -15,7 +15,8 @@ function love.conf(t)
   Database = {}
 	local db = {'items', 'skills', 'skillDags', 'battlers', 'status', 'animCharacter', 
     'animBattle', 'animOther', 'terrains', 'obstacles', 'ramps', 'characters', 'tilesets'}
-	for i,file in ipairs(db) do
+	for i = #db, 1, -1 do
+    local file = db[i]
 		Database[file] = JSON.decode(love.filesystem.read('data/' .. file .. '.json'))
 	end
   t.window.title = Config.name

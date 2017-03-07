@@ -1,6 +1,6 @@
 
 local List = require('core/algorithm/List')
-local Matrix = require('core/algorithm/Matrix')
+local Matrix2 = require('core/algorithm/Matrix2')
 local Path = require('core/algorithm/Path')
 local PriorityQueue = require('core/algorithm/PriorityQueue')
 local max = math.max
@@ -36,14 +36,14 @@ function PathFinder.dijkstra(action, initial)
   minx = max (initial.x + minx, 1);
   maxx = min (initial.x + maxx, field.sizeX);
   
-  local distances = Matrix(field.sizeX, field.sizeY, 1, md + 1)
+  local distances = Matrix2(field.sizeX, field.sizeY, md + 1)
   distances:set(0, initial.x, initial.y)
   
   local queue = PriorityQueue()
   queue:enqueue (initial, 0)
   repeat
     local current = queue:dequeue()
-    for _, neighbor in current.neighborList:iterator() do
+    for neighbor in current.neighborList:iterator() do
       local i = neighbor.x
       local j = neighbor.y
       if i >= minx and i <= maxx then
@@ -94,14 +94,14 @@ function PathFinder.findPath(action, initial, ignoreDistance)
   local queue = PriorityQueue()
   queue:enqueue (Path(initial), 0)
   
-  local closedTiles = Matrix(field.sizeX, field.sizeY, 1, false)
+  local closedTiles = Matrix2(field.sizeX, field.sizeY, false)
   
   while not queue:isEmpty() do
     local currentPath = queue:dequeue()
     local currentTile = currentPath.lastStep
     if not closedTiles:get(currentTile.x, currentTile.y) then
       closedTiles:set(true, currentTile.x, currentTile.y)
-      for _, neighbor in currentTile.neighborList:iterator() do
+      for neighbor in currentTile.neighborList:iterator() do
         local d = action:getDistanceBetween(currentTile, neighbor)
         if (d + currentPath.totalCost <= action:maxDistance() or ignoreDistance) then
           if action:isPassableBetween(currentTile, neighbor) then
@@ -113,6 +113,45 @@ function PathFinder.findPath(action, initial, ignoreDistance)
             end
           end
         end
+      end
+    end
+  end
+  return nil
+end
+
+-- Search for a path from the initial until run out of steps.
+-- Assumes that the destination will never be reached.
+-- @param(action : MoveAction) the move action that implements these methods:
+--    isPassableBetween(initial, final)
+--    getDistanceBetween(initial, final)
+--    isFinal(tile)
+--    estimateCost(initial, final)
+-- @param(initial : Tile) the start tile (optional)
+-- @oaram(ignoreDistance : boolean) flag to ignore maximum distance (false by default)
+-- @ret(Path) the path is some was founded, nil if none
+function PathFinder.findPathToUnreachable(action, initial, ignoreDistance)
+  local field = FieldManager.currentField
+  initial = initial or action:firstTarget()
+  
+  local queue = PriorityQueue()
+  queue:enqueue (Path(initial), 0)
+  local closedTiles = Matrix2(field.sizeX, field.sizeY, false)
+  
+  while not queue:isEmpty() do
+    local currentPath = queue:dequeue()
+    local currentTile = currentPath.lastStep
+    if not closedTiles:get(currentTile.x, currentTile.y) then
+      closedTiles:set(true, currentTile.x, currentTile.y)
+      if (currentPath.totalCost <= action:maxDistance() or ignoreDistance) then
+        for neighbor in currentTile.neighborList:iterator() do
+          local d = action:getDistanceBetween(currentTile, neighbor)
+          if action:isPassableBetween(currentTile, neighbor) then
+            local newPath = currentPath:addStep(neighbor, d)
+            queue:enqueue(newPath, newPath.totalCost + action:estimateCost(neighbor))
+          end
+        end
+      elseif action:isSelectable(currentPath.previousPath.lastStep) then
+        return currentPath.previousPath
       end
     end
   end

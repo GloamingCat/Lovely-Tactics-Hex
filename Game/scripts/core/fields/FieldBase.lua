@@ -4,14 +4,13 @@ local ObjectLayer = require('core/fields/ObjectLayer')
 local max = math.max
 local min = math.min
 
---[[
-@module
+--[[===========================================================================
 
 A FieldBase stores sets of different layers: Terrain, Object,
 Character and Region layers.
 It must be created from a data file.
 
-]]
+=============================================================================]]
 
 local FieldBase = require('core/class'):new()
 
@@ -72,7 +71,7 @@ function FieldBase:addTerrainLayer(layerData)
   local list = self.terrainLayers[layerData.info.height]
   local order = #list
   local layer = TerrainLayer(layerData, self.sizeX, self.sizeY, order, self.tileset)
-  table.insert(list, layer)
+  list[order + 1] = layer
 end
 
 -- Merges the obstacle layers. If there's no layer in that height, creates a new one.

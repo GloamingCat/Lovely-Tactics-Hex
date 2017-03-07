@@ -17,7 +17,7 @@ end
 -- @ret(List) a list of battler tables
 function PartyManager:currentBattlers()
   local battlers = List()
-  for m, member in self.members:iterator() do
+  for member in self.members:iterator() do
     battlers:add(Database.battlers[member + 1])
   end
   return battlers
@@ -27,7 +27,7 @@ end
 -- @ret(List) a list of battler tables
 function PartyManager:backupBattlers()
   local battlers = self:currentBattlers()
-  battlers:conditionalRemove(function(b, battler)
+  battlers:conditionalRemove(function(battler)
     local c = TroopManager:battlerCount(battler)
     return c > 0
   end)

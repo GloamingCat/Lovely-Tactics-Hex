@@ -68,7 +68,7 @@ end
 function List:conditionalRemove(func)
   local oldsize = self.size
   for i = 1, self.size do
-    while i <= self.size and func(i, self[i]) do
+    while i <= self.size and func(self[i], i) do
       table.remove(self, i)
       self.size = self.size - 1
     end
@@ -106,7 +106,13 @@ end
 -- List iterator to user in a for.
 -- @ret(function) the iterator function
 function List:iterator()
-  return ipairs(self)
+  local i = 0
+  return function()
+    i = i + 1
+    if i <= self.size then
+      return self[i]
+    end
+  end
 end
 
 -- Converting to string.

@@ -23,14 +23,14 @@ function GUI:createWindows()
 end
 
 function GUI:destroy()
-  for i, window in self.windowList:iterator() do
+  for window in self.windowList:iterator() do
     window:destroy()
   end
 end
 
 -- Updates all windows.
 function GUI:update()
-  for i, window in self.windowList:iterator() do
+  for window in self.windowList:iterator() do
     window:update()
   end
 end
@@ -51,7 +51,7 @@ function GUI:show()
     return
   end
   self.closed = false
-  for i, window in self.windowList:iterator() do
+  for window in self.windowList:iterator() do
     Callback.current.parent:fork(function()
       window:show()
     end)
@@ -59,7 +59,7 @@ function GUI:show()
   local done = false
   repeat
     done = true
-    for i, window in self.windowList:iterator() do
+    for window in self.windowList:iterator() do
       if not window.open then
         done = false
       end
@@ -75,7 +75,7 @@ function GUI:hide()
     return
   end
   self.open = false
-  for i, window in self.windowList:iterator() do
+  for window in self.windowList:iterator() do
     Callback.current.parent:fork(function()
       window:hide()
     end, 2)
@@ -83,7 +83,7 @@ function GUI:hide()
   local done = false
   repeat
     done = true
-    for i, window in self.windowList:iterator() do
+    for window in self.windowList:iterator() do
       if not window.closed then
         done = false
       end

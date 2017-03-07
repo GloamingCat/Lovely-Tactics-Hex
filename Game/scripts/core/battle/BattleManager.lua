@@ -39,7 +39,7 @@ end
 
 -- Clears batte information from characters and field.
 function BattleManager:clear()
-  for _, bc in TroopManager.characterList:iterator() do
+  for bc in TroopManager.characterList:iterator() do
     bc.battler = nil
   end
   if self.cursor then
@@ -66,12 +66,12 @@ function BattleManager:nextTurn()
       coroutine.yield()
     end
   end
-  for i, bc in TroopManager.characterList:iterator() do
+  for bc in TroopManager.characterList:iterator() do
     bc.battler:onTurnStart(iterations)
   end
   print('Turn started in: ' .. iterations)
   self:startTurn()
-  for i, bc in TroopManager.characterList:iterator() do
+  for bc in TroopManager.characterList:iterator() do
     bc.battler:onTurnEnd(iterations)
   end
   self.currentCharacter = nil
@@ -83,11 +83,10 @@ function BattleManager:startTurn()
   local AI = self.currentCharacter.battler.AI
   if AI then
     local char = self.currentCharacter
-    FieldManager.renderer:moveTo(char.position.x, char.position.y)
+    FieldManager.renderer:moveToObject(char, true)
     AI.nextAction(self.currentCharacter)
   else
     repeat
-      print(self.currentCharacter:toString())
       local result = GUIManager:showGUIForResult('battle/BattleGUI')
     until result == 1
   end
@@ -112,6 +111,21 @@ end
 function BattleManager:selectTarget(tile)
   self.currentAction:selectTarget(tile)
   FieldManager.renderer:moveToTile(tile)
+end
+
+-- Plays a battle animation.
+-- @param(animID : number) the animation's ID from database
+-- @ret(Animation) the newly created animation
+function BattleManager:playAnimation(animID)
+  local animationData = Database.animBattle[self.data.centerAnimID + 1]
+  local animation = Animation.fromData(animationData)
+  FieldManager.updateList:add(animation)
+  FieldManager.callbackTree:fork(function(callback) 
+    callback:wait(animation.duration)
+    FieldManager.updateList:remove(animation)
+    animation.sprite:removeSelf()
+  end)
+  return animation
 end
 
 return BattleManager

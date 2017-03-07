@@ -62,10 +62,10 @@ function BattleCursor:setTile(tile)
   local x, y, z = mathf.tile2Pixel(tile:coordinates())
   self.anim.sprite:setVisible(tile.selectable)
   local maxH = 0
-  for _, obj in tile.obstacleList:iterator() do
+  for obj in tile.obstacleList:iterator() do
     maxH = max(maxH, obj.colliderHeight)
   end
-  for _, obj in tile.characterList:iterator() do
+  for obj in tile.characterList:iterator() do
     maxH = max(maxH, obj.colliderHeight)
   end
   self.anim.sprite:setXYZ(x + self.offsetX, y - maxH * pph + self.offsetY, z - 1)

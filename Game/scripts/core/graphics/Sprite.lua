@@ -2,6 +2,8 @@
 local Vector = require('core/math/Vector')
 local Quad = love.graphics.newQuad
 local round = math.round
+local insert = table.insert
+local remove = table.remove
 
 --[[===========================================================================
 
@@ -198,7 +200,7 @@ end
 function Sprite:insertSelf(i)
   i = i + self.offsetDepth
   if self.renderer.list[i] then
-    table.insert(self.renderer.list[i], self)
+    insert(self.renderer.list[i], self)
   else
     self.renderer.list[i] = {}
     self.renderer.list[i][1] = self
@@ -216,7 +218,7 @@ function Sprite:removeSelf()
       if n == 1 then
         self.renderer.list[depth] = nil
       else
-        table.remove(list, i)
+        remove(list, i)
       end
       return
     end

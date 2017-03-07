@@ -9,8 +9,8 @@ local function makeSubscriptionInterfaces(instEvents, classEvents)
     end
     
     local function unsubscribe(self,unsubscriber)
-      for i,v in ipairs(self.subscribers) do
-        if v == unsubscriber then
+      for i = #self.subscribers, 1, -1 do
+        if self.subscribers[i] == unsubscriber then
           table.remove(self.subscribers, i)
         end
       end
@@ -26,8 +26,8 @@ local function addEventTriggers(inst)
   
   for k,v in pairs(events) do
     inst[k] = function(self,...)
-      for _,subscriber in ipairs(v.subscribers) do
-        subscriber(...)
+      for i = #v.subscribers, 1, -1 do
+        v.subscribers[i](...)
       end
     end
   end

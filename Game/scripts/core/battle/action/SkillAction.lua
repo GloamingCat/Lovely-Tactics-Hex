@@ -35,7 +35,7 @@ function SkillAction:resetTargetTiles(selectMovable, selectBorder)
         
         local tile = self.field:getObjectTile(i, j, h)
         local isBorder = false
-        for _, neighbor in tile.neighborList:iterator() do
+        for neighbor in tile.neighborList:iterator() do
           -- If this tile has any non-reachable neighbors
           if isnan(matrix:get(neighbor.x, neighbor.y)) then
             isBorder = true
@@ -43,24 +43,24 @@ function SkillAction:resetTargetTiles(selectMovable, selectBorder)
           end
         end
         if isBorder then
-          for i, j in mathf.radiusIterator(self.data.range, 
+          for i, j in mathf.radiusIterator(self.data.range + 1, 
               tile.x, tile.y, field.sizeX, field.sizeY) do
             local n = field:getObjectTile(i, j, h) 
             if isnan(matrix:get(n.x, n.y)) then
               n.selectable = selectBorder and self:isSelectable(n)
-              n:setColor(self.data.type)
+              n:setColor(self.type)
             end
           end
         end
         
       end
     end
-    for i, j in mathf.radiusIterator(self.data.range, 
+    for i, j in mathf.radiusIterator(self.data.range + 1, 
         charTile.x, charTile.y, field.sizeX, field.sizeY) do
       if isnan(matrix:get(i, j)) then
         local n = field:getObjectTile(i, j, h)
         n.selectable = selectBorder and self:isSelectable(n)
-        n:setColor(self.data.type)
+        n:setColor(self.type)
       end
     end
   end

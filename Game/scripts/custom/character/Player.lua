@@ -51,7 +51,8 @@ function Callback:interact()
     tile = tile,
     origin = player
   }
-  for i, char in ipairs(tile.characterList) do
+  for i = #tile.characterList, 1, -1 do
+    local char = tile.characterList[i]
     if char ~= player and char.interactListener ~= nil then
       event.dest = char
       local lastDirection = char.direction

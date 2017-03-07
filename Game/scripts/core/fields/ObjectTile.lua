@@ -117,7 +117,7 @@ function ObjectTile:getBattlerList()
     battlers = PartyManager:backupBattlers()
   else
     battlers = List()
-    for r, regionID in self.regionList:iterator() do
+    for regionID in self.regionList:iterator() do
       local data = Config.regions[regionID + 1]
       for i = 1, #data.battlers do
         local id = data.battlers[i]
@@ -126,8 +126,7 @@ function ObjectTile:getBattlerList()
       end
     end
   end
-  battlers:conditionalRemove(
-    function(b, battler) 
+  battlers:conditionalRemove(function(battler) 
       return not self.battlerTypeList:contains(battler.typeID)
     end)
   return battlers
@@ -157,11 +156,11 @@ end
 -- Checks if this tile is passable from the given direction.
 -- @param(dx : number) the x difference in tiles
 -- @param(dy : number) the y difference in tiles
--- @param(obj : Object) the object that is trying to access this tile (optional)
+-- @param(object : Object) the object that is trying to access this tile (optional)
 -- @ret(boolean) true if passable, false otherwise
-function ObjectTile:isPassable(dx, dy, obj)
-  for i, o in self.obstacleList:iterator() do
-    if not o:isPassable(dx, dy, obj) then
+function ObjectTile:isPassable(dx, dy, object)
+  for obj in self.obstacleList:iterator() do
+    if not obj:isPassable(dx, dy, obj) then
       return false
     end
   end
@@ -183,13 +182,13 @@ end
 -- @ret(boolean) true is collides with any of the characters, false otherwise
 function ObjectTile:collidesCharacter(char, party)
   if party then
-    for i, c in self.characterList:iterator() do
+    for c in self.characterList:iterator() do
       if char ~= c and c.party ~= party then
         return true
       end
     end
   else
-    for i, c in self.characterList:iterator() do
+    for c in self.characterList:iterator() do
       if char ~= c then
         return true
       end
@@ -207,7 +206,7 @@ end
 -- @ret(boolean) true if it's control zone, false otherwise
 function ObjectTile:isControlZone(you)
   local containsAlly, containsEnemy = false, false
-  for _, char in self.characterList:iterator() do
+  for char in self.characterList:iterator() do
     if char.battler then
       if char.battler.party == you.party then
         containsAlly = true
@@ -221,8 +220,8 @@ function ObjectTile:isControlZone(you)
   elseif containsAlly then
     return false
   end
-  for _, n in self.neighborList:iterator() do
-    for _, char in n.characterList:iterator() do
+  for n in self.neighborList:iterator() do
+    for char in n.characterList:iterator() do
       if char.battler and char.battler.party ~= you.party then
         return true
       end
@@ -235,7 +234,7 @@ end
 -- @ret(number) the party number (nil if more than one character with different parties)
 function ObjectTile:getCurrentParty()
   local party = nil
-  for i, c in self.characterList:iterator() do
+  for c in self.characterList:iterator() do
     if c.battler then
       if party == nil then
         party = c.battler.party
@@ -251,7 +250,7 @@ end
 -- @param(yourPaty : number) the party number to check
 -- @ret(boolean) true if there's at least one enemy, false otherwise
 function ObjectTile:hasEnemy(yourParty)
-  for i, c in self.characterList:iterator() do
+  for c in self.characterList:iterator() do
     if c.battler and c.battler.party ~= yourParty then
       return true
     end
@@ -262,7 +261,7 @@ end
 -- @param(yourPaty : number) the party number to check
 -- @ret(boolean) true if there's at least one ally, false otherwise
 function ObjectTile:hasAlly(yourParty)
-  for i, c in self.characterList:iterator() do
+  for c in self.characterList:iterator() do
     if c.party == yourParty then
       return true
     end

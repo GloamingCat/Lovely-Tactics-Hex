@@ -58,15 +58,9 @@ end
 
 -- Updates all children and removes to concluded ones.
 function CallbackTree:update()
-  for i in self.children:iterator() do
-    local child = self.children[i]
-    while not child:update() do
-      child.parent.children:remove(i)
-      if i > self.children.size then
-        break
-      end
-    end
-  end
+  self.children:conditionalRemove(function(child)
+    return not child:update()
+  end)
 end
 
 return CallbackTree

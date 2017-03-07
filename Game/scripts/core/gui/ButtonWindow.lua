@@ -263,7 +263,7 @@ function ButtonWindow:updateViewport(c, r)
   if newOffsetCol ~= self.offsetCol or newOffsetRow ~= self.offsetRow then
     self.offsetCol = newOffsetCol
     self.offsetRow = newOffsetRow
-    for _, button in self.buttonList:iterator() do
+    for button in self.buttonList:iterator() do
       button:hide()
       button:updatePosition(self.position)
       button:show()

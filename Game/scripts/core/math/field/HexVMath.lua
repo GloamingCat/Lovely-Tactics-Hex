@@ -36,7 +36,7 @@ end
 function HexVMath.createVertexShift()
   local v = {}
   local function put(x, y)
-    table.insert(v, Vector(HexVMath.pixel2Tile(x, y, 0)))
+    v[#v + 1] = Vector(HexVMath.pixel2Tile(x, y, 0))
   end
   put(tileB / 2, -tileH / 2)
   if allNeighbors then
@@ -224,6 +224,7 @@ end
 -- @param(sizeY : number) the max value of y
 -- @ret(function) the iterator function
 function HexVMath.radiusIterator(radius, centerx, centery, sizeX, sizeY)
+  radius = radius - 1
 	local i     = max (centerx - radius, 1);
   local maxdx = min (centerx + radius, sizeX);
   local j     = max (centery - radius, centery - radius - (i - centerx), 1) - 1;
@@ -247,6 +248,7 @@ end
 -- @ret(number) the minimum x among the tiles
 -- @ret(number) the maximum x among the tiles
 function HexVMath.radiusLimitsX(radius)
+  radius = radius - 1
 	return -radius, radius
 end
 
@@ -256,6 +258,7 @@ end
 -- @ret(number) the minimum y among the tiles
 -- @ret(number) the maximum y among the tiles
 function HexVMath.radiusLimitsY(radius, i)
+  radius = radius - 1
   return max(-radius, radius - i), min(radius, radius - i)
 end
 

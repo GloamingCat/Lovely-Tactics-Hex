@@ -32,7 +32,7 @@ end
 function HexHMax:createVertexShift()
   local v = {}
   local function put(x, y)
-    table.insert(v, Vector(HexHMax.pixel2Tile(x, y, 0)))
+    v[#v + 1] = Vector(HexHMax.pixel2Tile(x, y, 0))
   end
   put(Config.tileB / 2, -Config.tileH / 2)
   if Config.tileS > 0 or Config.allNeighbors then
