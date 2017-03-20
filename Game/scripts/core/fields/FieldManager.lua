@@ -34,6 +34,7 @@ function FieldManager:update()
     return
   end
   self.callbackTree:update()
+  self.currentField:update()
   for object in self.updateList:iterator() do
     object:update()
   end
@@ -167,7 +168,6 @@ end
 -- tile in the same field.
 -- @param(transition : table) the transition data
 function FieldManager:loadTransition(transition)
-  --print(self.callbackTree.children.size)
   local fieldID = transition.fieldID
   self:loadField(fieldID)
   self.player = self:createPlayer(transition)

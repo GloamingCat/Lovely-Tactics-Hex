@@ -1,11 +1,17 @@
 
 local Vector = require('core/math/Vector')
+local tileW = Config.grid.tileW
+local tileH = Config.grid.tileH
+local tileB = Config.grid.tileB
+local tileS = Config.grid.tileS
+local pixelsPerHeight = Config.grid.pixelsPerHeight
+local allNeighbors = Config.grid.allNeighbors
 
---[[
+--[[===========================================================================
 
 Implements a FieldMath specially to orthogonal fields.
 
-]]
+=============================================================================]]
 
 local OrtMath = require('core/math/field/FieldMath'):inherit()
 
@@ -23,11 +29,11 @@ end
 ---------------------------------------------------------------------------
 
 function OrtMath.ortWidth()
-  return FieldManager.sizeX * Config.tileW
+  return FieldManager.sizeX * tileW
 end
 
 function OrtMath.ortHeight()
-  return FieldManager.sizeY * Config.tileH
+  return FieldManager.sizeY * tileH
 end
 
 ---------------------------------------------------------------------------
@@ -35,11 +41,11 @@ end
 ---------------------------------------------------------------------------
 
 function OrtMath.ortMaxDepth()
-  return FieldManager.sizeY * Config.tileH + Config.pixelsPerHeight * 2
+  return FieldManager.sizeY * tileH + pixelsPerHeight * 2
 end
 
 function OrtMath.ortMinDepth()
-  return -Config.pixelsPerHeight
+  return -pixelsPerHeight
 end
 
 ---------------------------------------------------------------------------
@@ -48,9 +54,9 @@ end
 
 function OrtMath.ortToPixelPos(i, j, h)
   i, j = i - 1, j - 1
-  local d = -j * Config.tileH
-  local x = i * Config.tileW
-  local y = -d - h * Config.pixelsPerHeight
+  local d = -j * tileH
+  local x = i * tileW
+  local y = -d - h * pixelsPerHeight
   return Vector(x, y, d)
 end
 
@@ -59,9 +65,9 @@ end
 ---------------------------------------------------------------------------
 
 function OrtMath.pixelToOrtPos(x, y, d)
-  local h = -(y + d) / Config.pixelsPerHeight
-  local i = x / Config.tileW
-  local j = d / Config.tileH
+  local h = -(y + d) / pixelsPerHeight
+  local i = x / tileW
+  local j = d / tileH
   return Vector(i + 1, j + 1, h)
 end
 

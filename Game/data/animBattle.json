@@ -5,6 +5,8 @@
     "rows": 4,
     "cols": 5,
     "duration": 30,
+    "loop": false,
+    "allRows": true,
     "script": {
       "path": "",
       "param": ""
@@ -34,6 +36,8 @@
     "rows": 4,
     "cols": 5,
     "duration": 30,
+    "loop": false,
+    "allRows": true,
     "script": {
       "path": "",
       "param": ""
@@ -63,6 +67,8 @@
     "rows": 4,
     "cols": 5,
     "duration": 30,
+    "loop": false,
+    "allRows": true,
     "script": {
       "path": "",
       "param": ""
@@ -92,6 +98,8 @@
     "rows": 2,
     "cols": 4,
     "duration": 30,
+    "loop": false,
+    "allRows": true,
     "script": {
       "path": "",
       "param": ""
@@ -121,6 +129,8 @@
     "rows": 3,
     "cols": 5,
     "duration": 30,
+    "loop": false,
+    "allRows": true,
     "script": {
       "path": "",
       "param": ""

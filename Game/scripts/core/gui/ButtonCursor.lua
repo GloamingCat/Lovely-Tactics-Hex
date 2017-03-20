@@ -29,7 +29,6 @@ end
 -- Updates position to the selected button.
 function ButtonCursor:updatePosition()
   local button = self.window:currentButton()
---  print(self.window.currentCol, self.window.currentRow)
   self.anim.sprite:setPosition(self.window.position + 
     button:relativePosition() + self.displacement)
 end

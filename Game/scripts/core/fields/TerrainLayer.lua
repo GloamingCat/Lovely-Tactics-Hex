@@ -1,13 +1,13 @@
 
-local TerrainTile = require('core/fields/TerrainTile')
-
---[[
-@module
+--[[===========================================================================
 
 A TerrainLayer is a matrix of TerrainTiles.
 There may be more then one TerrainLayer in the field per height.
 
-]]
+=============================================================================]]
+
+-- Imports
+local TerrainTile = require('core/fields/TerrainTile')
 
 local TerrainLayer = require('core/class'):new()
 

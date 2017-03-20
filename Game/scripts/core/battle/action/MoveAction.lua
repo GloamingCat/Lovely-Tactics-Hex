@@ -1,8 +1,4 @@
 
-local BattleAction = require('core/battle/action/BattleAction')
-local PathFinder = require('core/algorithm/PathFinder')
-local mathf = math.field
-
 --[[===========================================================================
 
 The BattleAction that is executed when players chooses the "Move" button.
@@ -10,7 +6,24 @@ Any action used in PathFinder must inherit from this.
 
 =============================================================================]]
 
+-- Imports
+local BattleAction = require('core/battle/action/BattleAction')
+local PathFinder = require('core/algorithm/PathFinder')
+
+-- Alias
+local mathf = math.field
+
 local MoveAction = BattleAction:inherit()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
+
+local old_init = MoveAction.init
+function MoveAction:init(target, user, range)
+  old_init(self, target, user)
+  self.range = range or 0
+end
 
 -------------------------------------------------------------------------------
 -- Event handlers
@@ -57,7 +70,8 @@ end
 -- @param(tile : ObjectTile) tile to check
 -- @ret(boolean) true if it's final, false otherwise
 function MoveAction:isFinal(tile)
-  return tile == self.currentTarget
+  local cost = self:estimateCost(self.currentTarget, tile)
+  return cost < self.range and not tile:hasColliders(self.user) 
 end
 
 -- Checks passability between two tiles.

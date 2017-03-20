@@ -1,7 +1,41 @@
 [
   {
-    "name": "Blade Attack",
+    "name": "Trade",
     "description": "",
+    "type": 0,
+    "icon": {
+      "imagePath": "",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0
+    },
+    "radius": 1,
+    "range": 1,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "successRate": "100",
+    "basicResult": "0",
+    "energyCost": 0,
+    "timeCost": 50,
+    "restriction": 1,
+    "userLoadAnim": "",
+    "userCastAnim": "",
+    "stepOnCast": true,
+    "loadAnimID": -1,
+    "castAnimID": -1,
+    "centerAnimID": -1,
+    "individualAnimID": -1,
+    "mirror": true,
+    "elements": [],
+    "tags": []
+  },
+  {
+    "name": "Blade Attack",
+    "description": "cb\r\n",
+    "type": 1,
     "icon": {
       "imagePath": "Icon/Skills/Physical.png",
       "x": 0,
@@ -13,27 +47,33 @@
     "range": 1,
     "script": {
       "path": "skill/NormalAttack.lua",
-      "param": "(a:ATKP() * 2 - b:DEFP()) * math.random(0.8, 1.2)"
+      "param": ""
     },
+    "successRate": "((a:PREP() * 2 - b:EVDP()) / b:EVDP()) * 50",
+    "basicResult": "(a:ATKP() * 2 - b:DEFP()) * math.random(0.8, 1.2)",
     "energyCost": 0,
     "timeCost": 50,
     "restriction": 1,
-    "userAnim": "Attack",
+    "userLoadAnim": "",
+    "userCastAnim": "Attack0",
+    "stepOnCast": true,
+    "loadAnimID": -1,
     "castAnimID": -1,
     "centerAnimID": 3,
     "individualAnimID": -1,
+    "mirror": true,
     "elements": [
       {
         "id": 0,
         "value": 100
       }
     ],
-    "type": 0,
     "tags": []
   },
   {
     "name": "Magical Attack",
     "description": "",
+    "type": 1,
     "icon": {
       "imagePath": "Icon/Skills/Magical.png",
       "x": 0,
@@ -45,27 +85,33 @@
     "range": 4,
     "script": {
       "path": "skill/NormalAttack.lua",
-      "param": "(a:ATKP() * 2 - b:DEFP()) * math.random(0.8, 1.2)"
+      "param": ""
     },
+    "successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
+    "basicResult": "(a:ATKM() * 2 - b:DEFM()) * math.random(0.8, 1.2)",
     "energyCost": 0,
     "timeCost": 50,
     "restriction": 1,
-    "userAnim": "Attack",
+    "userLoadAnim": "",
+    "userCastAnim": "Attack0",
+    "stepOnCast": true,
+    "loadAnimID": -1,
     "castAnimID": -1,
     "centerAnimID": 0,
     "individualAnimID": -1,
+    "mirror": true,
     "elements": [
       {
         "id": 1,
         "value": 100
       }
     ],
-    "type": 0,
     "tags": []
   },
   {
     "name": "Super Fireball",
     "description": "Attacks an area of 2 tiles of radius.",
+    "type": 1,
     "icon": {
       "imagePath": "Icon/Skills/Magical.png",
       "x": 0,
@@ -76,16 +122,22 @@
     "radius": 2,
     "range": 4,
     "script": {
-      "path": "",
-      "param": "(a:ATKP() * 2 - b:DEFP()) * math.random(0.8, 1.2)"
+      "path": "skill/AreaAttack.lua",
+      "param": ""
     },
+    "successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
+    "basicResult": "(a:ATKM() * 2 - b:DEFM()) * math.random(0.8, 1.2)",
     "energyCost": 10,
     "timeCost": 100,
     "restriction": 1,
-    "userAnim": "Attack",
+    "userLoadAnim": "Load0",
+    "userCastAnim": "Attack1",
+    "stepOnCast": true,
+    "loadAnimID": -1,
     "castAnimID": -1,
     "centerAnimID": 1,
     "individualAnimID": -1,
+    "mirror": true,
     "elements": [
       {
         "id": 1,
@@ -96,12 +148,12 @@
         "value": 100
       }
     ],
-    "type": 0,
     "tags": []
   },
   {
     "name": "Blizzard",
     "description": "Attacks an area of 3 radius.",
+    "type": 1,
     "icon": {
       "imagePath": "Icon/Skills/Magical.png",
       "x": 0,
@@ -112,16 +164,22 @@
     "radius": 3,
     "range": 4,
     "script": {
-      "path": "",
-      "param": "(a:ATKP() * 2 - b:DEFP()) * math.random(0.8, 1.2)"
+      "path": "skill/AreaAttack.lua",
+      "param": ""
     },
+    "successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
+    "basicResult": "(a:ATKM() * 2 - b:DEFM()) * math.random(0.8, 1.2)",
     "energyCost": 20,
     "timeCost": 100,
     "restriction": 1,
-    "userAnim": "Attack",
+    "userLoadAnim": "Load0",
+    "userCastAnim": "Attack1",
+    "stepOnCast": true,
+    "loadAnimID": -1,
     "castAnimID": -1,
     "centerAnimID": 2,
     "individualAnimID": -1,
+    "mirror": true,
     "elements": [
       {
         "id": 1,
@@ -132,7 +190,6 @@
         "value": 100
       }
     ],
-    "type": 0,
     "tags": []
   }
 ]

@@ -1,5 +1,5 @@
 
-local Color = {}
+Color = {}
 
 Color.tile_general = {red = 85, green = 30, blue = 85, alpha = 80}
 Color.tile_move = {red = 60, green = 60, blue = 100, alpha = 80}
@@ -20,5 +20,3 @@ Color.gui_text_highlight = {red = 95, green = 50, blue = 100, alpha = 100}
 Color.gui_icon_default = {red = 100, green = 100, blue = 100, alpha = 100}
 Color.gui_icon_disabled = {red = 50, green = 50, blue = 50, alpha = 50}
 Color.gui_icon_highlight = {red = 120, green = 120, blue = 120, alpha = 100}
-
-return Color

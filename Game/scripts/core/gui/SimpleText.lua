@@ -2,7 +2,6 @@
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local Text = require('core/graphics/Text')
-local Font = require('custom/Font')
 
 --[[===========================================================================
 
@@ -14,7 +13,7 @@ local SimpleText = require('core/class'):new()
 
 function SimpleText:init(text, relativePosition, width, font, align)
   font = font or Font.gui_default
-  align = aling or 'left'
+  align = align or 'left'
   --self.sprite = Sprite(GUIManager.renderer)
   self.sprite = Text({'{font}' .. text, width, align, font = font}, GUIManager.renderer)
   self.text = text
@@ -42,7 +41,7 @@ end
 
 function SimpleText:updatePosition(pos)
   local rpos = self.relativePosition
-  self.sprite:setXYZ(pos.x + rpos.y, pos.y + rpos.y, pos.z + rpos.z)
+  self.sprite:setXYZ(pos.x + rpos.x, pos.y + rpos.y, pos.z + rpos.z)
 end
 
 function SimpleText:destroy()

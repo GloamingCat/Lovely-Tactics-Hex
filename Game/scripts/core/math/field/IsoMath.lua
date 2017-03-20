@@ -1,11 +1,17 @@
 
 local Vector = require('core/math/Vector')
+local tileW = Config.grid.tileW
+local tileH = Config.grid.tileH
+local tileB = Config.grid.tileB
+local tileS = Config.grid.tileS
+local pixelsPerHeight = Config.grid.pixelsPerHeight
+local allNeighbors = Config.grid.allNeighbors
 
---[[
+--[[===========================================================================
 
 Implements a FieldMath specially to isometric and hexagonal fields.
 
-]]
+=============================================================================]]
 
 local IsoMath = require('core/math/field/FieldMath'):inherit()
 
@@ -13,14 +19,14 @@ local IsoMath = require('core/math/field/FieldMath'):inherit()
 -- @ret(table) array of Vectors
 function IsoMath:createNeighborShift()
   local s = self:createFullNeighborShift()
-  if Config.allNeighbors then
+  if allNeighbors then
     return s
   end
-  if Config.tileS <= 0 then
+  if tileS <= 0 then
     table.remove(s, 2)
     table.remove(s, 5)
   end
-  if Config.tileB <= 0 then
+  if tileB <= 0 then
     table.remove(s, 4)
     table.remove(s, 7)
   end
@@ -34,21 +40,21 @@ function IsoMath:createVertexShift()
   local function put(x, y)
     v[#v + 1] = Vector(IsoMath.pixel2Tile(x, y, 0))
   end
-  put(Config.tileB / 2, -Config.tileH / 2)
-  if Config.tileS > 0 or Config.allNeighbors then
-    put(Config.tileW / 2, -Config.tileS / 2)
+  put(tileB / 2, -tileH / 2)
+  if tileS > 0 or allNeighbors then
+    put(tileW / 2, -tileS / 2)
   end
-  put(Config.tileW / 2, Config.tileS / 2)
-  if Config.tileB > 0 or Config.allNeighbors then
-    put(Config.tileB / 2, Config.tileH / 2)
+  put(tileW / 2, tileS / 2)
+  if tileB > 0 or allNeighbors then
+    put(tileB / 2, tileH / 2)
   end
-  put(-Config.tileB / 2, Config.tileH / 2)
-  if Config.tileS > 0 or Config.allNeighbors then
-    put(-Config.tileW / 2, Config.tileS / 2)
+  put(-tileB / 2, tileH / 2)
+  if tileS > 0 or allNeighbors then
+    put(-tileW / 2, tileS / 2)
   end
-  put(-Config.tileW / 2, -Config.tileS / 2)
-  if Config.tileB > 0 or Config.allNeighbors then
-    put(Config.tileB / 2, -Config.tileH / 2)
+  put(-tileW / 2, -tileS / 2)
+  if tileB > 0 or allNeighbors then
+    put(tileB / 2, -tileH / 2)
   end
   return v
 end
@@ -94,12 +100,12 @@ end
 ---------------------------------------------------------------------------
 
 function IsoMath.pixelWidth(sizeX, sizeY)
-  return (sizeX + sizeY - 1) * (Config.tileW + Config.tileB) / 2 + (Config.tileW - Config.tileB) / 2
+  return (sizeX + sizeY - 1) * (tileW + tileB) / 2 + (tileW - tileB) / 2
 end
 
 function IsoMath.pixelHeight(sizeX, sizeY, lastLayer)
-  return (sizeX + sizeY - 1) * (Config.tileH + Config.tileS) / 2 + (Config.tileH - Config.tileS) / 2 
-      + lastLayer * Config.pixelsPerHeight
+  return (sizeX + sizeY - 1) * (tileH + tileS) / 2 + (tileH - tileS) / 2 
+      + lastLayer * pixelsPerHeight
 end
 
 ---------------------------------------------------------------------------
@@ -107,11 +113,11 @@ end
 ---------------------------------------------------------------------------
 
 function IsoMath.maxDepth(sizeX, sizeY)
-  return sizeY * (Config.tileH + Config.tileS) / 2 + Config.pixelsPerHeight * 2
+  return sizeY * (tileH + tileS) / 2 + pixelsPerHeight * 2
 end
 
 function IsoMath.minDepth(sizeX, sizeY)
-  return -sizeX * (Config.tileW + Config.tileB) / 2 - Config.pixelsPerHeight
+  return -sizeX * (tileW + tileB) / 2 - pixelsPerHeight
 end
 
 ---------------------------------------------------------------------------
@@ -120,9 +126,9 @@ end
 
 function IsoMath.tile2Pixel(i, j, h)
   i, j = i - 1, j - 1
-  local d = -(j - i) * (Config.tileH + Config.tileS) / 2
-  local x = (i + j) * (Config.tileW + Config.tileB) / 2
-  local y = -d - h * Config.pixelsPerHeight
+  local d = -(j - i) * (tileH + tileS) / 2
+  local x = (i + j) * (tileW + tileB) / 2
+  local y = -d - h * pixelsPerHeight
   return x, y, d
 end
 
@@ -131,10 +137,10 @@ end
 ---------------------------------------------------------------------------
 
 function IsoMath.pixel2Tile(x, y, d)  
-  local h = -(y + d) / Config.pixelsPerHeight
+  local h = -(y + d) / pixelsPerHeight
   
-  local sij = x * 2 / (Config.tileW + Config.tileB)
-  local dji = -d * 2 / (Config.tileH + Config.tileS)
+  local sij = x * 2 / (tileW + tileB)
+  local dji = -d * 2 / (tileH + tileS)
   
   local i = (sij - dji) / 2
   local j = (sij + dji) / 2
@@ -150,10 +156,10 @@ function IsoMath.autoTileRows(grid, i, j)
   local shift = math.field.neighborShift
   local rows = { 0, 0, 0, 0 }
   local step1, step2 = 1, 1
-  if Config.tileS > 0 then 
+  if tileS > 0 then 
     step1 = 2
   end
-  if Config.tileB > 0 then
+  if tileB > 0 then
     step2 = 2
   end
   

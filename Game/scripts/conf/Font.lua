@@ -1,7 +1,7 @@
 
-local Font = {}
+Font = {}
 
-local default_font = love.graphics.newFont('fonts/fogsans.otf', 22)
+local default_font = love.graphics.newFont('fonts/FogSans.otf', 22)
 
 Font.gui_default = default_font
 Font.gui_button = default_font
@@ -14,4 +14,3 @@ Font.fps = love.graphics.newFont(12)
 
 Font.size = 2
 
-return Font

@@ -1,9 +1,4 @@
 
-local TerrainLayer = require('core/fields/TerrainLayer')
-local ObjectLayer = require('core/fields/ObjectLayer')
-local max = math.max
-local min = math.min
-
 --[[===========================================================================
 
 A FieldBase stores sets of different layers: Terrain, Object,
@@ -11,6 +6,14 @@ Character and Region layers.
 It must be created from a data file.
 
 =============================================================================]]
+
+-- Imports
+local TerrainLayer = require('core/fields/TerrainLayer')
+local ObjectLayer = require('core/fields/ObjectLayer')
+
+-- Alias
+local max = math.max
+local min = math.min
 
 local FieldBase = require('core/class'):new()
 
@@ -24,14 +27,14 @@ function FieldBase:init(data)
   if data.prefs.defaultRegion >= 0 then
     self.defaultRegion = data.prefs.defaultRegion
   end
-  local minh = 100
-  local maxh = 0
+  self.minh = 100
+  self.maxh = 0
   self.tileset = Database.tilesets[data.prefs.tilesetID + 1]
-  for i,layerData in ipairs(data.layers) do
-    maxh = max(layerData.info.height, maxh)
-    minh = min(layerData.info.height, minh)
+  for i, layerData in ipairs(data.layers) do
+    self.maxh = max(layerData.info.height, self.maxh)
+    self.minh = min(layerData.info.height, self.minh)
   end
-  for i = minh, maxh do
+  for i = self.minh, self.maxh do
     self.terrainLayers[i] = {}
     self.objectLayers[i] = ObjectLayer(self.sizeX, self.sizeY, i, self.defaultRegion)
   end
@@ -39,6 +42,27 @@ function FieldBase:init(data)
   self.minx, self.miny, self.maxx, self.maxy = math.field.pixelBounds(self)
   if data.prefs.onStart.path ~= nil then
     self.startScript = data.prefs.onStart
+  end
+end
+
+-- Updates all ObjectTiles and TerrainTiles in field's layers.
+function FieldBase:update()
+  for l = self.minh, self.maxh do
+    local layer = self.objectLayers[l]
+    for i = 1, self.sizeX do
+      for j = 1, self.sizeY do
+        layer.grid[i][j]:update()
+      end
+    end
+    local layerList = self.terrainLayers[l]
+    for k = 1, #layerList do
+      layer = layerList[k]
+      for i = 1, self.sizeX do
+        for j = 1, self.sizeY do
+          layer.grid[i][j]:update()
+        end
+      end
+    end
   end
 end
 

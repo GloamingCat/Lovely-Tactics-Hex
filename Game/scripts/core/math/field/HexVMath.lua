@@ -5,11 +5,11 @@ local min = math.min
 local max = math.max
 local abs = math.abs
 local round = math.round
-local tileW = Config.tileW
-local tileH = Config.tileH
-local tileB = Config.tileB
-local allNeighbors = Config.allNeighbors
-local pph = Config.pixelsPerHeight
+local tileW = Config.grid.tileW
+local tileH = Config.grid.tileH
+local tileB = Config.grid.tileB
+local allNeighbors = Config.grid.allNeighbors
+local pph = Config.grid.pixelsPerHeight
 
 --[[===========================================================================
 

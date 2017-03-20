@@ -16,7 +16,8 @@ local Animation = require('core/class'):new()
 -- @param(quadWidth : number) the width of each quad
 -- @param(quadHeight : number) the height of each quad
 -- @param(sprite : Sprite) the sprite that this animation if associated to (optional, but must be set later)
-function Animation:init(duration, rowCount, colCount, quadWidth, quadHeight, sprite)
+function Animation:init(duration, rowCount, colCount, quadWidth, quadHeight, 
+    loop, allRows, sprite)
   
   self.sprite = sprite
   self.paused = sprite == nil
@@ -38,6 +39,8 @@ function Animation:init(duration, rowCount, colCount, quadWidth, quadHeight, spr
   
   -- Frame count (adapted to the frame rate)
   self.time = 0
+  self.loop = loop
+  self.allRows = allRows
 end
 
 -- Creates a new animation from file data.
@@ -63,17 +66,23 @@ function Animation.fromData(data, renderer, sprite)
     AnimClass = require('custom/' .. data.script.path)
   end
   local animation = AnimClass(data.duration, data.rows, data.cols, 
-          w / data.cols, h / data.rows, sprite, data.script.param)
+    w / data.cols, h / data.rows, data.loop, data.allRows, sprite, data.script.param)
   return animation, texture, quad
 end
 
 -- Increments the frame count and automatically changes que sprite.
-function Animation:update() 
-  if not self.paused then
+function Animation:update()
+  local lastCol = self.col == self.colCount - 1
+  if not self.paused and (self.loop or not lastCol) then
     self.time = self.time + love.timer.getDelta() * 60
     if self.time >= self.duration / self.colCount then
       self.time = self.time - self.duration / self.colCount
-      self:setCol(self.col + 1)
+      if lastCol and self.allRows then
+        self:setCol(0)
+        self:setRow(self.row + 1)
+      else
+        self:setCol(self.col + 1)
+      end
     end
   end
 end

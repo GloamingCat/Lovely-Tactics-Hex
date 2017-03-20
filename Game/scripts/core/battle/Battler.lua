@@ -1,16 +1,25 @@
 
-local List = require('core/algorithm/List')
-local Inventory = require('core/battle/Inventory')
-local ceil = math.ceil
-local elementCount = #Config.elements
-
 --[[===========================================================================
 
 A class the holds character's information for battle formula.
 
 =============================================================================]]
 
+-- Imports
+local List = require('core/algorithm/List')
+local Inventory = require('core/battle/Inventory')
+
+-- Alias
+local max = math.max
+
+-- Constants
+local elementCount = #Config.elements
+
 local Battler = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 -- @param(data : table) the battler's data from file
 -- @param(party : number) this battler's party number
@@ -74,7 +83,7 @@ function Battler:createAttributes(base, level, build)
   att.maxHP = att[attConfig[Config.battle.attHPID + 1].shortName]
   att.maxSP = att[attConfig[Config.battle.attSPID + 1].shortName]
   att.turn = att[attConfig[Config.battle.attTurnID + 1].shortName]
-  att.steps = att[attConfig[Config.battle.attStepsID + 1].shortName]
+  att.steps = att[attConfig[Config.battle.attStepID + 1].shortName]
   return att
 end
 
@@ -112,6 +121,12 @@ function Battler:incrementTurnCount(limit)
   end
 end
 
+-- Decrements turn count by a value. It never reaches a negative value.
+-- @param(value : number)
+function Battler:decrementTurnCount(value)
+  self.turnCount = max(self.turnCount - value, 0)
+end
+
 -- Callback for when a new turn begins.
 -- @param(iterations : number) the number of turn iterations since the previous turn
 function Battler:onTurnStart(iterations)
@@ -123,11 +138,6 @@ end
 -- Callback for when a turn ends.
 -- @param(iterations : number) the number of turn iterations since the previous turn
 function Battler:onTurnEnd(iterations)
-  if BattleManager.currentCharacter.battler == self then
-    local limit = BattleManager.turnLimit
-    local lostTurnCount = limit - self.currentSteps * (limit / 2) / self.att:steps()
-    self.turnCount = self.turnCount - ceil(lostTurnCount)
-  end
 end
 
 -------------------------------------------------------------------------------

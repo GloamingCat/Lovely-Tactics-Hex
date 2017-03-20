@@ -1,12 +1,13 @@
 
-local Vector = require('core/math/Vector')
-
 --[[===========================================================================
 
 This module extends Lua's native math module with a few functions for generic
 purposes and a module for grid/field math.
 
 =============================================================================]]
+
+-- Imports
+local Vector = require('core/math/Vector')
 
 ---------------------------------------------------------------------------
 -- General
@@ -96,13 +97,17 @@ end
 -- Field Math
 ---------------------------------------------------------------------------
 
-if (Config.tileW == Config.tileB) and (Config.tileH == Config.tileS) then
+local tileW = Config.grid.tileW
+local tileH = Config.grid.tileH
+local tileB = Config.grid.tileB
+local tileS = Config.grid.tileS
+if (tileW == tileB) and (tileH == tileS) then
   math.field = require('core/math/field/OrtMath')
-elseif (Config.tileB == 0) and (Config.tileS == 0) then
+elseif (tileB == 0) and (tileS == 0) then
   math.field = require('core/math/field/IsoMath')
-elseif (Config.tileB > 0) and (Config.tileS == 0) then
+elseif (tileB > 0) and (tileS == 0) then
   math.field = require('core/math/field/HexVMath')
-elseif (Config.tileB == 0) and (Config.tileS > 0) then
+elseif (tileB == 0) and (tileS > 0) then
   math.field = require('core/math/field/HexHMath')
 else
   error('Tile size not supported!')

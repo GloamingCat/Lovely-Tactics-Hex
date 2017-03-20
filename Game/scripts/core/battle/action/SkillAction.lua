@@ -1,9 +1,17 @@
 
+--[[===========================================================================
+
+The BattleAction that is executed when players chooses a skill to use.
+
+=============================================================================]]
+
+-- Imports
 local Callback = require('core/callback/Callback')
 local BattleAction = require('core/battle/action/BattleAction')
-local SkillMoveAction = require('core/battle/action/SkillMoveAction')
+local MoveAction = require('core/battle/action/MoveAction')
 local PathFinder = require('core/algorithm/PathFinder')
-local elementCount = #Config.elements
+
+-- Alias
 local max = math.max
 local isnan = math.isnan
 local mathf = math.field
@@ -11,14 +19,16 @@ local time = love.timer.getDelta
 local now = love.timer.getTime
 local random = math.random
 local round = math.round
+local ceil = math.ceil
 
---[[===========================================================================
-
-The BattleAction that is executed when players chooses a skill to use.
-
-=============================================================================]]
+-- Constants
+local elementCount = #Config.elements
 
 local SkillAction = BattleAction:inherit()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 local old_init = SkillAction.init
 function SkillAction:init(initialTile, user, skill)
@@ -26,11 +36,11 @@ function SkillAction:init(initialTile, user, skill)
   self.data = skill
   -- Skill type
   if skill.type == 0 then
-    self.type = 'attack'
-  elseif skill.type == 1 then
-    self.type = 'support'
-  elseif skill.type == 2 then
     self.type = 'general'
+  elseif skill.type == 1 then
+    self.type = 'attack'
+  elseif skill.type == 2 then
+    self.type = 'support'
   end
   -- Formulae
   if self.data.basicResult ~= '' then
@@ -38,7 +48,7 @@ function SkillAction:init(initialTile, user, skill)
       'action, a, b')
   end
   if self.data.successRate ~= '' then
-    self.calculateRateFunctinon = self:loadFormulae(self.data.successRate, 
+    self.calculateSuccessRate = self:loadFormulae(self.data.successRate, 
       'action, a, b')
   end
   -- Store elements
@@ -46,7 +56,7 @@ function SkillAction:init(initialTile, user, skill)
   for i = 1, #skill.elements do
     e[skill.elements[i].id + 1] = skill.elements[i].value
   end
-  for i = 1, #elementCount do
+  for i = 1, elementCount do
     if not e[i] then
       e[i] = 0
     end
@@ -81,6 +91,7 @@ function SkillAction:selectTarget(tile)
     for i = #self.currentTargets, 1, -1 do
       self.currentTargets[i]:setSelected(false)
     end
+    print('not null')
   end
   self.currentTarget = tile
   self.currentTargets = self:getAllAffectedTiles(tile)
@@ -173,11 +184,13 @@ end
 -- @param(target : Character) the target character
 -- @ret(number) the final value (nil if miss)
 function SkillAction:calculateEffectResult(target)
-  local rate = self:calculateSuccessRate(self.user, target)
+  local rate = self:calculateSuccessRate(self.user.battler.att, 
+    target.battler.att)
   if random() + random(1, 99) > rate then
     return nil
   end
-  local result = self:calculateBasicResult(self.user, target)
+  local result = self:calculateBasicResult(self.user.battler.att, 
+    target.battler.att)
   local bonus = 0
   local targetElementFactors = target.battler.elementFactors
   for i = 1, elementCount do
@@ -198,6 +211,7 @@ function SkillAction:effectIntro()
   local introTime = 22.5
   Callback.current:wait(introTime)
   self.user:startSkill(self.currentTarget, self.data)
+  print(now() - start)
   return now() - start
 end
 
@@ -209,7 +223,8 @@ function SkillAction:effectCenter()
     local targetTime = 7.5
     local mirror = self.user.direction > 90 and self.user.direction <= 270
     local x, y, z = mathf.tile2Pixel(self.currentTarget:coordinates())
-    local animation = BattleManager:playAnimation(self.data.centerAnimID)
+    local animation = BattleManager:playAnimation(self.data.centerAnimID,
+      x, y, z - 1, mirror)
     Callback.current:wait(targetTime)
     return animation.duration - targetTime
   end
@@ -220,21 +235,24 @@ end
 -- @ret(number) the total duration of the animation
 function SkillAction:effectFinish(originTile)
   local start = now()
-  self.allTargetsAnimation(originTile)
-  self.user:finishSkill(originTile)
+  self:allTargetsAnimation(originTile)
+  self.user:finishSkill(originTile, self.data)
   return now() - start
 end
 
 -- Executes individual animation for all the affected tiles.
 function SkillAction:allTargetsAnimation(originTile)
-  for i = #self.currentTargets, 1, -1 do
-    local tile = self.currenTargets[i]
+  local allTargets = self.currentTargets or 
+    self:getAllAffectedTiles(self.currentTarget)
+  for i = #allTargets, 1, -1 do
+    local tile = allTargets[i]
     for char in tile.characterList:iterator() do
       self:singleTargetAnimation(char, originTile)
     end
   end
 end
 
+-- Executes individual animation for a single tile.
 function SkillAction:singleTargetAnimation(char, originTile)
   local result = self:calculateEffectResult(char)
   if not result or result == 0 then
@@ -243,9 +261,9 @@ function SkillAction:singleTargetAnimation(char, originTile)
     if self.data.radius > 0 then
       originTile = self.currentTarget
     end
-    char:damage(originTile, self.individualAnimID, result)
+    char:damage(self.data, result, originTile)
   else
-    char:heal(self.individualAnimID, -result)
+    char:heal(self.data, -result)
   end
   local targetTime = 2
   Callback.current:wait(targetTime)
@@ -256,11 +274,13 @@ end
 -------------------------------------------------------------------------------
 
 -- Overrides BattleAction:onConfirm.
+-- Executes the movement action and the skill's effect, 
+-- and then decrements battler's turn count and steps.
 function SkillAction:onConfirm(GUI)
   GUI:endGridSelecting()
   FieldManager.renderer:moveToObject(self.user, true)
   FieldManager.renderer.focusObject = self.user
-  local moveAction = SkillMoveAction(self.data.range, self.currentTarget, self.user)
+  local moveAction = MoveAction(self.currentTarget, self.user, self.data.range)
   local path = PathFinder.findPath(moveAction)
   if path then -- Target was reached
     self.user:walkPath(path)
@@ -270,11 +290,13 @@ function SkillAction:onConfirm(GUI)
     path = path or PathFinder.estimateBestTile(moveAction)
     self.user:walkPath(path)
   end
-  if path.lastStep:isControlZone(self.user.battler) then
-    self.user.battler.currentSteps = 0
+  local battler = self.user.battler
+  if path.lastStep:isControlZone(battler) then
+    battler.currentSteps = 0
   else
-    self.user.battler.currentSteps = self.user.battler.currentSteps - path.totalCost
+    battler.currentSteps = battler.currentSteps - path.totalCost
   end
+  battler:decrementTurnCount(ceil(self.data.timeCost * BattleManager.turnLimit / 200))
   return 1
 end
 

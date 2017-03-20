@@ -3,15 +3,15 @@
     "name": "Mage Skills",
     "nodes": [
       {
-        "skillID": 2,
+        "skillID": 3,
         "cost": 10,
         "requirements": []
       },
       {
-        "skillID": 3,
+        "skillID": 4,
         "cost": 20,
         "requirements": [
-          2
+          3
         ]
       }
     ]

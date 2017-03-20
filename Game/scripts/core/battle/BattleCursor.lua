@@ -1,19 +1,28 @@
 
-local Animation = require('core/graphics/Animation')
-local cursorAnimID = Config.gui.battleCursorAnimID
-local tileW = Config.tileW
-local tileH = Config.tileH
-local pph = Config.pixelsPerHeight
-local mathf = math.field
-local max = math.max
-
 --[[===========================================================================
 
 Cursor used to indicate current turn's character and the selected tile.
 
 =============================================================================]]
 
+-- Imports
+local Animation = require('core/graphics/Animation')
+
+-- Alias
+local mathf = math.field
+local max = math.max
+
+-- Constants
+local cursorAnimID = Config.gui.battleCursorAnimID
+local tileW = Config.grid.tileW
+local tileH = Config.grid.tileH
+local pph = Config.grid.pixelsPerHeight
+
 local BattleCursor = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 function BattleCursor:init()
   if cursorAnimID >= 0 then
@@ -52,6 +61,10 @@ function BattleCursor:destroy()
     self.anim.sprite:removeSelf()
   end
 end
+
+-------------------------------------------------------------------------------
+-- Position
+-------------------------------------------------------------------------------
 
 -- Sets the position to the given tile.
 -- @param(tile : ObjectTile) the target tile

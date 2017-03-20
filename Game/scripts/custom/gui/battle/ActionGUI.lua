@@ -27,7 +27,6 @@ end
 -- [COROUTINE] Overrides GUI:waitForResult.
 function ActionGUI:waitForResult()
   self.action:onActionGUI(self)
-  print('waiting')
   self:checkInput()
   while self.result == nil do
     if self.cursor then
@@ -37,7 +36,6 @@ function ActionGUI:waitForResult()
     self:checkInput()
   end
   self.cursor:destroy()
-  print('got result')
   return self.result
 end
 

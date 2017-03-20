@@ -1,7 +1,6 @@
 [
   {
     "name": "Template",
-    "portraitName": "",
     "colliderHeight": 4,
     "tiles": [
       {
@@ -38,11 +37,11 @@
         "id": 2
       }
     ],
+    "portraits": [],
     "tags": []
   },
   {
     "name": "Lancer",
-    "portraitName": "Lancer",
     "colliderHeight": 4,
     "tiles": [
       {
@@ -83,19 +82,15 @@
         "id": 8
       },
       {
-        "name": "Attack",
+        "name": "Attack0",
         "id": 6
-      },
-      {
-        "name": "Cast",
-        "id": 5
       }
     ],
+    "portraits": [],
     "tags": []
   },
   {
     "name": "Mage",
-    "portraitName": "Mage",
     "colliderHeight": 4,
     "tiles": [
       {
@@ -136,23 +131,23 @@
         "id": 15
       },
       {
-        "name": "Attack",
+        "name": "Attack0",
         "id": 12
       },
       {
-        "name": "Special",
+        "name": "Attack1",
         "id": 13
       },
       {
-        "name": "Cast",
+        "name": "Load0",
         "id": 11
       }
     ],
+    "portraits": [],
     "tags": []
   },
   {
     "name": "Green Lancer",
-    "portraitName": "Green Lancer",
     "colliderHeight": 4,
     "tiles": [
       {
@@ -193,19 +188,15 @@
         "id": 8
       },
       {
-        "name": "Attack",
+        "name": "Attack0",
         "id": 6
-      },
-      {
-        "name": "Cast",
-        "id": 5
       }
     ],
+    "portraits": [],
     "tags": []
   },
   {
     "name": "Blue Mage",
-    "portraitName": "Blue Mage",
     "colliderHeight": 4,
     "tiles": [
       {
@@ -246,18 +237,19 @@
         "id": 15
       },
       {
-        "name": "Attack",
+        "name": "Attack0",
         "id": 12
       },
       {
-        "name": "Special",
+        "name": "Attack1",
         "id": 13
       },
       {
-        "name": "Cast",
+        "name": "Load0",
         "id": 11
       }
     ],
+    "portraits": [],
     "tags": []
   }
 ]

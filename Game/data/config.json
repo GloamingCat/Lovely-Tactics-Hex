@@ -17,82 +17,46 @@
       "direction": 270
     }
   },
-  "party": {
-    "initialMembers": [
-      0,
-      1
-    ],
-    "maxBattleMembers": 6
-  },
-  "battle": {
-    "battlerTypes": [
-      {
-        "name": "Melee",
-        "code": "M"
-      },
-      {
-        "name": "Ranged",
-        "code": "R"
-      },
-      {
-        "name": "Healer",
-        "code": "H"
-      }
-    ],
-    "turnLimit": 2000,
-    "individualTurn": true,
-    "groupEscape": true,
-    "partyTileEscape": true,
-    "instantTurnTransition": true,
-    "attTurnID": 4,
-    "attHPID": 7,
-    "attSPID": 8,
-    "attStepsID": 5,
-    "attJumpID": 6
-  },
   "gui": {
     "cursorAnimID": 0,
     "battleCursorAnimID": 1,
     "tileAnimID": 2,
-    "tileHLAnimID": 3,
-    "disabledColor": {
-      "red": 128,
-      "green": 128,
-      "blue": 128
-    }
+    "tileHLAnimID": 3
   },
-  "tileW": 36,
-  "tileH": 22,
-  "tileB": 16,
-  "tileS": 0,
-  "pixelsPerHeight": 8,
-  "allNeighbors": false,
-  "sounds": {
-    "cursor": {
-      "path": "sfx/cursor.mp3",
-      "volume": 100,
-      "pitch": 150,
-      "speed": 150
-    },
-    "confirm": {
-      "path": "confirm.wav",
-      "volume": 100,
-      "pitch": 100,
-      "speed": 100
-    },
-    "cancel": {
-      "path": "cancel.wav",
-      "volume": 100,
-      "pitch": 100,
-      "speed": 100
-    },
-    "dialog": {
-      "path": "sfx/cursor.mp3",
-      "volume": 100,
-      "pitch": 75,
-      "speed": 200
-    }
+  "battle": {
+    "tradeSkillID": 0,
+    "attHPID": 7,
+    "attSPID": 8,
+    "attTurnID": 4,
+    "attStepID": 5,
+    "attJumpID": 6
   },
+  "grid": {
+    "tileW": 36,
+    "tileH": 22,
+    "tileB": 16,
+    "tileS": 0,
+    "pixelsPerHeight": 8,
+    "allNeighbors": false
+  },
+  "initialMembers": [
+    0,
+    1
+  ],
+  "battlerTypes": [
+    {
+      "name": "Melee",
+      "code": "M"
+    },
+    {
+      "name": "Ranged",
+      "code": "R"
+    },
+    {
+      "name": "Healer",
+      "code": "H"
+    }
+  ],
   "attributes": [
     {
       "name": "Strength",
@@ -168,7 +132,7 @@
     },
     {
       "name": "Magical Defense",
-      "shortName": "DEFP",
+      "shortName": "DEFM",
       "script": "att:MAG() * 5 + att:RES() * 5",
       "mutable": false
     },

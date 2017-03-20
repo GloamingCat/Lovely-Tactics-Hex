@@ -1,5 +1,9 @@
 
 local Vector = require('core/math/Vector')
+local tileW = Config.grid.tileW
+local tileH = Config.grid.tileH
+local tileB = Config.grid.tileB
+local tileS = Config.grid.tileS
 
 --[[===========================================================================
 
@@ -12,7 +16,7 @@ navigation/iteration, etc.
 local FieldMath = {}
 
 function FieldMath.init()
-  FieldMath.tg = (Config.tileH + Config.tileS) / (Config.tileW + Config.tileB)
+  FieldMath.tg = (tileH + tileS) / (tileW + tileB)
   FieldMath.fullNeighborShift = FieldMath.createFullNeighborShift()
   FieldMath.neighborShift = FieldMath.createNeighborShift()
   FieldMath.vertexShift = FieldMath.createVertexShift()

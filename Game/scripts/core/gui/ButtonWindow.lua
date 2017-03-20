@@ -104,7 +104,6 @@ function ButtonWindow:addButton(name, iconAnim, onConfirm, enableCondition)
   local buttonCount = #self.buttonMatrix + 1
   local row = ceil(buttonCount / self:colCount())
   local col = buttonCount - (row - 1) * self:colCount()
-  print(name, col, row)
   local button = Button(self, buttonCount, col, row, 
     name, self.font, iconAnim, onConfirm, nil, nil, enableCondition)
   self.buttonMatrix[buttonCount] = button
@@ -193,10 +192,8 @@ function ButtonWindow:movedCoordinates(c, r, dx, dy)
     if self.loopHorizontal then
       if dx > 0 then
         c = self:rightLoop(r)
-        print(c)
       else
         c = self:leftLoop(r)
-        print(c)
       end
     end
   else

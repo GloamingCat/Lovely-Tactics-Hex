@@ -1,11 +1,12 @@
 
-local BattleAction = require('core/battle/action/BattleAction')
-
 --[[===========================================================================
 
 The BattleAction that is executed when players cancels in the Turn Window.
 
 =============================================================================]]
+
+-- Imports
+local BattleAction = require('core/battle/action/BattleAction')
 
 local VisualizeAction = BattleAction:inherit()
 

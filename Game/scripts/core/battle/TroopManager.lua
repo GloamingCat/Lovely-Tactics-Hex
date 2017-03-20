@@ -1,17 +1,24 @@
 
-local List = require('core/algorithm/List')
-local Character = require('core/character/Character')
-local Battler = require('core/battle/Battler')
-local Random = love.math.random
-local mathf = math.field
-
 --[[===========================================================================
 
 Creates and manages battle troops.
 
 =============================================================================]]
 
+-- Imports
+local List = require('core/algorithm/List')
+local Character = require('core/character/Character')
+local Battler = require('core/battle/Battler')
+
+-- Alias
+local Random = love.math.random
+local mathf = math.field
+
 local TroopManager = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 function TroopManager:init()
   self.characterList = List()

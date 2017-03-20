@@ -1,17 +1,21 @@
 
-local PriorityQueue = require('core/algorithm/PriorityQueue')
-local MoveAction = require('core/battle/action/MoveAction')
-local SkillAction = require('core/battle/action/SkillAction')
-local SkillMoveAction = require('core/battle/action/SkillMoveAction')
-local PathFinder = require('core/algorithm/PathFinder')
-
 --[[===========================================================================
 
-
+A special type of Skill that only selects tiles with characters on it.
 
 =============================================================================]]
 
+-- Imports
+local PriorityQueue = require('core/algorithm/PriorityQueue')
+local MoveAction = require('core/battle/action/MoveAction')
+local SkillAction = require('core/battle/action/SkillAction')
+local PathFinder = require('core/algorithm/PathFinder')
+
 local CharacterOnlyAction = SkillAction:inherit()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 -- Overrides BattleAction:onSelect.
 local old_onSelect = CharacterOnlyAction.onSelect
@@ -23,7 +27,7 @@ end
 -- Gets the list of all tiles that have a character.
 -- @ret(List) the list of ObjectTiles
 function CharacterOnlyAction:getSelectableTiles()
-  local moveAction = SkillMoveAction(self.data.range, self.currentTarget, self.user)
+  local moveAction = MoveAction(self.currentTarget, self.user, self.data.range)
   local tempQueue = PriorityQueue()
   for char in TroopManager.characterList:iterator() do
     if self:isCharacterSelectable(char) then

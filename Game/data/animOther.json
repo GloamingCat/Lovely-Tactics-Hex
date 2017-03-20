@@ -5,6 +5,8 @@
     "rows": 1,
     "cols": 1,
     "duration": 20,
+    "loop": true,
+    "allRows": false,
     "script": {
       "path": "animation/Pointer.lua",
       "param": "{\"dx\": 2}"
@@ -34,6 +36,8 @@
     "rows": 1,
     "cols": 1,
     "duration": 30,
+    "loop": true,
+    "allRows": false,
     "script": {
       "path": "animation/Pointer.lua",
       "param": "{\"dy\": 2}"
@@ -63,6 +67,8 @@
     "rows": 1,
     "cols": 1,
     "duration": 90,
+    "loop": true,
+    "allRows": false,
     "script": {
       "path": "animation/Static.lua",
       "param": ""
@@ -92,6 +98,8 @@
     "rows": 1,
     "cols": 1,
     "duration": 90,
+    "loop": true,
+    "allRows": false,
     "script": {
       "path": "animation/Static.lua",
       "param": ""

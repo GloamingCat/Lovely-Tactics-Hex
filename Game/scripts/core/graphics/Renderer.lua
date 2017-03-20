@@ -7,7 +7,6 @@ local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
 local round = math.round
 local colorf = 255 / 100
 
-
 --[[===========================================================================
 
 A Renderer manages a list of sprites to be rendered. 
@@ -41,7 +40,6 @@ function Renderer:resizeCanvas()
   if newW ~= self.canvas:getWidth() and newH ~= self.canvas:getHeight() then
     self.canvas = lgraphics.newCanvas(newW, newH)
     self.needsRedraw = true
-    print(newW, newH)
   end
 end
 

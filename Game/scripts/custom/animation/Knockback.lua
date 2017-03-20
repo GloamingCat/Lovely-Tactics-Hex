@@ -1,11 +1,7 @@
 
 --[[===========================================================================
 
-A sprite that points in a given direction (vertical or horizontal)
-Parameter examples for this script:
-  1) { "dx": 4 }
-  2) { "dy": 2 }
-  3) { "dx": 2, "dy": 2 }
+The animation of knockback when a characters receives damage.
 
 =============================================================================]]
 
@@ -15,33 +11,35 @@ local Animation = require('core/graphics/Animation')
 -- Alias
 local round = math.round
 local abs = math.abs
+local row2Angle = math.row2Angle
+local angle2Coord = math.angle2Coord
 
-local Pointer = Animation:inherit()
+local Knockback = Animation:inherit()
 
-local old_init = Pointer.init
-function Pointer:init(...)
-  local arg = {...}
-  local param = JSON.decode(arg[#arg])
-  old_init(self, ...)
+local old_setRow = Knockback.setRow
+function Knockback:setRow(row)
+  old_setRow(self, row)
+  
   local centerx = self.sprite.offsetX
   local centery = self.sprite.offsetY
-  param.dx = abs(param.dx or 0)
-  param.dy = abs(param.dy or 0)
-  self.maxx = centerx + param.dx
-  self.maxy = centery + param.dy
-  self.minx = centerx - param.dx
-  self.miny = centery - param.dy
   
-  self.speedx = param.dx * 2 / self.duration
-  self.speedy = param.dy * 2 / self.duration
+  local dx, dy = angle2Coord(row2Angle(row))
+
+  self.maxx = centerx + dx
+  self.maxy = centery + dy
+  self.minx = centerx - dx
+  self.miny = centery - dy
+  
+  self.speedx = dx * 2 / self.duration
+  self.speedy = dy * 2 / self.duration
   
   self.currentX = self.minx
   self.currentY = self.miny
   self.sprite:setOffset(round(self.minx), round(self.miny))
 end
 
-local old_update = Pointer.update
-function Pointer:update()
+local old_update = Knockback.update
+function Knockback:update()
   old_update(self)
   self.currentX = self.currentX + self.speedx
   self.currentY = self.currentY + self.speedy
@@ -56,4 +54,4 @@ function Pointer:update()
   self.sprite:setOffset(round(self.currentX), round(self.currentY))
 end
 
-return Pointer
+return Knockback

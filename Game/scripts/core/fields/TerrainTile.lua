@@ -1,19 +1,24 @@
 
-local Vector = require('core/math/Vector')
-local Sprite = require('core/graphics/Sprite')
-local Animation = require('core/graphics/Animation')
-local mathf = math.field
-local tileW = Config.tileW
-local tileH = Config.tileH
-local tileB = Config.tileB
-local tileS = Config.tileS
-
 --[[===========================================================================
 
 A TerrainTile is a tile composed by a set of renderers (for each corner), with possible animation,
 that stores the id of the associated terrain.
 
 =============================================================================]]
+
+-- Imports
+local Vector = require('core/math/Vector')
+local Sprite = require('core/graphics/Sprite')
+local Animation = require('core/graphics/Animation')
+
+-- Alias
+local mathf = math.field
+
+-- Constants
+local tileW = Config.grid.tileW
+local tileH = Config.grid.tileH
+local tileB = Config.grid.tileB
+local tileS = Config.grid.tileS
 
 local TerrainTile = require('core/class'):new()
 
@@ -51,7 +56,7 @@ function TerrainTile:setTerrain(id)
   self.id = id
   -- Delete previous terrain's images.
   if self.quarters then
-    for i = 0, 4 do
+    for i = 1, 4 do
       self.quarters[i]:dispose()
     end
   end
@@ -78,9 +83,8 @@ function TerrainTile:setTerrain(id)
         local rows = 8
         local cols = terrainData.frameCount
         self.animations[i] = Animation(terrainData.duration, rows, cols, 
-          tileW, tileH, self.quarters[i])
+          tileW, tileH, true, false, self.quarters[i])
       end
-      FieldManager.updateList:add(self)
     end
   end
 end
@@ -116,11 +120,15 @@ end
 
 -- Updates each animation.
 function TerrainTile:update()
-  for i = 1, 4 do
-    self.animations[i]:update()
+  if self.animations then
+    for i = 1, 4 do
+      self.animations[i]:update()
+    end
   end
 end
 
+-- Converts to string.
+-- @ret(string) the string representation
 function TerrainTile:toString()
   return 'TerrainTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ', ' .. self.layer.order .. ')' 
 end

@@ -1,11 +1,12 @@
 
-local Animation = require('core/graphics/Animation')
-
 --[[===========================================================================
 
 Static sprite (not animated, no need for update).
 
 =============================================================================]]
+
+-- Imports
+local Animation = require('core/graphics/Animation')
 
 local Static = Animation:inherit()
 

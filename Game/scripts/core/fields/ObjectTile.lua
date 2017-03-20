@@ -2,11 +2,12 @@
 local Vector = require('core/math/Vector')
 local List = require('core/algorithm/List')
 local Animation = require('core/graphics/Animation')
-local Color = require('custom/Color')
 local mathf = math.field
-local tileW = Config.tileW
-local tileH = Config.tileH
 local max = math.max
+local tileW = Config.grid.tileW
+local tileH = Config.grid.tileH
+local controlZone = Battle.controlZone
+local overpassAllies = Battle.overpassAllies
 
 --[[===========================================================================
 
@@ -34,6 +35,16 @@ function ObjectTile:init(layer, x, y, defaultRegion)
     self.regionList:add(defaultRegion)
   end
   self:createGraphics()
+end
+
+-- Updates graphics animation.
+function ObjectTile:update()
+  if self.highlightAnim then
+    self.highlightAnim:update()
+  end
+  if self.baseAnim then
+    self.baseAnim:update()
+  end
 end
 
 -- Creates the graphical elements for battle grid navigation.
@@ -92,12 +103,6 @@ function ObjectTile:coordinates()
   return self.x, self.y, self.layer.height
 end
 
--- Converts to string.
--- @ret(string) the string representation
-function ObjectTile:toString()
-  return 'ObjectTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ')' 
-end
-
 -- Generates a unique character ID for a character in this tile.
 -- @ret(string) new ID
 function ObjectTile:generateCharacterID()
@@ -143,6 +148,7 @@ function ObjectTile:containsBattleType(types)
   end
   return false
 end
+
 -------------------------------------------------------------------------------
 -- Collision
 -------------------------------------------------------------------------------
@@ -181,7 +187,7 @@ end
 -- @param(party : number) the character's party (if not nil, it's passable for allies)
 -- @ret(boolean) true is collides with any of the characters, false otherwise
 function ObjectTile:collidesCharacter(char, party)
-  if party then
+  if party and overpassAllies then
     for c in self.characterList:iterator() do
       if char ~= c and c.party ~= party then
         return true
@@ -205,6 +211,9 @@ end
 -- @param(you : Battler) the battler of the current character
 -- @ret(boolean) true if it's control zone, false otherwise
 function ObjectTile:isControlZone(you)
+  if not controlZone then
+    return false
+  end
   local containsAlly, containsEnemy = false, false
   for char in self.characterList:iterator() do
     if char.battler then
@@ -314,6 +323,12 @@ function ObjectTile:hide()
     self.baseAnim.sprite:setVisible(false)
   end
   self:setSelected(false)
+end
+
+-- Converts to string.
+-- @ret(string) the string representation
+function ObjectTile:toString()
+  return 'ObjectTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ')' 
 end
 
 return ObjectTile

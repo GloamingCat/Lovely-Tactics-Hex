@@ -5,6 +5,11 @@ Implements basic game callbacks (load, update and draw).
 
 =============================================================================]]
 
+require('conf/Vocab')
+require('conf/Color')
+require('conf/Font')
+require('conf/Battle')
+require('conf/Sound')
 require('core.mathextend')
 require('core.imgcache')
 require('core.inputcalls')

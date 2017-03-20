@@ -212,7 +212,6 @@ function Window:show(add)
   self:showContent()
   self:setScale(self.scaleX, 1)
   if add then
-    print('aqui')
     self.GUI.windowList:add(self)
   end
   self:setScale(self.scaleX, 1)

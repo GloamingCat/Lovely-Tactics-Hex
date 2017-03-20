@@ -2,8 +2,6 @@
 local Sprite = require('core/graphics/Sprite')
 local Vector = require('core/math/Vector')
 local SimpleText = require('core/gui/SimpleText')
-local Color = require('custom/Color')
-local Font = require('custom/Font')
 
 --[[===========================================================================
 

@@ -1,14 +1,4 @@
 
-local Vector = require('core/math/Vector')
-local Stack = require('core/algorithm/Stack')
-local Sprite = require('core/graphics/Sprite')
-local CharacterBase = require('core/character/CharacterBase')
-local mathf = math.field
-local abs = math.abs
-local min = math.min
-local dashSpeed = Config.player.dashSpeed
-local time = love.timer.getDelta
-
 --[[===========================================================================
 
 This class provides general functions to be called
@@ -16,6 +6,26 @@ by callbacks. The [COUROUTINE] functions must ONLY
 be called from a callback.
 
 =============================================================================]]
+
+-- Import
+local CharacterBase = require('core/character/CharacterBase')
+local Callback = require('core/callback/Callback')
+local Vector = require('core/math/Vector')
+local Stack = require('core/algorithm/Stack')
+local Sprite = require('core/graphics/Sprite')
+
+-- Alias
+local mathf = math.field
+local abs = math.abs
+local max = math.max
+local min = math.min
+local sqrt = math.sqrt
+local time = love.timer.getDelta
+
+-- Constants
+local dashSpeed = Config.player.dashSpeed
+local pph = Config.grid.pixelsPerHeight
+local castStep = 6
 
 local Character = CharacterBase:inherit()
 
@@ -52,13 +62,13 @@ end
 -- Movement
 -------------------------------------------------------------------------------
 
--- [COUROUTINE] Walks to the center of the tile (x, y).
--- @param(x : number) coordinate x of the tile
--- @param(y : number) coordinate y of the tile
--- @param(h : number) the height of the tile
--- @param(collisionCheck : boolean) if it shoudl check collisions
--- @ret(boolean) true if the movement was successfully completed, false otherwise
-function Character:walkToTile(x, y, h, collisionCheck, walkAnim, idleAnim)
+-- [COUROUTINE] Walks to the given pixel point (x, y, d).
+-- @param(x : number) coordinate x of the point
+-- @param(y : number) coordinate y of the point
+-- @param(z : number) the depth of the point
+-- @param(collisionCheck : boolean) if it should check collisions
+-- @ret(boolean) true if the movement was completed, false otherwise
+function Character:walkToPoint(x, y, z, collisionCheck, walkAnim, idleAnim)
   idleAnim = idleAnim or "Idle"
   if not walkAnim then
     if self.speed >= dashSpeed then
@@ -67,9 +77,9 @@ function Character:walkToTile(x, y, h, collisionCheck, walkAnim, idleAnim)
       walkAnim = "Walk"
     end
   end
-  h = h or self:getTile().layer.height
+  z = z or self.position.z
   self.moving = true
-  local dest = Vector(mathf.tile2Pixel(x, y, h))
+  local dest = Vector(x, y, z)
   dest:round()
   if self.autoAnim then
     self:playAnimation(walkAnim)
@@ -104,14 +114,44 @@ function Character:walkToTile(x, y, h, collisionCheck, walkAnim, idleAnim)
   return true
 end
 
+function Character:walkDistance(dx, dy, dz, collisionCheck, walkAnim, idleAnim)
+  local pos = self.position
+  self:walkToPoint(pos.x + dx, pos.y + dy, pos.z + dz,
+    collisionCheck, walkAnim, idleAnim)
+end
+
+-- Walks the given distance in the given direction.
+-- @param(d : number) the distance to be walked
+-- @param(angle : number) the direction angle
+-- @param(dz : number) the distance in depth
+-- @param(collisionCheck : boolean) if it should check collisions
+-- @ret(boolean) true if the movement was completed, false otherwise
+function Character:walkInAngle(d, angle, dz, collisionCheck, walkAnim, idleAnim)
+  dz = dz or 0
+  local dx, dy = math.angle2Coord(angle)
+  self:walkDistance(dx * d, dy * d, dz, collisionCheck, walkAnim, idleAnim)
+end
+
+-- [COUROUTINE] Walks to the center of the tile (x, y).
+-- @param(x : number) coordinate x of the tile
+-- @param(y : number) coordinate y of the tile
+-- @param(h : number) the height of the tile
+-- @param(collisionCheck : boolean) if it should check collisions
+-- @ret(boolean) true if the movement was completed, false otherwise
+function Character:walkToTile(x, y, h, collisionCheck, walkAnim, idleAnim)
+  x, y, h = mathf.tile2Pixel(x, y, h or self:getTile().layer.height)
+  return self:walkToPoint(x, y, h, collisionCheck, walkAnim, idleAnim)
+end
+
 -- [COUROUTINE] Walks a distance in tiles defined by (dx, dy)
 -- @param(dx : number) the x-axis distance
 -- @param(dy : number) the y-axis distance
 -- @param(h : number) the height of the tile
--- @param(collisionCheck : boolean) if it shoudl check collisions
--- @ret(boolean) true if the movement was successfully completed, false otherwise
+-- @param(collisionCheck : boolean) if it should check collisions
+-- @ret(boolean) true if the movement was completed, false otherwise
 function Character:walkTiles(dx, dy, dh, collisionCheck)
-  local x, y, h = mathf.pixel2Tile(self.position.x, self.position.y, self.position.z)
+  local pos = self.position
+  local x, y, h = mathf.pixel2Tile(pos.x, pos.y, pos.z)
   return self:walkToTile(x + dx, y + dy, h + (dh or 0), collisionCheck)
 end
 
@@ -119,25 +159,84 @@ end
 -- Path
 -------------------------------------------------------------------------------
 
+-- Walks along the given path.
+-- @param(path : Path) a path of tiles
+-- @param(collisionCheck : boolean) if it shoudl check collisions
+-- @ret(boolean) true if the movement was completed, false otherwise
 function Character:walkPath(path, collisionCheck)
   local stack = Stack()
   for step in path:iterator() do
     stack:push(step)
   end
-  local currentTile = stack:pop()
+  stack:pop()
   local field = FieldManager.currentField
   while not stack:isEmpty() do
     local nextTile = stack:pop()
-    local dx, dy, dh = currentTile:coordinates()
-    --[[while stack.size > 1 and field:isCollinear(currentTile, nextTile, stack:peek()) do
-      currentTile = nextTile
-      nextTile = stack:pop()
-    end]]
-    dx = nextTile.x - dx
-    dy = nextTile.y - dy
-    dh = nextTile.layer.height - dh
-    self:walkTiles(dx, dy, dh, collisionCheck)
-    currentTile = nextTile
+    local h = nextTile.layer.height
+    self:walkToTile(nextTile.x, nextTile.y, h, collisionCheck)
+  end
+end
+
+-------------------------------------------------------------------------------
+-- Battle
+-------------------------------------------------------------------------------
+
+-- Executes the intro animation for skill use.
+-- @param(target : ObjectTile) the target of the skill
+-- @param(skill : table) skill data from database
+function Character:startSkill(target, skill)
+  local x, y = mathf.tile2Pixel(target:coordinates())
+  local dir = math.coord2Angle(x * mathf.tg, y)
+  if skill.stepOnCast and dir == dir then
+    self:walkInAngle(castStep, dir)
+  end
+  local time = 0
+  if skill.userLoadAnim ~= '' then
+    local anim = self:playAnimation(skill.userLoadAnim)
+    time = anim.duration
+  end
+  if skill.loadAnimID >= 0 then
+    local mirror = skill.mirror and dir > 90 and dir <= 270
+    local pos = self.position
+    local anim = BattleManager:playAnimation(skill.loadAnimID, 
+      pos.x, pos.y, pos.z - 1, mirror)
+    time = max(time, anim.duration)
+  end
+  Callback.current:wait(time)
+end
+
+-- Returns to original tile and stays idle.
+-- @param(origin : ObjectTile) the original tile of the character
+-- @param(skill : table) skill data from database
+function Character:finishSkill(origin, skill)
+  local x, y, z = mathf.tile2Pixel(origin:coordinates())
+  if skill.stepOnCast and dir == dir then
+    local autoTurn = self.autoTurn
+    self.autoTurn = false
+    self:walkToPoint(x, y, z)
+    self.autoTurn = autoTurn
+  end
+  self:playAnimation("Idle")
+end
+
+function Character:damage(skill, result, origin)
+  local previousSpeed = self.speed;
+  local speed = previousSpeed * 0.75;
+  if skill.damageType == 0 then -- on HP
+    -- Damage HP
+  else
+    -- Damage SP
+  end
+  local currentTile = self:getTile()
+  if currentTile ~= origin then
+    self:turnToTile(origin)
+  end
+  local time = self:playAnimation("Damage").duration
+  if skill.individualAnimID >= 0 then
+    local mirror = self.direction > 90 and self.direction <= 270
+    local pos = self.position
+    BattleManager:playAnimation(skill.individualAnimID, 
+      pos.x, pos.y, pos.z - 1, mirror)
   end
 end
 

@@ -1,16 +1,21 @@
 
-local List = require('core/algorithm/List')
-
 --[[===========================================================================
 
-
+Manages party members (active and backup).
 
 =============================================================================]]
 
+-- Imports
+local List = require('core/algorithm/List')
+
 local PartyManager = require('core/class'):new()
 
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
+
 function PartyManager:init()
-  self.members = List(Config.party.initialMembers)
+  self.members = List(Config.initialMembers)
 end
 
 -- Returns a list of battlers currently in the party.

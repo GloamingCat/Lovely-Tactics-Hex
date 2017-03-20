@@ -4,8 +4,6 @@ local Sprite = require('core/graphics/Sprite')
 local Window = require('core/gui/Window')
 local SimpleText = require('core/gui/SimpleText')
 local BattlePortrait = require('custom/gui/battle/BattlePortrait')
-local Font = require('custom/Font')
-local Vocab = require('custom/Vocab')
 local attConfig = Config.attributes
 local max = math.max
 

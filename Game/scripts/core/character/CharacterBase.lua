@@ -1,12 +1,4 @@
 
-local Vector = require('core/math/Vector')
-local Sprite = require('core/graphics/Sprite')
-local Animation = require('core/graphics/Animation')
-local Object = require('core/fields/Object')
-local CallbackTree = require('core/callback/CallbackTree')
-local mathf = math.field
-local Quad = love.graphics.newQuad
-
 --[[===========================================================================
 
 A Character is a dynamic object stored in the tile. 
@@ -18,7 +10,23 @@ are necessary for every character.
 
 =============================================================================]]
 
+-- Imports
+local Vector = require('core/math/Vector')
+local Sprite = require('core/graphics/Sprite')
+local Animation = require('core/graphics/Animation')
+local Object = require('core/fields/Object')
+local CallbackTree = require('core/callback/CallbackTree')
+local Callback = require('core/callback/Callback')
+
+-- Alias
+local mathf = math.field
+local Quad = love.graphics.newQuad
+
 local CharacterBase = Object:inherit()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 -- @param(id : string) an unique ID for the character in the field
 -- @param(tileData : table) the character's data from tileset file
@@ -53,6 +61,7 @@ function CharacterBase:toString()
   return 'Character ' .. self.name .. ' ' .. self.id
 end
 
+-- Removes from draw and update list.
 function CharacterBase:destroy()
   if self.sprite then
     self.sprite:removeSelf()
@@ -140,22 +149,52 @@ function CharacterBase:addAnimation(name, id)
   }
 end
 
--- Plays an animation by name.
+-- [COROUTINE] Plays an animation by name.
 -- @param(name : string) animation's name
-function CharacterBase:playAnimation(name)
+-- @param(wait : boolean) true to wait until first loop finishes (optional)
+function CharacterBase:playAnimation(name, wait)
   local data = self.animationData[name]
   assert(data, "Animation does not exist: " .. name)
   if self.animation == data.animation then
     return
   end
+  local anim = data.animation
   self.sprite:setTexture(data.texture)
   self.sprite.quad = data.quad
   self.sprite:setTransformation(self.transform)
   self.sprite:applyTransformation(data.transform)
-  self.animation = data.animation
-  self.animation.sprite = self.sprite
-  self.animation.paused = false
-  self.animation:setRow(math.angle2Row(self.direction))
+  self.animation = anim
+  anim.sprite = self.sprite
+  anim.paused = false
+  anim:setRow(math.angle2Row(self.direction))
+  if wait then
+    Callback.current:wait(anim.duration)
+  end
+  return anim
+end
+
+-------------------------------------------------------------------------------
+-- Direction
+-------------------------------------------------------------------------------
+
+-- Set's character direction
+-- @param(angle : number) angle in degrees
+function CharacterBase:setDirection(angle)
+  self.direction = angle
+  self.animation:setRow(math.angle2Row(angle))
+end
+
+-- The tile on front of the character, considering character's direction.
+-- @ret(ObjectTile) the front tile (nil if exceeds field border)
+function CharacterBase:frontTile(angle)
+  angle = angle or self.direction
+  local dx, dy = mathf.nextCoordDir(angle)
+  local tile = self:getTile()
+  if FieldManager.currentField:exceedsBorder(tile.x + dx, tile.y + dy) then
+    return nil
+  else
+    return tile.layer.grid[tile.x + dx][tile.y + dy]
+  end
 end
 
 -------------------------------------------------------------------------------
@@ -203,30 +242,6 @@ function Object:collision(tile, tiledif)
   local orig = Vector(tile:coordinates())
   local dest = orig + tiledif
   return FieldManager:collision(self, orig, dest)
-end
-
--------------------------------------------------------------------------------
--- Direction
--------------------------------------------------------------------------------
-
--- Set's character direction
--- @param(angle : number) angle in degrees
-function CharacterBase:setDirection(angle)
-  self.direction = angle
-  self.animation:setRow(math.angle2Row(angle))
-end
-
--- The tile on front of the character, considering character's direction.
--- @ret(ObjectTile) the front tile (nil if exceeds field border)
-function CharacterBase:frontTile(angle)
-  angle = angle or self.direction
-  local dx, dy = mathf.nextCoordDir(angle)
-  local tile = self:getTile()
-  if FieldManager.currentField:exceedsBorder(tile.x + dx, tile.y + dy) then
-    return nil
-  else
-    return tile.layer.grid[tile.x + dx][tile.y + dy]
-  end
 end
 
 -------------------------------------------------------------------------------

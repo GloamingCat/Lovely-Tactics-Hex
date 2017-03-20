@@ -5,7 +5,7 @@
     "level": 3,
     "typeID": 0,
     "characterID": 1,
-    "attackID": 0,
+    "attackID": 1,
     "skillDagID": -1,
     "money": 0,
     "exp": 0,
@@ -17,7 +17,16 @@
       "path": "build/Lancer.lua",
       "param": ""
     },
-    "attributes": [],
+    "attributes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "skills": [],
     "items": [],
     "elements": [],
     "tags": []
@@ -28,7 +37,7 @@
     "level": 3,
     "typeID": 1,
     "characterID": 2,
-    "attackID": 1,
+    "attackID": 2,
     "skillDagID": 0,
     "money": 0,
     "exp": 0,
@@ -40,10 +49,20 @@
       "path": "build/Mage.lua",
       "param": ""
     },
-    "attributes": [],
+    "attributes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0
+    ],
+    "skills": [
+      2
+    ],
     "items": [],
     "elements": [],
-    "skills": [2],
     "tags": []
   },
   {
@@ -52,7 +71,7 @@
     "level": 1,
     "typeID": 0,
     "characterID": 3,
-    "attackID": 0,
+    "attackID": 1,
     "skillDagID": -1,
     "money": 0,
     "exp": 5,
@@ -64,7 +83,16 @@
       "path": "build/Lancer.lua",
       "param": ""
     },
-    "attributes": [],
+    "attributes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "skills": [],
     "items": [],
     "elements": [],
     "tags": []
@@ -75,7 +103,7 @@
     "level": 1,
     "typeID": 1,
     "characterID": 4,
-    "attackID": 1,
+    "attackID": 2,
     "skillDagID": -1,
     "money": 0,
     "exp": 5,
@@ -87,7 +115,16 @@
       "path": "build/Mage.lua",
       "param": ""
     },
-    "attributes": [],
+    "attributes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "skills": [],
     "items": [],
     "elements": [],
     "tags": []

@@ -5,6 +5,8 @@
     "rows": 8,
     "cols": 1,
     "duration": 60,
+    "loop": true,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -34,6 +36,8 @@
     "rows": 8,
     "cols": 6,
     "duration": 40,
+    "loop": true,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -63,6 +67,8 @@
     "rows": 8,
     "cols": 6,
     "duration": 30,
+    "loop": true,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -92,6 +98,8 @@
     "rows": 8,
     "cols": 1,
     "duration": 30,
+    "loop": true,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -121,6 +129,8 @@
     "rows": 8,
     "cols": 6,
     "duration": 30,
+    "loop": true,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -150,6 +160,8 @@
     "rows": 8,
     "cols": 1,
     "duration": 30,
+    "loop": false,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -179,6 +191,8 @@
     "rows": 8,
     "cols": 5,
     "duration": 30,
+    "loop": false,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -208,6 +222,8 @@
     "rows": 8,
     "cols": 1,
     "duration": 30,
+    "loop": false,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -237,6 +253,8 @@
     "rows": 8,
     "cols": 1,
     "duration": 30,
+    "loop": true,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -266,6 +284,8 @@
     "rows": 8,
     "cols": 1,
     "duration": 60,
+    "loop": true,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -295,6 +315,8 @@
     "rows": 8,
     "cols": 6,
     "duration": 40,
+    "loop": true,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -324,6 +346,8 @@
     "rows": 8,
     "cols": 1,
     "duration": 30,
+    "loop": false,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -353,6 +377,8 @@
     "rows": 8,
     "cols": 1,
     "duration": 30,
+    "loop": false,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -382,6 +408,8 @@
     "rows": 8,
     "cols": 1,
     "duration": 30,
+    "loop": false,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -411,6 +439,8 @@
     "rows": 8,
     "cols": 1,
     "duration": 30,
+    "loop": false,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""
@@ -440,6 +470,8 @@
     "rows": 8,
     "cols": 1,
     "duration": 30,
+    "loop": true,
+    "allRows": false,
     "script": {
       "path": "",
       "param": ""

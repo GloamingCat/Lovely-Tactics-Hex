@@ -35,7 +35,6 @@ function Callback:checkFieldInput()
     else
       player.speed = player.walkSpeed
     end
-    print(player)
     player:moveByInput(dx, dy)
   end
 end

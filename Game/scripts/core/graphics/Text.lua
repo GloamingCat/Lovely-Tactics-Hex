@@ -1,6 +1,5 @@
 
 local Sprite = require('core/graphics/Sprite')
-local Font = require('custom/Font')
 local textShader = love.graphics.newShader('shaders/text.glsl')
 local lgraphics = love.graphics
 local log2 = 1/math.log(2)
@@ -50,7 +49,6 @@ function Text:setText(data)
   local f = self:renderFrame()
   self.texture = f
   self.quad = lgraphics.newQuad(0, 0, f:getWidth(), f:getHeight(), f:getWidth(), f:getHeight())
-  print(f:getWidth(), f:getHeight())
   self.renderer.needsRedraw = true
 end
 

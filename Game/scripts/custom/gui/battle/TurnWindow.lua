@@ -41,7 +41,6 @@ end
 function TurnWindow:onAttackAction(button)
   local id = BattleManager.currentCharacter.battler.attackSkillID
   local skill = Database.skills[id + 1]
-  print(skill.script.path)
   self:selectSkill(skill)
 end
 
