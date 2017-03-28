@@ -1,12 +1,15 @@
 
-local List = require('core/algorithm/List')
+--[[===========================================================================
 
---[[
-
+CallbackTree
+-------------------------------------------------------------------------------
 A tree of callbacks. 
 Must be updated every frame to run its callback children.
 
-]]
+=============================================================================]]
+
+-- Imports
+local List = require('core/algorithm/List')
 
 local CallbackTree = require('core/class'):new()
 

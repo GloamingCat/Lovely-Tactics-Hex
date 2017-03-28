@@ -1,22 +1,31 @@
 
-local Vector = require('core/math/Vector')
-local GameKey = require('core/input/GameKey')
+--[[===========================================================================
 
---[[
-@module 
-
+GameMouse
+-------------------------------------------------------------------------------
 Entity that represents game's mouse.
 Buttons:
 1 => left
 2 => right
 3 => middle
 
-]]
+=============================================================================]]
+
+-- Imports
+local Vector = require('core/math/Vector')
+local GameKey = require('core/input/GameKey')
+
+-- Alias
+local timer = love.timer
+
+-- Constants
+local hideTime = 3
 
 local GameMouse = require('core/class'):new()
 
-local hideTime = 3
-local timer = love.timer
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 function GameMouse:init()
   self.position = nil
@@ -41,18 +50,22 @@ function GameMouse:update()
   end
 end
 
+-------------------------------------------------------------------------------
+-- Input handlers
+-------------------------------------------------------------------------------
+
 -- Called when player clicks.
--- @param(button : number) button type, from 1 to 3
-function GameMouse:onPress(button)
-  self.buttons[button]:onPress()
+-- @param(id : number) button type, from 1 to 3
+function GameMouse:onPress(id)
+  self.buttons[id]:onPress()
   self.active = true
   self:show()
 end
 
 -- Called when player releases button.
--- @param(button : number) button type, from 1 to 3
-function GameMouse:onRelease(button)
-  self.buttons[button]:onRelease()
+-- @param(id : number) button type, from 1 to 3
+function GameMouse:onRelease(id)
+  self.buttons[id]:onRelease()
 end
 
 -- Called when player moves cursor.
@@ -62,6 +75,10 @@ function GameMouse:onMove(x, y)
   self.position = Vector(x, y)
   self:show()
 end
+
+-------------------------------------------------------------------------------
+-- Cursor's graphics
+-------------------------------------------------------------------------------
 
 -- Shows cursor.
 function GameMouse:show()

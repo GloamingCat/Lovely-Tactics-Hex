@@ -1,22 +1,29 @@
 
-local List = require('core/algorithm/List')
-local Matrix2 = require('core/algorithm/Matrix2')
-local Path = require('core/algorithm/Path')
-local PriorityQueue = require('core/algorithm/PriorityQueue')
-local max = math.max
-local min = math.min
-local mathf = math.field
-local floor = math.floor
-local nan = 0 / 0
-local radiusIterator = math.field.radiusIterator
-
 --[[===========================================================================
 
+PathFinder
+-------------------------------------------------------------------------------
 A module with graph algorithms used for grids during battle.
 Some parts of the algorithm used abstract functions from MoveAction class, so 
 any action used in this module must inherit from this class.
 
 =============================================================================]]
+
+-- Imports
+local List = require('core/algorithm/List')
+local Matrix2 = require('core/algorithm/Matrix2')
+local Path = require('core/algorithm/Path')
+local PriorityQueue = require('core/algorithm/PriorityQueue')
+
+-- Alias
+local max = math.max
+local min = math.min
+local mathf = math.field
+local floor = math.floor
+local radiusIterator = math.field.radiusIterator
+
+-- Constants
+local nan = 0 / 0
 
 local PathFinder = {}
 

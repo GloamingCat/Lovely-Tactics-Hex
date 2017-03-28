@@ -1,15 +1,24 @@
 
 --[[===========================================================================
 
+PlayerController
+-------------------------------------------------------------------------------
 The player's start callback.
 It describes the game's behavior according to the player's input.
 
 =============================================================================]]
 
-local Callback = require('core/callback/Callback'):inherit()
+-- Imports
+local Callback = require('core/callback/Callback')
+
+local PlayerController = Callback:inherit()
+
+-------------------------------------------------------------------------------
+-- Main function
+-------------------------------------------------------------------------------
 
 -- Checks input every frame.
-function Callback:exec(event, ...)
+function PlayerController:exec(event, ...)
   self.character = event.character
   while true do
     self:checkFieldInput()
@@ -17,8 +26,12 @@ function Callback:exec(event, ...)
   end
 end
 
+-------------------------------------------------------------------------------
+-- Input handlers
+-------------------------------------------------------------------------------
+
 -- Checks buttons.
-function Callback:checkFieldInput()
+function PlayerController:checkFieldInput()
   local player = self.character
   if not player:fieldInputEnabled() then
     return
@@ -40,7 +53,7 @@ function Callback:checkFieldInput()
 end
 
 -- Interacts with whoever is the player looking at (if any).
-function Callback:interact()
+function PlayerController:interact()
   local player = self.character
   local tile = player:frontTile()
   if tile == nil then
@@ -64,8 +77,8 @@ function Callback:interact()
 end
 
 -- Opens game's main GUI.
-function Callback:openGUI()
+function PlayerController:openGUI()
   GUIManager:showGUIForResult('MainGUI')
 end
 
-return Callback
+return PlayerController

@@ -1,13 +1,14 @@
 
 --[[===========================================================================
 
-This class provides general functions to be called
-by callbacks. The [COUROUTINE] functions must ONLY
-be called from a callback.
+Character
+-------------------------------------------------------------------------------
+This class provides general functions to be called by callbacks. 
+The [COUROUTINE] functions must ONLY be called from a callback.
 
 =============================================================================]]
 
--- Import
+-- Imports
 local CharacterBase = require('core/character/CharacterBase')
 local Callback = require('core/callback/Callback')
 local Vector = require('core/math/Vector')

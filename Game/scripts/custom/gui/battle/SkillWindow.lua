@@ -1,16 +1,23 @@
 
+--[[===========================================================================
+
+SkillWindow
+-------------------------------------------------------------------------------
+The window that is open to choose a skill from character's skill list.
+
+=============================================================================]]
+
+-- Imports
 local ListButtonWindow = require('core/gui/ListButtonWindow')
 local ActionWindow = require('custom/gui/battle/ActionWindow')
 local SkillAction = require('core/battle/action/SkillAction')
 local Vector = require('core/math/Vector')
 
---[[===========================================================================
-
-The window that is open to choose a skill from character's skill list.
-
-=============================================================================]]
-
 local SkillWindow = require('core/class'):inherit(ActionWindow, ListButtonWindow)
+
+-------------------------------------------------------------------------------
+-- Initialization
+-------------------------------------------------------------------------------
 
 local old_init = SkillWindow.init
 function SkillWindow:init(GUI)
@@ -18,12 +25,15 @@ function SkillWindow:init(GUI)
 end
 
 -- Creates a button from a skill ID.
--- @param(id : number) the skill ID
-function SkillWindow:createButton(id)
-  local skill = Database.skills[id + 1]
-  local button = self:addButton(skill.name, nil, self.onButtonConfirm)
+-- @param(skill : Skill) the skill data from battler's skill list
+function SkillWindow:createButton(skill)
+  local button = self:addButton(skill.data.name, nil, self.onButtonConfirm)
   button.skill = skill
 end
+
+-------------------------------------------------------------------------------
+-- Input handlers
+-------------------------------------------------------------------------------
 
 -- Called when player chooses a skill.
 -- @param(button : Button) the button selected
@@ -35,6 +45,10 @@ end
 function SkillWindow:onCancel()
   self:changeWindow(self.GUI.turnWindow)
 end
+
+-------------------------------------------------------------------------------
+-- Properties
+-------------------------------------------------------------------------------
 
 -- New button width.
 function SkillWindow:buttonWidth()

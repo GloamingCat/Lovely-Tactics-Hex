@@ -1,12 +1,8 @@
 
-local Vector = require('core/math/Vector')
-local Quad = love.graphics.newQuad
-local round = math.round
-local insert = table.insert
-local remove = table.remove
-
 --[[===========================================================================
 
+Sprite
+-------------------------------------------------------------------------------
 A Sprite is a group of information the determines the way an image should
 be rendered. The image may be scaled, rotated, translated and coloured.
 Its position determines where on the screen it's going to be rendered
@@ -15,7 +11,20 @@ depth/render order (z axis).
 
 =============================================================================]]
 
+-- Imports
+local Vector = require('core/math/Vector')
+
+-- Alias
+local Quad = love.graphics.newQuad
+local round = math.round
+local insert = table.insert
+local remove = table.remove
+
 local Sprite = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- Initialization
+-------------------------------------------------------------------------------
 
 -- @param(renderer : Renderer) the renderer that is going to handle this sprite
 -- @param(texture : Texture) sprite's texture
@@ -36,6 +45,10 @@ function Sprite:init(renderer, texture, quad)
   self.visible = true
 end
 
+-------------------------------------------------------------------------------
+-- Visibility
+-------------------------------------------------------------------------------
+
 -- Checks if sprite is visible on screen.
 -- @ret(boolean) true if visible, false otherwise
 function Sprite:isVisible()
@@ -50,6 +63,10 @@ function Sprite:setVisible(value)
   end
   self.visible = value
 end
+
+-------------------------------------------------------------------------------
+-- Quad and Texture
+-------------------------------------------------------------------------------
 
 -- Sets the texture and updates quad.
 -- @param(texture : Texture) the new texture
@@ -74,6 +91,10 @@ function Sprite:setQuad(x, y, w, h)
   self.renderer.needsRedraw = true
 end
 
+-------------------------------------------------------------------------------
+-- Transformations
+-------------------------------------------------------------------------------
+
 -- Sets sprite's offset, scale, rotation and color
 -- @param(data : table) transformation data
 function Sprite:setTransformation(data)
@@ -95,6 +116,32 @@ function Sprite:applyTransformation(data)
   self:setRGB(data.red * self.color.red / 100, data.green * self.color.green / 100, 
     data.blue * self.color.blue / 100, data.alpha * self.color.alpha / 100)
 end
+
+-- Sets the quad's scale.
+-- @param(sx : number) the X-axis scale
+-- @param(sy : number) the Y-axis scale
+function Sprite:setScale(sx, sy)
+  sx = sx or 1
+  sy = sy or 1
+  if self.scaleX ~= sx or self.scaleY ~= sy then
+    self.renderer.needsRedraw = true
+  end
+  self.scaleX = sx
+  self.scaleY = sy
+end
+
+-- Sets que quad's rotation
+-- @param(angle : number) the rotation's angle in degrees
+function Sprite:setRotation(angle)
+  if self.rotation ~= angle then
+    self.renderer.needsRedraw = true
+  end
+  self.rotation = angle
+end
+
+-------------------------------------------------------------------------------
+-- Offset
+-------------------------------------------------------------------------------
 
 -- Sets the quad's offset from the top left corner.
 -- @param(ox : number) the X-axis offset
@@ -122,27 +169,9 @@ function Sprite:setCenterOffset(offsetDepth)
   self:setOffset(round(w / 2), round(h / 2), offsetDepth)
 end
 
--- Sets the quad's scale.
--- @param(sx : number) the X-axis scale
--- @param(sy : number) the Y-axis scale
-function Sprite:setScale(sx, sy)
-  sx = sx or 1
-  sy = sy or 1
-  if self.scaleX ~= sx or self.scaleY ~= sy then
-    self.renderer.needsRedraw = true
-  end
-  self.scaleX = sx
-  self.scaleY = sy
-end
-
--- Sets que quad's rotation
--- @param(angle : number) the rotation's angle in degrees
-function Sprite:setRotation(angle)
-  if self.rotation ~= angle then
-    self.renderer.needsRedraw = true
-  end
-  self.rotation = angle
-end
+-------------------------------------------------------------------------------
+-- Color
+-------------------------------------------------------------------------------
 
 -- Sets sprite's color's rgb.
 -- @param(r : number) red component
@@ -165,6 +194,10 @@ end
 function Sprite:setColor(color)
   self:setRGB(color.red, color.green, color.blue, color.alpha)
 end
+
+-------------------------------------------------------------------------------
+-- Position
+-------------------------------------------------------------------------------
 
 -- Sets the sprite's pixel position the update's its position in the sprite list.
 -- @param(x : number) the pixel x of the image
@@ -191,6 +224,10 @@ end
 function Sprite:setPosition(pos)
   self:setXYZ(pos.x, pos.y, pos.z)
 end
+
+-------------------------------------------------------------------------------
+-- Renderer
+-------------------------------------------------------------------------------
 
 --Inserts sprite from its list.
 -- @param(i : number) the position in the list

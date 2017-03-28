@@ -33,10 +33,10 @@ end
 -- @param(skill : table) the skill data from Database
 function ActionWindow:selectSkill(skill)
   local actionType = SkillAction
-  if skill.script.path ~= '' then
-    actionType = require('custom/' .. skill.script.path)
+  if skill.data.script.path ~= '' then
+    actionType = require('custom/' .. skill.data.script.path)
   end
-  self:selectAction(actionType, nil, nil, skill, skill.script.param)
+  self:selectAction(actionType, nil, nil, skill, skill.data.script.param)
 end
 
 -- Closes this window to be replaced by another one.

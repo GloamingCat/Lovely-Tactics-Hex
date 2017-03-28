@@ -1,6 +1,8 @@
 
 --[[===========================================================================
 
+FieldBase
+-------------------------------------------------------------------------------
 A FieldBase stores sets of different layers: Terrain, Object,
 Character and Region layers.
 It must be created from a data file.
@@ -16,6 +18,10 @@ local max = math.max
 local min = math.min
 
 local FieldBase = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 -- @param(data : table) the data from file
 function FieldBase:init(data)

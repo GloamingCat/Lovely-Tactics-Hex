@@ -1,15 +1,22 @@
 
-local Sprite = require('core/graphics/Sprite')
-local Vector = require('core/math/Vector')
-local SimpleText = require('core/gui/SimpleText')
-
 --[[===========================================================================
 
+Button
+-------------------------------------------------------------------------------
 A window button. It may have a text and an animated icon.
 
 =============================================================================]]
 
+-- Imports
+local Sprite = require('core/graphics/Sprite')
+local Vector = require('core/math/Vector')
+local SimpleText = require('core/gui/SimpleText')
+
 local Button = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 -- @param(window : ButtonWindow) the window that this button is component of
 -- @param(index : number) the index of the button in the window
@@ -45,6 +52,27 @@ function Button:init(window, index, col, row, text, fontName, iconAnim,
   window.content:add(self)
 end
 
+-- Updates icon animation.
+function Button:update()
+  if self.icon then
+    self.icon:update()
+  end
+end
+
+-- Deletes text and icon sprites.
+function Button:destroy()
+  if self.textSprite then
+    self.textSprite:destroy()
+  end
+  if self.icon then
+    self.icon:removeSelf()
+  end
+end
+
+-------------------------------------------------------------------------------
+-- Input handlers
+-------------------------------------------------------------------------------
+
 -- Called when player presses "Confirm" on this button.
 function Button.onConfirm(window, button)
   window.result = button.index
@@ -58,6 +86,10 @@ end
 -- Called when player presses arrows on this button.
 function Button.onMove(window, button, dx, dy)
 end
+
+-------------------------------------------------------------------------------
+-- State
+-------------------------------------------------------------------------------
 
 -- Updates text and icon color based on button state.
 function Button:updateColor()
@@ -99,12 +131,9 @@ function Button:setSelected(value)
   end
 end
 
--- Updates icon animation.
-function Button:update()
-  if self.icon then
-    self.icon:update()
-  end
-end
+-------------------------------------------------------------------------------
+-- Position
+-------------------------------------------------------------------------------
 
 -- @ret(Vector) the offset from the window's position.
 function Button:relativePosition()
@@ -123,6 +152,10 @@ function Button:updatePosition(pos)
     self.icon:setPosition(pos)
   end
 end
+
+-------------------------------------------------------------------------------
+-- Show/hide
+-------------------------------------------------------------------------------
 
 -- Shows button's text and icon.
 function Button:show()
@@ -166,16 +199,6 @@ function Button:toString()
     return '' .. self.index
   end
   return self.index .. ': ' .. self.textSprite.text
-end
-
--- Deletes text and icon sprites.
-function Button:destroy()
-  if self.textSprite then
-    self.textSprite:destroy()
-  end
-  if self.icon then
-    self.icon:removeSelf()
-  end
 end
 
 return Button

@@ -6,7 +6,7 @@
     "dashSpeed": 120,
     "stopOnCollision": true,
     "script": {
-      "path": "character/Player.lua",
+      "path": "character/PlayerController.lua",
       "param": ""
     },
     "startPos": {

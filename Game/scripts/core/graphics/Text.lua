@@ -1,11 +1,8 @@
 
-local Sprite = require('core/graphics/Sprite')
-local textShader = love.graphics.newShader('shaders/text.glsl')
-local lgraphics = love.graphics
-local log2 = 1/math.log(2)
-
 --[[===========================================================================
 
+Text
+-------------------------------------------------------------------------------
 A text with dynamic fonts, colors and middle-text icons.
 Adapted from Robin Wellner and Florian Fischer's original code:
 
@@ -26,9 +23,25 @@ freely, subject to the following restrictions:
    3. This notice may not be removed or altered from any source
    distribution.
 
+TODO: toString
+
 =============================================================================]]
 
+-- Imports
+local Sprite = require('core/graphics/Sprite')
+
+-- Alias
+local lgraphics = love.graphics
+
+-- Constants
+local textShader = love.graphics.newShader('shaders/text.glsl')
+local log2 = 1/math.log(2)
+
 local Text = Sprite:inherit()
+
+-------------------------------------------------------------------------------
+-- Initialization
+-------------------------------------------------------------------------------
 
 local old_init = Text.init
 function Text:init(data, renderer)
@@ -37,10 +50,18 @@ function Text:init(data, renderer)
   self:setText(data)
 end
 
+-- Sets/changes the text content.
+-- @param(data : table) the table with text data:
+--  (data[1] : string) the rich text
+--  (data[2] : number) the width of the text box
+--  (data[3] : string) the align type (left, right or center) 
+--    (optional, left by default)
+--  (data[4] : number) the max number of characters that will be shown 
+--    (optional, no limit by default)
 function Text:setText(data)
   self.width = data[2] * Font.size
-  self.align = data[3] or self.align
-  self.maxchar = data[4] or self.maxchar
+  self.align = data[3] or self.align or 'left'
+  self.maxchar = data[4] or self.maxchar or -1
   self.hardwrap = false
   self.resources = {}
   self.parsedtext = {}
@@ -56,7 +77,8 @@ end
 -- Draw in screen
 -------------------------------------------------------------------------------
 
-function Text:draw(x, y)
+-- Draws text in the given position.
+function Text:draw()
   local sx = self.scaleX * ScreenManager.scaleX * self.renderer.zoom
   local sy = self.scaleY * ScreenManager.scaleY * self.renderer.zoom
   local w, h = self.texture:getWidth(), self.texture:getHeight()
@@ -204,7 +226,12 @@ local function renderText(parsedtext, fragment, lines, maxheight, x, width, i, h
 
 	local h = math.floor(fnt:getHeight(parsedtext[i]) * fnt:getLineHeight())
 	maxheight = math.max(maxheight, h)
-	return maxheight, x + fnt:getWidth(parsedtext[i]), {parsedtext[i], x = x > 0 and x or 0, type = 'string', height = h, width = fnt:getWidth(parsedtext[i])}
+	return maxheight, x + fnt:getWidth(parsedtext[i]), {parsedtext[i], 
+    x = x > 0 and x or 0, 
+    type = 'string', 
+    height = h, 
+    width = fnt:getWidth(parsedtext[i])
+  }
 end
 
 local function renderImage(fragment, lines, maxheight, x, width)

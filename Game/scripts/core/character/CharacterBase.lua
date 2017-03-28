@@ -1,6 +1,8 @@
 
 --[[===========================================================================
 
+CharacterBase
+-------------------------------------------------------------------------------
 A Character is a dynamic object stored in the tile. 
 It may be passable or not, and have an image or not.
 Player may also interact with this.

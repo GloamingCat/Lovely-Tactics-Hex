@@ -1,19 +1,30 @@
 
-local Renderer = require('core/graphics/Renderer')
-local Vector = require('core/math/Vector')
-local Queue = require('core/algorithm/Queue')
-local mathf = math.field
-local sqrt = math.sqrt
-local sqrt2 = sqrt(2)
-local time = love.timer.getDelta
-
 --[[===========================================================================
 
+FieldCamera
+-------------------------------------------------------------------------------
 The FieldCamera implements basic movement, zoom and rotation animations.
 
 =============================================================================]]
 
+-- Imports
+local Renderer = require('core/graphics/Renderer')
+local Vector = require('core/math/Vector')
+local Queue = require('core/algorithm/Queue')
+
+-- Alias
+local mathf = math.field
+local sqrt = math.sqrt
+local time = love.timer.getDelta
+
+-- Constants
+local sqrt2 = sqrt(2)
+
 local FieldCamera = Renderer:inherit()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 local old_init = FieldCamera.init
 function FieldCamera:init(size, minDepth, maxDepth)

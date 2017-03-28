@@ -1,11 +1,14 @@
 
-local SkillAction = require('core/battle/action/SkillAction')
-
 --[[===========================================================================
 
+AreaAttack
+-------------------------------------------------------------------------------
 A class for generic area attack skills that targets enemies.
 
 =============================================================================]]
+
+-- Imports
+local SkillAction = require('core/battle/action/SkillAction')
 
 local AreaAttack = SkillAction:inherit()
 

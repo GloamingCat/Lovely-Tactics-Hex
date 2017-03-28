@@ -1,16 +1,22 @@
 
+--[[===========================================================================
+
+GUIManager
+-------------------------------------------------------------------------------
+This class manages all GUI objects.
+
+=============================================================================]]
+
+-- Imports
 local Stack = require('core/algorithm/Stack')
 local Renderer = require('core/graphics/Renderer')
 local CallbackTree = require('core/callback/CallbackTree')
 
---[[
-@module 
-
-This class manages all GUI objects.
-
-]]
-
 local GUIManager = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 function GUIManager:init()
   self.renderer = Renderer(200, -100, 100)
@@ -26,6 +32,10 @@ function GUIManager:update()
   end
   self.callbackTree:update()
 end
+
+-------------------------------------------------------------------------------
+-- GUI calls
+-------------------------------------------------------------------------------
 
 -- Tells if there's any GUI waiting for player's input.
 function GUIManager:isWaitingInput()

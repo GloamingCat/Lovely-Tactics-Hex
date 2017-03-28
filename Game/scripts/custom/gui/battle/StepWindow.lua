@@ -1,15 +1,23 @@
 
+--[[===========================================================================
+
+StepWindow
+------------------------------------------------------------------------------
+Window that opens in Action GUI to show current character's number of 
+remaining steps.
+
+=============================================================================]]
+
+-- Imports
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 local SimpleText = require('core/gui/SimpleText')
 
---[[===========================================================================
-
-Window that opens in Action GUI.
-
-=============================================================================]]
-
 local StepWindow = Window:inherit()
+
+-------------------------------------------------------------------------------
+-- Initialization
+-------------------------------------------------------------------------------
 
 -- Overrides Window:init.
 local old_init = StepWindow.init

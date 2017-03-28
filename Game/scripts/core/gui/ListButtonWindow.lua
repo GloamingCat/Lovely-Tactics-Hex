@@ -1,12 +1,15 @@
 
-local ButtonWindow = require('core/gui/ButtonWindow')
-
 --[[===========================================================================
 
+ListButtonWindow
+-------------------------------------------------------------------------------
 A Button Window that has its buttons generated automatically given a list of
 arbitrary elements.
 
 =============================================================================]]
+
+-- Imports
+local ButtonWindow = require('core/gui/ButtonWindow')
 
 local ListButtonWindow = ButtonWindow:inherit()
 

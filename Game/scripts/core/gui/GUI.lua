@@ -1,14 +1,21 @@
 
-local List = require('core/algorithm/List')
-local Callback = require('core/callback/Callback')
-
 --[[===========================================================================
 
+GUI
+-------------------------------------------------------------------------------
 A set of windows. 
 
 =============================================================================]]
 
+-- Imports
+local List = require('core/algorithm/List')
+local Callback = require('core/callback/Callback')
+
 local GUI = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General 
+-------------------------------------------------------------------------------
 
 function GUI:init()
   self.windowList = List()
@@ -34,6 +41,10 @@ function GUI:update()
     window:update()
   end
 end
+
+-------------------------------------------------------------------------------
+-- Coroutine calls
+-------------------------------------------------------------------------------
 
 -- [COROUTINE] Waits until GUI closes and returns a result.
 function GUI:waitForResult()

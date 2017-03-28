@@ -1,22 +1,27 @@
 
-local Window = require('core/gui/Window')
-
 --[[===========================================================================
 
 An example of usage of an eventsheet for a Field.
 
 =============================================================================]]
 
-local Callback = require('core/callback/Callback'):inherit()
+-- Imports
+local Window = require('core/gui/Window')
+local Callback = require('core/callback/Callback')
 
-function Callback:exec(event, ...)
+local Example = Callback:inherit()
+
+-------------------------------------------------------------------------------
+-- Main function
+-------------------------------------------------------------------------------
+
+function Example:exec(event, ...)
   --FieldManager.player.blockingCharacters = FieldManager.player.blockingCharacters + 1
   print('Just started.')
   local list = FieldManager:search('Template')
   print(list.size)
   local char1 = list[2]
   local char2 = list[1]
-  
   char1:turnToTile(char1.tile.x + 1, char1.tile.y)
   self:fork(function()
     print('Walk start')
@@ -34,4 +39,4 @@ function Callback:exec(event, ...)
   --FieldManager.player.blockingCharacters = FieldManager.player.blockingCharacters - 1
 end
 
-return Callback
+return Example

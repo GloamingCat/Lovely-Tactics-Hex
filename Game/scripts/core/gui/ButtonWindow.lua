@@ -1,4 +1,13 @@
 
+--[[===========================================================================
+
+ButtonWindow
+-------------------------------------------------------------------------------
+Provides the base for windows with buttons.
+
+=============================================================================]]
+
+-- Imports
 local List = require('core/algorithm/List')
 local Matrix2 = require('core/algorithm/Matrix2')
 local Vector = require('core/math/Vector')
@@ -7,13 +16,9 @@ local Button = require('core/gui/Button')
 local ButtonCursor = require('core/gui/ButtonCursor')
 local VSlider = require('core/gui/VSlider')
 local Window = require('core/gui/Window')
+
+-- Alias
 local ceil = math.ceil
-
---[[===========================================================================
-
-Provides the base for windows with buttons.
-
-=============================================================================]]
 
 local ButtonWindow = Window:inherit()
 
@@ -49,7 +54,7 @@ function ButtonWindow:activate()
 end
 
 -------------------------------------------------------------------------------
--- General info
+-- Properties
 -------------------------------------------------------------------------------
 
 -- @ret(number) the number of visible columns

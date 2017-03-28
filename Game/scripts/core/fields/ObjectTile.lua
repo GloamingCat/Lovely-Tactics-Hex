@@ -1,22 +1,33 @@
 
-local Vector = require('core/math/Vector')
-local List = require('core/algorithm/List')
-local Animation = require('core/graphics/Animation')
-local mathf = math.field
-local max = math.max
-local tileW = Config.grid.tileW
-local tileH = Config.grid.tileH
-local controlZone = Battle.controlZone
-local overpassAllies = Battle.overpassAllies
-
 --[[===========================================================================
 
+ObjectTile
+-------------------------------------------------------------------------------
 An ObjectTile stores a list of static obstacles and a list of dynamic characters.
 There's only one ObjectTile for each (i, j, height) in the field.
 
 =============================================================================]]
 
+-- Imports
+local Vector = require('core/math/Vector')
+local List = require('core/algorithm/List')
+local Animation = require('core/graphics/Animation')
+
+-- Alias
+local mathf = math.field
+local max = math.max
+
+-- Constants
+local tileW = Config.grid.tileW
+local tileH = Config.grid.tileH
+local controlZone = Battle.controlZone
+local overpassAllies = Battle.overpassAllies
+
 local ObjectTile = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 -- @param(layer : ObjectLayer) the layer that this tile is in
 -- @param(x : number) the tile's x coordinate
@@ -46,6 +57,17 @@ function ObjectTile:update()
     self.baseAnim:update()
   end
 end
+
+-- Generates a unique character ID for a character in this tile.
+-- @ret(string) new ID
+function ObjectTile:generateCharacterID()
+  local h, x, y = self:coordinates()
+  return '' .. h .. '.' .. x .. '.' .. y .. '.' .. self.characterList.size
+end
+
+-------------------------------------------------------------------------------
+-- Graphics
+-------------------------------------------------------------------------------
 
 -- Creates the graphical elements for battle grid navigation.
 function ObjectTile:createGraphics()
@@ -82,6 +104,10 @@ function ObjectTile:updateDepth()
   end
 end
 
+-------------------------------------------------------------------------------
+-- Grid/neighborhood
+-------------------------------------------------------------------------------
+
 -- Stores the list of neighbor tiles.
 function ObjectTile:createNeighborList()
   self.neighborList = List()
@@ -101,13 +127,6 @@ end
 -- @ret(number) tile's height
 function ObjectTile:coordinates()
   return self.x, self.y, self.layer.height
-end
-
--- Generates a unique character ID for a character in this tile.
--- @ret(string) new ID
-function ObjectTile:generateCharacterID()
-  local h, x, y = self:coordinates()
-  return '' .. h .. '.' .. x .. '.' .. y .. '.' .. self.characterList.size
 end
 
 -------------------------------------------------------------------------------

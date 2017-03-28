@@ -1,13 +1,17 @@
 
+--[[===========================================================================
+
+SimpleText
+-------------------------------------------------------------------------------
+A simple content element for GUI window containing just a text.
+It's a type of window content.
+
+=============================================================================]]
+
+-- Imports
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local Text = require('core/graphics/Text')
-
---[[===========================================================================
-
-A simple content element for GUI window containing just a text.
-
-=============================================================================]]
 
 local SimpleText = require('core/class'):new()
 

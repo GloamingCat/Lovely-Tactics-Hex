@@ -1,13 +1,16 @@
 
-local insert = table.insert
-local remove = table.remove
-
 --[[===========================================================================
 
+List
+-------------------------------------------------------------------------------
 A list datatype implementation. See more in:
 http://en.wikipedia.org/wiki/List_(abstract_data_type)
 
 =============================================================================]]
+
+-- Alias
+local insert = table.insert
+local remove = table.remove
 
 local List = require('core/class'):new()
 

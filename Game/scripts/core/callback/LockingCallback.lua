@@ -1,13 +1,14 @@
 
+--[[===========================================================================
 
-local Callback = require('core/callback/Callback')
-
---[[
-@module 
-
+LockingCallback
+-------------------------------------------------------------------------------
 A base callback that blocks player's input during its execution.
 
-]]
+=============================================================================]]
+
+-- Imports
+local Callback = require('core/callback/Callback')
 
 local LockingCallback = Callback:inherit()
 

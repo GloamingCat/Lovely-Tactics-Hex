@@ -1,4 +1,14 @@
 
+--[[===========================================================================
+
+FieldManager
+-------------------------------------------------------------------------------
+Responsible for drawing and updating the current field, and also loading and
+storing fields from game's data.
+
+=============================================================================]]
+
+-- Imports
 local List = require('core/algorithm/List')
 local Stack = require('core/algorithm/Stack')
 local Vector = require('core/math/Vector')
@@ -7,17 +17,15 @@ local Field = require('core/fields/Field')
 local Player = require('core/character/Player')
 local CallbackTree = require('core/callback/CallbackTree')
 local FieldCamera = require('core/fields/FieldCamera')
+
+-- Alias
 local mathf = math.field
 
---[[===========================================================================
-
-The FieldManager is responsible for drawing and 
-updating the current field, and also loading and
-storing fields from game's data.
-
-=============================================================================]]
-
 local FieldManager = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 function FieldManager:init()
   self.stateStack = Stack() 

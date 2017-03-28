@@ -1,7 +1,10 @@
 
 --[[===========================================================================
 
-The BattleManager controls battle flow.
+BattleManager
+-------------------------------------------------------------------------------
+Controls battle flow (initializes troops, coordenates turns, checks victory
+and game over).
 
 =============================================================================]]
 

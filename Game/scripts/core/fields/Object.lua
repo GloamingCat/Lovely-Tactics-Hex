@@ -1,21 +1,34 @@
 
-local Vector = require('core/math/Vector')
-local Sprite = require('core/graphics/Sprite')
-local round = math.round
-
 --[[===========================================================================
 
+Object
+-------------------------------------------------------------------------------
 A common class for Obstacles and Characters.
 
 =============================================================================]]
 
+-- Imports
+local Vector = require('core/math/Vector')
+local Sprite = require('core/graphics/Sprite')
+
+-- Alias
+local round = math.round
+
 local Object = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 -- @param(data : table) data from file (Obstacle or Character)
 function Object:init(data, pos)
   self.colliderHeight = data.colliderHeight
   self.position = pos or Vector(0, 0, 0)
 end
+
+-------------------------------------------------------------------------------
+-- Position
+-------------------------------------------------------------------------------
 
 -- Sets the position of the object.
 -- @param(pos : Vector) the pixel position of the object
@@ -33,6 +46,20 @@ function Object:setXYZ(x, y, z)
   self.position.z = z
   self.sprite:setXYZ(x, y, z)
 end
+
+-- 'Teleports' the object to another position.
+-- @param(position : Vector) the new position
+function Object:instantMoveTo(position)
+  local tiles = self:getAllTiles()
+  self:removeFromTiles(tiles)
+  self:setPosition(position)
+  tiles = self:getAllTiles()
+  self:addToTiles(tiles)
+end
+
+-------------------------------------------------------------------------------
+-- Tile
+-------------------------------------------------------------------------------
 
 -- Converts current pixel position to tile.
 -- @ret(Tile) current tile
@@ -62,16 +89,6 @@ end
 
 -- [Abstract] Removes this object from the tiles it's occuping.
 function Object:removeFromTiles()
-end
-
--- 'Teleports' the object to another position.
--- @param(position : Vector) the new position
-function Object:instantMoveTo(position)
-  local tiles = self:getAllTiles()
-  self:removeFromTiles(tiles)
-  self:setPosition(position)
-  tiles = self:getAllTiles()
-  self:addToTiles(tiles)
 end
 
 return Object

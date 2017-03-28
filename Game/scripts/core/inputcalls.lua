@@ -1,10 +1,9 @@
 
---[[
-@module
+--[[===========================================================================
 
 Implements input callbacks (load, update and draw).
 
-]]
+=============================================================================]]
 
 -- Called when player presses any key.
 -- @param(code : string) the code of the key based on keyboard layout

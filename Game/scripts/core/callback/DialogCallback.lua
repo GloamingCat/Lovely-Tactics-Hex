@@ -1,12 +1,14 @@
 
-local Callback = require('core/callback/Callback')
+--[[===========================================================================
 
---[[
-@module 
-
+DialogCallback
+-------------------------------------------------------------------------------
 A base class  to callback that starts a dialog with player.
 
-]]
+=============================================================================]]
+
+-- Imports
+local Callback = require('core/callback/Callback')
 
 local DialogCallback = Callback:inherit()
 

@@ -1,13 +1,18 @@
 
-local CallbackTree = require('core/callback/CallbackTree')
-local time = love.timer.getDelta
-
 --[[===========================================================================
 
+Callback
+-------------------------------------------------------------------------------
 A piece of code that may be executed in coroutines, as a separate "process"
 or "thread". It must be updated by its tree every frame.
 
 =============================================================================]]
+
+-- Imports
+local CallbackTree = require('core/callback/CallbackTree')
+
+-- Alias
+local time = love.timer.getDelta
 
 local Callback = CallbackTree:inherit()
 

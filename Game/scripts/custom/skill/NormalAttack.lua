@@ -1,13 +1,16 @@
 
-local CharacterOnlyAction = require('core/battle/action/CharacterOnlyAction')
-
 --[[===========================================================================
 
+NormalAttack
+-------------------------------------------------------------------------------
 A class for generic attack skills that targets enemies.
 
 =============================================================================]]
 
-local NormalAttack = CharacterOnlyAction:inherit()
+-- Imports
+local CharacterOnlySkill = require('core/battle/action/CharacterOnlySkill')
+
+local NormalAttack = CharacterOnlySkill:inherit()
 
 -- Overrides CharacterOnlyAction:isCharacterSelectable.
 function NormalAttack:isCharacterSelectable(char)

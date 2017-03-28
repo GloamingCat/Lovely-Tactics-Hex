@@ -1,10 +1,4 @@
 
-local Vector = require('core/math/Vector')
-local tileW = Config.grid.tileW
-local tileH = Config.grid.tileH
-local tileB = Config.grid.tileB
-local tileS = Config.grid.tileS
-
 --[[===========================================================================
 
 The FieldMath is a module that provides basic math operations, like 
@@ -13,7 +7,20 @@ navigation/iteration, etc.
 
 =============================================================================]]
 
+-- Imports
+local Vector = require('core/math/Vector')
+
+-- Constants
+local tileW = Config.grid.tileW
+local tileH = Config.grid.tileH
+local tileB = Config.grid.tileB
+local tileS = Config.grid.tileS
+
 local FieldMath = {}
+
+---------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------
 
 function FieldMath.init()
   FieldMath.tg = (tileH + tileS) / (tileW + tileB)

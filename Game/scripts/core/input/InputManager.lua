@@ -1,25 +1,30 @@
 
-local GameKey = require('core/input/GameKey')
-local GameMouse = require('core/input/GameMouse')
-local max = math.max
-
 --[[===========================================================================
 
-The InputManager stores relevant inputs for the game.
-key states:
-0 => not pressing
-1 => pressing
-2 => pressing (with delay)
-3 => just pressed
+InputManager
+-------------------------------------------------------------------------------
+Stores relevant inputs for the game.
 
 =============================================================================]]
 
+-- Imports
+local KeyMap = require('core/input/KeyMap')
+local GameKey = require('core/input/GameKey')
+local GameMouse = require('core/input/GameMouse')
+
+-- Alias
+local max = math.max
+
 local InputManager = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 function InputManager:init()
   self.usingKeyboard = true
   self.keys = {}
-  self.keyMap = require('core/input/KeyMap')
+  self.keyMap = KeyMap
   for k, v in pairs(self.keyMap) do
     self.keys[v] = GameKey()
   end
@@ -37,6 +42,10 @@ function InputManager:update()
   end
   self.mouse:update()
 end
+
+-------------------------------------------------------------------------------
+-- Axis keys
+-------------------------------------------------------------------------------
 
 -- Converts boolean key buttons to axis in [-1, 1].
 -- @ret(number) the x-axis value

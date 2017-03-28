@@ -1,12 +1,18 @@
 
-local Sprite = require('core/graphics/Sprite')
-local Image = love.graphics.newImage
-
 --[[===========================================================================
 
-
+VSlider
+-------------------------------------------------------------------------------
+A side bar to scroll through windows.
+It's a type of window content.
 
 =============================================================================]]
+
+-- Imports
+local Sprite = require('core/graphics/Sprite')
+
+-- Alias
+local Image = love.graphics.newImage
 
 local VSlider = require('core/class'):new()
 

@@ -1,5 +1,15 @@
 
+--[[===========================================================================
+
+Implements a FieldMath specially to isometric and hexagonal fields.
+
+=============================================================================]]
+
+-- Imports
 local Vector = require('core/math/Vector')
+local IsoMath = require('core/math/field/FieldMath'):inherit()
+
+-- Constants
 local tileW = Config.grid.tileW
 local tileH = Config.grid.tileH
 local tileB = Config.grid.tileB
@@ -7,18 +17,10 @@ local tileS = Config.grid.tileS
 local pixelsPerHeight = Config.grid.pixelsPerHeight
 local allNeighbors = Config.grid.allNeighbors
 
---[[===========================================================================
-
-Implements a FieldMath specially to isometric and hexagonal fields.
-
-=============================================================================]]
-
-local IsoMath = require('core/math/field/FieldMath'):inherit()
-
 -- Creates an array with Vectors representing all neighbors of a tile.
 -- @ret(table) array of Vectors
-function IsoMath:createNeighborShift()
-  local s = self:createFullNeighborShift()
+function IsoMath.createNeighborShift()
+  local s = IsoMath.createFullNeighborShift()
   if allNeighbors then
     return s
   end

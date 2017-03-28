@@ -1,11 +1,21 @@
---[[
-@module 
 
-A Vector is an offset in three-dimensional space. 
+--[[===========================================================================
+
+Vector
+-------------------------------------------------------------------------------
+An offset in three-dimensional space. 
 It consists of an x, and a y component,
 each being an offset along a different orthogonal axis.
 
-]]
+=============================================================================]]
+
+-- Alias
+local floor = math.floor
+local ceil = math.ceil
+local round = math.round
+local rotate = math.rotate
+local min = math.min
+local max = math.max
 
 local Vector = require('core/class'):new()
 
@@ -110,7 +120,7 @@ end
 -- Rotate this Vector phi radians counterclockwise.
 -- @param(phi : number) the number of radians counterclockwise to rotate the Vector
 function Vector:rotate(phi)
-	self.x, self.y = math.rotate(self.x, self.y, phi)
+	self.x, self.y = rotate(self.x, self.y, phi)
 end
 
 -- Rotates this Vector phi radians counterclockwise.
@@ -145,42 +155,42 @@ end
 -- @param(time : number) the time between 0 and 1
 -- @ret(Vector) the result of the interpolation
 function Vector:lerp(other, time)
-  time = math.max(time, 0)
-  time = math.min(1, time)
+  time = max(time, 0)
+  time = min(1, time)
   return self * (1 - time) + other * time
 end
 
 -- Rounds this vector's coordinates.
 function Vector:round()
-  self.x = math.round(self.x)
-  self.y = math.round(self.y)
-  self.z = math.round(self.z)
+  self.x = round(self.x)
+  self.y = round(self.y)
+  self.z = round(self.z)
 end
 
 -- Rounds this vector's coordinates.
 -- @ret(Vector) this vector rounded as a new vector
 function Vector:rounded()
-  return Vector(math.round(self.x), math.round(self.y), math.round(self.z))
+  return Vector(round(self.x), round(self.y), round(self.z))
 end
 
 function Vector:floor()
-  self.x = math.floor(self.x)
-  self.y = math.floor(self.y)
-  self.z = math.floor(self.z)
+  self.x = floor(self.x)
+  self.y = floor(self.y)
+  self.z = floor(self.z)
 end
 
 function Vector:floored()
-  return Vector(math.floor(self.x), math.floor(self.y), math.floor(self.z))
+  return Vector(floor(self.x), floor(self.y), floor(self.z))
 end
 
 function Vector:ceil()
-  self.x = math.floor(self.x)
-  self.y = math.floor(self.y)
-  self.z = math.floor(self.z)
+  self.x = floor(self.x)
+  self.y = floor(self.y)
+  self.z = floor(self.z)
 end
 
 function Vector:ceiled()
-  return Vector(math.ceil(self.x), math.ceil(self.y), math.ceil(self.z))
+  return Vector(ceil(self.x), ceil(self.y), ceil(self.z))
 end
 
 -- Converting to string.

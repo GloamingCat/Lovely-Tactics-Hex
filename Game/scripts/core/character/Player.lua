@@ -1,17 +1,28 @@
 
-local Vector = require('core.math.Vector')
-local Character = require('core.character.Character')
-local timer = love.timer
-local conf = Config.player
-
 --[[===========================================================================
 
+Player
+-------------------------------------------------------------------------------
 This is a special character that can me controlled by the player with keyboard.
 It only exists for exploration fields.
 
 =============================================================================]]
 
+-- Imports
+local Vector = require('core.math.Vector')
+local Character = require('core.character.Character')
+
+-- Alias
+local timer = love.timer
+
+-- Constants
+local conf = Config.player
+
 local Player = Character:inherit()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 -- Overrides BaseCharacter:init.
 local old_init = Player.init
@@ -19,19 +30,18 @@ function Player:init()
   self.blocks = 0
   self.dashSpeed = conf.dashSpeed
   self.walkSpeed = conf.walkSpeed
+  local leaderBattler = Database.battlers[PartyManager.members[1] + 1]
   local data = {
     animID = 0,
     direction = 270,
     startID = 0,
     collisionID = -1,
     interactID = -1,
-    id = 0,-- TODO PartyManager.members[1].characterID,
+    id = leaderBattler.characterID,
     tags = {}
   }
   old_init(self, '0', data)
-  self.startListener = { 
-    path = 'character/Player' 
-  }
+  self.startListener = conf.script
 end
 
 -- Player's extra and base character properties.

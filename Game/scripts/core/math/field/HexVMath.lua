@@ -1,23 +1,29 @@
 
+--[[===========================================================================
+
+HexVMath
+-------------------------------------------------------------------------------
+Implements a FieldMath specially to vertical hexagonal fields.
+
+=============================================================================]]
+
+-- Imports
 local Vector = require('core/math/Vector')
+local HexVMath = require('core/math/field/FieldMath')
+
+-- Alias
 local angle2Coord = math.angle2Coord
 local min = math.min
 local max = math.max
 local abs = math.abs
 local round = math.round
+
+-- Constants
 local tileW = Config.grid.tileW
 local tileH = Config.grid.tileH
 local tileB = Config.grid.tileB
 local allNeighbors = Config.grid.allNeighbors
 local pph = Config.grid.pixelsPerHeight
-
---[[===========================================================================
-
-Implements a FieldMath specially to vertical hexagonal fields.
-
-=============================================================================]]
-
-local HexVMath = require('core/math/field/FieldMath')
 
 -- Creates an array with Vectors representing all neighbors of a tile.
 -- @ret(table) array of Vectors

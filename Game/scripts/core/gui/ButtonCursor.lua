@@ -1,12 +1,16 @@
 
-local Animation = require('core/graphics/Animation')
-local Vector = require('core/math/Vector')
-
 --[[===========================================================================
 
+ButtonCursor
+-------------------------------------------------------------------------------
 A cursor for button windows.
+It's a type of window content.
 
 =============================================================================]]
+
+-- Imports
+local Animation = require('core/graphics/Animation')
+local Vector = require('core/math/Vector')
 
 local ButtonCursor = require('core/class'):new()
 

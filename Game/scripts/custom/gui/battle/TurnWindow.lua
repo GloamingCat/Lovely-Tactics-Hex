@@ -1,4 +1,14 @@
 
+--[[===========================================================================
+
+TurnWindow
+-------------------------------------------------------------------------------
+Window that opens in the start of a character turn.
+Result = 1 means that the turn ended.
+
+=============================================================================]]
+
+-- Imports
 local ActionWindow = require('custom/gui/battle/ActionWindow')
 local MoveAction = require('core/battle/action/MoveAction')
 local TradeAction = require('core/battle/action/TradeAction')
@@ -6,16 +16,15 @@ local EscapeAction = require('core/battle/action/EscapeAction')
 local VisualizeAction = require('core/battle/action/VisualizeAction')
 local CallAction = require('core/battle/action/CallAction')
 local BattleCursor = require('core/battle/BattleCursor')
+
+-- Alias
 local mathf = math.field
 
---[[===========================================================================
-
-Window that opens in the start of a character turn.
-Result = 1 means that the turn ended.
-
-=============================================================================]]
-
 local TurnWindow = require('core/class'):inherit(ActionWindow)
+
+-------------------------------------------------------------------------------
+-- Initialization
+-------------------------------------------------------------------------------
 
 -- Overrides ButtonWindow:createButtons.
 function TurnWindow:createButtons()
@@ -39,9 +48,7 @@ end
 -- "Attack" button callback.
 -- @param(button : Button) the button chosen
 function TurnWindow:onAttackAction(button)
-  local id = BattleManager.currentCharacter.battler.attackSkillID
-  local skill = Database.skills[id + 1]
-  self:selectSkill(skill)
+  self:selectSkill(BattleManager.currentCharacter.battler:getAttackSkill())
 end
 
 -- "Move" button callback.

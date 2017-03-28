@@ -1,5 +1,15 @@
 
+--[[===========================================================================
+
+Implements a FieldMath specially to orthogonal fields.
+
+=============================================================================]]
+
+-- Imports
 local Vector = require('core/math/Vector')
+local OrtMath = require('core/math/field/FieldMath'):inherit()
+
+-- Constants
 local tileW = Config.grid.tileW
 local tileH = Config.grid.tileH
 local tileB = Config.grid.tileB
@@ -7,19 +17,13 @@ local tileS = Config.grid.tileS
 local pixelsPerHeight = Config.grid.pixelsPerHeight
 local allNeighbors = Config.grid.allNeighbors
 
---[[===========================================================================
-
-Implements a FieldMath specially to orthogonal fields.
-
-=============================================================================]]
-
-local OrtMath = require('core/math/field/FieldMath'):inherit()
-
-function OrtMath:createNeighborShift()
+-- Creates an array with Vectors representing all neighbors of a tile.
+-- @ret(table) array of Vectors
+function OrtMath.createNeighborShift()
   return { {0, 1}, {1, 0}, {0, -1}, {-1, 0} }
 end
 
-function OrtMath:createVertexShift()
+function OrtMath.createVertexShift()
   -- TODO
   return {}
 end

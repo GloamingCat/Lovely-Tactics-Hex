@@ -1,12 +1,14 @@
 
+--[[===========================================================================
+
+SaveManager
+-------------------------------------------------------------------------------
+Responsible for storing and loading game saves.
+
+=============================================================================]]
+
+-- Imports
 local GameSave = require('core/save/GameSave')
-
---[[
-@module 
-
-The SaveManager is responsible for storing and loading game saves.
-
-]]
 
 local SaveManager = require('core/class'):new()
 

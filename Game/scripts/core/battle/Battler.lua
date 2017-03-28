@@ -1,12 +1,15 @@
 
 --[[===========================================================================
 
+Battler
+-------------------------------------------------------------------------------
 A class the holds character's information for battle formula.
 
 =============================================================================]]
 
 -- Imports
 local List = require('core/algorithm/List')
+local Skill = require('core/battle/Skill')
 local Inventory = require('core/battle/Inventory')
 
 -- Alias
@@ -28,11 +31,15 @@ function Battler:init(data, party)
   self.att = self:createAttributes(data.attributes, data.level, data.build)
   self.currentHP = data.currentHP or self.att:maxHP()
   self.currentSP = data.currentSP or self.att:maxSP()
-  self.originalData = data
+  self.data = data
   self.turnCount = 0
   self.attackSkillID = data.attackID
   self.inventory = Inventory(data.items)
-  self.skillList = List(data.skills)
+  self.skillList = List()
+  -- Store skills
+  for i = 1, #data.skills do
+    self.skillList:add(Skill(data.skills[i]))
+  end
   -- Store elements
   local e = {}
   for i = 1, #data.elements do
@@ -52,8 +59,10 @@ function Battler:init(data, party)
   end
 end
 
+-- Converting to string.
+-- @ret(string) a string representation
 function Battler:toString()
-  return "Battler: " .. self.party
+  return 'Battler: ' .. self.data.name .. ' [Party ' .. self.party .. ']'
 end
 
 -------------------------------------------------------------------------------
@@ -166,9 +175,10 @@ end
 -- Skills
 -------------------------------------------------------------------------------
 
+-- Gets that skill that is called when this battler "attacks".
+-- @ret(Skill) the skill data
 function Battler:getAttackSkill()
-  local skill = Database.skills[self.attackSkillID + 1]
-  return skill
+  return Skill(self.attackSkillID)
 end
 
 return Battler

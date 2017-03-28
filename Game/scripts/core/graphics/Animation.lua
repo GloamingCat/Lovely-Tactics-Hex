@@ -1,14 +1,21 @@
 
-local Sprite = require('core/graphics/Sprite')
-
 --[[===========================================================================
 
+Animation
+-------------------------------------------------------------------------------
 An Animation updates the quad of the associated Sprite, 
 assuming that the texture of the sprite is a spritesheet.
 
 =============================================================================]]
 
+-- Imports
+local Sprite = require('core/graphics/Sprite')
+
 local Animation = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- Initialization
+-------------------------------------------------------------------------------
 
 -- @param(duration : number) the total duration
 -- @param(rowCount : number) how many rows the spritesheet has
@@ -69,6 +76,10 @@ function Animation.fromData(data, renderer, sprite)
     w / data.cols, h / data.rows, data.loop, data.allRows, sprite, data.script.param)
   return animation, texture, quad
 end
+
+-------------------------------------------------------------------------------
+-- Update
+-------------------------------------------------------------------------------
 
 -- Increments the frame count and automatically changes que sprite.
 function Animation:update()

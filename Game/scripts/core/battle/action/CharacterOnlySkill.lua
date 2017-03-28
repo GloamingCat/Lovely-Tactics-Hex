@@ -1,6 +1,8 @@
 
 --[[===========================================================================
 
+CharacterOnlySkill
+-------------------------------------------------------------------------------
 A special type of Skill that only selects tiles with characters on it.
 
 =============================================================================]]
@@ -11,23 +13,24 @@ local MoveAction = require('core/battle/action/MoveAction')
 local SkillAction = require('core/battle/action/SkillAction')
 local PathFinder = require('core/algorithm/PathFinder')
 
-local CharacterOnlyAction = SkillAction:inherit()
+local CharacterOnlySkill = SkillAction:inherit()
 
 -------------------------------------------------------------------------------
 -- General
 -------------------------------------------------------------------------------
 
 -- Overrides BattleAction:onSelect.
-local old_onSelect = CharacterOnlyAction.onSelect
-function CharacterOnlyAction:onSelect()
+local old_onSelect = CharacterOnlySkill.onSelect
+function CharacterOnlySkill:onSelect()
   self.index = 1
   self.selectableTiles = self:getSelectableTiles()
 end
 
 -- Gets the list of all tiles that have a character.
 -- @ret(List) the list of ObjectTiles
-function CharacterOnlyAction:getSelectableTiles()
-  local moveAction = MoveAction(self.currentTarget, self.user, self.data.range)
+function CharacterOnlySkill:getSelectableTiles()
+  local range = self.skill.data.range
+  local moveAction = MoveAction(self.currentTarget, self.user, range)
   local tempQueue = PriorityQueue()
   for char in TroopManager.characterList:iterator() do
     if self:isCharacterSelectable(char) then
@@ -49,7 +52,7 @@ end
 -------------------------------------------------------------------------------
 
 -- Overrides BattleAction:onActionGUI.
-function CharacterOnlyAction:onActionGUI(GUI)
+function CharacterOnlySkill:onActionGUI(GUI)
   self:resetAllTiles(false)
   self:resetTargetTiles(false, false)
   self:resetCharacterTiles()
@@ -61,7 +64,7 @@ end
 -------------------------------------------------------------------------------
 
 -- Overrides BattleAction:isSelectable.
-function CharacterOnlyAction:isSelectable(tile)
+function CharacterOnlySkill:isSelectable(tile)
   for char in tile.characterList:iterator() do
     if self:isCharacterSelectable(char) then
       return true
@@ -73,12 +76,12 @@ end
 -- Tells if the given character is selectable.
 -- @param(char : Character) the character to check
 -- @ret(boolean) true if selectable, false otherwise
-function CharacterOnlyAction:isCharacterSelectable(char)
+function CharacterOnlySkill:isCharacterSelectable(char)
   return true
 end
 
 -- Sets all character tiles as selectable.
-function CharacterOnlyAction:resetCharacterTiles()
+function CharacterOnlySkill:resetCharacterTiles()
   for i = 1, self.selectableTiles.size do
     local t = self.selectableTiles[i]
     t.selectable = true
@@ -91,12 +94,12 @@ end
 -------------------------------------------------------------------------------
 
 -- Overrides BattleAction:firstTarget.
-function CharacterOnlyAction:firstTarget()
+function CharacterOnlySkill:firstTarget()
   return self.selectableTiles[1]
 end
 
 -- Overrides BattleAction:nextTarget.
-function CharacterOnlyAction:nextTarget(dx, dy)
+function CharacterOnlySkill:nextTarget(dx, dy)
   if dx > 0 or dy > 0 then
     if self.index == self.selectableTiles.size then
       self.index = 1
@@ -113,4 +116,4 @@ function CharacterOnlyAction:nextTarget(dx, dy)
   return self.selectableTiles[self.index]
 end
 
-return CharacterOnlyAction
+return CharacterOnlySkill

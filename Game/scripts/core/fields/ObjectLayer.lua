@@ -1,16 +1,20 @@
 
-local ObjectTile = require('core/fields/ObjectTile')
-local Obstacle = require('core/fields/Obstacle')
-local Character = require('core/character/Character')
-local floor = math.floor
+--[[===========================================================================
 
---[[
-@module
-
+ObjectLayer
+-------------------------------------------------------------------------------
 An ObjectLayer is a matrix of ObjectTiles.
 There's only one ObjectLayer in the field per height.
 
-]]
+=============================================================================]]
+
+-- Imports
+local ObjectTile = require('core/fields/ObjectTile')
+local Obstacle = require('core/fields/Obstacle')
+local Character = require('core/character/Character')
+
+-- Alias
+local floor = math.floor
 
 local ObjectLayer = require('core/class'):new()
 

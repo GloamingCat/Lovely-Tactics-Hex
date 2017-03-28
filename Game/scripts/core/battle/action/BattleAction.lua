@@ -1,9 +1,8 @@
 
-local mathf = math.field
-local isnan = math.isnan
-
 --[[===========================================================================
 
+BattleAction
+-------------------------------------------------------------------------------
 A class that holds the behavior of a battle action: what happens when the 
 players first chooses what action, or if thet action need grid selecting, 
 if so, what tiles are selectables, etc.
@@ -14,7 +13,15 @@ window), Call Action (only team tiles), etc.
 
 =============================================================================]]
 
+-- Alias
+local mathf = math.field
+local isnan = math.isnan
+
 local BattleAction = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 -- @param(initialTile : ObjectTile) the initial target of the skill (optional)
 -- @param(user : Character) the user of the skill 

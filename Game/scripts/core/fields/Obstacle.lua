@@ -1,15 +1,20 @@
 
-local Vector = require('core/math/Vector')
-local Sprite = require('core/graphics/Sprite')
-local Object = require('core/fields/Object')
-local pph = Config.grid.pixelsPerHeight
-
 --[[===========================================================================
 
+Obstacle
+-------------------------------------------------------------------------------
 An Obstacle is a static object stored in the tile. 
 It may be passable or not, and have an image or not.
 
 =============================================================================]]
+
+-- Imports
+local Vector = require('core/math/Vector')
+local Sprite = require('core/graphics/Sprite')
+local Object = require('core/fields/Object')
+
+-- Constants
+local pph = Config.grid.pixelsPerHeight
 
 local Obstacle = Object:inherit()
 

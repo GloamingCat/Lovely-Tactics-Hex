@@ -1,6 +1,8 @@
 
 --[[===========================================================================
 
+SkillAction
+-------------------------------------------------------------------------------
 The BattleAction that is executed when players chooses a skill to use.
 
 =============================================================================]]
@@ -30,55 +32,12 @@ local SkillAction = BattleAction:inherit()
 -- General
 -------------------------------------------------------------------------------
 
+-- Overrides BattleAction:init.
+-- @param(skill : Skill) the skill's data
 local old_init = SkillAction.init
 function SkillAction:init(initialTile, user, skill)
   old_init(self, initialTile, user)
-  self.data = skill
-  -- Skill type
-  if skill.type == 0 then
-    self.type = 'general'
-  elseif skill.type == 1 then
-    self.type = 'attack'
-  elseif skill.type == 2 then
-    self.type = 'support'
-  end
-  -- Formulae
-  if self.data.basicResult ~= '' then
-    self.calculateBasicResult = self:loadFormulae(self.data.basicResult, 
-      'action, a, b')
-  end
-  if self.data.successRate ~= '' then
-    self.calculateSuccessRate = self:loadFormulae(self.data.successRate, 
-      'action, a, b')
-  end
-  -- Store elements
-  local e = {}
-  for i = 1, #skill.elements do
-    e[skill.elements[i].id + 1] = skill.elements[i].value
-  end
-  for i = 1, elementCount do
-    if not e[i] then
-      e[i] = 0
-    end
-  end
-  self.elementFactors = e
-end
-
--- Generates a function from a formulae in string.
--- @param(formulae : string) the formulae expression
--- @param(param : string) the param needed for the function (optional)
--- @ret(function) the function that evaluates the formulae
-function SkillAction:loadFormulae(formulae, param)
-  formulae = 'return ' .. formulae
-  if param and param ~= '' then
-    local funcString = 
-      'function(' .. param .. ') ' ..
-        formulae ..
-      ' end'
-    return loadstring('return ' .. funcString)()
-  else
-    return loadstring(formulae)
-  end
+  self.skill = skill
 end
 
 -------------------------------------------------------------------------------
@@ -91,7 +50,6 @@ function SkillAction:selectTarget(tile)
     for i = #self.currentTargets, 1, -1 do
       self.currentTargets[i]:setSelected(false)
     end
-    print('not null')
   end
   self.currentTarget = tile
   self.currentTargets = self:getAllAffectedTiles(tile)
@@ -104,41 +62,45 @@ end
 -- Selectable Tiles
 -------------------------------------------------------------------------------
 
+-- Paints and resets properties for the target tiles.
+-- By default, paints all movable tile with movable color, and non-movable but 
+-- reachable (within skill's range) tiles with the skill's type color.
+-- @param(selectMovable : boolean) true to paint movable tiles
+-- @param(selectBorder : boolean) true to paint non-movable tile within skill's range
 function SkillAction:resetTargetTiles(selectMovable, selectBorder)
   self:resetAllTiles(false)
   self:resetMovableTiles(selectMovable)
   local matrix = BattleManager.distanceMatrix
   local field = FieldManager.currentField
   local charTile = BattleManager.currentCharacter:getTile()
+  local range = self.skill.data.range + 1
   local h = charTile.layer.height
   for i = 1, self.field.sizeX do
     for j = 1, self.field.sizeY do
        -- If this tile is reachable
       if not isnan(matrix:get(i, j)) then
-        
         local tile = self.field:getObjectTile(i, j, h)
         local isBorder = false
         for neighbor in tile.neighborList:iterator() do
           -- If this tile has any non-reachable neighbors
           if isnan(matrix:get(neighbor.x, neighbor.y)) then
-            isBorder = true
+            isBorder = true -- This is a border tile
             break
           end
         end
-        if isBorder then
-          for i, j in mathf.radiusIterator(self.data.range + 1, 
+        if isBorder then -- If is border tile, paint all neighbors
+          for i, j in mathf.radiusIterator(range, 
               tile.x, tile.y, field.sizeX, field.sizeY) do
             local n = field:getObjectTile(i, j, h) 
-            if isnan(matrix:get(n.x, n.y)) then
+            if isnan(matrix:get(n.x, n.y)) then -- If this neighbor is not reachable
               n.selectable = selectBorder and self:isSelectable(n)
               n:setColor(self.type)
             end
           end
         end
-        
       end
     end
-    for i, j in mathf.radiusIterator(self.data.range + 1, 
+    for i, j in mathf.radiusIterator(range, 
         charTile.x, charTile.y, field.sizeX, field.sizeY) do
       if isnan(matrix:get(i, j)) then
         local n = field:getObjectTile(i, j, h)
@@ -147,7 +109,6 @@ function SkillAction:resetTargetTiles(selectMovable, selectBorder)
       end
     end
   end
-  
 end
 
 -------------------------------------------------------------------------------
@@ -172,7 +133,7 @@ function SkillAction:getAllAffectedTiles()
   local tiles = {}
   local field = FieldManager.currentField
   local height = self.currentTarget.layer.height
-  for i, j in mathf.radiusIterator(self.data.radius, self.currentTarget.x,
+  for i, j in mathf.radiusIterator(self.skill.data.radius, self.currentTarget.x,
       self.currentTarget.y, field.sizeX, field.sizeY) do
     tiles[#tiles + 1] = field:getObjectTile(i, j, height)
   end
@@ -184,17 +145,18 @@ end
 -- @param(target : Character) the target character
 -- @ret(number) the final value (nil if miss)
 function SkillAction:calculateEffectResult(target)
-  local rate = self:calculateSuccessRate(self.user.battler.att, 
+  local rate = self.skill:calculateSuccessRate(self.user.battler.att, 
     target.battler.att)
   if random() + random(1, 99) > rate then
     return nil
   end
-  local result = self:calculateBasicResult(self.user.battler.att, 
+  local result = self.skill:calculateBasicResult(self.user.battler.att, 
     target.battler.att)
   local bonus = 0
+  local skillElementFactors = self.skill.elementFactors
   local targetElementFactors = target.battler.elementFactors
   for i = 1, elementCount do
-    bonus = bonus + self.elementFactors[i] * targetElementFactors[i]
+    bonus = bonus + skillElementFactors[i] * targetElementFactors[i]
   end
   bonus = result * bonus
   return round(bonus + result)
@@ -210,7 +172,7 @@ function SkillAction:effectIntro()
   local start = now()
   local introTime = 22.5
   Callback.current:wait(introTime)
-  self.user:startSkill(self.currentTarget, self.data)
+  self.user:startSkill(self.currentTarget, self.skill.data)
   print(now() - start)
   return now() - start
 end
@@ -219,11 +181,11 @@ end
 -- @ret(number) the total duration of the animation
 function SkillAction:effectCenter()
   FieldManager.renderer:moveToTile(self.currentTarget)
-  if self.data.centerAnimID >= 0 then
+  if self.skill.data.centerAnimID >= 0 then
     local targetTime = 7.5
     local mirror = self.user.direction > 90 and self.user.direction <= 270
     local x, y, z = mathf.tile2Pixel(self.currentTarget:coordinates())
-    local animation = BattleManager:playAnimation(self.data.centerAnimID,
+    local animation = BattleManager:playAnimation(self.skill.data.centerAnimID,
       x, y, z - 1, mirror)
     Callback.current:wait(targetTime)
     return animation.duration - targetTime
@@ -236,7 +198,7 @@ end
 function SkillAction:effectFinish(originTile)
   local start = now()
   self:allTargetsAnimation(originTile)
-  self.user:finishSkill(originTile, self.data)
+  self.user:finishSkill(originTile, self.skill.data)
   return now() - start
 end
 
@@ -258,12 +220,12 @@ function SkillAction:singleTargetAnimation(char, originTile)
   if not result or result == 0 then
     -- Pop-up 'miss'
   elseif result > 0 then
-    if self.data.radius > 0 then
+    if self.skill.data.radius > 0 then
       originTile = self.currentTarget
     end
-    char:damage(self.data, result, originTile)
+    char:damage(self.skill.data, result, originTile)
   else
-    char:heal(self.data, -result)
+    char:heal(self.skill.data, -result)
   end
   local targetTime = 2
   Callback.current:wait(targetTime)
@@ -280,7 +242,7 @@ function SkillAction:onConfirm(GUI)
   GUI:endGridSelecting()
   FieldManager.renderer:moveToObject(self.user, true)
   FieldManager.renderer.focusObject = self.user
-  local moveAction = MoveAction(self.currentTarget, self.user, self.data.range)
+  local moveAction = MoveAction(self.currentTarget, self.user, self.skill.data.range)
   local path = PathFinder.findPath(moveAction)
   if path then -- Target was reached
     self.user:walkPath(path)
@@ -296,7 +258,8 @@ function SkillAction:onConfirm(GUI)
   else
     battler.currentSteps = battler.currentSteps - path.totalCost
   end
-  battler:decrementTurnCount(ceil(self.data.timeCost * BattleManager.turnLimit / 200))
+  local cost = self.skill.data.timeCost * BattleManager.turnLimit / 200
+  battler:decrementTurnCount(ceil(cost))
   return 1
 end
 

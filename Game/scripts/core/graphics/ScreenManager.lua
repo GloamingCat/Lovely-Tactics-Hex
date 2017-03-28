@@ -1,8 +1,8 @@
 
-local lgraphics = love.graphics
-
 --[[===========================================================================
 
+ScreenManager
+-------------------------------------------------------------------------------
 ScreenManager stores info about screen's 
 transformation (translation and scale).
 
@@ -14,7 +14,14 @@ Scaling types:
 
 =============================================================================]]
 
+-- Alias
+local lgraphics = love.graphics
+
 local ScreenManager = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 function ScreenManager:init()
   self.width = love.graphics.getWidth()
@@ -48,6 +55,10 @@ function ScreenManager:draw()
   lgraphics.draw(self.canvas, self.offsetX, self.offsetY)
   --print(drawCalls)
 end
+
+-------------------------------------------------------------------------------
+-- Properties
+-------------------------------------------------------------------------------
 
 -- Scales the screen (deforms both field and GUI).
 -- @param(x : number) the scale factor in axis x
@@ -102,6 +113,10 @@ function ScreenManager:setFullscreen()
   self.offsetY = (mode.height - self.canvas:getHeight()) / 2
   love.window.setMode(mode.width, mode.height, {fullscreen = true})
 end
+
+-------------------------------------------------------------------------------
+-- Event handlers
+-------------------------------------------------------------------------------
 
 -- Callback function triggered when window receives or loses focus.
 -- @param(f : boolean) window focus

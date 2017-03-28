@@ -1,9 +1,14 @@
 
 --[[===========================================================================
 
-A generic path of nodes.
+Path
+-------------------------------------------------------------------------------
+A generic path of nodes (steps).
 
 =============================================================================]]
+
+-- Imports
+local List = require('core/algorithm/List')
 
 local Path = require('core/class'):new()
 
@@ -36,6 +41,32 @@ function Path:iterator()
       return step
     end
   end
+end
+
+-- Creates a list with all steps of this path, from the initial until the last.
+-- @ret(List) the list of steps
+function Path:toList()
+  local list = List()
+  local path = self
+  repeat
+    list:add(path.lastStep)
+    path = path.previousPath
+  until path == nil
+  return list
+end
+
+-- Converting to string.
+-- @ret(string) A string representation
+function Path:toString()
+  local list = self:toList()
+  if list.size == 0 then
+    return 'Path {}'
+  end
+  local string = 'Path {'
+  for i = 1, list.size - 1 do
+    string = string .. tostring(list[i]) .. ', '
+  end
+  return string .. tostring(list[list.size]) .. '}'
 end
 
 return Path

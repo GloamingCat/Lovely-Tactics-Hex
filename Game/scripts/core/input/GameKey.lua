@@ -1,17 +1,30 @@
 
-local dt = love.timer.getDelta
-local now = love.timer.getTime
-
 --[[===========================================================================
 
+GameKey
+-------------------------------------------------------------------------------
 Entity that represents an input key.
+Key states:
+0 => not pressing
+1 => pressing
+2 => pressing (with delay)
+3 => just pressed
 
 =============================================================================]]
 
-local GameKey = require('core/class'):new()
+-- Alias
+local dt = love.timer.getDelta
+local now = love.timer.getTime
 
+-- Constants
 local defaultStartGap = 0.5
 local defaultRepreatGap = 0.05
+
+local GameKey = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 function GameKey:init()
   self.pressTime = 0
@@ -24,6 +37,10 @@ function GameKey:update()
     self.pressState = 1
   end
 end
+
+-------------------------------------------------------------------------------
+-- Check state
+-------------------------------------------------------------------------------
 
 -- Checks if button was triggered (just pressed).
 -- @ret(boolean) true if triggered, false otherwise
@@ -59,6 +76,10 @@ function GameKey:isPressingGap(startGap, repeatGap)
     return false
   end
 end
+
+-------------------------------------------------------------------------------
+-- Input handlers
+-------------------------------------------------------------------------------
 
 -- Called when this key is pressed.
 -- @param(isrepeat : boolean) is this call is a repeat

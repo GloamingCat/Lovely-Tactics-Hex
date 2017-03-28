@@ -1,13 +1,17 @@
 
-local Vector = require('core.math.Vector')
-local Line = require('core.math.Line')
+--[[===========================================================================
 
---[[
-@module
-
+Ramp
+-------------------------------------------------------------------------------
 Holds data about the ramp.
 
-]]
+TODO: everything
+
+=============================================================================]]
+
+-- Imports
+local Vector = require('core.math.Vector')
+local Line = require('core.math.Line')
 
 local Ramp = require('class'):new()
 
@@ -75,8 +79,10 @@ function Ramp:getHeight(position)
   return self.minHeight * (1 - t) + self.maxHeight * t
 end
 
+-- Converts to string.
+-- @ret(string) the string representation
 function Ramp:toString()
-  return 'Ramp <Bottom: ' .. self.bottom:toString() .. ', Top: ' .. self.top:toString() .. '>'
+  return 'Ramp (Bottom: ' .. self.bottom:toString() .. ', Top: ' .. self.top:toString() .. ')'
 end
 
 return Ramp

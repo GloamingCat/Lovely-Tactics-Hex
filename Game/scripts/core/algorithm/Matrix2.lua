@@ -1,12 +1,15 @@
 
-local insert = table.insert
-local remove = table.remove
-
 --[[===========================================================================
 
+Matrix2
+-------------------------------------------------------------------------------
 A 2D matrix of fixed size.
 
 =============================================================================]]
+
+-- Alias
+local insert = table.insert
+local remove = table.remove
 
 local Matrix2 = require('core/class'):new()
 

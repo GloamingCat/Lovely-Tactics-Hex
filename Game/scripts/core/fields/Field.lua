@@ -1,13 +1,18 @@
 
-local FieldBase = require('core/fields/FieldBase')
-local max = math.max
-local mathf = math.field
-
 --[[===========================================================================
 
+Field
+-------------------------------------------------------------------------------
 The class implements methods to check collisions.
 
 =============================================================================]]
+
+-- Imports
+local FieldBase = require('core/fields/FieldBase')
+
+-- Alias
+local max = math.max
+local mathf = math.field
 
 local Field = FieldBase:inherit()
 
@@ -148,7 +153,7 @@ function Field:collidesObstacle(object, origx, origy, origh, tile)
 end
 
 -------------------------------------------------------------------------------
--- Terrains
+-- Grid
 -------------------------------------------------------------------------------
 
 -- Gets the move cost in the given coordinates.
@@ -165,10 +170,9 @@ function Field:getMoveCost(x, y, height)
   return cost
 end
 
--------------------------------------------------------------------------------
--- Grid
--------------------------------------------------------------------------------
-
+-- Checks if three given tiles are collinear.
+-- @param(tile1 ... tile3 : ObjectTile) the tiles to check
+-- @ret(boolean) true if collinear, false otherwise
 function Field:isCollinear(tile1, tile2, tile3)
   return tile1.layer.height - tile2.layer.height == tile2.layer.height - tile3.layer.height and 
     mathf.isCollinear(tile1.x, tile1.y, tile2.x, tile2.y, tile3.x, tile3.y)

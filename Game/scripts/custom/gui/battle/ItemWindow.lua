@@ -1,16 +1,23 @@
 
+--[[===========================================================================
+
+ItemWindow
+-------------------------------------------------------------------------------
+The GUI that is open to choose an item from character's inventory.
+
+=============================================================================]]
+
+-- Imports
 local ListButtonWindow = require('core/gui/ListButtonWindow')
 local ActionWindow = require('custom/gui/battle/ActionWindow')
 local SkillAction = require('core/battle/action/SkillAction')
 local Vector = require('core/math/Vector')
 
---[[===========================================================================
-
-The GUI that is open to choose an item from character's inventory.
-
-=============================================================================]]
-
 local ItemWindow = require('core/class'):inherit(ListButtonWindow, ActionWindow)
+
+-------------------------------------------------------------------------------
+-- Initialization
+-------------------------------------------------------------------------------
 
 local old_init = ItemWindow.init
 function ItemWindow:init(GUI, list)
@@ -27,6 +34,10 @@ function ItemWindow:createButton(id)
   end
 end
 
+-------------------------------------------------------------------------------
+-- Input handlers
+-------------------------------------------------------------------------------
+
 -- Called when player chooses an item.
 -- @param(button : Button) the button selected
 function ItemWindow:onConfirm(button)
@@ -38,6 +49,10 @@ end
 function ItemWindow:onCancel()
   self:changeWindow(self.GUI.turnWindow)
 end
+
+-------------------------------------------------------------------------------
+-- Properties
+-------------------------------------------------------------------------------
 
 -- New button width.
 function ItemWindow:buttonWidth()

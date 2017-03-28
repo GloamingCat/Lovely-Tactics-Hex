@@ -1,12 +1,14 @@
 
-local Callback = require('core/callback/Callback')
+--[[===========================================================================
 
---[[
-@module 
-
+ParallelCallback
+-------------------------------------------------------------------------------
 A base callback that always execute in parallel with its caller.
 
-]]
+=============================================================================]]
+
+-- Imports
+local Callback = require('core/callback/Callback')
 
 local ParallelCallback = Callback:inherit()
 

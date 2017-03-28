@@ -1,20 +1,29 @@
 
-local List = require('core/algorithm/List')
-local lgraphics = love.graphics
-local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
---local spriteShader = lgraphics.newShader('shaders/sprite.glsl')
---local canvasShader = lgraphics.newShader('shaders/canvas.glsl')
-local round = math.round
-local colorf = 255 / 100
-
 --[[===========================================================================
 
+Renderer
+-------------------------------------------------------------------------------
 A Renderer manages a list of sprites to be rendered. 
 Stores them in order and draws them using a batch.
 
 =============================================================================]]
 
+-- Imports
+local List = require('core/algorithm/List')
+
+-- Alias
+local lgraphics = love.graphics
+local round = math.round
+
+-- Constants
+local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
+local colorf = 255 / 100
+
 local Renderer = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- Initialization
+-------------------------------------------------------------------------------
 
 -- @param(size : number) the max number of sprites.
 -- @param(minDepth : number) the minimun depth of a sprite
@@ -42,6 +51,10 @@ function Renderer:resizeCanvas()
     self.needsRedraw = true
   end
 end
+
+-------------------------------------------------------------------------------
+-- Transformations
+-------------------------------------------------------------------------------
 
 -- Sets Renderer's center position in the world coordinates.
 -- @param(x : number) pixel x
@@ -75,6 +88,10 @@ function Renderer:setRotation(angle)
     self.needsRedraw = true
   end
 end
+
+-------------------------------------------------------------------------------
+-- Draw
+-------------------------------------------------------------------------------
 
 -- Draws all sprites in the renderer's table.
 function Renderer:draw()

@@ -1,10 +1,8 @@
 
-local Vector = require('core/math/Vector')
-local Sprite = require('core/graphics/Sprite')
-local List = require('core/algorithm/List')
-
 --[[===========================================================================
 
+Window
+-------------------------------------------------------------------------------
 Provides the base for windows.
 Every content element for the window must have all the following methods:
   show
@@ -15,7 +13,16 @@ Every content element for the window must have all the following methods:
 
 =============================================================================]]
 
+-- Imports
+local Vector = require('core/math/Vector')
+local Sprite = require('core/graphics/Sprite')
+local List = require('core/algorithm/List')
+
 local Window = require('core/class'):new()
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
 
 -- @param(GUI : GUI) parent GUI
 -- @param(width : number) total width in pixels
@@ -60,7 +67,7 @@ function Window:destroy()
 end
 
 -------------------------------------------------------------------------------
--- General attributes
+-- Properties
 -------------------------------------------------------------------------------
 
 -- Sets the window to fully open or fully closed.
