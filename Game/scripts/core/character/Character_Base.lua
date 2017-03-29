@@ -1,30 +1,28 @@
 
 --[[===========================================================================
 
-CharacterBase
+Character - Base
 -------------------------------------------------------------------------------
 A Character is a dynamic object stored in the tile. 
 It may be passable or not, and have an image or not.
 Player may also interact with this.
 
-A CharacterBase provides very basic functions that
+A Character_Base provides very basic functions that
 are necessary for every character.
 
 =============================================================================]]
 
 -- Imports
 local Vector = require('core/math/Vector')
-local Sprite = require('core/graphics/Sprite')
-local Animation = require('core/graphics/Animation')
-local Object = require('core/fields/Object')
+local AnimatedObject = require('core/character/AnimatedObject')
 local CallbackTree = require('core/callback/CallbackTree')
-local Callback = require('core/callback/Callback')
 
 -- Alias
 local mathf = math.field
+local angle2Row = math.angle2Row
 local Quad = love.graphics.newQuad
 
-local CharacterBase = Object:inherit()
+local Character_Base = AnimatedObject:inherit()
 
 -------------------------------------------------------------------------------
 -- General
@@ -32,8 +30,8 @@ local CharacterBase = Object:inherit()
 
 -- @param(id : string) an unique ID for the character in the field
 -- @param(tileData : table) the character's data from tileset file
-local old_init = CharacterBase.init
-function CharacterBase:init(id, tileData)
+local old_init = Character_Base.init
+function Character_Base:init(id, tileData)
   local data = Database.characters[tileData.id + 1]
   old_init(self, data)
   self.id = id
@@ -49,25 +47,23 @@ function CharacterBase:init(id, tileData)
   self:initializeScripts(tileData, data)
 end
 
--- Updates animation and callback tree.
-function CharacterBase:update()
-  if self.animation then
-    self.animation:update()
-  end
+-- Updates callback tree.
+local old_update = Character_Base.update
+function Character_Base:update()
+  old_update(self)
   self.callbackTree:update()
 end
 
 -- Converting to string.
 -- @ret(string) a string representation
-function CharacterBase:toString()
+function Character_Base:toString()
   return 'Character ' .. self.name .. ' ' .. self.id
 end
 
 -- Removes from draw and update list.
-function CharacterBase:destroy()
-  if self.sprite then
-    self.sprite:removeSelf()
-  end
+local old_destroy = Character_Base.destroy
+function Character_Base:destroy()
+  old_destroy(self)
   FieldManager.characterList:removeElement(self)
 end
 
@@ -79,7 +75,7 @@ end
 -- @param(name : string) the name of the character
 -- @param(tiles : table) a list of collision tiles
 -- @param(colliderHeight : number) collider's height in height units
-function CharacterBase:initializeProperties(name, tiles, colliderHeight)
+function Character_Base:initializeProperties(name, tiles, colliderHeight)
   self.name = name
   self.collisionTiles = tiles
   self.position = Vector(0, 0, 0)
@@ -89,28 +85,19 @@ function CharacterBase:initializeProperties(name, tiles, colliderHeight)
   self.stopOnCollision = true
 end
 
--- Initializes animations and sprite.
--- @param(animations : table) an array of animation data
+-- Overrides AnimatedObject:initializeGraphics.
 -- @param(direction : number) the initial direction
--- @param(animID : number) the start animation's ID
-function CharacterBase:initializeGraphics(animations, direction, animID, transform)
-  self.transform = transform
+local old_initializeGraphics = Character_Base.initializeGraphics
+function Character_Base:initializeGraphics(animations, direction, animID, transform)
   self.direction = direction
-  self.animationData = {}
-  self.sprite = Sprite(FieldManager.renderer)
-  for i = #animations, 1, -1 do
-    self:addAnimation(animations[i].name, animations[i].id)
-  end
-  local first = animations[animID + 1].name
-  local data = self.animationData[first]
-  self:playAnimation(first)
+  old_initializeGraphics(self, animations, animID, transform)
   self:setDirection(direction)
 end
 
 -- Creates listeners from data.
 -- @param(tileData : table) the data from tileset
 -- @param(data : table) the data from characters file
-function CharacterBase:initializeScripts(tileData, data)
+function Character_Base:initializeScripts(tileData, data)
   if tileData.startID >= 0 then
     self.startListener = data.startListeners[tileData.startID + 1]
   end
@@ -124,7 +111,7 @@ end
 
 -- Load character's data from Game Save.
 -- @param(fieldData : table) all character's data from the field
-function CharacterBase:loadData(fieldData)
+function Character_Base:loadData(fieldData)
   local data = fieldData[self.id]
   if data then
     self.data = data
@@ -134,61 +121,29 @@ function CharacterBase:loadData(fieldData)
 end
 
 -------------------------------------------------------------------------------
--- Animation
+-- Direction
 -------------------------------------------------------------------------------
-
--- Creates a new animation from the database.
--- @param(name : string) the name of the animation for the character
--- @param(id : number) the animation's ID in the database
-function CharacterBase:addAnimation(name, id)
-  local data = Database.animCharacter[id + 1]
-  local animation, texture, quad = Animation.fromData(data, FieldManager.renderer, self.sprite)
-  self.animationData[name] = {
-    transform = data.transform, 
-    animation = animation, 
-    texture = texture, 
-    quad = quad
-  }
-end
 
 -- [COROUTINE] Plays an animation by name.
 -- @param(name : string) animation's name
 -- @param(wait : boolean) true to wait until first loop finishes (optional)
-function CharacterBase:playAnimation(name, wait)
-  local data = self.animationData[name]
-  assert(data, "Animation does not exist: " .. name)
-  if self.animation == data.animation then
-    return
-  end
-  local anim = data.animation
-  self.sprite:setTexture(data.texture)
-  self.sprite.quad = data.quad
-  self.sprite:setTransformation(self.transform)
-  self.sprite:applyTransformation(data.transform)
-  self.animation = anim
-  anim.sprite = self.sprite
-  anim.paused = false
-  anim:setRow(math.angle2Row(self.direction))
-  if wait then
-    Callback.current:wait(anim.duration)
-  end
-  return anim
+-- @param(row : number) the row of the animation (optional)
+local old_playAnimation = Character_Base.playAnimation
+function Character_Base:playAnimation(name, wait, row)
+  row = row or angle2Row(self.direction)
+  return old_playAnimation(self, name, wait, row)
 end
-
--------------------------------------------------------------------------------
--- Direction
--------------------------------------------------------------------------------
 
 -- Set's character direction
 -- @param(angle : number) angle in degrees
-function CharacterBase:setDirection(angle)
+function Character_Base:setDirection(angle)
   self.direction = angle
   self.animation:setRow(math.angle2Row(angle))
 end
 
 -- The tile on front of the character, considering character's direction.
 -- @ret(ObjectTile) the front tile (nil if exceeds field border)
-function CharacterBase:frontTile(angle)
+function Character_Base:frontTile(angle)
   angle = angle or self.direction
   local dx, dy = mathf.nextCoordDir(angle)
   local tile = self:getTile()
@@ -206,7 +161,7 @@ end
 -- Moves instantly a character to a point, if possible.
 -- @param(position : Vector) the pixel position of the object
 -- @ret(number) the type of the collision, if any
-function CharacterBase:instantMoveTo(position, collisionCheck)
+function Character_Base:instantMoveTo(position, collisionCheck)
   local tiles = self:getAllTiles()
   local center = self:getTile()
   local newCenter = Vector(math.field.pixel2Tile(position:coordinates()))
@@ -240,7 +195,7 @@ end
 -- @param(tile : Tile) the origin tile
 -- @param(tiledif : Vector) the displacement in tiles
 -- @ret(number) the collision type
-function Object:collision(tile, tiledif)
+function Character_Base:collision(tile, tiledif)
   local orig = Vector(tile:coordinates())
   local dest = orig + tiledif
   return FieldManager:collision(self, orig, dest)
@@ -252,7 +207,7 @@ end
 
 -- Gets all tiles this object is occuping.
 -- @ret(table) the list of tiles
-function CharacterBase:getAllTiles()
+function Character_Base:getAllTiles()
   local center = self:getTile()
   local x, y, z = center:coordinates()
   local tiles = { }
@@ -270,7 +225,7 @@ end
 
 -- Adds this object from to tiles it's occuping.
 -- @param(tiles : table) the list of occuped tiles
-function CharacterBase:addToTiles(tiles)
+function Character_Base:addToTiles(tiles)
   tiles = tiles or self:getAllTiles()
   for i = #tiles, 1, -1 do
     tiles[i].characterList:add(self)
@@ -279,11 +234,11 @@ end
 
 -- Removes this object from the tiles it's occuping.
 -- @param(tiles : table) the list of occuped tiles
-function CharacterBase:removeFromTiles(tiles)
+function Character_Base:removeFromTiles(tiles)
   tiles = tiles or self:getAllTiles()
   for i = #tiles, 1, -1 do
     tiles[i].characterList:removeElement(self)
   end
 end
 
-return CharacterBase
+return Character_Base

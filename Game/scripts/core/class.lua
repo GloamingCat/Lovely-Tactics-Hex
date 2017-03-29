@@ -129,8 +129,8 @@ end
 function class:new()
   local c = class
   local newClass = new(self, {})
-  function newClass:inherit()
-    return new(c, {self})
+  function newClass:inherit(...)
+    return new(c, {self, ...})
   end
   local old_toString = newClass.__tostring
   function newClass:toString()

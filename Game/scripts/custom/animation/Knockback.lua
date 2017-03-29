@@ -1,6 +1,8 @@
 
 --[[===========================================================================
 
+Knockback
+-------------------------------------------------------------------------------
 The animation of knockback when a characters receives damage.
 
 =============================================================================]]
@@ -16,9 +18,13 @@ local angle2Coord = math.angle2Coord
 local time = love.timer.getDelta
 
 -- Constants
-local step = 8
+local step = 10
 
 local Knockback = Animation:inherit()
+
+-------------------------------------------------------------------------------
+-- Movement direction
+-------------------------------------------------------------------------------
 
 local old_setRow = Knockback.setRow
 function Knockback:setRow(row)
@@ -41,6 +47,10 @@ function Knockback:setRow(row)
   self.currentX = centerx
   self.currentY = centery
 end
+
+-------------------------------------------------------------------------------
+-- Update movement
+-------------------------------------------------------------------------------
 
 local old_update = Knockback.update
 function Knockback:update()

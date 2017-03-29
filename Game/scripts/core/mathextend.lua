@@ -51,25 +51,6 @@ function math.rotate(x, y, phi)
 end
 
 ---------------------------------------------------------------------------
--- Direction-angle convertion
----------------------------------------------------------------------------
-
--- Converts row [0, 7] to float angle.
--- @param(row : number) the rown from 0 to 7
--- @ret(number) the angle in radians
-function math.row2Angle(row)
-  return row * 45
-end
-
--- Converts float angle to row [0, 7].
--- @param(angle : number) the angle in radians
--- @ret(number) the row from 0 to 7
-function math.angle2Row(angle)
-  angle = math.mod(angle, 360)
-  return math.round(angle / 45)
-end
-
----------------------------------------------------------------------------
 -- Angle-vector convertion
 ---------------------------------------------------------------------------
 
@@ -110,3 +91,32 @@ else
   error('Tile size not supported!')
 end
 math.field.init()
+
+---------------------------------------------------------------------------
+-- Direction-angle convertion
+---------------------------------------------------------------------------
+
+local diag = 45 * math.field.tg
+local dir = {0, diag, 90, 180 - diag, 180, 180 + diag, 270, 360 - diag}
+local int = {dir[2] / 2, (dir[2] + dir[3]) / 2, (dir[3] + dir[4]) / 2, 
+  (dir[4] + dir[5]) / 2, (dir[5] + dir[6]) / 2, (dir[6] + dir[7]) / 2,
+  (dir[7] + dir[8]) / 2, (dir[8] + 360) / 2}
+
+-- Converts row [0, 7] to float angle.
+-- @param(row : number) the rown from 0 to 7
+-- @ret(number) the angle in radians
+function math.row2Angle(row)
+  return dir[row]
+end
+
+-- Converts float angle to row [0, 7].
+-- @param(angle : number) the angle in radians
+-- @ret(number) the row from 0 to 7
+function math.angle2Row(angle)
+  for i = 1, 8 do
+    if angle < int[i] then
+      return i - 1
+    end
+  end
+  return 0
+end

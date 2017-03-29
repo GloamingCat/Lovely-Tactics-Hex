@@ -128,7 +128,7 @@ function SkillAction:effect()
   -- User's initial animation.
   local originTile = self.user:getTile()
   local dir = self.user:turnToTile(self.currentTarget.x, self.currentTarget.y)
-  self.user:loadSkill(self.skill.data, dir)
+  self.user:loadSkill(self.skill.data, dir, true)
   
   -- Cast animation
   FieldManager.renderer:moveToTile(self.currentTarget)

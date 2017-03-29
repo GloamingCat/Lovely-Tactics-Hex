@@ -221,7 +221,7 @@
     "imagePath": "Animation\\Character/Lancer/damage.png",
     "rows": 8,
     "cols": 1,
-    "duration": 15,
+    "duration": 10,
     "loop": false,
     "allRows": false,
     "script": {
@@ -438,7 +438,7 @@
     "imagePath": "Animation\\Character/Mage/dmg.png",
     "rows": 8,
     "cols": 1,
-    "duration": 15,
+    "duration": 10,
     "loop": false,
     "allRows": false,
     "script": {
