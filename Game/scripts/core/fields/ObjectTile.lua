@@ -172,12 +172,6 @@ end
 -- Collision
 -------------------------------------------------------------------------------
 
--- Checks if there's any object collider in this tile.
--- @ret(boolean) true if collides, false otherwise
-function ObjectTile:hasColliders()
-  return self.characterList:isEmpty() == false
-end
-
 -- Checks if this tile is passable from the given direction.
 -- @param(dx : number) the x difference in tiles
 -- @param(dy : number) the y difference in tiles

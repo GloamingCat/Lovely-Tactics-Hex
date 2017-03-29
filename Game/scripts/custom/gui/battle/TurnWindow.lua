@@ -48,7 +48,7 @@ end
 -- "Attack" button callback.
 -- @param(button : Button) the button chosen
 function TurnWindow:onAttackAction(button)
-  self:selectSkill(BattleManager.currentCharacter.battler:getAttackSkill())
+  self:selectSkill(BattleManager.currentCharacter.battler.attackSkill)
 end
 
 -- "Move" button callback.
@@ -108,12 +108,12 @@ function TurnWindow:attackEnabled(button)
     return true
   else
     local user = BattleManager.currentCharacter
-    local range = user.battler:getAttackSkill().range
     local tile = user:getTile()
     local field = FieldManager.currentField
-    local iterator = mathf.radiusIterator(range, tile.x, tile.y, field.sizeX, field.sizeY)
-    for i, j in iterator do
-      if field:getObjectTile(i, j, tile.layer.height):hasEnemy(user.battler.party) then
+    local range = user.battler.attackSkill.data.range
+    for i, j in mathf.radiusIterator(range + 1, tile.x, tile.y) do
+      if i >= 1 and j >= 1 and i <= field.sizeX and j <= field.sizeY and
+          field:getObjectTile(i, j, tile.layer.height):hasEnemy(user.battler.party) then
         return true
       end
     end

@@ -33,13 +33,13 @@ function Battler:init(data, party)
   self.currentSP = data.currentSP or self.att:maxSP()
   self.data = data
   self.turnCount = 0
-  self.attackSkillID = data.attackID
   self.inventory = Inventory(data.items)
   self.skillList = List()
   -- Store skills
   for i = 1, #data.skills do
     self.skillList:add(Skill(data.skills[i]))
   end
+  self.attackSkill = Skill(data.attackID)
   -- Store elements
   local e = {}
   for i = 1, #data.elements do
@@ -169,16 +169,6 @@ end
 -- @param(value : number) damage value (may be negative to cure)
 function Battler:damageSP(value)
   self.currentSP = self.currentSP - value
-end
-
--------------------------------------------------------------------------------
--- Skills
--------------------------------------------------------------------------------
-
--- Gets that skill that is called when this battler "attacks".
--- @ret(Skill) the skill data
-function Battler:getAttackSkill()
-  return Skill(self.attackSkillID)
 end
 
 return Battler

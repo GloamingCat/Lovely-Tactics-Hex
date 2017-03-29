@@ -221,11 +221,11 @@
     "imagePath": "Animation\\Character/Lancer/damage.png",
     "rows": 8,
     "cols": 1,
-    "duration": 30,
+    "duration": 15,
     "loop": false,
     "allRows": false,
     "script": {
-      "path": "",
+      "path": "animation/Knockback.lua",
       "param": ""
     },
     "transform": {
@@ -341,7 +341,7 @@
     }
   },
   {
-    "name": "Mage/Cast",
+    "name": "Mage/Load",
     "imagePath": "Animation\\Character/Mage/cast.png",
     "rows": 8,
     "cols": 1,
@@ -438,11 +438,11 @@
     "imagePath": "Animation\\Character/Mage/dmg.png",
     "rows": 8,
     "cols": 1,
-    "duration": 30,
+    "duration": 15,
     "loop": false,
     "allRows": false,
     "script": {
-      "path": "",
+      "path": "animation/Knockback.lua",
       "param": ""
     },
     "transform": {

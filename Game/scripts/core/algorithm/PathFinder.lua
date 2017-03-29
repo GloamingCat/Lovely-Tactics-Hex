@@ -73,7 +73,7 @@ function PathFinder.dijkstra(action, initial)
   local grid = initial.layer.grid
   for i = 1, field.sizeX do
     for j = 1, field.sizeY do
-      if not action:isSelectable(grid[i][j]) or distances:get(i, j) > md then
+      if not action:isStandable(grid[i][j]) or distances:get(i, j) > md then
         distances:set(nan, i, j)
       end
     end
@@ -157,7 +157,7 @@ function PathFinder.findPathToUnreachable(action, initial, ignoreDistance)
             queue:enqueue(newPath, newPath.totalCost + action:estimateCost(neighbor))
           end
         end
-      elseif action:isSelectable(currentPath.previousPath.lastStep) then
+      elseif action:isStandable(currentPath.previousPath.lastStep) then
         return currentPath.previousPath
       end
     end

@@ -146,12 +146,12 @@ function BattleManager:playAnimation(animID, x, y, z, mirror, wait)
   local animationData = Database.animBattle[animID + 1]
   local animation = Animation.fromData(animationData, FieldManager.renderer)
   animation.sprite:setXYZ(x, y, z)
-  --animation.sprite:setCenterOffset()
+  animation.sprite:setTransformation(animationData.transform)
   if mirror then
     animation.sprite:setScale(-1)
   end
   FieldManager.updateList:add(animation)
-  FieldManager.callbackTree:fork(function(callback) 
+  FieldManager.callbackTree:fork(function(callback)
     callback:wait(animation.duration)
     FieldManager.updateList:removeElement(animation)
     animation.sprite:removeSelf()

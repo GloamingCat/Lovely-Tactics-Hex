@@ -229,23 +229,20 @@ end
 -- @param(sizeX : number) the max value of x
 -- @param(sizeY : number) the max value of y
 -- @ret(function) the iterator function
-function HexVMath.radiusIterator(radius, centerx, centery, sizeX, sizeY)
-  radius = radius - 1
-	local i     = max (centerx - radius, 1);
-  local maxdx = min (centerx + radius, sizeX);
-  local j     = max (centery - radius, centery - radius - (i - centerx), 1) - 1;
-	local maxdy = min (centery + radius, centery + radius - (i - centerx), sizeY);
+function HexVMath.radiusIterator(radius, centerx, centery)
+	local i, maxdx = HexVMath.radiusLimitsX(radius)
+  local j, maxdy = HexVMath.radiusLimitsY(radius, i)
+  j = j - 1
   return function()
     j = j + 1
     if j > maxdy then
       i = i + 1
       if i > maxdx then
-        return nil
+        return
       end
-      j     = max (centery - radius, centery - radius - (i - centerx), 1);
-      maxdy = min (centery + radius, centery + radius - (i - centerx), sizeY);
+      j, maxdy = HexVMath.radiusLimitsY(radius, i)
     end
-    return i, j
+    return i + centerx, j + centery
   end
 end
 
@@ -265,7 +262,7 @@ end
 -- @ret(number) the maximum y among the tiles
 function HexVMath.radiusLimitsY(radius, i)
   radius = radius - 1
-  return max(-radius, radius - i), min(radius, radius - i)
+  return max(-radius, -radius - i), min(radius, radius - i)
 end
 
 -- Gets the next tile coordinates given the current tile and an input.

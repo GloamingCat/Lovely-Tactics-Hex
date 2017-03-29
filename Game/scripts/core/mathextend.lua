@@ -78,7 +78,7 @@ end
 -- @param(y : number) the y-axis coordinate
 -- @ret(number) the angle in degrees
 function math.coord2Angle(x, y)
-  return math.deg(math.atan2(y, x))
+  return math.deg(math.atan2(y, x)) % 360
 end
 
 -- Converts an angle to a normalized vector.

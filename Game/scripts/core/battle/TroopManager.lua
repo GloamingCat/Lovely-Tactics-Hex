@@ -108,7 +108,7 @@ end
 function TroopManager:battlerCount(battler)
   local c = 0
   for char in self.characterList:iterator() do
-    if char.battler.originalData == battler then
+    if char.battler.data == battler then
       c = c + 1
     end
   end

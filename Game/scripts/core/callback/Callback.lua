@@ -86,6 +86,14 @@ function Callback:wait(t)
   end
 end
 
+-- Waits until a given condition returns true.
+-- @param(func : function) a function that returns a boolean
+function Callback:waitUntil(func)
+  while not func() do
+    coroutine.yield()
+  end
+end
+
 -- Moves this callback to another parent callback or tree.
 -- Be aware that this callback may be updated two times in the same 
 -- frame (if the new parent is updated after the old one).

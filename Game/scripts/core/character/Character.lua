@@ -27,6 +27,7 @@ local time = love.timer.getDelta
 local dashSpeed = Config.player.dashSpeed
 local pph = Config.grid.pixelsPerHeight
 local castStep = 6
+local tg = mathf.tg
 
 local Character = CharacterBase:inherit()
 
@@ -37,26 +38,33 @@ local Character = CharacterBase:inherit()
 -- Turns on a vector's direction (in pixel coordinates).
 -- @param(x : number) vector's x
 -- @param(y : number) vector's y
+-- @ret(number) the angle to the given vector
 function Character:turnToVector(x, y)
   if abs(x) > 0.1 or abs(y) > 0.1 then
-    local angle = math.coord2Angle(x * mathf.tg, y)
+    local angle = math.coord2Angle(x, y)
     self:setDirection(angle)
+    return angle
+  else
+    return self.direction
   end
 end
 
 -- Turns to a pixel point.
 -- @param(x : number) the pixel x
 -- @param(y : number) the pixel y
+-- @ret(number) the angle to the given point
 function Character:turnToPoint(x, y)
-  self:turnToVector(x - self.position.x, y - self.position.z)
+  return self:turnToVector(x - self.position.x, y - self.position.z)
 end
 
 -- Turns to a grid point.
 -- @param(x : number) the tile x
 -- @param(y : number) the tile y
+-- @ret(number) the angle to the given tile
 function Character:turnToTile(x, y)
-  local destx, desty, destz = mathf.tile2Pixel(x, y, 0)
-  self:turnToVector(destx - self.position.x, destz - self.position.z)
+  local h = self:getTile().layer.height
+  local destx, desty, destz = mathf.tile2Pixel(x, y, h)
+  return self:turnToVector(destx - self.position.x, destz - self.position.z)
 end
 
 -------------------------------------------------------------------------------
@@ -128,8 +136,8 @@ end
 -- @param(collisionCheck : boolean) if it should check collisions
 -- @ret(boolean) true if the movement was completed, false otherwise
 function Character:walkInAngle(d, angle, dz, collisionCheck, walkAnim, idleAnim)
-  dz = dz or 0
-  local dx, dy = math.angle2Coord(angle)
+  local dx, dy = math.angle2Coord(angle or self.direction)
+  dz = dz or -dy
   self:walkDistance(dx * d, dy * d, dz, collisionCheck, walkAnim, idleAnim)
 end
 
@@ -179,31 +187,62 @@ function Character:walkPath(path, collisionCheck)
 end
 
 -------------------------------------------------------------------------------
--- Battle
+-- Skill (user)
 -------------------------------------------------------------------------------
 
--- Executes the intro animation for skill use.
+-- Executes the intro animations (load and cast) for skill use.
 -- @param(target : ObjectTile) the target of the skill
 -- @param(skill : table) skill data from database
-function Character:startSkill(target, skill)
-  local x, y = mathf.tile2Pixel(target:coordinates())
-  local dir = math.coord2Angle(x * mathf.tg, y)
-  if skill.stepOnCast and dir == dir then
-    self:walkInAngle(castStep, dir)
-  end
-  local time = 0
+function Character:loadSkill(skill, dir)
+  local minTime = 0
+  
+  -- Load animation (user)
   if skill.userLoadAnim ~= '' then
     local anim = self:playAnimation(skill.userLoadAnim)
-    time = anim.duration
+    minTime = anim.duration
   end
+  
+  -- Load animation (effect on tile)
   if skill.loadAnimID >= 0 then
     local mirror = skill.mirror and dir > 90 and dir <= 270
     local pos = self.position
     local anim = BattleManager:playAnimation(skill.loadAnimID, 
       pos.x, pos.y, pos.z - 1, mirror)
-    time = max(time, anim.duration)
+    minTime = max(minTime, anim.duration)
   end
-  Callback.current:wait(time)
+  
+  Callback.current:wait(minTime)
+end
+
+-- Plays cast animation.
+-- @param(skill : Skill)
+-- @param(dir : number) the direction of the cast
+function Character:castSkill(skill, dir, wait)
+  local minTime = 0
+  
+  -- Forward step
+  if skill.stepOnCast then
+    self:walkInAngle(castStep, dir)
+  end
+  
+  -- Cast animation (user)
+  if skill.userCastAnim ~= '' then
+    local anim = self:playAnimation(skill.userCastAnim)
+    minTime = anim.duration
+  end
+  
+  -- Cast animation (effect on tile)
+  if skill.castAnimID >= 0 then
+    local mirror = skill.mirror and dir > 90 and dir <= 270
+    local pos = self.position
+    local anim = BattleManager:playAnimation(skill.castAnimID, 
+      pos.x, pos.y, pos.z - 1, mirror)
+    minTime = max(minTime, anim.duration)
+  end
+  
+  if wait then
+    Callback.current:wait(minTime)
+  end
 end
 
 -- Returns to original tile and stays idle.
@@ -211,7 +250,7 @@ end
 -- @param(skill : table) skill data from database
 function Character:finishSkill(origin, skill)
   local x, y, z = mathf.tile2Pixel(origin:coordinates())
-  if skill.stepOnCast and dir == dir then
+  if skill.stepOnCast then
     local autoTurn = self.autoTurn
     self.autoTurn = false
     self:walkToPoint(x, y, z)
@@ -220,25 +259,29 @@ function Character:finishSkill(origin, skill)
   self:playAnimation("Idle")
 end
 
+-------------------------------------------------------------------------------
+-- Skill (target)
+-------------------------------------------------------------------------------
+
+-- Plays damage animation and shows the result in a pop-up.
 function Character:damage(skill, result, origin)
-  local previousSpeed = self.speed;
-  local speed = previousSpeed * 0.75;
+  local previousSpeed = self.speed
+  local speed = previousSpeed * 0.75
   if skill.damageType == 0 then -- on HP
     -- Damage HP
   else
     -- Damage SP
   end
   local currentTile = self:getTile()
-  if currentTile ~= origin then
-    self:turnToTile(origin)
-  end
-  local time = self:playAnimation("Damage").duration
+  local dir = self:turnToTile(origin.x, origin.y)
   if skill.individualAnimID >= 0 then
-    local mirror = self.direction > 90 and self.direction <= 270
+    local mirror = dir > 90 and dir <= 270
     local pos = self.position
     BattleManager:playAnimation(skill.individualAnimID, 
       pos.x, pos.y, pos.z - 1, mirror)
   end
+  self:playAnimation('Damage', true)
+  self:playAnimation('Idle')
 end
 
 return Character

@@ -17,6 +17,7 @@ local timer = love.timer
 
 -- Constants
 local conf = Config.player
+local tg = math.field.tg
 
 local Player = Character:inherit()
 
@@ -164,7 +165,7 @@ end
 -- @ret(boolean) true if the move was successful, false otherwise
 function Player:tryMovePixel(angle)
   local dx, dy = math.angle2Coord(angle)
-  dy = dy * math.field.tg
+  dy = dy * tg
   local v = Vector(dx, -dy)
   v:normalize()
   v.z = - v.y

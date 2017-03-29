@@ -13,7 +13,7 @@
     },
     "transform": {
       "offsetX": 0,
-      "offsetY": 0,
+      "offsetY": 16,
       "offsetDepth": 0,
       "scaleX": 100,
       "scaleY": 100,
@@ -44,7 +44,7 @@
     },
     "transform": {
       "offsetX": 0,
-      "offsetY": 0,
+      "offsetY": 18,
       "offsetDepth": 0,
       "scaleX": 100,
       "scaleY": 100,
@@ -75,7 +75,7 @@
     },
     "transform": {
       "offsetX": 0,
-      "offsetY": 0,
+      "offsetY": 24,
       "offsetDepth": 0,
       "scaleX": 100,
       "scaleY": 100,
@@ -106,7 +106,7 @@
     },
     "transform": {
       "offsetX": 0,
-      "offsetY": 0,
+      "offsetY": 16,
       "offsetDepth": 0,
       "scaleX": 100,
       "scaleY": 100,

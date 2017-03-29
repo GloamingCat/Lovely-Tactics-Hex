@@ -8,6 +8,7 @@ The BattleAction that is executed when players chooses a skill to use.
 =============================================================================]]
 
 -- Imports
+local List = require('core/algorithm/List')
 local Callback = require('core/callback/Callback')
 local BattleAction = require('core/battle/action/BattleAction')
 local MoveAction = require('core/battle/action/MoveAction')
@@ -25,6 +26,10 @@ local ceil = math.ceil
 
 -- Constants
 local elementCount = #Config.elements
+local introTime = 22.5
+local centerTime = 7.5
+local targetTime = 2.2
+local useTime = 2
 
 local SkillAction = BattleAction:inherit()
 
@@ -75,6 +80,8 @@ function SkillAction:resetTargetTiles(selectMovable, selectBorder)
   local charTile = BattleManager.currentCharacter:getTile()
   local range = self.skill.data.range + 1
   local h = charTile.layer.height
+  local borderTiles = List()
+  -- Find all border tiles
   for i = 1, self.field.sizeX do
     for j = 1, self.field.sizeY do
        -- If this tile is reachable
@@ -84,28 +91,25 @@ function SkillAction:resetTargetTiles(selectMovable, selectBorder)
         for neighbor in tile.neighborList:iterator() do
           -- If this tile has any non-reachable neighbors
           if isnan(matrix:get(neighbor.x, neighbor.y)) then
-            isBorder = true -- This is a border tile
+            borderTiles:add(tile)
             break
-          end
-        end
-        if isBorder then -- If is border tile, paint all neighbors
-          for i, j in mathf.radiusIterator(range, 
-              tile.x, tile.y, field.sizeX, field.sizeY) do
-            local n = field:getObjectTile(i, j, h) 
-            if isnan(matrix:get(n.x, n.y)) then -- If this neighbor is not reachable
-              n.selectable = selectBorder and self:isSelectable(n)
-              n:setColor(self.type)
-            end
           end
         end
       end
     end
-    for i, j in mathf.radiusIterator(range, 
-        charTile.x, charTile.y, field.sizeX, field.sizeY) do
-      if isnan(matrix:get(i, j)) then
-        local n = field:getObjectTile(i, j, h)
-        n.selectable = selectBorder and self:isSelectable(n)
-        n:setColor(self.type)
+  end
+  if borderTiles:isEmpty() then
+    borderTiles:add(charTile)
+  end
+  -- Paint border tiles
+  for tile in borderTiles:iterator() do
+    for i, j in mathf.radiusIterator(range, tile.x, tile.y) do
+      if i >= 1 and j >= 0 and i <= field.sizeX and j <= field.sizeY then
+        local n = field:getObjectTile(i, j, h) 
+        if isnan(matrix:get(i, j)) then -- If this neighbor is not reachable
+          n.selectable = selectBorder and self:isSelectable(n)
+          n:setColor(self.skill.type)
+        end
       end
     end
   end
@@ -118,13 +122,39 @@ end
 -- The effect applied when the user is prepared to use the skill.
 -- It executes animations and applies damage/heal to the targets.
 function SkillAction:effect()
+  -- Intro time.
+  Callback.current:wait(introTime)
+  
+  -- User's initial animation.
   local originTile = self.user:getTile()
-  local startTime = now()
-  local minTime = 0
-  minTime = minTime + self:effectIntro(originTile)
-  minTime = minTime + self:effectCenter(originTile)
-  minTime = minTime + self:effectFinish(originTile)
-  Callback.current:wait(max (0, startTime + minTime - now()) + 1)
+  local dir = self.user:turnToTile(self.currentTarget.x, self.currentTarget.y)
+  self.user:loadSkill(self.skill.data, dir)
+  
+  -- Cast animation
+  FieldManager.renderer:moveToTile(self.currentTarget)
+  self.user:castSkill(self.skill.data, dir)
+  
+  -- Minimum time to wait (initially, a frame).
+  local minTime = 1
+  
+  -- Animation in center target tile 
+  --  (does not wait full animation, only the minimum time).
+  if self.skill.data.centerAnimID >= 0 then
+    local mirror = self.user.direction > 90 and self.user.direction <= 270
+    local x, y, z = mathf.tile2Pixel(self.currentTarget:coordinates())
+    local animation = BattleManager:playAnimation(self.skill.data.centerAnimID,
+      x, y, z - 1, mirror)
+    Callback.current:wait(centerTime)
+  end
+  
+  -- Animation for each of affected tiles.
+  self:allTargetsAnimation(originTile)
+  
+  -- Return user to original position and animation.
+  self.user:finishSkill(originTile, self.skill.data)
+  
+  -- Wait until everything finishes.
+  Callback.current:wait(max (0, minTime - now()) + 60)
 end
 
 -- Gets all tiles that will be affected by skill's effect.
@@ -133,9 +163,11 @@ function SkillAction:getAllAffectedTiles()
   local tiles = {}
   local field = FieldManager.currentField
   local height = self.currentTarget.layer.height
-  for i, j in mathf.radiusIterator(self.skill.data.radius, self.currentTarget.x,
-      self.currentTarget.y, field.sizeX, field.sizeY) do
-    tiles[#tiles + 1] = field:getObjectTile(i, j, height)
+  for i, j in mathf.radiusIterator(self.skill.data.radius, 
+      self.currentTarget.x, self.currentTarget.y) do
+    if i >= 1 and j >= 0 and i <= field.sizeX and j <= field.sizeY then
+      tiles[#tiles + 1] = field:getObjectTile(i, j, height)
+    end
   end
   return tiles
 end
@@ -163,44 +195,8 @@ function SkillAction:calculateEffectResult(target)
 end
 
 -------------------------------------------------------------------------------
--- Animation
+-- Target Animations
 -------------------------------------------------------------------------------
-
--- Animation for the start of the skill.
--- @ret(number) the total duration of the animation
-function SkillAction:effectIntro()
-  local start = now()
-  local introTime = 22.5
-  Callback.current:wait(introTime)
-  self.user:startSkill(self.currentTarget, self.skill.data)
-  print(now() - start)
-  return now() - start
-end
-
--- Animation for the center of the targets.
--- @ret(number) the total duration of the animation
-function SkillAction:effectCenter()
-  FieldManager.renderer:moveToTile(self.currentTarget)
-  if self.skill.data.centerAnimID >= 0 then
-    local targetTime = 7.5
-    local mirror = self.user.direction > 90 and self.user.direction <= 270
-    local x, y, z = mathf.tile2Pixel(self.currentTarget:coordinates())
-    local animation = BattleManager:playAnimation(self.skill.data.centerAnimID,
-      x, y, z - 1, mirror)
-    Callback.current:wait(targetTime)
-    return animation.duration - targetTime
-  end
-  return 0
-end
-
--- Animation for the end of the skill.
--- @ret(number) the total duration of the animation
-function SkillAction:effectFinish(originTile)
-  local start = now()
-  self:allTargetsAnimation(originTile)
-  self.user:finishSkill(originTile, self.skill.data)
-  return now() - start
-end
 
 -- Executes individual animation for all the affected tiles.
 function SkillAction:allTargetsAnimation(originTile)
@@ -223,11 +219,14 @@ function SkillAction:singleTargetAnimation(char, originTile)
     if self.skill.data.radius > 0 then
       originTile = self.currentTarget
     end
-    char:damage(self.skill.data, result, originTile)
+    Callback.current.tree:fork(function()
+      char:damage(self.skill.data, result, originTile)
+    end)
   else
-    char:heal(self.skill.data, -result)
+    Callback.current.tree:fork(function()
+      char:heal(self.skill.data, -result)
+    end)
   end
-  local targetTime = 2
   Callback.current:wait(targetTime)
 end
 

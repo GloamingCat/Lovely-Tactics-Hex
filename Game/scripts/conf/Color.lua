@@ -1,16 +1,16 @@
 
 Color = {}
 
-Color.tile_general = {red = 85, green = 30, blue = 85, alpha = 80}
-Color.tile_move = {red = 60, green = 60, blue = 100, alpha = 80}
-Color.tile_support = {red = 20, green = 100, blue = 20, alpha = 80}
-Color.tile_attack = {red = 100, green = 20, blue = 20, alpha = 80}
-Color.tile_nothing = {red = 70, green = 70, blue = 70, alpha = 70}
+Color.tile_general = {red = 85, green = 50, blue = 85, alpha = 85}
+Color.tile_move = {red = 40, green = 40, blue = 100, alpha = 85}
+Color.tile_support = {red = 40, green = 100, blue = 40, alpha = 85}
+Color.tile_attack = {red = 100, green = 40, blue = 40, alpha = 85}
+Color.tile_nothing = {red = 70, green = 70, blue = 70, alpha = 75}
 
-Color.tile_general_off = {red = 85, green = 30, blue = 85, alpha = 20}
-Color.tile_move_off = {red = 20, green = 20, blue = 100, alpha = 20}
-Color.tile_support_off = {red = 20, green = 100, blue = 20, alpha = 20}
-Color.tile_attack_off = {red = 100, green = 20, blue = 20, alpha = 20}
+Color.tile_general_off = {red = 85, green = 35, blue = 85, alpha = 40}
+Color.tile_move_off = {red = 30, green = 30, blue = 100, alpha = 40}
+Color.tile_support_off = {red = 30, green = 100, blue = 30, alpha = 40}
+Color.tile_attack_off = {red = 100, green = 30, blue = 30, alpha = 40}
 Color.tile_nothing_off = {red = 60, green = 60, blue = 60, alpha = 20}
 
 Color.gui_text_default = {red = 100, green = 100, blue = 100, alpha = 100}

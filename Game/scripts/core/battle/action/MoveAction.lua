@@ -56,24 +56,27 @@ function MoveAction:onConfirm(GUI)
 end
 
 -------------------------------------------------------------------------------
--- Selectable Tiles
--------------------------------------------------------------------------------
-
--- Overrides BattleAction:isSelectable.
-function MoveAction:isSelectable(tile)
-  return tile:hasColliders() == false
-end
-
--------------------------------------------------------------------------------
 -- Path Finder
 -------------------------------------------------------------------------------
+
+-- Checks if a character can stay in this tile.
+-- @param(tile : ObjectTile) tile to check
+-- @ret(boolean) true if it can stay, false otherwise
+function MoveAction:isStandable(tile)
+  for c in tile.characterList:iterator() do
+    if c ~= self.user then
+      return false
+    end
+  end
+  return true
+end
 
 -- Tells if a tile is last of the movement.
 -- @param(tile : ObjectTile) tile to check
 -- @ret(boolean) true if it's final, false otherwise
 function MoveAction:isFinal(tile)
   local cost = self:estimateCost(self.currentTarget, tile)
-  return cost < self.range and not tile:hasColliders(self.user) 
+  return cost <= self.range and self:isStandable(tile)
 end
 
 -- Checks passability between two tiles.
