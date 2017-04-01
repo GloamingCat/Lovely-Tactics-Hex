@@ -22,6 +22,7 @@ local Object = require('core/class'):new()
 
 -- @param(data : table) data from file (Obstacle or Character)
 function Object:init(data, pos)
+  self.name = data.name
   self.colliderHeight = data.colliderHeight
   self.position = pos or Vector(0, 0, 0)
 end

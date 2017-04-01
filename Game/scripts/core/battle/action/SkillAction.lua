@@ -9,7 +9,6 @@ The BattleAction that is executed when players chooses a skill to use.
 
 -- Imports
 local List = require('core/algorithm/List')
-local Callback = require('core/callback/Callback')
 local BattleAction = require('core/battle/action/BattleAction')
 local MoveAction = require('core/battle/action/MoveAction')
 local PathFinder = require('core/algorithm/PathFinder')
@@ -121,9 +120,9 @@ end
 
 -- The effect applied when the user is prepared to use the skill.
 -- It executes animations and applies damage/heal to the targets.
-function SkillAction:effect()
+function SkillAction:onUse()
   -- Intro time.
-  Callback.current:wait(introTime)
+  _G.Callback:wait(introTime)
   
   -- User's initial animation.
   local originTile = self.user:getTile()
@@ -144,7 +143,7 @@ function SkillAction:effect()
     local x, y, z = mathf.tile2Pixel(self.currentTarget:coordinates())
     local animation = BattleManager:playAnimation(self.skill.data.centerAnimID,
       x, y, z - 1, mirror)
-    Callback.current:wait(centerTime)
+    _G.Callback:wait(centerTime)
   end
   
   -- Animation for each of affected tiles.
@@ -154,7 +153,7 @@ function SkillAction:effect()
   self.user:finishSkill(originTile, self.skill.data)
   
   -- Wait until everything finishes.
-  Callback.current:wait(max (0, minTime - now()) + 60)
+  _G.Callback:wait(max (0, minTime - now()) + 60)
 end
 
 -- Gets all tiles that will be affected by skill's effect.
@@ -216,23 +215,31 @@ function SkillAction:singleTargetAnimation(char, originTile)
   if not result or result == 0 then
     -- Pop-up 'miss'
   elseif result > 0 then
-    if self.skill.data.radius > 0 then
+    if self.skill.data.radius > 1 then
       originTile = self.currentTarget
     end
-    Callback.current.tree:fork(function()
+    _G.Callback.tree:fork(function()
       char:damage(self.skill.data, result, originTile)
     end)
   else
-    Callback.current.tree:fork(function()
+    _G.Callback.tree:fork(function()
       char:heal(self.skill.data, -result)
     end)
   end
-  Callback.current:wait(targetTime)
+  _G.Callback:wait(targetTime)
 end
 
 -------------------------------------------------------------------------------
 -- Event handlers
 -------------------------------------------------------------------------------
+
+-- Overrides BattleAction:onActionGUI.
+function SkillAction:onActionGUI(GUI)
+  self:resetAllTiles(false)
+  self:resetMovableTiles(true)
+  GUI:createTargetWindow()
+  GUI:startGridSelecting(self:firstTarget())
+end
 
 -- Overrides BattleAction:onConfirm.
 -- Executes the movement action and the skill's effect, 
@@ -245,7 +252,7 @@ function SkillAction:onConfirm(GUI)
   local path = PathFinder.findPath(moveAction)
   if path then -- Target was reached
     self.user:walkPath(path)
-    self:effect()
+    self:onUse()
   else -- Target was not reached
     path = PathFinder.findPathToUnreachable(moveAction)
     path = path or PathFinder.estimateBestTile(moveAction)

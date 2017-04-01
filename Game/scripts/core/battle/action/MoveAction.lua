@@ -15,6 +15,9 @@ local PathFinder = require('core/algorithm/PathFinder')
 -- Alias
 local mathf = math.field
 
+-- Constants
+local controlZone = Battle.controlZone
+
 local MoveAction = BattleAction:inherit()
 
 -------------------------------------------------------------------------------
@@ -52,7 +55,7 @@ function MoveAction:onConfirm(GUI)
   end
   self.user:walkPath(path)
   BattleManager:updateDistanceMatrix()
-  return 0
+  return -1
 end
 
 -------------------------------------------------------------------------------
@@ -84,14 +87,15 @@ end
 -- @param(final : ObjectTile) destination tile
 -- @ret(boolean) true if it's passable, false otherwise
 function MoveAction:isPassableBetween(initial, final)
-  local c = self.field:collisionXYZ(self.user, initial.x, initial.y, initial.layer.height, final:coordinates())
+  local c = self.field:collisionXYZ(self.user, initial.x, initial.y, 
+    initial.layer.height, final:coordinates())
   if c then
     return false
   end
-  if initial:isControlZone(self.user.battler) then
+  if controlZone and initial:isControlZone(self.user.battler) then
     return false
   end
-  local maxdh = self.user.battler.att:JMP()
+  local maxdh = self.user.battler.jump()
   local mindh = -2 * maxdh
   local dh = final.layer.height - initial.layer.height
   return mindh <= dh and dh <= maxdh

@@ -17,6 +17,10 @@ Scaling types:
 -- Alias
 local lgraphics = love.graphics
 
+-- Constans
+local defaultScaleX = Config.screen.widthScale
+local defaultScaleY = Config.screen.heightScale
+
 local ScreenManager = require('core/class'):new()
 
 -------------------------------------------------------------------------------
@@ -24,13 +28,11 @@ local ScreenManager = require('core/class'):new()
 -------------------------------------------------------------------------------
 
 function ScreenManager:init()
-  self.width = love.graphics.getWidth()
-  self.height = love.graphics.getHeight()
+  self.width = Config.screen.nativeWidth
+  self.height = Config.screen.nativeHeight
   self.scalingType = 1
-  self.defaultScaleX = 2
-  self.defaultScaleY = 2
-  self.scaleX = 1
-  self.scaleY = 1
+  self.scaleX = defaultScaleX
+  self.scaleY = defaultScaleY
   self.offsetX = 0
   self.offsetY = 0
   self.canvas = lgraphics.newCanvas(self.width * self.scaleX, self.height * self.scaleY)
@@ -76,6 +78,10 @@ function ScreenManager:setScale(x, y)
   self.scaleX = x
   self.scaleY = y
   self.canvas = love.graphics.newCanvas(self.width * x, self.height * y)
+  if self.width * x == love.graphics.getWidth() 
+      and self.height * y == love.graphics.getHeight() then
+    return
+  end
   love.window.setMode(self.width * x, self.height * y, {fullscreen = false})
   FieldManager.renderer:resizeCanvas()
   GUIManager.renderer:resizeCanvas()
@@ -84,7 +90,7 @@ end
 -- Changes screen to window mode.
 function ScreenManager:setWindowed()
   if love.window.getFullscreen() then
-    self:scale(self.defaultScaleX, self.defaultScaleY)
+    self:scale(defaultScaleX, defaultScaleY)
   end
 end
 

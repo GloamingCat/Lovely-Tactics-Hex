@@ -15,6 +15,7 @@ local Battler = require('core/battle/Battler')
 -- Alias
 local Random = love.math.random
 local mathf = math.field
+local charSpeed = (Config.player.dashSpeed + Config.player.walkSpeed) / 2
 
 local TroopManager = require('core/class'):new()
 
@@ -66,11 +67,9 @@ end
 function TroopManager:createBattleCharacter(tile, battlerData, field)
   local charID = tile:generateCharacterID()
   local characterData = {
-    id = battlerData.characterID,
+    id = battlerData.battleCharID,
+    type = 1,
     direction = 0,
-    startID = -1,
-    collisionID = -1,
-    interactID = -1,
     animID = 0,
     tags = {}
   }
@@ -79,7 +78,7 @@ function TroopManager:createBattleCharacter(tile, battlerData, field)
   character:addToTiles()
   character.battler = Battler(battlerData, tile.party)
   character:turnToTile(field.sizeX / 2, field.sizeY / 2)
-  character.speed = Config.player.dashSpeed
+  character.speed = charSpeed
   self.characterList:add(character)
   return character
 end
@@ -87,6 +86,17 @@ end
 -------------------------------------------------------------------------------
 -- Auxiliary Functions
 -------------------------------------------------------------------------------
+
+-- Searches for the Character with the given Battler.
+-- @param(battler : Battler) the battler to search for
+-- @ret(Character) the character with the battler (nil of not found)
+function TroopManager:getCharacter(battler)
+  for bc in self.characterList:iterator() do 
+    if bc.battler == battler then
+      return bc
+    end
+  end
+end
 
 -- Increments all character's turn count.
 --@ret(Character) the character that reached turn limit (nil if none did)

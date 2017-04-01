@@ -13,15 +13,16 @@ function love.conf(t)
   JSON = require('core/save/JsonParser')
   Config = JSON.decode(love.filesystem.read('data/config.json'))
   Database = {}
-	local db = {'items', 'skills', 'skillDags', 'battlers', 'status', 'animCharacter', 
-    'animBattle', 'animOther', 'terrains', 'obstacles', 'ramps', 'characters', 'tilesets'}
+	local db = {'items', 'skills', 'skillDags', 'battlers', 'status', 'tilesets', 
+    'animCharacter', 'animBattle', 'animOther', 'terrains', 'obstacles', 'ramps',
+    'charBattle', 'charField', 'charOther'}
 	for i = #db, 1, -1 do
     local file = db[i]
 		Database[file] = JSON.decode(love.filesystem.read('data/' .. file .. '.json'))
 	end
   t.window.title = Config.name
-  t.window.width = 400
-  t.window.height = 225
+  t.window.width = Config.screen.nativeWidth * Config.screen.widthScale
+  t.window.height = Config.screen.nativeHeight * Config.screen.heightScale
   t.window.fullscreentype = 'desktop'
   t.modules.joystick = false
   t.modules.physics = false

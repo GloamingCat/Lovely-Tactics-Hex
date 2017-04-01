@@ -9,21 +9,16 @@ There's only one ObjectTile for each (i, j, height) in the field.
 =============================================================================]]
 
 -- Imports
-local Vector = require('core/math/Vector')
+local ObjectTile_Battle = require('core/fields/ObjectTile_Battle')
 local List = require('core/algorithm/List')
-local Animation = require('core/graphics/Animation')
 
 -- Alias
-local mathf = math.field
-local max = math.max
+local neighborShift = math.field.neighborShift
 
 -- Constants
-local tileW = Config.grid.tileW
-local tileH = Config.grid.tileH
-local controlZone = Battle.controlZone
 local overpassAllies = Battle.overpassAllies
 
-local ObjectTile = require('core/class'):new()
+local ObjectTile = ObjectTile_Battle:inherit()
 
 -------------------------------------------------------------------------------
 -- General
@@ -45,17 +40,7 @@ function ObjectTile:init(layer, x, y, defaultRegion)
   if defaultRegion then
     self.regionList:add(defaultRegion)
   end
-  self:createGraphics()
-end
-
--- Updates graphics animation.
-function ObjectTile:update()
-  if self.highlightAnim then
-    self.highlightAnim:update()
-  end
-  if self.baseAnim then
-    self.baseAnim:update()
-  end
+  self:createGridGUI()
 end
 
 -- Generates a unique character ID for a character in this tile.
@@ -66,52 +51,13 @@ function ObjectTile:generateCharacterID()
 end
 
 -------------------------------------------------------------------------------
--- Graphics
--------------------------------------------------------------------------------
-
--- Creates the graphical elements for battle grid navigation.
-function ObjectTile:createGraphics()
-  local renderer = FieldManager.renderer
-  local x, y, z = mathf.tile2Pixel(self:coordinates())
-  x = x - tileW / 2
-  y = y - tileH / 2
-  if Config.gui.tileAnimID >= 0 then
-    local baseAnim = Database.animOther[Config.gui.tileAnimID + 1]
-    self.baseAnim = Animation.fromData(baseAnim, renderer)
-    self.baseAnim.sprite:setXYZ(x, y, z)
-  end
-  if Config.gui.tileHLAnimID >= 0 then
-    local hlAnim = Database.animOther[Config.gui.tileHLAnimID + 1]
-    self.highlightAnim = Animation.fromData(hlAnim, renderer)
-    self.highlightAnim.sprite:setXYZ(x, y, z)
-  end
-  self:hide()
-end
-
--- Updates graphics pixel depth according to the terrains' 
---  depth in this tile's coordinates.
-function ObjectTile:updateDepth()
-  local tiles = FieldManager.currentField.terrainLayers[self.layer.height]
-  local maxDepth = tiles[1].grid[self.x][self.y].depth
-  for i = #tiles, 2, -1 do
-    maxDepth = max(maxDepth, tiles[i].grid[self.x][self.y].depth)
-  end
-  if self.baseAnim then
-    self.baseAnim.sprite:setOffset(nil, nil, maxDepth / 2)
-  end
-  if self.highlightAnim then
-    self.highlightAnim.sprite:setOffset(nil, nil, maxDepth / 2 - 1)
-  end
-end
-
--------------------------------------------------------------------------------
 -- Grid/neighborhood
 -------------------------------------------------------------------------------
 
 -- Stores the list of neighbor tiles.
 function ObjectTile:createNeighborList()
   self.neighborList = List()
-  for i, n in ipairs(mathf.neighborShift) do
+  for i, n in ipairs(neighborShift) do
     local row = self.layer.grid[n.x + self.x]
     if row then
       local tile = row[n.y + self.y]
@@ -130,45 +76,6 @@ function ObjectTile:coordinates()
 end
 
 -------------------------------------------------------------------------------
--- Troop
--------------------------------------------------------------------------------
-
--- Returns the list of battlers that are suitable for this tile.
--- @ret(List) the list of battlers
-function ObjectTile:getBattlerList()
-  local battlers = nil
-  if self.party == 0 then
-    battlers = PartyManager:backupBattlers()
-  else
-    battlers = List()
-    for regionID in self.regionList:iterator() do
-      local data = Config.regions[regionID + 1]
-      for i = 1, #data.battlers do
-        local id = data.battlers[i]
-        local battlerData = Database.battlers[id + 1]
-        battlers:add(battlerData)
-      end
-    end
-  end
-  battlers:conditionalRemove(function(battler) 
-      return not self.battlerTypeList:contains(battler.typeID)
-    end)
-  return battlers
-end
-
--- Checks if any of types in a table are in this tile.
--- @ret(boolean) true if contains one or more types, falsa otherwise
-function ObjectTile:containsBattleType(types)
-  for i = 1, #types do
-    local typeID = types[i]
-    if self.battlerTypeList:contains(typeID) then
-      return true
-    end
-  end
-  return false
-end
-
--------------------------------------------------------------------------------
 -- Collision
 -------------------------------------------------------------------------------
 
@@ -177,13 +84,13 @@ end
 -- @param(dy : number) the y difference in tiles
 -- @param(object : Object) the object that is trying to access this tile (optional)
 -- @ret(boolean) true if passable, false otherwise
-function ObjectTile:isPassable(dx, dy, object)
+function ObjectTile:collidesObstacle(dx, dy, object)
   for obj in self.obstacleList:iterator() do
-    if not obj:isPassable(dx, dy, obj) then
-      return false
+    if not obj:isPassable(dx, dy, object) then
+      return true
     end
   end
-  return true
+  return false
 end
 
 -- Checks if this tile is passable from the given tile.
@@ -191,8 +98,8 @@ end
 -- @param(y : number) the y in tiles
 -- @param(obj : Object) the object that is trying to access this tile (optional)
 -- @ret(boolean) true if passable, false otherwise
-function ObjectTile:isPassableFrom(x, y, obj)
-  return self:isPassable(self.x - x, self.y - y, obj)
+function ObjectTile:collidesObstacleFrom(obj, x, y, h)
+  return self:collidesObstacle(self.x - x, self.y - y, obj)
 end
 
 -- Checks collision with characters.
@@ -214,128 +121,6 @@ function ObjectTile:collidesCharacter(char, party)
     end
   end
   return false
-end
-
--------------------------------------------------------------------------------
--- Battle
--------------------------------------------------------------------------------
-
--- Checks if this tile os in control zone for given party.
--- @param(you : Battler) the battler of the current character
--- @ret(boolean) true if it's control zone, false otherwise
-function ObjectTile:isControlZone(you)
-  if not controlZone then
-    return false
-  end
-  local containsAlly, containsEnemy = false, false
-  for char in self.characterList:iterator() do
-    if char.battler then
-      if char.battler.party == you.party then
-        containsAlly = true
-      else
-        containsEnemy = true
-      end
-    end
-  end
-  if containsEnemy then
-    return true
-  elseif containsAlly then
-    return false
-  end
-  for n in self.neighborList:iterator() do
-    for char in n.characterList:iterator() do
-      if char.battler and char.battler.party ~= you.party then
-        return true
-      end
-    end
-  end
-  return false
-end
-
--- Gets the party of the current character in the tile.
--- @ret(number) the party number (nil if more than one character with different parties)
-function ObjectTile:getCurrentParty()
-  local party = nil
-  for c in self.characterList:iterator() do
-    if c.battler then
-      if party == nil then
-        party = c.battler.party
-      elseif c.battler.party ~= party then
-        return nil
-      end
-    end
-  end
-  return party
-end
-
--- Checks if there are any enemies in this tile (character with a different party number)
--- @param(yourPaty : number) the party number to check
--- @ret(boolean) true if there's at least one enemy, false otherwise
-function ObjectTile:hasEnemy(yourParty)
-  for c in self.characterList:iterator() do
-    if c.battler and c.battler.party ~= yourParty then
-      return true
-    end
-  end
-end
-
--- Checks if there are any allies in this tile (character with the same party number)
--- @param(yourPaty : number) the party number to check
--- @ret(boolean) true if there's at least one ally, false otherwise
-function ObjectTile:hasAlly(yourParty)
-  for c in self.characterList:iterator() do
-    if c.party == yourParty then
-      return true
-    end
-  end
-end
-
--- Gets the terrain move cost in this tile.
--- @ret(number) the move cost
-function ObjectTile:getMoveCost()
-  return FieldManager.currentField:getMoveCost(self.x, self.y, self.layer.height)
-end
-
--------------------------------------------------------------------------------
--- Grid selecting
--------------------------------------------------------------------------------
-
--- Selects / deselects this tile.
--- @param(value : boolean) true to select, false to deselect
-function ObjectTile:setSelected(value)
-  if self.highlightAnim then
-    self.highlightAnim.sprite:setVisible(value)
-  end
-end
-
--- Sets color to the color with the given label.
--- @param(name : string) color label
-function ObjectTile:setColor(name)
-  self.colorName = name
-  if name == nil or name == '' then
-    name = 'nothing'
-  end
-  name = 'tile_' .. name
-  if not self.selectable then
-    name = name .. '_off'
-  end
-  local c = Color[name]
-  self.baseAnim.sprite:setColor(c)
-end
-
--- Shows tile edges.
-function ObjectTile:show()
-  if self.baseAnim then
-    self.baseAnim.sprite:setVisible(true)
-  end
-end
-
--- Hides tile edges.
-function ObjectTile:hide()
-  if self.baseAnim then
-    self.baseAnim.sprite:setVisible(false)
-  end
-  self:setSelected(false)
 end
 
 -- Converts to string.

@@ -48,24 +48,25 @@ function BattleAction:onActionGUI(GUI)
 end
 
 -- [Abstract] Called when player chooses a target for the action.
--- @ret(number) the result of the action:
---  1 to end turn, 0 to cancel action, nil to do nothing
+-- @ret(number) the time cost of the action:
+--  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
 function BattleAction:onConfirm(GUI)
   GUI:endGridSelecting()
   local result = GUIManager:openGUIForResult('ConfirmGUI')
-  if result == 1 then
-    return 1
+  if result > 0 then
+    return result
   else
     GUI:startGridSelecting()
+    return nil
   end
 end
 
 -- [Abstract] Called when player chooses a target for the action.
--- @ret(number) the result of the action:
---  1 to end turn, 0 to cancel action, nil to do nothing
+-- @ret(number) the time cost of the action:
+--  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
 function BattleAction:onCancel(GUI)
   GUI:endGridSelecting()
-  return 0
+  return -1
 end
 
 -------------------------------------------------------------------------------

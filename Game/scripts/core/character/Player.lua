@@ -38,7 +38,7 @@ function Player:init()
     startID = 0,
     collisionID = -1,
     interactID = -1,
-    id = leaderBattler.characterID,
+    id = leaderBattler.fieldCharID,
     tags = {}
   }
   old_init(self, '0', data)
@@ -83,9 +83,9 @@ function Player:moveByInput(dx, dy)
     self.autoAnim = false
     if autoAnim then
       if self.speed < conf.dashSpeed then
-        self:playAnimation('Walk')
+        self:playAnimation(self.walkAnim)
       else
-        self:playAnimation('Dash')
+        self:playAnimation(self.dashAnim)
       end
     end
     if conf.pixelMovement == true then
@@ -98,13 +98,13 @@ function Player:moveByInput(dx, dy)
         self:setDirection(math.coord2Angle(dx, dy))
       end
       if autoAnim then
-        self:playAnimation('Idle')
+        self:playAnimation(self.idleAnim)
       end
     end
     self.autoAnim = autoAnim
   else
     if self.autoAnim then
-      self:playAnimation('Idle')
+      self:playAnimation(self.idleAnim)
     end
   end
 end
@@ -130,19 +130,20 @@ function Player:tryMoveTile(angle)
   if nextTile == nil then
     return false
   end
-  local orig = Vector(self:getTile():coordinates())
-  local dest = Vector(nextTile:coordinates())
-  local collision = FieldManager.currentField:collision(self, orig, dest)
+  local ox, oy, oh = self:getTile():coordinates()
+  local dx, dy, dh = nextTile:coordinates()
+  local collision = FieldManager.currentField:collisionXYZ(self,
+    ox, oy, oh, dx, dy, dh)
   if collision ~= nil then
     if collision ~= 3 then -- not a character
       return false
     else
       self:playAnimation('Idle')
-      self:turnToTile(dest.x, dest.y) -- character
+      self:turnToTile(dx, dy) -- character
       return true
     end
   else
-    return self:walkToTile(dest.x, dest.y, dest.z, false)
+    return self:walkToTile(dx, dy, dh, false)
   end
   return false
 end

@@ -16,34 +16,49 @@ local Inventory = require('core/battle/Inventory')
 local max = math.max
 
 -- Constants
+local attConfig = Config.attributes
 local elementCount = #Config.elements
 
 local Battler = require('core/class'):new()
 
 -------------------------------------------------------------------------------
--- General
+-- Initialization
 -------------------------------------------------------------------------------
 
 -- @param(data : table) the battler's data from file
 -- @param(party : number) this battler's party number
 function Battler:init(data, party)
   self.party = party
-  self.att = self:createAttributes(data.attributes, data.level, data.build)
-  self.currentHP = data.currentHP or self.att:maxHP()
-  self.currentSP = data.currentSP or self.att:maxSP()
+  self:createAttributes(data.attributes, data.level, data.build)
+  self.currentHP = data.currentHP or self.maxHP()
+  self.currentSP = data.currentSP or self.maxSP()
   self.data = data
   self.turnCount = 0
   self.inventory = Inventory(data.items)
-  self.skillList = List()
-  -- Store skills
-  for i = 1, #data.skills do
-    self.skillList:add(Skill(data.skills[i]))
+  self:setPortraits(data.battleCharID)
+  self:setSkillList(data.skills, data.attackID)
+  self:setElements(data.elements)
+  self:setAI(data.scriptAI)
+end
+
+-- Sets data of this battler's AI.
+-- @param(ai : table) the script data table (with strings path and param)
+function Battler:setAI(ai)
+  if ai.path ~= '' then
+    self.AI = require('custom/ai/' .. ai.path)
+    self.AI.param = ai.param
+  else
+    self.AI = nil
   end
-  self.attackSkill = Skill(data.attackID)
-  -- Store elements
+end
+
+-- Creates and sets and array of element factors.
+-- @param(elements : table) array of element factors 
+--  (in percentage, 100 is neutral)
+function Battler:setElements(elements)
   local e = {}
-  for i = 1, #data.elements do
-    e[data.elements[i].id + 1] = data.elements[i].value
+  for i = 1, #elements do
+    e[elements[i].id + 1] = elements[i].value - 100
   end
   for i = 1, elementCount do
     if not e[i] then
@@ -51,11 +66,27 @@ function Battler:init(data, party)
     end
   end
   self.elementFactors = e
-  -- Create AI
-  local ai = data.scriptAI
-  if data.scriptAI.path ~= '' then
-    self.AI = require('custom/ai/' .. ai.path)
-    self.AI.param = ai.param
+end
+
+-- Creates and sets the list of usable skills.
+-- @param(skills : table) array of skill IDs
+-- @param(attackID : number) ID of the battler's "Attack" skill
+function Battler:setSkillList(skills, attackID)
+  self.skillList = List()
+  for i = 1, #skills do
+    self.skillList:add(Skill(skills[i]))
+  end
+  self.attackSkill = Skill(attackID)
+end
+
+-- Creates and sets and table of portraits.
+-- @param(charID : number) the battler's character ID
+function Battler:setPortraits(charID)
+  self.portraits = {}
+  local charData = Database.charBattle[charID + 1]
+  for i = 1, #charData.portraits do
+    local p = charData.portraits[i]
+    self.portraits[p.name] = p.quad
   end
 end
 
@@ -70,16 +101,16 @@ end
 -------------------------------------------------------------------------------
 
 -- Creates attribute functions from script data.
--- @param(data : table) a table of base values.
--- @ret(table) an array of attribute functions
+-- @param(data : table) a table of base values
 function Battler:createAttributes(base, level, build)
   if build.path ~= '' then
     build = require('custom/' .. build.path)
   else
     build = nil
   end
-  local att = {}
-  local attConfig = Config.attributes
+  self.att = {}
+  self.attAdd = {}
+  self.attMul = {}
   for i = 1, #attConfig do
     local shortName = attConfig[i].shortName
     local script = attConfig[i].script
@@ -87,20 +118,26 @@ function Battler:createAttributes(base, level, build)
     if build and script == '' then
       b = b + build[shortName](level)
     end
-    att[shortName] = self:createAttribute(b, script)
+    local base = self:createAttributeBase(b, script)
+    self.attAdd[shortName] = 0
+    self.attMul[shortName] = 1
+    self.att[shortName] = function()
+      return base(self.att) * self.attMul[shortName]
+        + self.attAdd[shortName]
+    end
   end
-  att.maxHP = att[attConfig[Config.battle.attHPID + 1].shortName]
-  att.maxSP = att[attConfig[Config.battle.attSPID + 1].shortName]
-  att.turn = att[attConfig[Config.battle.attTurnID + 1].shortName]
-  att.steps = att[attConfig[Config.battle.attStepID + 1].shortName]
-  return att
+  self.maxHP = self.att[attConfig[Config.battle.attHPID + 1].shortName]
+  self.maxSP = self.att[attConfig[Config.battle.attSPID + 1].shortName]
+  self.turn = self.att[attConfig[Config.battle.attTurnID + 1].shortName]
+  self.steps = self.att[attConfig[Config.battle.attStepID + 1].shortName]
+  self.jump = self.att[attConfig[Config.battle.attJumpID + 1].shortName]
 end
 
 -- Creates an attribute access function.
 -- @param(baseValue : number) attribute's base value from battler
 -- @param(script : number) attribute's formula script
 -- @ret(function) the function for this attribute
-function Battler:createAttribute(baseValue, script)
+function Battler:createAttributeBase(baseValue, script)
   if script == '' then
     return function()
       return baseValue
@@ -121,7 +158,7 @@ end
 -- @param(limit : number) the turn limit to start the turn
 -- @ret(boolean) true if the limit was reached, false otherwise
 function Battler:incrementTurnCount(limit)
-  self.turnCount = self.turnCount + self.att:turn()
+  self.turnCount = self.turnCount + self.turn()
   if self.turnCount >= limit then
     self.turnCount = self.turnCount - limit
     return true
@@ -140,7 +177,7 @@ end
 -- @param(iterations : number) the number of turn iterations since the previous turn
 function Battler:onTurnStart(iterations)
   if BattleManager.currentCharacter.battler == self then
-    self.currentSteps = self.att:steps()
+    self.currentSteps = self.steps()
   end
 end
 

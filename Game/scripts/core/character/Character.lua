@@ -28,7 +28,7 @@ local tile2Pixel = math.field.tile2Pixel
 local pixel2Tile = math.field.pixel2Tile
 
 -- Constants
-local dashSpeed = Config.player.dashSpeed
+local speedLimit = (Config.player.dashSpeed + Config.player.walkSpeed) / 2
 
 local Character = Character_Base:inherit(Character_Battle)
 
@@ -78,21 +78,17 @@ end
 -- @param(z : number) the depth of the point
 -- @param(collisionCheck : boolean) if it should check collisions
 -- @ret(boolean) true if the movement was completed, false otherwise
-function Character:walkToPoint(x, y, z, collisionCheck, walkAnim, idleAnim)
-  idleAnim = idleAnim or "Idle"
-  if not walkAnim then
-    if self.speed >= dashSpeed then
-      walkAnim = "Dash"
-    else
-      walkAnim = "Walk"
-    end
+function Character:walkToPoint(x, y, z, collisionCheck)
+  local anim = self.walkAnim
+  if self.speed >= speedLimit then
+    anim = self.dashAnim
   end
   z = z or self.position.z
   self.moving = true
   local dest = Vector(x, y, z)
   dest:round()
   if self.autoAnim then
-    self:playAnimation(walkAnim)
+    self:playAnimation(anim)
   end
   if self.autoTurn then
     self:turnToPoint(dest.x, dest.z)
@@ -104,7 +100,7 @@ function Character:walkToPoint(x, y, z, collisionCheck, walkAnim, idleAnim)
     local collision = self:instantMoveTo(origin:lerp(dest, min(1, t)), collisionCheck)
     if collision ~= nil and self.stopOnCollision == true then
       if self.autoAnim then
-        self:playAnimation(idleAnim)
+        self:playAnimation(self.idleAnim)
       end
       self.moving = false
       print('Interruped walk.')
@@ -117,7 +113,7 @@ function Character:walkToPoint(x, y, z, collisionCheck, walkAnim, idleAnim)
     t = t + self.speed * time() / d
   end
   if self.autoAnim then
-    self:playAnimation(idleAnim)
+    self:playAnimation(self.idleAnim)
   end
   self.moving = false
   self:setPosition(dest)
@@ -130,10 +126,9 @@ end
 -- @param(dz : number) the distance in depth (in pixels)
 -- @param(collisionCheck : boolean) if it should check collisions
 -- @ret(boolean) true if the movement was completed, false otherwise
-function Character:walkDistance(dx, dy, dz, collisionCheck, walkAnim, idleAnim)
+function Character:walkDistance(dx, dy, dz, collisionCheck)
   local pos = self.position
-  return self:walkToPoint(pos.x + dx, pos.y + dy, pos.z + dz,
-    collisionCheck, walkAnim, idleAnim)
+  return self:walkToPoint(pos.x + dx, pos.y + dy, pos.z + dz, collisionCheck)
 end
 
 -- Walks the given distance in the given direction.
@@ -142,11 +137,11 @@ end
 -- @param(dz : number) the distance in depth
 -- @param(collisionCheck : boolean) if it should check collisions
 -- @ret(boolean) true if the movement was completed, false otherwise
-function Character:walkInAngle(d, angle, dz, collisionCheck, walkAnim, idleAnim)
+function Character:walkInAngle(d, angle, dz, collisionCheck)
   local dx, dy = angle2Coord(angle or self.direction)
   dz = dz or -dy
   print(dx * d, dy * d, dz)
-  return self:walkDistance(dx * d, dy * d, dz, collisionCheck, walkAnim, idleAnim)
+  return self:walkDistance(dx * d, dy * d, dz, collisionCheck)
 end
 
 -- [COUROUTINE] Walks to the center of the tile (x, y).
@@ -155,9 +150,9 @@ end
 -- @param(h : number) the height of the tile
 -- @param(collisionCheck : boolean) if it should check collisions
 -- @ret(boolean) true if the movement was completed, false otherwise
-function Character:walkToTile(x, y, h, collisionCheck, walkAnim, idleAnim)
+function Character:walkToTile(x, y, h, collisionCheck)
   x, y, h = tile2Pixel(x, y, h or self:getTile().layer.height)
-  return self:walkToPoint(x, y, h, collisionCheck, walkAnim, idleAnim)
+  return self:walkToPoint(x, y, h, collisionCheck)
 end
 
 -- [COUROUTINE] Walks a distance in tiles defined by (dx, dy)

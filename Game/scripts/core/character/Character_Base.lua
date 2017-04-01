@@ -32,7 +32,13 @@ local Character_Base = AnimatedObject:inherit()
 -- @param(tileData : table) the character's data from tileset file
 local old_init = Character_Base.init
 function Character_Base:init(id, tileData)
-  local data = Database.characters[tileData.id + 1]
+  local db = Database.charField
+  if tileData.type == 1 then
+    db = Database.charBattle
+  elseif tileData.type == 2 then
+    db = Database.charOther
+  end
+  local data = db[tileData.id + 1]
   old_init(self, data)
   self.id = id
   self.type = 'character'
@@ -44,7 +50,7 @@ function Character_Base:init(id, tileData)
   
   self:initializeProperties(data.name, data.tiles)
   self:initializeGraphics(data.animations, tileData.direction, tileData.animID, data.transform)
-  self:initializeScripts(tileData, data)
+  self:initializeScripts(tileData)
 end
 
 -- Updates callback tree.
@@ -83,6 +89,11 @@ function Character_Base:initializeProperties(name, tiles, colliderHeight)
   self.autoAnim = true
   self.autoTurn = true
   self.stopOnCollision = true
+  self.walkAnim = 'Walk'
+  self.idleAnim = 'Idle'
+  self.dashAnim = 'Dash'
+  self.damageAnim = 'Damage'
+  self.koAnim = 'KO'
 end
 
 -- Overrides AnimatedObject:initializeGraphics.
@@ -97,16 +108,10 @@ end
 -- Creates listeners from data.
 -- @param(tileData : table) the data from tileset
 -- @param(data : table) the data from characters file
-function Character_Base:initializeScripts(tileData, data)
-  if tileData.startID >= 0 then
-    self.startListener = data.startListeners[tileData.startID + 1]
-  end
-  if tileData.collisionID >= 0 then
-    self.collisionListener = data.collisionListeners[tileData.collisionID + 1]
-  end
-  if tileData.interactID >= 0 then
-    self.interactListener = data.interactListeners[tileData.interactID + 1]
-  end
+function Character_Base:initializeScripts(tileData)
+  self.startListener = tileData.startScript
+  self.collisionListener = tileData.collisionScript
+  self.interactListener = tileData.interactScript
 end
 
 -- Load character's data from Game Save.

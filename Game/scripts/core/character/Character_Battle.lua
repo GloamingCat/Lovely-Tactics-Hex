@@ -7,9 +7,6 @@ Character methods that are called during a battle.
 
 =============================================================================]]
 
--- Imports
-local Callback = require('core/callback/Callback')
-
 -- Alias
 local tile2Pixel = math.field.tile2Pixel
 
@@ -44,7 +41,7 @@ function Character_Battle:loadSkill(skill, dir, wait)
   end
   
   if wait then
-    Callback.current:wait(minTime)
+    _G.Callback:wait(minTime)
   end
 end
 
@@ -78,7 +75,7 @@ function Character_Battle:castSkill(skill, dir, wait)
   end
   
   if wait then
-    Callback.current:wait(minTime)
+    _G.Callback:wait(minTime)
   end
 end
 
@@ -93,7 +90,7 @@ function Character_Battle:finishSkill(origin, skill)
     self:walkToPoint(x, y, z)
     self.autoTurn = autoTurn
   end
-  self:playAnimation("Idle")
+  self:playAnimation(self.idleAnim)
 end
 
 -------------------------------------------------------------------------------
@@ -118,8 +115,8 @@ function Character_Battle:damage(skill, result, origin)
     BattleManager:playAnimation(skill.individualAnimID, 
       pos.x, pos.y, pos.z - 1, mirror)
   end
-  self:playAnimation('Damage', true)
-  self:playAnimation('Idle')
+  self:playAnimation(self.damageAnim, true)
+  self:playAnimation(self.idleAnim)
 end
 
 return Character_Battle

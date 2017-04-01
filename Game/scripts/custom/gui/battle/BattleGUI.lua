@@ -1,15 +1,19 @@
 
+--[[===========================================================================
+
+BattleGUI
+-------------------------------------------------------------------------------
+The GUI that is openned in the start of a character turn.
+Its result is the action time that the character spent.
+
+=============================================================================]]
+
+-- Imports
 local GUI = require('core/gui/GUI')
 local TurnWindow = require('custom/gui/battle/TurnWindow')
 local SkillWindow = require('custom/gui/battle/SkillWindow')
 local ItemWindow = require('custom/gui/battle/ItemWindow')
 local Vector = require('core/math/Vector')
-
---[[===========================================================================
-
-The GUI that is openned in the start of a character turn.
-
-=============================================================================]]
 
 local BattleGUI = GUI:inherit()
 

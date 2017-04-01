@@ -1,21 +1,26 @@
 
-local Callback = require('core/callback/Callback')
-local Vector = require('core/math/Vector')
-local Animation = require('core/graphics/Animation')
-local GUI = require('core/gui/GUI')
-local TurnWindow = require('custom/gui/battle/TurnWindow')
-local StepWindow = require('custom/gui/battle/StepWindow')
-local BattleCursor = require('core/battle/BattleCursor')
-
 --[[===========================================================================
 
+ActionGUI
+-------------------------------------------------------------------------------
 The GUI that is open when player selects an action.
 It does not have windows, and instead it implements its own "waitForResult" 
 and "checkInput" methods.
+Its result is the action time that the character spent.
 
 =============================================================================]]
 
+-- Imports
+local GUI = require('core/gui/GUI')
+local StepWindow = require('custom/gui/battle/StepWindow')
+local TargetWindow = require('custom/gui/battle/TargetWindow')
+local BattleCursor = require('core/battle/BattleCursor')
+
 local ActionGUI = GUI:inherit()
+
+-------------------------------------------------------------------------------
+-- Initialization
+-------------------------------------------------------------------------------
 
 -- Overrides GUI:createWindows.
 function ActionGUI:createWindows()
@@ -23,6 +28,35 @@ function ActionGUI:createWindows()
   self.cursor = BattleCursor()
   self.action = BattleManager.currentAction
 end
+
+-------------------------------------------------------------------------------
+-- Auxiliary Windows
+-------------------------------------------------------------------------------
+
+-- Creates step window.
+-- @ret(StepWindow) newly created window
+function ActionGUI:createStepWindow()
+  if not self.stepWindow then
+    self.stepWindow = StepWindow(self)
+    self.stepWindow:setVisible(false)
+  end
+  return self.stepWindow
+end
+
+-- Creates target window.
+-- @ret(TargetWindow) newly created window
+function ActionGUI:createTargetWindow()
+  print('create target window')
+  if not self.targetWindow then
+    self.targetWindow = TargetWindow(self)
+    self.targetWindow:setVisible(false)
+  end
+  return self.targetWindow
+end
+
+-------------------------------------------------------------------------------
+-- Input
+-------------------------------------------------------------------------------
 
 -- [COROUTINE] Overrides GUI:waitForResult.
 function ActionGUI:waitForResult()
@@ -46,46 +80,56 @@ function ActionGUI:checkInput()
       self.result = self.action:onConfirm(self)
     end
   elseif InputManager.keys['cancel']:isTriggered() then
-    self.result = self.action:onCancel(self)
+    self.action:onCancel(self)
+    self.result = -1
   else
     local dx, dy = InputManager:axis(0.5, 0.0625)
     if dx ~= 0 or dy ~= 0 then
       local target = BattleManager.currentAction:nextTarget(dx, dy)
       if target then
-        self.cursor:setTile(target)
-        BattleManager:selectTarget(target)
+        self:selectTarget(target)
       end
     end
   end
 end
 
--- Creates step window.
--- @ret(StepWindow) newly created window
-function ActionGUI:createStepWindow()
-  if not self.stepWindow then
-    self.stepWindow = StepWindow(self)
-    self.stepWindow:setVisible(false)
+-- Sets given tile as current target.
+-- @param(target : ObjectTile) the new target tile
+function ActionGUI:selectTarget(target)
+  self.cursor:setTile(target)
+  BattleManager:selectTarget(target)
+  if self.targetWindow then
+    if target.characterList.size > 0 then
+      local battler = target.characterList[1].battler
+      self.targetWindow:setBattler(battler)
+      self.targetWindow:show()
+    else
+      self.targetWindow:hide()
+    end
   end
-  return self.stepWindow
 end
 
 -- Shows grid and cursor.
 function ActionGUI:startGridSelecting(target)
   if self.stepWindow then
-    Callback.current:fork(function()
+    _G.Callback:fork(function()
       self.stepWindow:show()
     end)
   end
   FieldManager:showGrid()
-  BattleManager:selectTarget(target or self.action.currentTarget)
-  self.cursor:setTile(target or self.action.currentTarget)
+  self:selectTarget(target or self.action.currentTarget)
 end
 
 -- Hides grid and cursor.
 function ActionGUI:endGridSelecting()
   if self.stepWindow then
-    Callback.current:fork(function()
+    _G.Callback:fork(function()
       self.stepWindow:hide()
+    end)
+  end
+  if self.targetWindow then
+    _G.Callback:fork(function()
+      self.targetWindow:hide()
     end)
   end
   FieldManager:hideGrid()

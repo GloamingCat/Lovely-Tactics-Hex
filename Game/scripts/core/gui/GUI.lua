@@ -63,7 +63,7 @@ function GUI:show()
   end
   self.closed = false
   for window in self.windowList:iterator() do
-    Callback.current.parent:fork(function()
+    _G.Callback.parent:fork(function()
       window:show()
     end)
   end
@@ -87,7 +87,7 @@ function GUI:hide()
   end
   self.open = false
   for window in self.windowList:iterator() do
-    Callback.current.parent:fork(function()
+    _G.Callback.parent:fork(function()
       window:hide()
     end, 2)
   end

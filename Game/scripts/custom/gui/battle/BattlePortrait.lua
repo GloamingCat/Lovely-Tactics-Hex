@@ -1,26 +1,36 @@
 
 --[[===========================================================================
 
-A window content with the battler's portrait and current HP/EP/ATB.
-TODO
+BattlePortrait
+-------------------------------------------------------------------------------
+A window content with a battler's portrait.
 
 =============================================================================]]
 
-local BattlePortrait = require('core/class'):new()
+-- Imports
+local Sprite = require('core/graphics/Sprite')
+local SimpleImage = require('core/gui/SimpleImage')
 
-function BattlePortrait:init(battler)
-end
+local BattlePortrait = SimpleImage:inherit()
 
-function BattlePortrait:update()
-end
+-------------------------------------------------------------------------------
+-- Initialization
+-------------------------------------------------------------------------------
 
-function BattlePortrait:updatePosition(pos)
-end
-
-function BattlePortrait:show()
-end
-
-function BattlePortrait:hide()
+-- Overrides SimpleImage:init.
+-- @param(battler : Battler) the portrait's battler
+-- @param(name : string) the name of the portrait
+local old_init = BattlePortrait.init
+function BattlePortrait:init(battler, name, ...)
+  local quad = battler.portraits[name]
+  local sprite
+  if quad then
+    sprite = Sprite.fromQuad(quad)
+  else
+    local character = TroopManager:getCharacter(battler)
+    sprite = character.sprite:clone(GUIManager.renderer)
+  end
+  old_init(self, sprite, ...)
 end
 
 return BattlePortrait

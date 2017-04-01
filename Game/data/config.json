@@ -1,9 +1,16 @@
 {
   "name": "LTH Example",
+  "screen": {
+    "nativeWidth": 400,
+    "nativeHeight": 225,
+    "widthScale": 2,
+    "heightScale": 2,
+    "scaleType": 1
+  },
   "player": {
     "pixelMovement": false,
     "walkSpeed": 90,
-    "dashSpeed": 120,
+    "dashSpeed": 200,
     "stopOnCollision": true,
     "script": {
       "path": "character/PlayerController.lua",

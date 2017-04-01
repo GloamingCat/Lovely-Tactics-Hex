@@ -1,9 +1,9 @@
 
 --[[===========================================================================
 
-FieldBase
+Field - Layers
 -------------------------------------------------------------------------------
-A FieldBase stores sets of different layers: Terrain, Object,
+Stores sets of different layers: Terrain, Object,
 Character and Region layers.
 It must be created from a data file.
 

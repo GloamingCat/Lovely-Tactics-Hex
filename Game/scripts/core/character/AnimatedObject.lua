@@ -11,31 +11,12 @@ An object with a table of animations.
 local Sprite = require('core/graphics/Sprite')
 local Animation = require('core/graphics/Animation')
 local Object = require('core/fields/Object')
-local Callback = require('core/callback/Callback')
 
 -- Alias
 local mathf = math.field
 local Quad = love.graphics.newQuad
 
 local AnimatedObject = Object:inherit()
-
--------------------------------------------------------------------------------
--- General
--------------------------------------------------------------------------------
-
--- Updates animation.
-function AnimatedObject:update()
-  if self.animation then
-    self.animation:update()
-  end
-end
-
--- Removes from draw and update list.
-function AnimatedObject:destroy()
-  if self.sprite then
-    self.sprite:removeSelf()
-  end
-end
 
 -------------------------------------------------------------------------------
 -- Initialization
@@ -63,9 +44,9 @@ function AnimatedObject:addAnimation(name, id)
   local data = Database.animCharacter[id + 1]
   local animation, texture, quad = Animation.fromData(data, FieldManager.renderer, self.sprite)
   self.animationData[name] = {
-    transform = data.transform, 
-    animation = animation, 
-    texture = texture, 
+    transform = data.transform,
+    animation = animation,
+    texture = texture,
     quad = quad
   }
 end
@@ -90,14 +71,32 @@ function AnimatedObject:playAnimation(name, wait, row)
   self.sprite:applyTransformation(data.transform)
   self.animation = anim
   anim.sprite = self.sprite
-  anim.paused = false
   if row then
     anim:setRow(row)
   end
+  anim.paused = false
   if wait then
-    Callback.current:wait(anim.duration)
+    _G.Callback:wait(anim.duration)
   end
   return anim
+end
+
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
+
+-- Updates animation.
+function AnimatedObject:update()
+  if self.animation then
+    self.animation:update()
+  end
+end
+
+-- Removes from draw and update list.
+function AnimatedObject:destroy()
+  if self.sprite then
+    self.sprite:removeSelf()
+  end
 end
 
 return AnimatedObject

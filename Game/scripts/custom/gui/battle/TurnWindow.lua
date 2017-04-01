@@ -78,7 +78,7 @@ end
 -- "Wait" button callback. End turn.
 -- @param(button : Button) the button chosen
 function TurnWindow:onWait(button)
-  self.result = 1
+  self.result = 0
 end
 
 -- "Skill" button callback. Opens Skill Window.

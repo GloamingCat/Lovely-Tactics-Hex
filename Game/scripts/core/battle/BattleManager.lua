@@ -11,7 +11,6 @@ and game over).
 -- Imports
 local PathFinder = require('core/algorithm/PathFinder')
 local CallbackTree = require('core/callback/CallbackTree')
-local Callback = require('core/callback/Callback')
 local MoveAction = require('core/battle/action/MoveAction')
 local Animation = require('core/graphics/Animation')
 
@@ -95,21 +94,20 @@ end
 -- [COROUTINE] Executes turn and returns when the turn finishes.
 function BattleManager:startTurn()
   local char = self.currentCharacter
-  char.battler.currentSteps = char.battler.att:steps()
+  char.battler.currentSteps = char.battler.steps()
   self:updateDistanceMatrix()
+  local actionCost = 0
   local AI = self.currentCharacter.battler.AI
   if AI then
     FieldManager.renderer:moveToObject(char, true)
-    AI.nextAction(self.currentCharacter)
+    actionCost = AI.nextAction(self.currentCharacter)
   else
-    repeat
-      local result = GUIManager:showGUIForResult('battle/BattleGUI')
-    until result == 1
+    actionCost = GUIManager:showGUIForResult('battle/BattleGUI')
   end
   -- Turn end
   local battler = self.currentCharacter.battler
-  local lostTurnCount = battler.currentSteps / battler.att:steps()
-  battler:decrementTurnCount(ceil(lostTurnCount * turnLimit / 2))
+  local stepCost = battler.currentSteps / battler.steps()
+  battler:decrementTurnCount(ceil((stepCost + actionCost) * turnLimit / 2))
 end
 
 -- Re-calculates the distance matrix.
@@ -157,7 +155,7 @@ function BattleManager:playAnimation(animID, x, y, z, mirror, wait)
     animation.sprite:removeSelf()
   end)
   if wait then
-    Callback.current:wait(animation.duration)
+    _G.Callback:wait(animation.duration)
   end
   return animation
 end

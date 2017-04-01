@@ -1,46 +1,5 @@
 [
   {
-    "name": "Template",
-    "colliderHeight": 4,
-    "tiles": [
-      {
-        "dx": 0,
-        "dy": 0
-      }
-    ],
-    "startListeners": [],
-    "collisionListeners": [],
-    "interactListeners": [],
-    "transform": {
-      "offsetX": 0,
-      "offsetY": 0,
-      "offsetDepth": 0,
-      "scaleX": 100,
-      "scaleY": 100,
-      "rotation": 0,
-      "red": 100,
-      "green": 100,
-      "blue": 100,
-      "alpha": 100
-    },
-    "animations": [
-      {
-        "name": "Idle",
-        "id": 0
-      },
-      {
-        "name": "Walk",
-        "id": 1
-      },
-      {
-        "name": "Dash",
-        "id": 2
-      }
-    ],
-    "portraits": [],
-    "tags": []
-  },
-  {
     "name": "Lancer",
     "colliderHeight": 4,
     "tiles": [
@@ -49,9 +8,6 @@
         "dy": 0
       }
     ],
-    "startListeners": [],
-    "collisionListeners": [],
-    "interactListeners": [],
     "transform": {
       "offsetX": 0,
       "offsetY": 0,
@@ -98,9 +54,6 @@
         "dy": 0
       }
     ],
-    "startListeners": [],
-    "collisionListeners": [],
-    "interactListeners": [],
     "transform": {
       "offsetX": 0,
       "offsetY": 0,
@@ -155,9 +108,6 @@
         "dy": 0
       }
     ],
-    "startListeners": [],
-    "collisionListeners": [],
-    "interactListeners": [],
     "transform": {
       "offsetX": 0,
       "offsetY": 0,
@@ -204,9 +154,6 @@
         "dy": 0
       }
     ],
-    "startListeners": [],
-    "collisionListeners": [],
-    "interactListeners": [],
     "transform": {
       "offsetX": 0,
       "offsetY": 0,

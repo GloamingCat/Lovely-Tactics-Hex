@@ -45,6 +45,33 @@ function Sprite:init(renderer, texture, quad)
   self.visible = true
 end
 
+-- Creates a new Sprite from quad data.
+-- @param(quadData : table) data from database
+-- @param(renderer : Renderer) the renderer of the sprite
+-- @ret(Sprite) the newly created Sprite
+function Sprite.fromQuad(quadData, renderer)
+  local texture = love.graphics.newImage('images/' .. quadData.imagePath)
+  local w, h = texture:getWidth(), texture:getHeight()
+  local quad = love.graphics.newQuad(quadData.x, quadData.y, 
+    quadData.width, quadData.height, w, h)
+  return Sprite(renderer, texture, quad)
+end
+
+-- Creates a deep copy of this sprite (does not clone texture).
+-- @param(renderer : Renderer) the renderer of the copy (optional)
+-- @ret(Sprite) the newly created copy
+function Sprite:clone(renderer)
+  local copy = Sprite(renderer or self.renderer, self.texture)
+  copy:setQuad(self.quad:getViewport())
+  copy:setOffset(self.offsetX, self.offsetY, self.offsetDepth)
+  copy:setScale(self.scaleX, self.scaleY)
+  copy:setColor(self.color)
+  copy:setPosition(self.position)
+  copy:setRotation(self.rotation)
+  copy:setVisible(self.visible)
+  return copy
+end
+
 -------------------------------------------------------------------------------
 -- Visibility
 -------------------------------------------------------------------------------

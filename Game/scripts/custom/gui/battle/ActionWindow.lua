@@ -1,14 +1,18 @@
 
+--[[===========================================================================
+
+ActionWindow
+-------------------------------------------------------------------------------
+A window that implements methods in common for battle windows that start
+an action (TurnWindow, SkillWindow and ItemWindow).
+Its result is the action time that the character spent.
+
+=============================================================================]]
+
+-- Imports
 local Callback = require('core/callback/Callback')
 local ButtonWindow = require('core/gui/ButtonWindow')
 local SkillAction = require('core/battle/action/SkillAction')
-
---[[===========================================================================
-
-A window that implements methods in common for battle windows that start
-an action (TurnWindow, SkillWindow and ItemWindow).
-
-=============================================================================]]
 
 local ActionWindow = ButtonWindow:inherit()
 
@@ -20,9 +24,9 @@ function ActionWindow:selectAction(actionType, ...)
   BattleManager:selectAction(actionType(...))
   self.GUI:hide()
   local result = GUIManager:showGUIForResult('battle/ActionGUI')
-  if result == 1 then
+  if result >= 0 then
     -- End of turn.
-    self.result = 1
+    self.result = result
   else
     FieldManager.renderer:moveToObject(BattleManager.currentCharacter)
     self.GUI:show()

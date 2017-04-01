@@ -29,19 +29,39 @@
       {
         "animID": 0,
         "direction": 0,
-        "startID": -1,
-        "collisionID": -1,
-        "interactID": -1,
+        "startScript": {
+          "path": "",
+          "param": ""
+        },
+        "collisionScript": {
+          "path": "",
+          "param": ""
+        },
+        "interactScript": {
+          "path": "",
+          "param": ""
+        },
         "id": 0,
+        "type": 0,
         "tags": []
       },
       {
         "animID": 0,
         "direction": 270,
-        "startID": 0,
-        "collisionID": -1,
-        "interactID": -1,
+        "startScript": {
+          "path": "",
+          "param": ""
+        },
+        "collisionScript": {
+          "path": "",
+          "param": ""
+        },
+        "interactScript": {
+          "path": "",
+          "param": ""
+        },
         "id": 0,
+        "type": 0,
         "tags": []
       }
     ],

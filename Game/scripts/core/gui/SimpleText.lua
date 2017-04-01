@@ -15,10 +15,13 @@ local Text = require('core/graphics/Text')
 
 local SimpleText = require('core/class'):new()
 
+-------------------------------------------------------------------------------
+-- Initialization
+-------------------------------------------------------------------------------
+
 function SimpleText:init(text, relativePosition, width, font, align)
   font = font or Font.gui_default
   align = align or 'left'
-  --self.sprite = Sprite(GUIManager.renderer)
   self.sprite = Text({'{font}' .. text, width, align, font = font}, GUIManager.renderer)
   self.text = text
   self.width = width
@@ -32,8 +35,9 @@ function SimpleText:setText(text)
     self.align, font = self.font})
 end
 
-function SimpleText:update()
-end
+-------------------------------------------------------------------------------
+-- Window Content methods
+-------------------------------------------------------------------------------
 
 function SimpleText:show()
   self.sprite:setVisible(true)

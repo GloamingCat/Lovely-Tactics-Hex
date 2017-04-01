@@ -42,14 +42,14 @@ function Callback:resume(co)
   if coroutine.status(co) == 'dead' then
     return false
   else
-    local previous = Callback.current
-    Callback.current = self
+    local previous = _G.Callback
+    _G.Callback = self
     local state, result = coroutine.resume(co)
     if not state then
       error( tostring(result), 2 )	-- Output error message
       return false
     end
-    Callback.current = previous
+    _G.Callback = previous
     return true
   end
 end

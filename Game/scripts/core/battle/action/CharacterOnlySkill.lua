@@ -56,6 +56,7 @@ function CharacterOnlySkill:onActionGUI(GUI)
   self:resetAllTiles(false)
   self:resetTargetTiles(false, false)
   self:resetCharacterTiles()
+  GUI:createTargetWindow()
   GUI:startGridSelecting(self:firstTarget())
 end
 
