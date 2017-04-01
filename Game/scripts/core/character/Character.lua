@@ -79,10 +79,14 @@ end
 -- @param(collisionCheck : boolean) if it should check collisions
 -- @ret(boolean) true if the movement was completed, false otherwise
 function Character:walkToPoint(x, y, z, collisionCheck)
-  local anim = self.walkAnim
-  if self.speed >= speedLimit then
-    anim = self.dashAnim
+  if self.currentMovement then
+    self.currentMovement:stop()
   end
+  self.currentMovement = _G.Callback
+  local anim = self.walkAnim
+  if self.moveSpeed >= speedLimit then
+    anim = self.dashAnim
+  end  
   z = z or self.position.z
   self.moving = true
   local dest = Vector(x, y, z)
@@ -95,7 +99,7 @@ function Character:walkToPoint(x, y, z, collisionCheck)
   end
   local origin = self.position:clone()
   local d = (dest - origin):len2D()
-  local t = self.speed * time() / d
+  local t = self.moveSpeed * time() / d
   while true do
     local collision = self:instantMoveTo(origin:lerp(dest, min(1, t)), collisionCheck)
     if collision ~= nil and self.stopOnCollision == true then
@@ -110,13 +114,17 @@ function Character:walkToPoint(x, y, z, collisionCheck)
       break
     end
     coroutine.yield()
-    t = t + self.speed * time() / d
+    if _G.Callback.interrupted then
+      return false
+    end
+    t = t + self.moveSpeed * time() / d
   end
   if self.autoAnim then
     self:playAnimation(self.idleAnim)
   end
   self.moving = false
   self:setPosition(dest)
+  self.currentMovement = nil
   return true
 end
 
@@ -185,7 +193,9 @@ function Character:walkPath(path, collisionCheck)
   while not stack:isEmpty() do
     local nextTile = stack:pop()
     local h = nextTile.layer.height
-    self:walkToTile(nextTile.x, nextTile.y, h, collisionCheck)
+    if not self:walkToTile(nextTile.x, nextTile.y, h, collisionCheck) then
+      break
+    end
   end
 end
 

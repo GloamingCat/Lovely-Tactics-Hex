@@ -78,7 +78,7 @@ end
 function FieldManager:createCamera(sizeX, sizeY, layerCount)
   local renderer = FieldCamera(sizeX * sizeY * layerCount * 4, 
     mathf.minDepth(sizeX, sizeY), mathf.maxDepth(sizeX, sizeY))
-  renderer:setPosition(mathf.pixelWidth(sizeX, sizeY) / 2, 0)
+  renderer:setXYZ(mathf.pixelWidth(sizeX, sizeY) / 2, 0)
   return renderer
 end
 
@@ -103,7 +103,7 @@ function FieldManager:getState()
     updateList = self.updateList,
     characterList = self.characterList,
     player = self.player,
-    renderer = self.renderer:getState(),
+    renderer = self.renderer,
     blocks = self.blocks,
     field = self.currentField
   }
@@ -117,7 +117,7 @@ function FieldManager:setState(state)
   self.player = state.player
   self.blocks = state.blocks
   self.currentField = state.field
-  self.renderer:setState(state.renderer)
+  self.renderer = state.renderer
 end
 
 -- Stores FieldManager's current state in the stack.

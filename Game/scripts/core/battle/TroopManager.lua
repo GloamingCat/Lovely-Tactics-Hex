@@ -78,7 +78,7 @@ function TroopManager:createBattleCharacter(tile, battlerData, field)
   character:addToTiles()
   character.battler = Battler(battlerData, tile.party)
   character:turnToTile(field.sizeX / 2, field.sizeY / 2)
-  character.speed = charSpeed
+  character.moveSpeed = charSpeed
   self.characterList:add(character)
   return character
 end

@@ -10,6 +10,7 @@ Stores them in order and draws them using a batch.
 
 -- Imports
 local List = require('core/algorithm/List')
+local Transform = require('core/math/Transform')
 
 -- Alias
 local lgraphics = love.graphics
@@ -19,7 +20,7 @@ local round = math.round
 local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
 local colorf = 255 / 100
 
-local Renderer = require('core/class'):new()
+local Renderer = Transform:inherit()
 
 -------------------------------------------------------------------------------
 -- Initialization
@@ -28,15 +29,13 @@ local Renderer = require('core/class'):new()
 -- @param(size : number) the max number of sprites.
 -- @param(minDepth : number) the minimun depth of a sprite
 -- @param(maxDepth : number) the maximum depth of a sprite
+local old_init = Renderer.init
 function Renderer:init(size, minDepth, maxDepth)
+  old_init(self)
   self.minDepth = minDepth
   self.maxDepth = maxDepth
   self.size = size
   self.list = {}
-  self.x = 0
-  self.y = 0
-  self.zoom = 1
-  self.rotation = 0
   self.batch = lgraphics.newSpriteBatch(blankTexture, size, 'dynamic')
   self.canvas = lgraphics.newCanvas(1, 1)
   self:resizeCanvas()
@@ -44,8 +43,8 @@ end
 
 -- Resize canvas acording to the zoom.
 function Renderer:resizeCanvas()
-  local newW = ScreenManager.scaleX * ScreenManager.width * self.zoom
-  local newH = ScreenManager.scaleY * ScreenManager.height * self.zoom
+  local newW = ScreenManager.width * ScreenManager.scaleX
+  local newH = ScreenManager.height * ScreenManager.scaleY
   if newW ~= self.canvas:getWidth() and newH ~= self.canvas:getHeight() then
     self.canvas = lgraphics.newCanvas(newW, newH)
     self.needsRedraw = true
@@ -59,32 +58,30 @@ end
 -- Sets Renderer's center position in the world coordinates.
 -- @param(x : number) pixel x
 -- @param(y : number) pixel y
-function Renderer:setPosition(x, y)
+local old_setXYZ = Renderer.setXYZ
+function Renderer:setXYZ(x, y, z)
   x = round(x)
   y = round(y)
-  if self.x ~= x or self.y ~= y then
+  if self.position.x ~= x or self.position.y ~= y then
+    old_setXYZ(self, x, y, 0)
     self.needsRedraw = true
   end
-  self.x = x
-  self.y = y
 end
 
 -- Sets Renderer's zoom. 1 is normal.
 -- @param(zoom : number) new zoom
 function Renderer:setZoom(zoom)
-  if zoom < self.zoom then
-    self.zoom = zoom
-    self:resizeCanvas()
-  else
-    self.zoom = zoom
+  if self.scaleX ~= zoom or self.scaleY ~= zoom then
+    self:setScale(zoom, zoom)
+    self.needsRedraw = true
   end
 end
 
 -- Sets Renderer's rotation.
 -- @param(angle : number) rotation in degrees
 function Renderer:setRotation(angle)
-  if angle ~= self.angle then
-    self.angle = angle
+  if angle ~= self.rotation then
+    self.rotation = angle
     self.needsRedraw = true
   end
 end
@@ -115,9 +112,9 @@ function Renderer:redrawCanvas()
   lgraphics.push()
   lgraphics.setCanvas(self.canvas)
   lgraphics.translate(-ox, -oy)
-  lgraphics.scale(ScreenManager.scaleX * self.zoom, ScreenManager.scaleY * self.zoom)
+  lgraphics.scale(ScreenManager.scaleX * self.scaleX, ScreenManager.scaleY * self.scaleY)
   lgraphics.rotate(self.rotation)
-  lgraphics.translate(-self.x + ox, -self.y + oy)
+  lgraphics.translate(-self.position.x + ox, -self.position.y + oy)
   lgraphics.clear()
   local drawCalls = 0
   local started = false
@@ -128,7 +125,7 @@ function Renderer:redrawCanvas()
         self.batch:setTexture(blankTexture)
         started = true
       end
-      self:drawList(list, toDraw)
+      self:drawList(list)
     end
   end
   self:clearBatch()

@@ -40,9 +40,9 @@ function Character_Base:init(id, tileData)
   end
   local data = db[tileData.id + 1]
   old_init(self, data)
+  
   self.id = id
   self.type = 'character'
-  self.moving = false
   self.callbackTree = CallbackTree()
   
   FieldManager.characterList:add(self)
@@ -84,8 +84,7 @@ end
 function Character_Base:initializeProperties(name, tiles, colliderHeight)
   self.name = name
   self.collisionTiles = tiles
-  self.position = Vector(0, 0, 0)
-  self.speed = 60
+  self.moveSpeed = 60
   self.autoAnim = true
   self.autoTurn = true
   self.stopOnCollision = true

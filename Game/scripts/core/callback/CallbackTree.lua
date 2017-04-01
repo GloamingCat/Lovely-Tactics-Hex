@@ -62,7 +62,13 @@ end
 -- Updates all children and removes to concluded ones.
 function CallbackTree:update()
   self.children:conditionalRemove(function(child)
-    return not child:update()
+    if child:update() then
+      return false
+    else
+      child.parent = nil
+      child.tree = nil
+      return true
+    end
   end)
 end
 

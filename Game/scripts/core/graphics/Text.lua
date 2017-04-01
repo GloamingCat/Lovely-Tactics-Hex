@@ -79,8 +79,8 @@ end
 
 -- Draws text in the given position.
 function Text:draw()
-  local sx = self.scaleX * ScreenManager.scaleX * self.renderer.zoom
-  local sy = self.scaleY * ScreenManager.scaleY * self.renderer.zoom
+  local sx = self.scaleX * ScreenManager.scaleX * self.renderer.scaleX
+  local sy = self.scaleY * ScreenManager.scaleY * self.renderer.scaleY
   local w, h = self.texture:getWidth(), self.texture:getHeight()
   local firstShader = lgraphics.getShader()
   lgraphics.setShader(textShader)

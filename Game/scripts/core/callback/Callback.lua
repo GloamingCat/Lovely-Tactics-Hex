@@ -69,6 +69,13 @@ end
 -- Auxiliary functions
 -------------------------------------------------------------------------------
 
+-- Wait until this callbacks finishes.
+function Callback:waitForEnd()
+  while self.parent do
+    coroutine.yield()
+  end
+end
+
 -- Executes this callback until it finishes.
 -- Specially useful when the parent callback must wait until this one finishes.
 function Callback:execAll()
@@ -103,6 +110,14 @@ function Callback:moveTo(parent)
     self.parent.children:removeElement(self)
   end
   parent:addChild(self)
+end
+
+-- Interrupts this callback.
+function Callback:stop()
+  self.parent.children:removeElement(self)
+  self.parent = nil
+  self.tree = nil
+  self.interrupted = true
 end
 
 return Callback

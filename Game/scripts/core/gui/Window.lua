@@ -210,10 +210,17 @@ function Window:show(add)
   if self.open then
     return
   end
+  if self.currentMovement then
+    self.currentMovement:stop()
+  end
+  self.currentMovement = _G.Callback
   self.closed = false
   local time = love.timer.getDelta
   repeat
     coroutine.yield()
+    if _G.Callback.interrupted then
+      return false
+    end
     self:setScale(self.scaleX, self.scaleY + time() * self.speed)
   until self.scaleY >= 1
   self:showContent()
@@ -223,6 +230,8 @@ function Window:show(add)
   end
   self:setScale(self.scaleX, 1)
   self.open = true
+  self.currentMovement = nil
+  return true
 end
 
 -- [COROUTINE] Closes this window.
@@ -230,11 +239,18 @@ function Window:hide(remove)
   if self.closed then
     return
   end
+  if self.currentMovement then
+    self.currentMovement:stop()
+  end
+  self.currentMovement = _G.Callback
   self.open = false
   local time = love.timer.getDelta
   self:hideContent()
   repeat
     coroutine.yield()
+    if _G.Callback.interrupted then
+      return false
+    end
     self:setScale(self.scaleX, self.scaleY - time() * self.speed)
   until self.scaleY <= 0
   self:setScale(self.scaleX, 0)
@@ -243,6 +259,7 @@ function Window:hide(remove)
   end
   self:setScale(self.scaleX, 0)
   self.closed = true
+  self.currentMovement = nil
 end
 
 return Window
