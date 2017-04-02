@@ -65,7 +65,6 @@ function FieldManager:loadField(fieldID)
   self.currentField:mergeLayers(fieldData.layers)
   for tile in self.currentField:gridIterator() do
     tile:createNeighborList()
-    tile:updateDepth()
   end
   collectgarbage()
 end
@@ -233,14 +232,14 @@ end
 -- Shows field grid GUI.
 function FieldManager:showGrid()
   for tile in self.currentField:gridIterator() do
-    tile:show()
+    tile.gui:show()
   end
 end
 
 -- Hides field grid GUI.
 function FieldManager:hideGrid()
   for tile in self.currentField:gridIterator() do
-    tile:hide()
+    tile.gui:hide()
   end
 end
 

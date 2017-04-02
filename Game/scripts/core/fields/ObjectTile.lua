@@ -40,7 +40,6 @@ function ObjectTile:init(layer, x, y, defaultRegion)
   if defaultRegion then
     self.regionList:add(defaultRegion)
   end
-  self:createGridGUI()
 end
 
 -- Generates a unique character ID for a character in this tile.

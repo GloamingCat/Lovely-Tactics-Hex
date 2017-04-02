@@ -18,6 +18,10 @@ local pph = Config.grid.pixelsPerHeight
 
 local Obstacle = Object:inherit()
 
+-------------------------------------------------------------------------------
+-- Initialization
+-------------------------------------------------------------------------------
+
 -- @param(data : table) the obstacle's data from tileset file
 -- @param(tileData : table) the data about ramp and collision
 -- @param(group : table) the group this obstacle is part of
@@ -53,6 +57,10 @@ function Obstacle:initializeNeighbors(neighbors)
   end
 end
 
+-------------------------------------------------------------------------------
+-- General
+-------------------------------------------------------------------------------
+
 -- Overrides Object:setXYZ.
 local old_setXYZ = Obstacle.setXYZ
 function Obstacle:setXYZ(x, y, z)
@@ -78,6 +86,16 @@ function Obstacle:isPassable(dx, dy, obj)
   return self.neighbors[dx][dy] == true
 end
 
+-- Converting to string.
+-- @ret(string) a string representation
+function Obstacle:toString()
+  return 'Obstacle ' .. self.name
+end
+
+-------------------------------------------------------------------------------
+-- Tiles
+-------------------------------------------------------------------------------
+
 -- Gets all tiles this object is occuping.
 -- @ret(table) the list of tiles
 function Obstacle:getAllTiles()
@@ -96,12 +114,6 @@ end
 function Obstacle:removeFromTiles(tiles)
   tiles = tiles or self:getTiles()
   tiles[1].obstacleList:removeElement(self)
-end
-
--- Converting to string.
--- @ret(string) a string representation
-function Obstacle:toString()
-  return 'Obstacle ' .. self.name
 end
 
 return Obstacle

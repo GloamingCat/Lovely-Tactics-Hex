@@ -84,7 +84,7 @@ end
 -- Verifies player's input. Stores result of action in self.result.
 function ActionGUI:checkInput()
   if InputManager.keys['confirm']:isTriggered() then
-    if self.action.currentTarget.selectable then
+    if self.action.currentTarget.gui.selectable then
       self.result = self.action:onConfirm(self)
     end
   elseif InputManager.keys['cancel']:isTriggered() then

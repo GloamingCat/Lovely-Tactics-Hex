@@ -131,13 +131,21 @@ function math.angle2Row(angle)
   return 0
 end
 
--- Calculates length of vector in 2D pixel coordinates.
+-- Calculates length of vector in pixel coordinates.
+-- @param(x : number) vector's x coordinates
+-- @param(y : number) vector's y coordinates
+-- @param(z : number) vector's z coordinates
+-- @ret(number) the pixel distance
 function math.len2D(x, y, z)
   z = z + y
   return sqrt(x*x + y*y + z*z)
 end
 
 -- Calculates length of vector in a 3D coordinate system.
+-- @param(x : number) vector's x coordinates
+-- @param(y : number) vector's y coordinates
+-- @param(z : number) vector's z coordinates
+-- @ret(number) the 3D distance
 function math.len(x, y, z)
   return sqrt(x*x + y*y + z*z)
 end

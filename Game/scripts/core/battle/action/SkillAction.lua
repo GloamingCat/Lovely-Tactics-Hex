@@ -52,13 +52,13 @@ end
 function SkillAction:selectTarget(tile)
   if self.currentTargets then
     for i = #self.currentTargets, 1, -1 do
-      self.currentTargets[i]:setSelected(false)
+      self.currentTargets[i].gui:setSelected(false)
     end
   end
   self.currentTarget = tile
   self.currentTargets = self:getAllAffectedTiles(tile)
   for i = #self.currentTargets, 1, -1 do
-    self.currentTargets[i]:setSelected(true)
+    self.currentTargets[i].gui:setSelected(true)
   end
 end
 
@@ -106,8 +106,8 @@ function SkillAction:resetTargetTiles(selectMovable, selectBorder)
       if i >= 1 and j >= 0 and i <= field.sizeX and j <= field.sizeY then
         local n = field:getObjectTile(i, j, h) 
         if isnan(matrix:get(i, j)) then -- If this neighbor is not reachable
-          n.selectable = selectBorder and self:isSelectable(n)
-          n:setColor(self.skill.type)
+          n.gui.selectable = selectBorder and self:isSelectable(n)
+          n.gui:setColor(self.skill.type)
         end
       end
     end

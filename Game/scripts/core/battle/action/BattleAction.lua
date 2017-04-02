@@ -84,8 +84,8 @@ end
 -- @param(selectable : boolean) the value to set all tiles
 function BattleAction:resetAllTiles(selectable)
   for tile in self.field:gridIterator() do
-    tile.selectable = selectable
-    tile:setColor('')
+    tile.gui.selectable = selectable
+    tile.gui:setColor('')
   end
 end
 
@@ -97,8 +97,8 @@ function BattleAction:resetMovableTiles(selectable)
     for j = 1, self.field.sizeY do
       if not isnan(matrix:get(i, j)) then
         local tile = self.field:getObjectTile(i, j, h)
-        tile.selectable = selectable
-        tile:setColor('move')
+        tile.gui.selectable = selectable
+        tile.gui:setColor('move')
       end
     end
   end
@@ -112,10 +112,10 @@ end
 -- @param(tile : ObjectTile) the new target
 function BattleAction:selectTarget(tile)
   if self.currentTarget ~= nil then
-    self.currentTarget:setSelected(false)
+    self.currentTarget.gui:setSelected(false)
   end
   self.currentTarget = tile
-  tile:setSelected(true)
+  tile.gui:setSelected(true)
 end
 
 -- Gets the first selected target tile.

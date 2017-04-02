@@ -39,6 +39,8 @@ end
 -- Movement
 -------------------------------------------------------------------------------
 
+-- Initializes all data of the object's movement and velocity.
+-- @param(pos : Vector) initial position (optional)
 function Transform:initPosition(pos)
   pos = pos or Vector(0, 0, 0)
   self.position = pos
@@ -106,10 +108,14 @@ function Transform:waitForMovement()
 end
 
 -- Calculates the distance between current position and a given point.
+-- @param(x : number) the x coordinate of the point
+-- @param(y : number) the y coordinate of the point
+-- @param(z : number) the z coordinate of the point
+-- @ret(number) the distance to the point
 function Transform:distanceTo(x, y, z)
-  local x2 = self.position.x
-  local z2 = self.position.z
-  return sqrt(x2 * x2 + z2 * z2)
+  local x2 = self.position.x - x
+  local y2 = self.position.y - y
+  return sqrt(x2 * x2 + y2 * y2)
 end
 
 -------------------------------------------------------------------------------

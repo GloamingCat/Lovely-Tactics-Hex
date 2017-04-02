@@ -85,8 +85,8 @@ end
 function CharacterOnlySkill:resetCharacterTiles()
   for i = 1, self.selectableTiles.size do
     local t = self.selectableTiles[i]
-    t.selectable = true
-    t:setColor(t.colorName)
+    t.gui.selectable = true
+    t.gui:setColor(t.gui.colorName)
   end
 end
 

@@ -9,15 +9,6 @@ Implements functions that are only used in battle.
 
 -- Imports
 local List = require('core/algorithm/List')
-local Animation = require('core/graphics/Animation')
-
--- Alias
-local tile2Pixel = math.field.tile2Pixel
-local max = math.max
-
--- Constants
-local tileW = Config.grid.tileW
-local tileH = Config.grid.tileH
 
 local ObjectTile_Battle = require('core/class'):new()
 
@@ -32,52 +23,10 @@ function ObjectTile_Battle:getMoveCost()
     self.layer.height)
 end
 
--------------------------------------------------------------------------------
--- Grid GUI
--------------------------------------------------------------------------------
-
--- Creates the graphical elements for battle grid navigation.
-function ObjectTile_Battle:createGridGUI()
-  local renderer = FieldManager.renderer
-  local x, y, z = tile2Pixel(self:coordinates())
-  x = x - tileW / 2
-  y = y - tileH / 2
-  if Config.gui.tileAnimID >= 0 then
-    local baseAnim = Database.animOther[Config.gui.tileAnimID + 1]
-    self.baseAnim = Animation.fromData(baseAnim, renderer)
-    self.baseAnim.sprite:setXYZ(x, y, z)
-  end
-  if Config.gui.tileHLAnimID >= 0 then
-    local hlAnim = Database.animOther[Config.gui.tileHLAnimID + 1]
-    self.highlightAnim = Animation.fromData(hlAnim, renderer)
-    self.highlightAnim.sprite:setXYZ(x, y, z)
-  end
-  self:hide()
-end
-
 -- Updates graphics animation.
 function ObjectTile_Battle:update()
-  if self.highlightAnim then
-    self.highlightAnim:update()
-  end
-  if self.baseAnim then
-    self.baseAnim:update()
-  end
-end
-
--- Updates graphics pixel depth according to the terrains' 
---  depth in this tile's coordinates.
-function ObjectTile_Battle:updateDepth()
-  local tiles = FieldManager.currentField.terrainLayers[self.layer.height]
-  local maxDepth = tiles[1].grid[self.x][self.y].depth
-  for i = #tiles, 2, -1 do
-    maxDepth = max(maxDepth, tiles[i].grid[self.x][self.y].depth)
-  end
-  if self.baseAnim then
-    self.baseAnim.sprite:setOffset(nil, nil, maxDepth / 2)
-  end
-  if self.highlightAnim then
-    self.highlightAnim.sprite:setOffset(nil, nil, maxDepth / 2 - 1)
+  if self.gui then
+    self.gui:update()
   end
 end
 
@@ -189,48 +138,6 @@ function ObjectTile_Battle:hasAlly(yourParty)
       return true
     end
   end
-end
-
--------------------------------------------------------------------------------
--- Grid GUI
--------------------------------------------------------------------------------
-
--- Selects / deselects this tile.
--- @param(value : boolean) true to select, false to deselect
-function ObjectTile_Battle:setSelected(value)
-  if self.highlightAnim then
-    self.highlightAnim.sprite:setVisible(value)
-  end
-end
-
--- Sets color to the color with the given label.
--- @param(name : string) color label
-function ObjectTile_Battle:setColor(name)
-  self.colorName = name
-  if name == nil or name == '' then
-    name = 'nothing'
-  end
-  name = 'tile_' .. name
-  if not self.selectable then
-    name = name .. '_off'
-  end
-  local c = Color[name]
-  self.baseAnim.sprite:setColor(c)
-end
-
--- Shows tile edges.
-function ObjectTile_Battle:show()
-  if self.baseAnim then
-    self.baseAnim.sprite:setVisible(true)
-  end
-end
-
--- Hides tile edges.
-function ObjectTile_Battle:hide()
-  if self.baseAnim then
-    self.baseAnim.sprite:setVisible(false)
-  end
-  self:setSelected(false)
 end
 
 return ObjectTile_Battle

@@ -29,23 +29,13 @@ local Knockback = Animation:inherit()
 local old_setRow = Knockback.setRow
 function Knockback:setRow(row)
   old_setRow(self, row)
-  
-  local centerx = self.sprite.offsetX
-  local centery = self.sprite.offsetY
-  
   local dx, dy = angle2Coord(row2Angle(row))
-  dx, dy = dx * step, -dy * step
-
-  self.maxx = centerx + abs(dx)
-  self.maxy = centery + abs(dy)
-  self.minx = centerx - abs(dx)
-  self.miny = centery - abs(dy)
-  
-  self.speedx = dx * 2 / self.duration * 60
-  self.speedy = dy * 2 / self.duration * 60
-  
-  self.currentX = centerx
-  self.currentY = centery
+  self.origX = self.sprite.offsetX
+  self.origY = self.sprite.offsetY
+  self.destX = self.origX + dx * step
+  self.destY = self.origY - dy * step
+  self.speed = 60 / self.duration
+  self.time = 0
 end
 
 -------------------------------------------------------------------------------
@@ -55,17 +45,14 @@ end
 local old_update = Knockback.update
 function Knockback:update()
   old_update(self)
-  self.currentX = self.currentX + self.speedx * time()
-  self.currentY = self.currentY + self.speedy * time()
-  if self.currentX > self.maxx or self.currentX < self.minx then
-    self.speedx = -self.speedx
-    self.currentX = self.currentX + self.speedx * time()
+  self.time = self.time + time() * self.speed
+  if self.time > 1 then
+    self.speed = -self.speed
+    self.time = self.time + time() * self.speed
   end
-  if self.currentY > self.maxy or self.currentY < self.miny then
-    self.speedy = -self.speedy
-    self.currentY = self.currentY + self.speedy * time()
-  end
-  self.sprite:setOffset(round(self.currentX), round(self.currentY))
+  local x = self.origX * (1 - self.time) + self.destX * self.time
+  local y = self.origY * (1 - self.time) + self.destY * self.time
+  self.sprite:setOffset(round(x), round(y))
 end
 
 return Knockback

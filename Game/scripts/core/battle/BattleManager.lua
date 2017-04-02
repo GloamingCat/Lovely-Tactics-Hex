@@ -13,6 +13,7 @@ local PathFinder = require('core/algorithm/PathFinder')
 local CallbackTree = require('core/callback/CallbackTree')
 local MoveAction = require('core/battle/action/MoveAction')
 local Animation = require('core/graphics/Animation')
+local TileGraphics = require('core/fields/TileGUI')
 
 -- Alias
 local Random = love.math.random
@@ -36,6 +37,10 @@ end
 
 -- Start a battle.
 function BattleManager:startBattle()
+  for tile in FieldManager.currentField:gridIterator() do
+    tile.gui = TileGraphics(tile)
+    tile.gui:updateDepth()
+  end
   return self:battleLoop()
 end
 
@@ -55,6 +60,9 @@ end
 function BattleManager:clear()
   for bc in TroopManager.characterList:iterator() do
     bc.battler = nil
+  end
+  for tile in FieldManager.currentField:gridIterator() do
+    tile.gui = nil
   end
   if self.cursor then
     self.cursor:destroy()
