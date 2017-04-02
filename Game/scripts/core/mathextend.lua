@@ -115,13 +115,14 @@ local int = {dir[2] / 2, (dir[2] + dir[3]) / 2, (dir[3] + dir[4]) / 2,
 -- @param(row : number) the rown from 0 to 7
 -- @ret(number) the angle in radians
 function math.row2Angle(row)
-  return dir[row]
+  return dir[row + 1]
 end
 
 -- Converts float angle to row [0, 7].
 -- @param(angle : number) the angle in radians
 -- @ret(number) the row from 0 to 7
 function math.angle2Row(angle)
+  angle = math.mod(angle, 360)
   for i = 1, 8 do
     if angle < int[i] then
       return i - 1

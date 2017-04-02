@@ -109,7 +109,6 @@ end
 function Transform:distanceTo(x, y, z)
   local x2 = self.position.x
   local z2 = self.position.z
-  print(self.position)
   return sqrt(x2 * x2 + z2 * z2)
 end
 

@@ -138,7 +138,6 @@ end
 function Character:walkInAngle(d, angle, dz, collisionCheck)
   local dx, dy = angle2Coord(angle or self.direction)
   dz = dz or -dy
-  print(dx * d, dy * d, dz)
   return self:walkDistance(dx * d, dy * d, dz, collisionCheck)
 end
 

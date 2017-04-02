@@ -34,7 +34,7 @@ function Knockback:setRow(row)
   local centery = self.sprite.offsetY
   
   local dx, dy = angle2Coord(row2Angle(row))
-  dx, dy = -dx * step, -dy * step
+  dx, dy = dx * step, -dy * step
 
   self.maxx = centerx + abs(dx)
   self.maxy = centery + abs(dy)

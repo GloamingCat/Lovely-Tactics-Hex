@@ -70,7 +70,6 @@ end
 -- @param(obj : Object) the object which is trying to pass through this obstacle (optional)
 function Obstacle:isPassable(dx, dy, obj)
   if self == obj then
-    print('bla')
     return true
   end
   if self.neighbors[dx] == nil then
