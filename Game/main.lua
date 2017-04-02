@@ -27,7 +27,6 @@ function love.load(arg)
     direction = startPos.direction or 270
   }
   FieldManager:loadTransition(initialTransition)
-  ScreenManager:setScale(2)
 end
 
 -- Callback function used to update the state of the game every frame.

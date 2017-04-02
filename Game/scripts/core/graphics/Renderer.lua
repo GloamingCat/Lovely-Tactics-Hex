@@ -18,7 +18,7 @@ local round = math.round
 
 -- Constants
 local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
-local colorf = 255 / 100
+local colorf = Color.toFloat
 
 local Renderer = Transformable:inherit()
 
@@ -108,13 +108,15 @@ function Renderer:redrawCanvas()
   self.toDraw = List()
   local ox = math.round(self.canvas:getWidth() / 2)
   local oy = math.round(self.canvas:getHeight() / 2)
+  local sx = ScreenManager.scaleX * self.scaleX
+  local sy = ScreenManager.scaleY * self.scaleY
   local firstCanvas = lgraphics.getCanvas()
   lgraphics.push()
   lgraphics.setCanvas(self.canvas)
   lgraphics.translate(-ox, -oy)
-  lgraphics.scale(ScreenManager.scaleX * self.scaleX, ScreenManager.scaleY * self.scaleY)
+  lgraphics.scale(sx, sy)
   lgraphics.rotate(self.rotation)
-  lgraphics.translate(-self.position.x + ox, -self.position.y + oy)
+  lgraphics.translate(-self.position.x + ox * 2 / sx, -self.position.y + oy * 2 / sy)
   lgraphics.clear()
   local drawCalls = 0
   local started = false

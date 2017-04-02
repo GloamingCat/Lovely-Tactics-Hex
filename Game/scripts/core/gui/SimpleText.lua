@@ -22,17 +22,13 @@ local SimpleText = require('core/class'):new()
 function SimpleText:init(text, relativePosition, width, font, align)
   font = font or Font.gui_default
   align = align or 'left'
-  self.sprite = Text({'{font}' .. text, width, align, font = font}, GUIManager.renderer)
+  self.sprite = Text(text, nil, {width, align, nil, font}, GUIManager.renderer)
   self.text = text
-  self.width = width
-  self.align = align
-  self.font = font
   self.relativePosition = relativePosition or Vector(0, 0, 0)
 end
 
 function SimpleText:setText(text)
-  self.sprite:setText({'{font}' .. text, self.width, 
-    self.align, font = self.font})
+  self.sprite:setText(text)
 end
 
 -------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 
 Font = {}
 
-local default_font = love.graphics.newFont('fonts/FogSans.otf', 22)
+local default_font = love.graphics.newFont('fonts/FogSans.otf', 44)
 
 Font.gui_default = default_font
 Font.gui_button = default_font
@@ -12,5 +12,4 @@ Font.popup_healHP = default_font
 Font.popup_healEP = default_font
 Font.fps = love.graphics.newFont(12)
 
-Font.size = 2
-
+Font.size = 4
