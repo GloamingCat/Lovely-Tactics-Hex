@@ -114,7 +114,7 @@ function Vector:len()
 end
 
 function Vector:len2D()
-  return math.sqrt(self.x*self.x+self.y*self.y+(self.z + self.y)*(self.z + self.y))
+  return math.len2D(self.x, self.y, self.z)
 end
 
 -- Rotate this Vector phi radians counterclockwise.

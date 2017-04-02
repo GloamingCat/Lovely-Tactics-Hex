@@ -14,6 +14,7 @@ local Character = require('core.character.Character')
 
 -- Alias
 local timer = love.timer
+local coord2Angle = math.coord2Angle
 
 -- Constants
 local conf = Config.player
@@ -50,14 +51,8 @@ local old_initializeProperties = Player.initializeProperties
 function Player:initializeProperties(name, colliderSize, colliderHeight)
   old_initializeProperties(self, 'Player', colliderSize, colliderHeight)
   self.inputOn = true
-  self.speed = conf.walkSpeed
+  self.moveSpeed = conf.walkSpeed
   self.stopOnCollision = conf.stopOnCollision
-end
-
--- Updates screen's position the player changes its position.
-local old_setPosition = Player.setPosition
-function Player:setPosition(position)
-  old_setPosition(self, position)
 end
 
 -------------------------------------------------------------------------------
@@ -70,7 +65,7 @@ function Player:fieldInputEnabled()
   if GUIManager:isWaitingInput() then
     return false
   end
-  return self.inputOn and self.moving == false and self.blocks == 0
+  return self.inputOn and self.moveTime >= 1 and self.blocks == 0
 end
 
 -- [COROUTINE] Moves player depending on input.
@@ -82,7 +77,7 @@ function Player:moveByInput(dx, dy)
     local autoAnim = self.autoAnim
     self.autoAnim = false
     if autoAnim then
-      if self.speed < conf.dashSpeed then
+      if self.moveSpeed < conf.dashSpeed then
         self:playAnimation(self.walkAnim)
       else
         self:playAnimation(self.dashAnim)
@@ -118,7 +113,7 @@ end
 -- @param(dy : number) input y
 -- @ret(boolean) true if player actually moved, false otherwise
 function Player:tileMovement(dx, dy)
-  local angle = math.coord2Angle(dx, dy)
+  local angle = coord2Angle(dx, dy)
   return self:tryMoveTile(angle) or self:tryMoveTile(angle + 45) or self:tryMoveTile(angle - 45)
 end
 

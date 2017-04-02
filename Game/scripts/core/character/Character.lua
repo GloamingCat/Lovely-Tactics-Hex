@@ -20,6 +20,7 @@ local Sprite = require('core/graphics/Sprite')
 local abs = math.abs
 local max = math.max
 local min = math.min
+local round = math.round
 local sqrt = math.sqrt
 local time = love.timer.getDelta
 local angle2Coord = math.angle2Coord
@@ -72,6 +73,24 @@ end
 -- Movement
 -------------------------------------------------------------------------------
 
+-- Overrides Transform:updatePosition to check collision.
+function Character:updatePosition()
+  if self.moveTime < 1 then
+    self.moveTime = self.moveTime + self.moveSpeed * time() / self.moveDistance
+    if self.moveTime >= 1 then
+      self:setXYZ(self.moveDestX, self.moveDestY, self.moveDestZ)
+      self.moveTime = 1
+    else
+      local x = self.moveOrigX * (1 - self.moveTime) + self.moveDestX * self.moveTime
+      local y = self.moveOrigY * (1 - self.moveTime) + self.moveDestY * self.moveTime
+      local z = self.moveOrigZ * (1 - self.moveTime) + self.moveDestZ * self.moveTime
+      if self:instantMoveTo(x, y, z, self.collisionCheck) and self.stopOnCollision then
+        self.moveTime = 1
+      end
+    end
+  end
+end
+
 -- [COUROUTINE] Walks to the given pixel point (x, y, d).
 -- @param(x : number) coordinate x of the point
 -- @param(y : number) coordinate y of the point
@@ -79,53 +98,24 @@ end
 -- @param(collisionCheck : boolean) if it should check collisions
 -- @ret(boolean) true if the movement was completed, false otherwise
 function Character:walkToPoint(x, y, z, collisionCheck)
-  if self.currentMovement then
-    self.currentMovement:stop()
-  end
-  self.currentMovement = _G.Callback
   local anim = self.walkAnim
   if self.moveSpeed >= speedLimit then
     anim = self.dashAnim
-  end  
+  end
   z = z or self.position.z
-  self.moving = true
-  local dest = Vector(x, y, z)
-  dest:round()
+  x, y, z = round(x), round(y), round(z)
   if self.autoAnim then
     self:playAnimation(anim)
   end
   if self.autoTurn then
-    self:turnToPoint(dest.x, dest.z)
+    self:turnToPoint(x, z)
   end
-  local origin = self.position:clone()
-  local d = (dest - origin):len2D()
-  local t = self.moveSpeed * time() / d
-  while true do
-    local collision = self:instantMoveTo(origin:lerp(dest, min(1, t)), collisionCheck)
-    if collision ~= nil and self.stopOnCollision == true then
-      if self.autoAnim then
-        self:playAnimation(self.idleAnim)
-      end
-      self.moving = false
-      print('Interruped walk.')
-      return false
+  self.collisionCheck = collisionCheck
+  self:moveTo(x, y, z, true)
+    if self.autoAnim then
+      self:playAnimation(self.idleAnim)
     end
-    if t >= 1 then
-      break
-    end
-    coroutine.yield()
-    if _G.Callback.interrupted then
-      return false
-    end
-    t = t + self.moveSpeed * time() / d
-  end
-  if self.autoAnim then
-    self:playAnimation(self.idleAnim)
-  end
-  self.moving = false
-  self:setPosition(dest)
-  self.currentMovement = nil
-  return true
+  return self.position.x == x and self.position.y == y and self.position.z == z
 end
 
 -- Walks a given distance in each axis.

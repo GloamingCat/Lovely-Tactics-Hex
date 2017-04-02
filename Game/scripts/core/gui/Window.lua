@@ -217,6 +217,9 @@ function Window:show(add)
   end
   self:scaleTo(self.scaleX, 1, true)
   self:showContent()
+  if add and not self.GUI.windowList:contains(self) then
+    self.GUI.windowList:add(self)
+  end
 end
 
 -- [COROUTINE] Closes this window.

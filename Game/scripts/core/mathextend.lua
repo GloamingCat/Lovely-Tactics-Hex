@@ -6,6 +6,15 @@ purposes and a module for grid/field math.
 
 =============================================================================]]
 
+-- Alias
+local sqrt = math.sqrt
+local floor = math.floor
+local cos = math.cos
+local sin = math.sin
+local deg = math.deg
+local rad = math.rad
+local atan2 = math.atan2
+
 ---------------------------------------------------------------------------
 -- General
 ---------------------------------------------------------------------------
@@ -14,7 +23,7 @@ purposes and a module for grid/field math.
 -- @param(x : number) the float number
 -- @ret(number) the integer
 function math.round(x)
-  return math.floor(x + 0.5)
+  return floor(x + 0.5)
 end
 
 -- Checks if a value is not a number.
@@ -45,7 +54,7 @@ end
 -- @ret(number) the new point's x
 -- @ret(number) the new point's y
 function math.rotate(x, y, phi)
-  local c, s = math.cos(phi), math.sin(phi)
+  local c, s = cos(phi), sin(phi)
 	x, y = c * x - s * y, s * x + c * y
   return x, y
 end
@@ -59,7 +68,7 @@ end
 -- @param(y : number) the y-axis coordinate
 -- @ret(number) the angle in degrees
 function math.coord2Angle(x, y)
-  return math.deg(math.atan2(y, x)) % 360
+  return deg(atan2(y, x)) % 360
 end
 
 -- Converts an angle to a normalized vector.
@@ -67,8 +76,8 @@ end
 -- @ret(number) the x-axis coordinate of the vector
 -- @ret(number) the y-axis coordinate of the vector
 function math.angle2Coord(angle)
-  angle = math.rad(angle)
-  return math.cos(angle), math.sin(angle)
+  angle = rad(angle)
+  return cos(angle), sin(angle)
 end
 
 ---------------------------------------------------------------------------
@@ -119,4 +128,15 @@ function math.angle2Row(angle)
     end
   end
   return 0
+end
+
+-- Calculates length of vector in 2D pixel coordinates.
+function math.len2D(x, y, z)
+  z = z + y
+  return sqrt(x*x + y*y + z*z)
+end
+
+-- Calculates length of vector in a 3D coordinate system.
+function math.len(x, y, z)
+  return sqrt(x*x + y*y + z*z)
 end

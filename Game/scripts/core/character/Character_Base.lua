@@ -21,6 +21,7 @@ local CallbackTree = require('core/callback/CallbackTree')
 local mathf = math.field
 local angle2Row = math.angle2Row
 local Quad = love.graphics.newQuad
+local round = math.round
 
 local Character_Base = AnimatedObject:inherit()
 
@@ -163,15 +164,18 @@ end
 -------------------------------------------------------------------------------
 
 -- Moves instantly a character to a point, if possible.
--- @param(position : Vector) the pixel position of the object
+-- @param(x : number) the pixel x of the object
+-- @param(y : number) the pixel y of the object
+-- @param(z : number) the pixel depth of the object
 -- @ret(number) the type of the collision, if any
-function Character_Base:instantMoveTo(position, collisionCheck)
+function Character_Base:instantMoveTo(x, y, z, collisionCheck)
   local tiles = self:getAllTiles()
   local center = self:getTile()
-  local newCenter = Vector(math.field.pixel2Tile(position:coordinates()))
-  newCenter:round()
-  local tiledif = newCenter - Vector(center:coordinates())
-  local tileChange = not tiledif:isZero()
+  local dx, dy, dh = math.field.pixel2Tile(x, y, z)
+  dx = round(dx) - center.x
+  dy = round(dy) - center.y
+  dh = round(dh) - center.layer.height
+  local tileChange = dx ~= 0 or dy ~= 0 or dh ~= 0
   if collisionCheck and tileChange and not self.passable then
     for i = #tiles, 1, -1 do
       local collision = self:collision(tiles[i], tiledif)
@@ -182,11 +186,11 @@ function Character_Base:instantMoveTo(position, collisionCheck)
   end
   if tileChange then
     self:removeFromTiles(tiles)
-    self:setPosition(position)
+    self:setXYZ(x, y, z)
     tiles = self:getAllTiles()
     self:addToTiles(tiles)
   else
-    self:setPosition(position)
+    self:setXYZ(x, y, z)
   end
   return nil
 end
@@ -199,9 +203,10 @@ end
 -- @param(tile : Tile) the origin tile
 -- @param(tiledif : Vector) the displacement in tiles
 -- @ret(number) the collision type
-function Character_Base:collision(tile, tiledif)
+function Character_Base:collision(tile, dx, dy, dh)
   local orig = Vector(tile:coordinates())
-  local dest = orig + tiledif
+  local dest = Vector(dx, dy, dh)
+  dest:add(orig)
   return FieldManager:collision(self, orig, dest)
 end
 

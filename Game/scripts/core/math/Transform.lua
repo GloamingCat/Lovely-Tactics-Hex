@@ -148,7 +148,6 @@ function Transform:updateScale()
 end
 
 function Transform:scaleTo(sx, sy, wait)
-  print('scale')
   self.scaleOrigX, self.scaleOrigY = self.scaleX, self.scaleY
   self.scaleDestX, self.scaleDestY = sx, sy
   self.scaleDistance = max(abs(self.scaleX - sx), abs(self.scaleY - sy))
@@ -160,11 +159,9 @@ end
 
 -- Waits until the move time is 1.
 function Transform:waitForScale()
-  print('start')
   while self.scaleTime < 1 do
     coroutine.yield()
   end
-  print('end')
 end
 
 -------------------------------------------------------------------------------

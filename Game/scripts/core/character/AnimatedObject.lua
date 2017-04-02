@@ -86,7 +86,9 @@ end
 -------------------------------------------------------------------------------
 
 -- Updates animation.
+local old_update = AnimatedObject.update
 function AnimatedObject:update()
+  old_update(self)
   if self.animation then
     self.animation:update()
   end

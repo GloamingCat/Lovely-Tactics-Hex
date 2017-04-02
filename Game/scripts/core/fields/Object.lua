@@ -14,6 +14,7 @@ local Sprite = require('core/graphics/Sprite')
 
 -- Alias
 local round = math.round
+local len2D = math.len2D
 
 local Object = Transform:inherit()
 
@@ -39,6 +40,11 @@ local old_setXYZ = Object.setXYZ
 function Object:setXYZ(x, y, z)
   old_setXYZ(self, x, y, z)
   self.sprite:setXYZ(x, y, z)
+end
+
+-- Overrides Transform:distanceTo.
+function Object:distanceTo(x, y, z)
+  return len2D(self.position.x - x, self.position.y - y, self.position.z - z)
 end
 
 -- 'Teleports' the object to another position.
