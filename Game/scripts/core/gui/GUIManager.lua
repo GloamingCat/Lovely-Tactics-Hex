@@ -52,18 +52,18 @@ end
 function GUIManager:showGUIForResult(path, block, ...)
   local arg = {...}
   if block then
-    local result = nil
+    local result, wait = nil
     self.callbackTree:fork(function()
         FieldManager.paused = true
-        result = self:showGUIForResult(path, false, unpack(arg))
+        result, wait = self:showGUIForResult(path, false, unpack(arg))
         FieldManager.paused = false
       end)
     coroutine.yield()
     return result
   else
     local gui = self:showGUI(path, unpack(arg))
-    local result = gui:waitForResult()
-    self:returnGUI()
+    local result, wait = gui:waitForResult()
+    self:returnGUI(wait)
     return result
   end
 end
@@ -82,13 +82,25 @@ function GUIManager:showGUI(path, ...)
 end
 
 -- [COROUTINE] Closes current GUI and returns to the previous.
-function GUIManager:returnGUI()
+function GUIManager:returnGUI(waitPrevious)
   local lastGUI = self.current
-  lastGUI:hide()
-  lastGUI:destroy()
+  if waitPrevious then
+    lastGUI:hide()
+    lastGUI:destroy()
+  else
+    self.callbackTree:fork(function()
+      lastGUI:hide()
+      lastGUI:destroy()
+    end)
+    self.callbackTree:fork(function()
+      while not lastGUI.closed do
+        lastGUI:update()
+        coroutine.yield()
+      end
+    end)
+  end
   if not self.stack:isEmpty() then
     self.current = self.stack:pop()
-    --self.current:show()
   else
     self.current = nil
   end

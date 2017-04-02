@@ -29,6 +29,11 @@ function ActionGUI:createWindows()
   self.action = BattleManager.currentAction
 end
 
+local old_update = ActionGUI.update
+function ActionGUI:update()
+  old_update(self)
+end
+
 -------------------------------------------------------------------------------
 -- Auxiliary Windows
 -------------------------------------------------------------------------------
@@ -37,8 +42,10 @@ end
 -- @ret(StepWindow) newly created window
 function ActionGUI:createStepWindow()
   if not self.stepWindow then
-    self.stepWindow = StepWindow(self)
-    self.stepWindow:setVisible(false)
+    local w = StepWindow(self)
+    self.stepWindow = w
+    self.windowList:add(w)
+    w:setVisible(false)
   end
   return self.stepWindow
 end
@@ -46,10 +53,11 @@ end
 -- Creates target window.
 -- @ret(TargetWindow) newly created window
 function ActionGUI:createTargetWindow()
-  print('create target window')
   if not self.targetWindow then
-    self.targetWindow = TargetWindow(self)
-    self.targetWindow:setVisible(false)
+    local w = TargetWindow(self)
+    self.targetWindow = w
+    self.windowList:add(w)
+    w:setVisible(false)
   end
   return self.targetWindow
 end
@@ -70,7 +78,7 @@ function ActionGUI:waitForResult()
     self:checkInput()
   end
   self.cursor:destroy()
-  return self.result
+  return self.result, false
 end
 
 -- Verifies player's input. Stores result of action in self.result.
@@ -102,9 +110,13 @@ function ActionGUI:selectTarget(target)
     if target.characterList.size > 0 then
       local battler = target.characterList[1].battler
       self.targetWindow:setBattler(battler)
-      self.targetWindow:show()
+      _G.Callback:fork(function()
+        self.targetWindow:show()
+      end)
     else
-      self.targetWindow:hide()
+      _G.Callback:fork(function()
+        self.targetWindow:hide()
+      end)
     end
   end
 end

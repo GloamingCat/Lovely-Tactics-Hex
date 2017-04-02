@@ -53,7 +53,7 @@ function GUI:waitForResult()
     coroutine.yield()
     self.activeWindow:checkInput()
   end
-  return self.activeWindow.result
+  return self.activeWindow.result, true
 end
 
 -- [COROUTINE] Shows all windows.
@@ -71,7 +71,7 @@ function GUI:show()
   repeat
     done = true
     for window in self.windowList:iterator() do
-      if not window.open then
+      if window.scaleY < 1 then
         done = false
       end
     end
@@ -95,7 +95,7 @@ function GUI:hide()
   repeat
     done = true
     for window in self.windowList:iterator() do
-      if not window.closed then
+      if window.scaleY > 0 then
         done = false
       end
     end

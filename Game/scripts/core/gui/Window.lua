@@ -14,11 +14,12 @@ Every content element for the window must have all the following methods:
 =============================================================================]]
 
 -- Imports
+local Transform = require('core/math/Transform')
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local List = require('core/algorithm/List')
 
-local Window = require('core/class'):new()
+local Window = Transform:inherit()
 
 -------------------------------------------------------------------------------
 -- General
@@ -29,14 +30,12 @@ local Window = require('core/class'):new()
 -- @param(height : number) total height in pixels
 -- @param(position : Vector) the position of the center of the window
 -- @param(skin : Image) window skin (optional)
+local old_init = Window.init
 function Window:init(GUI, width, height, position, skin)
+  old_init(self, position)
+  self.scaleSpeed = 5
   self.width = width
   self.height = height
-  self.scaleX = 1
-  self.scaleY = 1
-  self.speed = 5
-  self.open = false
-  self.closed = true
   self.skin = skin or love.graphics.newImage('images/GUI/windowSkin.png')
   self.paddingw = math.floor(self.skin:getWidth() / 3)
   self.paddingh = math.floor(self.skin:getHeight() / 3)
@@ -48,7 +47,9 @@ function Window:init(GUI, width, height, position, skin)
 end
 
 -- Updates all content elements.
+local old_update = Window.update
 function Window:update()
+  old_update(self)
   for c in self.content:iterator() do
     if c.update then
       c:update()
@@ -88,8 +89,9 @@ end
 
 -- Sets this window's position.
 -- @param(position : Vector) new position
+local old_setPosition = Window.setPosition
 function Window:setPosition(position)
-  self.position = position
+  old_setPosition(self, position)
   self:updateSkinSprites()
   for c in self.content:iterator() do
     if c.updatePosition then
@@ -101,9 +103,9 @@ end
 -- Scales this window.
 -- @param(sx : number) scale in axis x
 -- @param(sy : number) scale in axis y
+local old_setScale = Window.setScale
 function Window:setScale(sx, sy)
-  self.scaleX = sx
-  self.scaleY = sy
+  old_setScale(self, sx, sy)
   self:updateSkinSprites()
 end
 
@@ -207,59 +209,26 @@ end
 
 -- [COROUTINE] Opens this window.
 function Window:show(add)
-  if self.open then
+  if self.scaleY >= 1 then
     return
   end
-  if self.currentMovement then
-    self.currentMovement:stop()
-  end
-  self.currentMovement = _G.Callback
-  self.closed = false
-  local time = love.timer.getDelta
-  repeat
-    coroutine.yield()
-    if _G.Callback.interrupted then
-      return false
-    end
-    self:setScale(self.scaleX, self.scaleY + time() * self.speed)
-  until self.scaleY >= 1
-  self:showContent()
-  self:setScale(self.scaleX, 1)
   if add then
     self.GUI.windowList:add(self)
   end
-  self:setScale(self.scaleX, 1)
-  self.open = true
-  self.currentMovement = nil
-  return true
+  self:scaleTo(self.scaleX, 1, true)
+  self:showContent()
 end
 
 -- [COROUTINE] Closes this window.
 function Window:hide(remove)
-  if self.closed then
+  if self.scaleY <= 0 then
     return
   end
-  if self.currentMovement then
-    self.currentMovement:stop()
-  end
-  self.currentMovement = _G.Callback
-  self.open = false
-  local time = love.timer.getDelta
   self:hideContent()
-  repeat
-    coroutine.yield()
-    if _G.Callback.interrupted then
-      return false
-    end
-    self:setScale(self.scaleX, self.scaleY - time() * self.speed)
-  until self.scaleY <= 0
-  self:setScale(self.scaleX, 0)
+  self:scaleTo(self.scaleX, 0, true)
   if remove then
     self.GUI.windowList:removeElement(self)
   end
-  self:setScale(self.scaleX, 0)
-  self.closed = true
-  self.currentMovement = nil
 end
 
 return Window

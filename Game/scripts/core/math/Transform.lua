@@ -13,6 +13,8 @@ local Vector = require('core/math/Vector')
 -- Alias
 local time = love.timer.getDelta
 local sqrt = math.sqrt
+local abs = math.abs
+local max = math.max
 
 local Transform = require('core/class'):new()
 
@@ -112,12 +114,19 @@ function Transform:distanceTo(x, y, z)
 end
 
 -------------------------------------------------------------------------------
--- Scale (TODO)
+-- Scale
 -------------------------------------------------------------------------------
 
-function Transform:initScale()
-  self.scaleX = 1
-  self.scaleY = 1
+function Transform:initScale(sx, sy)
+  self.scaleX = sx or 1
+  self.scaleY = sy or 1
+  self.scaleSpeed = 5
+  self.scaleOrigX = self.scaleX
+  self.scaleOrigY = self.scaleY
+  self.scalaDestX = self.scaleX
+  self.scaleDestY = self.scaleY
+  self.scaleDistance = nil
+  self.scaleTime = 1
 end
 
 function Transform:setScale(x, y)
@@ -126,6 +135,36 @@ function Transform:setScale(x, y)
 end
 
 function Transform:updateScale()
+  if self.scaleTime < 1 then
+    self.scaleTime = self.scaleTime + self.scaleSpeed * time() / self.scaleDistance
+    if self.scaleTime >= 1 then
+      self:setScale(self.scaleDestX, self.scaleDestY)
+      self.scaleTime = 1
+    else
+      self:setScale(self.scaleOrigX * (1 - self.scaleTime) + self.scaleDestX * self.scaleTime, 
+        self.scaleOrigY * (1 - self.scaleTime) + self.scaleDestY * self.scaleTime)
+    end
+  end
+end
+
+function Transform:scaleTo(sx, sy, wait)
+  print('scale')
+  self.scaleOrigX, self.scaleOrigY = self.scaleX, self.scaleY
+  self.scaleDestX, self.scaleDestY = sx, sy
+  self.scaleDistance = max(abs(self.scaleX - sx), abs(self.scaleY - sy))
+  self.scaleTime = 0
+  if wait then
+    self:waitForScale()
+  end
+end
+
+-- Waits until the move time is 1.
+function Transform:waitForScale()
+  print('start')
+  while self.scaleTime < 1 do
+    coroutine.yield()
+  end
+  print('end')
 end
 
 -------------------------------------------------------------------------------
