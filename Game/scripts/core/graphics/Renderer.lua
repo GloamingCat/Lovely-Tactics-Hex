@@ -10,7 +10,7 @@ Stores them in order and draws them using a batch.
 
 -- Imports
 local List = require('core/algorithm/List')
-local Transform = require('core/math/Transform')
+local Transformable = require('core/math/Transformable')
 
 -- Alias
 local lgraphics = love.graphics
@@ -20,7 +20,7 @@ local round = math.round
 local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
 local colorf = 255 / 100
 
-local Renderer = Transform:inherit()
+local Renderer = Transformable:inherit()
 
 -------------------------------------------------------------------------------
 -- Initialization

@@ -12,6 +12,10 @@ local Renderer = require('core/graphics/Renderer')
 
 -- Alias
 local tile2Pixel = math.field.tile2Pixel
+local sqrt = math.sqrt
+
+-- Constants
+local cameraSpeed = 75
 
 local FieldCamera = Renderer:inherit()
 
@@ -24,11 +28,8 @@ local old_updatePosition = FieldCamera.updatePosition
 function FieldCamera:updatePosition()
   if self.focusObject then
     self:setXYZ(self.focusObject.position.x, self.focusObject.position.y)
-  elseif self.moveDistance then
-    local s = self.moveSpeed
-    self.moveSpeed = (self.moveSpeed / 6 + self.moveDistance * 3)
+  else
     old_updatePosition(self)
-    self.moveSpeed = s
   end
 end
 
@@ -40,18 +41,28 @@ end
 -- @param(tile : ObjectTile) the destionation tile
 -- @param(wait : boolean) flag to wait until the move finishes
 function FieldCamera:moveToTile(tile, wait)
-  self.focusObject = nil
-  local x, y, z = tile2Pixel(tile:coordinates())
-  self:moveTo(x, y, self.position.y - y, wait)
+  local x, y = tile2Pixel(tile:coordinates())
+  self:moveToPoint(x, y, wait)
 end
 
 -- [COROUTINE] Movec camera to the given object.
 -- @param(obj : Object) the destination object
 -- @param(wait : boolean) flag to wait until the move finishes
 function FieldCamera:moveToObject(obj, wait)
+  self:moveToPoint(obj.position.x, obj.position.y, wait)
+end
+
+-- Moves camera to the given pixel point.
+-- @param(x : number) the pixel x
+-- @param(y : nubmer) the pixel y
+-- @param(wait : boolean) flag to wait until the move finishes
+function FieldCamera:moveToPoint(x, y, wait)
   self.focusObject = nil
-  local p = obj.position
-  self:moveTo(p.x, p.y, p.y - self.position.y, wait)
+  local dx = self.position.x - x
+  local dy = self.position.y - y
+  local distance = sqrt(dx * dx + dy * dy)
+  local speed = (cameraSpeed + distance * 3)
+  self:moveTo(x, y, 0, speed / distance, wait)
 end
 
 return FieldCamera

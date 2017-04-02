@@ -27,6 +27,7 @@ local angle2Coord = math.angle2Coord
 local coord2Angle = math.coord2Angle
 local tile2Pixel = math.field.tile2Pixel
 local pixel2Tile = math.field.pixel2Tile
+local len2D = math.len2D
 
 -- Constants
 local speedLimit = (Config.player.dashSpeed + Config.player.walkSpeed) / 2
@@ -76,7 +77,7 @@ end
 -- Overrides Transform:updatePosition to check collision.
 function Character:updatePosition()
   if self.moveTime < 1 then
-    self.moveTime = self.moveTime + self.moveSpeed * time() / self.moveDistance
+    self.moveTime = self.moveTime + self.moveSpeed * time()
     if self.moveTime >= 1 then
       self:setXYZ(self.moveDestX, self.moveDestY, self.moveDestZ)
       self.moveTime = 1
@@ -99,7 +100,7 @@ end
 -- @ret(boolean) true if the movement was completed, false otherwise
 function Character:walkToPoint(x, y, z, collisionCheck)
   local anim = self.walkAnim
-  if self.moveSpeed >= speedLimit then
+  if self.speed >= speedLimit then
     anim = self.dashAnim
   end
   z = z or self.position.z
@@ -110,8 +111,9 @@ function Character:walkToPoint(x, y, z, collisionCheck)
   if self.autoTurn then
     self:turnToPoint(x, z)
   end
+  local distance = len2D(self.position.x - x, self.position.y - y, self.position.z - z)
   self.collisionCheck = collisionCheck
-  self:moveTo(x, y, z, true)
+  self:moveTo(x, y, z, self.speed / distance, true)
     if self.autoAnim then
       self:playAnimation(self.idleAnim)
     end

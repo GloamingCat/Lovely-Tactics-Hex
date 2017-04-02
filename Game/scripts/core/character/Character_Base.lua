@@ -85,7 +85,7 @@ end
 function Character_Base:initializeProperties(name, tiles, colliderHeight)
   self.name = name
   self.collisionTiles = tiles
-  self.moveSpeed = 60
+  self.speed = 60
   self.autoAnim = true
   self.autoTurn = true
   self.stopOnCollision = true

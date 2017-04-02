@@ -8,15 +8,14 @@ A common class for Obstacles and Characters.
 =============================================================================]]
 
 -- Imports
-local Transform = require('core/math/Transform')
+local Transformable = require('core/math/Transformable')
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 
 -- Alias
 local round = math.round
-local len2D = math.len2D
 
-local Object = Transform:inherit()
+local Object = Transformable:inherit()
 
 -------------------------------------------------------------------------------
 -- General
@@ -34,17 +33,12 @@ end
 -- Position
 -------------------------------------------------------------------------------
 
--- Overrides Transform:setXYZ.
+-- Overrides Transformable:setXYZ.
 -- Updates sprite position.
 local old_setXYZ = Object.setXYZ
 function Object:setXYZ(x, y, z)
   old_setXYZ(self, x, y, z)
   self.sprite:setXYZ(x, y, z)
-end
-
--- Overrides Transform:distanceTo.
-function Object:distanceTo(x, y, z)
-  return len2D(self.position.x - x, self.position.y - y, self.position.z - z)
 end
 
 -- 'Teleports' the object to another position.

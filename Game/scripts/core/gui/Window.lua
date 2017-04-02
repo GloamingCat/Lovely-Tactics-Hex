@@ -14,12 +14,12 @@ Every content element for the window must have all the following methods:
 =============================================================================]]
 
 -- Imports
-local Transform = require('core/math/Transform')
+local Transformable = require('core/math/Transformable')
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local List = require('core/algorithm/List')
 
-local Window = Transform:inherit()
+local Window = Transformable:inherit()
 
 -------------------------------------------------------------------------------
 -- General
@@ -33,7 +33,7 @@ local Window = Transform:inherit()
 local old_init = Window.init
 function Window:init(GUI, width, height, position, skin)
   old_init(self, position)
-  self.scaleSpeed = 5
+  self.speed = 5
   self.width = width
   self.height = height
   self.skin = skin or love.graphics.newImage('images/GUI/windowSkin.png')
@@ -215,7 +215,7 @@ function Window:show(add)
   if add then
     self.GUI.windowList:add(self)
   end
-  self:scaleTo(self.scaleX, 1, true)
+  self:scaleTo(self.scaleX, 1, self.speed, true)
   self:showContent()
   if add and not self.GUI.windowList:contains(self) then
     self.GUI.windowList:add(self)
@@ -228,7 +228,7 @@ function Window:hide(remove)
     return
   end
   self:hideContent()
-  self:scaleTo(self.scaleX, 0, true)
+  self:scaleTo(self.scaleX, 0, self.speed, true)
   if remove then
     self.GUI.windowList:removeElement(self)
   end

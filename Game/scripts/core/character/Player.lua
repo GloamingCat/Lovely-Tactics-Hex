@@ -51,7 +51,7 @@ local old_initializeProperties = Player.initializeProperties
 function Player:initializeProperties(name, colliderSize, colliderHeight)
   old_initializeProperties(self, 'Player', colliderSize, colliderHeight)
   self.inputOn = true
-  self.moveSpeed = conf.walkSpeed
+  self.speed = conf.walkSpeed
   self.stopOnCollision = conf.stopOnCollision
 end
 
@@ -77,7 +77,7 @@ function Player:moveByInput(dx, dy)
     local autoAnim = self.autoAnim
     self.autoAnim = false
     if autoAnim then
-      if self.moveSpeed < conf.dashSpeed then
+      if self.speed < conf.dashSpeed then
         self:playAnimation(self.walkAnim)
       else
         self:playAnimation(self.dashAnim)

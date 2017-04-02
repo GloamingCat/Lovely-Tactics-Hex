@@ -44,9 +44,9 @@ function PlayerController:checkFieldInput()
     local dx = InputManager:axisX(0, 0)
     local dy = InputManager:axisY(0, 0)
     if InputManager.keys['dash']:isPressing() then
-      player.moveSpeed = player.dashSpeed
+      player.speed = player.dashSpeed
     else
-      player.moveSpeed = player.walkSpeed
+      player.speed = player.walkSpeed
     end
     player:moveByInput(dx, dy)
   end
