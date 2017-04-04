@@ -22,11 +22,11 @@ local ActionWindow = ButtonWindow:inherit()
 function ActionWindow:selectAction(actionType, ...)
   -- Executes action grid selecting.
   BattleManager:selectAction(actionType(...))
-  self.GUI:hide()
-  local result = GUIManager:showGUIForResult('battle/ActionGUI')
-  if result >= 0 then
+  self.GUI:forkHide()
+  local actionCost = GUIManager:showGUIForResult('battle/ActionGUI')
+  if actionCost >= 0 then
     -- End of turn.
-    self.result = result
+    self.result = actionCost
   else
     FieldManager.renderer:moveToObject(BattleManager.currentCharacter)
     self.GUI:show()
@@ -46,8 +46,10 @@ end
 -- Closes this window to be replaced by another one.
 -- @param(window : ButtonWindow) the new active window
 function ActionWindow:changeWindow(window)
-  self:hide(true)
-  window:show(true)
+  self:hide()
+  self:removeSelf()
+  window:insertSelf()
+  window:show()
   window:activate()
 end
 

@@ -13,6 +13,7 @@ local TextParser = require('core/graphics/TextParser')
 
 -- Alias
 local lgraphics = love.graphics
+local Quad = lgraphics.newQuad
 local max = math.max
 local round = math.round
 
@@ -41,14 +42,14 @@ local Text = Sprite:inherit()
 local old_init = Text.init
 function Text:init(text, resources, properties, renderer)
   old_init(self, renderer)
-  self.isText = true
+  --self.isText = true
   self.maxWidth = properties[1] and (properties[1] + 1)
   self.align = properties[2] or self.align or 'left'
   self.maxchar = properties[3] or self.maxchar
   self.resources = resources
   self.text = text
-  self.scaleX = 1 / Font.size
-  self.scaleY = 1 / Font.size
+  self.scaleX = 1 / Font.scale
+  self.scaleY = 1 / Font.scale
   self.offsetX = 0
   self.offsetY = 0
   self:setText(text, resources)
@@ -66,36 +67,27 @@ function Text:setText(text, resources)
   self.renderer.needsRedraw = true
 end
 
+local old_setXYZ = Text.setXYZ
+function Text:setXYZ(x, y, z)
+  if x then
+    x = x + self:alignDisplacement(self.totalWidth, self.maxWidth)
+  end
+  old_setXYZ(self, x, y, z)
+end
+
 -------------------------------------------------------------------------------
 -- Draw in screen
 -------------------------------------------------------------------------------
 
--- Draws text in the given position.
-function Text:draw()
-  local sx = ScreenManager.scaleX * self.renderer.scaleX
-  local sy = ScreenManager.scaleY * self.renderer.scaleY
-  local w, h = self.texture:getWidth(), self.texture:getHeight()
-  local x = self:alignDisplacement(self.totalWidth, self.maxWidth)
-  local firstShader = lgraphics.getShader()
-  lgraphics.setShader(textShader)
-  textShader:send('stepSize', { 1 / (self.scaleX * w), 1 / (self.scaleY * h)})
-  textShader:send('scale', { sx * self.scaleX, sy * self.scaleY })
-  lgraphics.setBlendMode('alpha', 'premultiplied')
-  lgraphics.draw(self.texture, self.quad, self.position.x + x, self.position.y, 
-    self.rotation, self.scaleX, self.scaleY, self.offsetX, self.offsetY)
-  lgraphics.setBlendMode('alpha')
-  lgraphics.setShader(firstShader)
-end
-
 function Text:alignDisplacement(w, maxWidth)
   if maxWidth then
     if self.align == 'right' then
-      return maxWidth - w
+      return maxWidth - w - Font.outlineSize
     elseif self.aling == 'center' then
       return (maxWidth - w) / 2
     end
   end
-  return 0
+  return Font.outlineSize
 end
 
 -------------------------------------------------------------------------------
@@ -108,30 +100,40 @@ function Text:createTexture(lines)
   for i = 1, #lines do
     local l = ''
     for j = 1, #lines[i] do
-      l = l .. lines[i][j].content
+      if type(lines[i][j].content) == 'string' then
+        l = l .. lines[i][j].content
+      end
+      if lines[i][j].width == 0 then
+        print(lines[i][j].width)
+      end
     end
     fbWidth = max(fbWidth, lines[i].width)
     fbHeight = fbHeight + lines[i].height
-    --print(l)
   end
+  fbWidth = fbWidth
   fbHeight = fbHeight + round(lines[#lines].height / 2)
-  local buffer = lgraphics.newCanvas(round((fbWidth + 2) / self.scaleX), round((fbHeight + 2) / self.scaleY))
+  local buffer = lgraphics.newCanvas(round(fbWidth / self.scaleX), round(fbHeight / self.scaleY))
   local r, g, b, a = lgraphics.getColor()
-  local font = lgraphics.getFont()
+  local firstFont = lgraphics.getFont()
+  local firstShader = lgraphics.getShader()
+  local firstCanvas = lgraphics.getCanvas()
   buffer:setFilter('linear', 'nearest')
-  buffer:renderTo(function () self:renderLines(lines, fbWidth / self.scaleX) end)
+  lgraphics.setCanvas(buffer)
+  self:renderLines(lines, fbWidth / self.scaleX)
+  self.texture = self:preRender(buffer)
   lgraphics.setColor(r, g, b, a)
-  lgraphics.setFont(font)
+  lgraphics.setFont(firstFont)
+  lgraphics.setShader(firstShader)
+  lgraphics.setCanvas(firstCanvas)
   self.totalWidth = fbWidth
   self.totalHeight = fbHeight
-  self.texture = buffer
 end
 
 -- Renders all lines content.
 function Text:renderLines(lines, maxWidth)
   lgraphics.setFont(defaultFont)
   lgraphics.setColor(255, 255, 255, 255)
-	local x, y = 0, -Font.size
+	local x, y = 0, -1 / self.scaleY
   for i = 1, #lines do
     local line = lines[i]
 		y = y + line.height
@@ -142,21 +144,38 @@ function Text:renderLines(lines, maxWidth)
       if t == 'table' then
         local c = fragment.content
         lgraphics.setColor(c.red, c.green, c.blue, c.alpha)
+      elseif t == 'userdata' then
+        lgraphics.setFont(fragment.content)
       else
-        local fx = x + 1 / self.scaleX
-        local fy = y - fragment.height - self.scaleY
+        local fy = y - fragment.height
         if t == 'string' then
-          lgraphics.print(fragment.content, fx, fy)
+          lgraphics.print(fragment.content, x, fy)
         else
           local r, g, b, a = lgraphics.getColor()
           lgraphics.setColor(255, 255, 255, 255)
-          lgraphics.draw(fragment.content, fx, fy)
+          lgraphics.draw(fragment.content, x, fy)
           lgraphics.setColor(r, g, b, a)
         end
         x = x + fragment.width
 			end
 		end
 	end
+end
+
+function Text:preRender(texture)
+  local w, h = texture:getWidth(), texture:getHeight()
+  local quad = Quad(0, 0, w, h, w, h)
+  local newTexture = lgraphics.newCanvas(w, h)
+  newTexture:setFilter('linear', 'nearest')
+  lgraphics.setCanvas(newTexture)
+  lgraphics.setShader(textShader)
+  textShader:send('stepSize', { Font.outlineSize / self.scaleX / w, 
+      Font.outlineSize / self.scaleY / h })
+  textShader:send('scale', { self.scaleX, self.scaleY })
+  lgraphics.setBlendMode('alpha', 'premultiplied')
+  lgraphics.draw(texture)
+  lgraphics.setBlendMode('alpha')
+  return newTexture
 end
 
 return Text

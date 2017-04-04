@@ -143,33 +143,13 @@ function Renderer:drawList(list)
   local n = #list
   for i = 1, n do
     local sprite = list[i]
-    if sprite:isVisible() then
+    if sprite:isVisible() and sprite.texture ~= nil then
       if sprite.texture ~= self.batch:getTexture() then
-        self:changeTexture(sprite)
+        self:clearBatch()
+        self.batch:setTexture(sprite.texture)
       end
-      if sprite.texture ~= nil then
-        if sprite.isText then
-          self:clearBatch()
-          self:writeText(sprite)
-        else
-          self:addSprite(sprite)
-        end
-      end
+      self:addSprite(sprite)
     end
-  end
-end
-
--- Draws current batch and sets new texture.
--- @param(texture : Texture) the new texture
-function Renderer:changeTexture(sprite)
-  if sprite.texture == nil then
-    if sprite.text ~= nil then
-      self:clearBatch()
-      self:writeText(sprite)
-    end
-  else
-    self:clearBatch()
-    self.batch:setTexture(sprite.texture)
   end
 end
 
@@ -191,15 +171,6 @@ function Renderer:addSprite(sprite)
   self.batch:add(sprite.quad, sprite.position.x, sprite.position.y, 
     sprite.rotation, sprite.scaleX, sprite.scaleY, sprite.offsetX, sprite.offsetY)
   self.toDraw:add(sprite)
-end
-
--- Draws a text.
--- @param(sprite : Sprite) sprite containing the text
-function Renderer:writeText(sprite)
-  lgraphics.setColor(sprite.color.red * colorf, sprite.color.green * colorf, 
-    sprite.color.blue * colorf, sprite.color.alpha * colorf)
-  sprite:draw()
-  lgraphics.setColor(255, 255, 255, 255)
 end
 
 -- Organizes current sprite list by texture.

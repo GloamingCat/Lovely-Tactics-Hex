@@ -84,17 +84,13 @@ end
 -- "Skill" button callback. Opens Skill Window.
 -- @param(button : Button) the button chosen
 function TurnWindow:onSkill(button)
-  self:hide(true)
-  self.GUI.skillWindow:show(true)
-  self.GUI.skillWindow:activate()
+  self:changeWindow(self.GUI.skillWindow)
 end
 
 -- "Item" button callback. Opens Item Window.
 -- @param(button : Button) the button chosen
 function TurnWindow:onItem(button)
-  self:hide(true)
-  self.GUI.itemWindow:show(true)
-  button.window.GUI.itemWindow:activate()
+  self:changeWindow(self.GUI.itemWindow)
 end
 
 -------------------------------------------------------------------------------

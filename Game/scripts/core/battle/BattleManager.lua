@@ -106,8 +106,8 @@ function BattleManager:startTurn()
   self:updateDistanceMatrix()
   local actionCost = 0
   local AI = self.currentCharacter.battler.AI
+  FieldManager.renderer:moveToObject(char, true)
   if AI then
-    FieldManager.renderer:moveToObject(char, true)
     actionCost = AI.nextAction(self.currentCharacter)
   else
     actionCost = GUIManager:showGUIForResult('battle/BattleGUI')

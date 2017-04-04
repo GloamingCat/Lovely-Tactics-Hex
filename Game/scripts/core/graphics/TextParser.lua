@@ -22,7 +22,7 @@ function TextParser.parse(text, resources)
   local fragments = {}
 	if text ~= '' then 
 		for textFragment, resourceKey in text:gmatch('([^{]*){(.-)}') do
-      TextParser.addFragment(fragments, textFragment)
+      TextParser.parseFragment(fragments, textFragment)
 			local resource = resources[resourceKey] or resourceKey
       local t = type(resource)
       if t == 'string' or t == 'number' then
@@ -41,7 +41,7 @@ function TextParser.parseFragment(fragments, textFragment)
 	-- break up fragments with newlines
 	local n = textFragment:find('\n', 1, true)
 	while n do
-		insert(fragments, textFragment:sub(1, n-1))
+		insert(fragments, textFragment:sub(1, n - 1))
 		insert(fragments, '\n')
 		textFragment = textFragment:sub(n + 1)
 		n = textFragment:find('\n', 1, true)
@@ -63,14 +63,17 @@ function TextParser.createLines(fragments, initialFont, maxWidth)
 	for i = 1, #fragments do
     local fragment = fragments[i]
     local t = type(fragment)
-		if t == 'string' then
+		if t == 'string' then -- Piece of text
       currentLine = TextParser.addTextFragment(lines, currentLine, fragment, 
         currentFont, maxWidth)
-		elseif t == 'Image' then
+		elseif t == 'Image' then -- Image inside text
 			currentLine = TextParser.addImageFragment(lines, currentLine, fragment)
-		elseif t == 'Font' then
+		elseif t == 'userdata' then -- Font change
 			currentFont = fragment
-		end
+      insert(currentLine, { content = fragment })
+		else -- Color change
+      insert(currentLine, { content = fragment })
+    end
 	end
 	return lines
 end
@@ -94,7 +97,11 @@ function TextParser.addTextFragment(lines, currentLine, fragment, font, width)
   if width then
     return TextParser.wrapText(lines, currentLine, fragment, font, width)
   else
-    insert(currentLine, fragment)
+    local fw = font:getWidth(fragment)
+    local fh = font:getHeight(fragment) * font:getLineHeight()
+    insert(currentLine, { content = fragment, width = fw, height = fh })
+    currentLine.width = currentLine.width + fw
+    currentLine.height = max(currentLine.height, fh)
     return currentLine
   end
 end
@@ -155,7 +162,7 @@ function TextParser.addImageFragment(lines, currentLine, fragment, width)
       insert(lines, currentLine)
     end
   end
-  insert(currentLine, {content = fragment, width = fragment:getWidth(),
+  insert(currentLine, { content = fragment, width = fragment:getWidth(),
       height = fragment:getHeight() })
   return currentLine
 end

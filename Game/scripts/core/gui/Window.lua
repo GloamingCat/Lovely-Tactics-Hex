@@ -208,7 +208,7 @@ end
 -------------------------------------------------------------------------------
 
 -- [COROUTINE] Opens this window.
-function Window:show(add)
+function Window:show()
   if self.scaleY >= 1 then
     return
   end
@@ -217,21 +217,27 @@ function Window:show(add)
   end
   self:scaleTo(self.scaleX, 1, self.speed, true)
   self:showContent()
-  if add and not self.GUI.windowList:contains(self) then
-    self.GUI.windowList:add(self)
-  end
 end
 
 -- [COROUTINE] Closes this window.
-function Window:hide(remove)
+function Window:hide()
   if self.scaleY <= 0 then
     return
   end
   self:hideContent()
   self:scaleTo(self.scaleX, 0, self.speed, true)
-  if remove then
-    self.GUI.windowList:removeElement(self)
+end
+
+-- Inserts this window in the GUI's list.
+function Window:insertSelf()
+  if not self.GUI.windowList:contains(self) then
+    self.GUI.windowList:add(self)
   end
+end
+
+-- Removes this window from the GUI's list.
+function Window:removeSelf()
+  self.GUI.windowList:removeElement(self)
 end
 
 return Window

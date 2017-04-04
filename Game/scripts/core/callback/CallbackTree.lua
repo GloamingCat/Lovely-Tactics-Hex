@@ -51,7 +51,7 @@ end
 -- @param(path : string) path to the script
 -- @param(... : unknown) any extra arguments
 function CallbackTree:forkFromPath(path, ...)
-  if (path ~= '') then
+  if path ~= '' then
     local Callback = require('custom/' .. path)
     local callback = Callback(nil, ...)
     self:addChild(callback)

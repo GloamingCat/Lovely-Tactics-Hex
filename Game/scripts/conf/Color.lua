@@ -21,4 +21,9 @@ Color.gui_icon_default = {red = 100, green = 100, blue = 100, alpha = 100}
 Color.gui_icon_disabled = {red = 50, green = 50, blue = 50, alpha = 50}
 Color.gui_icon_highlight = {red = 120, green = 120, blue = 120, alpha = 100}
 
+Color.popup_dmgHP = {red = 100, green = 100, blue = 100, alpha = 100}
+Color.popup_dmgSP = {red = 100, green = 100, blue = 100, alpha = 100}
+Color.popup_healHP = {red = 100, green = 100, blue = 100, alpha = 100}
+Color.popup_healSP = {red = 100, green = 100, blue = 100, alpha = 100}
+
 Color.toFloat = 255 / 100

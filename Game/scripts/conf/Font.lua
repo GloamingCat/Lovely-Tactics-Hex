@@ -12,4 +12,5 @@ Font.popup_healHP = default_font
 Font.popup_healEP = default_font
 Font.fps = love.graphics.newFont(12)
 
-Font.size = 4
+Font.scale = 4
+Font.outlineSize = 4

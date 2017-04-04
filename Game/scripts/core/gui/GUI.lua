@@ -22,13 +22,15 @@ function GUI:init()
   self:createWindows()
   self.open = false
   self.closed = true
+  self.waitAnimation = true
 end
 
--- Abstract. Creates and opens the GUI's windows.
+-- [ABSTRACT] Creates and opens the GUI's windows.
 function GUI:createWindows()
   self.activeWindow = nil
 end
 
+-- Destroys all windows.
 function GUI:destroy()
   for window in self.windowList:iterator() do
     window:destroy()
@@ -53,7 +55,7 @@ function GUI:waitForResult()
     coroutine.yield()
     self.activeWindow:checkInput()
   end
-  return self.activeWindow.result, true
+  return self.activeWindow.result
 end
 
 -- [COROUTINE] Shows all windows.
@@ -63,11 +65,11 @@ function GUI:show()
   end
   self.closed = false
   for window in self.windowList:iterator() do
-    _G.Callback.parent:fork(function()
+    GUIManager.callbackTree:fork(function()
       window:show()
     end)
   end
-  local done = false
+  local done
   repeat
     done = true
     for window in self.windowList:iterator() do
@@ -87,11 +89,11 @@ function GUI:hide()
   end
   self.open = false
   for window in self.windowList:iterator() do
-    _G.Callback.parent:fork(function()
+    GUIManager.callbackTree:fork(function()
       window:hide()
-    end, 2)
+    end)
   end
-  local done = false
+  local done
   repeat
     done = true
     for window in self.windowList:iterator() do
@@ -102,6 +104,26 @@ function GUI:hide()
     coroutine.yield()
   until done
   self.closed = true
+end
+
+function GUI:forkShow()
+  if self.waitAnimation then
+    self:show()
+  else
+    GUIManager.callbackTree:fork(function()
+      self:show()
+    end)
+  end
+end
+
+function GUI:forkHide()
+  if self.waitAnimation then
+    self:hide()
+  else
+    GUIManager.callbackTree:fork(function()
+      self:hide()
+    end)
+  end
 end
 
 return GUI

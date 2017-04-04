@@ -7,6 +7,9 @@ Character methods that are called during a battle.
 
 =============================================================================]]
 
+-- Imports
+local PopupText = require('core/battle/PopupText')
+
 -- Alias
 local tile2Pixel = math.field.tile2Pixel
 
@@ -102,21 +105,24 @@ end
 -- @param(result : number) the the damage caused
 -- @param(origin : ObjectTile) the tile of the skill user
 function Character_Battle:damage(skill, result, origin)
-  if skill.damageType == 0 then -- on HP
-    -- Damage HP
-  else
-    -- Damage SP
+  local pos = self.position
+  local popupText = PopupText(pos.x, pos.y - 16, pos.z - 10)
+  if skill.affectHP then
+    popupText:addLine(result, Color.popup_dmgHP, Font.popup_dmgHP)
+  end
+  if skill.affectSP then
+    popupText:addLine(result, Color.popup_dmgSP, Font.popup_dmgSP)
   end
   local currentTile = self:getTile()
   local dir = self:turnToTile(origin.x, origin.y)
   if skill.individualAnimID >= 0 then
     local mirror = dir > 90 and dir <= 270
-    local pos = self.position
     BattleManager:playAnimation(skill.individualAnimID, 
-      pos.x, pos.y, pos.z - 1, mirror)
+      pos.x, pos.y, pos.z - 10, mirror)
   end
   self:playAnimation(self.damageAnim, true)
   self:playAnimation(self.idleAnim)
+  popupText:popup(true)
 end
 
 return Character_Battle

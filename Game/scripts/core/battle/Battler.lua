@@ -191,21 +191,28 @@ end
 -------------------------------------------------------------------------------
 
 -- Checks if battler is still alive by its HP.
--- @ret(boolean) true is HP is zero, false otherwise
+-- @ret(boolean) true if HP greater then zero, false otherwise
 function Battler:isAlive()
-  return self.currentHP == 0
+  return self.currentHP > 0
 end
 
 -- Decreases Hit Points.
 -- @param(value : number) damage value (may be negative to cure)
-function Battler:damageHP(value)
+-- @ret(boolean) true if character was knocked out
+function Battler:damageHP(value)  
   self.currentHP = self.currentHP - value
+  if self.currentHP <= 0 then
+    self.currentHP = 0
+    return true
+  else
+    return false
+  end
 end
 
 -- Decreases Skill Points.
 -- @param(value : number) damage value (may be negative to cure)
 function Battler:damageSP(value)
-  self.currentSP = self.currentSP - value
+  self.currentSP = max(0, self.currentSP - value)
 end
 
 return Battler

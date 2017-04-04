@@ -129,7 +129,7 @@ function Sprite:setTransformation(data)
   self:setOffset(w / 2 - data.offsetX, h - data.offsetY, data.offsetDepth)
   self:setScale(data.scaleX / 100, data.scaleY / 100)
   self:setRotation(math.rad(data.rotation or 0))
-  self:setRGB(data.red, data.green, data.blue, data.alpha)
+  self:setRGBA(data.red, data.green, data.blue, data.alpha)
 end
 
 -- Merges sprite's current transformation with a new one.
@@ -140,7 +140,7 @@ function Sprite:applyTransformation(data)
     data.offsetDepth + self.offsetDepth)
   self:setScale(data.scaleX / 100 * self.scaleX, data.scaleY / 100 * self.scaleY)
   self:setRotation(math.rad(data.rotation or 0 + self.rotation))
-  self:setRGB(data.red * self.color.red / 100, data.green * self.color.green / 100, 
+  self:setRGBA(data.red * self.color.red / 100, data.green * self.color.green / 100, 
     data.blue * self.color.blue / 100, data.alpha * self.color.alpha / 100)
 end
 
@@ -205,21 +205,24 @@ end
 -- @param(g : number) green component
 -- @param(b : number) blue component
 -- @param(a : number) alpha component (optional)
-function Sprite:setRGB(r, g, b, a)
-  a = a or self.color.a
+function Sprite:setRGBA(r, g, b, a)
+  r = r or self.color.red
+  g = g or self.color.green
+  b = b or self.color.blue
+  a = a or self.color.alpha
   if r ~= self.color.red or g ~= self.color.green or b ~= self.color.blue or a ~= self.color.alpha then
+    self.color.red = r
+    self.color.green = g
+    self.color.blue = b
+    self.color.alpha = a
     self.renderer.needsRedraw = true
   end
-  self.color.red = r or 255
-  self.color.green = g or 255
-  self.color.blue = b or 255
-  self.color.alpha = a or 255
 end
 
 -- Sets sprite's color's rgb.
 -- @param(color : table) a color table containing {red, green, blue, alpha} components
 function Sprite:setColor(color)
-  self:setRGB(color.red, color.green, color.blue, color.alpha)
+  self:setRGBA(color.red, color.green, color.blue, color.alpha)
 end
 
 -------------------------------------------------------------------------------

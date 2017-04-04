@@ -29,11 +29,6 @@ function ActionGUI:createWindows()
   self.action = BattleManager.currentAction
 end
 
-local old_update = ActionGUI.update
-function ActionGUI:update()
-  old_update(self)
-end
-
 -------------------------------------------------------------------------------
 -- Auxiliary Windows
 -------------------------------------------------------------------------------
@@ -110,11 +105,11 @@ function ActionGUI:selectTarget(target)
     if target.characterList.size > 0 then
       local battler = target.characterList[1].battler
       self.targetWindow:setBattler(battler)
-      _G.Callback:fork(function()
+      GUIManager.callbackTree:fork(function()
         self.targetWindow:show()
       end)
     else
-      _G.Callback:fork(function()
+      GUIManager.callbackTree:fork(function()
         self.targetWindow:hide()
       end)
     end
@@ -124,7 +119,7 @@ end
 -- Shows grid and cursor.
 function ActionGUI:startGridSelecting(target)
   if self.stepWindow then
-    _G.Callback:fork(function()
+    GUIManager.callbackTree:fork(function()
       self.stepWindow:show()
     end)
   end
@@ -135,12 +130,12 @@ end
 -- Hides grid and cursor.
 function ActionGUI:endGridSelecting()
   if self.stepWindow then
-    _G.Callback:fork(function()
+    GUIManager.callbackTree:fork(function()
       self.stepWindow:hide()
     end)
   end
   if self.targetWindow then
-    _G.Callback:fork(function()
+    GUIManager.callbackTree:fork(function()
       self.targetWindow:hide()
     end)
   end
