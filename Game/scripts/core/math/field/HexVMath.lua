@@ -251,7 +251,6 @@ end
 -- @ret(number) the minimum x among the tiles
 -- @ret(number) the maximum x among the tiles
 function HexVMath.radiusLimitsX(radius)
-  radius = radius - 1
 	return -radius, radius
 end
 
@@ -261,7 +260,6 @@ end
 -- @ret(number) the minimum y among the tiles
 -- @ret(number) the maximum y among the tiles
 function HexVMath.radiusLimitsY(radius, i)
-  radius = radius - 1
   return max(-radius, -radius - i), min(radius, radius - i)
 end
 

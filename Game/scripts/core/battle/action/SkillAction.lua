@@ -162,7 +162,7 @@ function SkillAction:getAllAffectedTiles()
   local tiles = {}
   local field = FieldManager.currentField
   local height = self.currentTarget.layer.height
-  for i, j in mathf.radiusIterator(self.skill.data.radius, 
+  for i, j in mathf.radiusIterator(self.skill.data.radius - 1, 
       self.currentTarget.x, self.currentTarget.y) do
     if i >= 1 and j >= 0 and i <= field.sizeX and j <= field.sizeY then
       tiles[#tiles + 1] = field:getObjectTile(i, j, height)

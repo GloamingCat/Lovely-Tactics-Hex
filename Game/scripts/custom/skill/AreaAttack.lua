@@ -21,7 +21,7 @@ function AreaAttack:getAffectedTiles()
   local field = FieldManager.currentField
   local height = self.currentTarget.layer.height
   local userParty = self.user.party
-  for i, j in radiusIterator(self.data.radius, 
+  for i, j in radiusIterator(self.data.radius - 1, 
       self.currentTarget.x, self.currentTarget.y) do
     if i >= 1 and j >= 0 and i <= field.sizeX and j <= field.sizeY
       local tile = field:getObjectTile(i, j, height)
