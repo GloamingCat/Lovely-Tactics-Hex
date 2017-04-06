@@ -18,15 +18,7 @@ require('core.globals')
 -- This function is called exactly once at the beginning of the game.
 -- @param(arg : table) A sequence strings which are command line arguments given to the game
 function love.load(arg)
-  local startPos = Config.player.startPos
-  local initialTransition = {
-    tileX = startPos.x or 0,
-    tileY = startPos.y or 7,
-    height = startPos.z or 0,
-    fieldID = startPos.fieldID or 0,
-    direction = startPos.direction or 270
-  }
-  FieldManager:loadTransition(initialTransition)
+  FieldManager:loadTransition(SaveManager.current.playerTransition)
 end
 
 -- Callback function used to update the state of the game every frame.
@@ -37,9 +29,6 @@ function love.update(dt)
   end
   if not GUIManager.paused then 
     GUIManager:update()
-  end
-  if BattleManager.onBattle then
-    BattleManager:update()
   end
   InputManager:update()
 end

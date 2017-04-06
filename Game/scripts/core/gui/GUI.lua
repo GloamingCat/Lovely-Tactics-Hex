@@ -35,6 +35,7 @@ function GUI:destroy()
   for window in self.windowList:iterator() do
     window:destroy()
   end
+  collectgarbage('collect')
 end
 
 -- Updates all windows.

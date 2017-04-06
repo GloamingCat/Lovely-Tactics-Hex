@@ -114,17 +114,6 @@ function Character_Base:initializeScripts(tileData)
   self.interactListener = tileData.interactScript
 end
 
--- Load character's data from Game Save.
--- @param(fieldData : table) all character's data from the field
-function Character_Base:loadData(fieldData)
-  local data = fieldData[self.id]
-  if data then
-    self.data = data
-  else
-    self.data = {}
-  end
-end
-
 -------------------------------------------------------------------------------
 -- Direction
 -------------------------------------------------------------------------------

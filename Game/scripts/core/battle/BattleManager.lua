@@ -37,6 +37,7 @@ end
 
 -- Start a battle.
 function BattleManager:startBattle()
+  self.onBattle = true
   for tile in FieldManager.currentField:gridIterator() do
     tile.gui = TileGraphics(tile)
     tile.gui:updateDepth()
@@ -54,6 +55,7 @@ function BattleManager:battleLoop()
       return winner
     end
   end
+  self.onBattle = false
 end
 
 -- Clears batte information from characters and field.

@@ -25,10 +25,14 @@ local Button = require('core/class'):new()
 -- @param(text : string) the text shown in the button
 -- @param(fontName : string) the text's font (from Fonts folder)
 -- @param(iconAnim : Animation) the icon graphics
--- @param(onConfirm : function) the function called when player confirms (optinal)
--- @param(onCancel : function) the function called when player cancels (optinal)
--- @param(onMove : function) the function called when player moves cursor (optional)
--- @param(enableCondition : function) the function that tells if this button is enabled (optional)
+-- @param(onConfirm : function) the function called when
+--  player confirms (optinal)
+-- @param(onCancel : function) the function called when
+--  player cancels (optinal)
+-- @param(onMove : function) the function called when 
+--  player moves cursor (optional)
+-- @param(enableCondition : function) the function that tells if 
+--  this button is enabled (optional)
 function Button:init(window, index, col, row, text, fontName, iconAnim, 
     onConfirm, onCancel, onMove, enableCondition)
   self.window = window
@@ -38,7 +42,8 @@ function Button:init(window, index, col, row, text, fontName, iconAnim,
   self.enabled = true
   self.selected = false
   if text ~= '' then
-    self.textSprite = SimpleText(text, nil, window:buttonWidth(), Font.gui_button)
+    local width = window:buttonWidth()
+    self.textSprite = SimpleText(text, nil, width, nil, Font.gui_button)
     self.textSprite.sprite:setColor(Color.gui_text_default)
   end
   if iconAnim ~= nil then
@@ -138,8 +143,11 @@ end
 -- @ret(Vector) the offset from the window's position.
 function Button:relativePosition()
   local w = self.window
-  return Vector(-(w.width / 2 - w.paddingw) + (self.col - w.offsetCol - 1) * w:buttonWidth(),
-                -(w.height / 2 - w.paddingh) + (self.row - w.offsetRow - 1) * w:buttonHeight(), -1)
+  local x = -(w.width / 2 - w.paddingw) + 
+    (self.col - w.offsetCol - 1) * w:buttonWidth()
+  local y = -(w.height / 2 - w.paddingh) + 
+    (self.row - w.offsetRow - 1) * w:buttonHeight()
+  return Vector(x, y, -1)
 end
 
 -- Updates position based on window's position.

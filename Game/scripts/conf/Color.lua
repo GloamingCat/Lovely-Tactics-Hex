@@ -1,6 +1,11 @@
 
 Color = {}
 
+Color.white = {red = 100, green = 100, blue = 100, alpha = 100}
+Color.red = {red = 100, green = 0, blue = 0, alpha = 100}
+Color.green = {red = 0, green = 100, blue = 0, alpha = 100}
+Color.blue = {red = 0, green = 0, blue = 100, alpha = 100}
+
 Color.tile_general = {red = 85, green = 50, blue = 85, alpha = 85}
 Color.tile_move = {red = 40, green = 40, blue = 100, alpha = 85}
 Color.tile_support = {red = 40, green = 100, blue = 40, alpha = 85}
@@ -26,4 +31,4 @@ Color.popup_dmgSP = {red = 100, green = 100, blue = 100, alpha = 100}
 Color.popup_healHP = {red = 100, green = 100, blue = 100, alpha = 100}
 Color.popup_healSP = {red = 100, green = 100, blue = 100, alpha = 100}
 
-Color.toFloat = 255 / 100
+Color.factor = 255 / 100

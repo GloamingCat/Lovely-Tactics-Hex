@@ -18,7 +18,6 @@ local round = math.round
 
 -- Constants
 local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
-local colorf = Color.toFloat
 
 local Renderer = Transformable:inherit()
 
@@ -143,34 +142,20 @@ function Renderer:drawList(list)
   local n = #list
   for i = 1, n do
     local sprite = list[i]
-    if sprite:isVisible() and sprite.texture ~= nil then
-      if sprite.texture ~= self.batch:getTexture() then
-        self:clearBatch()
-        self.batch:setTexture(sprite.texture)
-      end
-      self:addSprite(sprite)
+    if sprite:isVisible() then
+      sprite:draw(self)
     end
   end
 end
 
 -- Draws current and clears.
 function Renderer:clearBatch()
-  if self.batch then
+  if self.batch and self.toDraw.size > 0 then
     -- TODO: attach mesh from sprites in the toDraw list
     love.graphics.draw(self.batch)
     self.batch:clear()
     self.toDraw.size = 0
   end
-end
-
--- Inserts sprite to the batch.
--- @param(sprite : Sprite) sprite to be added
-function Renderer:addSprite(sprite)
-  self.batch:setColor(sprite.color.red * colorf, sprite.color.green * colorf, 
-    sprite.color.blue * colorf, sprite.color.alpha * colorf)
-  self.batch:add(sprite.quad, sprite.position.x, sprite.position.y, 
-    sprite.rotation, sprite.scaleX, sprite.scaleY, sprite.offsetX, sprite.offsetY)
-  self.toDraw:add(sprite)
 end
 
 -- Organizes current sprite list by texture.

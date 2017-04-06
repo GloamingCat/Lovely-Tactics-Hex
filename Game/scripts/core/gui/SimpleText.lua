@@ -19,35 +19,56 @@ local SimpleText = require('core/class'):new()
 -- Initialization
 -------------------------------------------------------------------------------
 
-function SimpleText:init(text, relativePosition, width, font, align)
-  font = font or Font.gui_default
-  align = align or 'left'
-  self.sprite = Text(text, nil, {width, align, nil, font}, GUIManager.renderer)
+-- @param(text : string) the text content (not rich text)
+-- @param(relativePosition : Vector) position relative to its window (optional)
+-- @param(width : number) the max width for texto box (optional)
+-- @param(align : string) alignment inside the box (optional, left by default)
+-- @param(font : Font) font of the text (optional)
+-- @param(colot : table) color of the text (optional)
+function SimpleText:init(text, relativePosition, width, align, font, color)
+  local r = {c = color or Color.gui_text_default, f = font or Font.gui_default}
+  local p = {width, align or 'left'}
+  assert(text, 'Nil text')
+  if text ~= '' then
+    text = '{c}{f}' .. text
+  end
+  self.resources = r
+  self.sprite = Text(text, r, p, GUIManager.renderer)
   self.text = text
   self.relativePosition = relativePosition or Vector(0, 0, 0)
 end
 
+-- Changes text content, using the same font and color.
+-- @param(text : string) the new text content
 function SimpleText:setText(text)
-  self.sprite:setText(text)
+  if text ~= '' then
+    text = '{c}{f}' .. text
+  end
+  self.sprite:setText(text, self.resources)
 end
 
 -------------------------------------------------------------------------------
 -- Window Content methods
 -------------------------------------------------------------------------------
 
+-- Hides text.
 function SimpleText:show()
   self.sprite:setVisible(true)
 end
 
+-- Shows text.
 function SimpleText:hide()
   self.sprite:setVisible(false)
 end
 
+-- Sets position relative to its parent window.
+-- @param(pos : Vector) window position
 function SimpleText:updatePosition(pos)
   local rpos = self.relativePosition
   self.sprite:setXYZ(pos.x + rpos.x, pos.y + rpos.y, pos.z + rpos.z)
 end
 
+-- Removes text.
 function SimpleText:destroy()
   self.sprite:removeSelf()
 end

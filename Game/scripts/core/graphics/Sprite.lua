@@ -20,6 +20,9 @@ local round = math.round
 local insert = table.insert
 local remove = table.remove
 
+-- Constants
+local colorf = Color.factor
+
 local Sprite = require('core/class'):new()
 
 -------------------------------------------------------------------------------
@@ -290,8 +293,20 @@ function Sprite:removeSelf()
   self.renderer.needsRedraw = true
 end
 
+function Sprite:draw(renderer)
+  if self.texture ~= renderer.batch:getTexture() then
+    renderer:clearBatch()
+    renderer.batch:setTexture(self.texture)
+  end
+  renderer.batch:setColor(self.color.red * colorf, self.color.green * colorf, 
+    self.color.blue * colorf, self.color.alpha * colorf)
+  renderer.batch:add(self.quad, self.position.x, self.position.y, 
+    self.rotation, self.scaleX, self.scaleY, self.offsetX, self.offsetY)
+  renderer.toDraw:add(self)
+end
+
 -- Deletes this sprite.
-function Sprite:dispose()
+function Sprite:destroy()
   self:removeSelf()
   self.quad = nil
   self.texture = nil

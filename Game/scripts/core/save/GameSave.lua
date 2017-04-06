@@ -19,6 +19,14 @@ function GameSave:init()
       self.battlers[i] = battlers[i]
     end
   end
+  local startPos = Config.player.startPos
+  self.playerTransition = {
+    tileX = startPos.x or 0,
+    tileY = startPos.y or 7,
+    height = startPos.z or 0,
+    fieldID = startPos.fieldID or 0,
+    direction = startPos.direction or 270
+  }
 end
 
 function GameSave:load()

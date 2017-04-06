@@ -34,7 +34,7 @@ function StepWindow:createContent()
   local w = self.width - self.paddingw * 2
   local pos = Vector(self.paddingw - self.width / 2, self.paddingh - self.height / 2 - 3, -1)
   local text = SimpleText(Vocab.steps .. ':', pos, w)
-  local value = SimpleText('' .. steps, pos, w, nil, 'right')
+  local value = SimpleText('' .. steps, pos, w, 'right')
   self.content:add(text)
   self.content:add(value)
 end

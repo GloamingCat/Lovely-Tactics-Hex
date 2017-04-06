@@ -56,6 +56,9 @@ end
 -- Creates field from ID.
 -- @param(fieldID : number) the field's ID
 function FieldManager:loadField(fieldID)
+  if self.currentField ~= nil then
+    self:storePersistentData()
+  end
   local fieldFile = love.filesystem.read('data/fields/' .. fieldID .. '.json')
   local fieldData = JSON.decode(fieldFile)
   self.updateList = List()
@@ -66,7 +69,7 @@ function FieldManager:loadField(fieldID)
   for tile in self.currentField:gridIterator() do
     tile:createNeighborList()
   end
-  collectgarbage()
+  collectgarbage('collect')
 end
 
 -- Create new field camera.
@@ -92,44 +95,6 @@ function FieldManager:createPlayer(transition)
 end
 
 -------------------------------------------------------------------------------
--- Field State
--------------------------------------------------------------------------------
-
--- Stores the FieldManager state, for in-game purposes only.
--- @ret(table) the table with the state data
-function FieldManager:getState()
-  return {
-    updateList = self.updateList,
-    characterList = self.characterList,
-    player = self.player,
-    renderer = self.renderer,
-    blocks = self.blocks,
-    field = self.currentField
-  }
-end
-
--- Sets FieldManager's state.
--- @param(state : table) the table with the state data
-function FieldManager:setState(state)
-  self.updateList = state.updateList
-  self.characterList = state.characterList
-  self.player = state.player
-  self.blocks = state.blocks
-  self.currentField = state.field
-  self.renderer = state.renderer
-end
-
--- Stores FieldManager's current state in the stack.
-function FieldManager:pushState()
-  self.stateStack:push(self:getState())
-end
-
--- Resets FieldManager's state to previous state.
-function FieldManager:popState()
-  self:setState(self.stateStack:pop())
-end
-
--------------------------------------------------------------------------------
 -- Game save
 -------------------------------------------------------------------------------
 
@@ -151,7 +116,7 @@ function FieldManager:getPlayerTransition()
   }
 end
 
--- Loads each character persistent data.
+-- Loads each character's persistent data.
 -- @param(id : number) the field id
 function FieldManager:loadPersistentData(id)
   local persistentData = SaveManager.current.characterData[id]
@@ -160,7 +125,20 @@ function FieldManager:loadPersistentData(id)
     SaveManager.current.characterData[id] = persistentData
   end
   for char in self.characterList:iterator() do
-    char:loadData(persistentData)
+    char.data = persistentData[char.id]
+  end
+end
+
+-- Stores each character's persistent data.
+function FieldManager:storePersistentData()
+  local id = self.currentField.id
+  local persistentData = SaveManager.current.characterData[id]
+  if persistentData == nil then
+    persistentData = {}
+    SaveManager.current.characterData[id] = persistentData
+  end
+  for char in self.characterList:iterator() do
+    persistentData[char.id] = char.data
   end
 end
 
@@ -199,7 +177,7 @@ end
 -- @param(fieldID : number) the field's id
 -- @ret(number) the number of the party that won the battle
 function FieldManager:loadBattle(fieldID)
-  self:pushState()
+  local oldFieldID = self.currentField.id
   self:loadField(fieldID)
   self.player = nil
   TroopManager:createTroops()
@@ -207,8 +185,9 @@ function FieldManager:loadBattle(fieldID)
     local script = self.currentField.startScript
     self.callbackTree:forkFromPath(script.path, {}, script.param)
   end
+  collectgarbage('collect')
   local winner = BattleManager:startBattle()
-  self:popState()
+  self:loadField(oldFieldID)
   return winner
 end
 

@@ -12,11 +12,13 @@ local Text = require('core/graphics/Text')
 
 -- Alias
 local time = love.timer.getDelta
+local max = math.max
 
 -- Constants
-local distance = 32
-local speed = 0.5
-local properties = {nil, 'center'}
+local distance = 15
+local speed = 8
+local pause = 30
+local properties = {nil, 'left'}
 
 local PopupText = require('core/class'):new()
 
@@ -25,7 +27,7 @@ function PopupText:init(x, y, z)
   self.y = y
   self.z = z
   self.text = nil
-  self.lineCount = 1
+  self.lineCount = 0
   self.resources = {}
 end
 
@@ -58,11 +60,12 @@ function PopupText:popup(wait)
     while d < distance do
       d = d + distance * speed * time()
       sprite:setXYZ(nil, self.y - d)
-      print(sprite.position:toString())
       coroutine.yield()
     end
+    _G.Callback:wait(pause)
     while sprite.color.alpha > 0 do
-      sprite:setRGBA(nil, nil, nil, sprite.color.alpha - speed * time() * 255)
+      local a = max(sprite.color.alpha - speed * time() * 100, 0)
+      sprite:setRGBA(nil, nil, nil, a)
       coroutine.yield()
     end
     sprite:removeSelf()

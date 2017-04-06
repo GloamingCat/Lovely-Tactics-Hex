@@ -17,6 +17,7 @@ local BattlePortrait = require('custom/gui/battle/BattlePortrait')
 -- Constants
 local battleConfig = Config.battle
 local attConfig = Config.attributes
+local font = Font.gui_small
 
 local TargetWindow = Window:inherit()
 
@@ -27,34 +28,46 @@ local TargetWindow = Window:inherit()
 -- Overrides Window:init.
 local old_init = TargetWindow.init
 function TargetWindow:init(GUI, skin)
-  local w = 108
-  local h = 48
-  local p = 12
-  old_init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - p, 
-      -ScreenManager.height / 2 + h / 2 + p), skin)
+  local w = 180
+  local h = 80
+  local m = 12
+  old_init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - m, 
+      -ScreenManager.height / 2 + h / 2 + m), skin)
   
-  --[[local hpw = self.paddingw / 2
-  local w = self.width / 2 - hpw * 3
-  local h = self.height - self.paddingh * 2
+  local hpw = self.paddingw / 2
+  w = w / 2
+  h = - h / 2 + self.paddingh
   
-  local pos1 = Vector(hpw, self.paddingh, -1)
-  local pos2 = Vector(hpw, self.paddingh + 20, -1)
-  local pos3 = Vector(hpw, self.paddingh + 40, -1)
+  local pos1 = Vector(-hpw, h, -1)
+  local pos2 = Vector(-hpw, h + 10, -1)
+  local pos3 = Vector(-hpw, h + 20, -1)
+  local pos4 = Vector(-hpw, h + 30, -1)
   
   local attHP = attConfig[battleConfig.attHPID + 1]
   local attSP = attConfig[battleConfig.attSPID + 1]
   
-  self.textHP = SimpleText(attHP.shortName, pos1, w)
-  self.textSP = SimpleText(attSP.shortName, pos2, w)
-  self.textTC = SimpleText(Vocab.turnCount, pos3, w)
+  self.textName = SimpleText('', pos1, w, 'center')
+  self.textHP = SimpleText(attHP.shortName .. ':', pos2, w, 'left', font)
+  self.textSP = SimpleText(attSP.shortName .. ':', pos3, w, 'left', font)
+  self.textTC = SimpleText(Vocab.turnCount .. ':', pos4, w, 'left', font)
   
-  self.textHPValue = SimpleText('', pos1, w, 'right')
-  self.textSPValue = SimpleText('', pos2, w, 'right')
-  self.textTCValue = SimpleText('', pos3, w, 'right')]]
+  self.textHPValue = SimpleText('', pos2, w, 'right', font)
+  self.textSPValue = SimpleText('', pos3, w, 'right', font)
+  self.textTCValue = SimpleText('', pos4, w, 'right', font)
+  
+  self.content:add(self.textName)
+  self.content:add(self.textHP)
+  self.content:add(self.textSP)
+  self.content:add(self.textTC)
+  self.content:add(self.textHPValue)
+  self.content:add(self.textSPValue)
+  self.content:add(self.textTCValue)
+  
+  collectgarbage('collect')
 end
 
 function TargetWindow:setBattler(battler)  
-  --[[if self.portrait then
+  if self.portrait then
     self.portrait:destroy()
   end
   local w = self.width / 2 - 3 * self.paddingw / 2
@@ -62,9 +75,14 @@ function TargetWindow:setBattler(battler)
   self.portrait = BattlePortrait(battler, 'Small', 
     self.paddingw, self.paddingh, w, h)
   
-  self.textHPValue:setText(battler.currentHP)
-  self.textSPValue:setText(battler.currentSP)
-  self.textTCValue:setText(battler.turnCount)]]
+  local tc = (battler.turnCount / BattleManager.turnLimit * 100)
+  
+  self.textName:setText(battler.data.name)
+  self.textHPValue:setText(battler.currentHP .. '/' .. battler:maxHP())
+  self.textSPValue:setText(battler.currentSP .. '/' .. battler:maxSP())
+  self.textTCValue:setText(string.format( '%3.0f', tc ) .. '%')
+  
+  collectgarbage('collect')
 end
 
 return TargetWindow

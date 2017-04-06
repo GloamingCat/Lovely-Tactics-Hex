@@ -15,6 +15,7 @@ local Animation = require('core/graphics/Animation')
 -- Alias
 local round = math.round
 local abs = math.abs
+local time = love.timer.getDelta
 
 local Pointer = Animation:inherit()
 
@@ -43,8 +44,8 @@ end
 local old_update = Pointer.update
 function Pointer:update()
   old_update(self)
-  self.currentX = self.currentX + self.speedx
-  self.currentY = self.currentY + self.speedy
+  self.currentX = self.currentX + self.speedx * time() * 60
+  self.currentY = self.currentY + self.speedy * time() * 60
   if self.currentX > self.maxx or self.currentX < self.minx then
     self.speedx = -self.speedx
     self.currentX = self.currentX + self.speedx

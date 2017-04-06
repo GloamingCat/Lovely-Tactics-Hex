@@ -28,6 +28,9 @@ function FieldBase:init(data)
   self.id = data.id
   self.sizeX = data.sizeX
   self.sizeY = data.sizeY
+  if data.prefs.onStart.path ~= nil then
+    self.startScript = data.prefs.onStart
+  end
   self.terrainLayers = {}
   self.objectLayers = {}
   if data.prefs.defaultRegion >= 0 then
@@ -46,9 +49,6 @@ function FieldBase:init(data)
   end
   self.centerX, self.centerY = math.field.pixelCenter(self)
   self.minx, self.miny, self.maxx, self.maxy = math.field.pixelBounds(self)
-  if data.prefs.onStart.path ~= nil then
-    self.startScript = data.prefs.onStart
-  end
 end
 
 -- Updates all ObjectTiles and TerrainTiles in field's layers.
