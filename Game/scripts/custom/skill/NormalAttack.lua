@@ -14,7 +14,8 @@ local NormalAttack = CharacterOnlySkill:inherit()
 
 -- Overrides CharacterOnlyAction:isCharacterSelectable.
 function NormalAttack:isCharacterSelectable(char)
-  return char.battler.party ~= self.user.battler.party
+  return char.battler.party ~= self.user.battler.party and
+    char.battler:isAlive()
 end
 
 return NormalAttack

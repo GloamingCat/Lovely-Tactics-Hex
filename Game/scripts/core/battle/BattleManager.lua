@@ -56,6 +56,9 @@ function BattleManager:battleLoop()
     end
   end
   self.onBattle = false
+  for char in TroopManager.characterList:iterator() do
+    char.battler:onBattleEnd()
+  end
 end
 
 -- Clears batte information from characters and field.

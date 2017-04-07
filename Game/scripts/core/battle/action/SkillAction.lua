@@ -77,7 +77,7 @@ function SkillAction:resetTargetTiles(selectMovable, selectBorder)
   local matrix = BattleManager.distanceMatrix
   local field = FieldManager.currentField
   local charTile = BattleManager.currentCharacter:getTile()
-  local range = self.skill.data.range + 1
+  local range = self.skill.data.range
   local h = charTile.layer.height
   local borderTiles = List()
   -- Find all border tiles

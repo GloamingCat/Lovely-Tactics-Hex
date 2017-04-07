@@ -15,9 +15,6 @@ local List = require('core/algorithm/List')
 -- Alias
 local neighborShift = math.field.neighborShift
 
--- Constants
-local overpassAllies = Battle.overpassAllies
-
 local ObjectTile = ObjectTile_Battle:inherit()
 
 -------------------------------------------------------------------------------
@@ -101,17 +98,11 @@ function ObjectTile:collidesObstacleFrom(obj, x, y, h)
   return self:collidesObstacle(self.x - x, self.y - y, obj)
 end
 
--- Checks collision with characters.
--- @param(char : Character) the character to check collision with
--- @param(party : number) the character's party (if not nil, it's passable for allies)
--- @ret(boolean) true is collides with any of the characters, false otherwise
-function ObjectTile:collidesCharacter(char, party)
-  if party and overpassAllies then
-    for c in self.characterList:iterator() do
-      if char ~= c and c.party ~= party then
-        return true
-      end
-    end
+-- Overrides ObjectTile_Battle:collidesCharacter.
+local old_collidesCharacter = ObjectTile_Battle.collidesCharacter
+function ObjectTile:collidesCharacter(char)
+  if char.battler then
+    return old_collidesCharacter(self, char)
   else
     for c in self.characterList:iterator() do
       if char ~= c then

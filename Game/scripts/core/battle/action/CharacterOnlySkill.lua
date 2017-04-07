@@ -78,7 +78,7 @@ end
 -- @param(char : Character) the character to check
 -- @ret(boolean) true if selectable, false otherwise
 function CharacterOnlySkill:isCharacterSelectable(char)
-  return true
+  return char.battler:isAlive()
 end
 
 -- Sets all character tiles as selectable.

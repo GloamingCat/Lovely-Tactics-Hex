@@ -10,6 +10,9 @@ Implements functions that are only used in battle.
 -- Imports
 local List = require('core/algorithm/List')
 
+-- Constants
+local overpassAllies = Battle.overpassAllies
+
 local ObjectTile_Battle = require('core/class'):new()
 
 -------------------------------------------------------------------------------
@@ -72,6 +75,20 @@ end
 -------------------------------------------------------------------------------
 -- Parties
 -------------------------------------------------------------------------------
+
+-- Checks collision with characters.
+-- @param(char : Character) the character to check collision with
+-- @ret(boolean) true is collides with any of the characters, false otherwise
+function ObjectTile_Battle:collidesCharacter(char)
+  local party = char.battler.party
+  for other in self.characterList:iterator() do
+    if char ~= other and (not other.battler or not overpassAllies or 
+        other.battler.party ~= party or not other.battler:isAlive()) then
+      return true
+    end
+  end
+  return false
+end
 
 -- Checks if this tile os in control zone for given party.
 -- @param(you : Battler) the battler of the current character

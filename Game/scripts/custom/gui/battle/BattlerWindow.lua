@@ -13,7 +13,6 @@ local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local Window = require('core/gui/Window')
 local SimpleText = require('core/gui/SimpleText')
-local BattlePortrait = require('custom/gui/battle/BattlePortrait')
 
 -- Alias
 local round = math.round
@@ -40,7 +39,6 @@ local old_createContent = BattlerWindow.createContent
 function BattlerWindow:createContent()
   old_createContent(self)
   local battler = BattleManager.currentAction.currentTarget.characterList[1].battler
-  self.portrait = BattlePortrait(battler, 'Full')
   
   local lineCount = 0
   

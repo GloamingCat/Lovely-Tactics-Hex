@@ -186,6 +186,13 @@ end
 function Battler:onTurnEnd(iterations)
 end
 
+-- Callback for when the battle ends.
+function Battler:onBattleEnd()
+  if self.data.persistent then
+    -- TODO: update battler's data
+  end
+end
+
 -------------------------------------------------------------------------------
 -- Battle
 -------------------------------------------------------------------------------

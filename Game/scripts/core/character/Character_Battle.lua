@@ -106,23 +106,29 @@ end
 -- @param(origin : ObjectTile) the tile of the skill user
 function Character_Battle:damage(skill, result, origin)
   local pos = self.position
-  local popupText = PopupText(pos.x, pos.y - 16, pos.z - 10)
+  local popupText = PopupText(pos.x, pos.y - 20, pos.z - 10)
+  local ko = false
   if skill.affectHP then
     popupText:addLine(result, Color.popup_dmgHP, Font.popup_dmgHP)
+    ko = self.battler:damageHP(result)
   end
   if skill.affectSP then
     popupText:addLine(result, Color.popup_dmgSP, Font.popup_dmgSP)
+    self.battler:damageSP(result)
   end
   local currentTile = self:getTile()
   local dir = self:turnToTile(origin.x, origin.y)
   if skill.individualAnimID >= 0 then
     local mirror = dir > 90 and dir <= 270
-    BattleManager:playAnimation(skill.individualAnimID, 
+    BattleManager:playAnimation(skill.individualAnimID,
       pos.x, pos.y, pos.z - 10, mirror)
   end
   self:playAnimation(self.damageAnim, true)
   self:playAnimation(self.idleAnim)
-  popupText:popup(true)
+  popupText:popup()
+  if ko then
+    self:playAnimation(self.koAnim, true)
+  end
 end
 
 return Character_Battle

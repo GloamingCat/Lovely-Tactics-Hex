@@ -48,11 +48,11 @@ function Pointer:update()
   self.currentY = self.currentY + self.speedy * time() * 60
   if self.currentX > self.maxx or self.currentX < self.minx then
     self.speedx = -self.speedx
-    self.currentX = self.currentX + self.speedx
+    self.currentX = self.currentX + self.speedx * time() * 60
   end
   if self.currentY > self.maxy or self.currentY < self.miny then
     self.speedy = -self.speedy
-    self.currentY = self.currentY + self.speedy
+    self.currentY = self.currentY + self.speedy * time() * 60
   end
   self.sprite:setOffset(round(self.currentX), round(self.currentY))
 end
