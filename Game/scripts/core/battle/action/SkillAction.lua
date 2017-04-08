@@ -12,6 +12,7 @@ local List = require('core/algorithm/List')
 local BattleAction = require('core/battle/action/BattleAction')
 local MoveAction = require('core/battle/action/MoveAction')
 local PathFinder = require('core/algorithm/PathFinder')
+local PopupText = require('core/battle/PopupText')
 
 -- Alias
 local max = math.max
@@ -122,7 +123,7 @@ end
 -- It executes animations and applies damage/heal to the targets.
 function SkillAction:onUse()
   -- Intro time.
-  _G.Callback:wait(introTime)
+  _G.Fiber:wait(introTime)
   
   -- User's initial animation.
   local originTile = self.user:getTile()
@@ -143,7 +144,7 @@ function SkillAction:onUse()
     local x, y, z = mathf.tile2Pixel(self.currentTarget:coordinates())
     local animation = BattleManager:playAnimation(self.skill.data.centerAnimID,
       x, y, z - 1, mirror)
-    _G.Callback:wait(centerTime)
+    _G.Fiber:wait(centerTime)
   end
   
   -- Animation for each of affected tiles.
@@ -153,7 +154,7 @@ function SkillAction:onUse()
   self.user:finishSkill(originTile, self.skill.data)
   
   -- Wait until everything finishes.
-  _G.Callback:wait(max (0, minTime - now()) + 60)
+  _G.Fiber:wait(max (0, minTime - now()) + 60)
 end
 
 -- Gets all tiles that will be affected by skill's effect.
@@ -176,13 +177,13 @@ end
 -- @param(target : Character) the target character
 -- @ret(number) the final value (nil if miss)
 function SkillAction:calculateEffectResult(target)
-  local rate = self.skill:calculateSuccessRate(self.user.battler.att, 
-    target.battler.att)
+  local rate = self.skill.calculateSuccessRate(self, self.user.battler.att, 
+    target.battler.att, random)
   if random() + random(1, 99) > rate then
     return nil
   end
   local result = self.skill:calculateBasicResult(self.user.battler.att, 
-    target.battler.att)
+    target.battler.att, random)
   local bonus = 0
   local skillElementFactors = self.skill.elementFactors
   local targetElementFactors = target.battler.elementFactors
@@ -212,21 +213,24 @@ end
 -- Executes individual animation for a single tile.
 function SkillAction:singleTargetAnimation(char, originTile)
   local result = self:calculateEffectResult(char)
-  if not result or result == 0 then
-    -- Pop-up 'miss'
-  elseif result > 0 then
+  if not result then
+    local pos = char.position
+    local popupText = PopupText(pos.x, pos.y - 20, pos.z - 10)
+    popupText:addLine(Vocab.miss, Color.popup_miss, Font.popup_miss)
+    popupText:popup()
+  elseif result >= 0 then
     if self.skill.data.radius > 1 then
       originTile = self.currentTarget
     end
-    _G.Callback.tree:fork(function()
+    _G.Fiber:fork(function()
       char:damage(self.skill.data, result, originTile)
     end)
   else
-    _G.Callback.tree:fork(function()
+    _G.Fiber:fork(function()
       char:heal(self.skill.data, -result)
     end)
   end
-  _G.Callback:wait(targetTime)
+  _G.Fiber:wait(targetTime)
 end
 
 -------------------------------------------------------------------------------

@@ -32,11 +32,11 @@ function Skill:init(skillID)
   -- Formulae
   if data.basicResult ~= '' then
     self.calculateBasicResult = self:loadFormulae(data.basicResult, 
-      'action, a, b')
+      'action, a, b, rand')
   end
   if data.successRate ~= '' then
     self.calculateSuccessRate = self:loadFormulae(data.successRate, 
-      'action, a, b')
+      'action, a, b, rand')
   end
   -- Store elements
   local e = {}

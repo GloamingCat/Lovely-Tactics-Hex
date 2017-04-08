@@ -16,6 +16,9 @@ local StepWindow = require('custom/gui/battle/StepWindow')
 local TargetWindow = require('custom/gui/battle/TargetWindow')
 local BattleCursor = require('core/battle/BattleCursor')
 
+-- Alias
+local yield = coroutine.yield
+
 local ActionGUI = GUI:inherit()
 
 -------------------------------------------------------------------------------
@@ -105,13 +108,9 @@ function ActionGUI:selectTarget(target)
     if target.characterList.size > 0 then
       local battler = target.characterList[1].battler
       self.targetWindow:setBattler(battler)
-      GUIManager.callbackTree:fork(function()
-        self.targetWindow:show()
-      end)
+      GUIManager.fiberList:fork(self.targetWindow.show, self.targetWindow)
     else
-      GUIManager.callbackTree:fork(function()
-        self.targetWindow:hide()
-      end)
+      GUIManager.fiberList:fork(self.targetWindow.hide, self.targetWindow)
     end
   end
 end
@@ -119,9 +118,7 @@ end
 -- Shows grid and cursor.
 function ActionGUI:startGridSelecting(target)
   if self.stepWindow then
-    GUIManager.callbackTree:fork(function()
-      self.stepWindow:show()
-    end)
+    GUIManager.fiberList:fork(self.stepWindow.show, self.stepWindow)
   end
   FieldManager:showGrid()
   self:selectTarget(target or self.action.currentTarget)
@@ -130,14 +127,14 @@ end
 -- Hides grid and cursor.
 function ActionGUI:endGridSelecting()
   if self.stepWindow then
-    GUIManager.callbackTree:fork(function()
-      self.stepWindow:hide()
-    end)
+    GUIManager.fiberList:fork(self.stepWindow.hide, self.stepWindow)
   end
   if self.targetWindow then
-    GUIManager.callbackTree:fork(function()
-      self.targetWindow:hide()
-    end)
+    GUIManager.fiberList:fork(self.targetWindow.hide, self.targetWindow)
+  end
+  while (self.targetWindow and not self.targetWindow.closed 
+      or self.stepWindow and not self.stepWindow.closed) do
+    yield()
   end
   FieldManager:hideGrid()
   self.cursor:hide()

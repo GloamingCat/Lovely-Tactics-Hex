@@ -62,7 +62,9 @@ function Object:getTile()
   x = round(x)
   y = round(y)
   h = round(h)
-  return FieldManager.currentField.objectLayers[h].grid[x][y]
+  local layer = FieldManager.currentField.objectLayers[h]
+  assert(layer, 'nil layer ' .. h)
+  return layer.grid[x][y]
 end
 
 -- Sets character's tile.

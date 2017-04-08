@@ -76,7 +76,7 @@ function AnimatedObject:playAnimation(name, wait, row)
   end
   anim.paused = false
   if wait then
-    _G.Callback:wait(anim.duration)
+    _G.Fiber:wait(anim.duration)
   end
   return anim
 end

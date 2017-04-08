@@ -9,7 +9,9 @@ A set of windows.
 
 -- Imports
 local List = require('core/algorithm/List')
-local Callback = require('core/callback/Callback')
+
+-- Alias
+local yield = coroutine.yield
 
 local GUI = require('core/class'):new()
 
@@ -22,7 +24,6 @@ function GUI:init()
   self:createWindows()
   self.open = false
   self.closed = true
-  self.waitAnimation = true
 end
 
 -- [ABSTRACT] Creates and opens the GUI's windows.
@@ -53,7 +54,7 @@ end
 function GUI:waitForResult()
   self.activeWindow:checkInput()
   while self.activeWindow.result == nil do
-    coroutine.yield()
+    yield()
     self.activeWindow:checkInput()
   end
   return self.activeWindow.result
@@ -66,7 +67,7 @@ function GUI:show()
   end
   self.closed = false
   for window in self.windowList:iterator() do
-    GUIManager.callbackTree:fork(function()
+    GUIManager.fiberList:fork(function()
       window:show()
     end)
   end
@@ -78,7 +79,7 @@ function GUI:show()
         done = false
       end
     end
-    coroutine.yield()
+    yield()
   until done
   self.open = true
 end
@@ -90,7 +91,7 @@ function GUI:hide()
   end
   self.open = false
   for window in self.windowList:iterator() do
-    GUIManager.callbackTree:fork(function()
+    GUIManager.fiberList:fork(function()
       window:hide()
     end)
   end
@@ -102,29 +103,9 @@ function GUI:hide()
         done = false
       end
     end
-    coroutine.yield()
+    yield()
   until done
   self.closed = true
-end
-
-function GUI:forkShow()
-  if self.waitAnimation then
-    self:show()
-  else
-    GUIManager.callbackTree:fork(function()
-      self:show()
-    end)
-  end
-end
-
-function GUI:forkHide()
-  if self.waitAnimation then
-    self:hide()
-  else
-    GUIManager.callbackTree:fork(function()
-      self:hide()
-    end)
-  end
 end
 
 return GUI

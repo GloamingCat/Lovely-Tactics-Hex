@@ -49,7 +49,7 @@ function PopupText:popup(wait)
     return
   end
   if not wait then
-    _G.Callback.tree:fork(function()
+    _G.Fiber:fork(function()
       self:popup(true)
     end)
   else
@@ -62,9 +62,10 @@ function PopupText:popup(wait)
       sprite:setXYZ(nil, self.y - d)
       coroutine.yield()
     end
-    _G.Callback:wait(pause)
+    _G.Fiber:wait(pause)
+    local f = 100 / (sprite.color.alpha / 255)
     while sprite.color.alpha > 0 do
-      local a = max(sprite.color.alpha - speed * time() * 100, 0)
+      local a = max(sprite.color.alpha - speed * time() * f, 0)
       sprite:setRGBA(nil, nil, nil, a)
       coroutine.yield()
     end

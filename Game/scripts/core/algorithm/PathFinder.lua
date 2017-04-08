@@ -78,6 +78,7 @@ function PathFinder.dijkstra(action, initial)
       end
     end
   end
+  distances:set(nan, initial.x, initial.y)
   return distances
 end
 

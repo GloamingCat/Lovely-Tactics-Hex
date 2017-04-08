@@ -15,20 +15,22 @@ local time = love.timer.getDelta
 local sqrt = math.sqrt
 local abs = math.abs
 local max = math.max
+local yield = coroutine.yield
 
 local Transformable = require('core/class'):new()
 
 -------------------------------------------------------------------------------
--- Initialization
+-- General
 -------------------------------------------------------------------------------
 
+-- Constructor.
 function Transformable:init(initPos, initScaleX, initScaleY, initRot)
   self:initPosition(initPos)
   self:initScale(initScaleX, initScaleY)
   self:initRotation(initRot)
 end
 
--- Updates transform.
+-- Called each frame.
 function Transformable:update()
   self:updatePosition()
   self:updateScale()
@@ -52,6 +54,7 @@ function Transformable:initPosition(pos)
   self.moveDestY = pos.y
   self.moveDestZ = pos.z
   self.moveTime = 1
+  self.moveFiber = nil
 end
 
 -- Sets each coordinate of the position.
@@ -78,7 +81,8 @@ function Transformable:updatePosition()
       self:setXYZ(self.moveDestX, self.moveDestY, self.moveDestZ)
       self.moveTime = 1
     else
-      self:setXYZ(self.moveOrigX * (1 - self.moveTime) + self.moveDestX * self.moveTime, 
+      self:setXYZ(
+        self.moveOrigX * (1 - self.moveTime) + self.moveDestX * self.moveTime, 
         self.moveOrigY * (1 - self.moveTime) + self.moveDestY * self.moveTime,
         self.moveOrigZ * (1 - self.moveTime) + self.moveDestZ * self.moveTime)
     end
@@ -103,8 +107,16 @@ end
 
 -- Waits until the move time is 1.
 function Transformable:waitForMovement()
+  local fiber = _G.Fiber
+  if self.moveFiber then
+    self.moveFiber:interrupt()
+  end
+  self.moveFiber = fiber
   while self.moveTime < 1 do
-    coroutine.yield()
+    yield()
+  end
+  if fiber:running() then
+    self.moveFiber = nil
   end
 end
 
@@ -121,6 +133,7 @@ function Transformable:initScale(sx, sy)
   self.scalaDestX = self.scaleX
   self.scaleDestY = self.scaleY
   self.scaleTime = 1
+  self.scaleFiber = nil
 end
 
 function Transformable:setScale(x, y)
@@ -141,6 +154,7 @@ function Transformable:updateScale()
   end
 end
 
+-- [COROUTINE]
 function Transformable:scaleTo(sx, sy, speed, wait)
   self.scaleOrigX, self.scaleOrigY = self.scaleX, self.scaleY
   self.scaleDestX, self.scaleDestY = sx, sy
@@ -153,8 +167,16 @@ end
 
 -- Waits until the move time is 1.
 function Transformable:waitForScale()
+  local fiber = _G.Fiber
+  if self.scaleFiber then
+    self.scaleFiber:interrupt()
+  end
+  self.scaleFiber = fiber
   while self.scaleTime < 1 do
-    coroutine.yield()
+    yield()
+  end
+  if fiber:running() then
+    self.scaleFiber = nil
   end
 end
 

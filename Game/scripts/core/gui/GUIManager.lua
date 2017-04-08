@@ -1,28 +1,28 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 GUIManager
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 This class manages all GUI objects.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Stack = require('core/algorithm/Stack')
 local Renderer = require('core/graphics/Renderer')
-local CallbackTree = require('core/callback/CallbackTree')
+local FiberList = require('core/fiber/FiberList')
 
 local GUIManager = require('core/class'):new()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- General
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 function GUIManager:init()
   self.renderer = Renderer(200, -100, 100)
   self.stack = Stack()
   self.paused = false
-  self.callbackTree = CallbackTree()
+  self.fiberList = FiberList()
 end
 
 -- Calls all the update functions.
@@ -33,12 +33,12 @@ function GUIManager:update()
   if self.current then
     self.current:update()
   end
-  self.callbackTree:update()
+  self.fiberList:update()
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- GUI calls
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Tells if there's any GUI waiting for player's input.
 function GUIManager:isWaitingInput()
@@ -63,7 +63,7 @@ function GUIManager:showGUI(path, ...)
   end
   local newGUI = require('custom/gui/' .. path)(...)
   self.current = newGUI
-  newGUI:forkShow()
+  newGUI:show()
   return newGUI
 end
 
@@ -74,7 +74,7 @@ function GUIManager:returnGUI()
     lastGUI:hide()
     lastGUI:destroy()
   else
-    self.callbackTree:fork(function()
+    self.fiberList:fork(function()
       lastGUI:hide()
       lastGUI:destroy()
     end)

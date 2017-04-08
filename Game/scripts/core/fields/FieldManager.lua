@@ -1,12 +1,12 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 FieldManager
--------------------------------------------------------------------------------
-Responsible for drawing and updating the current field, and also loading and
-storing fields from game's data.
+---------------------------------------------------------------------------------------------------
+Responsible for drawing and updating the current field, and also loading and storing fields from 
+game's data.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local List = require('core/algorithm/List')
@@ -15,7 +15,7 @@ local Vector = require('core/math/Vector')
 local Renderer = require('core/graphics/Renderer')
 local Field = require('core/fields/Field')
 local Player = require('core/character/Player')
-local CallbackTree = require('core/callback/CallbackTree')
+local FiberList = require('core/fiber/FiberList')
 local FieldCamera = require('core/fields/FieldCamera')
 
 -- Alias
@@ -23,9 +23,9 @@ local mathf = math.field
 
 local FieldManager = require('core/class'):new()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- General
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 function FieldManager:init()
   self.stateStack = Stack() 
@@ -33,7 +33,7 @@ function FieldManager:init()
   self.currentField = nil
   self.paused = false
   self.blocks = 0
-  self.callbackTree = CallbackTree()
+  self.fiberList = FiberList()
 end
 
 -- Calls all the update functions.
@@ -41,7 +41,7 @@ function FieldManager:update()
   if self.blocks > 0 then
     return
   end
-  self.callbackTree:update()
+  self.fiberList:update()
   self.currentField:update()
   for object in self.updateList:iterator() do
     object:update()
@@ -49,9 +49,9 @@ function FieldManager:update()
   self.renderer:update()
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Field Creation (internal use only)
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Creates field from ID.
 -- @param(fieldID : number) the field's ID
@@ -78,8 +78,8 @@ end
 -- @param(layerCount : number) the total number of layers in the field
 -- @ret(FieldCamera) newly created camera
 function FieldManager:createCamera(sizeX, sizeY, layerCount)
-  local renderer = FieldCamera(sizeX * sizeY * layerCount * 4, 
-    mathf.minDepth(sizeX, sizeY), mathf.maxDepth(sizeX, sizeY))
+  local mind, maxd = mathf.minDepth(sizeX, sizeY), mathf.maxDepth(sizeX, sizeY)
+  local renderer = FieldCamera(sizeX * sizeY * layerCount * 4, mind, maxd)
   renderer:setXYZ(mathf.pixelWidth(sizeX, sizeY) / 2, 0)
   return renderer
 end
@@ -94,9 +94,9 @@ function FieldManager:createPlayer(transition)
   return player
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Game save
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Creates a new Transition table based on player's current position.
 -- @ret(table) the transition data
@@ -142,15 +142,14 @@ function FieldManager:storePersistentData()
   end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Field transition
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Loads a field from file data and replaces current. 
 -- The information about the field must be stored in the transition data.
 -- The loaded field will the treated as an exploration field.
--- Don't use this function if you just want to "teleport" the player to another
--- tile in the same field.
+-- Don't use this function if you just want to move the player to another tile in the same field.
 -- @param(transition : table) the transition data
 function FieldManager:loadTransition(transition)
   local fieldID = transition.fieldID
@@ -160,20 +159,18 @@ function FieldManager:loadTransition(transition)
   self:loadPersistentData(fieldID)
   -- Create/call start listeners
   if self.currentField.startScript then
-    local script = self.currentField.startScript
-    self.callbackTree:forkFromPath(script.path, {}, script.param)
+    self.fiberList:forkFromScript(self.currentField.startScript)
   end
   for char in self.characterList:iterator() do
-    if char.startListener ~= nil then
-      char.callbackTree:forkFromPath(char.startListener.path, {character = char}, char.startListener.param)
+    if char.startScript ~= nil then
+      char.fiberList:forkFromScript(char.startScript, {character = char})
     end
   end
 end
 
 -- [COROUTINE] Loads a battle field and waits for the battle to finish.
--- It MUST be called from a callback in FieldManager's callbackTree,
--- or else the callback will be lost in the field transition.
--- At the end of the battle, it returns to the previous field.
+-- It MUST be called from a fiber in FieldManager's fiber list, or else the fiber will be 
+-- lost in the field transition. At the end of the battle, it reloads the previous field.
 -- @param(fieldID : number) the field's id
 -- @ret(number) the number of the party that won the battle
 function FieldManager:loadBattle(fieldID)
@@ -182,8 +179,7 @@ function FieldManager:loadBattle(fieldID)
   self.player = nil
   TroopManager:createTroops()
   if self.currentField.startScript then
-    local script = self.currentField.startScript
-    self.callbackTree:forkFromPath(script.path, {}, script.param)
+    self.fiberList:forkFromScript(self.currentField.startScript)
   end
   collectgarbage('collect')
   local winner = BattleManager:startBattle()
@@ -191,9 +187,9 @@ function FieldManager:loadBattle(fieldID)
   return winner
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Auxiliary Functions
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Searchs for characters with the given name
 -- @param(name : string) the name of the character(s)

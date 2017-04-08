@@ -10,7 +10,6 @@ and game over).
 
 -- Imports
 local PathFinder = require('core/algorithm/PathFinder')
-local CallbackTree = require('core/callback/CallbackTree')
 local MoveAction = require('core/battle/action/MoveAction')
 local Animation = require('core/graphics/Animation')
 local TileGraphics = require('core/fields/TileGUI')
@@ -18,6 +17,7 @@ local TileGraphics = require('core/fields/TileGUI')
 -- Alias
 local Random = love.math.random
 local ceil = math.ceil
+local yield = coroutine.yield
 
 -- Constants
 local turnLimit = Battle.turnLimit
@@ -85,7 +85,7 @@ function BattleManager:nextTurn()
     while not self.currentCharacter do
       self.currentCharacter = TroopManager:incrementTurnCount(turnLimit)
       iterations = iterations + 1
-      coroutine.yield()
+      yield()
     end
   else
     while not self.currentCharacter and iterations < turnLimit do
@@ -162,13 +162,13 @@ function BattleManager:playAnimation(animID, x, y, z, mirror, wait)
     animation.sprite:setScale(-1)
   end
   FieldManager.updateList:add(animation)
-  FieldManager.callbackTree:fork(function(callback)
-    callback:wait(animation.duration)
+  FieldManager.fiberList:fork(function()
+    _G.Fiber:wait(animation.duration)
     FieldManager.updateList:removeElement(animation)
     animation.sprite:removeSelf()
   end)
   if wait then
-    _G.Callback:wait(animation.duration)
+    _G.Fiber:wait(animation.duration)
   end
   return animation
 end

@@ -36,14 +36,11 @@ function Player:init()
   local data = {
     animID = 0,
     direction = 270,
-    startID = 0,
-    collisionID = -1,
-    interactID = -1,
+    startScript = conf.script,
     id = leaderBattler.fieldCharID,
     tags = {}
   }
   old_init(self, '0', data)
-  self.startListener = conf.script
 end
 
 -- Player's extra and base character properties.

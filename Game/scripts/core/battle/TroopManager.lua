@@ -103,9 +103,11 @@ end
 function TroopManager:incrementTurnCount(turnLimit)
   local current = nil
   for bc in self.characterList:iterator() do
-    if bc.battler:incrementTurnCount(turnLimit) then
-      if current == nil or current.battler.turnCount < bc.battler.turnCount then
-        current = bc
+    if bc.battler:isAlive() then
+      if bc.battler:incrementTurnCount(turnLimit) then
+        if current == nil or current.battler.turnCount < bc.battler.turnCount then
+          current = bc
+        end
       end
     end
   end

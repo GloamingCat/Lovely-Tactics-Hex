@@ -3,58 +3,24 @@
 
 PlayerController
 -------------------------------------------------------------------------------
-The player's start callback.
+The player's start fiber.
 It describes the game's behavior according to the player's input.
 
 =============================================================================]]
 
 -- Imports
-local Callback = require('core/callback/Callback')
+local Fiber = require('core/fiber/Fiber')
 
-local PlayerController = Callback:inherit()
-
--------------------------------------------------------------------------------
--- Main function
--------------------------------------------------------------------------------
-
--- Checks input every frame.
-function PlayerController:exec(event, ...)
-  self.character = event.character
-  while true do
-    self:checkFieldInput()
-    coroutine.yield()
-  end
-end
+-- Alias
+local yield = coroutine.yield
 
 -------------------------------------------------------------------------------
 -- Input handlers
 -------------------------------------------------------------------------------
 
--- Checks buttons.
-function PlayerController:checkFieldInput()
-  local player = self.character
-  if not player:fieldInputEnabled() then
-    return
-  end
-  if InputManager.keys['confirm']:isTriggered() then
-    self:interact()
-  elseif InputManager.keys['cancel']:isTriggered() then
-    self:openGUI()
-  else
-    local dx = InputManager:axisX(0, 0)
-    local dy = InputManager:axisY(0, 0)
-    if InputManager.keys['dash']:isPressing() then
-      player.speed = player.dashSpeed
-    else
-      player.speed = player.walkSpeed
-    end
-    player:moveByInput(dx, dy)
-  end
-end
-
 -- Interacts with whoever is the player looking at (if any).
-function PlayerController:interact()
-  local player = self.character
+local function interact()
+  local player = FieldManager.player
   local tile = player:frontTile()
   if tile == nil then
     return
@@ -67,18 +33,47 @@ function PlayerController:interact()
     local char = tile.characterList[i]
     if char ~= player and char.interactListener ~= nil then
       event.dest = char
-      local lastDirection = char.direction
-      local listener = char.interactListener
-      local callback = require('custom/character/' .. listener.path)
-      callback = callback(event, listener.param)
-      callback:execAll()
+      local fiber = Fiber.fromScript(nil, char.interactListener, event)
+      fiber:execAll()
     end
   end
 end
 
 -- Opens game's main GUI.
-function PlayerController:openGUI()
+local function openGUI()
   GUIManager:showGUIForResult('MainGUI')
 end
 
-return PlayerController
+-------------------------------------------------------------------------------
+-- Main function
+-------------------------------------------------------------------------------
+
+-- Checks buttons.
+local function checkFieldInput()
+  local player = FieldManager.player
+  if not player:fieldInputEnabled() then
+    return
+  end
+  if InputManager.keys['confirm']:isTriggered() then
+    interact()
+  elseif InputManager.keys['cancel']:isTriggered() then
+    openGUI()
+  else
+    local dx = InputManager:axisX(0, 0)
+    local dy = InputManager:axisY(0, 0)
+    if InputManager.keys['dash']:isPressing() then
+      player.speed = player.dashSpeed
+    else
+      player.speed = player.walkSpeed
+    end
+    player:moveByInput(dx, dy)
+  end
+end
+
+-- Checks input every frame.
+return function()
+  while true do
+    checkFieldInput()
+    yield()
+  end
+end

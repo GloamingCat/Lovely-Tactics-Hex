@@ -1,16 +1,15 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 ActionWindow
--------------------------------------------------------------------------------
-A window that implements methods in common for battle windows that start
-an action (TurnWindow, SkillWindow and ItemWindow).
+---------------------------------------------------------------------------------------------------
+A window that implements methods in common for battle windows that start an action (TurnWindow, 
+SkillWindow and ItemWindow).
 Its result is the action time that the character spent.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
-local Callback = require('core/callback/Callback')
 local ButtonWindow = require('core/gui/ButtonWindow')
 local SkillAction = require('core/battle/action/SkillAction')
 
@@ -22,7 +21,7 @@ local ActionWindow = ButtonWindow:inherit()
 function ActionWindow:selectAction(actionType, ...)
   -- Executes action grid selecting.
   BattleManager:selectAction(actionType(...))
-  self.GUI:forkHide()
+  self.GUI:hide()
   local actionCost = GUIManager:showGUIForResult('battle/ActionGUI')
   if actionCost >= 0 then
     -- End of turn.

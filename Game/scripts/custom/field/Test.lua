@@ -1,15 +1,14 @@
 
-local Window = require('core/gui/Window')
-
 --[[===========================================================================
 
 An example of usage of an eventsheet for a Field.
 
 =============================================================================]]
 
-local Callback = require('core/callback/Callback'):inherit()
+-- Imports
+local Window = require('core/gui/Window')
 
-function Callback:exec(event, ...)
+return function(param, event, ...)
  --[[ local transition = FieldManager:getPlayerTransition()
   transition.fieldID = 1
   self:wait(90)
@@ -22,5 +21,3 @@ function Callback:exec(event, ...)
   self:wait(90)]]
   FieldManager:loadBattle(1)
 end
-
-return Callback

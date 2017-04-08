@@ -15,7 +15,7 @@ are necessary for every character.
 -- Imports
 local Vector = require('core/math/Vector')
 local AnimatedObject = require('core/character/AnimatedObject')
-local CallbackTree = require('core/callback/CallbackTree')
+local FiberList = require('core/fiber/FiberList')
 
 -- Alias
 local mathf = math.field
@@ -25,10 +25,11 @@ local round = math.round
 
 local Character_Base = AnimatedObject:inherit()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- General
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
+-- Constructor.
 -- @param(id : string) an unique ID for the character in the field
 -- @param(tileData : table) the character's data from tileset file
 local old_init = Character_Base.init
@@ -44,7 +45,7 @@ function Character_Base:init(id, tileData)
   
   self.id = id
   self.type = 'character'
-  self.callbackTree = CallbackTree()
+  self.fiberList = FiberList()
   
   FieldManager.characterList:add(self)
   FieldManager.updateList:add(self)
@@ -54,11 +55,12 @@ function Character_Base:init(id, tileData)
   self:initializeScripts(tileData)
 end
 
--- Updates callback tree.
+-- Overrides AnimatedObject:update. 
+-- Updates fibers.
 local old_update = Character_Base.update
 function Character_Base:update()
   old_update(self)
-  self.callbackTree:update()
+  self.fiberList:update()
 end
 
 -- Converting to string.
@@ -74,9 +76,9 @@ function Character_Base:destroy()
   FieldManager.characterList:removeElement(self)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Inititialization
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Sets generic properties.
 -- @param(name : string) the name of the character
@@ -109,14 +111,20 @@ end
 -- @param(tileData : table) the data from tileset
 -- @param(data : table) the data from characters file
 function Character_Base:initializeScripts(tileData)
-  self.startListener = tileData.startScript
-  self.collisionListener = tileData.collisionScript
-  self.interactListener = tileData.interactScript
+  if tileData.startScript and tileData.startScript.path ~= '' then
+    self.startScript = tileData.startScript
+  end
+  if tileData.collisionScript and tileData.collisionScript.path ~= '' then
+    self.collisionScript = tileData.collisionScript
+  end
+  if tileData.interactScript and tileData.interactScript.path ~= '' then
+    self.interactScript = tileData.interactScript
+  end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Direction
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- [COROUTINE] Plays an animation by name.
 -- @param(name : string) animation's name
@@ -148,9 +156,9 @@ function Character_Base:frontTile(angle)
   end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Movement
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Moves instantly a character to a point, if possible.
 -- @param(x : number) the pixel x of the object
@@ -167,7 +175,7 @@ function Character_Base:instantMoveTo(x, y, z, collisionCheck)
   local tileChange = dx ~= 0 or dy ~= 0 or dh ~= 0
   if collisionCheck and tileChange and not self.passable then
     for i = #tiles, 1, -1 do
-      local collision = self:collision(tiles[i], tiledif)
+      local collision = self:collision(tiles[i])
       if collision ~= nil then
         return collision
       end
@@ -184,9 +192,9 @@ function Character_Base:instantMoveTo(x, y, z, collisionCheck)
   return nil
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Collision
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Checks if a tile point is colliding with something.
 -- @param(tile : Tile) the origin tile
@@ -199,20 +207,20 @@ function Character_Base:collision(tile, dx, dy, dh)
   return FieldManager:collision(self, orig, dest)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Tiles
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Gets all tiles this object is occuping.
 -- @ret(table) the list of tiles
 function Character_Base:getAllTiles()
   local center = self:getTile()
-  local x, y, z = center:coordinates()
+  local x, y, h = center:coordinates()
   local tiles = { }
   local last = 0
   for i = #self.collisionTiles, 1, -1 do
     local n = self.collisionTiles[i]
-    local tile = FieldManager.currentField:getObjectTile(x + n.dx, y + n.dy, z)
+    local tile = FieldManager.currentField:getObjectTile(x + n.dx, y + n.dy, h)
     if tile ~= nil then
       last = last + 1
       tiles[last] = tile

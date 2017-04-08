@@ -3,15 +3,14 @@
 
 Character
 -------------------------------------------------------------------------------
-This class provides general functions to be called by callbacks. 
-The [COUROUTINE] functions must ONLY be called from a callback.
+This class provides general functions to be called by fibers. 
+The [COUROUTINE] functions must ONLY be called from a fiber.
 
 =============================================================================]]
 
 -- Imports
 local Character_Base = require('core/character/Character_Base')
 local Character_Battle = require('core/character/Character_Battle')
-local Callback = require('core/callback/Callback')
 local Vector = require('core/math/Vector')
 local Stack = require('core/algorithm/Stack')
 local Sprite = require('core/graphics/Sprite')
@@ -140,7 +139,7 @@ end
 function Character:walkInAngle(d, angle, dz, collisionCheck)
   local dx, dy = angle2Coord(angle or self.direction)
   dz = dz or -dy
-  return self:walkDistance(dx * d, dy * d, dz, collisionCheck)
+  return self:walkDistance(dx * d, dy * d, dz * d, collisionCheck)
 end
 
 -- [COUROUTINE] Walks to the center of the tile (x, y).

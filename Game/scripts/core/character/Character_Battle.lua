@@ -44,7 +44,7 @@ function Character_Battle:loadSkill(skill, dir, wait)
   end
   
   if wait then
-    _G.Callback:wait(minTime)
+    _G.Fiber:wait(minTime)
   end
 end
 
@@ -78,7 +78,7 @@ function Character_Battle:castSkill(skill, dir, wait)
   end
   
   if wait then
-    _G.Callback:wait(minTime)
+    _G.Fiber:wait(minTime)
   end
 end
 
@@ -123,9 +123,9 @@ function Character_Battle:damage(skill, result, origin)
     BattleManager:playAnimation(skill.individualAnimID,
       pos.x, pos.y, pos.z - 10, mirror)
   end
+  popupText:popup()
   self:playAnimation(self.damageAnim, true)
   self:playAnimation(self.idleAnim)
-  popupText:popup()
   if ko then
     self:playAnimation(self.koAnim, true)
   end

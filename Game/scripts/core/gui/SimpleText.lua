@@ -24,7 +24,7 @@ local SimpleText = require('core/class'):new()
 -- @param(width : number) the max width for texto box (optional)
 -- @param(align : string) alignment inside the box (optional, left by default)
 -- @param(font : Font) font of the text (optional)
--- @param(colot : table) color of the text (optional)
+-- @param(color : table) color of the text (optional)
 function SimpleText:init(text, relativePosition, width, align, font, color)
   local r = {c = color or Color.gui_text_default, f = font or Font.gui_default}
   local p = {width, align or 'left'}

@@ -4,20 +4,10 @@ extern vec2 scale = vec2(1, 1);
 
 uniform vec4 outlineColor = vec4(0,0,0,1); // the color of the outline
 uniform number outlineSize = 1; // in pixels
-uniform number contrast = 30;
 
 vec4 effect( vec4 color, sampler2D texture, vec2 texture_coords, vec2 screen_coords ) {
   vec4 initialColor = texture2D(texture, texture_coords);
   number initialAlpha = initialColor[3];
-
-  // Apply contrast.
-  initialColor /= initialAlpha;
-  initialColor *= contrast;
-  initialColor += vec4(0.5f, 0.5f, 0.5f, 0);
-  initialColor[0] = min(initialColor[0] * contrast, 1);
-  initialColor[1] = min(initialColor[1] * contrast, 1);
-  initialColor[2] = min(initialColor[2] * contrast, 1);
-  initialColor *= initialAlpha;
   
   // Calculate alpha in neighborhood.
   number outlineAlpha = 0;

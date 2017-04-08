@@ -73,6 +73,9 @@ end
 -- Draw in screen
 -------------------------------------------------------------------------------
 
+-- Gets the line offset in x according to the alingment.
+-- @param(w : number) line's width
+-- @ret(number) the x offset
 function Text:alignOffset(w)
   if self.maxWidth then
     if self.align == 'right' then
@@ -84,6 +87,7 @@ function Text:alignOffset(w)
   return 0
 end
 
+-- Called when renderer is iterating through its rendering list.
 -- @param(renderer : Renderer)
 function Text:draw(renderer)
   renderer:clearBatch()

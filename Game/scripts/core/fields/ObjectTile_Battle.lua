@@ -93,10 +93,10 @@ end
 -- Checks if this tile os in control zone for given party.
 -- @param(you : Battler) the battler of the current character
 -- @ret(boolean) true if it's control zone, false otherwise
-function ObjectTile_Battle:isControlZone(you)
+function ObjectTile_Battle:isControlZone(you, noneighbours)
   local containsAlly, containsEnemy = false, false
   for char in self.characterList:iterator() do
-    if char.battler then
+    if char.battler and char.battler:isAlive() then
       if char.battler.party == you.party then
         containsAlly = true
       else
@@ -109,11 +109,12 @@ function ObjectTile_Battle:isControlZone(you)
   elseif containsAlly then
     return false
   end
+  if noneighbours then
+    return false
+  end
   for n in self.neighborList:iterator() do
-    for char in n.characterList:iterator() do
-      if char.battler and char.battler.party ~= you.party then
-        return true
-      end
+    if n:isControlZone(you, true) then
+      return true
     end
   end
   return false

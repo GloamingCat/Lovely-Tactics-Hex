@@ -33,7 +33,7 @@ local Window = Transformable:inherit()
 local old_init = Window.init
 function Window:init(GUI, width, height, position, skin)
   old_init(self, position)
-  self.speed = 5
+  self.speed = 8
   self.width = width
   self.height = height
   self.skin = skin or love.graphics.newImage('images/GUI/windowSkin.png')
@@ -212,11 +212,12 @@ function Window:show()
   if self.scaleY >= 1 then
     return
   end
-  if add then
-    self.GUI.windowList:add(self)
-  end
+  self.closed = false
   self:scaleTo(self.scaleX, 1, self.speed, true)
-  self:showContent()
+  if self.scaleY >= 1 then
+    self.open = true
+    self:showContent()
+  end
 end
 
 -- [COROUTINE] Closes this window.
@@ -224,8 +225,12 @@ function Window:hide()
   if self.scaleY <= 0 then
     return
   end
+  self.open = false
   self:hideContent()
   self:scaleTo(self.scaleX, 0, self.speed, true)
+  if self.scaleX >= 1 then
+    self.closed = true
+  end
 end
 
 -- Inserts this window in the GUI's list.
