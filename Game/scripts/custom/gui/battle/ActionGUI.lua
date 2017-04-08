@@ -136,6 +136,12 @@ function ActionGUI:endGridSelecting()
       or self.stepWindow and not self.stepWindow.closed) do
     yield()
   end
+  --[[if self.stepWindow then
+    self.stepWindow:setVisible(false)
+  end
+  if self.targetWindow then
+    self.targetWindow:setVisible(false)
+  end]]
   FieldManager:hideGrid()
   self.cursor:hide()
 end

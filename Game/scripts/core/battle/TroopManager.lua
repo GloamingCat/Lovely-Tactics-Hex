@@ -145,4 +145,29 @@ function TroopManager:winnerParty()
   return currentParty
 end
 
+function TroopManager:getPartyCenters()
+  local centers = {}
+  for bc in self.characterList:iterator() do
+    local party = bc.battler.party
+    local center = centers[party]
+    if center then
+      center.vector:add(bc.position)
+      center.count = centers[party].count + 1
+    else
+      centers[party] = {
+        vector = bc.position:clone(),
+        count = 1
+      }
+    end
+  end
+  for i = 0, #centers do
+    local c = centers[i]
+    if c then
+      c.vector:mul(1 / c.count)
+      centers[i] = c.vector
+    end
+  end
+  return centers
+end
+
 return TroopManager

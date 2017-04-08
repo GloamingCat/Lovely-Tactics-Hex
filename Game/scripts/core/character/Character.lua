@@ -9,11 +9,11 @@ The [COUROUTINE] functions must ONLY be called from a fiber.
 =============================================================================]]
 
 -- Imports
-local Character_Base = require('core/character/Character_Base')
-local Character_Battle = require('core/character/Character_Battle')
+local CharacterBase = require('core/character/Character_Base')
 local Vector = require('core/math/Vector')
 local Stack = require('core/algorithm/Stack')
 local Sprite = require('core/graphics/Sprite')
+local PopupText = require('core/battle/PopupText')
 
 -- Alias
 local abs = math.abs
@@ -30,66 +30,13 @@ local len2D = math.len2D
 
 -- Constants
 local speedLimit = (Config.player.dashSpeed + Config.player.walkSpeed) / 2
+local castStep = 6
 
-local Character = Character_Base:inherit(Character_Battle)
-
--------------------------------------------------------------------------------
--- Direction
--------------------------------------------------------------------------------
-
--- Turns on a vector's direction (in pixel coordinates).
--- @param(x : number) vector's x
--- @param(y : number) vector's y
--- @ret(number) the angle to the given vector
-function Character:turnToVector(x, y)
-  if abs(x) > 0.01 or abs(y) > 0.01 then
-    local angle = coord2Angle(x, y)
-    self:setDirection(angle)
-    return angle
-  else
-    return self.direction
-  end
-end
-
--- Turns to a pixel point.
--- @param(x : number) the pixel x
--- @param(y : number) the pixel y
--- @ret(number) the angle to the given point
-function Character:turnToPoint(x, y)
-  return self:turnToVector(x - self.position.x, y - self.position.z)
-end
-
--- Turns to a grid point.
--- @param(x : number) the tile x
--- @param(y : number) the tile y
--- @ret(number) the angle to the given tile
-function Character:turnToTile(x, y)
-  local h = self:getTile().layer.height
-  local destx, desty, destz = tile2Pixel(x, y, h)
-  return self:turnToVector(destx - self.position.x, destz - self.position.z)
-end
+local Character = CharacterBase:inherit()
 
 -------------------------------------------------------------------------------
--- Movement
+-- General Movement
 -------------------------------------------------------------------------------
-
--- Overrides Transform:updatePosition to check collision.
-function Character:updatePosition()
-  if self.moveTime < 1 then
-    self.moveTime = self.moveTime + self.moveSpeed * time()
-    if self.moveTime >= 1 then
-      self:setXYZ(self.moveDestX, self.moveDestY, self.moveDestZ)
-      self.moveTime = 1
-    else
-      local x = self.moveOrigX * (1 - self.moveTime) + self.moveDestX * self.moveTime
-      local y = self.moveOrigY * (1 - self.moveTime) + self.moveDestY * self.moveTime
-      local z = self.moveOrigZ * (1 - self.moveTime) + self.moveDestZ * self.moveTime
-      if self:instantMoveTo(x, y, z, self.collisionCheck) and self.stopOnCollision then
-        self.moveTime = 1
-      end
-    end
-  end
-end
 
 -- [COUROUTINE] Walks to the given pixel point (x, y, d).
 -- @param(x : number) coordinate x of the point
@@ -186,6 +133,115 @@ function Character:walkPath(path, collisionCheck)
     if not self:walkToTile(nextTile.x, nextTile.y, h, collisionCheck) then
       break
     end
+  end
+end
+
+-------------------------------------------------------------------------------
+-- Skill (user)
+-------------------------------------------------------------------------------
+
+-- [COROUTINE] Executes the intro animations (load and cast) for skill use.
+-- @param(target : ObjectTile) the target of the skill
+-- @param(skill : table) skill data from database
+function Character:loadSkill(skill, dir, wait)
+  local minTime = 0
+  
+  -- Load animation (user)
+  if skill.userLoadAnim ~= '' then
+    local anim = self:playAnimation(skill.userLoadAnim)
+    minTime = anim.duration
+  end
+  
+  -- Load animation (effect on tile)
+  if skill.loadAnimID >= 0 then
+    local mirror = skill.mirror and dir > 90 and dir <= 270
+    local pos = self.position
+    local anim = BattleManager:playAnimation(skill.loadAnimID, 
+      pos.x, pos.y, pos.z - 1, mirror)
+    minTime = max(minTime, anim.duration)
+  end
+  
+  if wait then
+    _G.Fiber:wait(minTime)
+  end
+end
+
+-- [COROUTINE] Plays cast animation.
+-- @param(skill : Skill)
+-- @param(dir : number) the direction of the cast
+function Character:castSkill(skill, dir, wait)
+  local minTime = 0
+  -- Forward step
+  if skill.stepOnCast then
+    local oldAutoTurn = self.autoTurn
+    self.autoTurn = false
+    self:walkInAngle(castStep, dir)
+    self.autoTurn = oldAutoTurn
+  end
+  -- Cast animation (user)
+  if skill.userCastAnim ~= '' then
+    local anim = self:playAnimation(skill.userCastAnim)
+    minTime = anim.duration
+  end
+  -- Cast animation (effect on tile)
+  if skill.castAnimID >= 0 then
+    local mirror = skill.mirror and dir > 90 and dir <= 270
+    local pos = self.position
+    local anim = BattleManager:playAnimation(skill.castAnimID, 
+      pos.x, pos.y, pos.z - 1, mirror)
+    minTime = max(minTime, anim.duration)
+  end
+  if wait then
+    _G.Fiber:wait(minTime)
+  end
+end
+
+-- [COROUTINE] Returns to original tile and stays idle.
+-- @param(origin : ObjectTile) the original tile of the character
+-- @param(skill : table) skill data from database
+function Character:finishSkill(origin, skill)
+  local x, y, z = tile2Pixel(origin:coordinates())
+  if skill.stepOnCast then
+    local autoTurn = self.autoTurn
+    self.autoTurn = false
+    self:walkToPoint(x, y, z)
+    self.autoTurn = autoTurn
+  end
+  self:playAnimation(self.idleAnim)
+end
+
+-------------------------------------------------------------------------------
+-- Skill (target)
+-------------------------------------------------------------------------------
+
+-- [COROUTINE] Plays damage animation and shows the result in a pop-up.
+-- @param(skill : Skill) the skill used
+-- @param(result : number) the the damage caused
+-- @param(origin : ObjectTile) the tile of the skill user
+function Character:damage(skill, result, origin)
+  local pos = self.position
+  local popupText = PopupText(pos.x, pos.y - 20, pos.z - 10)
+  local ko = false
+  if skill.affectHP then
+    popupText:addLine(result, Color.popup_dmgHP, Font.popup_dmgHP)
+    ko = self.battler:damageHP(result)
+  end
+  if skill.affectSP then
+    popupText:addLine(result, Color.popup_dmgSP, Font.popup_dmgSP)
+    self.battler:damageSP(result)
+  end
+  local currentTile = self:getTile()
+  local dir = self:turnToTile(origin.x, origin.y)
+  if skill.individualAnimID >= 0 then
+    local mirror = dir > 90 and dir <= 270
+    BattleManager:playAnimation(skill.individualAnimID,
+      pos.x, pos.y, pos.z - 10, mirror)
+  end
+  popupText:popup()
+  self:playAnimation(self.damageAnim, true)
+  self:playAnimation(self.idleAnim)
+  if ko then
+    self:playAnimation(self.koAnim, true)
   end
 end
 

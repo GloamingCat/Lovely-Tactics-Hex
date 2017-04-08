@@ -1,17 +1,18 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 GameSave
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 Stores the game data.
 
-=============================================================================]]
+=================================================================================================]]
 
 local GameSave = require('core/class'):new()
 
+-- Contructor.
 function GameSave:init()
   self.playTime = 0
-  self.characterData = {}
+  self.fieldData = {}
   self.battlers = {}
   local battlers = Database.battlers
   for i = 1, #battlers do 
@@ -29,6 +30,7 @@ function GameSave:init()
   }
 end
 
+-- Loads persistent data in the database.
 function GameSave:load()
   for i, battler in pairs(self.battlers) do
     Database.battlers[i] = battler

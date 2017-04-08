@@ -15,6 +15,9 @@ require('core.imgcache')
 require('core.inputcalls')
 require('core.globals')
 
+local cleanTime = 3600
+local cleanCount = 0
+
 -- This function is called exactly once at the beginning of the game.
 -- @param(arg : table) A sequence strings which are command line arguments given to the game
 function love.load(arg)
@@ -24,6 +27,11 @@ end
 -- Callback function used to update the state of the game every frame.
 -- @param(dt : number) The duration of the previous frame
 function love.update(dt)
+  cleanCount = cleanCount + 1
+  if cleanCount >= cleanTime then
+    cleanCount = 0
+    collectgarbage('collect')
+  end
   if not FieldManager.paused then 
     FieldManager:update() 
   end

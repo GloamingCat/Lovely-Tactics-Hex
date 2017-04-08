@@ -1,20 +1,20 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
-Character - Base
--------------------------------------------------------------------------------
+CharacterBase
+---------------------------------------------------------------------------------------------------
 A Character is a dynamic object stored in the tile. 
 It may be passable or not, and have an image or not.
 Player may also interact with this.
 
-A Character_Base provides very basic functions that
+A CharacterBase provides very basic functions that
 are necessary for every character.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Vector = require('core/math/Vector')
-local AnimatedObject = require('core/character/AnimatedObject')
+local DirectedObject = require('core/character/DirectedObject')
 local FiberList = require('core/fiber/FiberList')
 
 -- Alias
@@ -22,8 +22,9 @@ local mathf = math.field
 local angle2Row = math.angle2Row
 local Quad = love.graphics.newQuad
 local round = math.round
+local time = love.timer.getDelta
 
-local Character_Base = AnimatedObject:inherit()
+local Character_Base = DirectedObject:inherit()
 
 ---------------------------------------------------------------------------------------------------
 -- General
@@ -63,17 +64,18 @@ function Character_Base:update()
   self.fiberList:update()
 end
 
--- Converting to string.
--- @ret(string) a string representation
-function Character_Base:toString()
-  return 'Character ' .. self.name .. ' ' .. self.id
-end
-
 -- Removes from draw and update list.
 local old_destroy = Character_Base.destroy
 function Character_Base:destroy()
   old_destroy(self)
   FieldManager.characterList:removeElement(self)
+  FieldManager.updateList:removeElement(self)
+end
+
+-- Converting to string.
+-- @ret(string) a string representation
+function Character_Base:toString()
+  return 'Character ' .. self.name .. ' ' .. self.id
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -98,15 +100,6 @@ function Character_Base:initializeProperties(name, tiles, colliderHeight)
   self.koAnim = 'KO'
 end
 
--- Overrides AnimatedObject:initializeGraphics.
--- @param(direction : number) the initial direction
-local old_initializeGraphics = Character_Base.initializeGraphics
-function Character_Base:initializeGraphics(animations, direction, animID, transform)
-  self.direction = direction
-  old_initializeGraphics(self, animations, animID, transform)
-  self:setDirection(direction)
-end
-
 -- Creates listeners from data.
 -- @param(tileData : table) the data from tileset
 -- @param(data : table) the data from characters file
@@ -119,40 +112,6 @@ function Character_Base:initializeScripts(tileData)
   end
   if tileData.interactScript and tileData.interactScript.path ~= '' then
     self.interactScript = tileData.interactScript
-  end
-end
-
----------------------------------------------------------------------------------------------------
--- Direction
----------------------------------------------------------------------------------------------------
-
--- [COROUTINE] Plays an animation by name.
--- @param(name : string) animation's name
--- @param(wait : boolean) true to wait until first loop finishes (optional)
--- @param(row : number) the row of the animation (optional)
-local old_playAnimation = Character_Base.playAnimation
-function Character_Base:playAnimation(name, wait, row)
-  row = row or angle2Row(self.direction)
-  return old_playAnimation(self, name, wait, row)
-end
-
--- Set's character direction
--- @param(angle : number) angle in degrees
-function Character_Base:setDirection(angle)
-  self.direction = angle
-  self.animation:setRow(math.angle2Row(angle))
-end
-
--- The tile on front of the character, considering character's direction.
--- @ret(ObjectTile) the front tile (nil if exceeds field border)
-function Character_Base:frontTile(angle)
-  angle = angle or self.direction
-  local dx, dy = mathf.nextCoordDir(angle)
-  local tile = self:getTile()
-  if FieldManager.currentField:exceedsBorder(tile.x + dx, tile.y + dy) then
-    return nil
-  else
-    return tile.layer.grid[tile.x + dx][tile.y + dy]
   end
 end
 
@@ -192,19 +151,22 @@ function Character_Base:instantMoveTo(x, y, z, collisionCheck)
   return nil
 end
 
----------------------------------------------------------------------------------------------------
--- Collision
----------------------------------------------------------------------------------------------------
-
--- Checks if a tile point is colliding with something.
--- @param(tile : Tile) the origin tile
--- @param(tiledif : Vector) the displacement in tiles
--- @ret(number) the collision type
-function Character_Base:collision(tile, dx, dy, dh)
-  local orig = Vector(tile:coordinates())
-  local dest = Vector(dx, dy, dh)
-  dest:add(orig)
-  return FieldManager:collision(self, orig, dest)
+-- Overrides Transform:updatePosition to check collision.
+function Character_Base:updatePosition()
+  if self.moveTime < 1 then
+    self.moveTime = self.moveTime + self.moveSpeed * time()
+    if self.moveTime >= 1 then
+      self:setXYZ(self.moveDestX, self.moveDestY, self.moveDestZ)
+      self.moveTime = 1
+    else
+      local x = self.moveOrigX * (1 - self.moveTime) + self.moveDestX * self.moveTime
+      local y = self.moveOrigY * (1 - self.moveTime) + self.moveDestY * self.moveTime
+      local z = self.moveOrigZ * (1 - self.moveTime) + self.moveDestZ * self.moveTime
+      if self:instantMoveTo(x, y, z, self.collisionCheck) and self.stopOnCollision then
+        self.moveTime = 1
+      end
+    end
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -245,6 +207,39 @@ function Character_Base:removeFromTiles(tiles)
   for i = #tiles, 1, -1 do
     tiles[i].characterList:removeElement(self)
   end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Persistent Data
+---------------------------------------------------------------------------------------------------
+
+-- Sets persistent data.
+-- @param(data : table) data from save
+function Character_Base:setPersistentData(data)
+  self.data = data
+  if data then
+    if data.lastx and data.lasty and data.lastz then
+      self:setPosition(data.lastx, data.lasty, data.lastz)
+    end
+    if data.lastDir then
+      self:setDirection(data.lastDir)
+    end
+    if data.lastAnim then
+      self:playAnimation(data.lastAnim)
+    end
+  end
+end
+
+-- Gets persistent data.
+-- @ret(table) character's data
+function Character_Base:getPersistentData()
+  self.data = self.data or {}
+  self.data.lastx = self.position.x
+  self.data.lasty = self.position.y
+  self.data.lastz = self.position.z
+  self.data.lastDir = self.direction
+  self.data.lastAnim = self.animName
+  return self.data
 end
 
 return Character_Base

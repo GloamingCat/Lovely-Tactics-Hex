@@ -48,20 +48,22 @@ end
 -- [COROUTINE] Movec camera to the given object.
 -- @param(obj : Object) the destination object
 -- @param(wait : boolean) flag to wait until the move finishes
-function FieldCamera:moveToObject(obj, wait)
-  self:moveToPoint(obj.position.x, obj.position.y, wait)
+-- @param(speed : number) the speed of the movement
+function FieldCamera:moveToObject(obj, wait, speed)
+  self:moveToPoint(obj.position.x, obj.position.y, wait, speed)
 end
 
 -- Moves camera to the given pixel point.
 -- @param(x : number) the pixel x
 -- @param(y : nubmer) the pixel y
 -- @param(wait : boolean) flag to wait until the move finishes
-function FieldCamera:moveToPoint(x, y, wait)
+-- @param(speed : number) the speed of the movement
+function FieldCamera:moveToPoint(x, y, wait, speed)
   self.focusObject = nil
   local dx = self.position.x - x
   local dy = self.position.y - y
   local distance = sqrt(dx * dx + dy * dy)
-  local speed = (cameraSpeed + distance * 3)
+  speed = ((speed or cameraSpeed) + distance * 3)
   self:moveTo(x, y, 0, speed / distance, wait)
 end
 

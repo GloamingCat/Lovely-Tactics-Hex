@@ -59,11 +59,12 @@ end
 -- @param(name : string) animation's name
 -- @param(wait : boolean) true to wait until first loop finishes (optional)
 function AnimatedObject:playAnimation(name, wait, row)
-  local data = self.animationData[name]
-  assert(data, "Animation does not exist: " .. name)
-  if self.animation == data.animation then
+  if self.animName == name then
     return self.animation
   end
+  local data = self.animationData[name]
+  assert(data, "Animation does not exist: " .. name)
+  self.animName = name
   local anim = data.animation
   self.sprite:setTexture(data.texture)
   self.sprite.quad = data.quad

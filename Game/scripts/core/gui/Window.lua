@@ -33,7 +33,7 @@ local Window = Transformable:inherit()
 local old_init = Window.init
 function Window:init(GUI, width, height, position, skin)
   old_init(self, position)
-  self.speed = 8
+  self.speed = 10
   self.width = width
   self.height = height
   self.skin = skin or love.graphics.newImage('images/GUI/windowSkin.png')

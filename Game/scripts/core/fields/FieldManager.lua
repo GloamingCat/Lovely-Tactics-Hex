@@ -28,7 +28,6 @@ local FieldManager = require('core/class'):new()
 ---------------------------------------------------------------------------------------------------
 
 function FieldManager:init()
-  self.stateStack = Stack() 
   self.renderer = nil
   self.currentField = nil
   self.paused = false
@@ -95,7 +94,7 @@ function FieldManager:createPlayer(transition)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Game save
+-- State
 ---------------------------------------------------------------------------------------------------
 
 -- Creates a new Transition table based on player's current position.
@@ -116,30 +115,85 @@ function FieldManager:getPlayerTransition()
   }
 end
 
+-- Gets a generic variable of this field.
+-- @param(id : number) the ID of the variable
+-- @ret(unknown) the currently stored value for this variable
+function FieldManager:getVariable(id)
+  local persistentData = SaveManager.current.fieldData[id]
+  if persistentData.variables then
+    return persistentData.variables[id]
+  else
+    return nil
+  end
+end
+
+-- Sets a generic variable of this field.
+-- @param(id : number) the ID of the variable
+-- @param(value : unknown) the content of the variable
+function FieldManager:setVariable(id, value)
+  if value == nil then
+    value = true
+  end
+  local persistentData = SaveManager.current.fieldData[id]
+  persistentData.switches = persistentData.switches or {}
+  persistentData.switches[id] = value
+end
+
+function FieldManager:getState()
+  return {
+    field = self.currentField,
+    player = self.player,
+    renderer = self.renderer,
+    fiberList = self.fiberList,
+    updateList = self.updateList,
+    characterList = self.characterList
+  }
+end
+
+function FieldManager:setState(state)
+  self.currentField = state.field
+  self.player = state.player
+  self.renderer = state.renderer
+  self.fiberList = state.fiberList
+  self.updateList = state.updateList
+  self.characterList = state.updateList
+end
+
+---------------------------------------------------------------------------------------------------
+-- Persistent Data
+---------------------------------------------------------------------------------------------------
+
 -- Loads each character's persistent data.
 -- @param(id : number) the field id
 function FieldManager:loadPersistentData(id)
-  local persistentData = SaveManager.current.characterData[id]
+  local persistentData = SaveManager.current.fieldData[id]
   if persistentData == nil then
     persistentData = {}
-    SaveManager.current.characterData[id] = persistentData
+    SaveManager.current.fieldData[id] = persistentData
   end
   for char in self.characterList:iterator() do
-    char.data = persistentData[char.id]
+    char:setPersistentData(persistentData[char.id])
   end
 end
 
 -- Stores each character's persistent data.
 function FieldManager:storePersistentData()
   local id = self.currentField.id
-  local persistentData = SaveManager.current.characterData[id]
+  local persistentData = SaveManager.current.fieldData[id]
   if persistentData == nil then
     persistentData = {}
-    SaveManager.current.characterData[id] = persistentData
+    SaveManager.current.fieldData[id] = persistentData
   end
   for char in self.characterList:iterator() do
-    persistentData[char.id] = char.data
+    persistentData[char.id] = char:getPersistentData()
   end
+end
+
+-- Gets current field's persistent data from save.
+-- @ret(table) the data table from save
+function FieldManager:getPersistentData()
+  local id = self.currentField.id
+  return SaveManager.current.fieldData[id]
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -151,7 +205,7 @@ end
 -- The loaded field will the treated as an exploration field.
 -- Don't use this function if you just want to move the player to another tile in the same field.
 -- @param(transition : table) the transition data
-function FieldManager:loadTransition(transition)
+function FieldManager:loadTransition(transition, fromSave)
   local fieldID = transition.fieldID
   self:loadField(fieldID)
   self.player = self:createPlayer(transition)
@@ -159,11 +213,11 @@ function FieldManager:loadTransition(transition)
   self:loadPersistentData(fieldID)
   -- Create/call start listeners
   if self.currentField.startScript then
-    self.fiberList:forkFromScript(self.currentField.startScript)
+    self.fiberList:forkFromScript(self.currentField.startScript, {fromSave = fromSave})
   end
   for char in self.characterList:iterator() do
     if char.startScript ~= nil then
-      char.fiberList:forkFromScript(char.startScript, {character = char})
+      char.fiberList:forkFromScript(char.startScript, {character = char, fromSave = fromSave})
     end
   end
 end
@@ -174,16 +228,19 @@ end
 -- @param(fieldID : number) the field's id
 -- @ret(number) the number of the party that won the battle
 function FieldManager:loadBattle(fieldID)
-  local oldFieldID = self.currentField.id
+  local previousState = self:getState()
   self:loadField(fieldID)
   self.player = nil
-  TroopManager:createTroops()
+  BattleManager:setUpTiles()
+  BattleManager:setUpCharacters()
   if self.currentField.startScript then
     self.fiberList:forkFromScript(self.currentField.startScript)
   end
   collectgarbage('collect')
-  local winner = BattleManager:startBattle()
-  self:loadField(oldFieldID)
+  local winner = BattleManager:runBattle()
+  self:setState(previousState)
+  previousState = nil
+  collectgarbage('collect')
   return winner
 end
 

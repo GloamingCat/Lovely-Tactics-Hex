@@ -28,6 +28,7 @@ local BattleManager = require('core/class'):new()
 -- General
 -------------------------------------------------------------------------------
 
+-- Constructor.
 function BattleManager:init()
   self.turnLimit = turnLimit
   self.onBattle = false
@@ -35,30 +36,61 @@ function BattleManager:init()
   self.currentAction = nil
 end
 
--- Start a battle.
-function BattleManager:startBattle()
-  self.onBattle = true
+-- Creates battle characters.
+function BattleManager:setUpCharacters()
+  TroopManager:createTroops()
+end
+
+-- Creates tiles' GUI components.
+function BattleManager:setUpTiles()
   for tile in FieldManager.currentField:gridIterator() do
     tile.gui = TileGraphics(tile)
     tile.gui:updateDepth()
   end
-  return self:battleLoop()
+end
+
+-- Start a battle.
+function BattleManager:runBattle()
+  self.onBattle = true
+  self:battleIntro()
+  local winner = self:battleLoop()
+  self:battleEnd()
+  self.onBattle = false
+  return winner
+end
+
+-- Runs before battle loop.
+function BattleManager:battleIntro()
+  local centers = TroopManager:getPartyCenters()
+  local speed = 50
+  for i = #centers, 0, -1 do
+    local p = centers[i]
+    if p then
+      FieldManager.renderer:moveToPoint(p.x, p.y, true, speed)
+      _G.Fiber:wait(30)
+    end
+  end
+  _G.Fiber:wait(30)
 end
 
 -- Runs until battle finishes.
 function BattleManager:battleLoop()
   while true do
-    self:nextTurn()
+    local char, it = self:getNextTurn()
+    self:runTurn(char, it)
     local winner = TroopManager:winnerParty()
     if winner then
-      self:clear()
       return winner
     end
   end
-  self.onBattle = false
+end
+
+-- Runs after winner was determined and battle loop ends.
+function BattleManager:battleEnd()
   for char in TroopManager.characterList:iterator() do
     char.battler:onBattleEnd()
   end
+  self:clear()
 end
 
 -- Clears batte information from characters and field.
@@ -79,48 +111,53 @@ end
 -------------------------------------------------------------------------------
 
 -- [COROUTINE] Searchs for the next character turn and starts.
-function BattleManager:nextTurn()
+-- @ret(Character) the next turn's character
+-- @ret(number) the number of iterations it took from the previous turn
+function BattleManager:getNextTurn()
   local iterations = 0
+  local currentCharacter = nil
   if Battle.turnBar then
-    while not self.currentCharacter do
-      self.currentCharacter = TroopManager:incrementTurnCount(turnLimit)
+    while not currentCharacter do
+      currentCharacter = TroopManager:incrementTurnCount(turnLimit)
       iterations = iterations + 1
       yield()
     end
   else
-    while not self.currentCharacter and iterations < turnLimit do
-      self.currentCharacter = TroopManager:incrementTurnCount(turnLimit)
+    while not currentCharacter and iterations < turnLimit do
+      currentCharacter = TroopManager:incrementTurnCount(turnLimit)
       iterations = iterations + 1
     end
   end
-  for bc in TroopManager.characterList:iterator() do
-    bc.battler:onTurnStart(iterations)
-  end
-  print('Turn started in: ' .. iterations)
-  self:startTurn()
-  for bc in TroopManager.characterList:iterator() do
-    bc.battler:onTurnEnd(iterations)
-  end
-  self.currentCharacter = nil
+  return currentCharacter, iterations
 end
 
 -- [COROUTINE] Executes turn and returns when the turn finishes.
-function BattleManager:startTurn()
-  local char = self.currentCharacter
+function BattleManager:runTurn(char, iterations)
+  -- Start turn
+  --print('Turn started in: ' .. iterations)
+  self.currentCharacter = char
   char.battler.currentSteps = char.battler.steps()
   self:updateDistanceMatrix()
+  for bc in TroopManager.characterList:iterator() do
+    bc.battler:onTurnStart(iterations)
+  end
   local actionCost = 0
   local AI = self.currentCharacter.battler.AI
   FieldManager.renderer:moveToObject(char, true)
+  -- Action
   if AI then
     actionCost = AI.nextAction(self.currentCharacter)
   else
     actionCost = GUIManager:showGUIForResult('battle/BattleGUI')
   end
-  -- Turn end
+  -- End Turn
   local battler = self.currentCharacter.battler
   local stepCost = battler.currentSteps / battler.steps()
   battler:decrementTurnCount(ceil((stepCost + actionCost) * turnLimit / 2))
+  for bc in TroopManager.characterList:iterator() do
+    bc.battler:onTurnEnd(iterations)
+  end
+  self.currentCharacter = nil
 end
 
 -- Re-calculates the distance matrix.
@@ -145,7 +182,11 @@ function BattleManager:selectTarget(tile)
   FieldManager.renderer:moveToTile(tile)
 end
 
--- Plays a battle animation.
+-------------------------------------------------------------------------------
+-- Auxiliary functions
+-------------------------------------------------------------------------------
+
+-- [COROUTINE] Plays a battle animation.
 -- @param(animID : number) the animation's ID from database
 -- @param(x : number) pixel x of the animation
 -- @param(y : number) pixel y of the animation

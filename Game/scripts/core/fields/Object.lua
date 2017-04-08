@@ -77,6 +77,7 @@ end
 -- [ABSTRACT] Gets all tiles this object is occuping.
 -- @ret(table) the list of tiles
 function Object:getAllTiles()
+  return { self:getTile() }
 end
 
 -- [ABSTRACT] Adds this object from to tiles it's occuping.
@@ -85,6 +86,21 @@ end
 
 -- [ABSTRACT] Removes this object from the tiles it's occuping.
 function Object:removeFromTiles()
+end
+
+---------------------------------------------------------------------------------------------------
+-- Collision
+---------------------------------------------------------------------------------------------------
+
+-- Checks if a tile point is colliding with something.
+-- @param(tile : Tile) the origin tile
+-- @param(tiledif : Vector) the displacement in tiles
+-- @ret(number) the collision type
+function Object:collision(tile, dx, dy, dh)
+  local orig = Vector(tile:coordinates())
+  local dest = Vector(dx, dy, dh)
+  dest:add(orig)
+  return FieldManager:collision(self, orig, dest)
 end
 
 return Object
