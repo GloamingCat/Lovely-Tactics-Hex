@@ -15,12 +15,19 @@ local Animation = require('core/graphics/Animation')
 
 -- Alias
 local mathf = math.field
+local newQuad = love.graphics.newQuad
+local newImage = love.graphics.newImage
 
 -- Constants
 local tileW = Config.grid.tileW
 local tileH = Config.grid.tileH
 local tileB = Config.grid.tileB
 local tileS = Config.grid.tileS
+local viewports = {}
+viewports[1] = {0, 0}
+viewports[2] = {tileW / 2, 0}
+viewports[3] = {0, tileH / 2}
+viewports[4] = {tileW / 2, tileH / 2}
 
 local TerrainTile = require('core/class'):new()
 
@@ -75,9 +82,8 @@ function TerrainTile:setTerrain(id)
   self.moveCost = terrainData.moveCost / 100
   self.depth = terrainData.depth - self.order
   if terrainData.imagePath ~= '' then
-    local texture = love.graphics.newImage('images/' .. terrainData.imagePath)
     local rows = mathf.autoTileRows(self.layer.grid, self.x, self.y)
-    self:setQuarters(texture, rows)
+    self:setQuarters(terrainData.quad, rows)
     -- Create animation.
     if terrainData.frameCount > 1 then
       self.animations = {}
@@ -92,27 +98,20 @@ function TerrainTile:setTerrain(id)
 end
 
 -- Creates the animations for the terrain type
--- @param(texture : Texture) the terrain's image
--- @param(position : Vector) the pixel position of the tile's center
+-- @param(quadData : table) the terrain's quad table
 -- @param(rows : table) the autotile row of each quarter
--- @param(terrainData : table) information about the terrain
-function TerrainTile:setQuarters(texture, rows)
+function TerrainTile:setQuarters(quadData, rows)
+  local texture = newImage('images/' .. quadData.imagePath)
   -- Temp function to create a quad
-  local function quad(x, y)
-    return love.graphics.newQuad(x, y, tileW / 2, tileH / 2, 
+  local function createQuad(x, y)
+    return newQuad(x + quadData.x, y + quadData.y, tileW / 2, tileH / 2, 
       texture:getWidth(), texture:getHeight())
   end
-  -- Temp quarter array
-  local viewports = {}
-  viewports[1] = {0, 0}
-  viewports[2] = {tileW / 2, 0}
-  viewports[3] = {0, tileH / 2}
-  viewports[4] = {tileW / 2, tileH / 2}
   -- Create quarter renderers
   self.quarters = {}
   for i = 1, 4 do
     local x, y = viewports[i][1], viewports[i][2]
-    local quad = quad(x, y + rows[i] * tileH)
+    local quad = createQuad(x, y + rows[i] * tileH)
     local depth = (1 - y / tileH) * self.depth
     self.quarters[i] = Sprite(FieldManager.renderer, texture, quad)
     self.quarters[i]:setPosition(self.center)

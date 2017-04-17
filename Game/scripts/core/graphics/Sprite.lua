@@ -1,15 +1,14 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 Sprite
--------------------------------------------------------------------------------
-A Sprite is a group of information the determines the way an image should
-be rendered. The image may be scaled, rotated, translated and coloured.
-Its position determines where on the screen it's going to be rendered
-(x and y axis, relative to the world's coordinate system) and the 
-depth/render order (z axis).
+---------------------------------------------------------------------------------------------------
+A Sprite is a group of information the determines the way an image should be rendered. 
+The image may be scaled, rotated, translated and coloured.
+Its position determines where on the screen it's going to be rendered (x and y axis, relative to 
+the world's coordinate system) and the depth/render order (z axis).
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Vector = require('core/math/Vector')
@@ -25,9 +24,9 @@ local colorf = Color.factor
 
 local Sprite = require('core/class'):new()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Initialization
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- @param(renderer : Renderer) the renderer that is going to handle this sprite
 -- @param(texture : Texture) sprite's texture
@@ -75,9 +74,9 @@ function Sprite:clone(renderer)
   return copy
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Visibility
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Checks if sprite is visible on screen.
 -- @ret(boolean) true if visible, false otherwise
@@ -94,9 +93,9 @@ function Sprite:setVisible(value)
   self.visible = value
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Quad and Texture
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Sets the texture and updates quad.
 -- @param(texture : Texture) the new texture
@@ -121,9 +120,9 @@ function Sprite:setQuad(x, y, w, h)
   self.renderer.needsRedraw = true
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Transformations
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Sets sprite's offset, scale, rotation and color
 -- @param(data : table) transformation data
@@ -169,9 +168,9 @@ function Sprite:setRotation(angle)
   self.rotation = angle
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Offset
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Sets the quad's offset from the top left corner.
 -- @param(ox : number) the X-axis offset
@@ -199,15 +198,15 @@ function Sprite:setCenterOffset(offsetDepth)
   self:setOffset(round(w / 2), round(h / 2), offsetDepth)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Color
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
--- Sets sprite's color's rgb.
+-- Sets sprite's color's rgb. If a component parameter is nil, it will not be changed.
 -- @param(r : number) red component
 -- @param(g : number) green component
 -- @param(b : number) blue component
--- @param(a : number) alpha component (optional)
+-- @param(a : number) alpha component
 function Sprite:setRGBA(r, g, b, a)
   r = r or self.color.red
   g = g or self.color.green
@@ -262,7 +261,7 @@ end
 -- Renderer
 -------------------------------------------------------------------------------
 
---Inserts sprite from its list.
+-- Inserts sprite from its list.
 -- @param(i : number) the position in the list
 function Sprite:insertSelf(i)
   i = i + self.offsetDepth
@@ -293,6 +292,8 @@ function Sprite:removeSelf()
   self.renderer.needsRedraw = true
 end
 
+-- Called when the renderer needs to draw this sprite.
+-- @param(renderer : Renderer) the renderer that is drawing this sprite
 function Sprite:draw(renderer)
   if self.texture ~= renderer.batch:getTexture() then
     renderer:clearBatch()

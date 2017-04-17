@@ -34,6 +34,7 @@ function BattleManager:init()
   self.onBattle = false
   self.currentCharacter = nil
   self.currentAction = nil
+  self.training = {}
 end
 
 -- Creates battle characters.
@@ -144,8 +145,7 @@ function BattleManager:runTurn(char, iterations)
   local actionCost = 0
   local AI = self.currentCharacter.battler.AI
   FieldManager.renderer:moveToObject(char, true)
-  -- Action
-  if AI then
+  if AI and not self.training then
     actionCost = AI.nextAction(self.currentCharacter)
   else
     actionCost = GUIManager:showGUIForResult('battle/BattleGUI')

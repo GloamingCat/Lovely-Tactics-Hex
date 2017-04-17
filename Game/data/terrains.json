@@ -3,7 +3,13 @@
     "name": "Plain",
     "passable": true,
     "depth": 12,
-    "imagePath": "Terrain\\Plain.png",
+    "quad": {
+      "imagePath": "Terrain/HexV.png",
+      "x": 0,
+      "y": 0,
+      "width": 36,
+      "height": 198
+    },
     "frameCount": 1,
     "duration": 60,
     "moveCost": 100,
@@ -23,7 +29,13 @@
     "name": "Sand",
     "passable": true,
     "depth": 12,
-    "imagePath": "Terrain\\Sand.png",
+    "quad": {
+      "imagePath": "Terrain/HexV.png",
+      "x": 36,
+      "y": 0,
+      "width": 36,
+      "height": 198
+    },
     "frameCount": 1,
     "duration": 60,
     "moveCost": 100,
@@ -43,7 +55,13 @@
     "name": "Water",
     "passable": false,
     "depth": 12,
-    "imagePath": "Terrain\\Water.png",
+    "quad": {
+      "imagePath": "Terrain/HexV.png",
+      "x": 72,
+      "y": 0,
+      "width": 108,
+      "height": 198
+    },
     "frameCount": 3,
     "duration": 60,
     "moveCost": 100,

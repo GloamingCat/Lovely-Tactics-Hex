@@ -29,7 +29,7 @@ local Renderer = Transformable:inherit()
 -- @param(minDepth : number) the minimun depth of a sprite
 -- @param(maxDepth : number) the maximum depth of a sprite
 local old_init = Renderer.init
-function Renderer:init(size, minDepth, maxDepth)
+function Renderer:init(size, minDepth, maxDepth, order)
   old_init(self)
   self.minDepth = minDepth
   self.maxDepth = maxDepth
@@ -37,6 +37,8 @@ function Renderer:init(size, minDepth, maxDepth)
   self.list = {}
   self.batch = lgraphics.newSpriteBatch(blankTexture, size, 'dynamic')
   self.canvas = lgraphics.newCanvas(1, 1)
+  self.order = order
+  self:activate()
   self:resizeCanvas()
 end
 
@@ -48,6 +50,14 @@ function Renderer:resizeCanvas()
     self.canvas = lgraphics.newCanvas(newW, newH)
     self.needsRedraw = true
   end
+end
+
+function Renderer:activate()
+  ScreenManager.renderers[self.order] = self
+end
+
+function Renderer:deactivate()
+  ScreenManager.renderers[self.order] = nil
 end
 
 -------------------------------------------------------------------------------

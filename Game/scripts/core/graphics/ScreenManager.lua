@@ -16,8 +16,11 @@ Scaling types:
 
 -- Alias
 local lgraphics = love.graphics
+local setWindowMode = love.window.setMode
+local isFullScreen = love.window.getFullscreen
+local round = math.round
 
--- Constans
+-- Constants
 local defaultScaleX = Config.screen.widthScale
 local defaultScaleY = Config.screen.heightScale
 
@@ -36,6 +39,7 @@ function ScreenManager:init()
   self.offsetX = 0
   self.offsetY = 0
   self.canvas = lgraphics.newCanvas(self.width * self.scaleX, self.height * self.scaleY)
+  self.renderers = {}
 end
 
 -- Overrides love draw to count the calls.
@@ -51,11 +55,12 @@ function ScreenManager:draw()
   drawCalls = 0
   lgraphics.setCanvas(self.canvas)
   lgraphics.clear()
-  FieldManager.renderer:draw()
-  GUIManager.renderer:draw()
+  for i = 1, #self.renderers do
+    self.renderers[i]:draw()
+  end
   lgraphics.setCanvas()
   lgraphics.draw(self.canvas, self.offsetX, self.offsetY)
-  --print(drawCalls)
+  print(drawCalls)
 end
 
 -------------------------------------------------------------------------------
@@ -69,7 +74,7 @@ function ScreenManager:setScale(x, y)
   if self.scalingType == 0 then
     return
   elseif self.scalingType == 1 then
-    x = math.round(x)
+    x = round(x)
     y = x
   elseif self.scalingType == 2 then
     y = x
@@ -77,26 +82,27 @@ function ScreenManager:setScale(x, y)
   y = y or x
   self.scaleX = x
   self.scaleY = y
-  self.canvas = love.graphics.newCanvas(self.width * x, self.height * y)
-  if self.width * x == love.graphics.getWidth() 
-      and self.height * y == love.graphics.getHeight() then
+  self.canvas = lgraphics.newCanvas(self.width * x, self.height * y)
+  if self.width * x == lgraphics.getWidth() 
+      and self.height * y == lgraphics.getHeight() then
     return
   end
-  love.window.setMode(self.width * x, self.height * y, {fullscreen = false})
-  FieldManager.renderer:resizeCanvas()
-  GUIManager.renderer:resizeCanvas()
+  setWindowMode(self.width * x, self.height * y, {fullscreen = false})
+  for i = 1, self.renderers.size do
+    self.renderers[i]:resizeCanvas()
+  end
 end
 
 -- Changes screen to window mode.
 function ScreenManager:setWindowed()
-  if love.window.getFullscreen() then
+  if isFullScreen() then
     self:scale(defaultScaleX, defaultScaleY)
   end
 end
 
 -- Changes screen to full screen mode.
 function ScreenManager:setFullscreen()
-  if love.window.getFullscreen() then
+  if isFullScreen() then
     return
   end
   local modes = love.window.getFullscreenModes(1)
@@ -117,7 +123,7 @@ function ScreenManager:setFullscreen()
   self:scale(scaleX, scaleY)
   self.offsetX = (mode.width - self.canvas:getWidth()) / 2
   self.offsetY = (mode.height - self.canvas:getHeight()) / 2
-  love.window.setMode(mode.width, mode.height, {fullscreen = true})
+  setWindowMode(mode.width, mode.height, {fullscreen = true})
 end
 
 -------------------------------------------------------------------------------
@@ -127,8 +133,10 @@ end
 -- Callback function triggered when window receives or loses focus.
 -- @param(f : boolean) window focus
 function love.focus(f)
-  GUIManager.paused = not f
-  FieldManager.paused = not f
+  local renderers = _G.ScreenManager.renderers
+  for i = 1, #renderers do
+    renderers[i].paused = not f
+  end
 end
 
 return ScreenManager

@@ -19,7 +19,7 @@ local GUIManager = require('core/class'):new()
 ---------------------------------------------------------------------------------------------------
 
 function GUIManager:init()
-  self.renderer = Renderer(200, -100, 100)
+  self.renderer = Renderer(200, -100, 100, 2)
   self.stack = Stack()
   self.paused = false
   self.fiberList = FiberList()

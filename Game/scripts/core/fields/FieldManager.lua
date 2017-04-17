@@ -62,6 +62,9 @@ function FieldManager:loadField(fieldID)
   local fieldData = JSON.decode(fieldFile)
   self.updateList = List()
   self.characterList = List()
+  if self.renderer then
+    self.renderer:deactivate()
+  end
   self.renderer = self:createCamera(fieldData.sizeX, fieldData.sizeY, #fieldData.layers)
   self.currentField = Field(fieldData)
   self.currentField:mergeLayers(fieldData.layers)
@@ -78,7 +81,7 @@ end
 -- @ret(FieldCamera) newly created camera
 function FieldManager:createCamera(sizeX, sizeY, layerCount)
   local mind, maxd = mathf.minDepth(sizeX, sizeY), mathf.maxDepth(sizeX, sizeY)
-  local renderer = FieldCamera(sizeX * sizeY * layerCount * 4, mind, maxd)
+  local renderer = FieldCamera(sizeX * sizeY * layerCount * 4, mind, maxd, 1)
   renderer:setXYZ(mathf.pixelWidth(sizeX, sizeY) / 2, 0)
   return renderer
 end
@@ -157,6 +160,7 @@ function FieldManager:setState(state)
   self.fiberList = state.fiberList
   self.updateList = state.updateList
   self.characterList = state.updateList
+  self.renderer:activate()
 end
 
 ---------------------------------------------------------------------------------------------------

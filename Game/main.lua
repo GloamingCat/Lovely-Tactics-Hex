@@ -1,22 +1,18 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 Implements basic game callbacks (load, update and draw).
 
-=============================================================================]]
+=================================================================================================]]
 
-require('conf/Vocab')
-require('conf/Color')
-require('conf/Font')
-require('conf/Battle')
-require('conf/Sound')
-require('core.mathextend')
-require('core.imgcache')
-require('core.inputcalls')
-require('core.globals')
+require('core/mathextend')
+require('core/imgcache')
+require('core/inputcalls')
+require('core/globals')
 
-local cleanTime = 3600
+local cleanTime = 300
 local cleanCount = 0
+local startedProfi = false
 
 -- This function is called exactly once at the beginning of the game.
 -- @param(arg : table) A sequence strings which are command line arguments given to the game
@@ -24,14 +20,20 @@ function love.load(arg)
   FieldManager:loadTransition(SaveManager.current.playerTransition)
 end
 
+local function updateProfi()
+  if startedProfi then
+    PROFI:stop()
+    PROFI:writeReport( 'MyProfilingReport.txt' )
+    startedProfi = false
+  else
+    PROFI:start()
+    startedProfi = true
+  end
+end
+
 -- Callback function used to update the state of the game every frame.
 -- @param(dt : number) The duration of the previous frame
 function love.update(dt)
-  cleanCount = cleanCount + 1
-  if cleanCount >= cleanTime then
-    cleanCount = 0
-    collectgarbage('collect')
-  end
   if not FieldManager.paused then 
     FieldManager:update() 
   end
@@ -39,6 +41,12 @@ function love.update(dt)
     GUIManager:update()
   end
   InputManager:update()
+  cleanCount = cleanCount + 1
+  if cleanCount >= cleanTime then
+    cleanCount = 0
+    --updateProfi()
+    collectgarbage('collect')
+  end
 end
 
 -- Callback function used to draw on the screen every frame.
