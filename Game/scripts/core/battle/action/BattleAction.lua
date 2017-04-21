@@ -1,8 +1,8 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 BattleAction
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 A class that holds the behavior of a battle action: what happens when the 
 players first chooses what action, or if thet action need grid selecting, 
 if so, what tiles are selectables, etc.
@@ -11,7 +11,7 @@ Examples of battle actions: Move Action (needs grid and only blue tiles are
 selectables), Escape Action (doesn't need grid, and instead opens a confirm 
 window), Call Action (only team tiles), etc. 
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Alias
 local mathf = math.field
@@ -19,9 +19,9 @@ local isnan = math.isnan
 
 local BattleAction = require('core/class'):new()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- General
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- @param(initialTile : ObjectTile) the initial target of the skill (optional)
 -- @param(user : Character) the user of the skill 
@@ -32,22 +32,25 @@ function BattleAction:init(initialTile, user)
   self.currentTarget = initialTile
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Event handlers
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
--- [Abstract] Called when this action has been chosen.
+-- Called when this action has been chosen.
+-- By default, just selects the initial target tile.
 function BattleAction:onSelect()
   FieldManager.renderer:moveToTile(self:firstTarget())
 end
 
--- [Abstract] Updates the "selectable" field in all tiles for grid selecting.
+-- Called when the ActionGUI is open.
+-- By default, just updates the "selectable" field in all tiles for grid selecting.
 function BattleAction:onActionGUI(GUI)
   self:resetAllTiles(false)
   GUI:startGridSelecting(self:firstTarget())
 end
 
--- [Abstract] Called when player chooses a target for the action.
+-- Called when player chooses a target for the action. 
+-- By default, calls confirmation window.
 -- @ret(number) the time cost of the action:
 --  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
 function BattleAction:onConfirm(GUI)
@@ -61,7 +64,8 @@ function BattleAction:onConfirm(GUI)
   end
 end
 
--- [Abstract] Called when player chooses a target for the action.
+-- Called when player chooses a target for the action. 
+-- By default, just ends grid selecting.
 -- @ret(number) the time cost of the action:
 --  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
 function BattleAction:onCancel(GUI)
@@ -69,11 +73,12 @@ function BattleAction:onCancel(GUI)
   return -1
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Selectable Tiles
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
--- [Abstract] Tells if a tile can be chosen as target.
+-- Tells if a tile can be chosen as target. 
+-- By default, no tile is selectable.
 -- @param(tile : ObjectTile) the tile to check
 -- @ret(boolean) true if can be chosen, false otherwise
 function BattleAction:isSelectable(tile)
@@ -104,9 +109,9 @@ function BattleAction:resetMovableTiles(selectable)
   end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Grid navigation
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Set a tile was the current target.
 -- @param(tile : ObjectTile) the new target

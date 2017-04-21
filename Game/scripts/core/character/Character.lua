@@ -38,7 +38,7 @@ local Character = CharacterBase:inherit()
 -- General Movement
 -------------------------------------------------------------------------------
 
--- [COUROUTINE] Walks to the given pixel point (x, y, d).
+-- [COROUTINE] Walks to the given pixel point (x, y, d).
 -- @param(x : number) coordinate x of the point
 -- @param(y : number) coordinate y of the point
 -- @param(z : number) the depth of the point
@@ -89,7 +89,7 @@ function Character:walkInAngle(d, angle, dz, collisionCheck)
   return self:walkDistance(dx * d, dy * d, dz * d, collisionCheck)
 end
 
--- [COUROUTINE] Walks to the center of the tile (x, y).
+-- [COROUTINE] Walks to the center of the tile (x, y).
 -- @param(x : number) coordinate x of the tile
 -- @param(y : number) coordinate y of the tile
 -- @param(h : number) the height of the tile
@@ -100,7 +100,7 @@ function Character:walkToTile(x, y, h, collisionCheck)
   return self:walkToPoint(x, y, h, collisionCheck)
 end
 
--- [COUROUTINE] Walks a distance in tiles defined by (dx, dy)
+-- [COROUTINE] Walks a distance in tiles defined by (dx, dy)
 -- @param(dx : number) the x-axis distance
 -- @param(dy : number) the y-axis distance
 -- @param(h : number) the height of the tile

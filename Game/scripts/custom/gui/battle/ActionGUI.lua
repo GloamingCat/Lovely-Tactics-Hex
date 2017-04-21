@@ -1,14 +1,14 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 ActionGUI
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 The GUI that is open when player selects an action.
 It does not have windows, and instead it implements its own "waitForResult" 
 and "checkInput" methods.
 Its result is the action time that the character spent.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local GUI = require('core/gui/GUI')
@@ -21,9 +21,9 @@ local yield = coroutine.yield
 
 local ActionGUI = GUI:inherit()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Initialization
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Overrides GUI:createWindows.
 function ActionGUI:createWindows()
@@ -32,9 +32,9 @@ function ActionGUI:createWindows()
   self.action = BattleManager.currentAction
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Auxiliary Windows
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Creates step window.
 -- @ret(StepWindow) newly created window
@@ -60,9 +60,9 @@ function ActionGUI:createTargetWindow()
   return self.targetWindow
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Input
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- [COROUTINE] Overrides GUI:waitForResult.
 function ActionGUI:waitForResult()
@@ -115,6 +115,10 @@ function ActionGUI:selectTarget(target)
   end
 end
 
+---------------------------------------------------------------------------------------------------
+-- Grid selecting
+---------------------------------------------------------------------------------------------------
+
 -- Shows grid and cursor.
 function ActionGUI:startGridSelecting(target)
   if self.stepWindow then
@@ -136,12 +140,6 @@ function ActionGUI:endGridSelecting()
       or self.stepWindow and not self.stepWindow.closed) do
     yield()
   end
-  --[[if self.stepWindow then
-    self.stepWindow:setVisible(false)
-  end
-  if self.targetWindow then
-    self.targetWindow:setVisible(false)
-  end]]
   FieldManager:hideGrid()
   self.cursor:hide()
 end

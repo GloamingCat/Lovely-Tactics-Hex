@@ -1,11 +1,11 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 Object
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 A common class for Obstacles and Characters.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Transformable = require('core/math/Transformable')
@@ -17,9 +17,9 @@ local round = math.round
 
 local Object = Transformable:inherit()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- General
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- @param(data : table) data from file (Obstacle or Character)
 local old_init = Object.init
@@ -29,9 +29,9 @@ function Object:init(data, pos)
   self.colliderHeight = data.colliderHeight
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Position
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Overrides Transformable:setXYZ.
 -- Updates sprite position.
@@ -51,9 +51,9 @@ function Object:instantMoveTo(position)
   self:addToTiles(tiles)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Tile
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Converts current pixel position to tile.
 -- @ret(Tile) current tile
@@ -74,17 +74,17 @@ function Object:setPositionToTile(tile)
   self:setXYZ(x, y, z)
 end
 
--- [ABSTRACT] Gets all tiles this object is occuping.
+-- Gets all tiles this object is occuping.
 -- @ret(table) the list of tiles
 function Object:getAllTiles()
   return { self:getTile() }
 end
 
--- [ABSTRACT] Adds this object from to tiles it's occuping.
+-- Adds this object to the tiles it's occuping.
 function Object:addToTiles()
 end
 
--- [ABSTRACT] Removes this object from the tiles it's occuping.
+-- Removes this object from the tiles it's occuping.
 function Object:removeFromTiles()
 end
 

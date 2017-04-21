@@ -1,4 +1,12 @@
 
+--[[===============================================================================================
+
+TextRenderer
+---------------------------------------------------------------------------------------------------
+Module to parser a rich text string to generate table of fragments.
+
+=================================================================================================]]
+
 -- Alias
 local lgraphics = love.graphics
 local Quad = lgraphics.newQuad
@@ -8,6 +16,10 @@ local textShader = love.graphics.newShader('shaders/text.glsl')
 local colorf = Color.factor
 
 local TextRenderer = {}
+
+---------------------------------------------------------------------------------------------------
+-- Final Buffer
+---------------------------------------------------------------------------------------------------
 
 function TextRenderer.createLineBuffers(lines, defaultFont)
   -- Previous graphics state
@@ -36,6 +48,30 @@ function TextRenderer.createLineBuffers(lines, defaultFont)
   lgraphics.setCanvas(canvas)
   return renderedLines
 end
+
+-- Renders texture with the shader in a buffer with the correct size.
+-- @param(texture : Canvas) rendered text
+-- @ret(Canvas) pre-shaded texture
+function TextRenderer.shadeBuffer(texture)
+  local w, h = texture:getWidth(), texture:getHeight()
+  local quad = Quad(0, 0, w, h, w, h)
+  local newTexture = lgraphics.newCanvas(w, h)
+  newTexture:setFilter('linear', 'nearest')
+  lgraphics.setCanvas(newTexture)
+  lgraphics.setColor(0, 0, 255, 255)
+  --lgraphics.rectangle("fill", 0, 0, w, h)
+  lgraphics.setColor(255, 255, 255, 255)
+  lgraphics.setShader(textShader)
+  textShader:send('stepSize', { Font.outlineSize / w, Font.outlineSize / h })
+  lgraphics.setBlendMode('alpha', 'premultiplied')
+  lgraphics.draw(texture)
+  lgraphics.setBlendMode('alpha')
+  return newTexture
+end
+
+---------------------------------------------------------------------------------------------------
+-- Individual buffers
+---------------------------------------------------------------------------------------------------
 
 -- @param(line : table) a list of text fragments
 -- @ret(Canvas) rendered line
@@ -67,26 +103,6 @@ function TextRenderer.createLineBuffer(line)
     end
   end
   return buffer
-end
-
--- Renders texture with the shader in a buffer with the correct size.
--- @param(texture : Canvas) rendered text
--- @ret(Canvas) pre-shaded texture
-function TextRenderer.shadeBuffer(texture)
-  local w, h = texture:getWidth(), texture:getHeight()
-  local quad = Quad(0, 0, w, h, w, h)
-  local newTexture = lgraphics.newCanvas(w, h)
-  newTexture:setFilter('linear', 'nearest')
-  lgraphics.setCanvas(newTexture)
-  lgraphics.setColor(0, 0, 255, 255)
-  --lgraphics.rectangle("fill", 0, 0, w, h)
-  lgraphics.setColor(255, 255, 255, 255)
-  lgraphics.setShader(textShader)
-  textShader:send('stepSize', { Font.outlineSize / w, Font.outlineSize / h })
-  lgraphics.setBlendMode('alpha', 'premultiplied')
-  lgraphics.draw(texture)
-  lgraphics.setBlendMode('alpha')
-  return newTexture
 end
 
 return TextRenderer

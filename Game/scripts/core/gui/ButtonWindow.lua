@@ -1,11 +1,11 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 ButtonWindow
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 Provides the base for windows with buttons.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local List = require('core/algorithm/List')
@@ -22,7 +22,11 @@ local ceil = math.ceil
 
 local ButtonWindow = Window:inherit()
 
--- Override.
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
+-- Overrides Window:createContent.
 local old_createContent = ButtonWindow.createContent
 function ButtonWindow:createContent()
   self.buttonMatrix = Matrix2(self:colCount(), 1)
@@ -48,20 +52,26 @@ function ButtonWindow:createContent()
   end
 end
 
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
+
 -- Sets this window as the active one.
 function ButtonWindow:activate()
   self.GUI.activeWindow = self
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Properties
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
+-- Columns of the button matrix.
 -- @ret(number) the number of visible columns
 function ButtonWindow:colCount()
   return 3
 end
 
+-- Rows of the button matrix.
 -- @ret(number) the number of visible lines
 function ButtonWindow:rowCount()
   return 4
@@ -79,11 +89,11 @@ function ButtonWindow:totalHeight()
   return self.paddingh * 2 + self:rowCount() * self:buttonHeight()
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Buttons
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
--- [Abstract] Adds the buttons of the windo.
+-- Adds the buttons of the window.
 function ButtonWindow:createButtons()
 end
 
@@ -121,9 +131,9 @@ function ButtonWindow:currentButton()
   return self.buttonMatrix:get(self.currentCol, self.currentRow)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Input
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Check if player pressed any GUI button.
 function ButtonWindow:checkInput()
@@ -176,9 +186,9 @@ function ButtonWindow:onMove(c, r, dx, dy)
   self.cursor:updatePosition(self.position)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Coordinate change
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Gets the coordinates adjusted depending on loop types.
 -- @param(c : number) the column number
@@ -249,10 +259,13 @@ function ButtonWindow:downLoop(c)
   return r
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Viewport
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
+-- Adapts the visible buttons.
+-- @param(c : number) the current button's column
+-- @param(r : number) the current button's row
 function ButtonWindow:updateViewport(c, r)
   local newOffsetCol, newOffsetRow = self:newViewport(c, r)
   if newOffsetCol ~= self.offsetCol or newOffsetRow ~= self.offsetRow then
@@ -269,6 +282,9 @@ function ButtonWindow:updateViewport(c, r)
   end
 end
 
+-- Determines the new (c, r) coordinates of the button matrix viewport.
+-- @param(newc : number) the selected button's column
+-- @param(newr : number) the selected button's row
 function ButtonWindow:newViewport(newc, newr)
   local c, r = self.offsetCol, self.offsetRow
   if newc < c + 1 then

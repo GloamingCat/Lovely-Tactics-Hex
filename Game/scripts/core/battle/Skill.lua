@@ -7,6 +7,9 @@ The BattleAction that is executed when players chooses a skill to use.
 
 =============================================================================]]
 
+-- Imports
+local SkillAction = require('core/battle/action/SkillAction')
+
 -- Constants
 local elementCount = #Config.elements
 
@@ -72,6 +75,16 @@ function Skill:loadFormulae(formulae, param)
   else
     return loadstring(formulae)
   end
+end
+
+-- Creates the SkillAction instance of this skill.
+-- @ret(SkillAction) the action to be used during battle
+function Skill:asAction()
+  local actionType = SkillAction
+  if self.data.script.path ~= '' then
+    actionType = require('custom/' .. skill.data.script.path)
+  end
+  return actionType(nil, nil, self, self.data.script.param)
 end
 
 return Skill

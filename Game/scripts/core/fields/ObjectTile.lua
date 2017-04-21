@@ -1,26 +1,27 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 ObjectTile
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 An ObjectTile stores a list of static obstacles and a list of dynamic characters.
 There's only one ObjectTile for each (i, j, height) in the field.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
-local ObjectTile_Battle = require('core/fields/ObjectTile_Battle')
 local List = require('core/algorithm/List')
 
--- Alias
+-- Constants
+local overpassAllies = Battle.overpassAllies
 local neighborShift = math.field.neighborShift
 
-local ObjectTile = ObjectTile_Battle:inherit()
+local ObjectTile = require('core/class'):inherit()
 
--------------------------------------------------------------------------------
--- General
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
 
+-- Constructor.
 -- @param(layer : ObjectLayer) the layer that this tile is in
 -- @param(x : number) the tile's x coordinate
 -- @param(y : number) the tile's y coordinate
@@ -39,17 +40,6 @@ function ObjectTile:init(layer, x, y, defaultRegion)
   end
 end
 
--- Generates a unique character ID for a character in this tile.
--- @ret(string) new ID
-function ObjectTile:generateCharacterID()
-  local h, x, y = self:coordinates()
-  return '' .. h .. '.' .. x .. '.' .. y .. '.' .. self.characterList.size
-end
-
--------------------------------------------------------------------------------
--- Grid/neighborhood
--------------------------------------------------------------------------------
-
 -- Stores the list of neighbor tiles.
 function ObjectTile:createNeighborList()
   self.neighborList = List()
@@ -64,6 +54,24 @@ function ObjectTile:createNeighborList()
   end
 end
 
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
+
+-- Generates a unique character ID for a character in this tile.
+-- @ret(string) new ID
+function ObjectTile:generateCharacterID()
+  local h, x, y = self:coordinates()
+  return '' .. h .. '.' .. x .. '.' .. y .. '.' .. self.characterList.size
+end
+
+-- Converts to string.
+-- @ret(string) the string representation
+function ObjectTile:toString()
+  return 'ObjectTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ')' 
+end
+
+-- Tile's coordinates.
 -- @ret(number) tile's grid x
 -- @ret(number) tile's grid y
 -- @ret(number) tile's height
@@ -71,9 +79,23 @@ function ObjectTile:coordinates()
   return self.x, self.y, self.layer.height
 end
 
--------------------------------------------------------------------------------
+-- Gets the terrain move cost in this tile.
+-- @ret(number) the move cost
+function ObjectTile:getMoveCost()
+  return FieldManager.currentField:getMoveCost(self.x, self.y, 
+    self.layer.height)
+end
+
+-- Updates graphics animation.
+function ObjectTile:update()
+  if self.gui then
+    self.gui:update()
+  end
+end
+
+---------------------------------------------------------------------------------------------------
 -- Collision
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Checks if this tile is passable from the given direction.
 -- @param(dx : number) the x difference in tiles
@@ -98,25 +120,141 @@ function ObjectTile:collidesObstacleFrom(obj, x, y, h)
   return self:collidesObstacle(self.x - x, self.y - y, obj)
 end
 
--- Overrides ObjectTile_Battle:collidesCharacter.
-local old_collidesCharacter = ObjectTile_Battle.collidesCharacter
+-- Checks collision with characters.
+-- @param(char : Character) the character to check collision with
+-- @ret(boolean) true is collides with any of the characters, false otherwise
 function ObjectTile:collidesCharacter(char)
   if char.battler then
-    return old_collidesCharacter(self, char)
-  else
-    for c in self.characterList:iterator() do
-      if char ~= c then
+    -- Battle characters.
+    local party = char.battler.party
+    for other in self.characterList:iterator() do
+      if char ~= other and (not other.battler or not overpassAllies or 
+          other.battler.party ~= party or not other.battler:isAlive()) then
         return true
       end
+    end
+    return false
+  else
+    -- Normal characters.
+    if self.characterList.size > 1 then
+      return true
+    elseif self.characterList.size == 1 then
+      return self.characterList[1] ~= char
+    else
+      return false
+    end
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Troop
+---------------------------------------------------------------------------------------------------
+
+-- Returns the list of battlers that are suitable for this tile.
+-- @ret(List) the list of battlers
+function ObjectTile:getBattlerList()
+  local battlers = nil
+  if self.party == 0 then
+    battlers = PartyManager:backupBattlers()
+  else
+    battlers = List()
+    for regionID in self.regionList:iterator() do
+      local data = Config.regions[regionID + 1]
+      for i = 1, #data.battlers do
+        local id = data.battlers[i]
+        local battlerData = Database.battlers[id + 1]
+        battlers:add(battlerData)
+      end
+    end
+  end
+  battlers:conditionalRemove(function(battler) 
+      return not self.battlerTypeList:contains(battler.typeID)
+    end)
+  return battlers
+end
+
+-- Checks if any of types in a table are in this tile.
+-- @ret(boolean) true if contains one or more types, falsa otherwise
+function ObjectTile:containsBattleType(types)
+  for i = 1, #types do
+    local typeID = types[i]
+    if self.battlerTypeList:contains(typeID) then
+      return true
     end
   end
   return false
 end
 
--- Converts to string.
--- @ret(string) the string representation
-function ObjectTile:toString()
-  return 'ObjectTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ')' 
+---------------------------------------------------------------------------------------------------
+-- Parties
+---------------------------------------------------------------------------------------------------
+
+-- Checks if this tile os in control zone for given party.
+-- @param(you : Battler) the battler of the current character
+-- @ret(boolean) true if it's control zone, false otherwise
+function ObjectTile:isControlZone(you, noneighbours)
+  local containsAlly, containsEnemy = false, false
+  for char in self.characterList:iterator() do
+    if char.battler and char.battler:isAlive() then
+      if char.battler.party == you.party then
+        containsAlly = true
+      else
+        containsEnemy = true
+      end
+    end
+  end
+  if containsEnemy then
+    return true
+  elseif containsAlly then
+    return false
+  end
+  if noneighbours then
+    return false
+  end
+  for n in self.neighborList:iterator() do
+    if n:isControlZone(you, true) then
+      return true
+    end
+  end
+  return false
+end
+
+-- Gets the party of the current character in the tile.
+-- @ret(number) the party number (nil if more than one character with different parties)
+function ObjectTile:getCurrentParty()
+  local party = nil
+  for c in self.characterList:iterator() do
+    if c.battler then
+      if party == nil then
+        party = c.battler.party
+      elseif c.battler.party ~= party then
+        return nil
+      end
+    end
+  end
+  return party
+end
+
+-- Checks if there are any enemies in this tile (character with a different party number)
+-- @param(yourPaty : number) the party number to check
+-- @ret(boolean) true if there's at least one enemy, false otherwise
+function ObjectTile:hasEnemy(yourParty)
+  for c in self.characterList:iterator() do
+    if c.battler and c.battler.party ~= yourParty then
+      return true
+    end
+  end
+end
+
+-- Checks if there are any allies in this tile (character with the same party number)
+-- @param(yourPaty : number) the party number to check
+-- @ret(boolean) true if there's at least one ally, false otherwise
+function ObjectTile:hasAlly(yourParty)
+  for c in self.characterList:iterator() do
+    if c.party == yourParty then
+      return true
+    end
+  end
 end
 
 return ObjectTile

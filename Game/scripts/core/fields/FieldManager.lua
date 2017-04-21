@@ -142,6 +142,8 @@ function FieldManager:setVariable(id, value)
   persistentData.switches[id] = value
 end
 
+-- Gets manager's state (returns to a previous field).
+-- @ret(table) the table with the state's contents
 function FieldManager:getState()
   return {
     field = self.currentField,
@@ -153,6 +155,8 @@ function FieldManager:getState()
   }
 end
 
+-- Sets manager's state (returns to a previous field).
+-- @param(state : table) the table with the state's contents
 function FieldManager:setState(state)
   self.currentField = state.field
   self.player = state.player

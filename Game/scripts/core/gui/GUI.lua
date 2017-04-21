@@ -1,11 +1,11 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 GUI
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 A set of windows. 
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local List = require('core/algorithm/List')
@@ -15,10 +15,11 @@ local yield = coroutine.yield
 
 local GUI = require('core/class'):new()
 
--------------------------------------------------------------------------------
--- General 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+-- Initialization 
+---------------------------------------------------------------------------------------------------
 
+-- Constructor.
 function GUI:init()
   self.windowList = List()
   self:createWindows()
@@ -26,9 +27,20 @@ function GUI:init()
   self.closed = true
 end
 
--- [ABSTRACT] Creates and opens the GUI's windows.
+-- Creates the GUI's windows and sets the first active window.
 function GUI:createWindows()
   self.activeWindow = nil
+end
+
+---------------------------------------------------------------------------------------------------
+-- General 
+---------------------------------------------------------------------------------------------------
+
+-- Updates all windows.
+function GUI:update()
+  for window in self.windowList:iterator() do
+    window:update()
+  end
 end
 
 -- Destroys all windows.
@@ -39,11 +51,11 @@ function GUI:destroy()
   collectgarbage('collect')
 end
 
--- Updates all windows.
-function GUI:update()
-  for window in self.windowList:iterator() do
-    window:update()
-  end
+-- String representation.
+-- @ret(string) 
+function GUI:toString()
+  local name = self.name or 'Nameless'
+  return 'GUI: ' .. name
 end
 
 -------------------------------------------------------------------------------
@@ -51,6 +63,7 @@ end
 -------------------------------------------------------------------------------
 
 -- [COROUTINE] Waits until GUI closes and returns a result.
+-- @ret(unknown) the result of GUI (will never be nil)
 function GUI:waitForResult()
   self.activeWindow:checkInput()
   while self.activeWindow.result == nil do

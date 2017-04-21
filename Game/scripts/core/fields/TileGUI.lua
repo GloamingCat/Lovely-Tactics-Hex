@@ -19,6 +19,7 @@ local tileW = Config.grid.tileW
 local tileH = Config.grid.tileH
 local tileAnimID = Config.gui.tileAnimID
 local tileHLAnimID = Config.gui.tileHLAnimID
+local tileColors = Color
 
 local TileGUI = require('core/class'):new()
 
@@ -86,7 +87,7 @@ function TileGUI:setColor(name)
   if not self.selectable then
     name = name .. '_off'
   end
-  local c = Color[name]
+  local c = tileColors[name]
   self.baseAnim.sprite:setColor(c)
 end
 
