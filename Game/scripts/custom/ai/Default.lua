@@ -1,10 +1,11 @@
 
-local AI = {}
+local Default = {}
 
-function AI.nextAction(user)
-  local skill = user.battler:getAttackSkill()
-  BattleManager:selectTarget(skill:firstTarget())
-  skill:onExecute()
+function Default.nextAction(user)
+  local action = user.battler.attackSkill:asAction()
+  BattleManager:selectAction(action)
+  BattleManager:selectTarget(action:firstTarget())
+  return action:onConfirm()
 end
 
-return AI
+return Default

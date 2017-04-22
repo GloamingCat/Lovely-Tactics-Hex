@@ -149,4 +149,27 @@ function BattleAction:nextTarget(axisX, axisY)
   return self.field:getObjectTile(x, y, h)
 end
 
+---------------------------------------------------------------------------------------------------
+-- Artificial Inteligence
+---------------------------------------------------------------------------------------------------
+
+-- Gets the list of all potencial targets, to be used in AI.
+-- @ret(table) an array of ObjectTiles
+function BattleAction:potencialTargets()
+  local tiles = {}
+  local count = 0
+  for tile in FieldManager.currentField:gridIterator() do
+    if tile.gui.selectable and tile.gui.colorName ~= '' then
+      count = count + 1
+      tiles[count] = tile
+    end
+  return tiles
+end
+
+-- Estimates the best target for this action, to be used in AI.
+-- @ret(ObjectTile) the chosen target tile
+function BattleAction:bestTarget()
+  return self:firstTarget()
+end
+
 return BattleAction
