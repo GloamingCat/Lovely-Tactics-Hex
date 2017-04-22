@@ -163,6 +163,7 @@ function BattleAction:potencialTargets()
       count = count + 1
       tiles[count] = tile
     end
+  end
   return tiles
 end
 
