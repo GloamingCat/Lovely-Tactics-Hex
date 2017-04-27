@@ -3,14 +3,14 @@
 
 Random AI
 ---------------------------------------------------------------------------------------------------
-An AI thet chooses a random action from all possiblities and a random target from all valid 
+An AI that chooses a random action from all possiblities and a random target from all valid 
 targets hiven by the chosen action.
 
 =================================================================================================]]
 
-local Random = {}
+local Random = require('core/class'):new()
 
-function Random.nextAction(user)
+function Random:nextAction(user)
   local action = nil
   local max = user.battler.skillList.size + 1
   local r = love.math.random(max)

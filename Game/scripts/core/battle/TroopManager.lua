@@ -11,6 +11,7 @@ Creates and manages battle troops.
 local List = require('core/algorithm/List')
 local Character = require('core/character/Character')
 local Battler = require('core/battle/Battler')
+local PriorityQueue = require('core/algorithm/PriorityQueue')
 
 -- Alias
 local Random = love.math.random
@@ -20,9 +21,10 @@ local charSpeed = (Config.player.dashSpeed + Config.player.walkSpeed) / 2
 local TroopManager = require('core/class'):new()
 
 -------------------------------------------------------------------------------
--- General
+-- Initialization
 -------------------------------------------------------------------------------
 
+-- Constructor.
 function TroopManager:init()
   self.characterList = List()
 end
@@ -76,7 +78,7 @@ function TroopManager:createBattleCharacter(tile, battlerData, field)
   local character = Character(charID, characterData)
   character:setPositionToTile(tile)
   character:addToTiles()
-  character.battler = Battler(battlerData, tile.party)
+  character.battler = Battler(battlerData, tile.party, character)
   character:turnToTile(field.sizeX / 2, field.sizeY / 2)
   character.speed = charSpeed
   self.characterList:add(character)
@@ -99,19 +101,31 @@ function TroopManager:getCharacter(battler)
 end
 
 -- Increments all character's turn count.
---@ret(Character) the character that reached turn limit (nil if none did)
-function TroopManager:incrementTurnCount(turnLimit)
-  local current = nil
+-- @param(turnLimit : number) the turn count to start the turn
+-- @ret(Character) the character that reached turn limit (nil if none did)
+function TroopManager:incrementTurnCount(turnLimit, time)
+  time = time or 1
   for bc in self.characterList:iterator() do
     if bc.battler:isAlive() then
-      if bc.battler:incrementTurnCount(turnLimit) then
-        if current == nil or current.battler.turnCount < bc.battler.turnCount then
-          current = bc
-        end
-      end
+      bc.battler:incrementTurnCount(turnLimit, time)
     end
   end
-  return current
+end
+
+-- Sorts the characters according to which one's turn will star first.
+-- @param(turnLimit : number) the turn count to start the turn
+-- @ret(PriorityQueue) the queue where which element is a character 
+--  and each key is the remaining turn count until it's the character's turn
+function TroopManager:getTurnQueue(turnLimit)
+  local queue = PriorityQueue()
+  for char in self.characterList:iterator() do
+    if char.battler:isAlive() then
+      local speed = char.battler.turn()
+      local time = (turnLimit - char.battler.turnCount) / speed
+      queue:enqueue(char, time)
+    end
+  end
+  return queue
 end
 
 -- Counts the number of characters that have the given battler.
@@ -145,6 +159,8 @@ function TroopManager:winnerParty()
   return currentParty
 end
 
+-- Gets the pixel center of each party.
+-- @ret(table) array of vectors
 function TroopManager:getPartyCenters()
   local centers = {}
   for bc in self.characterList:iterator() do

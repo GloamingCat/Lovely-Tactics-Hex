@@ -21,22 +21,23 @@ local CharacterOnlySkill = SkillAction:inherit()
 
 -- Overrides BattleAction:onSelect.
 local old_onSelect = CharacterOnlySkill.onSelect
-function CharacterOnlySkill:onSelect()
+function CharacterOnlySkill:onSelect(user)
   self.index = 1
-  self.selectableTiles = self:getSelectableTiles()
+  self.selectableTiles = self:getSelectableTiles(user)
 end
 
 -- Gets the list of all tiles that have a character.
 -- @ret(List) the list of ObjectTiles
-function CharacterOnlySkill:getSelectableTiles()
-  local range = self.skill.data.range
-  local moveAction = MoveAction(self.currentTarget, self.user, range)
+function CharacterOnlySkill:getSelectableTiles(user)
+  local range = self.data.range
+  local moveAction = MoveAction(range)
   local tempQueue = PriorityQueue()
+  local initialTile = user:getTile()
   for char in TroopManager.characterList:iterator() do
-    if self:isCharacterSelectable(char) then
+    if self:isCharacterSelectable(char, user) then
       local tile = char:getTile()
       moveAction.currentTarget = tile
-      local path = PathFinder.findPath(moveAction, nil, true)
+      local path = PathFinder.findPath(moveAction, user, initialTile, true)
       if path == nil then
         tempQueue:enqueue(tile, math.huge)
       else
@@ -52,12 +53,12 @@ end
 -------------------------------------------------------------------------------
 
 -- Overrides BattleAction:onActionGUI.
-function CharacterOnlySkill:onActionGUI(GUI)
+function CharacterOnlySkill:onActionGUI(GUI, user)
   self:resetAllTiles(false)
   self:resetTargetTiles(false, false)
   self:resetCharacterTiles()
   GUI:createTargetWindow()
-  GUI:startGridSelecting(self:firstTarget())
+  GUI:startGridSelecting(self:firstTarget(user))
 end
 
 -------------------------------------------------------------------------------
@@ -65,9 +66,9 @@ end
 -------------------------------------------------------------------------------
 
 -- Overrides BattleAction:isSelectable.
-function CharacterOnlySkill:isSelectable(tile)
+function CharacterOnlySkill:isSelectable(tile, user)
   for char in tile.characterList:iterator() do
-    if self:isCharacterSelectable(char) then
+    if self:isCharacterSelectable(char, user) then
       return true
     end
   end
@@ -77,7 +78,7 @@ end
 -- Tells if the given character is selectable.
 -- @param(char : Character) the character to check
 -- @ret(boolean) true if selectable, false otherwise
-function CharacterOnlySkill:isCharacterSelectable(char)
+function CharacterOnlySkill:isCharacterSelectable(char, user)
   return char.battler:isAlive()
 end
 
@@ -95,7 +96,7 @@ end
 -------------------------------------------------------------------------------
 
 -- Overrides BattleAction:firstTarget.
-function CharacterOnlySkill:firstTarget()
+function CharacterOnlySkill:firstTarget(user)
   return self.selectableTiles[1]
 end
 

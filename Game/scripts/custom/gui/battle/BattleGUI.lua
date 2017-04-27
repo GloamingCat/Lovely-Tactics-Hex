@@ -1,12 +1,12 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 BattleGUI
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 The GUI that is openned in the start of a character turn.
 Its result is the action time that the character spent.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local GUI = require('core/gui/GUI')
@@ -22,12 +22,12 @@ function BattleGUI:createWindows()
   
   local skillList = BattleManager.currentCharacter.battler.skillList
   if not skillList:isEmpty() then
-    self.skillWindow = SkillWindow(self)
+    self.skillWindow = SkillWindow(self, skillList)
   end
   
   local itemList = BattleManager.currentCharacter.battler.inventory
   if not itemList:isEmpty() then
-    self.itemWindow = ItemWindow(self)
+    self.itemWindow = ItemWindow(self, itemList)
   end
   
   self.turnWindow = TurnWindow(self)

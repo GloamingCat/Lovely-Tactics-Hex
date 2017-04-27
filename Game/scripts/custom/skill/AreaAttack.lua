@@ -1,11 +1,11 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 AreaAttack
--------------------------------------------------------------------------------
-A class for generic area attack skills that targets enemies.
+---------------------------------------------------------------------------------------------------
+A class for generic area attack skills that targets any tile.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local SkillAction = require('core/battle/action/SkillAction')
@@ -16,11 +16,11 @@ local radiusIterator = math.field.radiusIterator
 local AreaAttack = SkillAction:inherit()
 
 -- Overrides SkillAction:getAffectedTiles.
-function AreaAttack:getAffectedTiles()
+function AreaAttack:getAllAffectedTiles(user)
   local tiles = {}
   local field = FieldManager.currentField
   local height = self.currentTarget.layer.height
-  local userParty = self.user.party
+  local userParty = user.party
   for i, j in radiusIterator(self.data.radius - 1,  
       self.currentTarget.x, self.currentTarget.y) do
     if i >= 1 and j >= 0 and i <= field.sizeX and j <= field.sizeY then

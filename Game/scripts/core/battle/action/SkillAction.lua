@@ -1,11 +1,11 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 SkillAction
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 The BattleAction that is executed when players chooses a skill to use.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local List = require('core/algorithm/List')
@@ -33,21 +33,85 @@ local useTime = 2
 
 local SkillAction = BattleAction:inherit()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- General
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:init.
+-- Constructor.
 -- @param(skill : Skill) the skill's data
 local old_init = SkillAction.init
-function SkillAction:init(initialTile, user, skill)
-  old_init(self, initialTile, user)
-  self.skill = skill
+function SkillAction:init(skillID)
+  old_init(self)
+  local data = Database.skills[skillID + 1]
+  self.data = data
+  self.id = skillID
+  -- Skill type
+  if data.type == 0 then
+    self.type = 'general'
+  elseif data.type == 1 then
+    self.type = 'attack'
+  elseif data.type == 2 then
+    self.type = 'support'
+  end
+  -- Formulae
+  if data.basicResult ~= '' then
+    self.calculateBasicResult = self:loadFormulae(data.basicResult, 
+      'action, a, b, rand')
+  end
+  if data.successRate ~= '' then
+    self.calculateSuccessRate = self:loadFormulae(data.successRate, 
+      'action, a, b, rand')
+  end
+  -- Store elements
+  local e = {}
+  for i = 1, #data.elements do
+    e[data.elements[i].id + 1] = data.elements[i].value
+  end
+  for i = 1, elementCount do
+    if not e[i] then
+      e[i] = 0
+    end
+  end
+  self.elementFactors = e
 end
 
--------------------------------------------------------------------------------
+-- Creates an SkillAction given the skill's ID in the database.
+function SkillAction.fromData(skillID)
+  local data = Database.skills[skillID + 1]
+  if data.script.path ~= '' then
+    local class = require('custom/' .. data.script.path)
+    return class(skillID, data.script.param)
+  else
+    return SkillAction(skillID)
+  end
+end
+
+-- Converting to string.
+-- @ret(string) a string representation
+function SkillAction:__tostring()
+  return 'SkillAction: ' .. self.skillID .. ' (' .. self.data.name .. ')'
+end
+
+-- Generates a function from a formulae in string.
+-- @param(formulae : string) the formulae expression
+-- @param(param : string) the param needed for the function (optional)
+-- @ret(function) the function that evaluates the formulae
+function SkillAction:loadFormulae(formulae, param)
+  formulae = 'return ' .. formulae
+  if param and param ~= '' then
+    local funcString = 
+      'function(' .. param .. ') ' ..
+        formulae ..
+      ' end'
+    return loadstring('return ' .. funcString)()
+  else
+    return loadstring(formulae)
+  end
+end
+
+---------------------------------------------------------------------------------------------------
 -- Grid navigation
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Overrides BattleAction:selectTarget.
 function SkillAction:selectTarget(tile)
@@ -63,9 +127,9 @@ function SkillAction:selectTarget(tile)
   end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Selectable Tiles
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Paints and resets properties for the target tiles.
 -- By default, paints all movable tile with movable color, and non-movable but 
@@ -78,7 +142,7 @@ function SkillAction:resetTargetTiles(selectMovable, selectBorder)
   local matrix = BattleManager.distanceMatrix
   local field = FieldManager.currentField
   local charTile = BattleManager.currentCharacter:getTile()
-  local range = self.skill.data.range
+  local range = self.data.range
   local h = charTile.layer.height
   local borderTiles = List()
   -- Find all border tiles
@@ -108,50 +172,50 @@ function SkillAction:resetTargetTiles(selectMovable, selectBorder)
         local n = field:getObjectTile(i, j, h) 
         if isnan(matrix:get(i, j)) then -- If this neighbor is not reachable
           n.gui.selectable = selectBorder and self:isSelectable(n)
-          n.gui:setColor(self.skill.type)
+          n.gui:setColor(self.type)
         end
       end
     end
   end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Effect
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- The effect applied when the user is prepared to use the skill.
 -- It executes animations and applies damage/heal to the targets.
-function SkillAction:onUse()
+function SkillAction:onUse(user)
   -- Intro time.
   _G.Fiber:wait(introTime)
   
   -- User's initial animation.
-  local originTile = self.user:getTile()
-  local dir = self.user:turnToTile(self.currentTarget.x, self.currentTarget.y)
-  self.user:loadSkill(self.skill.data, dir, true)
+  local originTile = user:getTile()
+  local dir = user:turnToTile(self.currentTarget.x, self.currentTarget.y)
+  user:loadSkill(self.data, dir, true)
   
   -- Cast animation
   FieldManager.renderer:moveToTile(self.currentTarget)
-  self.user:castSkill(self.skill.data, dir)
+  user:castSkill(self.data, dir)
   
   -- Minimum time to wait (initially, a frame).
   local minTime = 1
   
   -- Animation in center target tile 
   --  (does not wait full animation, only the minimum time).
-  if self.skill.data.centerAnimID >= 0 then
-    local mirror = self.user.direction > 90 and self.user.direction <= 270
+  if self.data.centerAnimID >= 0 then
+    local mirror = user.direction > 90 and user.direction <= 270
     local x, y, z = mathf.tile2Pixel(self.currentTarget:coordinates())
-    local animation = BattleManager:playAnimation(self.skill.data.centerAnimID,
+    local animation = BattleManager:playAnimation(self.data.centerAnimID,
       x, y, z - 1, mirror)
     _G.Fiber:wait(centerTime)
   end
   
   -- Animation for each of affected tiles.
-  self:allTargetsAnimation(originTile)
+  self:allTargetsAnimation(user, originTile)
   
   -- Return user to original position and animation.
-  self.user:finishSkill(originTile, self.skill.data)
+  user:finishSkill(originTile, self.data)
   
   -- Wait until everything finishes.
   _G.Fiber:wait(max (0, minTime - now()) + 60)
@@ -163,7 +227,7 @@ function SkillAction:getAllAffectedTiles()
   local tiles = {}
   local field = FieldManager.currentField
   local height = self.currentTarget.layer.height
-  for i, j in mathf.radiusIterator(self.skill.data.radius - 1, 
+  for i, j in mathf.radiusIterator(self.data.radius - 1, 
       self.currentTarget.x, self.currentTarget.y) do
     if i >= 1 and j >= 0 and i <= field.sizeX and j <= field.sizeY then
       tiles[#tiles + 1] = field:getObjectTile(i, j, height)
@@ -176,16 +240,17 @@ end
 -- It considers all element bonuses provided by the skill data.
 -- @param(target : Character) the target character
 -- @ret(number) the final value (nil if miss)
-function SkillAction:calculateEffectResult(target)
-  local rate = self.skill.calculateSuccessRate(self, self.user.battler.att, 
+function SkillAction:calculateEffectResult(user, target, rand)
+  rand = rand or random
+  local rate = self:calculateSuccessRate(user.battler.att, 
     target.battler.att, random)
-  if random() + random(1, 99) > rate then
+  if rand() + rand(1, 99) > rate then
     return nil
   end
-  local result = self.skill:calculateBasicResult(self.user.battler.att, 
-    target.battler.att, random)
+  local result = self:calculateBasicResult(user.battler.att, 
+    target.battler.att, rand)
   local bonus = 0
-  local skillElementFactors = self.skill.elementFactors
+  local skillElementFactors = self.elementFactors
   local targetElementFactors = target.battler.elementFactors
   for i = 1, elementCount do
     bonus = bonus + skillElementFactors[i] * targetElementFactors[i]
@@ -194,81 +259,84 @@ function SkillAction:calculateEffectResult(target)
   return round(bonus + result)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Target Animations
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Executes individual animation for all the affected tiles.
-function SkillAction:allTargetsAnimation(originTile)
+function SkillAction:allTargetsAnimation(user, originTile)
   local allTargets = self.currentTargets or 
     self:getAllAffectedTiles(self.currentTarget)
   for i = #allTargets, 1, -1 do
     local tile = allTargets[i]
-    for char in tile.characterList:iterator() do
-      self:singleTargetAnimation(char, originTile)
+    for target in tile.characterList:iterator() do
+      self:singleTargetAnimation(user, target, originTile)
     end
   end
 end
 
 -- Executes individual animation for a single tile.
-function SkillAction:singleTargetAnimation(char, originTile)
-  local result = self:calculateEffectResult(char)
+function SkillAction:singleTargetAnimation(user, target, originTile)
+  local result = self:calculateEffectResult(user, target)
   if not result then
-    local pos = char.position
+    -- Miss
+    local pos = target.position
     local popupText = PopupText(pos.x, pos.y - 20, pos.z - 10)
     popupText:addLine(Vocab.miss, Color.popup_miss, Font.popup_miss)
     popupText:popup()
   elseif result >= 0 then
-    if self.skill.data.radius > 1 then
+    -- Damage
+    if self.data.radius > 1 then
       originTile = self.currentTarget
     end
     _G.Fiber:fork(function()
-      char:damage(self.skill.data, result, originTile)
+      target:damage(self.data, result, originTile)
     end)
   else
+    -- Heal
     _G.Fiber:fork(function()
-      char:heal(self.skill.data, -result)
+      target:heal(self.data, -result)
     end)
   end
   _G.Fiber:wait(targetTime)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Event handlers
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Overrides BattleAction:onActionGUI.
-function SkillAction:onActionGUI(GUI)
+function SkillAction:onActionGUI(GUI, user)
   self:resetAllTiles(false)
   self:resetMovableTiles(true)
   GUI:createTargetWindow()
-  GUI:startGridSelecting(self:firstTarget())
+  GUI:startGridSelecting(self:firstTarget(user))
 end
 
 -- Overrides BattleAction:onConfirm.
 -- Executes the movement action and the skill's effect, 
 -- and then decrements battler's turn count and steps.
-function SkillAction:onConfirm(GUI)
+function SkillAction:onConfirm(GUI, user)
   GUI:endGridSelecting()
-  FieldManager.renderer:moveToObject(self.user, true)
-  FieldManager.renderer.focusObject = self.user
-  local moveAction = MoveAction(self.currentTarget, self.user, self.skill.data.range)
-  local path = PathFinder.findPath(moveAction)
+  FieldManager.renderer:moveToObject(user, true)
+  FieldManager.renderer.focusObject = user
+  local moveAction = MoveAction(self.data.range, self.currentTarget)
+  local path = PathFinder.findPath(moveAction, user)
   if path then -- Target was reached
-    self.user:walkPath(path)
-    self:onUse()
+    user:walkPath(path)
+    self:onUse(user)
   else -- Target was not reached
-    path = PathFinder.findPathToUnreachable(moveAction)
-    path = path or PathFinder.estimateBestTile(moveAction)
-    self.user:walkPath(path)
+    path = PathFinder.findPathToUnreachable(moveAction, user)
+    path = path or PathFinder.estimateBestTile(moveAction, user)
+    user:walkPath(path)
   end
-  local battler = self.user.battler
+  local battler = user.battler
   if path.lastStep:isControlZone(battler) then
     battler.currentSteps = 0
   else
     battler.currentSteps = battler.currentSteps - path.totalCost
   end
-  local cost = self.skill.data.timeCost * BattleManager.turnLimit / 200
+  local cost = self.data.timeCost * BattleManager.turnLimit / 200
   battler:decrementTurnCount(ceil(cost))
   return 1
 end

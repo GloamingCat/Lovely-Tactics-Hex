@@ -201,8 +201,7 @@ function Button:hide()
 end
 
 -- Converting to string.
--- @ret(string) a string representation
-function Button:toString()
+function Button:__tostring()
   if not self.textSprite then
     return '' .. self.index
   end

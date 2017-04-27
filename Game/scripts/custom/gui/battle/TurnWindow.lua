@@ -1,20 +1,20 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 TurnWindow
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 Window that opens in the start of a character turn.
 Result = 1 means that the turn ended.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local ActionWindow = require('custom/gui/battle/ActionWindow')
 local MoveAction = require('core/battle/action/MoveAction')
-local TradeAction = require('core/battle/action/TradeAction')
 local EscapeAction = require('core/battle/action/EscapeAction')
 local VisualizeAction = require('core/battle/action/VisualizeAction')
 local CallAction = require('core/battle/action/CallAction')
+local TradeSkill = require('custom/skill/TradeSkill')
 local BattleCursor = require('core/battle/BattleCursor')
 
 -- Alias
@@ -22,9 +22,9 @@ local mathf = math.field
 
 local TurnWindow = require('core/class'):inherit(ActionWindow)
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Initialization
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Overrides ButtonWindow:createButtons.
 function TurnWindow:createButtons()
@@ -41,61 +41,60 @@ function TurnWindow:createButtons()
   self.content:add(self.userCursor)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Confirm callbacks
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- "Attack" button callback.
--- @param(button : Button) the button chosen
 function TurnWindow:onAttackAction(button)
-  self:selectSkill(BattleManager.currentCharacter.battler.attackSkill)
+  self:selectAction(BattleManager.currentCharacter.battler.attackSkill)
 end
 
 -- "Move" button callback.
--- @param(button : Button) the button chosen
 function TurnWindow:onMoveAction(button)
-  self:selectAction(MoveAction)
+  self:selectAction(MoveAction())
 end
 
 -- "Trade" button callback.
--- @param(button : Button) the button chosen
 function TurnWindow:onTradeAction(button)
-  self:selectAction(TradeAction)
+  self:selectAction(TradeSkill())
 end
 
 -- "Escape" button callback.
--- @param(button : Button) the button chosen
 function TurnWindow:onEscapeAction(button)
-  self:selectAction(EscapeAction)
+  self:selectAction(EscapeAction())
 end
 
 -- "Call Ally" button callback.
--- @param(button : Button) the button chosen
 function TurnWindow:onCallAllyAction(button)
-  self:selectAction(CallAction)
-end
-
--- "Wait" button callback. End turn.
--- @param(button : Button) the button chosen
-function TurnWindow:onWait(button)
-  self.result = 0
+  self:selectAction(CallAction())
 end
 
 -- "Skill" button callback. Opens Skill Window.
--- @param(button : Button) the button chosen
 function TurnWindow:onSkill(button)
   self:changeWindow(self.GUI.skillWindow)
 end
 
 -- "Item" button callback. Opens Item Window.
--- @param(button : Button) the button chosen
 function TurnWindow:onItem(button)
   self:changeWindow(self.GUI.itemWindow)
 end
 
--------------------------------------------------------------------------------
+-- "Wait" button callback. End turn.
+function TurnWindow:onWait(button)
+  self.GUI:hide()
+  self.result = 0
+end
+
+-- Overrides ButtonWindow:onCancel.
+function TurnWindow:onCancel()
+  self:selectAction(VisualizeAction())
+  self.result = nil
+end
+
+---------------------------------------------------------------------------------------------------
 -- Enable Conditions
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Attack condition. Enabled if there are tiles to move to or if there are any
 --  enemies that the skill can reach.
@@ -143,7 +142,9 @@ function TurnWindow:itemEnabled(button)
   return not user.inventory:isEmpty()
 end
 
+-- Trade condition. Enabled if there are any character nearby that have items.
 function TurnWindow:tradeEnabled()
+  -- TODO
   return false
 end
 
@@ -159,9 +160,9 @@ function TurnWindow:callAllyEnabled()
   return not self.backupBattlers:isEmpty()
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- General info
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Overrides ButtonWindow:colCount.
 function TurnWindow:colCount()
@@ -169,14 +170,8 @@ function TurnWindow:colCount()
 end
 
 -- Overrides ButtonWindow:rowCount.
-function TurnWindow.rowCount()
+function TurnWindow:rowCount()
   return 4
-end
-
--- Overrides ButtonWindow:onCancel.
-function TurnWindow:onCancel()
-  self:selectAction(VisualizeAction)
-  self.result = nil
 end
 
 -- Overrides Window:show.

@@ -51,6 +51,15 @@ function PriorityQueue:dequeue()
   return pair[1], pair[2]
 end
 
+-- Gets the element with the highest priority.
+-- @ret(unknown) the front element
+-- @ret(number) the key/priority of the front element
+function PriorityQueue:front()
+  assert(self.size > 0, 'Priority queue is empty!')
+  local pair = self[self.size]
+  return pair[1], pair[2]
+end
+
 -- Checks if empty.
 function PriorityQueue:isEmpty()
   return self.size == 0

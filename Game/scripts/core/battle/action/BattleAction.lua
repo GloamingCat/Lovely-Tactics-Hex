@@ -20,16 +20,12 @@ local isnan = math.isnan
 local BattleAction = require('core/class'):new()
 
 ---------------------------------------------------------------------------------------------------
--- General
+-- Initialization
 ---------------------------------------------------------------------------------------------------
 
--- @param(initialTile : ObjectTile) the initial target of the skill (optional)
--- @param(user : Character) the user of the skill 
---  (BattleManager.currentCharacter by default)
-function BattleAction:init(initialTile, user)
+-- Constructor.
+function BattleAction:init()
   self.field = FieldManager.currentField
-  self.user = user or BattleManager.currentCharacter
-  self.currentTarget = initialTile
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -38,13 +34,13 @@ end
 
 -- Called when this action has been chosen.
 -- By default, just selects the initial target tile.
-function BattleAction:onSelect()
+function BattleAction:onSelect(user)
   FieldManager.renderer:moveToTile(self:firstTarget())
 end
 
 -- Called when the ActionGUI is open.
 -- By default, just updates the "selectable" field in all tiles for grid selecting.
-function BattleAction:onActionGUI(GUI)
+function BattleAction:onActionGUI(GUI, user)
   self:resetAllTiles(false)
   GUI:startGridSelecting(self:firstTarget())
 end
@@ -53,7 +49,7 @@ end
 -- By default, calls confirmation window.
 -- @ret(number) the time cost of the action:
 --  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
-function BattleAction:onConfirm(GUI)
+function BattleAction:onConfirm(GUI, user)
   GUI:endGridSelecting()
   local result = GUIManager:openGUIForResult('ConfirmGUI')
   if result > 0 then
@@ -68,7 +64,7 @@ end
 -- By default, just ends grid selecting.
 -- @ret(number) the time cost of the action:
 --  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
-function BattleAction:onCancel(GUI)
+function BattleAction:onCancel(GUI, user)
   GUI:endGridSelecting()
   return -1
 end
@@ -125,8 +121,8 @@ end
 
 -- Gets the first selected target tile.
 -- @ret(ObjectTile) the first tile
-function BattleAction:firstTarget()
-  return self.user:getTile()
+function BattleAction:firstTarget(user)
+  return (user or BattleManager.currentCharacter):getTile()
 end
 
 -- Gets the next target given the player's input.

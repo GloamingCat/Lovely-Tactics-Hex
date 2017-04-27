@@ -18,15 +18,15 @@ local VisualizeAction = BattleAction:inherit()
 -------------------------------------------------------------------------------
 
 -- Overrides BattleAction:onConfirm.
-function VisualizeAction:onConfirm()
+function VisualizeAction:onConfirm(user)
   -- TODO: show BattlerWindow
 end
 
 -- Overrides BattleAction:onActionGUI.
-function BattleAction:onActionGUI(GUI)
+function BattleAction:onActionGUI(GUI, user)
   self:resetAllTiles(false)
   GUI:createTargetWindow()
-  GUI:startGridSelecting(self:firstTarget())
+  GUI:startGridSelecting(self:firstTarget(user))
 end
 
 -------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ end
 -------------------------------------------------------------------------------
 
 -- Overrides BattleAction:isSelectable.
-function VisualizeAction:isSelectable(tile)
+function VisualizeAction:isSelectable(tile, user)
   return not tile.characterList:isEmpty()
 end
 

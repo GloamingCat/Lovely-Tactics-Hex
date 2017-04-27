@@ -60,7 +60,7 @@ end
 -- Erases content.
 function Window:destroy()
   for i = 1, 9 do
-    self.sprites[i]:removeSelf()
+    self.sprites[i]:destroy()
   end
   for c in self.content:iterator() do
     c:destroy()

@@ -1,12 +1,12 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 BattleManager
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 Controls battle flow (initializes troops, coordenates turns, checks victory
 and game over).
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local PathFinder = require('core/algorithm/PathFinder')
@@ -18,15 +18,16 @@ local TileGraphics = require('core/fields/TileGUI')
 local Random = love.math.random
 local ceil = math.ceil
 local yield = coroutine.yield
+local time = love.timer.getDelta
 
 -- Constants
 local turnLimit = Battle.turnLimit
 
 local BattleManager = require('core/class'):new()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- General
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Constructor.
 function BattleManager:init()
@@ -34,7 +35,6 @@ function BattleManager:init()
   self.onBattle = false
   self.currentCharacter = nil
   self.currentAction = nil
-  self.training = {}
 end
 
 -- Creates battle characters.
@@ -107,35 +107,34 @@ function BattleManager:clear()
   end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Turn
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- [COROUTINE] Searchs for the next character turn and starts.
 -- @ret(Character) the next turn's character
 -- @ret(number) the number of iterations it took from the previous turn
 function BattleManager:getNextTurn()
-  local iterations = 0
-  local currentCharacter = nil
+  self.turnQueue = TroopManager:getTurnQueue(turnLimit)
+  local currentCharacter, iterations = self.turnQueue:front()
   if Battle.turnBar then
-    while not currentCharacter do
-      currentCharacter = TroopManager:incrementTurnCount(turnLimit)
-      iterations = iterations + 1
+    local i = 0
+    while i < iterations do
+      i = i + time() * 60
+      TroopManager:incrementTurnCount(turnLimit, time() * 60)
       yield()
     end
   else
-    while not currentCharacter and iterations < turnLimit do
-      currentCharacter = TroopManager:incrementTurnCount(turnLimit)
-      iterations = iterations + 1
-    end
+    TroopManager:incrementTurnCount(turnLimit, iterations)
   end
   return currentCharacter, iterations
 end
 
 -- [COROUTINE] Executes turn and returns when the turn finishes.
+-- @param(char : Character) turn's character
+-- @param(iterations : number) the time since the last turn
 function BattleManager:runTurn(char, iterations)
   -- Start turn
-  --print('Turn started in: ' .. iterations)
   self.currentCharacter = char
   char.battler.currentSteps = char.battler.steps()
   self:updateDistanceMatrix()
@@ -146,7 +145,7 @@ function BattleManager:runTurn(char, iterations)
   local AI = self.currentCharacter.battler.AI
   FieldManager.renderer:moveToObject(char, true)
   if AI and not self.training then
-    actionCost = AI.nextAction(self.currentCharacter)
+    actionCost = AI:nextAction(self.currentCharacter)
   else
     actionCost = GUIManager:showGUIForResult('battle/BattleGUI')
   end
@@ -158,33 +157,38 @@ function BattleManager:runTurn(char, iterations)
     bc.battler:onTurnEnd(iterations)
   end
   self.currentCharacter = nil
+  self.currentAction = nil
 end
 
--- Re-calculates the distance matrix.
+-- Recalculates the distance matrix.
 function BattleManager:updateDistanceMatrix()
   local moveAction = MoveAction()
-  self.distanceMatrix = PathFinder.dijkstra(moveAction)
+  self.distanceMatrix = PathFinder.dijkstra(moveAction, self.currentCharacter)
 end
+
+---------------------------------------------------------------------------------------------------
+-- User input
+---------------------------------------------------------------------------------------------------
 
 -- [COROUTINE] Start a new action.
 -- @param(action : BattleAction) the new action
 function BattleManager:selectAction(action)
   self.currentAction = action
   if action then
-    action:onSelect()
+    action:onSelect(self.currentCharacter)
   end
 end
 
 -- Focus on given tile.
 -- @param(tile : ObjectTile) the new target tile
 function BattleManager:selectTarget(tile)
-  self.currentAction:selectTarget(tile)
+  self.currentAction:selectTarget(tile, self.currentCharacter)
   FieldManager.renderer:moveToTile(tile)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Auxiliary functions
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- [COROUTINE] Plays a battle animation.
 -- @param(animID : number) the animation's ID from database

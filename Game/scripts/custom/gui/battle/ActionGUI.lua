@@ -30,6 +30,7 @@ function ActionGUI:createWindows()
   self.name = 'Action GUI'
   self.cursor = BattleCursor()
   self.action = BattleManager.currentAction
+  self.user = BattleManager.currentCharacter
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -66,7 +67,7 @@ end
 
 -- [COROUTINE] Overrides GUI:waitForResult.
 function ActionGUI:waitForResult()
-  self.action:onActionGUI(self)
+  self.action:onActionGUI(self, self.user)
   self:checkInput()
   while self.result == nil do
     if self.cursor then
@@ -76,17 +77,17 @@ function ActionGUI:waitForResult()
     self:checkInput()
   end
   self.cursor:destroy()
-  return self.result, false
+  return self.result
 end
 
 -- Verifies player's input. Stores result of action in self.result.
 function ActionGUI:checkInput()
   if InputManager.keys['confirm']:isTriggered() then
     if self.action.currentTarget.gui.selectable then
-      self.result = self.action:onConfirm(self)
+      self.result = self.action:onConfirm(self, self.user)
     end
   elseif InputManager.keys['cancel']:isTriggered() then
-    self.action:onCancel(self)
+    self.action:onCancel(self, self.user)
     self.result = -1
   else
     local dx, dy = InputManager:axis(0.5, 0.0625)

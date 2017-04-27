@@ -18,9 +18,9 @@ local ActionWindow = ButtonWindow:inherit()
 -- Select an action.
 -- @param(actionType : class) the class of the action
 --  (must inherit from BattleAction) 
-function ActionWindow:selectAction(actionType, ...)
+function ActionWindow:selectAction(action)
   -- Executes action grid selecting.
-  BattleManager:selectAction(actionType(...))
+  BattleManager:selectAction(action)
   self.GUI:hide()
   local actionCost = GUIManager:showGUIForResult('battle/ActionGUI')
   if actionCost >= 0 then
@@ -30,16 +30,6 @@ function ActionWindow:selectAction(actionType, ...)
     FieldManager.renderer:moveToObject(BattleManager.currentCharacter)
     self.GUI:show()
   end
-end
-
--- Select a skill's action.
--- @param(skill : table) the skill data from Database
-function ActionWindow:selectSkill(skill)
-  local actionType = SkillAction
-  if skill.data.script.path ~= '' then
-    actionType = require('custom/' .. skill.data.script.path)
-  end
-  self:selectAction(actionType, nil, nil, skill, skill.data.script.param)
 end
 
 -- Closes this window to be replaced by another one.

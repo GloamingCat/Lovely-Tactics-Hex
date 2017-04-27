@@ -9,7 +9,7 @@ A class the holds character's information for battle formula.
 
 -- Imports
 local List = require('core/algorithm/List')
-local Skill = require('core/battle/Skill')
+local SkillAction = require('core/battle/action/SkillAction')
 local Inventory = require('core/battle/Inventory')
 
 -- Alias
@@ -34,7 +34,7 @@ function Battler:init(data, party)
   self.currentSP = data.currentSP or self.maxSP()
   self.data = data
   self.turnCount = 0
-  self.inventory = Inventory(data.items)
+  self.inventory = Inventory(self, data.items)
   self:setPortraits(data.battleCharID)
   self:setSkillList(data.skills, data.attackID)
   self:setElements(data.elements)
@@ -45,8 +45,7 @@ end
 -- @param(ai : table) the script data table (with strings path and param)
 function Battler:setAI(ai)
   if ai.path ~= '' then
-    self.AI = require('custom/ai/' .. ai.path)
-    self.AI.param = ai.param
+    self.AI = require('custom/' .. ai.path)(ai.param)
   else
     self.AI = nil
   end
@@ -74,9 +73,10 @@ end
 function Battler:setSkillList(skills, attackID)
   self.skillList = List()
   for i = 1, #skills do
-    self.skillList:add(Skill(skills[i]))
+    local id = skills[i]
+    self.skillList:add(SkillAction.fromData(id))
   end
-  self.attackSkill = Skill(attackID)
+  self.attackSkill = SkillAction.fromData(attackID)
 end
 
 -- Creates and sets and table of portraits.
@@ -92,7 +92,7 @@ end
 
 -- Converting to string.
 -- @ret(string) a string representation
-function Battler:toString()
+function Battler:__tostring()
   return 'Battler: ' .. self.data.name .. ' [Party ' .. self.party .. ']'
 end
 
@@ -157,14 +157,8 @@ end
 -- Increments turn count by the turn attribute.
 -- @param(limit : number) the turn limit to start the turn
 -- @ret(boolean) true if the limit was reached, false otherwise
-function Battler:incrementTurnCount(limit)
-  self.turnCount = self.turnCount + self.turn()
-  if self.turnCount >= limit then
-    self.turnCount = self.turnCount - limit
-    return true
-  else
-    return false
-  end
+function Battler:incrementTurnCount(limit, time)
+  self.turnCount = self.turnCount + self.turn() * time
 end
 
 -- Decrements turn count by a value. It never reaches a negative value.
@@ -176,9 +170,6 @@ end
 -- Callback for when a new turn begins.
 -- @param(iterations : number) the number of turn iterations since the previous turn
 function Battler:onTurnStart(iterations)
-  if BattleManager.currentCharacter.battler == self then
-    self.currentSteps = self.steps()
-  end
 end
 
 -- Callback for when a turn ends.
