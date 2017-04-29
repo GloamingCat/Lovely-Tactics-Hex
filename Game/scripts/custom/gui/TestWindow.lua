@@ -7,7 +7,7 @@ Just an example window.
 
 ===========================================================================]]
 
-local TestWindow = ButtonWindow:inherit()
+local TestWindow = class(ButtonWindow)
 
 local function buttonConfirm(button)
   print(button.index)

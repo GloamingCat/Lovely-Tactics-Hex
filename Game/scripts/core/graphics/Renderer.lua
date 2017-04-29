@@ -19,7 +19,7 @@ local round = math.round
 -- Constants
 local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
 
-local Renderer = Transformable:inherit()
+local Renderer = class(Transformable)
 
 -------------------------------------------------------------------------------
 -- Initialization

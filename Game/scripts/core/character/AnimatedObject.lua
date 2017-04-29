@@ -16,7 +16,7 @@ local Object = require('core/fields/Object')
 local mathf = math.field
 local Quad = love.graphics.newQuad
 
-local AnimatedObject = Object:inherit()
+local AnimatedObject = class(Object)
 
 -------------------------------------------------------------------------------
 -- Initialization
@@ -98,7 +98,7 @@ end
 -- Removes from draw and update list.
 function AnimatedObject:destroy()
   if self.sprite then
-    self.sprite:removeSelf()
+    self.sprite:destroy()
   end
 end
 

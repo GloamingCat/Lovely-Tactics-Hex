@@ -11,7 +11,7 @@ There may be more then one TerrainLayer in the field per height.
 -- Imports
 local TerrainTile = require('core/fields/TerrainTile')
 
-local TerrainLayer = require('core/class'):new()
+local TerrainLayer = class()
 
 -- @param(data : table) the layer's data from field's file
 -- @param(sizeX : number) the field's width

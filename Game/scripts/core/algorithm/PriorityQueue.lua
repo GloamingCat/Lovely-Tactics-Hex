@@ -1,16 +1,14 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 PriorityQueue
--------------------------------------------------------------------------------
-A priority queue with numeric keys. Be default, the element in the front will 
-be the one with the lowest key. See more in:
-https://en.wikipedia.org/wiki/Priority_queue
+---------------------------------------------------------------------------------------------------
+A priority queue with numeric keys. Be default, the element in the front will be the one with the 
+lowest key. See more in: https://en.wikipedia.org/wiki/Priority_queue
 
 TODO: implement a more efficient version (heap)
-TODO: implement toString
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local List = require('core/algorithm/List')
@@ -18,13 +16,21 @@ local List = require('core/algorithm/List')
 -- Alias
 local sort = table.sort
 
-local PriorityQueue = require('core/class'):new()
+local PriorityQueue = class()
+
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
 
 -- @param(comp : function) the function to compares two pairs (optional)
 function PriorityQueue:init(comp)
   self.comp = self.comp or comp
   self.size = 0
 end
+
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
 
 -- Default compare function
 function PriorityQueue.comp(a, b)
@@ -65,6 +71,10 @@ function PriorityQueue:isEmpty()
   return self.size == 0
 end
 
+---------------------------------------------------------------------------------------------------
+-- Convertion
+---------------------------------------------------------------------------------------------------
+
 -- Transform this queue into a list of elements (does not include keys).
 -- @ret(List) list of arbitrary elements
 function PriorityQueue:toList()
@@ -74,6 +84,12 @@ function PriorityQueue:toList()
     list:add(e)
   end
   return list
+end
+
+-- String representation.
+function PriorityQueue:__tostring()
+  local list = self:toList()
+  return tostring(list)
 end
 
 return PriorityQueue

@@ -13,7 +13,7 @@ Font.popup_dmgEP = default_font
 Font.popup_healHP = default_font
 Font.popup_healEP = default_font
 Font.popup_miss = default_font
-Font.fps = love.graphics.newFont(12)
+Font.fps = love.graphics.newFont('fonts/FogSans.otf', 12)
 
 Font.scale = 4
 Font.outlineSize = 4

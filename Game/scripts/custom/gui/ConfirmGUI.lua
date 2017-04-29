@@ -8,7 +8,7 @@ The GUI that contains only a confirm window.
 
 =============================================================================]]
 
-local ConfirmGUI = GUI:inherit()
+local ConfirmGUI = class(GUI)
 
 function ConfirmGUI:createWindows()
   self.name = 'Confirm GUI'

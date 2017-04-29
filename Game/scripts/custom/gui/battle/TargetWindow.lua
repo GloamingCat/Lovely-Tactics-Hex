@@ -18,7 +18,7 @@ local battleConfig = Config.battle
 local attConfig = Config.attributes
 local font = Font.gui_small
 
-local TargetWindow = Window:inherit()
+local TargetWindow = class(Window)
 
 -------------------------------------------------------------------------------
 -- Initialization

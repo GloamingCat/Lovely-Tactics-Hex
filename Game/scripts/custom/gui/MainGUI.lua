@@ -8,7 +8,7 @@ The GUI that is openned when player presses the menu button in the field.
 
 =============================================================================]]
 
-local MainGUI = GUI:inherit()
+local MainGUI = class(GUI)
 
 function MainGUI:createWindows()
   self.name = 'Main GUI'

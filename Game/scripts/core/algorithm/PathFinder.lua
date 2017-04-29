@@ -1,13 +1,13 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 PathFinder
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 A module with graph algorithms used for grids during battle.
-Some parts of the algorithm used abstract functions from MoveAction class, so 
-any action used in this module must inherit from this class.
+Some parts of the algorithm used abstract functions from MoveAction class, so any action used in 
+this module must inherit from this class.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local List = require('core/algorithm/List')
@@ -26,6 +26,10 @@ local radiusIterator = math.field.radiusIterator
 local nan = 0 / 0
 
 local PathFinder = {}
+
+---------------------------------------------------------------------------------------------------
+-- All destinations
+---------------------------------------------------------------------------------------------------
 
 -- Calculates that a distance matrix from the initial tile.
 -- @param(action : MoveAction) the move action that implements these methods:
@@ -82,6 +86,10 @@ function PathFinder.dijkstra(action, user, initial)
   distances:set(nan, initial.x, initial.y)
   return distances
 end
+
+---------------------------------------------------------------------------------------------------
+-- Single destination
+---------------------------------------------------------------------------------------------------
 
 -- Search for a path from the initial until action:isFinal returns true.
 -- @param(action : MoveAction) the move action that implements these methods:
@@ -166,6 +174,11 @@ function PathFinder.findPathToUnreachable(action, user, initial, ignoreDistance)
     end
   end
   return nil
+end
+
+-- @ret(string) the string representation
+function PathFinder:__tostring()
+  return 'PathFinder module'
 end
 
 return PathFinder

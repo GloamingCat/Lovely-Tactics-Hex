@@ -19,7 +19,7 @@ local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local List = require('core/algorithm/List')
 
-local Window = Transformable:inherit()
+local Window = class(Transformable)
 
 ---------------------------------------------------------------------------------------------------
 -- General

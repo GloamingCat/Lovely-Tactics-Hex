@@ -12,7 +12,7 @@ http://en.wikipedia.org/wiki/List_(abstract_data_type)
 local insert = table.insert
 local remove = table.remove
 
-local List = require('core/class'):new()
+local List = class()
 
 -- @param(content : table) an array of initial elements, 
 --  indexed continously starting from 1 (optional)
@@ -120,7 +120,7 @@ end
 
 -- Converting to string.
 -- @ret(string) A string representation
-function List:toString()
+function List:__tostring()
   if self.size == 0 then
     return 'List {}'
   end

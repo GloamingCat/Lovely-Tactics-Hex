@@ -20,7 +20,7 @@ local now = love.timer.getTime
 local defaultStartGap = 0.5
 local defaultRepreatGap = 0.05
 
-local GameKey = require('core/class'):new()
+local GameKey = class()
 
 -------------------------------------------------------------------------------
 -- General

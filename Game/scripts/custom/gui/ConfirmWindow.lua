@@ -9,7 +9,7 @@ result = 1 -> confirm
 
 =============================================================================]]
 
-local ConfirmWindow = ButtonWindow:inherit()
+local ConfirmWindow = class(ButtonWindow)
 
 local function onConfirm(button)
   button.window.result = 1

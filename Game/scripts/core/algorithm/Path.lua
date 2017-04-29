@@ -10,7 +10,7 @@ A generic path of nodes (steps).
 -- Imports
 local List = require('core/algorithm/List')
 
-local Path = require('core/class'):new()
+local Path = class()
 
 -- @param(lastStep : unknown) the last node of the path
 -- @param(previousPath : Path) the path to the last node (optional for initial)
@@ -57,7 +57,7 @@ end
 
 -- Converting to string.
 -- @ret(string) A string representation
-function Path:toString()
+function Path:__tostring()
   local list = self:toList()
   if list.size == 0 then
     return 'Path {}'

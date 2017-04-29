@@ -31,7 +31,7 @@ local centerTime = 7.5
 local targetTime = 2.2
 local useTime = 2
 
-local SkillAction = BattleAction:inherit()
+local SkillAction = class(BattleAction)
 
 ---------------------------------------------------------------------------------------------------
 -- General

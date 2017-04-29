@@ -17,7 +17,7 @@ window), Call Action (only team tiles), etc.
 local mathf = math.field
 local isnan = math.isnan
 
-local BattleAction = require('core/class'):new()
+local BattleAction = class()
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -50,14 +50,10 @@ end
 -- @ret(number) the time cost of the action:
 --  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
 function BattleAction:onConfirm(GUI, user)
-  GUI:endGridSelecting()
-  local result = GUIManager:openGUIForResult('ConfirmGUI')
-  if result > 0 then
-    return result
-  else
-    GUI:startGridSelecting()
-    return nil
+  if GUI then
+    GUI:endGridSelecting()
   end
+  return 0
 end
 
 -- Called when player chooses a target for the action. 
@@ -65,7 +61,9 @@ end
 -- @ret(number) the time cost of the action:
 --  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
 function BattleAction:onCancel(GUI, user)
-  GUI:endGridSelecting()
+  if GUI then
+    GUI:endGridSelecting()
+  end
   return -1
 end
 

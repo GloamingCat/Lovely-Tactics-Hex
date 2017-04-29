@@ -13,7 +13,7 @@ local ActionWindow = require('custom/gui/battle/ActionWindow')
 local SkillAction = require('core/battle/action/SkillAction')
 local Vector = require('core/math/Vector')
 
-local ItemWindow = ActionWindow:inherit(ListButtonWindow)
+local ItemWindow = class(ActionWindow, ListButtonWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -63,6 +63,11 @@ end
 -- New row count.
 function ItemWindow:rowCount()
   return 6
+end
+
+-- String identifier.
+function ItemWindow:__tostring()
+  return 'ItemWindow'
 end
 
 return ItemWindow

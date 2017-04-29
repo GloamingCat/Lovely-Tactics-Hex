@@ -11,7 +11,7 @@ A List of Fibers. Must be updated every frame.
 local List = require('core/algorithm/List')
 local Fiber = require('core/fiber/Fiber')
 
-local FiberList = List:inherit()
+local FiberList = class(List)
 
 ---------------------------------------------------------------------------------------------------
 -- General

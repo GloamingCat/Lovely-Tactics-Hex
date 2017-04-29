@@ -24,13 +24,14 @@ local round = math.round
 local defaultScaleX = Config.screen.widthScale
 local defaultScaleY = Config.screen.heightScale
 
-local ScreenManager = require('core/class'):new()
+local ScreenManager = class()
 
 ---------------------------------------------------------------------------------------------------
 -- General
 ---------------------------------------------------------------------------------------------------
 
 function ScreenManager:init()
+  love.graphics.setDefaultFilter("nearest", "nearest")
   self.width = Config.screen.nativeWidth
   self.height = Config.screen.nativeHeight
   self.scalingType = 1

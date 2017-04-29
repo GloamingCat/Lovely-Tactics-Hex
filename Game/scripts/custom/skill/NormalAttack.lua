@@ -10,7 +10,7 @@ A class for generic attack skills that targets only enemies.
 -- Imports
 local CharacterOnlySkill = require('core/battle/action/CharacterOnlySkill')
 
-local NormalAttack = CharacterOnlySkill:inherit()
+local NormalAttack = class(CharacterOnlySkill)
 
 -- Overrides CharacterOnlyAction:isCharacterSelectable.
 function NormalAttack:isCharacterSelectable(char, user)

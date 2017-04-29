@@ -20,7 +20,7 @@ local Window = require('core/gui/Window')
 -- Alias
 local ceil = math.ceil
 
-local ButtonWindow = Window:inherit()
+local ButtonWindow = class(Window)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization

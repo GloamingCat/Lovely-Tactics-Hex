@@ -10,7 +10,7 @@ TODO: implement toString
 
 =================================================================================================]]
 
-local Stack = require('core/class'):new()
+local Stack = class()
 
 -- Constructor. Starts empty.
 function Stack:init()

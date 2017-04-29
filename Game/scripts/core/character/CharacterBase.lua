@@ -24,7 +24,7 @@ local Quad = love.graphics.newQuad
 local round = math.round
 local time = love.timer.getDelta
 
-local Character_Base = DirectedObject:inherit()
+local CharacterBase = class(DirectedObject)
 
 ---------------------------------------------------------------------------------------------------
 -- General
@@ -33,8 +33,8 @@ local Character_Base = DirectedObject:inherit()
 -- Constructor.
 -- @param(id : string) an unique ID for the character in the field
 -- @param(tileData : table) the character's data from tileset file
-local old_init = Character_Base.init
-function Character_Base:init(id, tileData)
+local old_init = CharacterBase.init
+function CharacterBase:init(id, tileData)
   local db = Database.charField
   if tileData.type == 1 then
     db = Database.charBattle
@@ -58,15 +58,15 @@ end
 
 -- Overrides AnimatedObject:update. 
 -- Updates fibers.
-local old_update = Character_Base.update
-function Character_Base:update()
+local old_update = CharacterBase.update
+function CharacterBase:update()
   old_update(self)
   self.fiberList:update()
 end
 
 -- Removes from draw and update list.
-local old_destroy = Character_Base.destroy
-function Character_Base:destroy()
+local old_destroy = CharacterBase.destroy
+function CharacterBase:destroy()
   old_destroy(self)
   FieldManager.characterList:removeElement(self)
   FieldManager.updateList:removeElement(self)
@@ -74,7 +74,7 @@ end
 
 -- Converting to string.
 -- @ret(string) a string representation
-function Character_Base:toString()
+function CharacterBase:__tostring()
   return 'Character ' .. self.name .. ' ' .. self.id
 end
 
@@ -86,7 +86,7 @@ end
 -- @param(name : string) the name of the character
 -- @param(tiles : table) a list of collision tiles
 -- @param(colliderHeight : number) collider's height in height units
-function Character_Base:initializeProperties(name, tiles, colliderHeight)
+function CharacterBase:initializeProperties(name, tiles, colliderHeight)
   self.name = name
   self.collisionTiles = tiles
   self.speed = 60
@@ -103,7 +103,7 @@ end
 -- Creates listeners from data.
 -- @param(tileData : table) the data from tileset
 -- @param(data : table) the data from characters file
-function Character_Base:initializeScripts(tileData)
+function CharacterBase:initializeScripts(tileData)
   if tileData.startScript and tileData.startScript.path ~= '' then
     self.startScript = tileData.startScript
   end
@@ -124,7 +124,7 @@ end
 -- @param(y : number) the pixel y of the object
 -- @param(z : number) the pixel depth of the object
 -- @ret(number) the type of the collision, if any
-function Character_Base:instantMoveTo(x, y, z, collisionCheck)
+function CharacterBase:instantMoveTo(x, y, z, collisionCheck)
   local tiles = self:getAllTiles()
   local center = self:getTile()
   local dx, dy, dh = math.field.pixel2Tile(x, y, z)
@@ -152,7 +152,7 @@ function Character_Base:instantMoveTo(x, y, z, collisionCheck)
 end
 
 -- Overrides Transform:updatePosition to check collision.
-function Character_Base:updatePosition()
+function CharacterBase:updatePosition()
   if self.moveTime < 1 then
     self.moveTime = self.moveTime + self.moveSpeed * time()
     if self.moveTime >= 1 then
@@ -175,7 +175,7 @@ end
 
 -- Gets all tiles this object is occuping.
 -- @ret(table) the list of tiles
-function Character_Base:getAllTiles()
+function CharacterBase:getAllTiles()
   local center = self:getTile()
   local x, y, h = center:coordinates()
   local tiles = { }
@@ -193,7 +193,7 @@ end
 
 -- Adds this object from to tiles it's occuping.
 -- @param(tiles : table) the list of occuped tiles
-function Character_Base:addToTiles(tiles)
+function CharacterBase:addToTiles(tiles)
   tiles = tiles or self:getAllTiles()
   for i = #tiles, 1, -1 do
     tiles[i].characterList:add(self)
@@ -202,7 +202,7 @@ end
 
 -- Removes this object from the tiles it's occuping.
 -- @param(tiles : table) the list of occuped tiles
-function Character_Base:removeFromTiles(tiles)
+function CharacterBase:removeFromTiles(tiles)
   tiles = tiles or self:getAllTiles()
   for i = #tiles, 1, -1 do
     tiles[i].characterList:removeElement(self)
@@ -215,7 +215,7 @@ end
 
 -- Sets persistent data.
 -- @param(data : table) data from save
-function Character_Base:setPersistentData(data)
+function CharacterBase:setPersistentData(data)
   self.data = data
   if data then
     if data.lastx and data.lasty and data.lastz then
@@ -232,7 +232,7 @@ end
 
 -- Gets persistent data.
 -- @ret(table) character's data
-function Character_Base:getPersistentData()
+function CharacterBase:getPersistentData()
   self.data = self.data or {}
   self.data.lastx = self.position.x
   self.data.lasty = self.position.y
@@ -242,4 +242,4 @@ function Character_Base:getPersistentData()
   return self.data
 end
 
-return Character_Base
+return CharacterBase

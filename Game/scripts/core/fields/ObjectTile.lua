@@ -15,7 +15,7 @@ local List = require('core/algorithm/List')
 local overpassAllies = Battle.overpassAllies
 local neighborShift = math.field.neighborShift
 
-local ObjectTile = require('core/class'):inherit()
+local ObjectTile = class()
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -66,8 +66,7 @@ function ObjectTile:generateCharacterID()
 end
 
 -- Converts to string.
--- @ret(string) the string representation
-function ObjectTile:toString()
+function ObjectTile:__tostring()
   return 'ObjectTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ')' 
 end
 

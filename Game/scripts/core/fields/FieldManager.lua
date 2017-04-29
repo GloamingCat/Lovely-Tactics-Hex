@@ -21,7 +21,7 @@ local FieldCamera = require('core/fields/FieldCamera')
 -- Alias
 local mathf = math.field
 
-local FieldManager = require('core/class'):new()
+local FieldManager = class()
 
 ---------------------------------------------------------------------------------------------------
 -- General

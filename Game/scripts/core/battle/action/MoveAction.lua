@@ -18,7 +18,7 @@ local mathf = math.field
 -- Constants
 local controlZone = Battle.controlZone
 
-local MoveAction = BattleAction:inherit()
+local MoveAction = class(BattleAction)
 
 -------------------------------------------------------------------------------
 -- Initalization

@@ -13,7 +13,7 @@ local List = require('core/algorithm/List')
 -- Alias
 local Random = love.math.random
 
-local Inventory = List:inherit()
+local Inventory = class(List)
 
 ---------------------------------------------------------------------------------------------------
 -- General
@@ -66,7 +66,7 @@ end
 
 -- Converting to string.
 -- @ret(string) A string representation
-function Inventory:toString()
+function Inventory:__tostring()
   if self.size == 0 then
     return 'Inventory {}'
   end

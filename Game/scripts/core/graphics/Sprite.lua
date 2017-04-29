@@ -22,7 +22,7 @@ local remove = table.remove
 -- Constants
 local colorf = Color.factor
 
-local Sprite = require('core/class'):new()
+local Sprite = class()
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization

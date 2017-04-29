@@ -17,7 +17,7 @@ local sqrt = math.sqrt
 -- Constants
 local cameraSpeed = 75
 
-local FieldCamera = Renderer:inherit()
+local FieldCamera = class(Renderer)
 
 -------------------------------------------------------------------------------
 -- General

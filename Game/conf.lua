@@ -1,16 +1,13 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 File run before main.
 
-=============================================================================]]
-
-PROFI = require('ProFi')
-love.filesystem.setRequirePath('scripts/?.lua;/?.lua')
-require('core/requireoverride')
-require('core/coroutineerr')
+=================================================================================================]]
 
 function love.conf(t)
+  love.filesystem.setRequirePath('scripts/?.lua;/?.lua')
+  --PROFI = require('ProFi')
   JSON = require('core/save/JsonParser')
   Config = JSON.decode(love.filesystem.read('data/config.json'))
   Database = {}

@@ -7,7 +7,7 @@ Stores the game data.
 
 =================================================================================================]]
 
-local GameSave = require('core/class'):new()
+local GameSave = class()
 
 -- Contructor.
 function GameSave:init()

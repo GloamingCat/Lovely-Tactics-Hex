@@ -13,7 +13,7 @@ local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local Text = require('core/graphics/Text')
 
-local SimpleText = require('core/class'):new()
+local SimpleText = class()
 
 -------------------------------------------------------------------------------
 -- Initialization

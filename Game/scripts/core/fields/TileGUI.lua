@@ -21,7 +21,7 @@ local tileAnimID = Config.gui.tileAnimID
 local tileHLAnimID = Config.gui.tileHLAnimID
 local tileColors = Color
 
-local TileGUI = require('core/class'):new()
+local TileGUI = class()
 
 -- @param(tile : ObjectTile) the tile this object belongs to.
 function TileGUI:init(tile)
@@ -43,6 +43,7 @@ function TileGUI:init(tile)
   self:hide()
 end
 
+-- Updates graphics.
 function TileGUI:update()
   if self.highlightAnim then
     self.highlightAnim:update()
@@ -104,6 +105,16 @@ function TileGUI:hide()
     self.baseAnim.sprite:setVisible(false)
   end
   self:setSelected(false)
+end
+
+-- Erases any sprites.
+function TileGUI:destroy()
+  if self.baseAnim then
+    self.baseAnim:destroy()
+  end
+  if self.highlightAnim then
+    self.highlightAnim:destroy()
+  end
 end
 
 return TileGUI

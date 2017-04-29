@@ -21,14 +21,14 @@ local timer = love.timer
 -- Constants
 local hideTime = 3
 
-local GameMouse = require('core/class'):new()
+local GameMouse = class()
 
 -------------------------------------------------------------------------------
 -- General
 -------------------------------------------------------------------------------
 
 function GameMouse:init()
-  self.position = nil
+  self.position = Vector(0, 0)
   self.lastMove = 0
   self.active = false
   self.buttons = {}
@@ -72,7 +72,7 @@ end
 -- @param(x : number) current cursor x coordinate
 -- @param(y : number) current cursor y coordinate
 function GameMouse:onMove(x, y)
-  self.position = Vector(x, y)
+  self.position:set(x, y)
   self:show()
 end
 

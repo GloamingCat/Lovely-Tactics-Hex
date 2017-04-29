@@ -17,7 +17,7 @@ local nextCoordDir = math.field.nextCoordDir
 local tile2Pixel = math.field.tile2Pixel
 local abs = math.abs
 
-local DirectedObject = AnimatedObject:inherit()
+local DirectedObject = class(AnimatedObject)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization

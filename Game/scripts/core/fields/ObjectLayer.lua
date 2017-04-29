@@ -16,7 +16,7 @@ local Character = require('core/character/Character')
 -- Alias
 local floor = math.floor
 
-local ObjectLayer = require('core/class'):new()
+local ObjectLayer = class()
 
 -- @param(sizeX : number) the field's width
 -- @param(sizeY : number) the field's length

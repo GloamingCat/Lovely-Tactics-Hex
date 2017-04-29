@@ -20,7 +20,7 @@ local BattleCursor = require('core/battle/BattleCursor')
 -- Alias
 local mathf = math.field
 
-local TurnWindow = require('core/class'):inherit(ActionWindow)
+local TurnWindow = class(ActionWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -180,6 +180,11 @@ function TurnWindow:show(add)
   local user = BattleManager.currentCharacter
   self.userCursor:setCharacter(user)
   old_show(self, add)
+end
+
+-- String identifier.
+function TurnWindow:__tostring()
+  return 'TurnWindow'
 end
 
 return TurnWindow

@@ -22,7 +22,7 @@ local round = math.round
 local defaultFont = Font.gui_default
 local colorf = Color.factor
 
-local Text = Sprite:inherit()
+local Text = class(Sprite)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization

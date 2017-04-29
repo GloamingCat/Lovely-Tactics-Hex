@@ -11,7 +11,7 @@ The BattleAction that is executed when players cancels in the Turn Window.
 local BattlerWindow = require('custom/gui/battle/BattlerWindow')
 local BattleAction = require('core/battle/action/BattleAction')
 
-local VisualizeAction = BattleAction:inherit()
+local VisualizeAction = class(BattleAction)
 
 -------------------------------------------------------------------------------
 -- Event handlers

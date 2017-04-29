@@ -20,7 +20,7 @@ local speed = 8
 local pause = 30
 local properties = {nil, 'left'}
 
-local PopupText = require('core/class'):new()
+local PopupText = class()
 
 function PopupText:init(x, y, z)
   self.x = x
@@ -74,7 +74,7 @@ function PopupText:popup(wait)
 end
 
 function PopupText:destroy()
-  self.sprite:removeSelf()
+  self.sprite:destroy()
 end
 
 return PopupText

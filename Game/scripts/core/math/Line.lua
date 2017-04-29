@@ -7,7 +7,7 @@ Represents a two-dimentional line.
 
 =============================================================================]]
 
-local Line = require('core/class'):new()
+local Line = class()
 
 -- @param(a : number) the a coeficient
 -- @param(b : number) the b coeficient
@@ -24,8 +24,7 @@ function Line:distance(x, y)
 end
 
 -- Converting to string.
--- @ret(string) A string representation
-function Line:toString()
+function Line:__tostring()
   return '' .. self.a .. 'x + ' .. self.b .. 'y + ' .. self.c .. ' = 0'
 end
 

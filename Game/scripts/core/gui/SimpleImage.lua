@@ -14,7 +14,7 @@ local Sprite = require('core/graphics/Sprite')
 local max = math.max
 local min = math.min
 
-local SimpleImage = require('core/class'):new()
+local SimpleImage = class()
 
 -------------------------------------------------------------------------------
 -- Initialization

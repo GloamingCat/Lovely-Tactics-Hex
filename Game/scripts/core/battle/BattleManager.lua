@@ -23,7 +23,7 @@ local time = love.timer.getDelta
 -- Constants
 local turnLimit = Battle.turnLimit
 
-local BattleManager = require('core/class'):new()
+local BattleManager = class()
 
 ---------------------------------------------------------------------------------------------------
 -- General
@@ -100,6 +100,7 @@ function BattleManager:clear()
     bc.battler = nil
   end
   for tile in FieldManager.currentField:gridIterator() do
+    tile.gui:destroy()
     tile.gui = nil
   end
   if self.cursor then
@@ -210,7 +211,7 @@ function BattleManager:playAnimation(animID, x, y, z, mirror, wait)
   FieldManager.fiberList:fork(function()
     _G.Fiber:wait(animation.duration)
     FieldManager.updateList:removeElement(animation)
-    animation.sprite:removeSelf()
+    animation:destroy()
   end)
   if wait then
     _G.Fiber:wait(animation.duration)

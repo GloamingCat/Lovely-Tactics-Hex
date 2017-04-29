@@ -14,7 +14,7 @@ local resume = coroutine.resume
 local yield = coroutine.yield
 local time = love.timer.getDelta
 
-local Fiber = require('core/class'):new()
+local Fiber = class()
 
 ---------------------------------------------------------------------------------------------------
 -- General

@@ -15,7 +15,7 @@ local GameMouse = require('core/input/GameMouse')
 -- Alias
 local max = math.max
 
-local InputManager = require('core/class'):new()
+local InputManager = class()
 
 -------------------------------------------------------------------------------
 -- General

@@ -17,7 +17,7 @@ local abs = math.abs
 local max = math.max
 local yield = coroutine.yield
 
-local Transformable = require('core/class'):new()
+local Transformable = class()
 
 -------------------------------------------------------------------------------
 -- General

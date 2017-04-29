@@ -1,5 +1,17 @@
 
+--[[===============================================================================================
+
+HexHMath
+---------------------------------------------------------------------------------------------------
+Implements a FieldMath specially to isometric and hexagonal fields.
+
+=================================================================================================]]
+
+-- Imports
+local FieldMath = require('core/math/field/FieldMath')
 local Vector = require('core/math/Vector')
+
+-- Constants
 local tileW = Config.grid.tileW
 local tileH = Config.grid.tileH
 local tileB = Config.grid.tileB
@@ -7,13 +19,7 @@ local tileS = Config.grid.tileS
 local pixelsPerHeight = Config.grid.pixelsPerHeight
 local allNeighbors = Config.grid.allNeighbors
 
---[[===========================================================================
-
-Implements a FieldMath specially to isometric and hexagonal fields.
-
-=============================================================================]]
-
-local HexHMax = require('core/math/field/FieldMath'):inherit()
+local HexHMax = class(FieldMath)
 
 -- Creates an array with Vectors representing all neighbors of a tile.
 -- @ret(table) array of Vectors

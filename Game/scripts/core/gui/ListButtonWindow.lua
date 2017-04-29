@@ -11,7 +11,7 @@ arbitrary elements.
 -- Imports
 local ButtonWindow = require('core/gui/ButtonWindow')
 
-local ListButtonWindow = ButtonWindow:inherit()
+local ListButtonWindow = class(ButtonWindow)
 
 ----------------------------------------------------------------------------------------------------
 -- Initialization

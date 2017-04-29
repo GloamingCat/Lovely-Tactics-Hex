@@ -11,7 +11,7 @@ A 3D matrix of fixed size.
 local insert = table.insert
 local remove = table.remove
 
-local Matrix3 = require('core/class'):new()
+local Matrix3 = class()
 
 function Matrix3:init(width, height, depth, startValue)
   depth = depth or 1
@@ -47,14 +47,14 @@ end
 
 -- Converting to string.
 -- @ret(string) A string representation
-function Matrix3:toString()
+function Matrix3:__tostring()
   local s = '{ '
   for i = 1, self.width do
     s = s .. '{ '
     for j = 1, self.height do
       s = s .. '{ '
       for k = 1, self.depth do
-        s = s .. self:get(i, j, k) .. ' '
+        s = s .. tostring(self:get(i, j, k)) .. ' '
       end
       s - s .. '}'
     end

@@ -16,7 +16,7 @@ local max = math.max
 local min = math.min
 local mathf = math.field
 
-local Field = require('core/class'):new()
+local Field = class()
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization

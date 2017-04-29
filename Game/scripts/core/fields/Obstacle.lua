@@ -16,7 +16,7 @@ local Object = require('core/fields/Object')
 -- Constants
 local pph = Config.grid.pixelsPerHeight
 
-local Obstacle = Object:inherit()
+local Obstacle = class(Object)
 
 -------------------------------------------------------------------------------
 -- Initialization
@@ -87,8 +87,7 @@ function Obstacle:isPassable(dx, dy, obj)
 end
 
 -- Converting to string.
--- @ret(string) a string representation
-function Obstacle:toString()
+function Obstacle:__tostring()
   return 'Obstacle ' .. self.name
 end
 

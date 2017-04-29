@@ -13,7 +13,7 @@ Its result is the action time that the character spent.
 local ButtonWindow = require('core/gui/ButtonWindow')
 local SkillAction = require('core/battle/action/SkillAction')
 
-local ActionWindow = ButtonWindow:inherit()
+local ActionWindow = class(ButtonWindow)
 
 -- Select an action.
 -- @param(actionType : class) the class of the action

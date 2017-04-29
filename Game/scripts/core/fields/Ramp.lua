@@ -10,10 +10,10 @@ TODO: everything
 =============================================================================]]
 
 -- Imports
-local Vector = require('core.math.Vector')
-local Line = require('core.math.Line')
+local Vector = require('core/math/Vector')
+local Line = require('core/math/Line')
 
-local Ramp = require('class'):new()
+local Ramp = class()
 
 -- @param(data : table) the data from file
 function Ramp:init(data)
@@ -80,9 +80,8 @@ function Ramp:getHeight(position)
 end
 
 -- Converts to string.
--- @ret(string) the string representation
-function Ramp:toString()
-  return 'Ramp (Bottom: ' .. self.bottom:toString() .. ', Top: ' .. self.top:toString() .. ')'
+function Ramp:__tostring()
+  return 'Ramp (Bottom: ' .. tostring(self.bottom) .. ', Top: ' .. tostring(self.top) .. ')'
 end
 
 return Ramp

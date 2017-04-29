@@ -13,7 +13,7 @@ local SkillAction = require('core/battle/action/SkillAction')
 -- Alias
 local radiusIterator = math.field.radiusIterator
 
-local AreaAttack = SkillAction:inherit()
+local AreaAttack = class(SkillAction)
 
 -- Overrides SkillAction:getAffectedTiles.
 function AreaAttack:getAllAffectedTiles(user)

@@ -11,7 +11,7 @@ assuming that the texture of the sprite is a spritesheet.
 -- Imports
 local Sprite = require('core/graphics/Sprite')
 
-local Animation = require('core/class'):new()
+local Animation = class()
 
 -------------------------------------------------------------------------------
 -- Initialization
@@ -121,6 +121,13 @@ function Animation:setRow(row)
     self.row = row
     self.sprite.quad:setViewport(x, y, w, h)
     self.sprite.renderer.needsRedraw = true
+  end
+end
+
+-- Destroy this animation.
+function Animation:destroy()
+  if self.sprite then
+    self.sprite:destroy()
   end
 end
 

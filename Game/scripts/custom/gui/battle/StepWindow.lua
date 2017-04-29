@@ -13,7 +13,7 @@ local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 local SimpleText = require('core/gui/SimpleText')
 
-local StepWindow = Window:inherit()
+local StepWindow = class(Window)
 
 -------------------------------------------------------------------------------
 -- Initialization

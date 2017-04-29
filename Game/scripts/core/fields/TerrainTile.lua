@@ -29,7 +29,7 @@ viewports[2] = {tileW / 2, 0}
 viewports[3] = {0, tileH / 2}
 viewports[4] = {tileW / 2, tileH / 2}
 
-local TerrainTile = require('core/class'):new()
+local TerrainTile = class()
 
 -- @param(layer : Layer) the layer that the tile is in
 -- @param(x : number) the x coordinate of the tile
@@ -130,7 +130,7 @@ end
 
 -- Converts to string.
 -- @ret(string) the string representation
-function TerrainTile:toString()
+function TerrainTile:__tostring()
   return 'TerrainTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ', ' .. self.layer.order .. ')' 
 end
 

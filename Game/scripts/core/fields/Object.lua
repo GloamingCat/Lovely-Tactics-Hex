@@ -15,7 +15,7 @@ local Sprite = require('core/graphics/Sprite')
 -- Alias
 local round = math.round
 
-local Object = Transformable:inherit()
+local Object = class(Transformable)
 
 ---------------------------------------------------------------------------------------------------
 -- General

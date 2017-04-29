@@ -1,13 +1,13 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 Vector
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 An offset in three-dimensional space. 
 It consists of an x, and a y component,
 each being an offset along a different orthogonal axis.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Alias
 local floor = math.floor
@@ -16,8 +16,10 @@ local round = math.round
 local rotate = math.rotate
 local min = math.min
 local max = math.max
+local sqrt = math.sqrt
+local len2D = math.len2D
 
-local Vector = require('core/class'):new()
+local Vector = class()
 
 -- @param(x : number) the x coordinate of the Vector
 -- @param(y : number) the y coordinate of the Vector
@@ -28,13 +30,52 @@ function Vector:init(x,y,z)
   self.z = z or 0
 end
 
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
+
+-- Sets this vector's coordinates.
+-- @param(number) The new x coordinate of the Vector
+-- @param(number) The new y coordinate of the Vector
+-- @param(number) The new z coordinate of the Vector
+function Vector:set(x, y, z)
+  self.x = x or self.x
+  self.y = y or self.y
+  self.z = z or self.z
+end
+
+-- Returns the coordinates of the Vector as separate values.
+-- @ret(number) The x coordinate of the Vector
+-- @ret(number) The y coordinate of the Vector
+-- @ret(number) The z coordinate of the Vector
+function Vector:coordinates()
+  return self.x, self.y, self.z
+end
+
+-- Creates a new vector that is the copy of this one.
+-- @ret(Vector) the clone vector
+function Vector:clone()
+  return Vector(self.x, self.y, self.z)
+end
+
+-- Checks if this vector's coordinates equal to the given coordinates.
+-- @param(number) The x coordinate of the Vector
+-- @param(number) The y coordinate of the Vector
+-- @param(number) The z coordinate of the Vector
+-- @ret(boolean) true if and only if each coordinate is equal to the given one
 function Vector:equals(x, y, z)
   return self.x == x and self.y == y and self.z == z
 end
 
+-- Checks if the velor is null.
+-- @ret(boolean) if and only if all coordinates equal to zero
 function Vector:isZero()
   return self.x == 0 and self.y == 0 and self.z == 0
 end
+
+---------------------------------------------------------------------------------------------------
+-- Operations
+---------------------------------------------------------------------------------------------------
 
 -- Adds other Vector to this Vector
 -- @param(other : Vector) the vector to be added
@@ -93,28 +134,14 @@ function Vector:perp()
   return Vector(-self.y,self.x,self.z)
 end
 
--- Returns the coordinates of the Vector as separate values.
--- @ret(number) The x coordinate of the Vector
--- @ret(number) The y coordinate of the Vector
--- @ret(number) The z coordinate of the Vector
-function Vector:coordinates()
-  return self.x, self.y, self.z
-end
-
--- Creates a new vector that is the copy of this one.
--- @ret(Vector) the clone vector
-function Vector:clone()
-  return Vector(self.x, self.y, self.z)
-end
-
 -- Calculares the length of the vector.
 --@ret(number) the length
 function Vector:len()
-  return math.sqrt(self.x*self.x+self.y*self.y+self.z*self.z)
+  return sqrt(self.x*self.x+self.y*self.y+self.z*self.z)
 end
 
 function Vector:len2D()
-  return math.len2D(self.x, self.y, self.z)
+  return len2D(self.x, self.y, self.z)
 end
 
 -- Rotate this Vector phi radians counterclockwise.
@@ -134,8 +161,6 @@ end
 
 -- Normalizes this Vector.
 function Vector:normalize()
-  --local z = self.z
-  --self.z = 0
 	local l = self:len()
   self.x = self.x / l
   self.y = self.y / l
@@ -160,6 +185,10 @@ function Vector:lerp(other, time)
   return self * (1 - time) + other * time
 end
 
+---------------------------------------------------------------------------------------------------
+-- To integer
+---------------------------------------------------------------------------------------------------
+
 -- Rounds this vector's coordinates.
 function Vector:round()
   self.x = round(self.x)
@@ -173,29 +202,34 @@ function Vector:rounded()
   return Vector(round(self.x), round(self.y), round(self.z))
 end
 
+-- Floors this vector's coordinates.
 function Vector:floor()
   self.x = floor(self.x)
   self.y = floor(self.y)
   self.z = floor(self.z)
 end
 
+-- Floors this vector's coordinates.
+-- @ret(Vector) this vector floored as a new vector
 function Vector:floored()
   return Vector(floor(self.x), floor(self.y), floor(self.z))
 end
 
+-- Ceils this vector's coordinates.
 function Vector:ceil()
   self.x = floor(self.x)
   self.y = floor(self.y)
   self.z = floor(self.z)
 end
 
+-- Ceils this vector's coordinates.
+-- @ret(Vector) this vector ceiled as a new vector
 function Vector:ceiled()
   return Vector(ceil(self.x), ceil(self.y), ceil(self.z))
 end
 
--- Converting to string.
--- @ret(string) A string representation
-function Vector:toString()
+-- @ret(string) the string representation
+function Vector:__tostring()
   return '<' .. self.x .. ',' .. self.y .. ',' .. self.z .. '>'
 end
 

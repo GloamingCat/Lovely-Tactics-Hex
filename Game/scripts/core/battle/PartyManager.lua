@@ -10,7 +10,7 @@ Stores and manages player's party members (active and backup).
 -- Imports
 local List = require('core/algorithm/List')
 
-local PartyManager = require('core/class'):new()
+local PartyManager = class()
 
 -------------------------------------------------------------------------------
 -- General

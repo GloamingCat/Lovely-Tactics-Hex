@@ -9,7 +9,7 @@ The [COUROUTINE] functions must ONLY be called from a fiber.
 =============================================================================]]
 
 -- Imports
-local CharacterBase = require('core/character/Character_Base')
+local CharacterBase = require('core/character/CharacterBase')
 local Vector = require('core/math/Vector')
 local Stack = require('core/algorithm/Stack')
 local Sprite = require('core/graphics/Sprite')
@@ -32,7 +32,7 @@ local len2D = math.len2D
 local speedLimit = (Config.player.dashSpeed + Config.player.walkSpeed) / 2
 local castStep = 6
 
-local Character = CharacterBase:inherit()
+local Character = class(CharacterBase)
 
 -------------------------------------------------------------------------------
 -- General Movement

@@ -14,7 +14,7 @@ local Sprite = require('core/graphics/Sprite')
 -- Alias
 local Image = love.graphics.newImage
 
-local VSlider = require('core/class'):new()
+local VSlider = class()
 
 function VSlider:init(window, relativePosition, length)
   window.content:add(self)

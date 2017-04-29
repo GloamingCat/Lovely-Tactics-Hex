@@ -12,7 +12,7 @@ local Sprite = require('core/graphics/Sprite')
 local Vector = require('core/math/Vector')
 local SimpleText = require('core/gui/SimpleText')
 
-local Button = require('core/class'):new()
+local Button = class()
 
 -------------------------------------------------------------------------------
 -- General
@@ -70,7 +70,7 @@ function Button:destroy()
     self.textSprite:destroy()
   end
   if self.icon then
-    self.icon:removeSelf()
+    self.icon:destroy()
   end
 end
 

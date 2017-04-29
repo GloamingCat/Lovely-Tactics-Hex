@@ -21,7 +21,7 @@ local max = math.max
 -- Constants
 local attConfig = Config.attributes
 
-local BattlerWindow = Window:inherit()
+local BattlerWindow = class(Window)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization

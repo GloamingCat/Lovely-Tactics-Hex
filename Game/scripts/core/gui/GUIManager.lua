@@ -12,7 +12,7 @@ local Stack = require('core/algorithm/Stack')
 local Renderer = require('core/graphics/Renderer')
 local FiberList = require('core/fiber/FiberList')
 
-local GUIManager = require('core/class'):new()
+local GUIManager = class()
 
 ---------------------------------------------------------------------------------------------------
 -- General

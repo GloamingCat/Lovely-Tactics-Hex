@@ -20,7 +20,7 @@ local time = love.timer.getDelta
 -- Constants
 local step = 10
 
-local Knockback = Animation:inherit()
+local Knockback = class(Animation)
 
 -------------------------------------------------------------------------------
 -- Movement direction

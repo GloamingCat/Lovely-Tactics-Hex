@@ -20,7 +20,7 @@ local tileW = Config.grid.tileW
 local tileH = Config.grid.tileH
 local pph = Config.grid.pixelsPerHeight
 
-local BattleCursor = require('core/class'):new()
+local BattleCursor = class()
 
 -------------------------------------------------------------------------------
 -- General

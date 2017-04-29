@@ -7,7 +7,7 @@ An usable map generated from a tag list from an object of the database.
 
 =================================================================================================]]
 
-local TagMap = require('core/class'):new()
+local TagMap = class()
 
 -- Constructor.
 -- @param(data : table) an array of tag items

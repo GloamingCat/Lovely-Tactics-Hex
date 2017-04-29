@@ -13,7 +13,7 @@ local MoveAction = require('core/battle/action/MoveAction')
 local SkillAction = require('core/battle/action/SkillAction')
 local PathFinder = require('core/algorithm/PathFinder')
 
-local CharacterOnlySkill = SkillAction:inherit()
+local CharacterOnlySkill = class(SkillAction)
 
 -------------------------------------------------------------------------------
 -- General

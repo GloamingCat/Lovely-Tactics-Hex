@@ -19,7 +19,7 @@ local max = math.max
 local attConfig = Config.attributes
 local elementCount = #Config.elements
 
-local Battler = require('core/class'):new()
+local Battler = class()
 
 -------------------------------------------------------------------------------
 -- Initialization

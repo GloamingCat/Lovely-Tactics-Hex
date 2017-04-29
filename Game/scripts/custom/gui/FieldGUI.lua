@@ -1,13 +1,13 @@
 
-local GUI = require('core.gui.GUI')
-
 --[[===========================================================================
 
 The GUI that is visible during normal gameplay in the field.
 
 =============================================================================]]
 
-local FieldGUI = GUI:inherit()
+local GUI = require('core/gui/GUI')
+
+local FieldGUI = class(GUI)
 
 function FieldGUI:setProperties()
   self.name = 'Field GUI'

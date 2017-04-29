@@ -18,7 +18,7 @@ local Random = love.math.random
 local mathf = math.field
 local charSpeed = (Config.player.dashSpeed + Config.player.walkSpeed) / 2
 
-local TroopManager = require('core/class'):new()
+local TroopManager = class()
 
 -------------------------------------------------------------------------------
 -- Initialization

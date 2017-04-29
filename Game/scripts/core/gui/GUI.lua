@@ -13,7 +13,7 @@ local List = require('core/algorithm/List')
 -- Alias
 local yield = coroutine.yield
 
-local GUI = require('core/class'):new()
+local GUI = class()
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization 
@@ -52,8 +52,7 @@ function GUI:destroy()
 end
 
 -- String representation.
--- @ret(string) 
-function GUI:toString()
+function GUI:__tostring()
   local name = self.name or 'Nameless'
   return 'GUI: ' .. name
 end

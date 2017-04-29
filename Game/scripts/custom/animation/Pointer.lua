@@ -1,13 +1,15 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
+Pointer
+---------------------------------------------------------------------------------------------------
 A sprite that points in a given direction (vertical or horizontal)
 Parameter examples for this script:
   1) { "dx": 4 }
   2) { "dy": 2 }
   3) { "dx": 2, "dy": 2 }
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Animation = require('core/graphics/Animation')
@@ -17,7 +19,7 @@ local round = math.round
 local abs = math.abs
 local time = love.timer.getDelta
 
-local Pointer = Animation:inherit()
+local Pointer = class(Animation)
 
 local old_init = Pointer.init
 function Pointer:init(...)
@@ -41,6 +43,7 @@ function Pointer:init(...)
   self.sprite:setOffset(round(self.minx), round(self.miny))
 end
 
+-- Overrides Animation:update.
 local old_update = Pointer.update
 function Pointer:update()
   old_update(self)

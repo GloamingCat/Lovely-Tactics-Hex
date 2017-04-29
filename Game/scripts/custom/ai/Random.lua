@@ -8,16 +8,16 @@ targets hiven by the chosen action.
 
 =================================================================================================]]
 
-local Random = require('core/class'):new()
+local Random = class()
 
 function Random:nextAction(user)
   local action = nil
   local max = user.battler.skillList.size + 1
   local r = love.math.random(max)
   if r < max then
-    action = user.battler.skillList[r]:asAction()
+    action = user.battler.skillList[r]
   else
-    action = user.battler.attackSkill:asAction()
+    action = user.battler.attackSkill
   end
   BattleManager:selectAction(action)
   local targets = action:validTargets()

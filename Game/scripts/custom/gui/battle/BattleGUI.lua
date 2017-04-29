@@ -15,7 +15,7 @@ local SkillWindow = require('custom/gui/battle/SkillWindow')
 local ItemWindow = require('custom/gui/battle/ItemWindow')
 local Vector = require('core/math/Vector')
 
-local BattleGUI = GUI:inherit()
+local BattleGUI = class(GUI)
 
 function BattleGUI:createWindows()
   self.name = 'Battle GUI'

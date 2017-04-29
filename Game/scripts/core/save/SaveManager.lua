@@ -10,7 +10,7 @@ Responsible for storing and loading game saves.
 -- Imports
 local GameSave = require('core/save/GameSave')
 
-local SaveManager = require('core/class'):new()
+local SaveManager = class()
 
 function SaveManager:init()
   self.current = GameSave()

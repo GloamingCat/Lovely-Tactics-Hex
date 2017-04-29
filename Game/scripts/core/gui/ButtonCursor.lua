@@ -12,7 +12,7 @@ It's a type of window content.
 local Animation = require('core/graphics/Animation')
 local Vector = require('core/math/Vector')
 
-local ButtonCursor = require('core/class'):new()
+local ButtonCursor = class()
 
 function ButtonCursor:init(window)
   self.window = window

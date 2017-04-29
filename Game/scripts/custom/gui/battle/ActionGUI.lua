@@ -19,7 +19,7 @@ local BattleCursor = require('core/battle/BattleCursor')
 -- Alias
 local yield = coroutine.yield
 
-local ActionGUI = GUI:inherit()
+local ActionGUI = class(GUI)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization

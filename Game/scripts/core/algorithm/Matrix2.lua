@@ -11,7 +11,7 @@ A 2D matrix of fixed size.
 local insert = table.insert
 local remove = table.remove
 
-local Matrix2 = require('core/class'):new()
+local Matrix2 = class()
 
 function Matrix2:init(width, height, startValue)
   self.width = width
@@ -45,18 +45,18 @@ function Matrix2:iterator()
   end
 end
 
--- Converting to string.
--- @ret(string) A string representation
-function Matrix2:toString()
+-- @ret(string) the string representation
+function Matrix2:__tostring()
   local s = '{ '
   for i = 1, self.width do
     s = s .. '{ '
     for j = 1, self.height do
-      s = s .. self:get(i, j, k) .. ' '
+      s = s .. tostring(self:get(i, j, k)) .. ' '
     end
     s = s .. '}'
   end
   s = s .. ' }'
+  return s
 end
 
 return Matrix2
