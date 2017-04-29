@@ -68,7 +68,9 @@ function class(...)
       return c[key]
     end
     setmetatable(inst,inst_meta)
-    inst:init(...)
+    if inst.init then
+      inst:init(...)
+    end
     return inst
   end
 
