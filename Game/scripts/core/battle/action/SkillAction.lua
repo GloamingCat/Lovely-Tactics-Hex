@@ -34,32 +34,33 @@ local useTime = 2
 local SkillAction = class(BattleAction)
 
 ---------------------------------------------------------------------------------------------------
--- General
+-- Initialization
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
--- @param(skill : Skill) the skill's data
+-- @param(skillID : number) the skill's ID from database
 local old_init = SkillAction.init
 function SkillAction:init(skillID)
-  old_init(self)
   local data = Database.skills[skillID + 1]
   self.data = data
   self.id = skillID
+  local color
   -- Skill type
   if data.type == 0 then
-    self.type = 'general'
+    color = 'general'
   elseif data.type == 1 then
-    self.type = 'attack'
+    color = 'attack'
   elseif data.type == 2 then
-    self.type = 'support'
+    color = 'support'
   end
+  old_init(self, data.range, color)
   -- Formulae
   if data.basicResult ~= '' then
-    self.calculateBasicResult = self:loadFormulae(data.basicResult, 
+    self.calculateBasicResult = loadformula(data.basicResult, 
       'action, a, b, rand')
   end
   if data.successRate ~= '' then
-    self.calculateSuccessRate = self:loadFormulae(data.successRate, 
+    self.calculateSuccessRate = loadformula(data.successRate, 
       'action, a, b, rand')
   end
   -- Store elements
@@ -92,23 +93,6 @@ function SkillAction:__tostring()
   return 'SkillAction: ' .. self.skillID .. ' (' .. self.data.name .. ')'
 end
 
--- Generates a function from a formulae in string.
--- @param(formulae : string) the formulae expression
--- @param(param : string) the param needed for the function (optional)
--- @ret(function) the function that evaluates the formulae
-function SkillAction:loadFormulae(formulae, param)
-  formulae = 'return ' .. formulae
-  if param and param ~= '' then
-    local funcString = 
-      'function(' .. param .. ') ' ..
-        formulae ..
-      ' end'
-    return loadstring('return ' .. funcString)()
-  else
-    return loadstring(formulae)
-  end
-end
-
 ---------------------------------------------------------------------------------------------------
 -- Grid navigation
 ---------------------------------------------------------------------------------------------------
@@ -132,70 +116,13 @@ function SkillAction:selectTarget(GUI, tile)
   end
 end
 
--- Sets the given tile as the current target.
-function SkillAction:setCurrentTarget(tile)
-
-end
-
----------------------------------------------------------------------------------------------------
--- Selectable Tiles
----------------------------------------------------------------------------------------------------
-
--- Paints and resets properties for the target tiles.
--- By default, paints all movable tile with movable color, and non-movable but 
--- reachable (within skill's range) tiles with the skill's type color.
--- @param(selectMovable : boolean) true to paint movable tiles
--- @param(selectBorder : boolean) true to paint non-movable tile within skill's range
-function SkillAction:resetTargetTiles(selectMovable, selectBorder)
-  self:resetAllTiles(false)
-  self:resetMovableTiles(selectMovable)
-  local matrix = BattleManager.distanceMatrix
-  local field = FieldManager.currentField
-  local charTile = BattleManager.currentCharacter:getTile()
-  local range = self.data.range
-  local h = charTile.layer.height
-  local borderTiles = List()
-  -- Find all border tiles
-  for i = 1, self.field.sizeX do
-    for j = 1, self.field.sizeY do
-       -- If this tile is reachable
-      if not isnan(matrix:get(i, j)) then
-        local tile = self.field:getObjectTile(i, j, h)
-        local isBorder = false
-        for neighbor in tile.neighborList:iterator() do
-          -- If this tile has any non-reachable neighbors
-          if isnan(matrix:get(neighbor.x, neighbor.y)) then
-            borderTiles:add(tile)
-            break
-          end
-        end
-      end
-    end
-  end
-  if borderTiles:isEmpty() then
-    borderTiles:add(charTile)
-  end
-  -- Paint border tiles
-  for tile in borderTiles:iterator() do
-    for i, j in mathf.radiusIterator(range, tile.x, tile.y) do
-      if i >= 1 and j >= 0 and i <= field.sizeX and j <= field.sizeY then
-        local n = field:getObjectTile(i, j, h) 
-        if isnan(matrix:get(i, j)) then -- If this neighbor is not reachable
-          n.gui.selectable = selectBorder and self:isSelectable(n)
-          n.gui:setColor(self.type)
-        end
-      end
-    end
-  end
-end
-
 ---------------------------------------------------------------------------------------------------
 -- Effect
 ---------------------------------------------------------------------------------------------------
 
 -- The effect applied when the user is prepared to use the skill.
 -- It executes animations and applies damage/heal to the targets.
-function SkillAction:onUse(user)
+function SkillAction:use(user)
   -- Intro time.
   _G.Fiber:wait(introTime)
   
@@ -233,7 +160,7 @@ end
 
 -- Gets all tiles that will be affected by skill's effect.
 -- @ret(table) an array of tiles
-function SkillAction:getAllAffectedTiles()
+function SkillAction:getAllAffectedTiles(user)
   local tiles = {}
   local field = FieldManager.currentField
   local height = self.currentTarget.layer.height
@@ -315,14 +242,6 @@ end
 -- Event handlers
 ---------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:onActionGUI.
-function SkillAction:onActionGUI(GUI, user)
-  self:resetAllTiles(false)
-  self:resetMovableTiles(true)
-  GUI:createTargetWindow()
-  GUI:startGridSelecting(self:firstTarget(user))
-end
-
 -- Overrides BattleAction:onConfirm.
 -- Executes the movement action and the skill's effect, 
 -- and then decrements battler's turn count and steps.
@@ -336,7 +255,7 @@ function SkillAction:onConfirm(GUI, user)
   local path = PathFinder.findPath(moveAction, user)
   if path then -- Target was reached
     user:walkPath(path)
-    self:onUse(user)
+    self:use(user)
   else -- Target was not reached
     path = PathFinder.findPathToUnreachable(moveAction, user)
     path = path or PathFinder.estimateBestTile(moveAction, user)
@@ -351,6 +270,30 @@ function SkillAction:onConfirm(GUI, user)
   local cost = self.data.timeCost * BattleManager.turnLimit / 200
   battler:decrementTurnCount(ceil(cost))
   return 1
+end
+
+---------------------------------------------------------------------------------------------------
+-- Artificial Inteligence
+---------------------------------------------------------------------------------------------------
+
+-- Gets the list of all potencial targets, to be used in AI.
+-- @ret(table) an array of ObjectTiles
+function SkillAction:potencialTargets(user)
+  local tiles = {}
+  local count = 0
+  for tile in FieldManager.currentField:gridIterator() do
+    if tile.gui.selectable and tile.gui.colorName ~= '' then
+      count = count + 1
+      tiles[count] = tile
+    end
+  end
+  return tiles
+end
+
+-- Estimates the best target for this action, to be used in AI.
+-- @ret(ObjectTile) the chosen target tile
+function SkillAction:bestTarget(user)
+  return self:firstTarget(user)
 end
 
 return SkillAction

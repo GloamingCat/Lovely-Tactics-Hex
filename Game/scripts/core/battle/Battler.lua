@@ -146,8 +146,7 @@ function Battler:createAttributeBase(baseValue, script)
   if baseValue > 0 then
     script = script .. ' + ' .. baseValue
   end
-  local funcString = 'function(att) return ' .. script .. ' end'
-  return loadstring('return ' .. funcString)()
+  return loadformula(script, 'att')
 end
 
 -------------------------------------------------------------------------------

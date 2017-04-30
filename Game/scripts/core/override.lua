@@ -100,3 +100,23 @@ function loadstring(str, ...)
     return func
   end
 end
+
+function loadfunction(body, param)
+  if param and param ~= '' then
+    local funcString = 
+      'function(' .. param .. ') ' ..
+        body ..
+      ' end'
+    return loadstring('return ' .. funcString)()
+  else
+    return loadstring(body)
+  end
+end
+
+-- Generates a function from a formula in string.
+-- @param(formula : string) the formula expression
+-- @param(param : string) the param needed for the function (optional)
+-- @ret(function) the function that evaluates the formulae
+function loadformula(formula, param)
+  return loadfunction('return ' .. formula, param)
+end

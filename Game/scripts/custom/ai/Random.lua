@@ -3,27 +3,27 @@
 
 Random AI
 ---------------------------------------------------------------------------------------------------
-An AI that chooses a random action from all possiblities and a random target from all valid 
-targets hiven by the chosen action.
+An AI that chooses a random skill from all possible skills and a random target from all valid 
+targets hiven by the chosen skill.
 
 =================================================================================================]]
 
 local Random = class()
 
 function Random:nextAction(user)
-  local action = nil
+  local skill = nil
   local max = user.battler.skillList.size + 1
   local r = love.math.random(max)
   if r < max then
-    action = user.battler.skillList[r]
+    skill = user.battler.skillList[r]
   else
-    action = user.battler.attackSkill
+    skill = user.battler.attackSkill
   end
-  BattleManager:selectAction(action)
-  local targets = action:validTargets()
+  local targets = skill:potencialTargets(user)
   r = love.math.random(#targets)
-  BattleManager:selectTarget(targets[r])
-  action:onConfirm()
+  BattleManager:selectAction(skill)
+  BattleManager:selectTarget(nil, targets[r])
+  skill:onConfirm()
 end
 
 return Random

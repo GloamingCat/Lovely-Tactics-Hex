@@ -44,7 +44,7 @@
     "money": 0,
     "exp": 0,
     "scriptAI": {
-      "path": "ai/Berserker.lua",
+      "path": "",
       "param": ""
     },
     "build": {
@@ -61,7 +61,7 @@
       0
     ],
     "skills": [
-      2
+      3
     ],
     "items": [],
     "elements": [],

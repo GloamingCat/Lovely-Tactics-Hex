@@ -27,8 +27,7 @@ local MoveAction = class(BattleAction)
 -- Constructor.
 local old_init = MoveAction.init
 function MoveAction:init(range, initialTile)
-  old_init(self)
-  self.range = range or 0
+  old_init(self, range or 0)
   self.currentTarget = initialTile
 end
 
@@ -38,9 +37,8 @@ end
 
 -- Overrides BattleAction:onActionGUI.
 function MoveAction:onActionGUI(GUI, user)
-  self:resetAllTiles(false)
-  self:resetMovableTiles(true)
-  GUI:startGridSelecting(self:firstTarget())
+  self:resetTileColors()
+  GUI:startGridSelecting(self:firstTarget(user))
   GUI:createStepWindow():show()
 end
 
@@ -58,6 +56,18 @@ function MoveAction:onConfirm(GUI, user)
   user:walkPath(path)
   BattleManager:updateDistanceMatrix()
   return -1
+end
+
+-------------------------------------------------------------------------------
+-- Selectable Tiles
+-------------------------------------------------------------------------------
+
+-- Tells if a tile can be chosen as target. 
+-- By default, no tile is selectable.
+-- @param(tile : ObjectTile) the tile to check
+-- @ret(boolean) true if can be chosen, false otherwise
+function BattleAction:isSelectable(tile, user)
+  return tile.gui.movable
 end
 
 -------------------------------------------------------------------------------

@@ -22,6 +22,7 @@ local CharacterOnlySkill = class(SkillAction)
 -- Overrides BattleAction:onSelect.
 local old_onSelect = CharacterOnlySkill.onSelect
 function CharacterOnlySkill:onSelect(user)
+  old_onSelect(self, user)
   self.index = 1
   self.selectableTiles = self:getSelectableTiles(user)
 end
@@ -34,8 +35,8 @@ function CharacterOnlySkill:getSelectableTiles(user)
   local tempQueue = PriorityQueue()
   local initialTile = user:getTile()
   for char in TroopManager.characterList:iterator() do
-    if self:isCharacterSelectable(char, user) then
-      local tile = char:getTile()
+    local tile = char:getTile()
+    if tile.gui.selectable then
       moveAction.currentTarget = tile
       local path = PathFinder.findPath(moveAction, user, initialTile, true)
       if path == nil then
@@ -43,22 +44,11 @@ function CharacterOnlySkill:getSelectableTiles(user)
       else
         tempQueue:enqueue(tile, path.totalCost)
       end
+    else
+      print(tostring(tile))
     end
   end
   return tempQueue:toList()
-end
-
----------------------------------------------------------------------------------------------------
--- Event handlers
----------------------------------------------------------------------------------------------------
-
--- Overrides BattleAction:onActionGUI.
-function CharacterOnlySkill:onActionGUI(GUI, user)
-  self:resetAllTiles(false)
-  self:resetTargetTiles(false, false)
-  self:resetCharacterTiles()
-  GUI:createTargetWindow()
-  GUI:startGridSelecting(self:firstTarget(user))
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -67,6 +57,9 @@ end
 
 -- Overrides BattleAction:isSelectable.
 function CharacterOnlySkill:isSelectable(tile, user)
+  if user.battler.currentSteps == 0 and not tile.gui.reachable then
+    return false
+  end
   for char in tile.characterList:iterator() do
     if self:isCharacterSelectable(char, user) then
       return true
@@ -80,15 +73,6 @@ end
 -- @ret(boolean) true if selectable, false otherwise
 function CharacterOnlySkill:isCharacterSelectable(char, user)
   return char.battler:isAlive()
-end
-
--- Sets all character tiles as selectable.
-function CharacterOnlySkill:resetCharacterTiles()
-  for i = 1, self.selectableTiles.size do
-    local t = self.selectableTiles[i]
-    t.gui.selectable = true
-    t.gui:setColor(t.gui.colorName)
-  end
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -13,6 +13,9 @@ window), Call Action (only team tiles), etc.
 
 =================================================================================================]]
 
+-- Imports
+local List = require('core/algorithm/List')
+
 -- Alias
 local mathf = math.field
 local isnan = math.isnan
@@ -24,7 +27,9 @@ local BattleAction = class()
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
-function BattleAction:init()
+function BattleAction:init(range, colorName)
+  self.range = range
+  self.colorName = colorName
   self.field = FieldManager.currentField
 end
 
@@ -33,20 +38,24 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Called when this action has been chosen.
--- By default, just selects the initial target tile.
 function BattleAction:onSelect(user)
-  --FieldManager.renderer:moveToTile(self:firstTarget())
+  self:resetTileProperties(user)
 end
 
 -- Called when the ActionGUI is open.
 -- By default, just updates the "selectable" field in all tiles for grid selecting.
+-- @param(GUI : ActionGUI) the current Action GUI
+-- @param(user : Character) the user of the action
 function BattleAction:onActionGUI(GUI, user)
-  self:resetAllTiles(false)
-  GUI:startGridSelecting(self:firstTarget())
+  self:resetTileColors()
+  GUI:createTargetWindow()
+  GUI:startGridSelecting(self:firstTarget(user))
 end
 
 -- Called when player chooses a target for the action. 
 -- By default, calls confirmation window.
+-- @param(GUI : ActionGUI) the current Action GUI (nil if there's no open GUI)
+-- @param(user : Character) the user of the action
 -- @ret(number) the time cost of the action:
 --  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
 function BattleAction:onConfirm(GUI, user)
@@ -58,6 +67,8 @@ end
 
 -- Called when player chooses a target for the action. 
 -- By default, just ends grid selecting.
+-- @param(GUI : ActionGUI) the current Action GUI (nil if there's no open GUI)
+-- @param(user : Character) the user of the action
 -- @ret(number) the time cost of the action:
 --  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
 function BattleAction:onCancel(GUI, user)
@@ -75,31 +86,109 @@ end
 -- By default, no tile is selectable.
 -- @param(tile : ObjectTile) the tile to check
 -- @ret(boolean) true if can be chosen, false otherwise
-function BattleAction:isSelectable(tile)
+function BattleAction:isSelectable(tile, user)
   return false
 end
 
 -- Sets all tiles as selectable or not and resets color to default.
 -- @param(selectable : boolean) the value to set all tiles
-function BattleAction:resetAllTiles(selectable)
+function BattleAction:resetSelectableTiles(user)
   for tile in self.field:gridIterator() do
-    tile.gui.selectable = selectable
-    tile.gui:setColor('')
+    tile.gui.selectable = self:isSelectable(tile, user)
   end
 end
 
+---------------------------------------------------------------------------------------------------
+-- Movable Tiles
+---------------------------------------------------------------------------------------------------
+
 -- Sets all movable tiles as selectable or not and resets color to default.
-function BattleAction:resetMovableTiles(selectable)
+function BattleAction:resetMovableTiles(user)
   local matrix = BattleManager.distanceMatrix
   local h = BattleManager.currentCharacter:getTile().layer.height
   for i = 1, self.field.sizeX do
     for j = 1, self.field.sizeY do
-      if not isnan(matrix:get(i, j)) then
-        local tile = self.field:getObjectTile(i, j, h)
-        tile.gui.selectable = selectable
-        tile.gui:setColor('move')
+      local tile = self.field:getObjectTile(i, j, h)
+      tile.gui.movable = not isnan(matrix:get(i, j))
+    end
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Reachable Tiles
+---------------------------------------------------------------------------------------------------
+
+-- Paints and resets properties for the target tiles.
+-- By default, paints all movable tile with movable color, and non-movable but 
+-- reachable (within skill's range) tiles with the skill's type color.
+-- @param(selectMovable : boolean) true to paint movable tiles
+-- @param(selectBorder : boolean) true to paint non-movable tile within skill's range
+function BattleAction:resetReachableTiles(user)
+  local matrix = BattleManager.distanceMatrix
+  local field = FieldManager.currentField
+  local charTile = BattleManager.currentCharacter:getTile()
+  local h = charTile.layer.height
+  local borderTiles = List()
+  -- Find all border tiles
+  for i = 1, self.field.sizeX do
+    for j = 1, self.field.sizeY do
+       -- If this tile is reachable
+      local tile = self.field:getObjectTile(i, j, h)
+      tile.gui.reachable = not isnan(matrix:get(i, j))
+      if tile.gui.reachable then
+        for neighbor in tile.neighborList:iterator() do
+          -- If this tile has any non-reachable neighbors, it's a border tile
+          if isnan(matrix:get(neighbor.x, neighbor.y)) then
+            borderTiles:add(tile)
+            break
+          end
+        end
       end
     end
+  end
+  if borderTiles:isEmpty() then
+    borderTiles:add(charTile)
+  end
+  -- Paint border tiles
+  for tile in borderTiles:iterator() do
+    for i, j in mathf.radiusIterator(self.range, tile.x, tile.y) do
+      if i >= 1 and j >= 1 and i <= field.sizeX and j <= field.sizeY then
+        local n = field:getObjectTile(i, j, h) 
+        n.gui.reachable = true
+      end
+    end
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Tiles Properties
+---------------------------------------------------------------------------------------------------
+
+-- Resets all general tile properties (movable, reachable, selectable).
+function BattleAction:resetTileProperties(user)
+  self:resetMovableTiles(user)
+  self:resetReachableTiles(user)
+  self:resetSelectableTiles(user)
+end
+
+-- Sets tile colors according to its properties (movable, reachable and selectable).
+function BattleAction:resetTileColors()
+  for tile in self.field:gridIterator() do
+    if tile.gui.movable then
+      tile.gui:setColor('move')
+    elseif tile.gui.reachable then
+      print(self.colorName)
+      tile.gui:setColor(self.colorName)
+    else
+      tile.gui:setColor('')
+    end
+  end
+end
+
+-- Sets all tiles' colors as the "nothing" color.
+function BattleAction:clearTileColors()
+  for tile in self.field:gridIterator() do
+    tile.gui:setColor('')
   end
 end
 
@@ -144,30 +233,6 @@ function BattleAction:nextTarget(axisX, axisY)
   local x, y = mathf.nextTile(self.currentTarget.x, self.currentTarget.y, 
     axisX, axisY, self.field.sizeX, self.field.sizeY)
   return self.field:getObjectTile(x, y, h)
-end
-
----------------------------------------------------------------------------------------------------
--- Artificial Inteligence
----------------------------------------------------------------------------------------------------
-
--- Gets the list of all potencial targets, to be used in AI.
--- @ret(table) an array of ObjectTiles
-function BattleAction:potencialTargets(user)
-  local tiles = {}
-  local count = 0
-  for tile in FieldManager.currentField:gridIterator() do
-    if tile.gui.selectable and tile.gui.colorName ~= '' then
-      count = count + 1
-      tiles[count] = tile
-    end
-  end
-  return tiles
-end
-
--- Estimates the best target for this action, to be used in AI.
--- @ret(ObjectTile) the chosen target tile
-function BattleAction:bestTarget(user)
-  return self:firstTarget(user)
 end
 
 return BattleAction
