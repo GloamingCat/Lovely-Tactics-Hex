@@ -11,7 +11,7 @@
     "money": 0,
     "exp": 0,
     "scriptAI": {
-      "path": "",
+      "path": "ai/Berserker.lua",
       "param": ""
     },
     "build": {
@@ -44,7 +44,7 @@
     "money": 0,
     "exp": 0,
     "scriptAI": {
-      "path": "",
+      "path": "ai/Berserker.lua",
       "param": ""
     },
     "build": {
@@ -79,7 +79,7 @@
     "money": 0,
     "exp": 5,
     "scriptAI": {
-      "path": "",
+      "path": "ai/Berserker.lua",
       "param": ""
     },
     "build": {
@@ -112,7 +112,7 @@
     "money": 0,
     "exp": 5,
     "scriptAI": {
-      "path": "",
+      "path": "ai/Berserker.lua",
       "param": ""
     },
     "build": {

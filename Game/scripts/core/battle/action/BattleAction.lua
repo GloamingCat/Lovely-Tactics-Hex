@@ -35,7 +35,7 @@ end
 -- Called when this action has been chosen.
 -- By default, just selects the initial target tile.
 function BattleAction:onSelect(user)
-  FieldManager.renderer:moveToTile(self:firstTarget())
+  --FieldManager.renderer:moveToTile(self:firstTarget())
 end
 
 -- Called when the ActionGUI is open.
@@ -109,7 +109,10 @@ end
 
 -- Set a tile was the current target.
 -- @param(tile : ObjectTile) the new target
-function BattleAction:selectTarget(tile)
+function BattleAction:selectTarget(GUI, tile)
+  if GUI then
+    FieldManager.renderer:moveToTile(tile)
+  end
   if self.currentTarget ~= nil then
     self.currentTarget.gui:setSelected(false)
   end
@@ -149,7 +152,7 @@ end
 
 -- Gets the list of all potencial targets, to be used in AI.
 -- @ret(table) an array of ObjectTiles
-function BattleAction:potencialTargets()
+function BattleAction:potencialTargets(user)
   local tiles = {}
   local count = 0
   for tile in FieldManager.currentField:gridIterator() do
@@ -163,8 +166,8 @@ end
 
 -- Estimates the best target for this action, to be used in AI.
 -- @ret(ObjectTile) the chosen target tile
-function BattleAction:bestTarget()
-  return self:firstTarget()
+function BattleAction:bestTarget(user)
+  return self:firstTarget(user)
 end
 
 return BattleAction

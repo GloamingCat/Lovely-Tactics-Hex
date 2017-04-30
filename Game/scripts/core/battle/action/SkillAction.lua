@@ -114,17 +114,27 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides BattleAction:selectTarget.
-function SkillAction:selectTarget(tile)
-  if self.currentTargets then
-    for i = #self.currentTargets, 1, -1 do
-      self.currentTargets[i].gui:setSelected(false)
+function SkillAction:selectTarget(GUI, tile)
+  if GUI then
+    FieldManager.renderer:moveToTile(tile)
+    if self.currentTargets then
+      for i = #self.currentTargets, 1, -1 do
+        self.currentTargets[i].gui:setSelected(false)
+      end
     end
   end
   self.currentTarget = tile
   self.currentTargets = self:getAllAffectedTiles(tile)
-  for i = #self.currentTargets, 1, -1 do
-    self.currentTargets[i].gui:setSelected(true)
+  if GUI then
+    for i = #self.currentTargets, 1, -1 do
+      self.currentTargets[i].gui:setSelected(true)
+    end
   end
+end
+
+-- Sets the given tile as the current target.
+function SkillAction:setCurrentTarget(tile)
+
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -317,7 +327,9 @@ end
 -- Executes the movement action and the skill's effect, 
 -- and then decrements battler's turn count and steps.
 function SkillAction:onConfirm(GUI, user)
-  GUI:endGridSelecting()
+  if GUI then
+    GUI:endGridSelecting()
+  end
   FieldManager.renderer:moveToObject(user, true)
   FieldManager.renderer.focusObject = user
   local moveAction = MoveAction(self.data.range, self.currentTarget)

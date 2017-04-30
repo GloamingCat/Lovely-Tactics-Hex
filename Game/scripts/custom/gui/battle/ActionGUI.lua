@@ -104,7 +104,7 @@ end
 -- @param(target : ObjectTile) the new target tile
 function ActionGUI:selectTarget(target)
   self.cursor:setTile(target)
-  BattleManager:selectTarget(target)
+  BattleManager:selectTarget(GUI, target)
   if self.targetWindow then
     if target.characterList.size > 0 then
       local battler = target.characterList[1].battler

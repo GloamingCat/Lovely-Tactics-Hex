@@ -182,9 +182,8 @@ end
 
 -- Focus on given tile.
 -- @param(tile : ObjectTile) the new target tile
-function BattleManager:selectTarget(tile)
-  self.currentAction:selectTarget(tile, self.currentCharacter)
-  FieldManager.renderer:moveToTile(tile)
+function BattleManager:selectTarget(GUI, tile)
+  self.currentAction:selectTarget(GUI, tile, self.currentCharacter)
 end
 
 ---------------------------------------------------------------------------------------------------
