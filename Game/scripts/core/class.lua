@@ -59,9 +59,6 @@ function class(...)
     inst.__class = c
     local inst_meta = {}
     for k,v in pairs(c_meta) do
-      if c.waitForResult then
-        --print(k)
-      end
       inst_meta[k] = v
     end
     function inst_meta:__index(key)

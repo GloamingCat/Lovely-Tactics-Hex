@@ -44,8 +44,6 @@ function CharacterOnlySkill:getSelectableTiles(user)
       else
         tempQueue:enqueue(tile, path.totalCost)
       end
-    else
-      print(tostring(tile))
     end
   end
   return tempQueue:toList()

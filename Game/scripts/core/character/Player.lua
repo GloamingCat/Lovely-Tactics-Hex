@@ -15,6 +15,7 @@ local Character = require('core/character/Character')
 -- Alias
 local timer = love.timer
 local coord2Angle = math.coord2Angle
+local tile2Pixel = math.field.tile2pixel
 
 -- Constants
 local conf = Config.player
@@ -130,12 +131,13 @@ function Player:tryMoveTile(angle)
     if collision ~= 3 then -- not a character
       return false
     else
-      self:playAnimation('Idle')
+      self:playAnimation(self.idleAnim)
       self:turnToTile(dx, dy) -- character
       return true
     end
   else
-    return self:walkToTile(dx, dy, dh, false)
+    self:walkToTile(dx, dy, dh, false)
+    return true
   end
   return false
 end
@@ -166,7 +168,7 @@ function Player:tryMovePixel(angle)
   self:turnToVector(v.x, v.z)
   local collision = self:instantMoveTo(nextPosition)
   if collision == nil then
-    self:playAnimation('Walk')
+    self:playAnimation(self.walkAnimation)
     return true
   else
     return collision == 3

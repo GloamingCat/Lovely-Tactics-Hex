@@ -177,7 +177,6 @@ function BattleAction:resetTileColors()
     if tile.gui.movable then
       tile.gui:setColor('move')
     elseif tile.gui.reachable then
-      print(self.colorName)
       tile.gui:setColor(self.colorName)
     else
       tile.gui:setColor('')
