@@ -19,7 +19,7 @@ Once the engine is properly installed, all you have to do is run the project fol
 
 ## Contributors
 
-* Thanks to Luke Perkin for the ProFI module: https://gist.github.com/perky/2838755
+* Thanks to Luke Perkin for the ProFi module: https://gist.github.com/perky/2838755;
 * Thanks to Robin Wellner, and Florian Fischer for the code used as base for the rich text, found in: https://github.com/gvx/richtext;
 * Thanks to rxi for the json parser: https://github.com/rxi/json.lua/blob/master/json.lua;
 * Thanks to kevinclancy for class module: https://bitbucket.org/kevinclancy/basic-class-system/wiki/Home.
