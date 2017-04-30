@@ -155,16 +155,11 @@ end
 function CharacterBase:updatePosition()
   if self.moveTime < 1 then
     self.moveTime = self.moveTime + self.moveSpeed * time()
-    if self.moveTime >= 1 then
-      self:setXYZ(self.moveDestX, self.moveDestY, self.moveDestZ)
+    local x = self.moveOrigX * (1 - self.moveTime) + self.moveDestX * self.moveTime
+    local y = self.moveOrigY * (1 - self.moveTime) + self.moveDestY * self.moveTime
+    local z = self.moveOrigZ * (1 - self.moveTime) + self.moveDestZ * self.moveTime
+    if self:instantMoveTo(x, y, z, self.collisionCheck) and self.stopOnCollision then
       self.moveTime = 1
-    else
-      local x = self.moveOrigX * (1 - self.moveTime) + self.moveDestX * self.moveTime
-      local y = self.moveOrigY * (1 - self.moveTime) + self.moveDestY * self.moveTime
-      local z = self.moveOrigZ * (1 - self.moveTime) + self.moveDestZ * self.moveTime
-      if self:instantMoveTo(x, y, z, self.collisionCheck) and self.stopOnCollision then
-        self.moveTime = 1
-      end
     end
   end
 end

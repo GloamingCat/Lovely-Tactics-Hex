@@ -1,12 +1,12 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 Character
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 This class provides general functions to be called by fibers. 
 The [COUROUTINE] functions must ONLY be called from a fiber.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local CharacterBase = require('core/character/CharacterBase')
@@ -34,9 +34,9 @@ local castStep = 6
 
 local Character = class(CharacterBase)
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- General Movement
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- [COROUTINE] Walks to the given pixel point (x, y, d).
 -- @param(x : number) coordinate x of the point
@@ -60,10 +60,10 @@ function Character:walkToPoint(x, y, z, collisionCheck)
   local distance = len2D(self.position.x - x, self.position.y - y, self.position.z - z)
   self.collisionCheck = collisionCheck
   self:moveTo(x, y, z, self.speed / distance, true)
-    if self.autoAnim then
-      self:playAnimation(self.idleAnim)
-    end
-  return self.position.x == x and self.position.y == y and self.position.z == z
+  if self.autoAnim then
+    self:playAnimation(self.idleAnim)
+  end
+  return self.position:almostEquals(x, y, z)
 end
 
 -- Walks a given distance in each axis.
@@ -112,9 +112,9 @@ function Character:walkTiles(dx, dy, dh, collisionCheck)
   return self:walkToTile(x + dx, y + dy, h + (dh or 0), collisionCheck)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Path
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Walks along the given path.
 -- @param(path : Path) a path of tiles
@@ -130,15 +130,15 @@ function Character:walkPath(path, collisionCheck)
   while not stack:isEmpty() do
     local nextTile = stack:pop()
     local h = nextTile.layer.height
-    if not self:walkToTile(nextTile.x, nextTile.y, h, collisionCheck) then
+    if not self:walkToTile(nextTile.x, nextTile.y, h, collisionCheck) and collisionCheck then
       break
     end
   end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Skill (user)
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- [COROUTINE] Executes the intro animations (load and cast) for skill use.
 -- @param(target : ObjectTile) the target of the skill
@@ -210,9 +210,9 @@ function Character:finishSkill(origin, skill)
   self:playAnimation(self.idleAnim)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Skill (target)
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- [COROUTINE] Plays damage animation and shows the result in a pop-up.
 -- @param(skill : Skill) the skill used

@@ -14,6 +14,10 @@ local sin = math.sin
 local deg = math.deg
 local rad = math.rad
 local atan2 = math.atan2
+local abs = math.abs
+
+-- Constants
+local E = 0.000001
 
 ---------------------------------------------------------------------------------------------------
 -- General
@@ -39,12 +43,13 @@ end
 function math.mod(x, y)
   return ((x % y) + y) % y
 end
+local mod = math.mod
 
 -- Returns a number between 1 and y.
 -- @param(x : number) the value possiblity out of the interval
 -- @param(y : number) the max value
 function math.mod1(x, y)
-  return math.mod(x, y) + 1
+  return mod(x, y) + 1
 end
 
 -- Rotates a point.
@@ -72,6 +77,14 @@ function math.randomExpectation(a, b)
   end
 end
 
+-- Checks if two number values and pratically equal, given the defined epsilon (E).
+-- @param(x : number) the first value
+-- @param(y : number) the second value
+-- @ret(boolean) true if they are almost equal, false otherwise
+function math.almostEquals(x, y)
+  return abs(x - y) < E
+end
+
 ---------------------------------------------------------------------------------------------------
 -- Angle-vector convertion
 ---------------------------------------------------------------------------------------------------
@@ -91,6 +104,29 @@ end
 function math.angle2Coord(angle)
   angle = rad(angle)
   return cos(angle), sin(angle)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Vector operations
+---------------------------------------------------------------------------------------------------
+
+-- Calculates length of vector in pixel coordinates.
+-- @param(x : number) vector's x coordinates
+-- @param(y : number) vector's y coordinates
+-- @param(z : number) vector's z coordinates
+-- @ret(number) the pixel distance
+function math.len2D(x, y, z)
+  z = z + y
+  return sqrt(x*x + y*y + z*z)
+end
+
+-- Calculates length of vector in a 3D coordinate system.
+-- @param(x : number) vector's x coordinates
+-- @param(y : number) vector's y coordinates
+-- @param(z : number) vector's z coordinates
+-- @ret(number) the 3D distance
+function math.len(x, y, z)
+  return sqrt(x*x + y*y + z*z)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -135,30 +171,11 @@ end
 -- @param(angle : number) the angle in radians
 -- @ret(number) the row from 0 to 7
 function math.angle2Row(angle)
-  angle = math.mod(angle, 360)
+  angle = mod(angle, 360)
   for i = 1, 8 do
     if angle < int[i] then
       return i - 1
     end
   end
   return 0
-end
-
--- Calculates length of vector in pixel coordinates.
--- @param(x : number) vector's x coordinates
--- @param(y : number) vector's y coordinates
--- @param(z : number) vector's z coordinates
--- @ret(number) the pixel distance
-function math.len2D(x, y, z)
-  z = z + y
-  return sqrt(x*x + y*y + z*z)
-end
-
--- Calculates length of vector in a 3D coordinate system.
--- @param(x : number) vector's x coordinates
--- @param(y : number) vector's y coordinates
--- @param(z : number) vector's z coordinates
--- @ret(number) the 3D distance
-function math.len(x, y, z)
-  return sqrt(x*x + y*y + z*z)
 end
