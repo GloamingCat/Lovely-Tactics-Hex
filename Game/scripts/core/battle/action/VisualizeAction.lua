@@ -18,7 +18,7 @@ local VisualizeAction = class(BattleAction)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides BattleAction:onConfirm.
-function VisualizeAction:onConfirm(user)
+function VisualizeAction:onConfirm(input)
   -- TODO: show BattlerWindow
 end
 
@@ -27,11 +27,12 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides BattleAction:resetTileProperties.
-function VisualizeAction:resetTileProperties(user)
-  self:resetSelectableTiles(user)
+function VisualizeAction:resetTileProperties(input)
+  self:resetSelectableTiles(input)
 end
 
-function VisualizeAction:resetTileColors(user)
+-- Overrides BattleAction:resetTileColors.
+function VisualizeAction:resetTileColors(input)
   self:clearTileColors()
 end
 
@@ -40,7 +41,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides BattleAction:isSelectable.
-function VisualizeAction:isSelectable(tile, user)
+function VisualizeAction:isSelectable(input, tile)
   return not tile.characterList:isEmpty()
 end
 

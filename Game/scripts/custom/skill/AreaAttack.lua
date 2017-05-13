@@ -13,7 +13,7 @@ local SkillAction = require('core/battle/action/SkillAction')
 local AreaAttack = class(SkillAction)
 
 -- Overrides BattleAction:isSelectable.
-function AreaAttack:isSelectable(tile, user)
+function AreaAttack:isSelectable(input, tile)
   return true
 end
 

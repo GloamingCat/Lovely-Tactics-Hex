@@ -12,6 +12,7 @@ Its result is the action time that the character spent.
 -- Imports
 local ButtonWindow = require('core/gui/ButtonWindow')
 local SkillAction = require('core/battle/action/SkillAction')
+local ActionInput = require('core/battle/action/ActionInput')
 
 local ActionWindow = class(ButtonWindow)
 
@@ -20,9 +21,10 @@ local ActionWindow = class(ButtonWindow)
 --  (must inherit from BattleAction) 
 function ActionWindow:selectAction(action)
   -- Executes action grid selecting.
-  BattleManager:selectAction(action)
+  local input = ActionInput(action)
+  action:onSelect(input)
   self.GUI:hide()
-  local actionCost = GUIManager:showGUIForResult('battle/ActionGUI')
+  local actionCost = GUIManager:showGUIForResult('battle/ActionGUI', input)
   if actionCost >= 0 then
     -- End of turn.
     self.result = actionCost

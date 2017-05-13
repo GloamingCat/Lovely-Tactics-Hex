@@ -35,13 +35,13 @@ local PathFinder = {}
 -- @param(action : MoveAction) the move action that implements these methods:
 --    isPassableBetween(initial, final)
 --    getDistanceBetween(initial, final)
---    isSelectable(tile)
+--    isStandable(tile)
 -- @param(initial : Tile) the start tile (optional)
 -- @ret(Matrix) the distance matrix
 function PathFinder.dijkstra(action, user, initial)
   local field = FieldManager.currentField
-  initial = initial or action:firstTarget(user)
   user = user or BattleManager.currentCharacter
+  initial = initial or user:getTile()
   
   local md = floor(action:maxDistance(user))
   local minx, maxx = mathf.radiusLimitsX(md)
@@ -93,18 +93,21 @@ end
 
 -- Search for a path from the initial until action:isFinal returns true.
 -- @param(action : MoveAction) the move action that implements these methods:
---    isPassableBetween(initial, final)
---    getDistanceBetween(initial, final)
---    isFinal(tile)
---    estimateCost(initial, final)
--- @param(initial : Tile) the start tile (optional)
+--    isPassableBetween(initial, final, user) : boolean
+--    isStandable(tile, user) : boolean
+--    isFinal(tile, final, user) : boolean
+--    getDistanceBetween(initial, final, user) : number
+--    estimateCost(initial, final, user) : number
+-- @param(user : Character)
+-- @param(target : ObjectTile)
+-- @param(initial : ObjectTile) the start tile (optional)
 -- @oaram(ignoreDistance : boolean) flag to ignore maximum distance (false by default)
 -- @ret(Path) the path is some was founded, nil if none
-function PathFinder.findPath(action, user, initial, ignoreDistance)
+function PathFinder.findPath(action, user, target, initial, ignoreDistance)
   local field = FieldManager.currentField
-  initial = initial or action:firstTarget(user)
+  initial = initial or user:getTile()
   
-  if action:isFinal(initial, user) then
+  if action:isFinal(initial, target, user) then
     return Path(initial)
   end
   
@@ -123,10 +126,10 @@ function PathFinder.findPath(action, user, initial, ignoreDistance)
         if (d + currentPath.totalCost <= action:maxDistance(user) or ignoreDistance) then
           if action:isPassableBetween(currentTile, neighbor, user) then
             local newPath = currentPath:addStep(neighbor, d)
-            if action:isFinal(neighbor, user) then
+            if action:isFinal(neighbor, target, user) then
               return newPath
             else
-              queue:enqueue(newPath, newPath.totalCost + action:estimateCost(neighbor, nil, user))
+              queue:enqueue(newPath, newPath.totalCost + action:estimateCost(neighbor, target, user))
             end
           end
         end
@@ -139,16 +142,18 @@ end
 -- Search for a path from the initial until run out of steps.
 -- Assumes that the destination will never be reached.
 -- @param(action : MoveAction) the move action that implements these methods:
---    isPassableBetween(initial, final)
---    getDistanceBetween(initial, final)
---    isFinal(tile)
---    estimateCost(initial, final)
--- @param(initial : Tile) the start tile (optional)
+--    isPassableBetween(initial, final, user) : boolean
+--    isStandable(tile, user) : boolean
+--    getDistanceBetween(initial, final, user) : number
+--    estimateCost(initial, final, user) : number
+-- @param(user : Character)
+-- @param(target : ObjectTile)
+-- @param(initial : ObjectTile) the start tile (optional)
 -- @oaram(ignoreDistance : boolean) flag to ignore maximum distance (false by default)
 -- @ret(Path) the path is some was founded, nil if none
-function PathFinder.findPathToUnreachable(action, user, initial, ignoreDistance)
+function PathFinder.findPathToUnreachable(action, user, target, initial, ignoreDistance)
   local field = FieldManager.currentField
-  initial = initial or action:firstTarget(user)
+  initial = initial or user:getTile()
   
   local queue = PriorityQueue()
   queue:enqueue (Path(initial), 0)
@@ -165,7 +170,7 @@ function PathFinder.findPathToUnreachable(action, user, initial, ignoreDistance)
           local d = action:getDistanceBetween(currentTile, neighbor, user)
           if action:isPassableBetween(currentTile, neighbor, user) then
             local newPath = currentPath:addStep(neighbor, d)
-            queue:enqueue(newPath, newPath.totalCost + action:estimateCost(neighbor, nil, user))
+            queue:enqueue(newPath, newPath.totalCost + action:estimateCost(neighbor, target, user))
           end
         end
       elseif action:isStandable(currentPath.previousPath.lastStep, user) then
@@ -174,11 +179,6 @@ function PathFinder.findPathToUnreachable(action, user, initial, ignoreDistance)
     end
   end
   return nil
-end
-
--- @ret(string) the string representation
-function PathFinder:__tostring()
-  return 'PathFinder module'
 end
 
 return PathFinder

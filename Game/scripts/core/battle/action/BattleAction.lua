@@ -27,8 +27,9 @@ local BattleAction = class()
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
-function BattleAction:init(range, colorName)
+function BattleAction:init(range, radius, colorName)
   self.range = range
+  self.radius = radius
   self.colorName = colorName
   self.field = FieldManager.currentField
 end
@@ -38,42 +39,38 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Called when this action has been chosen.
-function BattleAction:onSelect(user)
-  self:resetTileProperties(user)
+function BattleAction:onSelect(input)
+  self:resetTileProperties(input)
 end
 
 -- Called when the ActionGUI is open.
 -- By default, just updates the "selectable" field in all tiles for grid selecting.
 -- @param(GUI : ActionGUI) the current Action GUI
 -- @param(user : Character) the user of the action
-function BattleAction:onActionGUI(GUI, user)
+function BattleAction:onActionGUI(input)
   self:resetTileColors()
-  GUI:createTargetWindow()
-  GUI:startGridSelecting(self:firstTarget(user))
+  input.GUI:createTargetWindow()
+  input.GUI:startGridSelecting(self:firstTarget(input))
 end
 
 -- Called when player chooses a target for the action. 
 -- By default, calls confirmation window.
--- @param(GUI : ActionGUI) the current Action GUI (nil if there's no open GUI)
--- @param(user : Character) the user of the action
 -- @ret(number) the time cost of the action:
 --  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
-function BattleAction:onConfirm(GUI, user)
-  if GUI then
-    GUI:endGridSelecting()
+function BattleAction:onConfirm(input)
+  if input.GUI then
+    input.GUI:endGridSelecting()
   end
   return 0
 end
 
 -- Called when player chooses a target for the action. 
 -- By default, just ends grid selecting.
--- @param(GUI : ActionGUI) the current Action GUI (nil if there's no open GUI)
--- @param(user : Character) the user of the action
 -- @ret(number) the time cost of the action:
 --  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
-function BattleAction:onCancel(GUI, user)
-  if GUI then
-    GUI:endGridSelecting()
+function BattleAction:onCancel(input)
+  if input.GUI then
+    input.GUI:endGridSelecting()
   end
   return -1
 end
@@ -82,19 +79,11 @@ end
 -- Selectable Tiles
 ---------------------------------------------------------------------------------------------------
 
--- Tells if a tile can be chosen as target. 
--- By default, no tile is selectable.
--- @param(tile : ObjectTile) the tile to check
--- @ret(boolean) true if can be chosen, false otherwise
-function BattleAction:isSelectable(tile, user)
-  return false
-end
-
 -- Sets all tiles as selectable or not and resets color to default.
 -- @param(selectable : boolean) the value to set all tiles
-function BattleAction:resetSelectableTiles(user)
+function BattleAction:resetSelectableTiles(input)
   for tile in self.field:gridIterator() do
-    tile.gui.selectable = self:isSelectable(tile, user)
+    tile.gui.selectable = self:isSelectable(input, tile)
   end
 end
 
@@ -103,7 +92,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Sets all movable tiles as selectable or not and resets color to default.
-function BattleAction:resetMovableTiles(user)
+function BattleAction:resetMovableTiles(input)
   local matrix = BattleManager.distanceMatrix
   local h = BattleManager.currentCharacter:getTile().layer.height
   for i = 1, self.field.sizeX do
@@ -121,9 +110,7 @@ end
 -- Paints and resets properties for the target tiles.
 -- By default, paints all movable tile with movable color, and non-movable but 
 -- reachable (within skill's range) tiles with the skill's type color.
--- @param(selectMovable : boolean) true to paint movable tiles
--- @param(selectBorder : boolean) true to paint non-movable tile within skill's range
-function BattleAction:resetReachableTiles(user)
+function BattleAction:resetReachableTiles(input)
   local matrix = BattleManager.distanceMatrix
   local field = FieldManager.currentField
   local charTile = BattleManager.currentCharacter:getTile()
@@ -165,14 +152,14 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Resets all general tile properties (movable, reachable, selectable).
-function BattleAction:resetTileProperties(user)
-  self:resetMovableTiles(user)
-  self:resetReachableTiles(user)
-  self:resetSelectableTiles(user)
+function BattleAction:resetTileProperties(input)
+  self:resetMovableTiles(input)
+  self:resetReachableTiles(input)
+  self:resetSelectableTiles(input)
 end
 
 -- Sets tile colors according to its properties (movable, reachable and selectable).
-function BattleAction:resetTileColors()
+function BattleAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
     if tile.gui.movable then
       tile.gui:setColor('move')
@@ -195,43 +182,117 @@ end
 -- Grid navigation
 ---------------------------------------------------------------------------------------------------
 
--- Set a tile was the current target.
--- @param(tile : ObjectTile) the new target
-function BattleAction:selectTarget(GUI, tile)
-  if GUI then
-    FieldManager.renderer:moveToTile(tile)
+-- Tells if a tile can be chosen as target. 
+-- By default, no tile is selectable.
+-- @param(tile : ObjectTile) the tile to check
+-- @ret(boolean) true if can be chosen, false otherwise
+function BattleAction:isSelectable(input, tile)
+  return false
+end
+
+-- @param(input : ActionInput)
+function BattleAction:onSelectTarget(input)
+  if input.GUI then
+    FieldManager.renderer:moveToTile(input.target)
+    local targets = self:getAllAffectedTiles(input)
+    for i = #targets, 1, -1 do
+      targets[i].gui:setSelected(true)
+    end
   end
-  if self.currentTarget ~= nil then
-    self.currentTarget.gui:setSelected(false)
+end
+
+-- @param(input : ActionInput)
+function BattleAction:onDeselectTarget(input)
+  if input.GUI and input.target then
+    local oldTargets = self:getAllAffectedTiles(input)
+    for i = #oldTargets, 1, -1 do
+      oldTargets[i].gui:setSelected(false)
+    end
   end
-  self.currentTarget = tile
-  tile.gui:setSelected(true)
+end
+
+-- Gets all tiles that will be affected by skill's effect.
+-- @ret(table) an array of tiles
+function BattleAction:getAllAffectedTiles(input)
+  local tiles = {}
+  local field = FieldManager.currentField
+  local height = input.target.layer.height
+  for i, j in mathf.radiusIterator(self.radius - 1, 
+      input.target.x, input.target.y) do
+    if i >= 1 and j >= 0 and i <= field.sizeX and j <= field.sizeY then
+      tiles[#tiles + 1] = field:getObjectTile(i, j, height)
+    end
+  end
+  return tiles
 end
 
 -- Gets the first selected target tile.
 -- @ret(ObjectTile) the first tile
-function BattleAction:firstTarget(user)
-  return (user or BattleManager.currentCharacter):getTile()
+function BattleAction:firstTarget(input)
+  return input.user:getTile()
 end
 
 -- Gets the next target given the player's input.
 -- @param(dx : number) the input in axis x
 -- @param(dy : number) the input in axis y
 -- @ret(ObjectTile) the next tile
-function BattleAction:nextTarget(axisX, axisY)
-  local h = self.currentTarget.layer.height
+function BattleAction:nextTarget(input, axisX, axisY)
+  local h = input.target.layer.height
   if axisY > 0 then
     if h < #self.field.objectLayers then
-      return self.field:getObjectTile(self.currentTarget.x, self.currentTarget.y, h + 1)
+      return self.field:getObjectTile(input.target.x, input.target.y, h + 1)
     end
   elseif axisY < 0 then
     if h > 0 then
-      return self.field:getObjectTile(self.currentTarget.x, self.currentTarget.y, h - 1)
+      return self.field:getObjectTile(input.target.x, input.target.y, h - 1)
     end
   end
-  local x, y = mathf.nextTile(self.currentTarget.x, self.currentTarget.y, 
+  local x, y = mathf.nextTile(input.target.x, input.target.y, 
     axisX, axisY, self.field.sizeX, self.field.sizeY)
   return self.field:getObjectTile(x, y, h)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Artificial Inteligence
+---------------------------------------------------------------------------------------------------
+
+-- Gets the list of all potencial targets, to be used in AI.
+-- By default, returns all selectable and reachable tiles.
+-- @param(input : table)
+-- @ret(table) an array of ObjectTiles
+function BattleAction:potencialTargets(input)
+  local tiles = {}
+  local count = 0
+  for tile in self.field:gridIterator() do
+    if tile.gui.selectable and tile.gui.reachable then
+      count = count + 1
+      tiles[count] = tile
+    end
+  end
+  return tiles
+end
+
+-- Estimates the best target for this action, to be used in AI.
+-- @param(input : table)
+-- @ret(ObjectTile) the chosen target tile
+function BattleAction:bestTarget(input)
+  return self:firstTarget(input)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Simulation
+---------------------------------------------------------------------------------------------------
+
+-- Executes the action in the given state.
+-- @param(state : table) the information about the state
+-- @param(input : ActionInput)
+function BattleAction:simulate(state, input)
+end
+
+-- Action identifier.
+-- @ret(string)
+function BattleAction:getCode()
+  return ''
 end
 
 return BattleAction

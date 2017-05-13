@@ -34,7 +34,6 @@ function BattleManager:init()
   self.turnLimit = turnLimit
   self.onBattle = false
   self.currentCharacter = nil
-  self.currentAction = nil
 end
 
 -- Creates battle characters.
@@ -158,32 +157,12 @@ function BattleManager:runTurn(char, iterations)
     bc.battler:onTurnEnd(iterations)
   end
   self.currentCharacter = nil
-  self.currentAction = nil
 end
 
 -- Recalculates the distance matrix.
 function BattleManager:updateDistanceMatrix()
   local moveAction = MoveAction()
   self.distanceMatrix = PathFinder.dijkstra(moveAction, self.currentCharacter)
-end
-
----------------------------------------------------------------------------------------------------
--- User input
----------------------------------------------------------------------------------------------------
-
--- [COROUTINE] Start a new action.
--- @param(action : BattleAction) the new action
-function BattleManager:selectAction(action)
-  self.currentAction = action
-  if action then
-    action:onSelect(self.currentCharacter)
-  end
-end
-
--- Focus on given tile.
--- @param(tile : ObjectTile) the new target tile
-function BattleManager:selectTarget(GUI, tile)
-  self.currentAction:selectTarget(GUI, tile, self.currentCharacter)
 end
 
 ---------------------------------------------------------------------------------------------------

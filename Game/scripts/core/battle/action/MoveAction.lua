@@ -27,7 +27,7 @@ local MoveAction = class(BattleAction)
 -- Constructor.
 local old_init = MoveAction.init
 function MoveAction:init(range, initialTile)
-  old_init(self, range or 0)
+  old_init(self, range or 0, 0)
   self.currentTarget = initialTile
 end
 
@@ -36,24 +36,27 @@ end
 -------------------------------------------------------------------------------
 
 -- Overrides BattleAction:onActionGUI.
-function MoveAction:onActionGUI(GUI, user)
+function MoveAction:onActionGUI(input)
   self:resetTileColors()
-  GUI:startGridSelecting(self:firstTarget(user))
-  GUI:createStepWindow():show()
+  input.GUI:startGridSelecting(self:firstTarget(input))
+  input.GUI:createStepWindow():show()
 end
 
 -- Overrides BattleAction:onConfirm.
-function MoveAction:onConfirm(GUI, user)
-  GUI:endGridSelecting()
-  FieldManager.renderer:moveToObject(user, true)
-  FieldManager.renderer.focusObject = user
-  local path = PathFinder.findPath(self, user)
-  if path.lastStep:isControlZone(user.battler) then
-    user.battler.currentSteps = 0
-  else
-    user.battler.currentSteps = user.battler.currentSteps - path.totalCost
+function MoveAction:onConfirm(input)
+  if input.GUI then
+    input.GUI:endGridSelecting()
   end
-  user:walkPath(path)
+  FieldManager.renderer:moveToObject(input.user, true)
+  FieldManager.renderer.focusObject = input.user
+  local path = PathFinder.findPath(self, input.user, input.target)
+  local battler = input.user.battler
+  if path.lastStep:isControlZone(battler) then
+    battler.currentSteps = 0
+  else
+    battler.currentSteps = battler.currentSteps - path.totalCost
+  end
+  input.user:walkPath(path)
   BattleManager:updateDistanceMatrix()
   return -1
 end
@@ -64,9 +67,8 @@ end
 
 -- Tells if a tile can be chosen as target. 
 -- By default, no tile is selectable.
--- @param(tile : ObjectTile) the tile to check
 -- @ret(boolean) true if can be chosen, false otherwise
-function BattleAction:isSelectable(tile, user)
+function MoveAction:isSelectable(input, tile)
   return tile.gui.movable
 end
 
@@ -89,8 +91,8 @@ end
 -- Tells if a tile is last of the movement.
 -- @param(tile : ObjectTile) tile to check
 -- @ret(boolean) true if it's final, false otherwise
-function MoveAction:isFinal(tile, user)
-  local cost = self:estimateCost(self.currentTarget, tile, user)
+function MoveAction:isFinal(tile, final, user)
+  local cost = self:estimateCost(final, tile, user)
   return cost <= self.range and self:isStandable(tile, user)
 end
 
@@ -131,7 +133,6 @@ end
 -- @param(final : ObjectTile) the destination tile
 -- @ret(number) the estimated move cost
 function MoveAction:estimateCost(initial, final, user)
-  final = final or self.currentTarget
   return mathf.tileDistance(initial.x, initial.y, final.x, final.y)
 end
 
