@@ -23,6 +23,7 @@ local now = love.timer.getTime
 local random = math.random
 local round = math.round
 local ceil = math.ceil
+local expectation = math.randomExpectation
 
 -- Constants
 local elementCount = #Config.elements
@@ -43,7 +44,6 @@ local old_init = SkillAction.init
 function SkillAction:init(skillID)
   local data = Database.skills[skillID + 1]
   self.data = data
-  self.id = skillID
   local color
   -- Skill type
   if data.type == 0 then
@@ -231,6 +231,42 @@ function SkillAction:onConfirm(input)
   local cost = self.data.timeCost * BattleManager.turnLimit / 200
   battler:decrementTurnCount(ceil(cost))
   return 1
+end
+
+---------------------------------------------------------------------------------------------------
+-- Simulation
+---------------------------------------------------------------------------------------------------
+
+-- Executes the action in the given state. By default, just 
+-- @param(state : BattleSimulation) the current battle simulation
+-- @param(input : ActionInput)
+-- @param(BattleSimulation) the modified state (the same state if nothing changed)
+function SkillAction:simulate(state, input)
+  local tiles = self:getAllAffectedTiles(input)
+  state = state:shallowCopy({}, nil)
+  for i = #tiles, 1, -1 do
+    for char in tiles[i].characterList:iterator() do
+      if char.battler then
+        local effect = self:calculateEffectResult(input, char, expectation)
+        if effect then
+          local charState = state.characters[char]
+          local newState = {}
+          if charState and charState.hp then
+            newState.hp = charState.hp - effect
+          else
+            newState.hp = char.battler.currentHP - effect
+          end
+        end
+      end
+    end
+  end
+  return state
+end
+
+-- Action identifier.
+-- @ret(string)
+function SkillAction:getCode()
+  return 'Skill' .. self.data.id
 end
 
 return SkillAction

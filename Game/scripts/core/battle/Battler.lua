@@ -212,4 +212,13 @@ function Battler:damageSP(value)
   self.currentSP = max(0, self.currentSP - value)
 end
 
+-- The battler's current state in the battle. 
+-- @ret(table) a table containing only mutable attributes
+function Battler:getState()
+  return {
+    hp = self.currentHP,
+    sp = self.currentSP
+  }
+end
+
 return Battler
