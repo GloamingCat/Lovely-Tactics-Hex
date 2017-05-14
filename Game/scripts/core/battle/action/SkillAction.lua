@@ -237,7 +237,8 @@ end
 -- Simulation
 ---------------------------------------------------------------------------------------------------
 
--- Executes the action in the given state. By default, just 
+-- Executes the action in the given state. 
+-- By default, just applies the effect result in the affected characters.
 -- @param(state : BattleSimulation) the current battle simulation
 -- @param(input : ActionInput)
 -- @param(BattleSimulation) the modified state (the same state if nothing changed)
