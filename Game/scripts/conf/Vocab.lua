@@ -1,14 +1,19 @@
 
-Vocab = {}
-
-Vocab.attack = 'Attack'
-Vocab.move = 'Move'
-Vocab.escape = 'Escape'
-Vocab.trade = 'Trade'
-Vocab.item = 'Item'
-Vocab.skill = 'Skill'
-Vocab.callAlly = 'Call Ally'
-Vocab.wait = 'Wait'
-Vocab.steps = 'Steps'
-Vocab.turnCount = 'TC'
-Vocab.miss = 'Miss'
+return {
+  -- Turn Window
+  attack = 'Attack',
+  move = 'Move',
+  escape = 'Escape',
+  trade = 'Trade',
+  item = 'Item',
+  skill = 'Skill',
+  callAlly = 'Call Ally',
+  wait = 'Wait',
+  
+  -- Battler Window
+  steps = 'Steps',
+  turnCount = 'TC',
+  
+  -- Miss pop-up
+  miss = 'Miss'
+}

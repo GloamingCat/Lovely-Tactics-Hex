@@ -1,11 +1,11 @@
 
-Battle = {}
-
-Battle.turnLimit = 2000
-Battle.individualTurn = true
-Battle.groupEscape = true
-Battle.partyTileEscape = true
-Battle.turnBar = false
-Battle.maxMembers = 6
-Battle.controlZone = true
-Battle.overpassAllies = true
+return { 
+  turnLimit = 2000,
+  individualTurn = true,
+  groupEscape = true,
+  partyTileEscape = true,
+  turnBar = false,
+  maxMembers = 6,
+  controlZone = false,
+  overpassAllies = false
+}
