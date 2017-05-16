@@ -11,12 +11,13 @@ evaluation function.
 -- Imports
 local Queue = require('core/algorithm/Queue')
 local BattleSimulation = require('core/battle/BattleSimulation')
+local ArtificialInteligence = require('core/battle/ArtificialInteligence')
 local ActionInput = require('core/battle/action/ActionInput')
 
 -- Alias
 local floor = math.floor
 
-local MonteCarlo = class()
+local MonteCarlo = class(ArtificialInteligence)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -36,8 +37,7 @@ end
 -- Execution
 ---------------------------------------------------------------------------------------------------
 
--- When it's the AI's turn.
--- @param(user : Character) the character of the AI
+-- Overrides ArtificialInteligence:nextAction.
 function MonteCarlo:nextAction(user)
   local state = BattleSimulation()
   local input = self:getBestAction(user, state)
@@ -76,13 +76,7 @@ end
 -- Custom
 ---------------------------------------------------------------------------------------------------
 
--- Gets the list of possible actions of the given character.
-function MonteCarlo:getCharacterActions(character)
-  local b = character.battler
-  return {b.attackSkill, unpack(b.skillList)}
-end
-
--- Evaluation function. By default, the value is given by: 
+-- Evaluation function. By default, the value is given by:
 --  sum(HP of allies) - sum(HP of enemies).
 function MonteCarlo:getEvaluation(state)
   local sum = 0

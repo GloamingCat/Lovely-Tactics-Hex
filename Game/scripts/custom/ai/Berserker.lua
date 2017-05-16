@@ -7,16 +7,15 @@ An AI that picks the first character and attacks them.
 
 =================================================================================================]]
 
+-- Imports
+local ArtificialInteligence = require('core/battle/ArtificialInteligence')
 local ActionInput = require('core/battle/action/ActionInput')
 
-local Berserker = class()
+local Berserker = class(ArtificialInteligence)
 
+-- Overrides ArtificialInteligence:nextAction.
 function Berserker:nextAction(user)
-  local skill = user.battler.attackSkill
-  local input = ActionInput(skill)
-  skill:onSelect(input, user)
-  input.target = skill:bestTarget(user)
-  return skill:onConfirm(input)
+  return self:executeActionBest(user.battler.attackSkill, user)
 end
 
 return Berserker

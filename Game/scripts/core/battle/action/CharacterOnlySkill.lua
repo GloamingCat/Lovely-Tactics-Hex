@@ -8,10 +8,9 @@ A special type of Skill that only selects tiles with characters on it.
 =================================================================================================]]
 
 -- Imports
-local PriorityQueue = require('core/algorithm/PriorityQueue')
 local MoveAction = require('core/battle/action/MoveAction')
 local SkillAction = require('core/battle/action/SkillAction')
-local PathFinder = require('core/algorithm/PathFinder')
+local BattleTactics = require('core/algorithm/BattleTactics')
 
 local CharacterOnlySkill = class(SkillAction)
 
@@ -30,22 +29,8 @@ end
 -- Gets the list of all tiles that have a character.
 -- @ret(List) the list of ObjectTiles
 function CharacterOnlySkill:getSelectableTiles(input)
-  local range = self.data.range
-  local moveAction = MoveAction(range)
-  local tempQueue = PriorityQueue()
-  local initialTile = input.user:getTile()
-  for char in TroopManager.characterList:iterator() do
-    local tile = char:getTile()
-    if tile.gui.selectable then
-      local path = PathFinder.findPath(moveAction, input.user, tile, initialTile, true)
-      if path == nil then
-        tempQueue:enqueue(tile, math.huge)
-      else
-        tempQueue:enqueue(tile, path.totalCost)
-      end
-    end
-  end
-  return tempQueue:toList()
+  local queue = BattleTactics.closestCharacters(input)
+  return queue:toList()
 end
 
 ---------------------------------------------------------------------------------------------------
