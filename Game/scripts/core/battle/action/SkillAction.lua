@@ -216,7 +216,7 @@ function SkillAction:onConfirm(input)
   if input.GUI then
     input.GUI:endGridSelecting()
   end
-  FieldManager.renderer:moveToObject(input.user, true)
+  FieldManager.renderer:moveToObject(input.user, nil, true)
   FieldManager.renderer.focusObject = input.user
   local moveAction = MoveAction(self.data.range, input.target)
   local path = PathFinder.findPath(moveAction, input.user, input.target)

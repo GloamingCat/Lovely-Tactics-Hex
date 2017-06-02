@@ -66,7 +66,7 @@ function BattleManager:battleIntro()
   for i = #centers, 0, -1 do
     local p = centers[i]
     if p then
-      FieldManager.renderer:moveToPoint(p.x, p.y, true, speed)
+      FieldManager.renderer:moveToPoint(p.x, p.y, speed, true)
       _G.Fiber:wait(30)
     end
   end
@@ -105,6 +105,7 @@ function BattleManager:clear()
   if self.cursor then
     self.cursor:destroy()
   end
+  self.distanceMatrix = nil
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -143,7 +144,7 @@ function BattleManager:runTurn(char, iterations)
   end
   local actionCost = 0
   local AI = self.currentCharacter.battler.AI
-  FieldManager.renderer:moveToObject(char, true)
+  FieldManager.renderer:moveToObject(char, nil, true)
   if AI and not self.training then
     actionCost = AI:nextAction(self.currentCharacter)
   else

@@ -10,8 +10,10 @@ It may be passable or not, and have an image or not.
 
 -- Imports
 local Vector = require('core/math/Vector')
-local Sprite = require('core/graphics/Sprite')
 local Object = require('core/fields/Object')
+
+-- Alias
+local tile2Pixel = math.field.tile2Pixel
 
 -- Constants
 local pph = Config.grid.pixelsPerHeight
@@ -26,23 +28,20 @@ local Obstacle = class(Object)
 -- @param(tileData : table) the data about ramp and collision
 -- @param(group : table) the group this obstacle is part of
 local old_init = Obstacle.init
-function Obstacle:init(data, tileData, group)
-  old_init(self, data)
+function Obstacle:init(data, tileData, initTile, group)
+  local x, y, z = tile2Pixel(initTile:coordinates())
+  old_init(self, data, Vector(x, y, z))
   self.type = 'obstacle'
   self.group = group
-  if data.quad.imagePath ~= '' then
-    local texture = love.graphics.newImage('images/' .. data.quad.imagePath)
-    local x, y = data.quad.x, data.quad.y
-    local w, h = data.quad.width, data.quad.height
-    local quad = love.graphics.newQuad(x, y, w, h, texture:getWidth(), texture:getHeight())
-    self.sprite = Sprite(FieldManager.renderer, texture, quad)
-    self.sprite:setTransformation(data.transform)
-  end
+  self.sprite = group.sprite
+  initTile.obstacleList:add(self)
   self:initializeNeighbors(tileData.neighbors)
   if tileData.rampID >= 0 then
     local rampData = Database.ramps[tileData.rampID + 1]
-    self.ramp = Ramp(rampData)
+    --self.ramp = Ramp(rampData)
   end
+  self:setXYZ(x, y, z)
+  self:addToTiles()
 end
 
 -- Creates neighborhood.
@@ -95,24 +94,14 @@ end
 -- Tiles
 -------------------------------------------------------------------------------
 
--- Gets all tiles this object is occuping.
--- @ret(table) the list of tiles
-function Obstacle:getAllTiles()
-  return { self:getTile() }
+-- Overrides Object:addToTiles.
+function Obstacle:addToTiles()
+  self:getTile().obstacleList:add(self)
 end
 
--- Adds this object from to tiles it's occuping.
--- @param(tiles : table) the list of occuped tiles (optional)
-function Obstacle:addToTiles(tiles)
-  tiles = tiles or self:getTiles()
-  tiles[1].obstacleList:add(self)
-end
-
--- Removes this object from the tiles it's occuping.
--- @param(tiles : table) the list of occuped tiles (optional)
-function Obstacle:removeFromTiles(tiles)
-  tiles = tiles or self:getTiles()
-  tiles[1].obstacleList:removeElement(self)
+-- Overrides Object:removeFromTiles.
+function Obstacle:removeFromTiles()
+  self:getTile().obstacleList:removeElement(self)
 end
 
 return Obstacle

@@ -41,8 +41,8 @@ function Object:setXYZ(x, y, z)
   self.sprite:setXYZ(x, y, z)
 end
 
--- 'Teleports' the object to another position.
--- @param(position : Vector) the new position
+-- Overrides Transformable:instantMoveTo.
+-- Updates the tile's object list.
 function Object:instantMoveTo(position)
   local tiles = self:getAllTiles()
   self:removeFromTiles(tiles)
@@ -67,11 +67,18 @@ function Object:getTile()
   return layer.grid[x][y]
 end
 
--- Sets character's tile.
--- @param(x : ObjectTile) new tile 
-function Object:setPositionToTile(tile)
+-- Sets object's position to the given tile.
+-- @param(tile : ObjectTile) new tile 
+function Object:setTile(tile)
   local x, y, z = math.field.tile2Pixel(tile:coordinates())
   self:setXYZ(x, y, z)
+end
+
+-- Move to the given tile.
+-- @param(tile : ObjectTile) new tile
+function Object:moveToTile(tile, ...)
+  local x, y, z = math.field.tile2Pixel(tile:coordinates())
+  self:moveTo(x, y, z, ...)
 end
 
 -- Gets all tiles this object is occuping.
@@ -82,10 +89,12 @@ end
 
 -- Adds this object to the tiles it's occuping.
 function Object:addToTiles()
+  -- Abstract.
 end
 
 -- Removes this object from the tiles it's occuping.
 function Object:removeFromTiles()
+  -- Abstract.
 end
 
 ---------------------------------------------------------------------------------------------------

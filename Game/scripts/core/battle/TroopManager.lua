@@ -75,9 +75,7 @@ function TroopManager:createBattleCharacter(tile, battlerData, field)
     animID = 0,
     tags = {}
   }
-  local character = Character(charID, characterData)
-  character:setPositionToTile(tile)
-  character:addToTiles()
+  local character = Character(charID, characterData, tile)
   character.battler = Battler(battlerData, tile.party, character)
   character:turnToTile(field.sizeX / 2, field.sizeY / 2)
   character.speed = charSpeed

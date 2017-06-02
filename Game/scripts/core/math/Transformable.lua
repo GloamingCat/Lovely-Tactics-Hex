@@ -1,11 +1,11 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 Transformable
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 An object with physical properties (position, rotation, scale).
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Vector = require('core/math/Vector')
@@ -19,32 +19,34 @@ local yield = coroutine.yield
 
 local Transformable = class()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- General
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Constructor.
 function Transformable:init(initPos, initScaleX, initScaleY, initRot)
-  self:initPosition(initPos)
-  self:initScale(initScaleX, initScaleY)
-  self:initRotation(initRot)
+  self:initMovement(initPos or Vector(0, 0, 0))
+  self:initScale(initScaleX or 1, initScaleY or 1)
+  self:initRotation(initRot or 0)
+  self.interruptableMove = true
+  self.interruptableScale = true
+  self.interruptableRotation = true
 end
 
 -- Called each frame.
 function Transformable:update()
-  self:updatePosition()
+  self:updateMovement()
   self:updateScale()
   self:updateRotation()
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Movement
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Initializes all data of the object's movement and velocity.
--- @param(pos : Vector) initial position (optional)
-function Transformable:initPosition(pos)
-  pos = pos or Vector(0, 0, 0)
+-- @param(pos : Vector) initial position
+function Transformable:initMovement(pos)
   self.position = pos
   self.moveSpeed = 0
   self.moveOrigX = pos.x
@@ -55,6 +57,7 @@ function Transformable:initPosition(pos)
   self.moveDestZ = pos.z
   self.moveTime = 1
   self.moveFiber = nil
+  self.cropMovement = true
 end
 
 -- Sets each coordinate of the position.
@@ -74,28 +77,52 @@ function Transformable:setPosition(p)
 end
 
 -- Applies move speed and updates position.
-function Transformable:updatePosition()
+function Transformable:updateMovement()
   if self.moveTime < 1 then
     self.moveTime = self.moveTime + self.moveSpeed * time()
-    if self.moveTime >= 1 then
-      self:setXYZ(self.moveDestX, self.moveDestY, self.moveDestZ)
+    if self.moveTime > 1 and self.cropMovement then
       self.moveTime = 1
-    else
-      self:setXYZ(
-        self.moveOrigX * (1 - self.moveTime) + self.moveDestX * self.moveTime, 
-        self.moveOrigY * (1 - self.moveTime) + self.moveDestY * self.moveTime,
-        self.moveOrigZ * (1 - self.moveTime) + self.moveDestZ * self.moveTime)
+    end
+    local x = self.moveOrigX * (1 - self.moveTime) + self.moveDestX * self.moveTime
+    local y = self.moveOrigY * (1 - self.moveTime) + self.moveDestY * self.moveTime
+    local z = self.moveOrigZ * (1 - self.moveTime) + self.moveDestZ * self.moveTime
+    if self:instantMoveTo(x, y, z) and self.interruptableMove then
+      self.moveTime = 1
     end
   end
 end
 
 -- [COROUTINE] Moves to (x, y).
--- @param(x : number) the x coordinate in pixels
--- @param(y : number) the y coordinate in pixels
--- @param(z : number) the z coordinate in pixels (depth)
--- @param(speed : number) the speed of the movement
--- @param(wait : boolean) flag to wait until the move finishes
+-- @param(x : number) the pixel x
+-- @param(y : number) the pixel y
+-- @param(z : number) the pixel depth
+-- @param(speed : number) the speed of the movement (optional)
+-- @param(wait : boolean) flag to wait until the move finishes (optional)
 function Transformable:moveTo(x, y, z, speed, wait)
+  if speed then
+    self:gradativeMoveTo(x, y, z, speed, wait)
+  else
+    self:instantMoveTo(x, y, z)
+  end
+end
+
+-- Moves instantly a character to a point, if possible.
+-- @param(x : number) the pixel x
+-- @param(y : number) the pixel y
+-- @param(z : number) the pixel depth
+-- @ret(boolean) true if the movement must be interrupted, nil or false otherwise
+function Transformable:instantMoveTo(x, y, z)
+  self:setXYZ(x, y, z)
+  return nil
+end
+
+-- [COROUTINE] Moves gradativaly (through updateMovement) to the given point.
+-- @param(x : number) the pixel x
+-- @param(y : number) the pixel y
+-- @param(z : number) the pixel depth
+-- @param(speed : number) the speed of the movement
+-- @param(wait : boolean) flag to wait until the move finishes (optional)
+function Transformable:gradativeMoveTo(x, y, z, speed, wait)
   self.moveOrigX, self.moveOrigY, self.moveOrigZ = self.position:coordinates()
   self.moveDestX, self.moveDestY, self.moveDestZ = x, y, z
   self.moveSpeed = speed
@@ -105,7 +132,7 @@ function Transformable:moveTo(x, y, z, speed, wait)
   end
 end
 
--- Waits until the move time is 1.
+-- [COROUTINE] Waits until the move time is 1.
 function Transformable:waitForMovement()
   local fiber = _G.Fiber
   if self.moveFiber then
@@ -120,18 +147,18 @@ function Transformable:waitForMovement()
   end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Scale
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 function Transformable:initScale(sx, sy)
-  self.scaleX = sx or 1
-  self.scaleY = sy or 1
+  self.scaleX = sx
+  self.scaleY = sy
   self.scaleSpeed = 0
-  self.scaleOrigX = self.scaleX
-  self.scaleOrigY = self.scaleY
-  self.scalaDestX = self.scaleX
-  self.scaleDestY = self.scaleY
+  self.scaleOrigX = sx
+  self.scaleOrigY = sy
+  self.scalaDestX = sx
+  self.scaleDestY = sy
   self.scaleTime = 1
   self.scaleFiber = nil
 end
@@ -180,12 +207,17 @@ function Transformable:waitForScale()
   end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Rotation (TODO)
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
-function Transformable:initRotation()
-  self.rotation = 0
+function Transformable:initRotation(r)
+  self.rotation = r
+  self.rotationSpeed = 0
+  self.rotationOrig = r
+  self.rotationDest = r
+  self.rotationTime = 1
+  self.rotationFiber = nil
 end
 
 function Transformable:setRotation(r)

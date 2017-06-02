@@ -24,12 +24,12 @@ local FieldCamera = class(Renderer)
 -------------------------------------------------------------------------------
 
 -- Updates position and movement.
-local old_updatePosition = FieldCamera.updatePosition
-function FieldCamera:updatePosition()
+local old_updateMovement = FieldCamera.updateMovement
+function FieldCamera:updateMovement()
   if self.focusObject then
     self:setXYZ(self.focusObject.position.x, self.focusObject.position.y)
   else
-    old_updatePosition(self)
+    old_updateMovement(self)
   end
 end
 
@@ -40,25 +40,25 @@ end
 -- [COROUTINE] Moves camera to the given tile.
 -- @param(tile : ObjectTile) the destionation tile
 -- @param(wait : boolean) flag to wait until the move finishes
-function FieldCamera:moveToTile(tile, wait)
+function FieldCamera:moveToTile(tile, speed, wait)
   local x, y = tile2Pixel(tile:coordinates())
-  self:moveToPoint(x, y, wait)
+  self:moveToPoint(x, y, speed, wait)
 end
 
 -- [COROUTINE] Movec camera to the given object.
 -- @param(obj : Object) the destination object
--- @param(wait : boolean) flag to wait until the move finishes
 -- @param(speed : number) the speed of the movement
-function FieldCamera:moveToObject(obj, wait, speed)
-  self:moveToPoint(obj.position.x, obj.position.y, wait, speed)
+-- @param(wait : boolean) flag to wait until the move finishes
+function FieldCamera:moveToObject(obj, speed, wait)
+  self:moveToPoint(obj.position.x, obj.position.y, speed, wait)
 end
 
 -- Moves camera to the given pixel point.
 -- @param(x : number) the pixel x
 -- @param(y : nubmer) the pixel y
--- @param(wait : boolean) flag to wait until the move finishes
 -- @param(speed : number) the speed of the movement
-function FieldCamera:moveToPoint(x, y, wait, speed)
+-- @param(wait : boolean) flag to wait until the move finishes
+function FieldCamera:moveToPoint(x, y, speed, wait)
   self.focusObject = nil
   local dx = self.position.x - x
   local dy = self.position.y - y

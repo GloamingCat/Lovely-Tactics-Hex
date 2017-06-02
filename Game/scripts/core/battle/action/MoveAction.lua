@@ -47,7 +47,7 @@ function MoveAction:onConfirm(input)
   if input.GUI then
     input.GUI:endGridSelecting()
   end
-  FieldManager.renderer:moveToObject(input.user, true)
+  FieldManager.renderer:moveToObject(input.user, nil, true)
   FieldManager.renderer.focusObject = input.user
   local path = PathFinder.findPath(self, input.user, input.target)
   local battler = input.user.battler

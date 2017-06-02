@@ -23,6 +23,7 @@ local angle2Row = math.angle2Row
 local Quad = love.graphics.newQuad
 local round = math.round
 local time = love.timer.getDelta
+local tile2Pixel = math.field.tile2Pixel
 
 local CharacterBase = class(DirectedObject)
 
@@ -33,8 +34,9 @@ local CharacterBase = class(DirectedObject)
 -- Constructor.
 -- @param(id : string) an unique ID for the character in the field
 -- @param(tileData : table) the character's data from tileset file
+-- @param(initTile : ObjectTile) initial character's tile
 local old_init = CharacterBase.init
-function CharacterBase:init(id, tileData)
+function CharacterBase:init(id, tileData, initTile)
   local db = Database.charField
   if tileData.type == 1 then
     db = Database.charBattle
@@ -42,7 +44,8 @@ function CharacterBase:init(id, tileData)
     db = Database.charOther
   end
   local data = db[tileData.id + 1]
-  old_init(self, data)
+  local x, y, z = tile2Pixel(initTile:coordinates())
+  old_init(self, data, Vector(x, y, z))
   
   self.id = id
   self.type = 'character'
@@ -54,6 +57,9 @@ function CharacterBase:init(id, tileData)
   self:initializeProperties(data.name, data.tiles)
   self:initializeGraphics(data.animations, tileData.direction, tileData.animID, data.transform)
   self:initializeScripts(tileData)
+  
+  self:setXYZ(x, y, z)
+  self:addToTiles()
 end
 
 -- Overrides AnimatedObject:update. 
@@ -92,12 +98,12 @@ function CharacterBase:initializeProperties(name, tiles, colliderHeight)
   self.speed = 60
   self.autoAnim = true
   self.autoTurn = true
-  self.stopOnCollision = true
   self.walkAnim = 'Walk'
   self.idleAnim = 'Idle'
   self.dashAnim = 'Dash'
   self.damageAnim = 'Damage'
   self.koAnim = 'KO'
+  self.cropMovement = false
 end
 
 -- Creates listeners from data.
@@ -119,28 +125,30 @@ end
 -- Movement
 ---------------------------------------------------------------------------------------------------
 
--- Moves instantly a character to a point, if possible.
--- @param(x : number) the pixel x of the object
--- @param(y : number) the pixel y of the object
--- @param(z : number) the pixel depth of the object
--- @ret(number) the type of the collision, if any
+-- Overrides Transformable:instantMoveTo.
+-- @param(collisionCheck : boolean) if false, ignores collision
+-- @ret(number) the type of the collision, nil if none
 function CharacterBase:instantMoveTo(x, y, z, collisionCheck)
-  local tiles = self:getAllTiles()
   local center = self:getTile()
   local dx, dy, dh = math.field.pixel2Tile(x, y, z)
   dx = round(dx) - center.x
   dy = round(dy) - center.y
   dh = round(dh) - center.layer.height
-  local tileChange = dx ~= 0 or dy ~= 0 or dh ~= 0
-  if collisionCheck and tileChange and not self.passable then
-    for i = #tiles, 1, -1 do
-      local collision = self:collision(tiles[i])
-      if collision ~= nil then
-        return collision
+  if dx ~= 0 or dy ~= 0 or dh ~= 0 then
+    local tiles = self:getAllTiles()
+    -- Collision
+    if collisionCheck == nil then
+      collisionCheck = self.collisionCheck
+    end
+    if collisionCheck and not self.passable then
+      for i = #tiles, 1, -1 do
+        local collision = self:collision(tiles[i])
+        if collision ~= nil then
+          return collision
+        end
       end
     end
-  end
-  if tileChange then
+    -- Updates tile position
     self:removeFromTiles(tiles)
     self:setXYZ(x, y, z)
     tiles = self:getAllTiles()
@@ -149,19 +157,6 @@ function CharacterBase:instantMoveTo(x, y, z, collisionCheck)
     self:setXYZ(x, y, z)
   end
   return nil
-end
-
--- Overrides Transform:updatePosition to check collision.
-function CharacterBase:updatePosition()
-  if self.moveTime < 1 then
-    self.moveTime = self.moveTime + self.moveSpeed * time()
-    local x = self.moveOrigX * (1 - self.moveTime) + self.moveDestX * self.moveTime
-    local y = self.moveOrigY * (1 - self.moveTime) + self.moveDestY * self.moveTime
-    local z = self.moveOrigZ * (1 - self.moveTime) + self.moveDestZ * self.moveTime
-    if self:instantMoveTo(x, y, z, self.collisionCheck) and self.stopOnCollision then
-      self.moveTime = 1
-    end
-  end
 end
 
 ---------------------------------------------------------------------------------------------------

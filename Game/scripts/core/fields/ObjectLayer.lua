@@ -12,9 +12,11 @@ There's only one ObjectLayer in the field per height.
 local ObjectTile = require('core/fields/ObjectTile')
 local Obstacle = require('core/fields/Obstacle')
 local Character = require('core/character/Character')
+local Sprite = require('core/graphics/Sprite')
 
 -- Alias
 local floor = math.floor
+local newQuad = love.graphics.newQuad
 
 local ObjectLayer = class()
 
@@ -45,13 +47,21 @@ function ObjectLayer:mergeObstacles(layerData, tileset)
         id = tileset.obstacles[id + 1].id
         local obstacleData = Database.obstacles[id + 1]
         local group = {}
+        -- Graphics
+        if obstacleData.quad.imagePath ~= '' then
+          local texture = love.graphics.newImage('images/' .. obstacleData.quad.imagePath)
+          local x, y = obstacleData.quad.x, obstacleData.quad.y
+          local w, h = obstacleData.quad.width, obstacleData.quad.height
+          local quad = newQuad(x, y, w, h, texture:getWidth(), texture:getHeight())
+          group.sprite = Sprite(FieldManager.renderer, texture, quad)
+          group.sprite:setTransformation(obstacleData.transform)
+        end
+        -- Collision tiles
         for k = 1, #obstacleData.tiles do
           local tileData = obstacleData.tiles[k]
-          local obstacle = Obstacle(obstacleData, tileData)
-          obstacle.tile = self.grid[i][j]
-          obstacle.tile.obstacleList:add(obstacle)
-          obstacle:setPositionToTile(obstacle.tile)
-          group[i] = obstacle
+          local tile = self.grid[i + tileData.dx][j + tileData.dy]
+          local obstacle = Obstacle(obstacleData, tileData, tile, group)
+          group[k] = obstacle
         end
       end
     end
@@ -69,9 +79,7 @@ function ObjectLayer:mergeCharacters(layerData, tileset)
         local tile = self.grid[i][j]
         local charID = tile:generateCharacterID()
         local characterData = tileset.characters[id + 1]
-        local character = Character(charID, characterData)
-        character:setPositionToTile(tile)
-        character:addToTiles()
+        Character(charID, characterData, tile)
       end
     end
   end

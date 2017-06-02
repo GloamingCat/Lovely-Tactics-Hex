@@ -89,9 +89,8 @@ end
 -- Creates a character representing player.
 -- @ret(Player) the newly created player
 function FieldManager:createPlayer(transition)
-  local player = Player()
   local tile = self.currentField:getObjectTileFromTransition(transition)
-  player:setPositionToTile(tile)
+  local player = Player(tile)
   player:setDirection(transition.direction)
   return player
 end
