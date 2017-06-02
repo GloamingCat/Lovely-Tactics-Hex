@@ -34,6 +34,12 @@ function BattleAction:init(range, radius, colorName)
   self.field = FieldManager.currentField
 end
 
+-- Action identifier.
+-- @ret(string)
+function BattleAction:getCode()
+  return ''
+end
+
 ---------------------------------------------------------------------------------------------------
 -- Event handlers
 ---------------------------------------------------------------------------------------------------
@@ -112,7 +118,6 @@ end
 -- reachable (within skill's range) tiles with the skill's type color.
 function BattleAction:resetReachableTiles(input)
   local matrix = BattleManager.distanceMatrix
-  local field = FieldManager.currentField
   local charTile = BattleManager.currentCharacter:getTile()
   local h = charTile.layer.height
   local borderTiles = List()
@@ -139,8 +144,8 @@ function BattleAction:resetReachableTiles(input)
   -- Paint border tiles
   for tile in borderTiles:iterator() do
     for i, j in mathf.radiusIterator(self.range, tile.x, tile.y) do
-      if i >= 1 and j >= 1 and i <= field.sizeX and j <= field.sizeY then
-        local n = field:getObjectTile(i, j, h) 
+      if i >= 1 and j >= 1 and i <= self.field.sizeX and j <= self.field.sizeY then
+        local n = self.field:getObjectTile(i, j, h) 
         n.gui.reachable = true
       end
     end
@@ -215,12 +220,11 @@ end
 -- @ret(table) an array of tiles
 function BattleAction:getAllAffectedTiles(input)
   local tiles = {}
-  local field = FieldManager.currentField
   local height = input.target.layer.height
   for i, j in mathf.radiusIterator(self.radius - 1, 
       input.target.x, input.target.y) do
-    if i >= 1 and j >= 0 and i <= field.sizeX and j <= field.sizeY then
-      tiles[#tiles + 1] = field:getObjectTile(i, j, height)
+    if i >= 1 and j >= 0 and i <= self.field.sizeX and j <= self.field.sizeY then
+      tiles[#tiles + 1] = self.field:getObjectTile(i, j, height)
     end
   end
   return tiles
@@ -283,16 +287,11 @@ end
 -- Simulation
 ---------------------------------------------------------------------------------------------------
 
--- Executes the action in the given state.
--- @param(state : table) the information about the state
+-- Executes the action without animations.
+-- This method should just apply the effect without the need of waiting for next frame.
 -- @param(input : ActionInput)
-function BattleAction:simulate(state, input)
-end
-
--- Action identifier.
--- @ret(string)
-function BattleAction:getCode()
-  return ''
+-- @ret(BattleSimulation) the state with information with the modifications of the skill
+function BattleAction:simulate(input)
 end
 
 return BattleAction

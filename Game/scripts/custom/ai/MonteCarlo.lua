@@ -10,7 +10,7 @@ evaluation function.
 
 -- Imports
 local Queue = require('core/algorithm/Queue')
-local BattleSimulation = require('core/battle/BattleSimulation')
+local BattleState = require('core/battle/BattleState')
 local ArtificialInteligence = require('core/battle/ArtificialInteligence')
 local ActionInput = require('core/battle/action/ActionInput')
 
@@ -39,60 +39,66 @@ end
 
 -- Overrides ArtificialInteligence:nextAction.
 function MonteCarlo:nextAction(user)
-  local state = BattleSimulation()
-  local input = self:getBestAction(user, state)
-  input.action:onSelect(input, user)
+  local state = BattleState()
+  local input = ActionInput(nil, user)
+  input = self:getEvaluation(user, state, self.steps)
+  input.action:onSelect(input)
   return input.action:onConfirm(input)
 end
 
--- @ret(ActionInput)
-function MonteCarlo:getBestBranch(user, state)
-  local possibleActions = self:getCharacterActions(user)
-  local bestEval = self:getEvaluation(state)
-  local bestAction = nil
-  local bestTarget = nil
-  local input = ActionInput(nil, user)
-  for i = 1, #possibleActions do
-    input.action = possibleActions[i]
-    local possibleTargets = input.action:potencialTargets(input)
-    for j = 1, #possibleTargets do
-      input.target = possibleTargets[i]
-      local newState = state:applyAction(input)
-      local eval = self:getEvaluation(newState)
-      if eval > bestEval then
-        bestEval = eval
-        bestAction = input.action
-        bestTarget = input.target
-      end
-      print(eval)
+-- @param(user : Character)
+-- @param(state : BattleState)
+-- @param(depth : number)
+-- @ret(ActionInput) the most promising input
+-- @ret(number) score
+function MonteCarlo:getEvaluation(user, state, depth)
+	if depth == 0 then
+		return self:estimateEvaluation()
+	else
+		local bestEval = -math.huge
+    local bestInput = nil
+    local possibleInputs = self:getPossibleInputs(user)
+		for i = 1, #possibleInputs do
+      local input = possibleInputs[i]
+      -- Apply action modifications
+			local newState = state:addInput(input)
+      -- Get evaluation
+			local _, eval = self:getEvaluation(user, newState, depth - 1)
+			if eval > bestEval then
+				bestEval = eval
+        bestInput = input
+			end
+      -- Back to previous state
+			state:revert()
+		end
+    return bestInput, bestEval
+	end
+end
+
+-- @param(user : Character)
+-- @ret(table) array of ActionInput objects
+function MonteCarlo:getPossibleInputs(user)
+  local inputs = {}
+  local actions = ArtificialInteligence:getCharacterActions(user)
+  for i = 1, #actions do
+    local action = actions[i]
+    local input = ActionInput(action, user)
+    local targets = action:possibleTargets(input)
+    for j = 1, #targets do
+      local target = targets[j]
+      inputs[#inputs + 1] = ActionInput(action, user, target)
     end
   end
-  input.target = bestTarget
-  input.action = bestAction
-  return input
+  return inputs
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Custom
 ---------------------------------------------------------------------------------------------------
 
--- Evaluation function. By default, the value is given by:
---  sum(HP of allies) - sum(HP of enemies).
-function MonteCarlo:getEvaluation(state)
-  local sum = 0
-  local party = BattleManager.currentCharacter.battler.party
-  for char in TroopManager.characterList:iterator() do
-    if char.battler then
-      local charState = state.characters[char]
-      local hp = charState and charState.hp or char.battler.currentHP
-      if char.battler.party == party then
-        sum = sum + hp
-      else
-        sum = sum - hp
-      end
-    end
-  end
-  return sum
+-- @ret(number)
+function MonteCarlo:estimateEvaluation()
+  return 0 -- TODO
 end
 
 return MonteCarlo

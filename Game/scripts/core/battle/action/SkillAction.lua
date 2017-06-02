@@ -87,10 +87,16 @@ function SkillAction.fromData(skillID)
   end
 end
 
+-- Action identifier.
+-- @ret(string)
+function SkillAction:getCode()
+  return 'Skill' .. self.data.id
+end
+
 -- Converting to string.
 -- @ret(string) a string representation
 function SkillAction:__tostring()
-  return 'SkillAction: ' .. self.skillID .. ' (' .. self.data.name .. ')'
+  return 'SkillAction: ' .. self:getCode()
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -237,37 +243,32 @@ end
 -- Simulation
 ---------------------------------------------------------------------------------------------------
 
--- Executes the action in the given state. 
+-- Overrides BattleAction:simulate.
 -- By default, just applies the effect result in the affected characters.
--- @param(state : BattleSimulation) the current battle simulation
--- @param(input : ActionInput)
--- @param(BattleSimulation) the modified state (the same state if nothing changed)
-function SkillAction:simulate(state, input)
-  local tiles = self:getAllAffectedTiles(input)
-  state = state:shallowCopy({}, nil)
-  for i = #tiles, 1, -1 do
-    for char in tiles[i].characterList:iterator() do
-      if char.battler then
-        local effect = self:calculateEffectResult(input, char, expectation)
-        if effect then
-          local charState = state.characters[char]
-          local newState = {}
-          if charState and charState.hp then
-            newState.hp = charState.hp - effect
-          else
-            newState.hp = char.battler.currentHP - effect
+function SkillAction:simulate(input)
+  -- Movement
+  local moveAction = MoveAction(self.data.range, input.target)
+  local path = PathFinder.findPath(moveAction, input.user, input.target)
+  if path then -- Target was reached
+    -- Modifications about battler
+    local tiles = self:getAllAffectedTiles(input)
+    for i = #tiles, 1, -1 do
+      for char in tiles[i].characterList:iterator() do
+        if char.battler then
+          local effect = self:calculateEffectResult(input, char, expectation)
+          if effect then
+            char.battler:damageHP(effect)
           end
         end
       end
     end
+    -- Position
+    input.user:moveToTile(path.lastStep)
+  else -- Target was not reached
+    path = PathFinder.findPathToUnreachable(moveAction, input.user, input.target)
+    --path = path or PathFinder.estimateBestPath(moveAction, input.user, input.target)
+    input.user:moveToTile(path.lastStep)
   end
-  return state
-end
-
--- Action identifier.
--- @ret(string)
-function SkillAction:getCode()
-  return 'Skill' .. self.data.id
 end
 
 return SkillAction

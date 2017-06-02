@@ -184,7 +184,7 @@ function Battler:onBattleEnd()
 end
 
 -------------------------------------------------------------------------------
--- Battle
+-- State
 -------------------------------------------------------------------------------
 
 -- Checks if battler is still alive by its HP.
@@ -215,10 +215,35 @@ end
 -- The battler's current state in the battle. 
 -- @ret(table) a table containing only mutable attributes
 function Battler:getState()
+  local attAdd = {}
+  for k, v in pairs(self.attAdd) do
+    attAdd[k] = v
+  end
+  local attMul = {}
+  for k, v in pairs(self.attMul) do
+    attMul[k] = v
+  end
   return {
     hp = self.currentHP,
-    sp = self.currentSP
+    sp = self.currentSP,
+    attAdd = attAdd,
+    attMul = attMul,
+    turnCount = self.turnCount
   }
+end
+
+-- Changes the battler's current info.
+-- @param(state : table) the info about battler's mutable attributes
+function Battler:setState(state)
+  for k, v in pairs(state.attAdd) do
+    self.attAdd[k] = v
+  end
+  for k, v in pairs(state.attMul) do
+    self.attMul[k] = v
+  end
+  self.currentHP = state.hp
+  self.currentSP = state.sp
+  self.turnCount = state.turnCount
 end
 
 return Battler
