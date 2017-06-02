@@ -6,8 +6,6 @@ PriorityQueue
 A priority queue with numeric keys. Be default, the element in the front will be the one with the 
 lowest key. See more in: https://en.wikipedia.org/wiki/Priority_queue
 
-TODO: implement a more efficient version (heap)
-
 =================================================================================================]]
 
 -- Imports
@@ -15,6 +13,7 @@ local List = require('core/algorithm/List')
 
 -- Alias
 local sort = table.sort
+local floor = math.floor
 
 local PriorityQueue = class()
 
@@ -24,7 +23,7 @@ local PriorityQueue = class()
 
 -- @param(comp : function) the function to compares two pairs (optional)
 function PriorityQueue:init(comp)
-  self.comp = self.comp or comp
+  self.comp = comp or self.comp
   self.size = 0
 end
 
@@ -34,16 +33,23 @@ end
 
 -- Default compare function
 function PriorityQueue.comp(a, b)
-  return a[2] > b[2]
+  return a[2] < b[2]
 end
 
 -- Adds new pair to the queue.
 -- @param(element : unknown) the new element to add
--- @param(p : number) the priority of the element
-function PriorityQueue:enqueue(element, p)
+-- @param(v : number) the priority of the element
+function PriorityQueue:enqueue(element, v)
+  local new = {element, v}
   self.size = self.size + 1
-  self[self.size] = {element, p}
-  sort(self, self.comp)
+  local n = self.size
+  local p = (n - n % 2) / 2
+  self[n] = new
+  while n > 1 and self.comp(self[n], self[p]) do
+    self[n], self[p] = self[p], self[n]
+    n = p
+    p = (n - n % 2) / 2
+  end
 end
 
 -- Removes the front pair.
@@ -51,9 +57,31 @@ end
 -- @ret(number) the key/priority of the element removed
 function PriorityQueue:dequeue()
   assert(self.size > 0, 'Priority queue is empty!')
-  local pair = self[self.size]
+  local pair = self[1]
+  -- Only one element
+  if self.size == 1 then
+    self[1] = nil
+    self.size = 0
+    return pair[1], pair[2]
+  end
+  self[1] = self[self.size]
   self[self.size] = nil
   self.size = self.size - 1
+  local size = self.size
+  local root = 1
+  local child = 2*root
+  while child <= size do
+    if self.comp(self[child], self[root]) then
+      self[root], self[child] = self[child], self[root]
+      root = child
+    elseif child + 1 < size and self.comp(self[child + 1], self[child]) then
+      self[root], self[child + 1] = self[child + 1], self[root]
+      root = child + 1
+    else
+      break
+    end
+    child = 2*root
+  end
   return pair[1], pair[2]
 end
 
@@ -62,7 +90,7 @@ end
 -- @ret(number) the key/priority of the front element
 function PriorityQueue:front()
   assert(self.size > 0, 'Priority queue is empty!')
-  local pair = self[self.size]
+  local pair = self[1]
   return pair[1], pair[2]
 end
 
@@ -76,6 +104,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Transform this queue into a list of elements (does not include keys).
+-- Empties the queue during the proccess.
 -- @ret(List) list of arbitrary elements
 function PriorityQueue:toList()
   local list = List()
@@ -86,9 +115,24 @@ function PriorityQueue:toList()
   return list
 end
 
+-- Transform this queue into a list of elements (does not include keys).
+-- @ret(List) list of arbitrary elements
+function PriorityQueue:asList()
+  local list = List()
+  while self.size > 0 do
+    local e, v = self:dequeue()
+    list:add({e, v})
+  end
+  for i = 1, list.size do
+    self:enqueue(list[i][1], list[i][2])
+    list[i] = list[i][1]
+  end
+  return list
+end
+
 -- String representation.
 function PriorityQueue:__tostring()
-  local list = self:toList()
+  local list = self:asList()
   return tostring(list)
 end
 
