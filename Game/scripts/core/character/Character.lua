@@ -134,6 +134,7 @@ function Character:walkPath(path, collisionCheck)
       break
     end
   end
+  self:moveToTile(path.lastStep)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -206,6 +207,7 @@ function Character:finishSkill(origin, skill)
     self.autoTurn = false
     self:walkToPoint(x, y, z)
     self.autoTurn = autoTurn
+    self:setXYZ(x, y, z)
   end
   self:playAnimation(self.idleAnim)
 end

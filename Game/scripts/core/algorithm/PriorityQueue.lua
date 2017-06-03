@@ -71,14 +71,21 @@ function PriorityQueue:dequeue()
   local root = 1
   local child = 2*root
   while child <= size do
-    if self.comp(self[child], self[root]) then
+    local comp1 = self.comp(self[root], self[child])
+    local comp2 = true
+    local comp3 = true
+    if child + 1 <= size then
+      comp2 = self.comp(self[root], self[child + 1])
+      comp3 = self.comp(self[child], self[child + 1])
+    end
+    if comp1 and comp2 then
+      break
+    elseif comp3 then
       self[root], self[child] = self[child], self[root]
       root = child
-    elseif child + 1 < size and self.comp(self[child + 1], self[child]) then
+    else
       self[root], self[child + 1] = self[child + 1], self[root]
       root = child + 1
-    else
-      break
     end
     child = 2*root
   end

@@ -50,7 +50,7 @@ function Player:initializeProperties(name, colliderSize, colliderHeight)
   old_initializeProperties(self, 'Player', colliderSize, colliderHeight)
   self.inputOn = true
   self.speed = conf.walkSpeed
-  self.stopOnCollision = conf.stopOnCollision
+  self.interruptableMove = conf.stopOnCollision
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -92,6 +92,9 @@ function Player:moveByInput(dx, dy)
       end
       if autoAnim then
         self:playAnimation(self.idleAnim)
+      end
+      if conf.pixelMovement == false then
+        self:adjustToTile()
       end
     end
     self.autoAnim = autoAnim

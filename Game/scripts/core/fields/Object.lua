@@ -14,6 +14,8 @@ local Sprite = require('core/graphics/Sprite')
 
 -- Alias
 local round = math.round
+local pixel2Tile = math.field.pixel2Tile
+local tile2Pixel = math.field.tile2Pixel
 
 local Object = class(Transformable)
 
@@ -58,7 +60,7 @@ end
 -- Converts current pixel position to tile.
 -- @ret(Tile) current tile
 function Object:getTile()
-  local x, y, h = math.field.pixel2Tile(self.position:coordinates())
+  local x, y, h = pixel2Tile(self.position:coordinates())
   x = round(x)
   y = round(y)
   h = round(h)
@@ -95,6 +97,12 @@ end
 -- Removes this object from the tiles it's occuping.
 function Object:removeFromTiles()
   -- Abstract.
+end
+
+-- Sets this object to the center of its current tile.
+function Object:adjustToTile()
+  local x, y, z = tile2Pixel(self:getTile():coordinates())
+  self:setXYZ(x, y, z)
 end
 
 ---------------------------------------------------------------------------------------------------
