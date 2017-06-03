@@ -9,7 +9,6 @@ An AI that picks the first character and attacks them.
 
 -- Imports
 local ArtificialInteligence = require('core/battle/ArtificialInteligence')
-local ActionInput = require('core/battle/action/ActionInput')
 
 local Berserker = class(ArtificialInteligence)
 

@@ -2,7 +2,7 @@
   {
     "name": "Hero Lancer",
     "persistent": true,
-    "level": 2,
+    "level": 5,
     "typeID": 0,
     "battleCharID": 0,
     "fieldCharID": 0,
@@ -11,7 +11,7 @@
     "money": 0,
     "exp": 0,
     "scriptAI": {
-      "path": "ai/Berserker.lua",
+      "path": "",
       "param": ""
     },
     "build": {
@@ -35,7 +35,7 @@
   {
     "name": "Hero Mage",
     "persistent": true,
-    "level": 2,
+    "level": 5,
     "typeID": 1,
     "battleCharID": 1,
     "fieldCharID": 0,
@@ -70,7 +70,7 @@
   {
     "name": "Green Lancer",
     "persistent": false,
-    "level": 1,
+    "level": 3,
     "typeID": 0,
     "battleCharID": 2,
     "fieldCharID": -1,
@@ -79,7 +79,7 @@
     "money": 0,
     "exp": 5,
     "scriptAI": {
-      "path": "ai/Berserker.lua",
+      "path": "ai/Ofensive.lua",
       "param": ""
     },
     "build": {
@@ -103,7 +103,7 @@
   {
     "name": "Blue Mage",
     "persistent": false,
-    "level": 1,
+    "level": 3,
     "typeID": 1,
     "battleCharID": 3,
     "fieldCharID": -1,
@@ -112,7 +112,7 @@
     "money": 0,
     "exp": 5,
     "scriptAI": {
-      "path": "ai/Berserker.lua",
+      "path": "ai/Chicken.lua",
       "param": ""
     },
     "build": {

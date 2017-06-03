@@ -164,6 +164,27 @@ function SkillAction:calculateEffectResult(input, targetChar, rand)
   return round(bonus + result)
 end
 
+-- Gets the total damage caused. 
+-- Increases if affected an enemy, decreases if affected an ally.
+-- @param(input : ActionInput)
+-- @param(tile : ObjectTile)
+-- @ret(number) the result effect
+function SkillAction:calculateTotalEffectResult(input, tile, rand)
+  local sum = 0
+  for n in mathf.radiusIterator(self.range, tile.x, tile.y) do
+    for char in n.characterList:iterator() do
+      input.target = tile
+      local effect = self:calculateEffectResult(input, char, rand)
+      if char.battler.party ~= input.user.battler.party then
+        sum = sum + effect
+      else
+        sum = sum - effect
+      end
+    end
+  end
+  return sum
+end
+
 ---------------------------------------------------------------------------------------------------
 -- Target Animations
 ---------------------------------------------------------------------------------------------------
