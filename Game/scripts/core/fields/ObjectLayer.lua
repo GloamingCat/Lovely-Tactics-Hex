@@ -10,8 +10,8 @@ There's only one ObjectLayer in the field per height.
 
 -- Imports
 local ObjectTile = require('core/fields/ObjectTile')
-local Obstacle = require('core/fields/Obstacle')
-local Character = require('core/character/Character')
+local Obstacle = require('core/objects/Obstacle')
+local Character = require('core/objects/Character')
 local Sprite = require('core/graphics/Sprite')
 
 -- Alias

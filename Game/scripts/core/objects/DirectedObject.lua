@@ -8,7 +8,7 @@ An object with a direction.
 =============================================================================]]
 
 -- Imports
-local AnimatedObject = require('core/character/AnimatedObject')
+local AnimatedObject = require('core/objects/AnimatedObject')
 
 -- Alias
 local angle2Row = math.angle2Row

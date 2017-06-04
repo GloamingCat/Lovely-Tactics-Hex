@@ -14,7 +14,7 @@ are necessary for every character.
 
 -- Imports
 local Vector = require('core/math/Vector')
-local DirectedObject = require('core/character/DirectedObject')
+local DirectedObject = require('core/objects/DirectedObject')
 local FiberList = require('core/fiber/FiberList')
 
 -- Alias

@@ -10,7 +10,7 @@ It only exists for exploration fields.
 
 -- Imports
 local Vector = require('core/math/Vector')
-local Character = require('core/character/Character')
+local Character = require('core/objects/Character')
 
 -- Alias
 local timer = love.timer

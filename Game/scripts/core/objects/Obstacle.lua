@@ -10,7 +10,7 @@ It may be passable or not, and have an image or not.
 
 -- Imports
 local Vector = require('core/math/Vector')
-local Object = require('core/fields/Object')
+local Object = require('core/objects/Object')
 
 -- Alias
 local tile2Pixel = math.field.tile2Pixel

@@ -9,7 +9,7 @@ Creates and manages battle troops.
 
 -- Imports
 local List = require('core/algorithm/List')
-local Character = require('core/character/Character')
+local Character = require('core/objects/Character')
 local Battler = require('core/battle/Battler')
 local PriorityQueue = require('core/algorithm/PriorityQueue')
 

@@ -14,7 +14,7 @@ local Stack = require('core/algorithm/Stack')
 local Vector = require('core/math/Vector')
 local Renderer = require('core/graphics/Renderer')
 local Field = require('core/fields/Field')
-local Player = require('core/character/Player')
+local Player = require('core/objects/Player')
 local FiberList = require('core/fiber/FiberList')
 local FieldCamera = require('core/fields/FieldCamera')
 

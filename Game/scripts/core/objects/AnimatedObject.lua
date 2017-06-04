@@ -10,7 +10,7 @@ An object with a table of animations.
 -- Imports
 local Sprite = require('core/graphics/Sprite')
 local Animation = require('core/graphics/Animation')
-local Object = require('core/fields/Object')
+local Object = require('core/objects/Object')
 
 -- Alias
 local mathf = math.field
