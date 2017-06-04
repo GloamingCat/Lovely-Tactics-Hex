@@ -8,9 +8,9 @@ An AI that picks the character with the higher chance to be defeated in a single
 =================================================================================================]]
 
 -- Imports
-local ArtificialInteligence = require('core/battle/ArtificialInteligence')
+local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
 local ActionInput = require('core/battle/action/ActionInput')
-local BattleTactics = require('core/algorithm/BattleTactics')
+local BattleTactics = require('core/battle/ai/BattleTactics')
 
 -- Alias
 local expectation = math.randomExpectation

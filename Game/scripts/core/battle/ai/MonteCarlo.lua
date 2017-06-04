@@ -10,8 +10,8 @@ evaluation function.
 
 -- Imports
 local Queue = require('core/algorithm/Queue')
-local BattleState = require('core/battle/BattleState')
-local ArtificialInteligence = require('core/battle/ArtificialInteligence')
+local BattleState = require('core/battle/ai/BattleState')
+local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
 local ActionInput = require('core/battle/action/ActionInput')
 
 -- Alias

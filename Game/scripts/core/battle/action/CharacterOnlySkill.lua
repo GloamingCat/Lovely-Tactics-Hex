@@ -10,7 +10,7 @@ A special type of Skill that only selects tiles with characters on it.
 -- Imports
 local MoveAction = require('core/battle/action/MoveAction')
 local SkillAction = require('core/battle/action/SkillAction')
-local BattleTactics = require('core/algorithm/BattleTactics')
+local BattleTactics = require('core/battle/ai/BattleTactics')
 
 local CharacterOnlySkill = class(SkillAction)
 

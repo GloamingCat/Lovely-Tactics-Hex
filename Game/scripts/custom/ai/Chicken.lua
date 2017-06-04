@@ -8,9 +8,9 @@ An AI that moves to the farest tile that still has a reachable target.
 =================================================================================================]]
 
 -- Imports
-local ArtificialInteligence = require('core/battle/ArtificialInteligence')
+local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
 local ActionInput = require('core/battle/action/ActionInput')
-local BattleTactics = require('core/algorithm/BattleTactics')
+local BattleTactics = require('core/battle/ai/BattleTactics')
 local MoveAction = require('core/battle/action/MoveAction')
 local PathFinder = require('core/algorithm/PathFinder')
 

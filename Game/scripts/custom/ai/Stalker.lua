@@ -8,9 +8,9 @@ An AI that selects a close character and keeps attacking until it's defeated.
 =================================================================================================]]
 
 -- Imports
-local ArtificialInteligence = require('core/battle/ArtificialInteligence')
+local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
 local ActionInput = require('core/battle/action/ActionInput')
-local BattleTactics = require('core/algorithm/BattleTactics')
+local BattleTactics = require('core/battle/ai/BattleTactics')
 
 local Stalker = class(ArtificialInteligence)
 

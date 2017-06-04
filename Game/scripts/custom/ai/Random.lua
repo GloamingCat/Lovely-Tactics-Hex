@@ -9,7 +9,7 @@ targets hiven by the chosen skill.
 =================================================================================================]]
 
 -- Imports
-local ArtificialInteligence = require('core/battle/ArtificialInteligence')
+local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
 
 local Random = class(ArtificialInteligence)
 
