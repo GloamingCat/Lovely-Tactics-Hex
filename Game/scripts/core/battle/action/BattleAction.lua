@@ -27,7 +27,8 @@ local BattleAction = class()
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
-function BattleAction:init(range, radius, colorName)
+function BattleAction:init(timeCost, range, radius, colorName)
+  self.timeCost = timeCost
   self.range = range
   self.radius = radius
   self.colorName = colorName
@@ -67,7 +68,7 @@ function BattleAction:onConfirm(input)
   if input.GUI then
     input.GUI:endGridSelecting()
   end
-  return 0
+  return self.timeCost
 end
 
 -- Called when player chooses a target for the action. 
@@ -99,12 +100,12 @@ end
 
 -- Sets all movable tiles as selectable or not and resets color to default.
 function BattleAction:resetMovableTiles(input)
-  local matrix = BattleManager.distanceMatrix
+  local matrix = BattleManager.pathMatrix
   local h = BattleManager.currentCharacter:getTile().layer.height
   for i = 1, self.field.sizeX do
     for j = 1, self.field.sizeY do
       local tile = self.field:getObjectTile(i, j, h)
-      tile.gui.movable = not isnan(matrix:get(i, j))
+      tile.gui.movable = matrix:get(i, j) ~= nil
     end
   end
 end
@@ -117,7 +118,7 @@ end
 -- By default, paints all movable tile with movable color, and non-movable but 
 -- reachable (within skill's range) tiles with the skill's type color.
 function BattleAction:resetReachableTiles(input)
-  local matrix = BattleManager.distanceMatrix
+  local matrix = BattleManager.pathMatrix
   local charTile = BattleManager.currentCharacter:getTile()
   local h = charTile.layer.height
   local borderTiles = List()
@@ -126,11 +127,11 @@ function BattleAction:resetReachableTiles(input)
     for j = 1, self.field.sizeY do
        -- If this tile is reachable
       local tile = self.field:getObjectTile(i, j, h)
-      tile.gui.reachable = not isnan(matrix:get(i, j))
+      tile.gui.reachable = matrix:get(i, j) ~= nil
       if tile.gui.reachable then
         for neighbor in tile.neighborList:iterator() do
           -- If this tile has any non-reachable neighbors, it's a border tile
-          if isnan(matrix:get(neighbor.x, neighbor.y)) then
+          if matrix:get(neighbor.x, neighbor.y) then
             borderTiles:add(tile)
             break
           end
@@ -260,11 +261,11 @@ end
 -- Artificial Inteligence
 ---------------------------------------------------------------------------------------------------
 
--- Gets the list of all potencial targets, to be used in AI.
+-- Gets the list of all potential targets, to be used in AI.
 -- By default, returns all selectable and reachable tiles.
 -- @param(input : table)
 -- @ret(table) an array of ObjectTiles
-function BattleAction:potencialTargets(input)
+function BattleAction:potentialTargets(input)
   local tiles = {}
   local count = 0
   for tile in self.field:gridIterator() do
@@ -280,7 +281,22 @@ end
 -- @param(input : table)
 -- @ret(ObjectTile) the chosen target tile
 function BattleAction:bestTarget(input)
-  return self:firstTarget(input)
+  return self:potentialTargets(input)[1]
+end
+
+-- Gets the list of all potential tiles to each the user could move before using the skill.
+-- By default, it does not consider any movement.
+-- @param(input : ActionInput)
+-- @ret(table) an array of ObjectTiles
+function BattleAction:potentialMovements(input)
+  return { input.user:getTile() }
+end
+
+-- Estimates the best movement destination for this action, to be used in AI.
+-- @param(input : table)
+-- @ret(ObjectTile) the chosen target tile
+function BattleAction:bestMovement(input)
+  return self:potentialMovements(input)[1]
 end
 
 ---------------------------------------------------------------------------------------------------

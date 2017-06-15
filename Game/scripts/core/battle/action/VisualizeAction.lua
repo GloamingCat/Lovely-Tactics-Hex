@@ -19,7 +19,7 @@ local VisualizeAction = class(BattleAction)
 
 local old_init = VisualizeAction.init
 function VisualizeAction:init()
-  old_init(self, 0, 1)
+  old_init(self, nil, 0, 1)
 end
 
 ---------------------------------------------------------------------------------------------------

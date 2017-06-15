@@ -98,7 +98,7 @@ function BattleTactics.hasReachableTargets(tile, input)
   for i, j in radiusIterator(input.action.range, tile.x, tile.y) do
     if i >= 1 and j >= 1 and i <= field.sizeX and j <= field.sizeY then
       local n = field:getObjectTile(i, j, h)
-      if input.action:isSelectable(input, n) then
+      if n.gui.selectable then
         return true
       end
     end
@@ -110,6 +110,7 @@ end
 -- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
 function BattleTactics.runAway(party, input)
   local queue = PriorityQueue()
+  local mind = BattleTactics.enemyDistance(party, input.user:getTile())
   for tile in FieldManager.currentField:gridIterator() do
     if tile.gui.movable then
       local valid = true
@@ -117,7 +118,10 @@ function BattleTactics.runAway(party, input)
         valid = BattleTactics.hasReachableTargets(tile, input)
       end
       if valid then
-        queue:enqueue(tile, -BattleTactics.enemyDistance(party, tile))
+        local d = BattleTactics.enemyDistance(party, tile)
+        if d > mind then
+          queue:enqueue(tile, -d)
+        end
       end
     end
   end

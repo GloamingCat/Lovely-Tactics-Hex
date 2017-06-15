@@ -13,6 +13,7 @@ local BattleAction = require('core/battle/action/BattleAction')
 local MoveAction = require('core/battle/action/MoveAction')
 local PathFinder = require('core/algorithm/PathFinder')
 local PopupText = require('core/battle/PopupText')
+local BattleTactics = require('core/battle/ai/BattleTactics')
 
 -- Alias
 local max = math.max
@@ -44,7 +45,7 @@ local old_init = SkillAction.init
 function SkillAction:init(skillID)
   local data = Database.skills[skillID + 1]
   self.data = data
-  local color
+  local color = nil
   -- Skill type
   if data.type == 0 then
     color = 'general'
@@ -53,7 +54,7 @@ function SkillAction:init(skillID)
   elseif data.type == 2 then
     color = 'support'
   end
-  old_init(self, data.range, data.radius, color)
+  old_init(self, data.timeCost, data.range, data.radius, color)
   -- Formulae
   if data.basicResult ~= '' then
     self.calculateBasicResult = loadformula(data.basicResult, 
@@ -249,15 +250,35 @@ function SkillAction:onConfirm(input)
     --path = path or PathFinder.estimateBestPath(moveAction, input.user, input.target)
     input.user:walkPath(path)
   end
-  local battler = input.user.battler
-  if path.lastStep:isControlZone(battler) then
-    battler.currentSteps = 0
+  input.user.battler:onMove(path)
+  return self.timeCost
+end
+
+---------------------------------------------------------------------------------------------------
+-- AI
+---------------------------------------------------------------------------------------------------
+
+-- Overrides BattleAction:potentialTargets.
+local old_potentialTargets = SkillAction.potentialTargets
+function SkillAction:potentialTargets(input)
+  if self.radius > 1 then
+    return BattleTactics.areaTargets(input):toList()
   else
-    battler.currentSteps = battler.currentSteps - path.totalCost
+    return BattleTactics.closestCharacters(input):toList()
   end
-  local cost = self.data.timeCost * BattleManager.turnLimit / 200
-  battler:decrementTurnCount(ceil(cost))
-  return 1
+end
+
+-- Overrides BattleAction:potentialMovements.
+local old_potentialMovements = SkillAction.potentialMovements
+function SkillAction:potentialMovements(input)
+  if self.range > 1 then
+    local queue = BattleTactics.runAway(input.user.battler.party, input)
+    local list = queue:toList()
+    list:add(input.user:getTile())
+    return queue:toList()  
+  else
+    return old_potentialMovements(self, input)
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -290,6 +311,7 @@ function SkillAction:simulate(input)
     --path = path or PathFinder.estimateBestPath(moveAction, input.user, input.target)
     input.user:moveToTile(path.lastStep)
   end
+  input.user.battler:onMove(path)
 end
 
 return SkillAction

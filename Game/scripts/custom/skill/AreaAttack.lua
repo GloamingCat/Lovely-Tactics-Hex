@@ -48,8 +48,4 @@ function AreaAttack:potentialTargets(input)
   return tiles
 end
 
-function AreaAttack:bestTarget()
-  
-end
-
 return AreaAttack

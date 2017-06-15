@@ -25,8 +25,8 @@ function BattleState:init()
 end
 
 -- Executes an input and generates a new state.
-function BattleState:applyInput(input)
-  input.action:simulate(input)
+function BattleState:applyMacro(macro)
+  macro:simulate()
   return BattleState()
 end
 
@@ -40,3 +40,5 @@ function BattleState:revert()
     char.position.z = state.z
   end
 end
+
+return BattleState

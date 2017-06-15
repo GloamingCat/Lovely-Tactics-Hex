@@ -31,13 +31,13 @@ local PathFinder = {}
 -- All destinations
 ---------------------------------------------------------------------------------------------------
 
--- Calculates that a distance matrix from the initial tile.
+-- Calculates the path matrix from the initial tile.
 -- @param(action : MoveAction) the move action that implements these methods:
 --    isPassableBetween(initial, final)
 --    getDistanceBetween(initial, final)
 --    isStandable(tile)
 -- @param(initial : Tile) the start tile (optional)
--- @ret(Matrix) the distance matrix
+-- @ret(Matrix) the path matrix
 function PathFinder.dijkstra(action, user, initial)
   local field = FieldManager.currentField
   user = user or BattleManager.currentCharacter
@@ -48,8 +48,8 @@ function PathFinder.dijkstra(action, user, initial)
   minx = max (initial.x + minx, 1);
   maxx = min (initial.x + maxx, field.sizeX);
   
-  local distances = Matrix2(field.sizeX, field.sizeY, md + 1)
-  distances:set(0, initial.x, initial.y)
+  local matrix = Matrix2(field.sizeX, field.sizeY)
+  matrix:set(Path(initial), initial.x, initial.y)
   
   local queue = PriorityQueue()
   queue:enqueue (initial, 0)
@@ -64,11 +64,12 @@ function PathFinder.dijkstra(action, user, initial)
 				maxy = min (initial.y + maxy, field.sizeY);
         if j >= miny and j <= maxy then
           if action:isPassableBetween(current, neighbor, user) then
-            local neighborDistance = action:getDistanceBetween(current, neighbor, user)
-            local pathDistance = distances:get(current.x, current.y) + neighborDistance
-            if distances:get(i, j) > pathDistance then
-              distances:set(pathDistance, i, j)
-              queue:enqueue(neighbor, pathDistance) 
+            local d = action:getDistanceBetween(current, neighbor, user)
+            local oldPath = matrix:get(i, j)
+            local newPath = matrix:get(current.x, current.y):addStep(neighbor, d)
+            if newPath.totalCost <= md and (oldPath == nil or newPath.totalCost < oldPath.totalCost) then
+              matrix:set(newPath, i, j)
+              queue:enqueue(neighbor, newPath.totalCost)
             end
           end
         end
@@ -78,13 +79,13 @@ function PathFinder.dijkstra(action, user, initial)
   local grid = initial.layer.grid
   for i = 1, field.sizeX do
     for j = 1, field.sizeY do
-      if not action:isStandable(grid[i][j], user) or distances:get(i, j) > md then
-        distances:set(nan, i, j)
+      if not action:isStandable(grid[i][j], user) then
+        matrix:set(nil, i, j)
       end
     end
   end
-  distances:set(nan, initial.x, initial.y)
-  return distances
+  --matrix:set(nil, initial.x, initial.y)
+  return matrix
 end
 
 ---------------------------------------------------------------------------------------------------

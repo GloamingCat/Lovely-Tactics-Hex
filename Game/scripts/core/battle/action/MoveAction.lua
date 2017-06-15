@@ -26,9 +26,8 @@ local MoveAction = class(BattleAction)
 
 -- Constructor.
 local old_init = MoveAction.init
-function MoveAction:init(range, initialTile)
-  old_init(self, range or 0, 1)
-  self.currentTarget = initialTile
+function MoveAction:init(range)
+  old_init(self, -1, range or 0, 1)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -50,15 +49,10 @@ function MoveAction:onConfirm(input)
   FieldManager.renderer:moveToObject(input.user, nil, true)
   FieldManager.renderer.focusObject = input.user
   local path = PathFinder.findPath(self, input.user, input.target)
-  local battler = input.user.battler
-  if path.lastStep:isControlZone(battler) then
-    battler.currentSteps = 0
-  else
-    battler.currentSteps = battler.currentSteps - path.totalCost
-  end
   input.user:walkPath(path)
-  BattleManager:updateDistanceMatrix()
-  return -1
+  input.user.battler:onMove(path)
+  BattleManager:updatePathMatrix()
+  return self.timeCost
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -122,8 +122,8 @@ function TurnWindow:moveEnabled(button)
   if user.currentSteps <= 0 then
     return false
   end
-  for distance in BattleManager.distanceMatrix:iterator() do
-    if distance <= user.currentSteps and distance > 0 then
+  for path in BattleManager.pathMatrix:iterator() do
+    if path and path.totalCost <= user.currentSteps then
       return true
     end
   end
@@ -142,7 +142,7 @@ function TurnWindow:itemEnabled(button)
   return not user.inventory:isEmpty()
 end
 
--- Trade condition. Enabled if there are any character nearby that have items.
+-- Trade condition. Enabled if there are any characters nearby that have items.
 function TurnWindow:tradeEnabled()
   -- TODO
   return false

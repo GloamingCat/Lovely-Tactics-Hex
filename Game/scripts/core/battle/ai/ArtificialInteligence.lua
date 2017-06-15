@@ -20,7 +20,7 @@ local ArtificialInteligence = class()
 -- @param(user : Character)
 -- @ret(number)
 function ArtificialInteligence:nextAction(user)
-  return 0
+  return 0 -- Abstract.
 end
 
 -- @param(character : Character)

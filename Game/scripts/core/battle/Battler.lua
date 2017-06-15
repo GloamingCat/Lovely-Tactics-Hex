@@ -14,10 +14,13 @@ local Inventory = require('core/battle/Inventory')
 
 -- Alias
 local max = math.max
+local ceil = math.ceil
+local newArray = util.newArray
 
 -- Constants
 local attConfig = Config.attributes
 local elementCount = #Config.elements
+local turnLimit = Battle.turnLimit
 
 local Battler = class()
 
@@ -32,6 +35,7 @@ function Battler:init(data, party)
   self:createAttributes(data.attributes, data.level, data.build)
   self.currentHP = data.currentHP or self.maxHP()
   self.currentSP = data.currentSP or self.maxSP()
+  self.currentSteps = 0
   self.data = data
   self.turnCount = 0
   self.inventory = Inventory(self, data.items)
@@ -55,14 +59,9 @@ end
 -- @param(elements : table) array of element factors 
 --  (in percentage, 100 is neutral)
 function Battler:setElements(elements)
-  local e = {}
+  local e = newArray(elementCount, 0)
   for i = 1, #elements do
     e[elements[i].id + 1] = elements[i].value - 100
-  end
-  for i = 1, elementCount do
-    if not e[i] then
-      e[i] = 0
-    end
   end
   self.elementFactors = e
 end
@@ -79,7 +78,7 @@ function Battler:setSkillList(skills, attackID)
   self.attackSkill = SkillAction.fromData(attackID)
 end
 
--- Creates and sets and table of portraits.
+-- Creates and sets a table of portraits.
 -- @param(charID : number) the battler's character ID
 function Battler:setPortraits(charID)
   self.portraits = {}
@@ -156,7 +155,7 @@ end
 -- Increments turn count by the turn attribute.
 -- @param(limit : number) the turn limit to start the turn
 -- @ret(boolean) true if the limit was reached, false otherwise
-function Battler:incrementTurnCount(limit, time)
+function Battler:incrementTurnCount(time)
   self.turnCount = self.turnCount + self.turn() * time
 end
 
@@ -176,10 +175,34 @@ end
 function Battler:onTurnEnd(iterations)
 end
 
+-- Callback for when this battler's turn starts.
+function Battler:onSelfTurnStart(iterations)
+  self.currentSteps = self.steps()
+end
+
+-- Callback for when this battler's turn ends.
+function Battler:onSelfTurnEnd(iterations, actionCost)
+  local stepCost = self.currentSteps / self.steps()
+  self:decrementTurnCount(ceil((stepCost + actionCost) * turnLimit / 2))
+end
+
+-------------------------------------------------------------------------------
+-- Other callbacks
+-------------------------------------------------------------------------------
+
 -- Callback for when the battle ends.
 function Battler:onBattleEnd()
   if self.data.persistent then
     -- TODO: update battler's data
+  end
+end
+
+-- Updates
+function Battler:onMove(path)
+  if path.lastStep:isControlZone(self) then
+    self.currentSteps = 0
+  else
+    self.currentSteps = self.currentSteps - path.totalCost
   end
 end
 
@@ -226,6 +249,7 @@ function Battler:getState()
   return {
     hp = self.currentHP,
     sp = self.currentSP,
+    steps = self.currentSteps,
     attAdd = attAdd,
     attMul = attMul,
     turnCount = self.turnCount
@@ -243,6 +267,7 @@ function Battler:setState(state)
   end
   self.currentHP = state.hp
   self.currentSP = state.sp
+  self.currentSteps = state.steps
   self.turnCount = state.turnCount
 end
 

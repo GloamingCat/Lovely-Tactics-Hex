@@ -16,7 +16,6 @@ local TileGraphics = require('core/fields/TileGUI')
 
 -- Alias
 local Random = love.math.random
-local ceil = math.ceil
 local yield = coroutine.yield
 local time = love.timer.getDelta
 
@@ -105,7 +104,7 @@ function BattleManager:clear()
   if self.cursor then
     self.cursor:destroy()
   end
-  self.distanceMatrix = nil
+  self.pathMatrix = nil
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -113,20 +112,21 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- [COROUTINE] Searchs for the next character turn and starts.
+-- @param(ignoreAnim : boolean) true to skip bar increasing animation
 -- @ret(Character) the next turn's character
 -- @ret(number) the number of iterations it took from the previous turn
-function BattleManager:getNextTurn()
+function BattleManager:getNextTurn(ignoreAnim)
   self.turnQueue = TroopManager:getTurnQueue(turnLimit)
   local currentCharacter, iterations = self.turnQueue:front()
-  if Battle.turnBar then
+  if Battle.turnBar and not ignoreAnim then
     local i = 0
     while i < iterations do
       i = i + time() * 60
-      TroopManager:incrementTurnCount(turnLimit, time() * 60)
+      TroopManager:incrementTurnCount(time() * 60)
       yield()
     end
   else
-    TroopManager:incrementTurnCount(turnLimit, iterations)
+    TroopManager:incrementTurnCount(iterations)
   end
   return currentCharacter, iterations
 end
@@ -137,8 +137,8 @@ end
 function BattleManager:runTurn(char, iterations)
   -- Start turn
   self.currentCharacter = char
-  char.battler.currentSteps = char.battler.steps()
-  self:updateDistanceMatrix()
+  char.battler:onSelfTurnStart()
+  self:updatePathMatrix()
   for bc in TroopManager.characterList:iterator() do
     bc.battler:onTurnStart(iterations)
   end
@@ -146,14 +146,12 @@ function BattleManager:runTurn(char, iterations)
   local AI = self.currentCharacter.battler.AI
   FieldManager.renderer:moveToObject(char, nil, true)
   if AI and not self.training then
-    actionCost = AI:nextAction(self.currentCharacter)
+    actionCost = AI:nextAction(iterations, char)
   else
     actionCost = GUIManager:showGUIForResult('battle/BattleGUI')
   end
   -- End Turn
-  local battler = self.currentCharacter.battler
-  local stepCost = battler.currentSteps / battler.steps()
-  battler:decrementTurnCount(ceil((stepCost + actionCost) * turnLimit / 2))
+  self.currentCharacter.battler:onSelfTurnEnd(iterations, actionCost, turnLimit)
   for bc in TroopManager.characterList:iterator() do
     bc.battler:onTurnEnd(iterations)
   end
@@ -161,9 +159,9 @@ function BattleManager:runTurn(char, iterations)
 end
 
 -- Recalculates the distance matrix.
-function BattleManager:updateDistanceMatrix()
+function BattleManager:updatePathMatrix()
   local moveAction = MoveAction()
-  self.distanceMatrix = PathFinder.dijkstra(moveAction, self.currentCharacter)
+  self.pathMatrix = PathFinder.dijkstra(moveAction, self.currentCharacter)
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -99,13 +99,13 @@ function TroopManager:getCharacter(battler)
 end
 
 -- Increments all character's turn count.
--- @param(turnLimit : number) the turn count to start the turn
+-- @param(time : number) the number of time iterations (1 by default)
 -- @ret(Character) the character that reached turn limit (nil if none did)
-function TroopManager:incrementTurnCount(turnLimit, time)
+function TroopManager:incrementTurnCount(time)
   time = time or 1
   for bc in self.characterList:iterator() do
     if bc.battler:isAlive() then
-      bc.battler:incrementTurnCount(turnLimit, time)
+      bc.battler:incrementTurnCount(time)
     end
   end
 end

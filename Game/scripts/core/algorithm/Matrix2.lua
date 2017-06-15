@@ -35,7 +35,7 @@ end
 
 function Matrix2:iterator()
   local i = 0
-  local size = #self
+  local size = self.width * self.height
   return function()
     i = i + 1
     while self[i] == nil and i <= size do
