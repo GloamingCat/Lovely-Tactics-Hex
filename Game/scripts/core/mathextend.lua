@@ -15,6 +15,7 @@ local deg = math.deg
 local rad = math.rad
 local atan2 = math.atan2
 local abs = math.abs
+local pow = math.pow
 
 -- Constants
 local E = 0.000001
@@ -43,11 +44,11 @@ end
 function math.mod(x, y)
   return ((x % y) + y) % y
 end
-local mod = math.mod
 
 -- Returns a number between 1 and y.
 -- @param(x : number) the value possiblity out of the interval
 -- @param(y : number) the max value
+local mod = math.mod
 function math.mod1(x, y)
   return mod(x, y) + 1
 end
@@ -83,6 +84,39 @@ end
 -- @ret(boolean) true if they are almost equal, false otherwise
 function math.almostEquals(x, y)
   return abs(x - y) < E
+end
+
+-- Multiples two array of numbers (must have same size).
+-- @param(a : table) first array
+-- @param(b : table) second array
+-- @ret(number) the result of the multiplication
+function math.mulVectors(a, b)
+  assert(#a == #b, "Cannot multiply vectors: " .. #a .. " " .. #b)
+  local m = 0
+  for i = 1, #a do
+    m = m + a[i]*b[i]
+  end
+  return m
+end
+
+---------------------------------------------------------------------------------------------------
+-- Normalization
+---------------------------------------------------------------------------------------------------
+
+-- Euler constant.
+math.e = 2.718281828459045
+
+-- Sigmoid function to normalize input value.
+-- @param(x : number) input value
+local euler = math.e
+function math.sigmoid(x)
+  return 1 / (pow(euler, -x) + 1)
+end
+
+-- Derivative of the sigmoid function.
+-- @param(x : number) input value
+function math.dsigmoid(x)
+  return 1 - x*x
 end
 
 ---------------------------------------------------------------------------------------------------

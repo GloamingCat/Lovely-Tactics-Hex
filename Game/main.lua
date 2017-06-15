@@ -8,6 +8,7 @@ Implements basic game callbacks (load, update and draw).
 require('core/class')
 require('core/override')
 require('core/mathextend')
+require('core/util')
 require('core/inputcalls')
 require('core/globals')
 
