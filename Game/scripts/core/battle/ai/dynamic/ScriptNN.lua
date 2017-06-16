@@ -110,8 +110,15 @@ function ScriptNN:onBattleEnd(user)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Inputs
+-- Default Inputs
 ---------------------------------------------------------------------------------------------------
+
+-- Generates the input vector from the current battle state.
+-- @ret(table) array of functions that generate each input value
+function ScriptNN:createInputs()
+  return {self.userHP, self.userSP, self.allyHP, self.allySP, 
+    self.enemyHP, self.enemySP, self.bias}
+end
 
 function ScriptNN:userHP(user)
   return (user.battler.currentHP / user.battler.maxHP())
@@ -126,7 +133,7 @@ function ScriptNN:allyHP(user)
   for char in TroopManager.characterList:iterator() do
     if char.battler.party == user.battler.party then
       s = s + user.battler.currentHP
-      ms = ms + user.battler.HP()
+      ms = ms + user.battler.maxHP()
     end
   end
   return s / ms
@@ -137,7 +144,7 @@ function ScriptNN:allySP(user)
   for char in TroopManager.characterList:iterator() do
     if char.battler.party == user.battler.party then
       s = s + user.battler.currentSP
-      ms = ms + user.battler.SP()
+      ms = ms + user.battler.maxSP()
     end
   end
   return s / ms
@@ -148,7 +155,7 @@ function ScriptNN:enemyHP(user)
   for char in TroopManager.characterList:iterator() do
     if char.battler.party ~= user.battler.party then
       s = s + user.battler.currentHP
-      ms = ms + user.battler.HP()
+      ms = ms + user.battler.maxHP()
     end
   end
   return s / ms
@@ -159,7 +166,7 @@ function ScriptNN:enemySP(user)
   for char in TroopManager.characterList:iterator() do
     if char.battler.party ~= user.battler.party then
       s = s + user.battler.currentSP
-      ms = ms + user.battler.SP()
+      ms = ms + user.battler.maxSP()
     end
   end
   return s / ms
@@ -167,13 +174,6 @@ end
 
 function ScriptNN:bias()
   return 1
-end
-
--- Generates the input vector from the current battle state.
--- @ret(table) array of functions that generate each input value
-function ScriptNN:createInputs()
-  return {self.userHP, self.userSP, self.allyHP, self.allySP, 
-    self.enemyHP, self.enemySP, self.bias}
 end
 
 return ScriptNN

@@ -112,8 +112,8 @@
     "money": 0,
     "exp": 5,
     "scriptAI": {
-      "path": "ai/Chicken.lua",
-      "param": ""
+      "path": "ai/ScriptNN.lua",
+      "param": "train"
     },
     "build": {
       "path": "build/Mage.lua",

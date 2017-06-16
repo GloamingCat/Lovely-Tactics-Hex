@@ -1,27 +1,28 @@
 
 --[[===============================================================================================
 
-Chicken AI
+HideRule
 ---------------------------------------------------------------------------------------------------
-An AI that moves to the farest tile that still has a reachable target.
+The rule for an AI that moves to the farest tile that still has a reachable target.
 
 =================================================================================================]]
 
 -- Imports
-local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
 local ActionInput = require('core/battle/action/ActionInput')
 local BattleTactics = require('core/battle/ai/BattleTactics')
 local MoveAction = require('core/battle/action/MoveAction')
 local PathFinder = require('core/algorithm/PathFinder')
+local ScriptRule = require('core/battle/ai/dynamic/ScriptRule')
 
--- Alias
-local expectation = math.randomExpectation
+local HideRule = class(ScriptRule)
 
-local Chicken = class(ArtificialInteligence)
+---------------------------------------------------------------------------------------------------
+-- Execution
+---------------------------------------------------------------------------------------------------
 
--- Overrides ArtificialInteligence:nextAction.
-function Chicken:nextAction(user)
-  local skill = user.battler.attackSkill
+-- Overrides ScriptRule:execute.
+function HideRule:execute(user)
+  local skill = self.action
   local input = ActionInput(skill, user)
   skill:onSelect(input)
   local queue = BattleTactics.runAway(user.battler.party, input)
@@ -41,4 +42,4 @@ function Chicken:nextAction(user)
   return skill:onConfirm(input)
 end
 
-return Chicken
+return HideRule

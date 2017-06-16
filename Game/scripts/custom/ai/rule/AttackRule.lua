@@ -1,25 +1,29 @@
 
 --[[===============================================================================================
 
-Ofensive AI
+AttackRule
 ---------------------------------------------------------------------------------------------------
-An AI that picks the character with the higher chance to be defeated in a single attack.
+The rule for an AI that moves to the safest tile that still has a reachable target.
 
 =================================================================================================]]
 
 -- Imports
-local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
 local ActionInput = require('core/battle/action/ActionInput')
 local BattleTactics = require('core/battle/ai/BattleTactics')
+local ScriptRule = require('core/battle/ai/dynamic/ScriptRule')
 
 -- Alias
 local expectation = math.randomExpectation
 
-local Ofensive = class(ArtificialInteligence)
+local AttackRule = class(ScriptRule)
 
--- Overrides ArtificialInteligence:nextAction.
-function Ofensive:nextAction(user)
-  local skill = user.battler.attackSkill
+---------------------------------------------------------------------------------------------------
+-- Execution
+---------------------------------------------------------------------------------------------------
+
+-- Overrides ScriptRule:execute.
+function AttackRule:execute(user)
+  local skill = self.action
   local input = ActionInput(skill, user)
   skill:onSelect(input)
   local bestTile = nil
@@ -45,4 +49,4 @@ function Ofensive:nextAction(user)
   return input.action:onConfirm(input)
 end
 
-return Ofensive
+return AttackRule

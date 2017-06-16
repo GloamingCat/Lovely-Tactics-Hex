@@ -15,6 +15,7 @@ local PathFinder = require('core/algorithm/PathFinder')
 -- Alias
 local expectation = math.randomExpectation
 local radiusIterator = math.field.radiusIterator
+local min = math.min
 
 local BattleTactics = {}
 
@@ -70,22 +71,55 @@ function BattleTactics.areaTargets(input)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Run Action
+-- Hide / Run Away
 ---------------------------------------------------------------------------------------------------
 
 -- @param(party : number) character's party
--- @param(tile : ObjectTile) the tile to check
--- @ret(number) the sum of the distances to all enemies
-function BattleTactics.enemyDistance(party, tile)
-  local getDistance = math.field.tileDistance
-  local d = 0
-  for char in TroopManager.characterList:iterator() do
-    if char.battler and char.battler.party ~= party then
-      local t = char:getTile()
-      d = d + getDistance(tile.x, tile.y, t.x, t.y)
+-- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
+function BattleTactics.runAway(party, input)
+  return BattleTactics.hide(party, input, BattleTactics.minEnemyDistance)
+end
+
+-- @param(party : number) character's party
+-- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
+function BattleTactics.runToAllies(party, input)
+  return BattleTactics.hide(party, input, BattleTactics.allyDistance)
+end
+
+-- @param(party : number) character's party
+-- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
+function BattleTactics.runFromEnemies(party, input)
+  return BattleTactics.hide(party, input, BattleTactics.enemyDistance)
+end
+
+-- @param(party : number) character's party
+-- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
+function BattleTactics.runFromEnemiesToAllies(party, input)
+  return BattleTactics.hide(party, input, BattleTactics.partyDistance)
+end
+
+-- @param(party : number) character's party
+-- @param(input : ActionInput)
+-- @param(getDistance : function) calculates the total distance
+-- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
+function BattleTactics.hide(party, input, getDistance)
+  local queue = PriorityQueue()
+  local mind = getDistance(party, input.user:getTile())
+  for tile in FieldManager.currentField:gridIterator() do
+    if tile.gui.movable then
+      local valid = true
+      if input then
+        valid = BattleTactics.hasReachableTargets(tile, input)
+      end
+      if valid then
+        local d = getDistance(party, tile)
+        if d > mind then
+          queue:enqueue(tile, -d)
+        end
+      end
     end
   end
-  return d
+  return queue
 end
 
 -- Checks if a given tile has reachable target for the given skill.
@@ -106,26 +140,64 @@ function BattleTactics.hasReachableTargets(tile, input)
   return false
 end
 
+---------------------------------------------------------------------------------------------------
+-- Distance calculators
+---------------------------------------------------------------------------------------------------
+
+-- Sum of the distances from the enemies.
 -- @param(party : number) character's party
--- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
-function BattleTactics.runAway(party, input)
-  local queue = PriorityQueue()
-  local mind = BattleTactics.enemyDistance(party, input.user:getTile())
-  for tile in FieldManager.currentField:gridIterator() do
-    if tile.gui.movable then
-      local valid = true
-      if input ~= nil then
-        valid = BattleTactics.hasReachableTargets(tile, input)
-      end
-      if valid then
-        local d = BattleTactics.enemyDistance(party, tile)
-        if d > mind then
-          queue:enqueue(tile, -d)
-        end
-      end
+-- @param(tile : ObjectTile) the tile to check
+-- @ret(number) the sum of the distances to all enemies
+function BattleTactics.minEnemyDistance(party, tile)
+  local getDistance = math.field.tileDistance
+  local d = -math.huge
+  for char in TroopManager.characterList:iterator() do
+    if char.battler and char.battler.party ~= party then
+      local t = char:getTile()
+      d = min(d, getDistance(tile.x, tile.y, t.x, t.y))
     end
   end
-  return queue
+  return d
+end
+
+-- Sum of the distances from the allies (negative).
+-- @param(party : number) character's party
+-- @param(tile : ObjectTile) the tile to check
+-- @ret(number) the sum of the distances to all enemies
+function BattleTactics.allyDistance(party, tile)
+  local getDistance = math.field.tileDistance
+  local d = 0
+  for char in TroopManager.characterList:iterator() do
+    if char.battler and char.battler.party == party then
+      local t = char:getTile()
+      d = d - getDistance(tile.x, tile.y, t.x, t.y)
+    end
+  end
+  return d
+end
+
+-- Sum of the distances from the enemies.
+-- @param(party : number) character's party
+-- @param(tile : ObjectTile) the tile to check
+-- @ret(number) the sum of the distances to all enemies
+function BattleTactics.enemyDistance(party, tile)
+  local getDistance = math.field.tileDistance
+  local d = 0
+  for char in TroopManager.characterList:iterator() do
+    if char.battler and char.battler.party ~= party then
+      local t = char:getTile()
+      d = d + getDistance(tile.x, tile.y, t.x, t.y)
+    end
+  end
+  return d
+end
+
+-- Sum of the distance from enemies (positive) and allies (negative).
+-- @param(party : number) character's party
+-- @param(tile : ObjectTile) the tile to check
+-- @ret(number) the sum of the distances to all enemies
+function BattleTactics.partyDistance(party, tile)
+  return BattleTactics.enemyDistance(party, tile) + BattleTactics.allyDistance(party, tile)
 end
 
 return BattleTactics

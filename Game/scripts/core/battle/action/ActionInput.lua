@@ -38,14 +38,18 @@ end
 function ActionInput:execute()
   if self.moveTarget then
     local moveAction = MoveAction()
-    local user = self.input.user
+    local user = self.user
     local path = PathFinder.findPath(moveAction, user, self.moveTarget, nil, true)
     local cost = path.totalCost
-    self.input.user:walkPath(path)
-    self.input.user.battler:onMove(path)
+    user:walkPath(path)
+    user.battler:onMove(path)
   end
-  self.input.action:onSelect(self.input)
-  return self.input.action:onConfirm(self.input)
+  if self.action then
+    self.action:onSelect(self)
+    return self.action:onConfirm(self)
+  else
+    return 0
+  end
 end
 
 -- Simulates the action (executes without animations, within the same frame).
@@ -56,10 +60,14 @@ function ActionInput:simulate()
     local user = self.input.user
     local path = PathFinder.findPath(moveAction, user, self.moveTarget, nil, true)
     local cost = path.totalCost
-    self.input.user:moveToTile(self.moveTarget)
-    self.input.user.battler:onMove(path)
+    user:moveToTile(self.moveTarget)
+    user.battler:onMove(path)
   end
-  return self.input.action:simulate(self.input)
+  if self.action then
+    return self.action:simulate(self)
+  else
+    return 0
+  end
 end
 
 return ActionInput
