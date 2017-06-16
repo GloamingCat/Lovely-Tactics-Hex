@@ -79,7 +79,7 @@
     "money": 0,
     "exp": 5,
     "scriptAI": {
-      "path": "ai/Ofensive.lua",
+      "path": "ai/script/Ofensive.lua",
       "param": ""
     },
     "build": {
@@ -112,7 +112,7 @@
     "money": 0,
     "exp": 5,
     "scriptAI": {
-      "path": "ai/ScriptNN.lua",
+      "path": "ai/script/Hidder.lua",
       "param": "train"
     },
     "build": {

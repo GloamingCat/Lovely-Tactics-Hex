@@ -40,9 +40,10 @@ end
 
 -- Executes next action of the current character, when it's the character's turn.
 -- By default, just skips turn, with no time loss.
+-- @param(it : number) the number of iterations since last turn
 -- @param(user : Character)
 -- @ret(number)
-function ArtificialInteligence:nextAction(user)
+function ArtificialInteligence:nextAction(it, user)
   return 0 -- Abstract.
 end
 

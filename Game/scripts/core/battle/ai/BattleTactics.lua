@@ -150,7 +150,7 @@ end
 -- @ret(number) the sum of the distances to all enemies
 function BattleTactics.minEnemyDistance(party, tile)
   local getDistance = math.field.tileDistance
-  local d = -math.huge
+  local d = math.huge
   for char in TroopManager.characterList:iterator() do
     if char.battler and char.battler.party ~= party then
       local t = char:getTile()

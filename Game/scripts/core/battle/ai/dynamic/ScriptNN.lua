@@ -50,7 +50,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides ArtificialInteligence:nextAction.
-function ScriptNN:nextAction(user)
+function ScriptNN:nextAction(it, user)
   local inputs = {}
   for i = 1, self.inputs do
     inputs[i] = self.inputs[i](self, user)

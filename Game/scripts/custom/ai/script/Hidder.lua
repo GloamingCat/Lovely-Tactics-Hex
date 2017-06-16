@@ -21,9 +21,9 @@ local Hidder = class(ArtificialInteligence)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides ArtificialInteligence:nextAction.
-function Hidder:nextAction(user)
-  local rule = HideRule(user.battler.attackSkill)  
-  return rule:execute(user)
+function Hidder:nextAction(it, user)
+  local rule = HideRule(nil, user.battler.attackSkill) 
+  return rule:execute(user) or 0
 end
 
 return Hidder

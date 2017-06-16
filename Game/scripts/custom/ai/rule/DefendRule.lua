@@ -27,6 +27,10 @@ function DefendRule:execute(user)
   skill:onSelect(input)
   local queue = BattleTactics.runFromEnemiesToAllies(user.battler.party, input)
   
+  if queue:isEmpty() then
+    return nil
+  end
+  
   -- Find tile to move
   input.target = queue:front()
   input.action = MoveAction()

@@ -21,9 +21,9 @@ local Defensive = class(ArtificialInteligence)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides ArtificialInteligence:nextAction.
-function Defensive:nextAction(user)
-  local rule = DefendRule(user.battler.attackSkill)  
-  return rule:execute(user)
+function Defensive:nextAction(it, user)
+  local rule = DefendRule(nil, user.battler.attackSkill)  
+  return rule:execute(user) or 0
 end
 
 return Defensive

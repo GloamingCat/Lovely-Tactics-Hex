@@ -18,9 +18,9 @@ local Berserker = class(ArtificialInteligence)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides ArtificialInteligence:nextAction.
-function Berserker:nextAction(user)
-  local rule = RushRule(user.battler.attackSkill)
-  return rule:execute(user)
+function Berserker:nextAction(it, user)
+  local rule = RushRule(nil, user.battler.attackSkill)
+  return rule:execute(user) or 0
 end
 
 return Berserker

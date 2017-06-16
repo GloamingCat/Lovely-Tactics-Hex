@@ -21,9 +21,9 @@ local Chicken = class(ArtificialInteligence)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides ArtificialInteligence:nextAction.
-function Chicken:nextAction(user)
+function Chicken:nextAction(it, user)
   local rule = RunAwayRule()  
-  return rule:execute(user)
+  return rule:execute(user) or 0
 end
 
 return Chicken

@@ -14,7 +14,7 @@ local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
 local Random = class(ArtificialInteligence)
 
 -- Overrides ArtificialInteligence:nextAction.
-function Random:nextAction(user)
+function Random:nextAction(it, user)
   local action = self:getRandomAction(user)
   return self:executeActionRandom(action, user)
 end

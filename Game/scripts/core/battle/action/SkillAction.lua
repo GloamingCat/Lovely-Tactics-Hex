@@ -44,6 +44,7 @@ local old_init = SkillAction.init
 function SkillAction:init(skillID)
   local data = Database.skills[skillID + 1]
   self.data = data
+  self.skillID = skillID
   local color = nil
   -- Skill type
   if data.type == 0 then
@@ -90,7 +91,7 @@ end
 -- Converting to string.
 -- @ret(string) a string representation
 function SkillAction:__tostring()
-  return 'SkillAction: ' .. self.data.id
+  return 'SkillAction (' .. self.skillID .. ': ' .. self.data.name .. ')'
 end
 
 ---------------------------------------------------------------------------------------------------

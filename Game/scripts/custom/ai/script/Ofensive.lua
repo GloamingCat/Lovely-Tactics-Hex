@@ -18,9 +18,9 @@ local Ofensive = class(ArtificialInteligence)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides ArtificialInteligence:nextAction.
-function Ofensive:nextAction(user)
-  local rule = AttackRule(user.battler.attackSkill)
-  return rule:execute(user)
+function Ofensive:nextAction(it, user)
+  local rule = AttackRule(nil, user.battler.attackSkill)
+  return rule:execute(user) or 0
 end
 
 return Ofensive

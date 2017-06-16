@@ -3,8 +3,8 @@
 
 SimpleNN
 ---------------------------------------------------------------------------------------------------
-A ScriptNN that generates each rule from user's skill list considering Rusher, Chicken, Ofensive,
-Defensive and Wait rules.
+A ScriptNN that generates each rule from user's skill list considering Rush, Attack, Defend, Hide, 
+Run Away and Wait rules.
 
 =================================================================================================]]
 
@@ -19,23 +19,25 @@ local WaitRule = require('custom/ai/rule/WaitRule')
 
 local SimpleNN = class(ScriptNN)
 
+local function addRules(rules, skill)
+  local s = #rules
+  local name = tostring(skill)
+  rules[s + 1] = RushRule('Rush - ' .. name, skill)
+  rules[s + 2] = AttackRule('Attack - ' .. name, skill)
+  rules[s + 3] = DefendRule('Defend - ' .. name, skill)
+  rules[s + 4] = HideRule('Hide - ' .. name, skill)
+end
+
 -- Overrides ScriptNN:createRules.
 function SimpleNN:createRules(user)
-  local r = { 
-    RushRule(user.battler.attackSkill),
-    AttackRule(user.battler.attackSkill),
-    DefendRule(user.battler.attackSkill),
-    HideRule(user.battler.attackSkill)
-  }
+  local r = {}
+  addRules(r, user.battler.attackSkill) 
   local skills = user.battler.skillList
   for skill in user.battler.skillList:iterator() do
-    r[#r + 1] = RushRule(skill)
-    r[#r + 1] = AttackRule(skill)
-    r[#r + 1] = DefendRule(skill)
-    r[#r + 1] = HideRule(skill)
+    addRules(r, skill)
   end
-  r[#r + 1] = RunAwayRule()
-  r[#r + 1] = WaitRule()
+  r[#r + 1] = RunAwayRule('RunArray')
+  r[#r + 1] = WaitRule('Wait')
   return r
 end
 

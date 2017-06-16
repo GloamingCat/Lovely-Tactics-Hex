@@ -14,7 +14,8 @@ local ActionInput = require('core/battle/action/ActionInput')
 local ScriptRule = class()
 
 -- @param(action : BattleAction) the BattleAction executed in the rule
-function ScriptRule:init(action)
+function ScriptRule:init(name, action)
+  self.name = name
   self.action = action
 end
 
@@ -26,9 +27,10 @@ function ScriptRule:getInput(user)
   local action = self.action
   local input = ActionInput(action, user)
   if action.targetPicket then
-    input.target = action:targetPicket.bestTarget(input)
+    input.target = action.targetPicket:bestTarget(input)
   else
     input.target = action:firstTarget()
+  end
   return input
 end
 

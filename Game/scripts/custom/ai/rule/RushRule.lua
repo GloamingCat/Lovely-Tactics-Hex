@@ -21,6 +21,9 @@ function RushRule:execute(user)
   local input = ActionInput(self.action, user)
   self.action:onSelect(input)
   local queue = BattleTactics.closestCharacters(input)
+  if queue:isEmpty() then
+    return nil
+  end
   input.target = queue:front()
   return self.action:onConfirm(input)
 end

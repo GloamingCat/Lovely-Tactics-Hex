@@ -14,7 +14,7 @@ local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
 local Default = class(ArtificialInteligence)
 
 -- Overrides ArtificialInteligence:nextAction.
-function Default:nextAction(user)
+function Default:nextAction(it, user)
   return self:executeActionBest(user.battler.attackSkill, user)
 end
 
