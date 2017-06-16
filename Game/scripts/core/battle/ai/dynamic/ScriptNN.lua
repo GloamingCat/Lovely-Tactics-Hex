@@ -26,8 +26,10 @@ local ScriptNN = class(Script)
 local old_init = Script.init
 function ScriptNN:init(param)
   old_init(self)
+  local training = false
   if param == 'train' then
     self.patterns = {}
+    training = true
   end
   self.inputs = self:createInputs()
   local data = JSON.decode(self:loadData())

@@ -25,8 +25,8 @@ function BattleState:init()
 end
 
 -- Executes an input and generates a new state.
-function BattleState:applyMacro(macro)
-  macro:simulate()
+function BattleState:applyInput(input)
+  input:execute()
   return BattleState()
 end
 

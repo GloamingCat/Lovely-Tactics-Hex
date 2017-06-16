@@ -41,15 +41,23 @@ function MoveAction:onActionGUI(input)
   input.GUI:createStepWindow():show()
 end
 
+---------------------------------------------------------------------------------------------------
+-- Execution
+---------------------------------------------------------------------------------------------------
+
 -- Overrides BattleAction:onConfirm.
 function MoveAction:onConfirm(input)
-  if input.GUI then
-    input.GUI:endGridSelecting()
-  end
-  FieldManager.renderer:moveToObject(input.user, nil, true)
-  FieldManager.renderer.focusObject = input.user
   local path = PathFinder.findPath(self, input.user, input.target)
-  input.user:walkPath(path)
+  if input.skipAnimations then
+    input.user:moveToTile(self.moveTarget)
+  else
+    if input.GUI then
+      input.GUI:endGridSelecting()
+    end
+    FieldManager.renderer:moveToObject(input.user, nil, true)
+    FieldManager.renderer.focusObject = input.user
+    input.user:walkPath(path)
+  end
   input.user.battler:onMove(path)
   BattleManager:updatePathMatrix()
   return self.timeCost

@@ -27,18 +27,16 @@ local BattleAction = class()
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
+-- @param(timeCost : number)
+-- @param(range : number)
+-- @param(radius : number)
+-- @param(colorName : string)
 function BattleAction:init(timeCost, range, radius, colorName)
   self.timeCost = timeCost
   self.range = range
   self.radius = radius
   self.colorName = colorName
   self.field = FieldManager.currentField
-end
-
--- Action identifier.
--- @ret(string)
-function BattleAction:getCode()
-  return ''
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -65,7 +63,7 @@ end
 -- @ret(number) the time cost of the action:
 --  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
 function BattleAction:onConfirm(input)
-  if input.GUI then
+  if input.GUI and not input.skipAnimations then
     input.GUI:endGridSelecting()
   end
   return self.timeCost
@@ -255,17 +253,6 @@ function BattleAction:nextTarget(input, axisX, axisY)
   local x, y = mathf.nextTile(input.target.x, input.target.y, 
     axisX, axisY, self.field.sizeX, self.field.sizeY)
   return self.field:getObjectTile(x, y, h)
-end
-
----------------------------------------------------------------------------------------------------
--- Simulation
----------------------------------------------------------------------------------------------------
-
--- Executes the action without animations.
--- This method should just apply the effect without the need of waiting for next frame.
--- @param(input : ActionInput)
--- @ret(BattleSimulation) the state with information with the modifications of the skill
-function BattleAction:simulate(input)
 end
 
 return BattleAction

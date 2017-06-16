@@ -87,16 +87,45 @@ function SkillAction.fromData(skillID)
   end
 end
 
--- Action identifier.
--- @ret(string)
-function SkillAction:getCode()
-  return 'Skill' .. self.data.id
-end
-
 -- Converting to string.
 -- @ret(string) a string representation
 function SkillAction:__tostring()
-  return 'SkillAction: ' .. self:getCode()
+  return 'SkillAction: ' .. self.data.id
+end
+
+---------------------------------------------------------------------------------------------------
+-- Event handlers
+---------------------------------------------------------------------------------------------------
+
+-- Overrides BattleAction:onConfirm.
+-- Executes the movement action and the skill's effect.
+function SkillAction:onConfirm(input)
+  local moveAction = MoveAction(self.data.range, input.target)
+  local path = PathFinder.findPath(moveAction, input.user, input.target)
+  if input.skipAnimations then
+    if path then
+      input.user:moveToTile(path.lastStep)
+      self:applyEffects(input)
+    else
+      path = PathFinder.findPathToUnreachable(moveAction, input.user, input.target)
+      input.user:moveToTile(path.lastStep)
+    end
+  else
+    FieldManager.renderer:moveToObject(input.user, nil, true)
+    FieldManager.renderer.focusObject = input.user
+    if input.GUI then
+      input.GUI:endGridSelecting()
+    end
+    if path then
+      input.user:walkPath(path)
+      self:use(input)
+    else
+      path = PathFinder.findPathToUnreachable(moveAction, input.user, input.target)
+      input.user:walkPath(path)
+    end
+  end
+  input.user.battler:onMove(path)
+  return self.timeCost
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -227,63 +256,23 @@ function SkillAction:singleTargetAnimation(input, targetChar, originTile)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Event handlers
----------------------------------------------------------------------------------------------------
-
--- Overrides BattleAction:onConfirm.
--- Executes the movement action and the skill's effect, 
--- and then decrements battler's turn count and steps.
-function SkillAction:onConfirm(input)
-  if input.GUI then
-    input.GUI:endGridSelecting()
-  end
-  FieldManager.renderer:moveToObject(input.user, nil, true)
-  FieldManager.renderer.focusObject = input.user
-  local moveAction = MoveAction(self.data.range, input.target)
-  local path = PathFinder.findPath(moveAction, input.user, input.target)
-  if path then -- Target was reached
-    input.user:walkPath(path)
-    self:use(input)
-  else -- Target was not reached
-    path = PathFinder.findPathToUnreachable(moveAction, input.user, input.target)
-    --path = path or PathFinder.estimateBestPath(moveAction, input.user, input.target)
-    input.user:walkPath(path)
-  end
-  input.user.battler:onMove(path)
-  return self.timeCost
-end
-
----------------------------------------------------------------------------------------------------
 -- Simulation
 ---------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:simulate.
--- By default, just applies the effect result in the affected characters.
-function SkillAction:simulate(input)
-  -- Movement
-  local moveAction = MoveAction(self.data.range, input.target)
-  local path = PathFinder.findPath(moveAction, input.user, input.target)
-  if path then -- Target was reached
-    -- Modifications about battler
-    local tiles = self:getAllAffectedTiles(input)
-    for i = #tiles, 1, -1 do
-      for char in tiles[i].characterList:iterator() do
-        if char.battler then
-          local effect = self:calculateEffectResult(input, char, expectation)
-          if effect then
-            char.battler:damageHP(effect)
-          end
+-- Applies skill's effect with animations.
+-- By default, just applies the damage result in the affected characters.
+function SkillAction:applyEffects(input)
+  local tiles = self:getAllAffectedTiles(input)
+  for i = #tiles, 1, -1 do
+    for char in tiles[i].characterList:iterator() do
+      if char.battler then
+        local effect = self:calculateEffectResult(input, char, expectation)
+        if effect then
+          char.battler:damageHP(effect)
         end
       end
     end
-    -- Position
-    input.user:moveToTile(path.lastStep)
-  else -- Target was not reached
-    path = PathFinder.findPathToUnreachable(moveAction, input.user, input.target)
-    --path = path or PathFinder.estimateBestPath(moveAction, input.user, input.target)
-    input.user:moveToTile(path.lastStep)
   end
-  input.user.battler:onMove(path)
 end
 
 return SkillAction
