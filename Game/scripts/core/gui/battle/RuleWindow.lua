@@ -8,28 +8,31 @@ Window that opens when creating the battle database to manually decide a rule.
 =================================================================================================]]
 
 -- Imports
-local ActionWindow = require('custom/gui/battle/ActionWindow')
-local MoveAction = require('core/battle/action/MoveAction')
-local EscapeAction = require('core/battle/action/EscapeAction')
-local VisualizeAction = require('core/battle/action/VisualizeAction')
-local CallAction = require('core/battle/action/CallAction')
-local TradeSkill = require('custom/skill/TradeSkill')
+local ButtonWindow = require('core/gui/ButtonWindow')
 local BattleCursor = require('core/battle/BattleCursor')
 
 -- Alias
 local mathf = math.field
 
-local RuleWindow = class(ActionWindow)
+local RuleWindow = class(ButtonWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
+local old_init = RuleWindow.init
+function RuleWindow:init(GUI, rules, ...)
+  self.rules = rules
+  old_init(...)
+end
+
 -- Overrides ButtonWindow:createButtons.
 function RuleWindow:createButtons()
   self.ai = BattleManager.currentCharacter.battler.ai
-  for
-  self:addButton('Attack', nil, self.onAttackAction, self.attackEnabled)
+  for i = 1, #self.rules do
+    local rule = self.rules[i]
+    self:addButton(rule.name)
+  end
   self.userCursor = BattleCursor()
   self.content:add(self.userCursor)
 end
@@ -59,6 +62,14 @@ end
 -- Overrides ButtonWindow:rowCount.
 function RuleWindow:rowCount()
   return 4
+end
+
+-- Overrides Window:show.
+local old_show = RuleWindow.show
+function RuleWindow:show(add)
+  local user = BattleManager.currentCharacter
+  self.userCursor:setCharacter(user)
+  old_show(self, add)
 end
 
 -- String identifier.

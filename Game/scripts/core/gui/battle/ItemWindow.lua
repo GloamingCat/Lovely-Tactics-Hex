@@ -1,48 +1,53 @@
 
 --[[===============================================================================================
 
-SkillWindow
+ItemWindow
 ---------------------------------------------------------------------------------------------------
-The window that is open to choose a skill from character's skill list.
+The GUI that is open to choose an item from character's inventory.
 
 =================================================================================================]]
 
 -- Imports
 local ListButtonWindow = require('core/gui/ListButtonWindow')
-local ActionWindow = require('custom/gui/battle/ActionWindow')
+local ActionWindow = require('core/gui/battle/ActionWindow')
 local SkillAction = require('core/battle/action/SkillAction')
 local Vector = require('core/math/Vector')
 
-local SkillWindow = class(ActionWindow, ListButtonWindow)
+local ItemWindow = class(ActionWindow, ListButtonWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
-local old_init = SkillWindow.init
-function SkillWindow:init(GUI, skillList)
-  old_init(self, skillList, GUI)
+local old_init = ItemWindow.init
+function ItemWindow:init(GUI, itemList)
+  old_init(self, itemList, GUI)
 end
 
--- Creates a button from a skill ID.
--- @param(skill : SkillAction) the SkillAction from battler's skill list
-function SkillWindow:createButton(skill)
-  local button = self:addButton(skill.data.name, nil, self.onButtonConfirm)
-  button.skill = skill
+-- Creates a button from an item ID.
+-- @param(id : number) the item ID
+function ItemWindow:createButton(itemSlot)
+  local item = Database.items[itemSlot.id + 1]
+  if item.skillID >= 0 then
+    local name = item.name .. '(' .. itemSlot.count .. ')'
+    local button = self:addButton(name, nil, self.onButtonConfirm)
+    button.item = item
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Input handlers
 ---------------------------------------------------------------------------------------------------
 
--- Called when player chooses a skill.
+-- Called when player chooses an item.
 -- @param(button : Button) the button selected
-function SkillWindow:onButtonConfirm(button)
-  self:selectAction(button.skill)
+function ItemWindow:onConfirm(button)
+  local skill = Database.skills[button.item.skillID + 1]
+  self:selectAction(skill)
 end
 
 -- Called when player cancels.
-function SkillWindow:onCancel()
+function ItemWindow:onCancel()
   self:changeWindow(self.GUI.turnWindow)
 end
 
@@ -51,18 +56,18 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- New button width.
-function SkillWindow:buttonWidth()
+function ItemWindow:buttonWidth()
   return 80
 end
 
 -- New row count.
-function SkillWindow:rowCount()
+function ItemWindow:rowCount()
   return 6
 end
 
 -- String identifier.
-function SkillWindow:__tostring()
-  return 'SkillWindow'
+function ItemWindow:__tostring()
+  return 'ItemWindow'
 end
 
-return SkillWindow
+return ItemWindow

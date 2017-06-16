@@ -12,8 +12,8 @@ Its result is the action time that the character spent.
 
 -- Imports
 local GUI = require('core/gui/GUI')
-local StepWindow = require('custom/gui/battle/StepWindow')
-local TargetWindow = require('custom/gui/battle/TargetWindow')
+local StepWindow = require('core/gui/battle/StepWindow')
+local TargetWindow = require('core/gui/battle/TargetWindow')
 local BattleCursor = require('core/battle/BattleCursor')
 
 -- Alias
