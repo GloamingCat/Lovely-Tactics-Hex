@@ -13,7 +13,6 @@ local BattleAction = require('core/battle/action/BattleAction')
 local MoveAction = require('core/battle/action/MoveAction')
 local PathFinder = require('core/algorithm/PathFinder')
 local PopupText = require('core/battle/PopupText')
-local BattleTactics = require('core/battle/ai/BattleTactics')
 
 -- Alias
 local max = math.max
@@ -252,33 +251,6 @@ function SkillAction:onConfirm(input)
   end
   input.user.battler:onMove(path)
   return self.timeCost
-end
-
----------------------------------------------------------------------------------------------------
--- AI
----------------------------------------------------------------------------------------------------
-
--- Overrides BattleAction:potentialTargets.
-local old_potentialTargets = SkillAction.potentialTargets
-function SkillAction:potentialTargets(input)
-  if self.radius > 1 then
-    return BattleTactics.areaTargets(input):toList()
-  else
-    return BattleTactics.closestCharacters(input):toList()
-  end
-end
-
--- Overrides BattleAction:potentialMovements.
-local old_potentialMovements = SkillAction.potentialMovements
-function SkillAction:potentialMovements(input)
-  if self.range > 1 then
-    local queue = BattleTactics.runAway(input.user.battler.party, input)
-    local list = queue:toList()
-    list:add(input.user:getTile())
-    return queue:toList()  
-  else
-    return old_potentialMovements(self, input)
-  end
 end
 
 ---------------------------------------------------------------------------------------------------

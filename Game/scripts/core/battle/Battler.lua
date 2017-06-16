@@ -168,11 +168,17 @@ end
 -- Callback for when a new turn begins.
 -- @param(iterations : number) the number of turn iterations since the previous turn
 function Battler:onTurnStart(iterations)
+  if self.AI and self.AI.onTurnStart then
+    self.AI:onTurnStart(self, iterations)
+  end
 end
 
 -- Callback for when a turn ends.
 -- @param(iterations : number) the number of turn iterations since the previous turn
 function Battler:onTurnEnd(iterations)
+  if self.AI and self.AI.onTurnEnd then
+    self.AI:onTurnEnd(self, iterations)
+  end
 end
 
 -- Callback for when this battler's turn starts.
@@ -195,9 +201,12 @@ function Battler:onBattleEnd()
   if self.data.persistent then
     -- TODO: update battler's data
   end
+  if self.AI and self.AI.onBattleEnd then
+    self.AI:onBattleEnd(self)
+  end
 end
 
--- Updates
+-- Callback for when the player moves.
 function Battler:onMove(path)
   if path.lastStep:isControlZone(self) then
     self.currentSteps = 0

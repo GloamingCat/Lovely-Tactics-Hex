@@ -30,8 +30,8 @@ function NeuralNetwork:init(inputCount, neuronCount, outputCount, weights, train
   self.inputCount = inputCount
   self.neuronCount = neuronCount
   self.outputCount = outputCount
-  self.inputWeights = (weights and weights.input) or self:newLayer(inputCount, neuronCount, 1)
-  self.hiddenWeights = (weights and weights.hidden) or self:newLayer(neuronCount, outputCount, 1)
+  self.inputWeights = (weights and weights[0]) or self:newLayer(inputCount, neuronCount, 1)
+  self.hiddenWeights = (weights and weights[1]) or self:newLayer(neuronCount, outputCount, 1)
   if training then
     self.inputChanges = self:newLayer(inputCount, neuronCount, 0)
     self.hiddenChanges = self:newLayer(neuronCount, outputCount, 0)

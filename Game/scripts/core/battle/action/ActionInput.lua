@@ -4,16 +4,23 @@
 ActionInput
 ---------------------------------------------------------------------------------------------------
 An action that represents a full decision for the turn (a movement, a BattleAction and a target).
-By default, it does not have any previous move actions besides the one defined by the skill use,
-but it may override "fromPotentialTargets" function to generate move targets for each action.
 
 =================================================================================================]]
 
+-- Imports
+local MoveAction = require('core/battle/action/MoveAction')
+
 local ActionInput = class()
+
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
 
 -- @param(action : BattleAction)
 -- @param(user : Character)
--- @param(GUI : ActionGUI)
+-- @param(target : ObjectTile) action target (optional)
+-- @param(moveTarget : ObjectTile) MoveAction target (optional)
+-- @param(GUI : ActionGUI) current ActionGUI, if any (optional)
 function ActionInput:init(action, user, target, moveTarget, GUI)
   self.action = action
   self.user = user or BattleManager.currentCharacter
@@ -22,6 +29,12 @@ function ActionInput:init(action, user, target, moveTarget, GUI)
   self.GUI = GUI
 end
 
+---------------------------------------------------------------------------------------------------
+-- Execution
+---------------------------------------------------------------------------------------------------
+
+-- Executes the action.
+-- @ret(number) the action time cost
 function ActionInput:execute()
   if self.moveTarget then
     local moveAction = MoveAction()
@@ -35,6 +48,8 @@ function ActionInput:execute()
   return self.input.action:onConfirm(self.input)
 end
 
+-- Simulates the action (executes without animations, within the same frame).
+-- @ret(number) the action time cost
 function ActionInput:simulate()
   if self.moveTarget then
     local moveAction = MoveAction()

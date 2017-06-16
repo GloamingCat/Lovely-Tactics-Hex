@@ -13,20 +13,38 @@ local ActionInput = require('core/battle/action/ActionInput')
 
 local ScriptRule = class()
 
--- @param(priority : number) priority of the rule in the script
 -- @param(action : BattleAction) the BattleAction executed in the rule
-function ScriptRule:init(key, priority, action)
-  self.key = key
-  self.priority = priority
+function ScriptRule:init(action)
   self.action = action
 end
 
 -- Generates the macro to be executed during battle.
--- By default, it gets the best estimated target for the given skill and no previous movement.
+-- By default, it gets the first target for the given skill and no previous movement.
 -- @param(user : Character)
 -- @ret(ActionInput) the input to execute or nil if it cannot be executed
-function ScriptRule:getMacro(user)
-  return ActionInput(self.action, self.action:bestTarget(), user:getTile())
+function ScriptRule:getInput(user)
+  local action = self.action
+  local input = ActionInput(action, user)
+  if action.targetPicket then
+    input.target = action:targetPicket.bestTarget(input)
+  else
+    input.target = action:firstTarget()
+  return input
+end
+
+-- Generates the action input and, if possible, executes the rule.
+-- @param(user : Character)
+function ScriptRule:execute(user)
+  if self.action then
+    local input = self:getInput(user)
+    if input and input.target and input.target.gui.selectable then
+      -- Can execute the action.
+      return input:execute()
+    else
+      -- Cannot execute the action.
+      return nil
+    end
+  end
 end
 
 return ScriptRule

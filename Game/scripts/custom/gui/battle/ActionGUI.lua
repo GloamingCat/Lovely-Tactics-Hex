@@ -25,6 +25,7 @@ local ActionGUI = class(GUI)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides GUI:init.
 local old_init = ActionGUI.init
 function ActionGUI:init(input)
   old_init(self)
