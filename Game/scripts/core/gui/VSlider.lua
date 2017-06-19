@@ -1,12 +1,12 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 VSlider
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 A side bar to scroll through windows.
 It's a type of window content.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Sprite = require('core/graphics/Sprite')
@@ -15,6 +15,10 @@ local Sprite = require('core/graphics/Sprite')
 local Image = love.graphics.newImage
 
 local VSlider = class()
+
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
 
 function VSlider:init(window, relativePosition, length)
   window.content:add(self)
@@ -39,6 +43,10 @@ function VSlider:init(window, relativePosition, length)
   self.cursor:setCenterOffset(-2)
 end
 
+---------------------------------------------------------------------------------------------------
+-- Position
+---------------------------------------------------------------------------------------------------
+
 function VSlider:updatePosition(pos)
   pos = pos + self.relativePosition
   self.bar:setXYZ(pos.x, pos.y)
@@ -49,9 +57,13 @@ end
 
 function VSlider:updateCursorPosition(pos)
   local length = self.length - self.upArrow.offsetY - self.downArrow.offsetY
-  local t = self.window.offsetRow / (self.window.lastRow - self.window:rowCount())
+  local t = self.window.offsetRow / (self.window:actualRowCount() - self.window:rowCount())
   self.cursor:setXYZ(pos.x, pos.y + length * (t - 0.5))
 end
+
+---------------------------------------------------------------------------------------------------
+-- Content methods
+---------------------------------------------------------------------------------------------------
 
 function VSlider:show()
   self.bar:setVisible(true)

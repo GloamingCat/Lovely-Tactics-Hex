@@ -66,8 +66,9 @@ end
 -- @param(battlerData : table) the battler's data from file
 -- @param(field : Field) the current field
 -- @ret(BattleCharacter) the newly created character
-function TroopManager:createBattleCharacter(tile, battlerData, field)
+function TroopManager:createBattleCharacter(tile, battlerID, field)
   local charID = tile:generateCharacterID()
+  local battlerData = Database.battlers[battlerID + 1]
   local characterData = {
     id = battlerData.battleCharID,
     type = 1,
@@ -76,7 +77,7 @@ function TroopManager:createBattleCharacter(tile, battlerData, field)
     tags = {}
   }
   local character = Character(charID, characterData, tile)
-  character.battler = Battler(battlerData, tile.party, character)
+  character.battler = Battler(character, battlerID, tile.party)
   character:turnToTile(field.sizeX / 2, field.sizeY / 2)
   character.speed = charSpeed
   self.characterList:add(character)

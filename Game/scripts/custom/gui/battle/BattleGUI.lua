@@ -17,6 +17,10 @@ local Vector = require('core/math/Vector')
 
 local BattleGUI = class(GUI)
 
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
 function BattleGUI:createWindows()
   self.name = 'Battle GUI'
   
@@ -37,6 +41,10 @@ function BattleGUI:createWindows()
   self.activeWindow = self.turnWindow
   self.windowList:add(self.turnWindow)
 end
+
+---------------------------------------------------------------------------------------------------
+-- Camera focus
+---------------------------------------------------------------------------------------------------
 
 -- Overrides GUI:show.
 local old_show = BattleGUI.show

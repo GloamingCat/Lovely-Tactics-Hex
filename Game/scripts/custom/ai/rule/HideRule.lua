@@ -25,25 +25,27 @@ function HideRule:execute(user)
   local skill = self.action
   local input = ActionInput(skill, user)
   skill:onSelect(input)
-  local queue = BattleTactics.runAway(user.battler.party, input)
-  
-  if queue:isEmpty() then
-    return nil
-  end
   
   -- Find tile to move
-  input.target = queue:front()
-  input.action = MoveAction()
-  input.action:onSelect(input)
-  input.action:onConfirm(input)
+  local queue = BattleTactics.runAway(user.battler.party, input)
+  if not queue:isEmpty() then
+    input.target = queue:front()
+    input.action = MoveAction()
+    input.action:onSelect(input)
+    input.action:onConfirm(input)
+  end
   
   -- Find tile to attack
   input.action = skill
   skill:onSelect(input)
   queue = BattleTactics.closestCharacters(input)
-  input.target = queue:front()
   
-  return skill:onConfirm(input)
+  if queue:isEmpty() then
+    return nil
+  end
+  
+  input.target = queue:front()
+  return input:execute()
 end
 
 return HideRule

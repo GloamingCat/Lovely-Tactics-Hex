@@ -116,7 +116,8 @@ end
 -- Derivative of the sigmoid function.
 -- @param(x : number) input value
 function math.dsigmoid(x)
-  return 1 - x*x
+  --return 1 - x*x
+  return x
 end
 
 ---------------------------------------------------------------------------------------------------

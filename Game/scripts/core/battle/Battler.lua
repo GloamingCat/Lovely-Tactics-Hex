@@ -1,11 +1,11 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 Battler
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 A class the holds character's information for battle formula.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local List = require('core/algorithm/List')
@@ -24,13 +24,16 @@ local turnLimit = Battle.turnLimit
 
 local Battler = class()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Initialization
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
--- @param(data : table) the battler's data from file
+-- @param(character : Character)
+-- @param(battlerID : table) the battler's ID in database
 -- @param(party : number) this battler's party number
-function Battler:init(data, party)
+function Battler:init(character, battlerID, party)
+  local data = Database.battlers[battlerID + 1]
+  self.battlerID = battlerID
   self.party = party
   self:createAttributes(data.attributes, data.level, data.build)
   self.currentHP = data.currentHP or self.maxHP()
@@ -49,7 +52,7 @@ end
 -- @param(ai : table) the script data table (with strings path and param)
 function Battler:setAI(ai)
   if ai.path ~= '' then
-    self.AI = require('custom/' .. ai.path)(ai.param)
+    self.AI = require('custom/' .. ai.path)(self, ai.param)
   else
     self.AI = nil
   end
@@ -95,9 +98,9 @@ function Battler:__tostring()
   return 'Battler: ' .. self.data.name .. ' [Party ' .. self.party .. ']'
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Attributes
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Creates attribute functions from script data.
 -- @param(data : table) a table of base values
@@ -148,9 +151,9 @@ function Battler:createAttributeBase(baseValue, script)
   return loadformula(script, 'att')
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Turn
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Increments turn count by the turn attribute.
 -- @param(limit : number) the turn limit to start the turn
@@ -192,9 +195,9 @@ function Battler:onSelfTurnEnd(iterations, actionCost)
   self:decrementTurnCount(ceil((stepCost + actionCost) * turnLimit / 2))
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Other callbacks
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Callback for when the battle ends.
 function Battler:onBattleEnd()
@@ -215,9 +218,9 @@ function Battler:onMove(path)
   end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- State
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Checks if battler is still alive by its HP.
 -- @ret(boolean) true if HP greater then zero, false otherwise

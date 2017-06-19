@@ -51,7 +51,6 @@ end
 function GUIManager:showGUIForResult(path, ...)
   local gui = self:showGUI(path, ...)
   local result = gui:waitForResult()
-  self:returnGUI()
   return result
 end
 

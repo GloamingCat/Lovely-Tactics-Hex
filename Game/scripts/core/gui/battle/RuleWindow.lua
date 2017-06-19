@@ -23,7 +23,7 @@ local RuleWindow = class(ButtonWindow)
 local old_init = RuleWindow.init
 function RuleWindow:init(GUI, rules, ...)
   self.rules = rules
-  old_init(...)
+  old_init(self, GUI, ...)
 end
 
 -- Overrides ButtonWindow:createButtons.
@@ -31,7 +31,7 @@ function RuleWindow:createButtons()
   self.ai = BattleManager.currentCharacter.battler.ai
   for i = 1, #self.rules do
     local rule = self.rules[i]
-    self:addButton(rule.name)
+    self:addButton(rule.name, nil, self.onButton)
   end
   self.userCursor = BattleCursor()
   self.content:add(self.userCursor)
@@ -43,7 +43,8 @@ end
 
 -- Selects a rule.
 function RuleWindow:onButton(button)
-  -- TODO
+  self.GUI:hide()
+  self.result = button.index
 end
 
 -- Overrides ButtonWindow:onCancel.
@@ -63,6 +64,15 @@ end
 function RuleWindow:rowCount()
   return 4
 end
+
+-- Overrides ButtonWindow:buttonWidth.
+function RuleWindow:buttonWidth()
+  return 100
+end
+
+---------------------------------------------------------------------------------------------------
+-- Battle Cursor
+---------------------------------------------------------------------------------------------------
 
 -- Overrides Window:show.
 local old_show = RuleWindow.show

@@ -46,10 +46,11 @@ function ButtonWindow:createContent()
   if button then
     button:setSelected(true)
   end
-  if self.buttonMatrix.height > self:rowCount() then
-    self.vSlider = VSlider(self, Vector(self.width / 2 - self.paddingw,0), 
+  if self:actualRowCount() > self:rowCount() then
+    self.vSlider = VSlider(self, Vector(self.width / 2 - self.paddingw, 0), 
       self.height - self.paddingh * 2)
   end
+  self:updateViewport(1, 1)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -129,6 +130,10 @@ end
 -- @ret(Button) the selected button
 function ButtonWindow:currentButton()
   return self.buttonMatrix:get(self.currentCol, self.currentRow)
+end
+
+function ButtonWindow:actualRowCount()
+  return self.buttonMatrix.height
 end
 
 ---------------------------------------------------------------------------------------------------

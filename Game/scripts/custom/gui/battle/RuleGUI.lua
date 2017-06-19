@@ -28,14 +28,12 @@ end
 function RuleGUI:createWindows()
   self.name = 'Rule GUI'
   self.ruleWindow = RuleWindow(self, self.rules)
-  self.ruleWindow:setPosition(Vector(-ScreenManager.width / 2 + self.ruleWindow.width / 2 + 8, 
-      -ScreenManager.height / 2 + self.ruleWindow.height / 2 + 8))
   self.activeWindow = self.ruleWindow
   self.windowList:add(self.ruleWindow)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Show
+-- Camera focus
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides GUI:show.

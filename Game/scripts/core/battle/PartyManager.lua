@@ -30,6 +30,10 @@ function PartyManager:currentBattlers()
   return battlers
 end
 
+function PartyManager:currentBattlerIDs()
+  return List(self.members)
+end
+
 -- Retuns the list of battlers that are not in battle.
 -- @ret(List) a list of battler tables
 function PartyManager:backupBattlers()
@@ -39,6 +43,18 @@ function PartyManager:backupBattlers()
     return c > 0
   end)
   return battlers
+end
+
+-- Retuns the list of battlers that are not in battle.
+-- @ret(List) a list of battler tables
+function PartyManager:backupBattlersIDs()
+  local list = List(self.members)
+  list:conditionalRemove(function(id)
+    local battler = Database.battlers[id + 1]
+    local c = TroopManager:battlerCount(battler)
+    return c > 0
+  end)
+  return list
 end
 
 return PartyManager
