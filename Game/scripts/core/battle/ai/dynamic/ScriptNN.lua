@@ -18,22 +18,44 @@ local newArray = util.newArray
 local ScriptNN = class(Script)
 
 ---------------------------------------------------------------------------------------------------
+-- Shared patterns
+---------------------------------------------------------------------------------------------------
+
+local patterns = {}
+
+---------------------------------------------------------------------------------------------------
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
 -- @param(key : string)
--- @param(trainig : boolean)
+-- @param(battler : Battler)
+-- @param(param : string)
 local old_init = Script.init
-function ScriptNN:init(param)
-  old_init(self)
-  local training = false
-  if param == 'train' then
-    self.patterns = {}
-    training = true
-  end
+function ScriptNN:init(key, battler, param)
+  self.battler = battler
+  old_init(self, key)
   self.inputs = self:createInputs()
-  local data = JSON.decode(self:loadData())
-  self.network = self:createNetwork(data, training)
+  if param == 'sample' then
+    -- Creating samples.
+    if not patterns[key] then
+      patterns[key] = BattleManager.params[key] or self:loadJsonData('_pat') or {}
+    end
+  elseif param == 'train' then
+    -- Train from samples.
+    if not patterns[key] then
+      self.network = self:createNetwork(nil, true)
+      local data = BattleManager.params[key] or self:loadJsonData('_pat')
+      self.network:train(data, 1)
+      patterns[key] = { self.network.inputWeights, self.network.hiddenWeights }
+      self:saveJsonData(patterns[key])
+    else
+      self.network = self:createNetwork(patterns[key], true)
+    end
+  else
+    -- Execute from training.
+    local data = BattleManager.params[key] or self:loadJsonData()
+    self.network = self:createNetwork(data, false)
+  end
 end
 
 -- Creates the network from the data.
@@ -52,13 +74,13 @@ end
 -- Overrides ArtificialInteligence:nextAction.
 function ScriptNN:nextAction(it, user)
   local inputs = {}
-  for i = 1, self.inputs do
+  for i = 1, #self.inputs do
     inputs[i] = self.inputs[i](self, user)
   end
-  if self.patterns then
-    return self:fromPlayerInput(user, inputs)
-  else
+  if self.network then
     return self:fromNetworkTest(user, inputs)
+  else
+    return self:fromPlayerInput(user, inputs)
   end
 end
 
@@ -74,7 +96,7 @@ function ScriptNN:fromNetworkTest(user, inputs)
   end
   while not queue:isEmpty() do
     local id = queue:dequeue()
-    local cost = self:executeRule(id)
+    local cost = self:executeRule(user, id)
     if cost then
       return cost
     end
@@ -90,11 +112,12 @@ function ScriptNN:fromPlayerInput(user, inputs)
   local cost = nil
   repeat
     local id = GUIManager:showGUIForResult('battle/RuleGUI', self.rules)
-    cost = self:executeRule(id)
+    cost = self:executeRule(user, id)
     if cost then
       local outputs = newArray(#self.rules, 0)
       outputs[id] = 1
-      self.patterns[#self.patterns + 1] = {inputs, outputs}
+      local pat = patterns[self.key]
+      pat[#pat + 1] = { inputs, outputs }
     end
   until cost
   return cost
@@ -103,11 +126,10 @@ end
 -- Callback to train the network and store the result.
 -- @param(user : Character)
 function ScriptNN:onBattleEnd(user)
-  if self.patterns then
-    self.network:train(self.patterns, 5)
-    local weights = {self.network.inputWeights, self.network.hiddenWeights}
-    local data = JSON.encode(weights)
-    self:saveData(data)
+  if not self.network and patterns[self.key] then
+    local pat = patterns[self.key]
+    patterns[self.key] = nil
+    self:saveJsonData(pat, '_pat')
   end
 end
 
@@ -134,8 +156,8 @@ function ScriptNN:allyHP(user)
   local s, ms = 0, 0
   for char in TroopManager.characterList:iterator() do
     if char.battler.party == user.battler.party then
-      s = s + user.battler.currentHP
-      ms = ms + user.battler.maxHP()
+      s = s + char.battler.currentHP
+      ms = ms + char.battler.maxHP()
     end
   end
   return s / ms
@@ -145,8 +167,8 @@ function ScriptNN:allySP(user)
   local s, ms = 0, 0
   for char in TroopManager.characterList:iterator() do
     if char.battler.party == user.battler.party then
-      s = s + user.battler.currentSP
-      ms = ms + user.battler.maxSP()
+      s = s + char.battler.currentSP
+      ms = ms + char.battler.maxSP()
     end
   end
   return s / ms
@@ -156,8 +178,8 @@ function ScriptNN:enemyHP(user)
   local s, ms = 0, 0
   for char in TroopManager.characterList:iterator() do
     if char.battler.party ~= user.battler.party then
-      s = s + user.battler.currentHP
-      ms = ms + user.battler.maxHP()
+      s = s + char.battler.currentHP
+      ms = ms + char.battler.maxHP()
     end
   end
   return s / ms
@@ -167,8 +189,8 @@ function ScriptNN:enemySP(user)
   local s, ms = 0, 0
   for char in TroopManager.characterList:iterator() do
     if char.battler.party ~= user.battler.party then
-      s = s + user.battler.currentSP
-      ms = ms + user.battler.maxSP()
+      s = s + char.battler.currentSP
+      ms = ms + char.battler.maxSP()
     end
   end
   return s / ms

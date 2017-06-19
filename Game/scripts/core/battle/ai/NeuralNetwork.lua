@@ -67,13 +67,13 @@ function NeuralNetwork:test(inputs)
   local ir = {}
   for n = 1, #self.inputWeights do
     local weights = self.inputWeights[n]
-    ir[ir + 1] = mulVector(weights, inputs)
+    ir[#ir + 1] = mulVector(weights, inputs)
   end
   -- Result of hidden layer
   local hr = {}
   for n = 1, #self.hiddenWeights do
     local weights = self.hiddenWeights[n]
-    hr[hr + 1] = mulVector(weights, ir)
+    hr[#hr + 1] = mulVector(weights, ir)
   end
   return hr, ir
 end
@@ -89,12 +89,11 @@ function NeuralNetwork:train(patterns, it)
     local err = 0
     for p = 1, #patterns do
       local pat = patterns[p]
-      local inputs = pat[0]
-      local outputs = pat[1]
+      local inputs = pat[1]
+      local outputs = pat[2]
       local hr, ir = self:test(inputs)
       err = err + self:backpropagate(inputs, ir, hr, outputs)
     end
-    print(err)
   end
 end
 
@@ -112,21 +111,24 @@ function NeuralNetwork:backpropagate(ai, ah, ao, outputs)
   -- Input layer result deltas
   local hd = {}
   for i = 1, self.neuronCount do
-    local err = mulVector(od, self.hiddenLayer[i])
+    local err = 0
+    for j = 1, self.outputCount do
+      err = err + od[j] * self.hiddenWeights[j][i]
+    end
     hd[i] = dsigmoid(ah[i]) * err
   end
   -- Update hidden layer weights
   for i = 1, self.neuronCount do
     for j = 1, self.outputCount do
       local d = od[j] * ah[i]
-      self:updateWeight(self.hiddenWeights[i], self.hiddenChanges[i], d, j)
+      self:updateWeight(self.hiddenWeights[j], self.hiddenChanges[j], d, i)
     end
   end
   -- Update input layer weights
   for i = 1, self.inputCount do
     for j = 1, self.neuronCount do
       local d = hd[j] * ai[i]
-      self:updateWeight(self.inputWeights[i], self.inputChanges[i], d, j)
+      self:updateWeight(self.inputWeights[j], self.inputChanges[j], d, i)
     end
   end
   -- Total error
@@ -143,7 +145,7 @@ end
 -- @param(d : number) delta
 -- @param(i : number) input index
 function NeuralNetwork:updateWeight(weights, changes, d, i)
-  weights[i] = weights[i] + self.learningRate * d + self.momentum * changes[j]
+  weights[i] = weights[i] + self.learningRate * d + self.momentum * changes[i]
   changes[i] = d
 end
 

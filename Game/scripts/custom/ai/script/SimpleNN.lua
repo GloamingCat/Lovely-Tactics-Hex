@@ -19,21 +19,32 @@ local WaitRule = require('custom/ai/rule/WaitRule')
 
 local SimpleNN = class(ScriptNN)
 
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
+-- @param(battler : Battler)
+-- @param(param : string)
+local old_init = ScriptNN.init
+function SimpleNN:init(battler, param)
+  old_init(self, 'SimpleNN' .. battler.battlerID, battler, param)
+end
+
 local function addRules(rules, skill)
   local s = #rules
-  local name = tostring(skill)
-  rules[s + 1] = RushRule('Rush - ' .. name, skill)
-  rules[s + 2] = AttackRule('Attack - ' .. name, skill)
-  rules[s + 3] = DefendRule('Defend - ' .. name, skill)
-  rules[s + 4] = HideRule('Hide - ' .. name, skill)
+  local name = skill.skillID
+  rules[s + 1] = RushRule('Rush ' .. name, skill)
+  rules[s + 2] = AttackRule('Attack ' .. name, skill)
+  rules[s + 3] = DefendRule('Defend ' .. name, skill)
+  rules[s + 4] = HideRule('Hide ' .. name, skill)
 end
 
 -- Overrides ScriptNN:createRules.
-function SimpleNN:createRules(user)
+function SimpleNN:createRules()
   local r = {}
-  addRules(r, user.battler.attackSkill) 
-  local skills = user.battler.skillList
-  for skill in user.battler.skillList:iterator() do
+  addRules(r, self.battler.attackSkill) 
+  local skills = self.battler.skillList
+  for skill in self.battler.skillList:iterator() do
     addRules(r, skill)
   end
   r[#r + 1] = RunAwayRule('RunArray')

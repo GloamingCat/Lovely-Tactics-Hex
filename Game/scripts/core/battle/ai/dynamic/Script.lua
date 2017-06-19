@@ -40,27 +40,45 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Generates the ActionInput from the rule and executes it.
+-- @param(user : Character)
 -- @param(id : number)
 -- @ret(number) the time cost of the action, or nil if rule could not execute
-function Script:executeRule(id)
+function Script:executeRule(user, id)
   local rule = self.rules[id]
-  return rule:execute()
+  return rule:execute(user)
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Script Data
 ---------------------------------------------------------------------------------------------------
 
--- Loads the file from AI data folder.
--- @ret(string) the data in the file
-function Script:loadData()
-  return readFile('data/ai/' .. self.key .. '.json')
+-- Loads the file from AI data folder and decodes from JSON.
+-- @ret(unknown) the data in the file
+function Script:loadJsonData(sufix)
+  local data = self:loadData(sufix)
+  if data then
+    return JSON.decode(data)
+  else
+    return nil
+  end
+end
+
+-- Encodes the data as JSON saves in AI data folder.
+-- @param(data : unknown) the data to write
+function Script:saveJsonData(data, sufix)
+  self:saveData(JSON.encode(data), sufix)
 end
 
 -- Loads the file from AI data folder.
+-- @ret(string) the data in the file
+function Script:loadData(sufix)
+  return readFile(self.key .. (sufix or '') .. '.json')
+end
+
+-- Saves the data in AI data folder.
 -- @param(data : string) the data to write
-function Script:saveData(data)
-  return writeFile('data/ai/' .. self.key .. '.json', data)
+function Script:saveData(data, sufix)
+  writeFile(self.key .. (sufix or '')  .. '.json', data)
 end
 
 return Script
