@@ -47,8 +47,11 @@
     "allNeighbors": false
   },
   "initialMembers": [
-    0,
-    1
+    4,
+    4,
+    4,
+    5,
+    5
   ],
   "battlerTypes": [
     {

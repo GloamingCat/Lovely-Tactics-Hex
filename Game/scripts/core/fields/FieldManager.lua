@@ -234,12 +234,11 @@ end
 -- lost in the field transition. At the end of the battle, it reloads the previous field.
 -- @param(fieldID : number) the field's id
 -- @ret(number) the number of the party that won the battle
-function FieldManager:loadBattle(fieldID)
+function FieldManager:loadBattle(fieldID, params)
   local previousState = self:getState()
   self:loadField(fieldID)
   self.player = nil
-  BattleManager:setUpTiles()
-  BattleManager:setUpCharacters()
+  BattleManager:setUp(params)
   if self.currentField.startScript then
     self.fiberList:forkFromScript(self.currentField.startScript)
   end

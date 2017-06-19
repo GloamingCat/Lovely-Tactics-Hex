@@ -145,7 +145,7 @@ end
 function TroopManager:winnerParty()
   local currentParty = nil
   for bc in self.characterList:iterator() do
-    if bc.battler and bc.battler:isAlive() then
+    if bc.battler:isAlive() then
       if currentParty == nil then
         currentParty = bc.battler.party
       else

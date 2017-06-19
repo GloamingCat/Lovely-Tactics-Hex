@@ -150,23 +150,24 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Returns the list of battlers that are suitable for this tile.
--- @ret(List) the list of battlers
+-- @ret(List) the list of battler IDs
 function ObjectTile:getBattlerList()
   local battlers = nil
   if self.party == 0 then
-    battlers = PartyManager:backupBattlers()
+    --battlers = PartyManager:backupBattlersIDs()
+    battlers = PartyManager:currentBattlerIDs()
   else
     battlers = List()
     for regionID in self.regionList:iterator() do
       local data = Config.regions[regionID + 1]
       for i = 1, #data.battlers do
         local id = data.battlers[i]
-        local battlerData = Database.battlers[id + 1]
-        battlers:add(battlerData)
+        battlers:add(id)
       end
     end
   end
-  battlers:conditionalRemove(function(battler) 
+  battlers:conditionalRemove(function(battlerID) 
+      local battler = Database.battlers[battlerID + 1]
       return not self.battlerTypeList:contains(battler.typeID)
     end)
   return battlers

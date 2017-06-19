@@ -19,5 +19,5 @@ return function(param, event, ...)
   transition.tileY = transition.tileY + 10
   FieldManager:loadTransition(transition)
   self:wait(90)]]
-  FieldManager:loadBattle(1)
+  FieldManager:loadBattle(1, { skipAnimations = true })
 end

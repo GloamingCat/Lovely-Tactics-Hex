@@ -112,8 +112,8 @@
     "money": 0,
     "exp": 5,
     "scriptAI": {
-      "path": "ai/script/Hidder.lua",
-      "param": "train"
+      "path": "ai/script/SimpleNN.lua",
+      "param": ""
     },
     "build": {
       "path": "build/Mage.lua",
@@ -128,7 +128,77 @@
       0,
       0
     ],
+    "skills":  [
+      3
+    ],
+    "items": [],
+    "elements": [],
+    "tags": []
+  },
+  {
+    "name": "Yellow Lancer",
+    "persistent": false,
+    "level": 3,
+    "typeID": 0,
+    "battleCharID": 4,
+    "fieldCharID": 0,
+    "attackID": 1,
+    "skillDagID": -1,
+    "money": 0,
+    "exp": 5,
+    "scriptAI": {
+      "path": "ai/script/Ofensive.lua",
+      "param": ""
+    },
+    "build": {
+      "path": "build/Lancer.lua",
+      "param": ""
+    },
+    "attributes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
     "skills": [],
+    "items": [],
+    "elements": [],
+    "tags": []
+  },
+  {
+    "name": "Magenta Mage",
+    "persistent": false,
+    "level": 3,
+    "typeID": 1,
+    "battleCharID": 5,
+    "fieldCharID": -1,
+    "attackID": 2,
+    "skillDagID": -1,
+    "money": 0,
+    "exp": 5,
+    "scriptAI": {
+      "path": "ai/script/Defensive.lua",
+      "param": ""
+    },
+    "build": {
+      "path": "build/Mage.lua",
+      "param": ""
+    },
+    "attributes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "skills":  [
+      3
+    ],
     "items": [],
     "elements": [],
     "tags": []

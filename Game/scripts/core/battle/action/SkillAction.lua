@@ -101,6 +101,9 @@ end
 -- Overrides BattleAction:onConfirm.
 -- Executes the movement action and the skill's effect.
 function SkillAction:onConfirm(input)
+  if input.GUI then
+    input.GUI:endGridSelecting()
+  end
   local moveAction = MoveAction(self.data.range, input.target)
   local path = PathFinder.findPath(moveAction, input.user, input.target)
   if input.skipAnimations then
@@ -114,9 +117,6 @@ function SkillAction:onConfirm(input)
   else
     FieldManager.renderer:moveToObject(input.user, nil, true)
     FieldManager.renderer.focusObject = input.user
-    if input.GUI then
-      input.GUI:endGridSelecting()
-    end
     if path then
       input.user:walkPath(path)
       self:use(input)
@@ -260,18 +260,30 @@ end
 -- Simulation
 ---------------------------------------------------------------------------------------------------
 
--- Applies skill's effect with animations.
+-- Applies skill's effect with no animations.
 -- By default, just applies the damage result in the affected characters.
+-- @param(input : ActionInput)
 function SkillAction:applyEffects(input)
   local tiles = self:getAllAffectedTiles(input)
   for i = #tiles, 1, -1 do
     for char in tiles[i].characterList:iterator() do
-      if char.battler then
-        local effect = self:calculateEffectResult(input, char, expectation)
-        if effect then
-          char.battler:damageHP(effect)
-        end
-      end
+      self:applyEffect(input, char)
+    end
+  end
+end
+
+-- Applies skill's effect with no animations in a single character.
+-- @param(input : ActionInput)
+function SkillAction:applyEffect(input, char)
+  if not char.battler then
+    return
+  end
+  local effect = self:calculateEffectResult(input, char, expectation)
+  if effect then
+    if self.data.affectHP then
+      char.battler:damageHP(effect)
+    else
+      char.battler:damageSP(effect)
     end
   end
 end

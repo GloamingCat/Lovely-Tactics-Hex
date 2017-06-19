@@ -31,8 +31,7 @@ function DefendRule:execute(user)
   if not queue:isEmpty() then
     input.target = queue:front()
     input.action = MoveAction()
-    input.action:onSelect(input)
-    input.action:onConfirm(input)
+    input:execute()
   end
   
   -- Find tile to attack

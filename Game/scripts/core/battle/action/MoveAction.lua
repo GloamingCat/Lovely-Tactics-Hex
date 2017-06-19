@@ -47,13 +47,13 @@ end
 
 -- Overrides BattleAction:onConfirm.
 function MoveAction:onConfirm(input)
+  if input.GUI then
+    input.GUI:endGridSelecting()
+  end
   local path = PathFinder.findPath(self, input.user, input.target)
   if input.skipAnimations then
-    input.user:moveToTile(self.moveTarget)
+    input.user:moveToTile(input.target)
   else
-    if input.GUI then
-      input.GUI:endGridSelecting()
-    end
     FieldManager.renderer:moveToObject(input.user, nil, true)
     FieldManager.renderer.focusObject = input.user
     input.user:walkPath(path)

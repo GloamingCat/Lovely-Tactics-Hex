@@ -27,6 +27,7 @@ function ActionInput:init(action, user, target, moveTarget, GUI)
   self.target = target
   self.moveTarget = moveTarget
   self.GUI = GUI
+  self.skipAnimations = BattleManager.params.skipAnimations
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -37,8 +38,7 @@ end
 -- @ret(number) the action time cost
 function ActionInput:execute()
   if self.moveTarget then
-    local moveAction = MoveAction()
-    local moveInput = ActionInput(moveAction, self.user, self.moveTarget)
+    local moveInput = ActionInput(MoveAction(), self.user, self.moveTarget)
     moveInput.skipAnimations = self.skipAnimations
     moveInput:execute()
   end

@@ -35,6 +35,14 @@ function BattleManager:init()
   self.currentCharacter = nil
 end
 
+-- Creates battle elements.
+-- @param(params : table) battle params to be used by custom scripts
+function BattleManager:setUp(params)
+  self.params = params or {}
+  self:setUpTiles()
+  self:setUpCharacters()
+end
+
 -- Creates battle characters.
 function BattleManager:setUpCharacters()
   TroopManager:createTroops()
@@ -60,6 +68,9 @@ end
 
 -- Runs before battle loop.
 function BattleManager:battleIntro()
+  if self.params.skipAnimations then
+    return
+  end
   local centers = TroopManager:getPartyCenters()
   local speed = 50
   for i = #centers, 0, -1 do
@@ -105,6 +116,7 @@ function BattleManager:clear()
     self.cursor:destroy()
   end
   self.pathMatrix = nil
+  self.params = nil
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -144,7 +156,9 @@ function BattleManager:runTurn(char, iterations)
   end
   local actionCost = 0
   local AI = self.currentCharacter.battler.AI
-  FieldManager.renderer:moveToObject(char, nil, true)
+  if not self.params.skipAnimations then
+    FieldManager.renderer:moveToObject(char, nil, true)
+  end
   if AI and not self.training then
     actionCost = AI:nextAction(iterations, char)
   else
