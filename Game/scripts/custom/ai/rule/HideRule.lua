@@ -27,7 +27,7 @@ function HideRule:execute(user)
   skill:onSelect(input)
   
   -- Find tile to move
-  local queue = BattleTactics.runAway(user.battler.party, input)
+  local queue = BattleTactics.runAway(user, input)
   if not queue:isEmpty() then
     input.target = queue:front()
     input.action = MoveAction()

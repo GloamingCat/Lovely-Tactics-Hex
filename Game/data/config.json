@@ -44,7 +44,9 @@
     "tileB": 16,
     "tileS": 0,
     "pixelsPerHeight": 8,
-    "allNeighbors": false
+    "allNeighbors": false,
+    "troopWidth": 5,
+    "troopHeight": 3
   },
   "initialMembers": [
     4,

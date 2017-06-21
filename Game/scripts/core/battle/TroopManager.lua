@@ -29,6 +29,14 @@ function TroopManager:init()
   self.characterList = List()
 end
 
+-- Erases battlers and clears list.
+function TroopManager:clear()
+  for bc in self.characterList:iterator() do
+    bc.battler = nil
+  end
+  self.characterList = List()
+end
+
 -------------------------------------------------------------------------------
 -- Character creation
 -------------------------------------------------------------------------------

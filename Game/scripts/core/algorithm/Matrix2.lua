@@ -45,6 +45,42 @@ function Matrix2:iterator()
   end
 end
 
+function Matrix2:__mul(other)
+  if other.height and other.width then
+    return self:mulMatrix(other)
+  else
+    return self:mulVector(other)
+  end
+end
+
+function Matrix2:mulMatrix(other)
+  assert(self.height == other.width, 'Cannot multiply matrixes: ' .. self.height .. ' ' .. other.width)
+  local m = Matrix2(self.width, other.height, 0)
+  for i = 1, self.width do
+    for j = 1, other.height do
+      local value = 0
+      for k = 1, self.height do
+        value = value + self:get(i, k) + other:get(k, j)
+      end
+      m:set(value, i, j)
+    end
+  end
+  return m
+end
+
+function Matrix2:mulVector(vector)
+  assert(self.height == #vector, 'Cannot multiply with vector: ' .. self.height .. ' ' .. #vector)
+  local m = {}
+  for i = 1, self.width do
+    local value = 0
+    for j = 1, self.height do
+      value = vector[j] * self:get(i, j)
+    end
+    m[i] = value
+  end
+  return m
+end
+
 -- @ret(string) the string representation
 function Matrix2:__tostring()
   local s = '{ '

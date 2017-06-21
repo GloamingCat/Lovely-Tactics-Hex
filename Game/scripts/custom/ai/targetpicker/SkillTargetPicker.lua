@@ -27,7 +27,7 @@ end
 local old_potentialMovements = SkillTargetPicker.potentialMovements
 function SkillTargetPicker:potentialMovements(input)
   if input.action.range > 1 then
-    local queue = BattleTactics.runAway(input.user.battler.party, input)
+    local queue = BattleTactics.runAway(input.user, input)
     local list = queue:toList()
     list:add(input.user:getTile())
     return queue:toList()  

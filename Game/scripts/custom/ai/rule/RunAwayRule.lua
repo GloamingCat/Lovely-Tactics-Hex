@@ -22,7 +22,7 @@ local RunAwayRule = class(ScriptRule)
 
 -- Overrides ScriptRule:execute.
 function RunAwayRule:execute(user)
-  local queue = BattleTactics.runAway(user.battler.party)
+  local queue = BattleTactics.runAway(user)
   if queue:isEmpty() then
     return nil
   end

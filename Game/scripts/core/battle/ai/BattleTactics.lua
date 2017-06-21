@@ -76,35 +76,36 @@ end
 
 -- @param(party : number) character's party
 -- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
-function BattleTactics.runAway(party, input)
-  return BattleTactics.hide(party, input, BattleTactics.minEnemyDistance)
+function BattleTactics.runAway(user, input)
+  return BattleTactics.hide(user, input, BattleTactics.minEnemyDistance)
 end
 
 -- @param(party : number) character's party
 -- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
-function BattleTactics.runToAllies(party, input)
-  return BattleTactics.hide(party, input, BattleTactics.allyDistance)
+function BattleTactics.runToAllies(user, input)
+  return BattleTactics.hide(user, input, BattleTactics.allyDistance)
 end
 
 -- @param(party : number) character's party
 -- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
-function BattleTactics.runFromEnemies(party, input)
-  return BattleTactics.hide(party, input, BattleTactics.enemyDistance)
+function BattleTactics.runFromEnemies(user, input)
+  return BattleTactics.hide(user, input, BattleTactics.enemyDistance)
 end
 
 -- @param(party : number) character's party
 -- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
-function BattleTactics.runFromEnemiesToAllies(party, input)
-  return BattleTactics.hide(party, input, BattleTactics.partyDistance)
+function BattleTactics.runFromEnemiesToAllies(user, input)
+  return BattleTactics.hide(user, input, BattleTactics.partyDistance)
 end
 
 -- @param(party : number) character's party
 -- @param(input : ActionInput)
 -- @param(getDistance : function) calculates the total distance
 -- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
-function BattleTactics.hide(party, input, getDistance)
+function BattleTactics.hide(user, input, getDistance)
+  local party = user.battler.party
   local queue = PriorityQueue()
-  local mind = getDistance(party, input.user:getTile())
+  local mind = getDistance(party, user:getTile())
   for tile in FieldManager.currentField:gridIterator() do
     if tile.gui.movable then
       local valid = true

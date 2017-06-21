@@ -33,12 +33,13 @@ function BattleManager:init()
   self.turnLimit = turnLimit
   self.onBattle = false
   self.currentCharacter = nil
+  self.params = {}
 end
 
 -- Creates battle elements.
 -- @param(params : table) battle params to be used by custom scripts
 function BattleManager:setUp(params)
-  self.params = params or {}
+  self.params = params or self.params
   self:setUpTiles()
   self:setUpCharacters()
 end
@@ -105,9 +106,6 @@ end
 
 -- Clears batte information from characters and field.
 function BattleManager:clear()
-  for bc in TroopManager.characterList:iterator() do
-    bc.battler = nil
-  end
   for tile in FieldManager.currentField:gridIterator() do
     tile.gui:destroy()
     tile.gui = nil
@@ -115,8 +113,8 @@ function BattleManager:clear()
   if self.cursor then
     self.cursor:destroy()
   end
+  TroopManager:clear()
   self.pathMatrix = nil
-  self.params = nil
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -86,6 +86,10 @@ function math.almostEquals(x, y)
   return abs(x - y) < E
 end
 
+---------------------------------------------------------------------------------------------------
+-- Vector / Matrix
+---------------------------------------------------------------------------------------------------
+
 -- Multiples two array of numbers (must have same size).
 -- @param(a : table) first array
 -- @param(b : table) second array

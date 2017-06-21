@@ -9,7 +9,7 @@
     "defaultRegion": 0,
     "partyCount": 2,
     "onStart": {
-      "path": "field/Test.lua",
+      "path": "field/NNCreator.lua",
       "param": ""
     },
     "transitions": [],

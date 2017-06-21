@@ -44,6 +44,7 @@ end
 
 function GeneticAlgorithm:getFittest(p)
   local fittest = p[1]
+  fittest.fitness = fittest.fitness or self.getFitness(fittest)
   for i = 2, #p do
     local ind = p[i]
     ind.fitness = ind.fitness or self.getFitness(ind)
@@ -65,6 +66,7 @@ function GeneticAlgorithm:evolvePopulation(p)
     local ind1 = self:tournamentSelection(p)
     local ind2 = self:tournamentSelection(p)
     local newInd = self:crossover(ind1, ind2)
+    newp[i] = newInd
   end
   for i = elitismOffset, #newp do
     self:mutate(newp[i])
@@ -99,6 +101,7 @@ function GeneticAlgorithm:mutate(ind)
       ind[i] = self:randomGene()
     end
   end
+  ind.fitness = nil
 end
 
 return GeneticAlgorithm

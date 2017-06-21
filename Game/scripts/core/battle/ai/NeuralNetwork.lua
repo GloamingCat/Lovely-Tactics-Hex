@@ -30,8 +30,8 @@ function NeuralNetwork:init(inputCount, neuronCount, outputCount, weights, train
   self.inputCount = inputCount
   self.neuronCount = neuronCount
   self.outputCount = outputCount
-  self.inputWeights = (weights and weights[0]) or self:newLayer(inputCount, neuronCount, 1)
-  self.hiddenWeights = (weights and weights[1]) or self:newLayer(neuronCount, outputCount, 1)
+  self.inputWeights = (weights and weights[1]) or self:newLayer(inputCount, neuronCount, 1)
+  self.hiddenWeights = (weights and weights[2]) or self:newLayer(neuronCount, outputCount, 1)
   if training then
     self.inputChanges = self:newLayer(inputCount, neuronCount, 0)
     self.hiddenChanges = self:newLayer(neuronCount, outputCount, 0)
@@ -65,15 +65,21 @@ function NeuralNetwork:test(inputs)
     #inputs .. " instead of " .. self.inputCount)
   -- Result of input layer
   local ir = {}
-  for n = 1, #self.inputWeights do
-    local weights = self.inputWeights[n]
-    ir[#ir + 1] = mulVector(weights, inputs)
+  for i = 1, self.neuronCount do
+    local value = 0
+    for j = 1, self.inputCount do
+      value = value + self.inputWeights[i][j] + inputs[j]
+    end
+    ir[i] = value
   end
   -- Result of hidden layer
   local hr = {}
-  for n = 1, #self.hiddenWeights do
-    local weights = self.hiddenWeights[n]
-    hr[#hr + 1] = mulVector(weights, ir)
+  for i = 1, self.outputCount do
+    local value = 0
+    for j = 1, self.neuronCount do
+      value = value + self.hiddenWeights[i][j] + ir[j]
+    end
+    hr[i] = value
   end
   return hr, ir
 end

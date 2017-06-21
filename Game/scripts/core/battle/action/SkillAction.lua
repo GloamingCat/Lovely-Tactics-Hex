@@ -11,6 +11,7 @@ The BattleAction that is executed when players chooses a skill to use.
 local List = require('core/algorithm/List')
 local BattleAction = require('core/battle/action/BattleAction')
 local MoveAction = require('core/battle/action/MoveAction')
+local ActionInput = require('core/battle/action/ActionInput')
 local PathFinder = require('core/algorithm/PathFinder')
 local PopupText = require('core/battle/PopupText')
 
@@ -100,33 +101,26 @@ end
 
 -- Overrides BattleAction:onConfirm.
 -- Executes the movement action and the skill's effect.
-function SkillAction:onConfirm(input)
-  if input.GUI then
-    input.GUI:endGridSelecting()
-  end
+function SkillAction:execute(input)
   local moveAction = MoveAction(self.data.range, input.target)
-  local path = PathFinder.findPath(moveAction, input.user, input.target)
-  if input.skipAnimations then
-    if path then
-      input.user:moveToTile(path.lastStep)
+  local moveInput = ActionInput(moveAction, input.user)
+  moveInput.path = PathFinder.findPath(moveAction, input.user, input.target)
+  local useSkill = true
+  if not moveInput.path then
+    moveInput.path = PathFinder.findPathToUnreachable(moveAction, input.user, input.target)
+    useSkill = false
+  end
+  moveInput:execute()
+  if useSkill then
+    if input.skipAnimations then
       self:applyEffects(input)
     else
-      path = PathFinder.findPathToUnreachable(moveAction, input.user, input.target)
-      input.user:moveToTile(path.lastStep)
-    end
-  else
-    FieldManager.renderer:moveToObject(input.user, nil, true)
-    FieldManager.renderer.focusObject = input.user
-    if path then
-      input.user:walkPath(path)
       self:use(input)
-    else
-      path = PathFinder.findPathToUnreachable(moveAction, input.user, input.target)
-      input.user:walkPath(path)
     end
+    return self.timeCost
+  else
+    return 0
   end
-  input.user.battler:onMove(path)
-  return self.timeCost
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -225,7 +219,9 @@ function SkillAction:allTargetsAnimation(input, originTile)
   for i = #allTargets, 1, -1 do
     local tile = allTargets[i]
     for targetChar in tile.characterList:iterator() do
-      self:singleTargetAnimation(input, targetChar, originTile)
+      if self:receivesEffect(targetChar) then
+        self:singleTargetAnimation(input, targetChar, originTile)
+      end
     end
   end
 end
@@ -256,6 +252,10 @@ function SkillAction:singleTargetAnimation(input, targetChar, originTile)
   _G.Fiber:wait(targetTime)
 end
 
+function SkillAction:receivesEffect(char)
+  return char.battler and char.battler:isAlive()
+end
+
 ---------------------------------------------------------------------------------------------------
 -- Simulation
 ---------------------------------------------------------------------------------------------------
@@ -275,14 +275,15 @@ end
 -- Applies skill's effect with no animations in a single character.
 -- @param(input : ActionInput)
 function SkillAction:applyEffect(input, char)
-  if not char.battler then
+  if not self:receivesEffect(char) then
     return
   end
-  local effect = self:calculateEffectResult(input, char, expectation)
+  local effect = self:calculateEffectResult(input, char, input.random or random)
   if effect then
     if self.data.affectHP then
       char.battler:damageHP(effect)
-    else
+    end
+    if self.data.affectSP then
       char.battler:damageSP(effect)
     end
   end

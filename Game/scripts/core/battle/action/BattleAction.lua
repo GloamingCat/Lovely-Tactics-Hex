@@ -63,10 +63,10 @@ end
 -- @ret(number) the time cost of the action:
 --  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
 function BattleAction:onConfirm(input)
-  if input.GUI and not input.skipAnimations then
+  if input.GUI then
     input.GUI:endGridSelecting()
   end
-  return self.timeCost
+  return self:execute(input)
 end
 
 -- Called when player chooses a target for the action. 
@@ -78,6 +78,11 @@ function BattleAction:onCancel(input)
     input.GUI:endGridSelecting()
   end
   return -1
+end
+
+-- Executes the action animations and applies effects.
+function BattleAction:execute(input)
+  return 0 -- Abstract.
 end
 
 ---------------------------------------------------------------------------------------------------
