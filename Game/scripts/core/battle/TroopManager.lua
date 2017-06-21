@@ -149,12 +149,12 @@ function TroopManager:battlerCount(battler)
 end
 
 -- Searchs for a winner party (when all alive characters belong to the same party).
--- @ret(number) the number of the party. Returns nil if no one won yet
+-- @ret(number) the number of the party (returns nil if no one won yet, -1 if there's a draw)
 function TroopManager:winnerParty()
-  local currentParty = nil
+  local currentParty = -1
   for bc in self.characterList:iterator() do
     if bc.battler:isAlive() then
-      if currentParty == nil then
+      if currentParty == -1 then
         currentParty = bc.battler.party
       else
         if currentParty ~= bc.battler.party then

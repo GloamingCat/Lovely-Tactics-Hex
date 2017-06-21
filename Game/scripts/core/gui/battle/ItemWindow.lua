@@ -44,6 +44,7 @@ end
 function ItemWindow:onConfirm(button)
   local skill = Database.skills[button.item.skillID + 1]
   self:selectAction(skill)
+  -- TODO: remove item from inventory
 end
 
 -- Called when player cancels.

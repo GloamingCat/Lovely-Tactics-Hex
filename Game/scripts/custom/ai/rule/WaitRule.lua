@@ -17,6 +17,7 @@ local WaitRule = class(ScriptRule)
 ---------------------------------------------------------------------------------------------------
 
 function WaitRule:execute(user)
+  print('wait')
   return 0
 end
 

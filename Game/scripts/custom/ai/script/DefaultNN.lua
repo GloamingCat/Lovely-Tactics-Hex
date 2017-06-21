@@ -30,13 +30,12 @@ function SimpleNN:init(battler, param)
   old_init(self, 'SimpleNN' .. battler.battlerID, battler, param)
 end
 
-local function addRules(rules, skill)
-  local s = #rules
+local function addRules(r, skill)
   local name = skill.skillID
-  rules[s + 1] = RushRule('Rush ' .. name, skill)
-  rules[s + 2] = AttackRule('Attack ' .. name, skill)
-  rules[s + 3] = DefendRule('Defend ' .. name, skill)
-  rules[s + 4] = HideRule('Hide ' .. name, skill)
+  r[#r + 1] = RushRule('Rush ' .. name, skill)
+  r[#r + 1] = AttackRule('Attack ' .. name, skill)
+  r[#r + 1] = DefendRule('Defend ' .. name, skill)
+  r[#r + 1] = HideRule('Hide ' .. name, skill)
 end
 
 -- Overrides ScriptNN:createRules.

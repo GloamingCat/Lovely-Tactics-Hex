@@ -117,6 +117,14 @@ function BattleManager:clear()
   self.pathMatrix = nil
 end
 
+-- Called when a deadlock is detected. 
+-- Only used when it is impossible to end the battle, so it just kills everybody.
+function BattleManager:deadLock()
+  for char in TroopManager.characterList:iterator() do
+    char.battler:damageHP(math.huge)
+  end
+end
+
 ---------------------------------------------------------------------------------------------------
 -- Turn
 ---------------------------------------------------------------------------------------------------

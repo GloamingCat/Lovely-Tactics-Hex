@@ -32,6 +32,10 @@ local introTime = 22.5
 local centerTime = 7.5
 local targetTime = 2.2
 local useTime = 2
+local maxDeadLocks = 100
+
+-- Static
+local deadLockCount = 0
 
 local SkillAction = class(BattleAction)
 
@@ -109,6 +113,12 @@ function SkillAction:execute(input)
   if not moveInput.path then
     moveInput.path = PathFinder.findPathToUnreachable(moveAction, input.user, input.target)
     useSkill = false
+    deadLockCount = deadLockCount + 1
+    if deadLockCount > maxDeadLocks then
+      BattleManager:deadLock()
+    end
+  else
+    deadLockCount = 0
   end
   moveInput:execute()
   if useSkill then
@@ -117,6 +127,7 @@ function SkillAction:execute(input)
     else
       self:use(input)
     end
+    input.user.battler:onSkillUse(self)
     return self.timeCost
   else
     return 0
@@ -281,7 +292,9 @@ function SkillAction:applyEffect(input, char)
   local effect = self:calculateEffectResult(input, char, input.random or random)
   if effect then
     if self.data.affectHP then
-      char.battler:damageHP(effect)
+      if char.battler:damageHP(effect) then
+        char:playAnimation(char.koAnim)
+      end
     end
     if self.data.affectSP then
       char.battler:damageSP(effect)

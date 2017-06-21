@@ -23,6 +23,7 @@ function RushRule:execute(user)
   self.action:onSelect(input)
   local queue = BattleTactics.closestCharacters(input)
   if queue:isEmpty() then
+    print('rush')
     return nil
   end
   input.target = queue:front()

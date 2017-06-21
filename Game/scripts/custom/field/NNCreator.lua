@@ -16,8 +16,8 @@ local readFile = love.filesystem.read
 local writeFile = love.filesystem.write
 
 -- Constants
-local battlerID = 3
-local matches = { 1, 1 }
+local battlerID = 5
+local matches = { 1, 0 }
 local repeats = 4
 local generations = 10
 
@@ -60,6 +60,8 @@ local function getWinningRate(params, key)
 end
 
 return function()
+  love.filesystem.write('test.json', JSON.encode({1, 2, 3, 4, 5}))
+  
   local battler = Battler(nil, battlerID, -1)
   assert(battler.AI.network, 'Battler ' .. battlerID .. ' (' .. 
     battler.data.name .. ') does not have a neural network AI.')
@@ -78,18 +80,20 @@ return function()
   
   -- Evolve population
   local ga = GeneticAlgorithm(length, 0, 1, getFitness)
-  local pop = battler.AI:loadJsonData('_pop') or ga:newPopulation(20)
-  for i = 1, generations do
+  local pop = battler.AI:loadJsonData('_pop') or ga:newPopulation(10)
+  
+  repeat
     pop = ga:evolvePopulation(pop)
-  end
-  
-  -- Clear and save individuals
-  local fittest = ga:getFittest(pop)
-  for i = 1, #pop do
-    pop[i].fitness = nil
-  end
-  battler.AI:saveJsonData(pop, '_pop')
-  battler.AI:saveJsonData(toWeights(fittest, battler.AI.network))
-  
-  FieldManager:loadBattle(1, {})
+    
+    -- Clear and save individuals
+    local fittest = ga:getFittest(pop)
+    for i = 1, #pop do
+      pop[i].fitness = nil
+    end
+    local weights = toWeights(fittest, battler.AI.network)
+    battler.AI:saveJsonData(weights)
+    battler.AI:saveJsonData(pop, '_pop')
+    local testWinner = FieldManager:loadBattle(matches[1], { skipAnimations = true })
+    print('Test Winner: ' .. testWinner)
+  until testWinner == matches[2]
 end

@@ -24,6 +24,7 @@ local RunAwayRule = class(ScriptRule)
 function RunAwayRule:execute(user)
   local queue = BattleTactics.runAway(user)
   if queue:isEmpty() then
+    print('run away')
     return nil
   end
   local input = ActionInput(MoveAction(), user, queue:front()) 

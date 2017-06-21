@@ -68,6 +68,10 @@ function NeuralNetwork:test(inputs)
   for i = 1, self.neuronCount do
     local value = 0
     for j = 1, self.inputCount do
+      if not self.inputWeights[i] then
+        print(#self.inputWeights, #self.inputWeights[1], #self.hiddenWeights, #self.hiddenWeights[1])
+      elseif not self.inputWeights[i][j] then
+      end
       value = value + self.inputWeights[i][j] + inputs[j]
     end
     ir[i] = value

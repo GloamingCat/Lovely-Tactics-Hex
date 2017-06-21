@@ -16,9 +16,11 @@ function GeneticAlgorithm:init(geneLength, geneMin, geneMax, fitnessFunction)
   self.geneLength = geneLength
   self.geneMin = geneMin
   self.geneMax = geneMax
-  self.mutationRate = 0.015
+  self.mutationRate = 0.1
   self.tournamentSize = 5
   self.elitism = true
+  self.maxGenerations = 100
+  self.minFitness = 0.70
   self.getFitness = fitnessFunction
 end
 
@@ -56,22 +58,30 @@ function GeneticAlgorithm:getFittest(p)
 end
 
 function GeneticAlgorithm:evolvePopulation(p)
-  local newp = {}
-  local elitismOffset = 0
-  if self.elitism then
-    newp[1] = self:getFittest(p)
-    elitismOffset = 1
+  for i = 1, self.maxGenerations do
+    local fittest = self:getFittest(p)
+    print('Fittest: ' .. fittest.fitness, 'Generation: ' .. i)
+    if fittest.fitness >= self.minFitness then
+      return p, i
+    end
+    local newp = {}
+    local elitismOffset = 0
+    if self.elitism then
+      newp[1] = fittest
+      elitismOffset = 1
+    end
+    for i = elitismOffset, #p do
+      local ind1 = self:tournamentSelection(p)
+      local ind2 = self:tournamentSelection(p)
+      local newInd = self:crossover(ind1, ind2)
+      newp[i] = newInd
+    end
+    for i = elitismOffset, #newp do
+      self:mutate(newp[i])
+    end
+    p = newp
   end
-  for i = elitismOffset, #p do
-    local ind1 = self:tournamentSelection(p)
-    local ind2 = self:tournamentSelection(p)
-    local newInd = self:crossover(ind1, ind2)
-    newp[i] = newInd
-  end
-  for i = elitismOffset, #newp do
-    self:mutate(newp[i])
-  end
-  return newp
+  return p, self.maxGenerations + 1
 end
 
 function GeneticAlgorithm:tournamentSelection(p)

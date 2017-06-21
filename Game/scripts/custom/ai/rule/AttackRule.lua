@@ -44,7 +44,12 @@ function AttackRule:execute(user)
   if bestTile then
     input.target = bestTile
   else
-    input.target = BattleTactics.closestCharacters(input):front()
+    local queue = BattleTactics.closestCharacters(input)
+    if queue:isEmpty() then
+      print('attack')
+      return nil
+    end
+    input.target = queue:front()
   end
   return input.action:onConfirm(input)
 end

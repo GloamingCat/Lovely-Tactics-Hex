@@ -91,7 +91,7 @@ end
 -- @param(tile : ObjectTile) tile to check
 -- @ret(boolean) true if it's final, false otherwise
 function MoveAction:isFinal(tile, final, user)
-  local cost = self:estimateCost(final, tile, user)
+  local cost = self:estimateCost(tile, final, user)
   return cost <= self.range and self:isStandable(tile, user)
 end
 

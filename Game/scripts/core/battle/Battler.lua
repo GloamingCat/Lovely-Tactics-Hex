@@ -209,13 +209,18 @@ function Battler:onBattleEnd()
   end
 end
 
--- Callback for when the player moves.
+-- Callback for when the character moves.
 function Battler:onMove(path)
   if path.lastStep:isControlZone(self) then
     self.currentSteps = 0
   else
     self.currentSteps = self.currentSteps - path.totalCost
   end
+end
+
+-- Callback for when the character uses a skill.
+function Battler:onSkillUse(action)
+  self.currentSP = self.currentSP - action.data.energyCost
 end
 
 ---------------------------------------------------------------------------------------------------

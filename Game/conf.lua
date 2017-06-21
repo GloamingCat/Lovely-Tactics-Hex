@@ -9,16 +9,20 @@ function love.conf(t)
   love.filesystem.setRequirePath('scripts/?.lua;/?.lua')
   --PROFI = require('ProFi')
   JSON = require('core/save/JsonParser')
-  Config = JSON.decode(love.filesystem.read('data/config.json'))
+  local configjson = love.filesystem.read('data/config.json')
+  Config = JSON.decode(configjson)
   Database = {}
 	local db = {'items', 'skills', 'skillDags', 'battlers', 'status', 'tilesets', 
     'animCharacter', 'animBattle', 'animOther', 'terrains', 'obstacles', 'ramps',
     'charBattle', 'charField', 'charOther'}
 	for i = #db, 1, -1 do
     local file = db[i]
-		Database[file] = JSON.decode(love.filesystem.read('data/' .. file .. '.json'))
+    local datajson = love.filesystem.read('data/' .. file .. '.json')
+		Database[file] = JSON.decode(datajson)
 	end
+  t.identity = Config.name 
   t.window.title = Config.name
+  t.window.icon = 'images/icon24.png'
   t.window.width = Config.screen.nativeWidth * Config.screen.widthScale
   t.window.height = Config.screen.nativeHeight * Config.screen.heightScale
   t.window.fullscreentype = 'desktop'
