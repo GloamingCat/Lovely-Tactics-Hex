@@ -40,7 +40,6 @@ function DefendRule:execute(user)
   queue = BattleTactics.closestCharacters(input)
   
   if queue:isEmpty() then
-    print('defend')
     return nil
   end
   

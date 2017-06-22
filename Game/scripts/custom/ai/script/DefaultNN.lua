@@ -46,7 +46,7 @@ function SimpleNN:createRules()
   for skill in self.battler.skillList:iterator() do
     addRules(r, skill)
   end
-  r[#r + 1] = RunAwayRule('RunArray')
+  --r[#r + 1] = RunAwayRule('RunArray')
   r[#r + 1] = WaitRule('Wait')
   return r
 end

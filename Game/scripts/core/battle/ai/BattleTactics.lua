@@ -29,20 +29,19 @@ local BattleTactics = {}
 function BattleTactics.closestCharacters(input)
   local range = input.action.range
   local moveAction = MoveAction(range)
-  local tempQueue = PriorityQueue(function (a, b)
-    local x = (a[2] and a[2].totalCost) or math.huge
-    local y = (b[2] and b[2].totalCost) or math.huge
-    return x < y
-  end)
+  local tempQueue = PriorityQueue()
   local initialTile = input.user:getTile()
   for char in TroopManager.characterList:iterator() do
     local tile = char:getTile()
     if tile.gui.selectable then
       local path = PathFinder.findPath(moveAction, input.user, tile, initialTile, true)
-      if path == nil then
-        tempQueue:enqueue(tile, nil)
+      if path then
+        tempQueue:enqueue(tile, path.totalCost)
       else
-        tempQueue:enqueue(tile, path)
+        path = PathFinder.findPathToUnreachable(moveAction, input.user, tile, initialTile, true)
+        if path then 
+          tempQueue:enqueue(tile, path.totalCost + 100)
+        end
       end
     end
   end
@@ -71,56 +70,62 @@ function BattleTactics.areaTargets(input)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Hide / Run Away
+-- Tile Optimization
 ---------------------------------------------------------------------------------------------------
 
--- @param(party : number) character's party
--- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
-function BattleTactics.runAway(user, input)
-  return BattleTactics.hide(user, input, BattleTactics.minEnemyDistance)
-end
-
--- @param(party : number) character's party
--- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
-function BattleTactics.runToAllies(user, input)
-  return BattleTactics.hide(user, input, BattleTactics.allyDistance)
-end
-
--- @param(party : number) character's party
--- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
-function BattleTactics.runFromEnemies(user, input)
-  return BattleTactics.hide(user, input, BattleTactics.enemyDistance)
-end
-
--- @param(party : number) character's party
--- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
-function BattleTactics.runFromEnemiesToAllies(user, input)
-  return BattleTactics.hide(user, input, BattleTactics.partyDistance)
-end
-
--- @param(party : number) character's party
+-- @param(user : Character)
 -- @param(input : ActionInput)
--- @param(getDistance : function) calculates the total distance
--- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
-function BattleTactics.hide(user, input, getDistance)
+-- @param(isValid : function) checks if a tile is valid
+-- @param(evaluate : function) gets the evaluation of a tile
+-- @param(order : function) comparison function to the priority queue 
+--  (optional, ascending by default)
+-- @ret(PriorityQueue) queue of tiles sorted by priority
+function BattleTactics.optimalTiles(user, input, isValid, evaluate, order)
+  order = order or PriorityQueue.ascending
   local party = user.battler.party
-  local queue = PriorityQueue()
-  local mind = getDistance(party, user:getTile())
+  local queue = PriorityQueue(order)
+  local initTile = user:getTile()
+  local min = { initTile, evaluate(initTile, user, input) }
+  local pair = {}
   for tile in FieldManager.currentField:gridIterator() do
-    if tile.gui.movable then
-      local valid = true
-      if input then
-        valid = BattleTactics.hasReachableTargets(tile, input)
-      end
-      if valid then
-        local d = getDistance(party, tile)
-        if d > mind then
-          queue:enqueue(tile, -d)
-        end
+    if isValid(tile, user, input) then
+      pair[1] = tile
+      pair[2] = evaluate(tile, user, input)
+      if order(pair, min) then
+        queue:enqueue(tile, pair[2])
       end
     end
   end
   return queue
+end
+
+---------------------------------------------------------------------------------------------------
+-- Distance Optimization
+---------------------------------------------------------------------------------------------------
+
+-- @param(user : Character)
+-- @param(input : ActionInput)
+-- @param(getDistance : function) the distance calculator given the party and the tile
+-- @param(order : function) the comparison function for distances 
+--  (optional, descending by default)
+-- @ret(PriorityQueue)
+function BattleTactics.bestDistance(user, input, getDistance, order)
+  local party = user.battler.party
+  local evaluate = function(tile)
+    return getDistance(party, tile)
+  end
+  return BattleTactics.optimalTiles(user, input,
+    BattleTactics.potentialMoveTarget,
+    evaluate,
+    order or PriorityQueue.descending)
+end
+
+-- @param(tile : ObjectTile)
+-- @param(user : Character)
+-- @param(input : ActionInput)
+-- @ret(boolean)
+function BattleTactics.potentialMoveTarget(tile, user, input)
+  return tile.gui.movable and (not input or BattleTactics.hasReachableTargets(tile, input))
 end
 
 -- Checks if a given tile has reachable target for the given skill.
@@ -139,6 +144,31 @@ function BattleTactics.hasReachableTargets(tile, input)
     end
   end
   return false
+end
+
+-- @param(party : number) character's party
+-- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
+function BattleTactics.runAway(user, input)
+  return BattleTactics.bestDistance(user, input, BattleTactics.minEnemyDistance)
+end
+
+-- @param(party : number) character's party
+-- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
+function BattleTactics.runToAllies(user, input)
+  return BattleTactics.bestDistance(user, input, BattleTactics.allyDistance, 
+    PriorityQueue.ascending)
+end
+
+-- @param(party : number) character's party
+-- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
+function BattleTactics.runFromEnemies(user, input)
+  return BattleTactics.bestDistance(user, input, BattleTactics.enemyDistance)
+end
+
+-- @param(party : number) character's party
+-- @ret(PriorityQueue) queue of tiles sorted by distance from enemies
+function BattleTactics.runFromEnemiesToAllies(user, input)
+  return BattleTactics.bestDistance(user, input, BattleTactics.partyDistance)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -161,7 +191,7 @@ function BattleTactics.minEnemyDistance(party, tile)
   return d
 end
 
--- Sum of the distances from the allies (negative).
+-- Sum of the distances from the allies.
 -- @param(party : number) character's party
 -- @param(tile : ObjectTile) the tile to check
 -- @ret(number) the sum of the distances to all enemies
@@ -171,7 +201,7 @@ function BattleTactics.allyDistance(party, tile)
   for char in TroopManager.characterList:iterator() do
     if char.battler and char.battler.party == party then
       local t = char:getTile()
-      d = d - getDistance(tile.x, tile.y, t.x, t.y)
+      d = d + getDistance(tile.x, tile.y, t.x, t.y)
     end
   end
   return d
@@ -198,7 +228,7 @@ end
 -- @param(tile : ObjectTile) the tile to check
 -- @ret(number) the sum of the distances to all enemies
 function BattleTactics.partyDistance(party, tile)
-  return BattleTactics.enemyDistance(party, tile) + BattleTactics.allyDistance(party, tile)
+  return BattleTactics.enemyDistance(party, tile) - BattleTactics.allyDistance(party, tile)
 end
 
 return BattleTactics

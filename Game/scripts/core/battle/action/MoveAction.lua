@@ -47,7 +47,8 @@ end
 
 -- Overrides BattleAction:execute.
 function MoveAction:execute(input)
-  local path = input.path or PathFinder.findPath(self, input.user, input.target)
+  local path = input.path or BattleManager.pathMatrix:get(input.target.x, input.target.y) 
+    or PathFinder.findPath(self, input.user, input.target)
   if input.skipAnimations then
     input.user:moveToTile(path.lastStep)
   else

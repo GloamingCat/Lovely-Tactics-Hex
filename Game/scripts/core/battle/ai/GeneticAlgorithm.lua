@@ -1,29 +1,47 @@
 
 --[[===============================================================================================
 
-NeuralNetwork
+GeneticAlgorithm
 ---------------------------------------------------------------------------------------------------
-Generic implementation of a neural network.
-The bias is optional and must be added manually in the inputs.
+An implementation of a generic genetic algorithm.
 
 =================================================================================================]]
 
+-- Alias
 local rand = love.math.random
 
 local GeneticAlgorithm = class()
 
-function GeneticAlgorithm:init(geneLength, geneMin, geneMax, fitnessFunction)
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
+-- @param(geneLength : number) the number of genes per individual
+-- @param(geneMin : number) the minimum value of a gene
+-- @param(geneMax : number) the maximum value of a gene
+-- @param(fitnessFunc : function) the fitness evaluator of an individual;
+-- @param(integer : boolean) true if the genes are integers (optional, float genes by default)
+--  must take a single array of genes as argument and return a number
+function GeneticAlgorithm:init(geneLength, geneMin, geneMax, fitnessFunc, integer)
   self.geneLength = geneLength
   self.geneMin = geneMin
   self.geneMax = geneMax
-  self.mutationRate = 0.1
-  self.tournamentSize = 5
+  self.mutationRate = 0.05
+  self.tournamentSize = 0
   self.elitism = true
   self.maxGenerations = 100
-  self.minFitness = 0.70
-  self.getFitness = fitnessFunction
+  self.minFitness = 0.80
+  self.getFitness = fitnessFunc
+  if integer then
+    self.randomGene = self.integerGene
+  else
+    self.randomGene = self.floatGene
+  end
 end
 
+-- Creates a new population of random individuals.
+-- @param(size : number) number of individuals
+-- @ret(table) array of individuals
 function GeneticAlgorithm:newPopulation(size)
   local p = {}
   for i = 1, size do
@@ -32,50 +50,89 @@ function GeneticAlgorithm:newPopulation(size)
   return p
 end
 
-function GeneticAlgorithm:randomGene()
-  return rand() * (self.geneMax - self.geneMin) + self.geneMin
-end
-
-function GeneticAlgorithm:newIndividual()
+-- Creates a new individual with random or given genes.
+-- @param(original : table) original array of genes to be copied (optional)
+-- @ret(table) the array of genes
+function GeneticAlgorithm:newIndividual(original)
   local genes = {}
-  for i = 1, self.geneLength do
-    genes[i] = self:randomGene()
+  if original then
+    for i = 1, self.geneLength do
+      genes[i] = original[i]
+    end
+  else
+    for i = 1, self.geneLength do
+      genes[i] = self:randomGene()
+    end
   end
   return genes
 end
 
+-- Creates a new random gane.
+-- @ret(number) the value of the gene
+function GeneticAlgorithm:integerGene()
+  return rand(self.geneMin, self.geneMax)
+end
+
+-- Creates a new random gane.
+-- @ret(number) the value of the gene
+function GeneticAlgorithm:floatGene()
+  return rand() * (self.geneMax - self.geneMin) + self.geneMin
+end
+
+---------------------------------------------------------------------------------------------------
+-- Evolution
+---------------------------------------------------------------------------------------------------
+
+-- Evaluates the individuals and gets the fittest.
+-- @param(p : table) an array of individuals
+-- @ret(table) the best individual as an array of genes
+-- @ret(number) the index of the individual in the population
 function GeneticAlgorithm:getFittest(p)
-  local fittest = p[1]
-  fittest.fitness = fittest.fitness or self.getFitness(fittest)
+  local fittest = 1
+  p[fittest].fitness = p[fittest].fitness or self.getFitness(p[fittest])
   for i = 2, #p do
     local ind = p[i]
     ind.fitness = ind.fitness or self.getFitness(ind)
-    if ind.fitness > fittest.fitness then
-      fittest = ind
+    if ind.fitness > p[fittest].fitness then
+      fittest = i
     end
   end
-  return fittest
+  return p[fittest], fittest
 end
 
+-- Creates a new population starting from the given one.
+-- It stops evolving when the maximum number of generations is reached or
+-- there's an individual with the minimum fitness value.
+-- @param(p : table) array of individuals
+-- @ret(table) a new array of individuals
+-- @ret(number) the number of generations taken to reach the new population
 function GeneticAlgorithm:evolvePopulation(p)
   for i = 1, self.maxGenerations do
-    local fittest = self:getFittest(p)
+    -- Get fittest individual
+    local fittest, j = self:getFittest(p)
     print('Fittest: ' .. fittest.fitness, 'Generation: ' .. i)
     if fittest.fitness >= self.minFitness then
       return p, i
     end
+    -- Reserves fittest
     local newp = {}
-    local elitismOffset = 0
+    local elitismOffset = 1
     if self.elitism then
+      p[1], p[j] = p[j], p[1]
       newp[1] = fittest
-      elitismOffset = 1
+      elitismOffset = 2
     end
-    for i = elitismOffset, #p do
-      local ind1 = self:tournamentSelection(p)
-      local ind2 = self:tournamentSelection(p)
-      local newInd = self:crossover(ind1, ind2)
-      newp[i] = newInd
+    -- Crossover
+    if self.tournamentSize > 0 then
+      for i = elitismOffset, #p do
+        newp[i] = self:crossover(p)
+      end
+    else
+      for i = elitismOffset, #p do
+        newp[i] = p[i]
+      end
     end
+    -- Mutation
     for i = elitismOffset, #newp do
       self:mutate(newp[i])
     end
@@ -84,6 +141,24 @@ function GeneticAlgorithm:evolvePopulation(p)
   return p, self.maxGenerations + 1
 end
 
+---------------------------------------------------------------------------------------------------
+-- Operator
+---------------------------------------------------------------------------------------------------
+
+-- Mutates the given individual.
+-- @param(ind : table) the individual as array of genes
+function GeneticAlgorithm:mutate(ind)
+  for i = 1, #ind do
+    if rand() <= self.mutationRate then
+      ind[i] = self:randomGene()
+    end
+  end
+  ind.fitness = nil
+end
+
+-- Selects the fittest individual random a sub-population of the given population.
+-- @param(p : table) the population as an array of individuals
+-- @ret(table) the fittest individual as an array of genes
 function GeneticAlgorithm:tournamentSelection(p)
   local newp = {}
   for i = 1, self.tournamentSize do
@@ -93,7 +168,12 @@ function GeneticAlgorithm:tournamentSelection(p)
   return self:getFittest(newp)
 end
 
-function GeneticAlgorithm:crossover(ind1, ind2)
+-- Creates a new individual from a crossover of two selected parent from the given population.
+-- @param(p : table) the population as an array of individuals
+-- @ret(table) the new individual
+function GeneticAlgorithm:crossover(p)
+  local ind1 = self:tournamentSelection(p)
+  local ind2 = self:tournamentSelection(p)
   local newInd = {}
   for i = 1, self.geneLength do
     if rand() <= 0.5 then
@@ -103,15 +183,6 @@ function GeneticAlgorithm:crossover(ind1, ind2)
     end
   end
   return newInd
-end
-
-function GeneticAlgorithm:mutate(ind)
-  for i = 1, #ind do
-    if rand() <= self.mutationRate then
-      ind[i] = self:randomGene()
-    end
-  end
-  ind.fitness = nil
 end
 
 return GeneticAlgorithm

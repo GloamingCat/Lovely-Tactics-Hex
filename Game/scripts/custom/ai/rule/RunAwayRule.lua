@@ -22,12 +22,17 @@ local RunAwayRule = class(ScriptRule)
 
 -- Overrides ScriptRule:execute.
 function RunAwayRule:execute(user)
+  local action = MoveAction()
+  local input = ActionInput(action, user)
+  action:onSelect(input)
+  
+  -- Find tile to move
   local queue = BattleTactics.runAway(user)
   if queue:isEmpty() then
-    print('run away')
     return nil
   end
-  local input = ActionInput(MoveAction(), user, queue:front()) 
+  
+  input.target = queue:front()
   return input:execute()
 end
 

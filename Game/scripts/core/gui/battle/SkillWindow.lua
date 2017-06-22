@@ -27,7 +27,7 @@ end
 -- Creates a button from a skill ID.
 -- @param(skill : SkillAction) the SkillAction from battler's skill list
 function SkillWindow:createButton(skill)
-  local button = self:addButton(skill.data.name, nil, self.onButtonConfirm)
+  local button = self:addButton(skill.data.name, nil, self.onButtonConfirm, self.buttonEnabled)
   button.skill = skill
 end
 
@@ -39,6 +39,15 @@ end
 -- @param(button : Button) the button selected
 function SkillWindow:onButtonConfirm(button)
   self:selectAction(button.skill)
+end
+
+-- Tells if a skill can be used.
+-- @param(button : Button) the button to check
+-- @ret(boolean)
+function SkillAction:buttonEnabled(button)
+  local userSP = BattleManager.currentCharacter.battler.currentSP
+  local cost = button.skill.data.energyCost
+  return userSP >= cost
 end
 
 -- Called when player cancels.

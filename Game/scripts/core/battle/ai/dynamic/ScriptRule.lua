@@ -37,7 +37,7 @@ end
 -- Generates the action input and, if possible, executes the rule.
 -- @param(user : Character)
 function ScriptRule:execute(user)
-  if self.action then
+  if self.action and self:canExecute(user) then
     local input = self:getInput(user)
     if input and input.target and input.target.gui.selectable then
       -- Can execute the action.
@@ -46,7 +46,24 @@ function ScriptRule:execute(user)
       -- Cannot execute the action.
       return nil
     end
+  else
+    -- Nothing to execute.
+    return nil
   end
+end
+
+-- Checks if a rule can be executed.
+-- @param(user : Character)
+-- @ret(boolean)
+function ScriptRule:canExecute(user)
+  if self.action.data then
+    local cost = self.action.data.energyCost
+    if cost then
+      local userSP = user.battler.currentSP
+      return userSP >= cost
+    end
+  end
+  return true
 end
 
 return ScriptRule

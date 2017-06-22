@@ -40,7 +40,6 @@ function HideRule:execute(user)
   queue = BattleTactics.closestCharacters(input)
   
   if queue:isEmpty() then
-    print('hide')
     return nil
   end
   

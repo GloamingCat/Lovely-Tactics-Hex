@@ -21,20 +21,29 @@ local PriorityQueue = class()
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
--- @param(comp : function) the function to compares two pairs (optional)
+-- @param(comp : function) the function that compares two pairs (optional)
 function PriorityQueue:init(comp)
-  self.comp = comp or self.comp
+  self.comp = comp or self.ascending
   self.size = 0
+end
+
+---------------------------------------------------------------------------------------------------
+-- Comparison
+---------------------------------------------------------------------------------------------------
+
+-- Default compare function for ascending orders
+function PriorityQueue.ascending(a, b)
+  return a[2] < b[2]
+end
+
+-- Default compare function for descending orders
+function PriorityQueue.descending(a, b)
+  return a[2] > b[2]
 end
 
 ---------------------------------------------------------------------------------------------------
 -- General
 ---------------------------------------------------------------------------------------------------
-
--- Default compare function
-function PriorityQueue.comp(a, b)
-  return a[2] < b[2]
-end
 
 -- Adds new pair to the queue.
 -- @param(element : unknown) the new element to add
