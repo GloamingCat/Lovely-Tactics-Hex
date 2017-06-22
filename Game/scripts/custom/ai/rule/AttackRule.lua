@@ -10,7 +10,7 @@ The rule for an AI that moves to the safest tile that still has a reachable targ
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
 local BattleTactics = require('core/battle/ai/BattleTactics')
-local ScriptRule = require('core/battle/ai/dynamic/ScriptRule')
+local ScriptRule = require('core/battle/ai/script/ScriptRule')
 
 -- Alias
 local expectation = math.randomExpectation

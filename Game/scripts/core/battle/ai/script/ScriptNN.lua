@@ -9,8 +9,8 @@ Script that determines the rule to use using a neural network.
 
 -- Imports
 local PriorityQueue = require('core/algorithm/PriorityQueue')
-local NeuralNetwork = require('core/battle/ai/NeuralNetwork')
-local Script = require('core/battle/ai/dynamic/Script')
+local NeuralNetwork = require('core/battle/ai/script/NeuralNetwork')
+local Script = require('core/battle/ai/script/Script')
 
 -- Alias
 local newArray = util.newArray

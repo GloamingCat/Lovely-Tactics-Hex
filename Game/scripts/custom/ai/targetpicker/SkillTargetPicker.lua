@@ -8,7 +8,7 @@ A general TargetPicker for SkillActions.
 =================================================================================================]]
 
 -- Imports
-local TargetPicker = require('core/ai/TargetPicker')
+local TargetPicker = require('core/ai/montecarlo/TargetPicker')
 local BattleTactics = require('core/ai/BattleTactics')
 
 local SkillTargetPicker = class(TargetPicker)

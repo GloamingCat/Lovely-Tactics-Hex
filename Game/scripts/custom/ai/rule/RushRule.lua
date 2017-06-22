@@ -10,7 +10,7 @@ Rule that just ends the turn. May be used when the other rules cannot be used.
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
 local BattleTactics = require('core/battle/ai/BattleTactics')
-local ScriptRule = require('core/battle/ai/dynamic/ScriptRule')
+local ScriptRule = require('core/battle/ai/script/ScriptRule')
 
 local RushRule = class(ScriptRule)
 

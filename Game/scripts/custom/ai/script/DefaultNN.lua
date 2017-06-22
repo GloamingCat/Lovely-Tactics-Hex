@@ -9,7 +9,7 @@ Run Away and Wait rules.
 =================================================================================================]]
 
 -- Imports
-local ScriptNN = require('core/battle/ai/dynamic/ScriptNN')
+local ScriptNN = require('core/battle/ai/script/ScriptNN')
 local RushRule = require('custom/ai/rule/RushRule')
 local AttackRule = require('custom/ai/rule/AttackRule')
 local DefendRule = require('custom/ai/rule/DefendRule')
@@ -46,7 +46,7 @@ function SimpleNN:createRules()
   for skill in self.battler.skillList:iterator() do
     addRules(r, skill)
   end
-  --r[#r + 1] = RunAwayRule('RunArray')
+  r[#r + 1] = RunAwayRule('RunArray')
   r[#r + 1] = WaitRule('Wait')
   return r
 end

@@ -8,7 +8,6 @@ A general TargetPicker for area skills.
 =================================================================================================]]
 
 -- Imports
-local TargetPicker = require('core/ai/TargetPicker')
 local BattleTactics = require('core/ai/BattleTactics')
 local SkillTargetPicker = require('custom/ai/targetpicker/SkillTargetPicker')
 

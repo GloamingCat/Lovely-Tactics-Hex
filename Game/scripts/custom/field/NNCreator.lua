@@ -9,7 +9,7 @@ A script that generates weights for a neural network.
 
 -- Imports
 local Battler = require('core/battle/Battler')
-local GeneticAlgorithm = require('core/battle/ai/GeneticAlgorithm')
+local GeneticAlgorithm = require('core/battle/ai/script/GeneticAlgorithm')
 
 -- Alias
 local readFile = love.filesystem.read

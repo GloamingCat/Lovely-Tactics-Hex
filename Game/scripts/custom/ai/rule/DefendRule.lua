@@ -12,7 +12,7 @@ local ActionInput = require('core/battle/action/ActionInput')
 local BattleTactics = require('core/battle/ai/BattleTactics')
 local MoveAction = require('core/battle/action/MoveAction')
 local PathFinder = require('core/algorithm/PathFinder')
-local ScriptRule = require('core/battle/ai/dynamic/ScriptRule')
+local ScriptRule = require('core/battle/ai/script/ScriptRule')
 
 local DefendRule = class(ScriptRule)
 
