@@ -10,7 +10,7 @@ Any action used in PathFinder must inherit from this.
 
 -- Imports
 local BattleAction = require('core/battle/action/BattleAction')
-local PathFinder = require('core/algorithm/PathFinder')
+local PathFinder = require('core/battle/ai/PathFinder')
 
 -- Alias
 local mathf = math.field

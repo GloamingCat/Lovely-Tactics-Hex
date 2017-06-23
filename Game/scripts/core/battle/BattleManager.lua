@@ -9,7 +9,7 @@ and game over).
 =================================================================================================]]
 
 -- Imports
-local PathFinder = require('core/algorithm/PathFinder')
+local PathFinder = require('core/battle/ai/PathFinder')
 local MoveAction = require('core/battle/action/MoveAction')
 local Animation = require('core/graphics/Animation')
 local TileGraphics = require('core/fields/TileGUI')

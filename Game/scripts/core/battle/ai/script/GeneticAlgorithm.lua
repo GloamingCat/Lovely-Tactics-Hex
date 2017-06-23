@@ -9,6 +9,9 @@ An implementation of a generic genetic algorithm.
 
 -- Alias
 local rand = love.math.random
+local writeFile = love.filesystem.write
+local arrayMax = util.arrayMax
+local arrayMean = util.arrayMean
 
 local GeneticAlgorithm = class()
 
@@ -26,25 +29,27 @@ function GeneticAlgorithm:init(geneLength, geneMin, geneMax, fitnessFunc, intege
   self.geneLength = geneLength
   self.geneMin = geneMin
   self.geneMax = geneMax
-  self.mutationRate = 0.05
-  self.tournamentSize = 0
   self.elitism = true
-  self.maxGenerations = 100
-  self.minFitness = 0.80
+  self.maxGenerations = 40
+  self.minFitness = 1
+  self.mutationRate = 0.025
+  self.populationSize = 10
+  self.tournamentSize = 5
   self.getFitness = fitnessFunc
   if integer then
     self.randomGene = self.integerGene
   else
     self.randomGene = self.floatGene
   end
+  self.log = {}
 end
 
 -- Creates a new population of random individuals.
 -- @param(size : number) number of individuals
 -- @ret(table) array of individuals
-function GeneticAlgorithm:newPopulation(size)
+function GeneticAlgorithm:newPopulation()
   local p = {}
-  for i = 1, size do
+  for i = 1, self.populationSize do
     p[i] = self:newIndividual()
   end
   return p
@@ -80,6 +85,33 @@ function GeneticAlgorithm:floatGene()
 end
 
 ---------------------------------------------------------------------------------------------------
+-- Log
+---------------------------------------------------------------------------------------------------
+
+-- Adds new fitness log to the log array.
+-- @param(p : table) the population after calculating fitness
+-- @param(i : number) the generation index
+function GeneticAlgorithm:logFitness(p, i)
+  local fit = {}
+  for i = 1, #p do
+    fit[i] = p[i].fitness
+  end
+  self.log[i] = fit
+end
+
+-- Saves log in a file.
+-- @param(key : string) the base of the file name
+function GeneticAlgorithm:saveLog(key)
+  local max, mean = '', ''
+  for i = 1, #self.log do
+    max = max .. i .. ' ' .. arrayMax(self.log[i]) .. '\n'
+    mean = mean .. i .. ' ' .. arrayMean(self.log[i]) .. '\n'
+  end
+  writeFile(key .. '_max.txt', max)
+  writeFile(key .. '_mean.txt', mean)
+end
+
+---------------------------------------------------------------------------------------------------
 -- Evolution
 ---------------------------------------------------------------------------------------------------
 
@@ -111,6 +143,7 @@ function GeneticAlgorithm:evolvePopulation(p)
     -- Get fittest individual
     local fittest, j = self:getFittest(p)
     print('Fittest: ' .. fittest.fitness, 'Generation: ' .. i)
+    self:logFitness(p, i)
     if fittest.fitness >= self.minFitness then
       return p, i
     end

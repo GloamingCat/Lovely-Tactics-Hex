@@ -8,6 +8,40 @@ This module provides a few general functions to be used in convenient situations
 util = {}
 
 ---------------------------------------------------------------------------------------------------
+-- Tables
+---------------------------------------------------------------------------------------------------
+
+-- Creates a copy of the given table.
+-- @param(table : table) the table with the (key, value) entries to be copied
+-- @ret(table) the copy of the table
+function util.copyTable(table)
+  local copy = {}
+  util.addTable(copy, table)
+  return copy
+end
+
+-- Combines multiple tables' keys and values into a single one.
+-- @param(tables : table) a table of tables
+-- @ret(table) the joined tables
+function util.joinTables(tables)
+  local new = {}
+  for i = 1, #tables do
+    local table = tables[i]
+    util.addTable(new, table)
+  end
+  return new
+end
+
+-- Adds the seconde table's key and values to the first one.
+-- @param(table : table) the table to be modified
+-- @param(entries : table) a table of (key, value) entries to be added
+function util.addTable(table, entries)
+  for k, v in pairs(entries) do
+    table[k] = v
+  end
+end
+
+---------------------------------------------------------------------------------------------------
 -- Arrays
 ---------------------------------------------------------------------------------------------------
 
@@ -54,35 +88,39 @@ function util.addArray(array, elements)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Tables
+-- Array Stats
 ---------------------------------------------------------------------------------------------------
 
--- Creates a copy of the given table.
--- @param(table : table) the table with the (key, value) entries to be copied
--- @ret(table) the copy of the table
-function util.copyTable(table)
-  local copy = {}
-  util.addTable(copy, table)
-  return copy
+-- Sums all the elements in a array of numbers (or objects with the + operator).
+-- @param(arr : table) array containing the elements
+-- @ret(unknown) the sum of all elements
+function util.arraySum(arr)
+  local s = 0
+  for i = 1, #arr do
+    s = s + arr[i]
+  end
+  return s
 end
 
--- Combines multiple tables' keys and values into a single one.
--- @param(tables : table) a table of tables
--- @ret(table) the joined tables
-function util.joinTables(tables)
-  local new = {}
-  for i = 1, #tables do
-    local table = tables[i]
-    util.addTable(new, table)
+-- Gets the maximum element from an array of numbers (or objects with the > operator).
+-- @param(arr : table) array containing the elements
+-- @ret(unknown) the maximum element
+function util.arrayMax(arr)
+  if #arr == 0 then
+    return nil
   end
-  return new
+  local m = 1
+  for i = 2, #arr do
+    if arr[i] > arr[m] then
+      m = i
+    end
+  end
+  return arr[m], m
 end
 
--- Adds the seconde table's key and values to the first one.
--- @param(table : table) the table to be modified
--- @param(entries : table) a table of (key, value) entries to be added
-function util.addTable(table, entries)
-  for k, v in pairs(entries) do
-    table[k] = v
-  end
+-- Gets the mean value from an array of numbers (or objects with + and / operators).
+-- @param(arr : table) array containing the elements
+-- @ret(unknown) the mean
+function util.arrayMean(arr)
+  return util.arraySum(arr) / #arr
 end

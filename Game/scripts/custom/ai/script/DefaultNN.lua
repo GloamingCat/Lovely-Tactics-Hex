@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-SimpleNN
+DefaultNN
 ---------------------------------------------------------------------------------------------------
 A ScriptNN that generates each rule from user's skill list considering Rush, Attack, Defend, Hide, 
 Run Away and Wait rules.
@@ -17,7 +17,7 @@ local HideRule = require('custom/ai/rule/HideRule')
 local RunAwayRule = require('custom/ai/rule/RunAwayRule')
 local WaitRule = require('custom/ai/rule/WaitRule')
 
-local SimpleNN = class(ScriptNN)
+local DefaultNN = class(ScriptNN)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -26,8 +26,8 @@ local SimpleNN = class(ScriptNN)
 -- @param(battler : Battler)
 -- @param(param : string)
 local old_init = ScriptNN.init
-function SimpleNN:init(battler, param)
-  old_init(self, 'SimpleNN' .. battler.battlerID, battler, param)
+function DefaultNN:init(battler, param)
+  old_init(self, 'DefaultNN' .. battler.battlerID, battler, param)
 end
 
 local function addRules(r, skill)
@@ -39,7 +39,7 @@ local function addRules(r, skill)
 end
 
 -- Overrides ScriptNN:createRules.
-function SimpleNN:createRules()
+function DefaultNN:createRules()
   local r = {}
   addRules(r, self.battler.attackSkill) 
   local skills = self.battler.skillList
@@ -51,4 +51,4 @@ function SimpleNN:createRules()
   return r
 end
 
-return SimpleNN
+return DefaultNN

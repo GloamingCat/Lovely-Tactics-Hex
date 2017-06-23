@@ -112,7 +112,7 @@
     "money": 0,
     "exp": 5,
     "scriptAI": {
-      "path": "ai/script/Rusher.lua",
+      "path": "ai/script/DefaultNN.lua",
       "param": ""
     },
     "build": {
@@ -147,7 +147,7 @@
     "money": 0,
     "exp": 5,
     "scriptAI": {
-      "path": "ai/script/Ofensive.lua",
+      "path": "ai/script/Rusher.lua",
       "param": ""
     },
     "build": {
@@ -180,7 +180,7 @@
     "money": 0,
     "exp": 5,
     "scriptAI": {
-      "path": "ai/script/DefaultNN.lua",
+      "path": "ai/script/Hidder.lua",
       "param": ""
     },
     "build": {

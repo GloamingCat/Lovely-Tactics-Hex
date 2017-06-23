@@ -14,6 +14,7 @@ local Script = require('core/battle/ai/script/Script')
 
 -- Alias
 local newArray = util.newArray
+local max = math.max
 
 local ScriptNN = class(Script)
 
@@ -64,7 +65,7 @@ end
 function ScriptNN:createNetwork(data, training)
   local inputCount = #self.inputs
   local outputCount = #self.rules
-  return NeuralNetwork(inputCount, inputCount + outputCount, outputCount, data, training)
+  return NeuralNetwork(inputCount, max(inputCount + outputCount), outputCount, data, training)
 end
 
 ---------------------------------------------------------------------------------------------------

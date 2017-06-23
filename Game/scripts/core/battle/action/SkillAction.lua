@@ -12,7 +12,7 @@ local List = require('core/algorithm/List')
 local BattleAction = require('core/battle/action/BattleAction')
 local MoveAction = require('core/battle/action/MoveAction')
 local ActionInput = require('core/battle/action/ActionInput')
-local PathFinder = require('core/algorithm/PathFinder')
+local PathFinder = require('core/battle/ai/PathFinder')
 local PopupText = require('core/battle/PopupText')
 
 -- Alias

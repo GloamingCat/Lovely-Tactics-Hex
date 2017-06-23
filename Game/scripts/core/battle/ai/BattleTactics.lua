@@ -10,7 +10,7 @@ A module with some search algorithms to solve optimization problems in the battl
 -- Imports
 local MoveAction = require('core/battle/action/MoveAction')
 local PriorityQueue = require('core/algorithm/PriorityQueue')
-local PathFinder = require('core/algorithm/PathFinder')
+local PathFinder = require('core/battle/ai/PathFinder')
 
 -- Alias
 local expectation = math.randomExpectation

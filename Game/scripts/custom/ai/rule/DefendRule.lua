@@ -11,7 +11,7 @@ The rule for an AI that moves to the safest tile that still has a reachable targ
 local ActionInput = require('core/battle/action/ActionInput')
 local BattleTactics = require('core/battle/ai/BattleTactics')
 local MoveAction = require('core/battle/action/MoveAction')
-local PathFinder = require('core/algorithm/PathFinder')
+local PathFinder = require('core/battle/ai/PathFinder')
 local ScriptRule = require('core/battle/ai/script/ScriptRule')
 
 local DefendRule = class(ScriptRule)
