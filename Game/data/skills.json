@@ -16,10 +16,8 @@
       "path": "",
       "param": ""
     },
-    "affectHP": true,
-    "successRate": "100",
-    "basicResult": "0",
-    "energyCost": 0,
+    "effects": [],
+    "costs": [],
     "timeCost": 50,
     "restriction": 1,
     "userLoadAnim": "",
@@ -50,10 +48,14 @@
       "path": "skill/NormalAttack.lua",
       "param": ""
     },
-    "affectHP": true,
-    "successRate": "((a:PREP() * 2 - b:EVDP()) / b:EVDP()) * 50",
-    "basicResult": "(a:ATKP() * 2 - b:DEFP()) * rand(80, 120) / 100",
-    "energyCost": 0,
+    "effects": [
+      {
+        "successRate": "((a:PREP() * 2 - b:EVDP()) / b:EVDP()) * 50",
+        "basicResult": "(a:ATKP() * 2 - b:DEFP()) * rand(80, 120) / 100",
+        "id": 0
+      }
+    ],
+    "costs": [],
     "timeCost": 50,
     "restriction": 1,
     "userLoadAnim": "",
@@ -89,10 +91,14 @@
       "path": "skill/NormalAttack.lua",
       "param": ""
     },
-    "affectHP": true,
-    "successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
-    "basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100",
-    "energyCost": 0,
+    "effects": [
+      {
+        "successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
+        "basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100",
+        "id": 0
+      }
+    ],
+    "costs": [],
     "timeCost": 50,
     "restriction": 1,
     "userLoadAnim": "",
@@ -128,10 +134,17 @@
       "path": "skill/AreaAttack.lua",
       "param": ""
     },
-    "affectHP": true,
-    "successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
-    "basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100",
-    "energyCost": 10,
+    "effects": [
+      {
+        "successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
+        "basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100",
+        "id": 0
+      }
+    ],
+    "costs": [
+      "value": "10",
+      "id": 1
+    ],
     "timeCost": 100,
     "restriction": 1,
     "userLoadAnim": "Load0",
@@ -171,10 +184,17 @@
       "path": "skill/AreaAttack.lua",
       "param": ""
     },
-    "affectHP": true,
-    "successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
-    "basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100",
-    "energyCost": 20,
+    "effects": [
+      {
+        "successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
+        "basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100",
+        "id": 0
+      }
+    ],
+    "costs": [
+      "value": "20",
+      "id": 1
+    ],
     "timeCost": 100,
     "restriction": 1,
     "userLoadAnim": "Load0",

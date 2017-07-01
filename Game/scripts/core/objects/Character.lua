@@ -220,29 +220,12 @@ end
 -- @param(skill : Skill) the skill used
 -- @param(result : number) the the damage caused
 -- @param(origin : ObjectTile) the tile of the skill user
-function Character:damage(skill, result, origin)
-  local pos = self.position
-  local popupText = PopupText(pos.x, pos.y - 20, pos.z - 10)
-  local ko = false
-  if skill.affectHP then
-    popupText:addLine(result, Color.popup_dmgHP, Font.popup_dmgHP)
-    ko = self.battler:damageHP(result)
-  end
-  if skill.affectSP then
-    popupText:addLine(result, Color.popup_dmgSP, Font.popup_dmgSP)
-    self.battler:damageSP(result)
-  end
+function Character:damage(skill, results, origin)
   local currentTile = self:getTile()
-  local dir = self:turnToTile(origin.x, origin.y)
-  if skill.individualAnimID >= 0 then
-    local mirror = dir > 90 and dir <= 270
-    BattleManager:playAnimation(skill.individualAnimID,
-      pos.x, pos.y, pos.z - 10, mirror)
-  end
-  popupText:popup()
+  self:turnToTile(origin.x, origin.y)
   self:playAnimation(self.damageAnim, true)
   self:playAnimation(self.idleAnim)
-  if ko then
+  if not self.battler:isAlive() then
     self:playAnimation(self.koAnim, true)
   end
 end

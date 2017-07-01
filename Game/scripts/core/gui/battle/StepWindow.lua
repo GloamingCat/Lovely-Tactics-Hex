@@ -30,7 +30,7 @@ end
 local old_createContent = StepWindow.createContent
 function StepWindow:createContent()
   old_createContent(self)
-  local steps = BattleManager.currentCharacter.battler.currentSteps
+  local steps = BattleManager.currentCharacter.battler.state.steps
   local w = self.width - self.paddingw * 2
   local pos = Vector(self.paddingw - self.width / 2, self.paddingh - self.height / 2 - 3, -1)
   local text = SimpleText(Vocab.steps .. ':', pos, w)

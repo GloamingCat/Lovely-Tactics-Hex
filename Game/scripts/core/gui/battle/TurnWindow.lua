@@ -119,11 +119,11 @@ end
 -- Move condition. Enabled if there are any tiles for the character to move to.
 function TurnWindow:moveEnabled(button)
   local user = BattleManager.currentCharacter.battler
-  if user.currentSteps <= 0 then
+  if user.state.steps <= 0 then
     return false
   end
   for path in BattleManager.pathMatrix:iterator() do
-    if path and path.totalCost <= user.currentSteps then
+    if path and path.totalCost <= user.state.steps then
       return true
     end
   end

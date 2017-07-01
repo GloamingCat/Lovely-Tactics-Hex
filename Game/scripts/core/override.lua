@@ -118,5 +118,8 @@ end
 -- @param(param : string) the param needed for the function (optional)
 -- @ret(function) the function that evaluates the formulae
 function loadformula(formula, param)
+  if formula == '' or not formula then
+    formula = 'nil'
+  end
   return loadfunction('return ' .. formula, param)
 end

@@ -109,7 +109,7 @@ function MoveAction:isPassableBetween(initial, final, user)
   if controlZone and initial:isControlZone(user.battler) then
     return false
   end
-  local maxdh = user.battler.jump()
+  local maxdh = user.battler.jumpPoints()
   local mindh = -2 * maxdh
   local dh = final.layer.height - initial.layer.height
   return mindh <= dh and dh <= maxdh
@@ -139,7 +139,7 @@ end
 -- The max distance the character can walk.
 -- @ret(number) the distance in tiles (may not be integer)
 function MoveAction:maxDistance(user)
-  return user.battler.currentSteps
+  return user.battler.state.steps
 end
 
 return MoveAction

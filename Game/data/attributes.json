@@ -1,0 +1,106 @@
+[
+  {
+    "name": "Strength",
+    "shortName": "STR",
+    "script": "",
+    "mutable": true
+  },
+  {
+    "name": "Magic",
+    "shortName": "MAG",
+    "script": "",
+    "mutable": true
+  },
+  {
+    "name": "Dexterity",
+    "shortName": "DEX",
+    "script": "",
+    "mutable": true
+  },
+  {
+    "name": "Resistance",
+    "shortName": "RES",
+    "script": "",
+    "mutable": true
+  },
+  {
+    "name": "Agility",
+    "shortName": "AGI",
+    "script": "",
+    "mutable": true
+  },
+  {
+    "name": "Movement",
+    "shortName": "MOV",
+    "script": "",
+    "mutable": false
+  },
+  {
+    "name": "Jump",
+    "shortName": "JMP",
+    "script": "",
+    "mutable": false
+  },
+  {
+    "name": "Health",
+    "shortName": "MHP",
+    "script": "att:STR() * 20 + att:RES() * 20",
+    "mutable": false,
+    "state": true
+  },
+  {
+    "name": "Skill",
+    "shortName": "MSP",
+    "script": "att:MAG() * 20 + att:DEX() * 20",
+    "mutable": false,
+    "state": true
+  },
+  {
+    "name": "Physical Attack",
+    "shortName": "ATKP",
+    "script": "att:STR() * 7 + att:DEX() * 3",
+    "mutable": false
+  },
+  {
+    "name": "Physical Defense",
+    "shortName": "DEFP",
+    "script": "att:STR() * 3 + att:RES() * 7",
+    "mutable": false
+  },
+  {
+    "name": "Magical Attack",
+    "shortName": "ATKM",
+    "script": "att:MAG() * 5 + att:DEX() * 5",
+    "mutable": false
+  },
+  {
+    "name": "Magical Defense",
+    "shortName": "DEFM",
+    "script": "att:MAG() * 5 + att:RES() * 5",
+    "mutable": false
+  },
+  {
+    "name": "Physical Precision",
+    "shortName": "PREP",
+    "script": "att:DEX() * 10",
+    "mutable": false
+  },
+  {
+    "name": "Physical Evade",
+    "shortName": "EVDP",
+    "script": "att:AGI() * 5 + att:DEX() * 5",
+    "mutable": false
+  },
+  {
+    "name": "Magical Precision",
+    "shortName": "PREM",
+    "script": "att:MAG() * 3 + att:DEX() * 7",
+    "mutable": false
+  },
+  {
+    "name": "Magical Evade",
+    "shortName": "EVDM",
+    "script": "att:AGI() * 5 + att:MAG() * 5",
+    "mutable": false
+  }
+]

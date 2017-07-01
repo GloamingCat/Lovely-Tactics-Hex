@@ -14,10 +14,42 @@ util = {}
 -- Creates a copy of the given table.
 -- @param(table : table) the table with the (key, value) entries to be copied
 -- @ret(table) the copy of the table
-function util.copyTable(table)
+function util.shallowCopyTable(table)
   local copy = {}
   util.addTable(copy, table)
   return copy
+end
+
+-- Adds the seconde table's key and values to the first one.
+-- @param(table : table) the table to be modified
+-- @param(entries : table) a table of (key, value) entries to be added
+function util.shallowAddTable(table, entries)
+  for k, v in pairs(entries) do
+    table[k] = v
+  end
+end
+
+-- Creates a copy of the given table.
+-- @param(table : table) the table with the (key, value) entries to be copied
+-- @ret(table) the copy of the table
+function util.deepCopyTable(table)
+  local copy = {}
+  util.deepAddTable(copy, table)
+  return copy
+end
+
+-- Adds the seconde table's key and values to the first one.
+-- @param(table : table) the table to be modified
+-- @param(entries : table) a table of (key, value) entries to be added
+function util.deepAddTable(table, entries)
+  for k, v in pairs(entries) do
+    local typ = type(v)
+    if typ == 'table' then
+      table[k] = util.deepCopyTable(v)
+    else
+      table[k] = v
+    end
+  end
 end
 
 -- Combines multiple tables' keys and values into a single one.
@@ -27,18 +59,9 @@ function util.joinTables(tables)
   local new = {}
   for i = 1, #tables do
     local table = tables[i]
-    util.addTable(new, table)
+    util.shallowAddTable(new, table)
   end
   return new
-end
-
--- Adds the seconde table's key and values to the first one.
--- @param(table : table) the table to be modified
--- @param(entries : table) a table of (key, value) entries to be added
-function util.addTable(table, entries)
-  for k, v in pairs(entries) do
-    table[k] = v
-  end
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -12,7 +12,7 @@ function love.conf(t)
   local configjson = love.filesystem.read('data/config.json')
   Config = JSON.decode(configjson)
   Database = {}
-	local db = {'items', 'skills', 'skillDags', 'battlers', 'status', 'tilesets', 
+	local db = {'attributes', 'items', 'skills', 'skillDags', 'battlers', 'status', 'tilesets', 
     'animCharacter', 'animBattle', 'animOther', 'terrains', 'obstacles', 'ramps',
     'charBattle', 'charField', 'charOther'}
 	for i = #db, 1, -1 do

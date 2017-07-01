@@ -32,11 +32,15 @@
   },
   "battle": {
     "tradeSkillID": 0,
-    "attHPID": 7,
-    "attSPID": 8,
     "attTurnID": 4,
     "attStepID": 5,
-    "attJumpID": 6
+    "attJumpID": 6,
+    "attLifeID": 0,
+    "stateValues": [
+      { "name": "Health Points", "shortName": "HP", "min": "0", "max": "att:MHP()", "initAtMax": true },
+      { "name": "Skill Points", "shortName": "SP", "min": "0", "max": "att:MSP()", "initAtMax": true },
+      { "name": "Ki Points", "shortName": "KP", "min": "0", "max": "", "initAtMax": false }
+    ]
   },
   "grid": {
     "tileW": 36,
@@ -67,110 +71,6 @@
     {
       "name": "Healer",
       "code": "H"
-    }
-  ],
-  "attributes": [
-    {
-      "name": "Strength",
-      "shortName": "STR",
-      "script": "",
-      "mutable": true
-    },
-    {
-      "name": "Magic",
-      "shortName": "MAG",
-      "script": "",
-      "mutable": true
-    },
-    {
-      "name": "Dexterity",
-      "shortName": "DEX",
-      "script": "",
-      "mutable": true
-    },
-    {
-      "name": "Resistance",
-      "shortName": "RES",
-      "script": "",
-      "mutable": true
-    },
-    {
-      "name": "Agility",
-      "shortName": "AGI",
-      "script": "",
-      "mutable": true
-    },
-    {
-      "name": "Movement",
-      "shortName": "MOV",
-      "script": "",
-      "mutable": false
-    },
-    {
-      "name": "Jump",
-      "shortName": "JMP",
-      "script": "",
-      "mutable": false
-    },
-    {
-      "name": "Health",
-      "shortName": "HP",
-      "script": "att:STR() * 20 + att:RES() * 20",
-      "mutable": false
-    },
-    {
-      "name": "Energy",
-      "shortName": "EP",
-      "script": "att:MAG() * 20 + att:DEX() * 20",
-      "mutable": false
-    },
-    {
-      "name": "Physical Attack",
-      "shortName": "ATKP",
-      "script": "att:STR() * 7 + att:DEX() * 3",
-      "mutable": false
-    },
-    {
-      "name": "Physical Defense",
-      "shortName": "DEFP",
-      "script": "att:STR() * 3 + att:RES() * 7",
-      "mutable": false
-    },
-    {
-      "name": "Magical Attack",
-      "shortName": "ATKM",
-      "script": "att:MAG() * 5 + att:DEX() * 5",
-      "mutable": false
-    },
-    {
-      "name": "Magical Defense",
-      "shortName": "DEFM",
-      "script": "att:MAG() * 5 + att:RES() * 5",
-      "mutable": false
-    },
-    {
-      "name": "Physical Precision",
-      "shortName": "PREP",
-      "script": "att:DEX() * 10",
-      "mutable": false
-    },
-    {
-      "name": "Physical Evade",
-      "shortName": "EVDP",
-      "script": "att:AGI() * 5 + att:DEX() * 5",
-      "mutable": false
-    },
-    {
-      "name": "Magical Precision",
-      "shortName": "PREM",
-      "script": "att:MAG() * 3 + att:DEX() * 7",
-      "mutable": false
-    },
-    {
-      "name": "Magical Evade",
-      "shortName": "EVDM",
-      "script": "att:AGI() * 5 + att:MAG() * 5",
-      "mutable": false
     }
   ],
   "elements": [

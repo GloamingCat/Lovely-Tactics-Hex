@@ -127,8 +127,7 @@ function TroopManager:getTurnQueue(turnLimit)
   local queue = PriorityQueue()
   for char in self.characterList:iterator() do
     if char.battler:isAlive() then
-      local speed = char.battler.turn()
-      local time = (turnLimit - char.battler.turnCount) / speed
+      local time = char.battler:remainingTurnCount()
       queue:enqueue(char, time)
     end
   end

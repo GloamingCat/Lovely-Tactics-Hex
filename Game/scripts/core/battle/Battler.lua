@@ -14,13 +14,20 @@ local Inventory = require('core/battle/Inventory')
 
 -- Alias
 local max = math.max
+local min = math.min
 local ceil = math.ceil
 local newArray = util.newArray
+local readFile = love.filesystem.read
 
 -- Constants
-local attConfig = Config.attributes
+local stateValues = Config.battle.stateValues
+local attConfig = Database.attributes
 local elementCount = #Config.elements
 local turnLimit = Battle.turnLimit
+local turnName = attConfig[Config.battle.attTurnID + 1].shortName
+local jumpName = attConfig[Config.battle.attJumpID + 1].shortName
+local stepName = attConfig[Config.battle.attStepID + 1].shortName
+local lifeName = stateValues[Config.battle.attLifeID + 1].shortName
 
 local Battler = class()
 
@@ -33,15 +40,12 @@ local Battler = class()
 -- @param(party : number) this battler's party number
 function Battler:init(character, battlerID, party)
   local data = Database.battlers[battlerID + 1]
+  self.data = data
   self.battlerID = battlerID
   self.party = party
-  self:createAttributes(data.attributes, data.level, data.build)
-  self.currentHP = data.currentHP or self.maxHP()
-  self.currentSP = data.currentSP or self.maxSP()
-  self.currentSteps = 0
-  self.data = data
-  self.turnCount = 0
   self.inventory = Inventory(self, data.items)
+  local persistentData = self:loadPersistentData()
+  self:createAttributes(persistentData, data.attributes, data.level, data.build)
   self:setPortraits(data.battleCharID)
   self:setSkillList(data.skills, data.attackID)
   self:setElements(data.elements)
@@ -104,15 +108,16 @@ end
 
 -- Creates attribute functions from script data.
 -- @param(data : table) a table of base values
-function Battler:createAttributes(base, level, build)
+function Battler:createAttributes(data, base, level, build)
   if build.path ~= '' then
     build = require('custom/' .. build.path)
   else
     build = nil
   end
   self.att = {}
-  self.attAdd = {}
-  self.attMul = {}
+  self.state = {}
+  self.state.attAdd = {}
+  self.state.attMul = {}
   for i = 1, #attConfig do
     local shortName = attConfig[i].shortName
     local script = attConfig[i].script
@@ -120,19 +125,34 @@ function Battler:createAttributes(base, level, build)
     if build and script == '' then
       b = b + build[shortName](level)
     end
+    self.state.attAdd[shortName] = 0
+    self.state.attMul[shortName] = 1
     local base = self:createAttributeBase(b, script)
-    self.attAdd[shortName] = 0
-    self.attMul[shortName] = 1
     self.att[shortName] = function()
-      return base(self.att) * self.attMul[shortName]
-        + self.attAdd[shortName]
+      return base(self.att) * self.state.attMul[shortName]
+        + self.state.attAdd[shortName]
     end
   end
-  self.maxHP = self.att[attConfig[Config.battle.attHPID + 1].shortName]
-  self.maxSP = self.att[attConfig[Config.battle.attSPID + 1].shortName]
-  self.turn = self.att[attConfig[Config.battle.attTurnID + 1].shortName]
-  self.steps = self.att[attConfig[Config.battle.attStepID + 1].shortName]
-  self.jump = self.att[attConfig[Config.battle.attJumpID + 1].shortName]
+  self.turnStep = self.att[turnName]
+  self.jumpPoints = self.att[jumpName]
+  self.maxSteps = self.att[stepName]
+  -- Initialize state values
+  self.stateMax = {}
+  self.stateMin = {}
+  for i = 1, #stateValues do
+    local shortName = stateValues[i].shortName
+    self.stateMax[shortName] = loadformula(stateValues[i].max, 'att')
+    self.stateMin[shortName] = loadformula(stateValues[i].min, 'att')
+    if data and data[shortName] then
+      self:setStateValue(shortName, data[shortName])
+    elseif stateValues[i].initAtMax then
+      self.state[shortName] = self.stateMax[shortName](self.att) or math.huge
+    else
+      self.state[shortName] = self.stateMin[shortName](self.att) or -math.huge
+    end
+  end
+  self.state.steps = 0
+  self.state.turnCount = 0
 end
 
 -- Creates an attribute access function.
@@ -159,13 +179,17 @@ end
 -- @param(limit : number) the turn limit to start the turn
 -- @ret(boolean) true if the limit was reached, false otherwise
 function Battler:incrementTurnCount(time)
-  self.turnCount = self.turnCount + self.turn() * time
+  self.state.turnCount = self.state.turnCount + self.turnStep() * time
 end
 
 -- Decrements turn count by a value. It never reaches a negative value.
 -- @param(value : number)
 function Battler:decrementTurnCount(value)
-  self.turnCount = max(self.turnCount - value, 0)
+  self.state.turnCount = max(self.state.turnCount - value, 0)
+end
+
+function Battler:remainingTurnCount()
+  return (turnLimit - self.state.turnCount) / self.turnStep()
 end
 
 -- Callback for when a new turn begins.
@@ -186,12 +210,12 @@ end
 
 -- Callback for when this battler's turn starts.
 function Battler:onSelfTurnStart(iterations)
-  self.currentSteps = self.steps()
+  self.state.steps = self.maxSteps()
 end
 
 -- Callback for when this battler's turn ends.
 function Battler:onSelfTurnEnd(iterations, actionCost)
-  local stepCost = self.currentSteps / self.steps()
+  local stepCost = self.state.steps / self.maxSteps()
   self:decrementTurnCount(ceil((stepCost + actionCost) * turnLimit / 2))
 end
 
@@ -212,15 +236,18 @@ end
 -- Callback for when the character moves.
 function Battler:onMove(path)
   if path.lastStep:isControlZone(self) then
-    self.currentSteps = 0
+    self.state.steps = 0
   else
-    self.currentSteps = self.currentSteps - path.totalCost
+    self.state.steps = self.state.steps - path.totalCost
   end
 end
 
 -- Callback for when the character uses a skill.
 function Battler:onSkillUse(action)
-  self.currentSP = self.currentSP - action.data.energyCost
+  local costs = action.costs
+  for i = 1, #costs do
+    self:damage(costs[i].name, costs[i].cost(self.att))
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -230,62 +257,51 @@ end
 -- Checks if battler is still alive by its HP.
 -- @ret(boolean) true if HP greater then zero, false otherwise
 function Battler:isAlive()
-  return self.currentHP > 0
+  return self.state[lifeName] > 0
 end
 
--- Decreases Hit Points.
--- @param(value : number) damage value (may be negative to cure)
--- @ret(boolean) true if character was knocked out
-function Battler:damageHP(value)  
-  self.currentHP = self.currentHP - value
-  if self.currentHP <= 0 then
-    self.currentHP = 0
-    return true
+-- Sets its life points to 0.
+function Battler:kill()
+  self.state[lifeName] = 0
+end
+
+-- Decreases a state attribute.
+-- @param(name : string) the name of the state attribute
+-- @param(value : number) the value to be decreased
+-- @ret(number) -1 if it's less than the minimum, 1 if it's more than the maximum, nil otherwise
+function Battler:damage(name, value)
+  return self:setStateValue(name, self.state[name] - value)
+end
+
+-- Sets a value to a state attribute.
+-- @param(name : string) the name of the state attribute
+-- @param(value : number) the new state attribute's value
+-- @ret(number) -1 if it's less than the minimum, 1 if it's more than the maximum, nil otherwise
+function Battler:setStateValue(name, value)
+  local maxValue = self.stateMax[name](self.att) or math.huge
+  local minValue = self.stateMin[name](self.att) or -math.huge
+  if value < minValue then
+    self.state[name] = minValue
+    return -1
+  elseif value > maxValue then
+    self.state[name] = maxValue
+    return 1
   else
-    return false
+    self.state[name] = value
+    return nil
   end
 end
 
--- Decreases Skill Points.
--- @param(value : number) damage value (may be negative to cure)
-function Battler:damageSP(value)
-  self.currentSP = max(0, self.currentSP - value)
+function Battler:savePersistentData()
+  -- TODO
 end
 
--- The battler's current state in the battle. 
--- @ret(table) a table containing only mutable attributes
-function Battler:getState()
-  local attAdd = {}
-  for k, v in pairs(self.attAdd) do
-    attAdd[k] = v
+function Battler:loadPersistentData()
+  if self.data.persistent then
+    return nil -- TODO
+  else
+    return nil
   end
-  local attMul = {}
-  for k, v in pairs(self.attMul) do
-    attMul[k] = v
-  end
-  return {
-    hp = self.currentHP,
-    sp = self.currentSP,
-    steps = self.currentSteps,
-    attAdd = attAdd,
-    attMul = attMul,
-    turnCount = self.turnCount
-  }
-end
-
--- Changes the battler's current info.
--- @param(state : table) the info about battler's mutable attributes
-function Battler:setState(state)
-  for k, v in pairs(state.attAdd) do
-    self.attAdd[k] = v
-  end
-  for k, v in pairs(state.attMul) do
-    self.attMul[k] = v
-  end
-  self.currentHP = state.hp
-  self.currentSP = state.sp
-  self.currentSteps = state.steps
-  self.turnCount = state.turnCount
 end
 
 return Battler

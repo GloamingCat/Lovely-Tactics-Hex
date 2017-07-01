@@ -42,12 +42,12 @@ function TargetWindow:init(GUI, skin)
   local pos3 = Vector(x, y + 25, -1)
   local pos4 = Vector(x, y + 35, -1)
   
-  local attHP = attConfig[battleConfig.attHPID + 1]
-  local attSP = attConfig[battleConfig.attSPID + 1]
+  -- local attHP = attConfig[battleConfig.attHPID + 1] TODO
+  -- local attSP = attConfig[battleConfig.attSPID + 1]
   
   self.textName = SimpleText('', pos1, w, 'center')
-  self.textHP = SimpleText(attHP.shortName .. ':', pos2, w, 'left', font)
-  self.textSP = SimpleText(attSP.shortName .. ':', pos3, w, 'left', font)
+  self.textHP = SimpleText('HP:', pos2, w, 'left', font)
+  self.textSP = SimpleText('SP:', pos3, w, 'left', font)
   self.textTC = SimpleText(Vocab.turnCount .. ':', pos4, w, 'left', font)
   
   self.textHPValue = SimpleText('', pos2, w, 'right', font)
@@ -64,10 +64,10 @@ function TargetWindow:init(GUI, skin)
 end
 
 function TargetWindow:setBattler(battler)  
-  local tc = (battler.turnCount / BattleManager.turnLimit * 100)
+  local tc = (battler.state.turnCount / BattleManager.turnLimit * 100)
   self.textName:setText(battler.data.name)
-  self.textHPValue:setText(battler.currentHP .. '/' .. battler:maxHP())
-  self.textSPValue:setText(battler.currentSP .. '/' .. battler:maxSP())
+  self.textHPValue:setText(battler.state.HP .. '/' .. battler.att:MHP())
+  self.textSPValue:setText(battler.state.SP .. '/' .. battler.att:MSP())
   self.textTCValue:setText(string.format( '%3.0f', tc ) .. '%')
   collectgarbage('collect')
 end

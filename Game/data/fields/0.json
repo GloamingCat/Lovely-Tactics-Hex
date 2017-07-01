@@ -9,7 +9,7 @@
     "defaultRegion": 0,
     "partyCount": 2,
     "onStart": {
-      "path": "field/CreatorTest.lua",
+      "path": "field/Test.lua",
       "param": ""
     },
     "transitions": [],

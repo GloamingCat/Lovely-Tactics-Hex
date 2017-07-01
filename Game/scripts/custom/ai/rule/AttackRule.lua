@@ -33,7 +33,7 @@ function AttackRule:execute(user)
     if tile.gui.selectable and tile.gui.reachable then
       local dmg = skill:calculateEffectResult(input, char, expectation)
       if dmg then
-        local chance = (char.battler.currentHP - dmg) / char.battler:maxHP()
+        local chance = (char.battler.state.HP - dmg) / char.battler.att:MHP()
         if chance > bestChance then
           bestChance = chance
           bestTile = tile

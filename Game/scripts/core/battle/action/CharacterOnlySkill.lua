@@ -39,7 +39,7 @@ end
 
 -- Overrides BattleAction:isSelectable.
 function CharacterOnlySkill:isSelectable(input, tile)
-  if input.user.battler.currentSteps == 0 and not tile.gui.reachable then
+  if input.user.battler.state.steps == 0 and not tile.gui.reachable then
     return false
   end
   for char in tile.characterList:iterator() do
