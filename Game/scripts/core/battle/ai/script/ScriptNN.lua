@@ -141,62 +141,10 @@ end
 -- Generates the input vector from the current battle state.
 -- @ret(table) array of functions that generate each input value
 function ScriptNN:createInputs()
-  return {self.userHP, self.userSP, self.allyHP, self.allySP, 
-    self.enemyHP, self.enemySP, self.bias}
+  return { self.bias }
 end
 
-function ScriptNN:userHP(user)
-  return (user.battler.currentHP / user.battler.maxHP())
-end
-
-function ScriptNN:userSP(user)
-  return (user.battler.currentSP / user.battler.maxSP())
-end
-
-function ScriptNN:allyHP(user)
-  local s, ms = 0, 0
-  for char in TroopManager.characterList:iterator() do
-    if char.battler.party == user.battler.party then
-      s = s + char.battler.currentHP
-      ms = ms + char.battler.maxHP()
-    end
-  end
-  return s / ms
-end
-
-function ScriptNN:allySP(user)
-  local s, ms = 0, 0
-  for char in TroopManager.characterList:iterator() do
-    if char.battler.party == user.battler.party then
-      s = s + char.battler.currentSP
-      ms = ms + char.battler.maxSP()
-    end
-  end
-  return s / ms
-end
-
-function ScriptNN:enemyHP(user)
-  local s, ms = 0, 0
-  for char in TroopManager.characterList:iterator() do
-    if char.battler.party ~= user.battler.party then
-      s = s + char.battler.currentHP
-      ms = ms + char.battler.maxHP()
-    end
-  end
-  return s / ms
-end
-
-function ScriptNN:enemySP(user)
-  local s, ms = 0, 0
-  for char in TroopManager.characterList:iterator() do
-    if char.battler.party ~= user.battler.party then
-      s = s + char.battler.currentSP
-      ms = ms + char.battler.maxSP()
-    end
-  end
-  return s / ms
-end
-
+-- Neural network input bias.
 function ScriptNN:bias()
   return 1
 end

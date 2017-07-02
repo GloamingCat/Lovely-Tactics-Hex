@@ -38,8 +38,7 @@
     "attLifeID": 0,
     "stateValues": [
       { "name": "Health Points", "shortName": "HP", "min": "0", "max": "att:MHP()", "initAtMax": true },
-      { "name": "Skill Points", "shortName": "SP", "min": "0", "max": "att:MSP()", "initAtMax": true },
-      { "name": "Ki Points", "shortName": "KP", "min": "0", "max": "", "initAtMax": false }
+      { "name": "Skill Points", "shortName": "SP", "min": "0", "max": "att:MSP()", "initAtMax": true }
     ]
   },
   "grid": {

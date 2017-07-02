@@ -74,7 +74,7 @@ function SkillAction:init(skillID)
   self.costs = {}
   for i = 1, #data.costs do
     self.costs[i] = {
-      cost = loadformula(data.costs[i].value, 'att'),
+      cost = loadformula(data.costs[i].value, 'action, att'),
       attName = Database.attributes[data.costs[i].id + 1].shortName
     }
   end
@@ -109,8 +109,24 @@ function SkillAction:__tostring()
 end
 
 ---------------------------------------------------------------------------------------------------
--- Event handlers
+-- Execution
 ---------------------------------------------------------------------------------------------------
+
+-- Checks if the given character can use the skill, considering skill's costs
+-- @param(user : Character)
+-- @ret(boolean)
+function SkillAction:canExecute(user)
+  local att = user.battler.att
+  local state = user.battler.state
+  for i = 1, #self.costs do
+    local cost = self.costs[i].cost(self, att)
+    local value = state[self.costs[i].attName]
+    if cost > value then
+      return false
+    end
+  end
+  return true
+end
 
 -- Overrides BattleAction:onConfirm.
 -- Executes the movement action and the skill's effect.

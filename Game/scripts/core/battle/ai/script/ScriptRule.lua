@@ -56,12 +56,8 @@ end
 -- @param(user : Character)
 -- @ret(boolean)
 function ScriptRule:canExecute(user)
-  if self.action.data and false then -- TODO
-    local cost = self.action.data.energyCost
-    if cost then
-      local userSP = user.battler.currentSP
-      return userSP >= cost
-    end
+  if self.action.data then
+    return self.action:canExecute(user)
   end
   return true
 end

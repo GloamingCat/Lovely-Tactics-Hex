@@ -45,10 +45,7 @@ end
 -- @param(button : Button) the button to check
 -- @ret(boolean)
 function SkillAction:buttonEnabled(button)
-  -- local userSP = BattleManager.currentCharacter.battler.state.SP
-  -- local cost = button.skill.data.energyCost
-  -- return userSP >= cost
-  return true
+  return button.skill:canExecute(BattleManager.currentCharacter)
 end
 
 -- Called when player cancels.
