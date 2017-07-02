@@ -24,9 +24,8 @@ local Object = class(Transformable)
 ---------------------------------------------------------------------------------------------------
 
 -- @param(data : table) data from file (Obstacle or Character)
-local old_init = Object.init
 function Object:init(data, pos)
-  old_init(self, pos)
+  Transformable.init(self, pos)
   self.name = data.name
   self.colliderHeight = data.colliderHeight
 end
@@ -37,9 +36,8 @@ end
 
 -- Overrides Transformable:setXYZ.
 -- Updates sprite position.
-local old_setXYZ = Object.setXYZ
 function Object:setXYZ(x, y, z)
-  old_setXYZ(self, x, y, z)
+  Transformable.setXYZ(self, x, y, z)
   self.sprite:setXYZ(x, y, z)
 end
 

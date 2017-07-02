@@ -28,7 +28,6 @@ local Player = class(Character)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides BaseCharacter:init.
-local old_init = Player.init
 function Player:init(initTile)
   self.blocks = 0
   self.dashSpeed = conf.dashSpeed
@@ -41,13 +40,12 @@ function Player:init(initTile)
     id = leaderBattler.fieldCharID,
     tags = {}
   }
-  old_init(self, '0', data, initTile)
+  Character.init(self, '0', data, initTile)
 end
 
 -- Player's extra and base character properties.
-local old_initializeProperties = Player.initializeProperties
 function Player:initializeProperties(name, colliderSize, colliderHeight)
-  old_initializeProperties(self, 'Player', colliderSize, colliderHeight)
+  Character.initializeProperties(self, 'Player', colliderSize, colliderHeight)
   self.inputOn = true
   self.speed = conf.walkSpeed
   self.interruptableMove = conf.stopOnCollision

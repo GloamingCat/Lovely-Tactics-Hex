@@ -27,10 +27,9 @@ local Obstacle = class(Object)
 -- @param(data : table) the obstacle's data from tileset file
 -- @param(tileData : table) the data about ramp and collision
 -- @param(group : table) the group this obstacle is part of
-local old_init = Obstacle.init
 function Obstacle:init(data, tileData, initTile, group)
   local x, y, z = tile2Pixel(initTile:coordinates())
-  old_init(self, data, Vector(x, y, z))
+  Object.init(self, data, Vector(x, y, z))
   self.type = 'obstacle'
   self.group = group
   self.sprite = group.sprite
@@ -61,9 +60,8 @@ end
 -------------------------------------------------------------------------------
 
 -- Overrides Object:setXYZ.
-local old_setXYZ = Obstacle.setXYZ
 function Obstacle:setXYZ(x, y, z)
-  old_setXYZ(self, x, y, z)
+  Object.setXYZ(self, x, y, z)
   if self.ramp then
     local h = -(y + z) / pph
     self.ramp:setPosition(x, y)

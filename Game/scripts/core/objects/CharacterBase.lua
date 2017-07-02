@@ -35,7 +35,6 @@ local CharacterBase = class(DirectedObject)
 -- @param(id : string) an unique ID for the character in the field
 -- @param(tileData : table) the character's data from tileset file
 -- @param(initTile : ObjectTile) initial character's tile
-local old_init = CharacterBase.init
 function CharacterBase:init(id, tileData, initTile)
   local db = Database.charField
   if tileData.type == 1 then
@@ -45,7 +44,7 @@ function CharacterBase:init(id, tileData, initTile)
   end
   local data = db[tileData.id + 1]
   local x, y, z = tile2Pixel(initTile:coordinates())
-  old_init(self, data, Vector(x, y, z))
+  DirectedObject.init(self, data, Vector(x, y, z))
   
   self.id = id
   self.type = 'character'
@@ -64,16 +63,14 @@ end
 
 -- Overrides AnimatedObject:update. 
 -- Updates fibers.
-local old_update = CharacterBase.update
 function CharacterBase:update()
-  old_update(self)
+  DirectedObject.update(self)
   self.fiberList:update()
 end
 
 -- Removes from draw and update list.
-local old_destroy = CharacterBase.destroy
 function CharacterBase:destroy()
-  old_destroy(self)
+  DirectedObject.destroy(self)
   FieldManager.characterList:removeElement(self)
   FieldManager.updateList:removeElement(self)
 end

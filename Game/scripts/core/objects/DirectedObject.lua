@@ -25,10 +25,9 @@ local DirectedObject = class(AnimatedObject)
 
 -- Overrides AnimatedObject:initializeGraphics.
 -- @param(direction : number) the initial direction
-local old_initializeGraphics = DirectedObject.initializeGraphics
 function DirectedObject:initializeGraphics(animations, direction, animID, transform)
   self.direction = direction
-  old_initializeGraphics(self, animations, animID, transform)
+  AnimatedObject.initializeGraphics(self, animations, animID, transform)
   self:setDirection(direction)
 end
 
@@ -40,10 +39,9 @@ end
 -- @param(name : string) animation's name
 -- @param(wait : boolean) true to wait until first loop finishes (optional)
 -- @param(row : number) the row of the animation (optional)
-local old_playAnimation = DirectedObject.playAnimation
 function DirectedObject:playAnimation(name, wait, row)
   row = row or angle2Row(self.direction)
-  return old_playAnimation(self, name, wait, row)
+  return AnimatedObject.playAnimation(self, name, wait, row)
 end
 
 -- Set's character direction
