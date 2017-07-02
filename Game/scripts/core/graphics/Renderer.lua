@@ -1,12 +1,12 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 Renderer
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 A Renderer manages a list of sprites to be rendered. 
 Stores them in order and draws them using a batch.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local List = require('core/algorithm/List')
@@ -15,15 +15,16 @@ local Transformable = require('core/math/Transformable')
 -- Alias
 local lgraphics = love.graphics
 local round = math.round
+local rotate = math.rotate
 
 -- Constants
 local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
 
 local Renderer = class(Transformable)
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Initialization
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- @param(size : number) the max number of sprites.
 -- @param(minDepth : number) the minimun depth of a sprite
@@ -46,23 +47,85 @@ end
 function Renderer:resizeCanvas()
   local newW = ScreenManager.width * ScreenManager.scaleX
   local newH = ScreenManager.height * ScreenManager.scaleY
-  if newW ~= self.canvas:getWidth() and newH ~= self.canvas:getHeight() then
+  if newW ~= self.canvas:getWidth() or newH ~= self.canvas:getHeight() then
     self.canvas = lgraphics.newCanvas(newW, newH)
     self.needsRedraw = true
   end
 end
 
+-- Inserts self in the screen renderers.
 function Renderer:activate()
   ScreenManager.renderers[self.order] = self
 end
 
+-- Removes self from the screen renderers.
 function Renderer:deactivate()
   ScreenManager.renderers[self.order] = nil
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+-- Position convertion
+---------------------------------------------------------------------------------------------------
+
+-- Converts a screen point to a world point.
+-- @param(x : number) the screen x
+-- @param(y : number) the screen y
+function Renderer:screen2World(x, y)
+  -- Canvas center
+  local ox = ScreenManager.width / 2
+  local oy = ScreenManager.height / 2
+  
+  -- Total scale
+  local sx = ScreenManager.scaleX * self.scaleX
+  local sy = ScreenManager.scaleY * self.scaleY
+  
+  -- Screen black border offset
+  x, y = x - ScreenManager.offsetX, y - ScreenManager.offsetY
+  
+  -- Set to origin
+  x = x + (self.position.x - ox) * sx
+  y = y + (self.position.y - oy) * sy
+  
+  -- Revert Transformation
+  x, y = x - ox * sx, y - oy * sy
+  x, y = rotate(x, y, -self.rotation)
+  x, y = x / sx, y / sy
+  x, y = x + ox, y + oy
+  
+  return x, y
+end
+
+-- Converts a world point to a screen point.
+-- @param(x : number) the world x
+-- @param(y : number) the world y
+function Renderer:world2Screen(x, y)
+  -- Canvas center
+  local ox = ScreenManager.width / 2
+  local oy = ScreenManager.height / 2
+  
+  -- Total scale
+  local sx = ScreenManager.scaleX * self.scaleX
+  local sy = ScreenManager.scaleY * self.scaleY
+
+  -- Apply Transformation
+  x, y = x - ox, y - oy
+  x, y = x * sx, y * sy
+  x, y = rotate(x, y, self.rotation)
+  x, y = x + ox * sx, y + oy * sy
+
+  -- Set to position
+  x = x - (self.position.x - ox) * sx
+  y = y - (self.position.y - oy) * sy
+
+  -- Screen black border offset
+  x, y = x + ScreenManager.offsetX, y + ScreenManager.offsetY
+  
+  return x, y
+end
+
+---------------------------------------------------------------------------------------------------
 -- Transformations
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Sets Renderer's center position in the world coordinates.
 -- @param(x : number) pixel x
@@ -95,28 +158,29 @@ function Renderer:setRotation(angle)
   end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Draw
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Draws all sprites in the renderer's table.
 function Renderer:draw()
   if self.needsRedraw then
     self:redrawCanvas()
   end
-  local ox = round(self.canvas:getWidth() / 2)
-  local oy = round(self.canvas:getHeight() / 2)
-  local x = round(ScreenManager.scaleX * ScreenManager.width / 2)
-  local y = round(ScreenManager.scaleY * ScreenManager.height / 2)
-  lgraphics.draw(self.canvas, x - ox, y - oy)
+  lgraphics.draw(self.canvas, 0, 0)
+  --local ox = round(self.canvas:getWidth() / 2)
+  --local oy = round(self.canvas:getHeight() / 2)
+  --local x = round(ScreenManager.scaleX * ScreenManager.width / 2)
+  --local y = round(ScreenManager.scaleY * ScreenManager.height / 2)
+  --lgraphics.draw(self.canvas, x - ox, y - oy)
 end
 
 -- Draws all sprites in the table to the canvas.
 function Renderer:redrawCanvas()
   -- Center of the canvas
   self.toDraw = List()
-  local ox = math.round(self.canvas:getWidth() / 2)
-  local oy = math.round(self.canvas:getHeight() / 2)
+  local ox = round(self.canvas:getWidth() / 2)
+  local oy = round(self.canvas:getHeight() / 2)
   local sx = ScreenManager.scaleX * self.scaleX
   local sy = ScreenManager.scaleY * self.scaleY
   local firstCanvas = lgraphics.getCanvas()
