@@ -120,12 +120,7 @@ end
 -- @param(final : ObjectTile) the destination tile
 -- @ret(number) the move cost
 function MoveAction:getDistanceBetween(initial, final, user)
-  local baseCost = (initial:getMoveCost() + final:getMoveCost()) / 2
-  if final.characterList.size > 0 then
-    return baseCost + 0.1
-  else
-    return baseCost
-  end
+  return (initial:getMoveCost() + final:getMoveCost()) / 2
 end
 
 -- Calculas a minimum cost between two tiles.
@@ -133,7 +128,12 @@ end
 -- @param(final : ObjectTile) the destination tile
 -- @ret(number) the estimated move cost
 function MoveAction:estimateCost(initial, final, user)
-  return mathf.tileDistance(initial.x, initial.y, final.x, final.y)
+  local baseCost = mathf.tileDistance(initial.x, initial.y, final.x, final.y)
+  if final.characterList.size > 0 then
+    return baseCost + 0.1
+  else
+    return baseCost
+  end
 end
 
 -- The max distance the character can walk.

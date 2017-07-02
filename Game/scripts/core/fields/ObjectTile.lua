@@ -13,6 +13,7 @@ local List = require('core/algorithm/List')
 
 -- Constants
 local overpassAllies = Battle.overpassAllies
+local overpassDeads = Battle.overpassDeads
 local neighborShift = math.field.neighborShift
 
 local ObjectTile = class()
@@ -127,8 +128,7 @@ function ObjectTile:collidesCharacter(char)
     -- Battle characters.
     local party = char.battler.party
     for other in self.characterList:iterator() do
-      if char ~= other and (not other.battler or not overpassAllies or 
-          other.battler.party ~= party or not other.battler:isAlive()) then
+      if self:collidesCharacters(char, other) then
         return true
       end
     end
@@ -143,6 +143,26 @@ function ObjectTile:collidesCharacter(char)
       return false
     end
   end
+end
+
+-- Checks if two characters in this tiles collide.
+-- @param(char : Character) the character to walk to this tile
+-- @param(other : Character) the character currently in this tile
+-- @ret(boolean)
+function ObjectTile:collidesCharacters(char, other)
+  if char == other then
+    return false
+  end
+  if not other.battler then
+    return true
+  end
+  if not other.battler:isAlive() and overpassDeads then
+    return false
+  end
+  if char.battler.party == other.battler.party and overpassAllies then
+    return false
+  end
+  return true
 end
 
 ---------------------------------------------------------------------------------------------------
