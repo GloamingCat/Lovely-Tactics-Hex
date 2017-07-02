@@ -130,9 +130,9 @@ end
 function MoveAction:estimateCost(initial, final, user)
   local baseCost = mathf.tileDistance(initial.x, initial.y, final.x, final.y)
   if final.characterList.size > 0 then
-    return baseCost + 0.1
+    return baseCost 
   else
-    return baseCost
+    return baseCost - 0.0001
   end
 end
 

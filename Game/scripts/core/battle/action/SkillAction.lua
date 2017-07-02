@@ -160,7 +160,7 @@ function SkillAction:execute(input)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Effect
+-- Use
 ---------------------------------------------------------------------------------------------------
 
 -- The effect applied when the user is prepared to use the skill.
@@ -199,6 +199,37 @@ function SkillAction:use(input)
   
   -- Wait until everything finishes.
   _G.Fiber:wait(max (0, minTime - now()) + 60)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Simulate
+---------------------------------------------------------------------------------------------------
+
+-- Applies skill's effect with no animations.
+-- By default, just applies the damage result in the affected characters.
+-- @param(input : ActionInput)
+function SkillAction:applyEffects(input)
+  local tiles = self:getAllAffectedTiles(input)
+  for i = #tiles, 1, -1 do
+    for char in tiles[i].characterList:iterator() do
+      self:applyEffect(input, char)
+    end
+  end
+end
+
+-- Applies skill's effect with no animations in a single character.
+-- @param(input : ActionInput)
+function SkillAction:applyEffect(input, char)
+  if not self:receivesEffect(char) then
+    return
+  end
+  local results, dmg = self:calculateEffectResults(input, char, input.random)
+  for i = 1, #results do
+    char.battler:damage(results[i][1], results[i][2])
+    if not char.battler:isAlive() then
+      char:playAnimation(char.koAnim)
+    end
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -325,37 +356,6 @@ function SkillAction:popupResults(pos, battler, results)
     battler:damage(results[i][1], results[i][2])
   end
   popupText:popup()
-end
-
----------------------------------------------------------------------------------------------------
--- Simulation
----------------------------------------------------------------------------------------------------
-
--- Applies skill's effect with no animations.
--- By default, just applies the damage result in the affected characters.
--- @param(input : ActionInput)
-function SkillAction:applyEffects(input)
-  local tiles = self:getAllAffectedTiles(input)
-  for i = #tiles, 1, -1 do
-    for char in tiles[i].characterList:iterator() do
-      self:applyEffect(input, char)
-    end
-  end
-end
-
--- Applies skill's effect with no animations in a single character.
--- @param(input : ActionInput)
-function SkillAction:applyEffect(input, char)
-  if not self:receivesEffect(char) then
-    return
-  end
-  local results, dmg = self:calculateEffectResults(input, char, input.random)
-  for i = 1, #results do
-    char.battler:damage(results[i][1], results[i][2])
-    if not char.battler:isAlive() then
-      char:playAnimation(char.koAnim)
-    end
-  end
 end
 
 return SkillAction

@@ -55,8 +55,8 @@ function BattleTactics.areaTargets(input)
   local map = {}
   for char in TroopManager.characterList:iterator() do
     local tile = char:getTile()
-    if tile.gui.reachable and tile.gui.selectable then
-      local damage = input.action:calculateTotalEffectResult(input, tile, expectation)
+    if tile.gui.reachable and tile.gui.selectable and not map[tile] then
+      local damage = BattleTactics.getTotalEffectResult(input, tile)
       if damage > 0 then
         map[tile] = damage
       end
@@ -69,8 +69,30 @@ function BattleTactics.areaTargets(input)
   return queue
 end
 
+-- Calculates the total damage of a skill in the given tile.
+-- @param(input : ActionInput)
+-- @param(target : ObjectTile)
+-- @ret(number)
+function BattleTactics.getTotalEffectResult(input, target)
+  input.target = target
+  local tiles = input.action:getAllAffectedTiles(input)
+  local sum = 0
+  for i = 1, #tiles do
+    local tile = tiles[i]
+    for targetChar in tile.characterList:iterator() do
+      if input.action:receivesEffect(targetChar) then
+        local results = input.action:calculateEffectResults(input, targetChar, expectation)
+        for j = 1, #results do
+          sum = sum + results[i][2]
+        end
+      end
+    end
+  end
+  return sum
+end
+
 ---------------------------------------------------------------------------------------------------
--- Tile Optimization
+-- General Tile Optimization
 ---------------------------------------------------------------------------------------------------
 
 -- @param(user : Character)
