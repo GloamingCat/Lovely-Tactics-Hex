@@ -11,10 +11,12 @@ require('core/mathextend')
 require('core/util')
 require('core/inputcalls')
 require('core/globals')
+require('custom/plugins')
 
 local cleanTime = 300
 local cleanCount = 0
 local startedProfi = false
+local paused = false
 
 -- This function is called exactly once at the beginning of the game.
 -- @param(arg : table) A sequence strings which are command line arguments given to the game
@@ -36,11 +38,16 @@ end
 -- Callback function used to update the state of the game every frame.
 -- @param(dt : number) The duration of the previous frame
 function love.update(dt)
-  if not FieldManager.paused then 
-    FieldManager:update() 
+  if not paused then
+    if not FieldManager.paused then 
+      FieldManager:update() 
+    end
+    if not GUIManager.paused then 
+      GUIManager:update()
+    end
   end
-  if not GUIManager.paused then 
-    GUIManager:update()
+  if InputManager.keys['pause']:isTriggered() then
+    paused = not paused
   end
   InputManager:update()
   cleanCount = cleanCount + 1
@@ -55,4 +62,12 @@ end
 function love.draw()
   ScreenManager:draw()
   love.graphics.print(love.timer.getFPS())
+  local pos = InputManager.mouse.position
+  local wx, wy = FieldManager.renderer:screen2World(pos.x, pos.y)
+  local tx, ty = math.field.pixel2Tile(wx, wy, -wy)
+  tx, ty = math.round(tx), math.round(ty)
+  love.graphics.print('(' .. tx .. ',' .. ty .. ')', 0, 12)
+  if paused then
+    love.graphics.printf('PAUSED', 0, 0, ScreenManager.scaleX * ScreenManager.width, 'right')
+  end
 end

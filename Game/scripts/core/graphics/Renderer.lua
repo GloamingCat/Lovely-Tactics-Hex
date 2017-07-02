@@ -70,6 +70,8 @@ end
 -- Converts a screen point to a world point.
 -- @param(x : number) the screen x
 -- @param(y : number) the screen y
+-- @ret(number) world x
+-- @ret(number) world y
 function Renderer:screen2World(x, y)
   -- Canvas center
   local ox = ScreenManager.width / 2
@@ -98,6 +100,8 @@ end
 -- Converts a world point to a screen point.
 -- @param(x : number) the world x
 -- @param(y : number) the world y
+-- @ret(number) screen x
+-- @ret(number) screen y
 function Renderer:world2Screen(x, y)
   -- Canvas center
   local ox = ScreenManager.width / 2
