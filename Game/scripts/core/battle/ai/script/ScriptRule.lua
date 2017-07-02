@@ -9,15 +9,24 @@ ActionInput to be used according to the state.
 
 =================================================================================================]]
 
+-- Imports
 local ActionInput = require('core/battle/action/ActionInput')
 
 local ScriptRule = class()
+
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
 
 -- @param(action : BattleAction) the BattleAction executed in the rule
 function ScriptRule:init(name, action)
   self.name = name
   self.action = action
 end
+
+---------------------------------------------------------------------------------------------------
+-- Execution
+---------------------------------------------------------------------------------------------------
 
 -- Generates the macro to be executed during battle.
 -- By default, it gets the first target for the given skill and no previous movement.

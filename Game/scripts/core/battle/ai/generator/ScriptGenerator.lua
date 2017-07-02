@@ -8,7 +8,7 @@ Generates weights for the neural network of an AI script.
 =================================================================================================]]
 
 -- Imports
-local GeneticAlgorithm = require('core/battle/ai/script/GeneticAlgorithm')
+local GeneticAlgorithm = require('core/battle/ai/generator/GeneticAlgorithm')
 local Battler = require('core/battle/Battler')
 
 -- Alias
