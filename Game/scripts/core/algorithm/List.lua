@@ -65,17 +65,21 @@ function List:removeElement(element)
 end
 
 -- Removes all elements that satisfy a given condition.
--- @param(func : function) a function that receives an element 
+-- @param(remove : function) a function that receives an element 
 --  and returns true if it must be removed or false if not
 -- @ret(number) returns the number of elements removed
-function List:conditionalRemove(func)
+function List:conditionalRemove(remove)
   local oldsize = self.size
+  local size = 0
   for i = 1, self.size do
-    while i <= self.size and func(self[i], i) do
-      table.remove(self, i)
-      self.size = self.size - 1
+    local el = self[i]
+    self[i] = nil
+    if not remove(el, i) then
+      size = size + 1
+      self[size] = el
     end
   end
+  self.size = size
   return oldsize - self.size
 end
 
