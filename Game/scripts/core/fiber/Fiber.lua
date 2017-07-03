@@ -124,4 +124,8 @@ function Fiber:waitUntil(func)
   end
 end
 
+function Fiber:__tostring()
+  return 'Fiber: ' .. tostring(self.coroutine)
+end
+
 return Fiber

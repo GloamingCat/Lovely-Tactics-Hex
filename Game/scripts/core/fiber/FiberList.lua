@@ -19,14 +19,16 @@ local FiberList = class(List)
 
 -- Updates all Fibers.
 function FiberList:update()
-  self:conditionalRemove(self.resume)
+  for i = 1, self.size do
+    self[i]:update()
+  end
+  self:conditionalRemove(self.finished)
 end
 
 -- Function that resumes a Fiber.
 -- @param(fiber : Fiber) Fiber to resume
 -- @ret(boolean) true if Fiber ended, false otherwise
-function FiberList.resume(fiber)
-  fiber:update()
+function FiberList.finished(fiber)
   return fiber.coroutine == nil
 end
 
