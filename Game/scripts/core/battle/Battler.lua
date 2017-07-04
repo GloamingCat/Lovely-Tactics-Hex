@@ -251,27 +251,8 @@ function Battler:onSkillUse(action)
 end
 
 ---------------------------------------------------------------------------------------------------
--- State
+-- State Values
 ---------------------------------------------------------------------------------------------------
-
--- Checks if battler is still alive by its HP.
--- @ret(boolean) true if HP greater then zero, false otherwise
-function Battler:isAlive()
-  return self.state[lifeName] > 0
-end
-
--- Sets its life points to 0.
-function Battler:kill()
-  self.state[lifeName] = 0
-end
-
--- Decreases a state attribute.
--- @param(name : string) the name of the state attribute
--- @param(value : number) the value to be decreased
--- @ret(number) -1 if it's less than the minimum, 1 if it's more than the maximum, nil otherwise
-function Battler:damage(name, value)
-  return self:setStateValue(name, self.state[name] - value)
-end
 
 -- Sets a value to a state attribute.
 -- @param(name : string) the name of the state attribute
@@ -291,6 +272,49 @@ function Battler:setStateValue(name, value)
     return nil
   end
 end
+
+-- Decreases a state attribute.
+-- @param(name : string) the name of the state attribute
+-- @param(value : number) the value to be decreased
+-- @ret(number) -1 if it's less than the minimum, 1 if it's more than the maximum, nil otherwise
+function Battler:damage(name, value)
+  return self:setStateValue(name, self.state[name] - value)
+end
+
+function Battler:relativeTurnCount()
+  return self.state.turnCount / turnLimit
+end
+
+---------------------------------------------------------------------------------------------------
+-- Life points
+---------------------------------------------------------------------------------------------------
+
+-- Checks if battler is still alive by its HP.
+-- @ret(boolean) true if HP greater then zero, false otherwise
+function Battler:isAlive()
+  return self.state[lifeName] > 0
+end
+
+-- Sets its life points to 0.
+function Battler:kill()
+  self.state[lifeName] = 0
+end
+
+-- Gets the total life points.
+-- @ret(number)
+function Battler:absoluteLifePoints()
+  return self.state[lifeName]
+end
+
+-- Gets life points relative to the maximum.
+-- @ret(number) between 0 and 1
+function Battler:relativeLifePoints()
+  return self.state[lifeName] / self.stateMax[lifeName](self.att)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Persistent Data
+---------------------------------------------------------------------------------------------------
 
 function Battler:savePersistentData()
   -- TODO

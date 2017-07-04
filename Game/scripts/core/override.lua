@@ -6,8 +6,8 @@
 local getDelta = love.timer.getDelta
 function love.timer.getDelta()
   local dt = getDelta()
-  if dt > 0.1 then
-    return 0.1
+  if dt > 0.05 then
+    return 0.05
   else
     return dt
   end

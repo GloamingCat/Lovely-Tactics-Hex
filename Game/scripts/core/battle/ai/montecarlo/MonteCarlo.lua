@@ -28,7 +28,7 @@ local MonteCarlo = class(ArtificialInteligence)
 -- @param(battler : Battler)
 -- @param(param : string) the script param (used as the maximum tree depth)
 function MonteCarlo:init(key, battler, param)
-  self.steps = param and param.steps or 2
+  self.steps = param and param.steps or 1
   ArtificialInteligence.init(self, key, battler, param and param.parallel)
 end
 
@@ -40,7 +40,7 @@ end
 function MonteCarlo:runTurn(it, user)
   --PROFI:start()
   local state = BattleState()
-  local eval, input = self:getMax(it, user.battler.party, state, user, self.steps)
+  local eval, input = self:getMax(it, state, user, self.steps)
   --print(eval, input.action, input.target)
   input.skipAnimations = BattleManager.params.skipAnimations
   input.random = nil
@@ -51,68 +51,60 @@ function MonteCarlo:runTurn(it, user)
   return input:execute()
 end
 
--- @param(party : number) the party of the actual current user
 -- @param(state : BattleState) current simulated state
 -- @param(user : Character) current simulated user
 -- @param(depth : number) max depth of the tree
 -- @ret(number) the maximum possible score for the given party
 -- @ret(ActionInput) the action that leads to that score
-function MonteCarlo:getMax(it, party, state, user, depth)
+function MonteCarlo:getMax(it, state, user, depth)
   local inputs = self:getInputs(user)
+  --print('ally', user, #inputs)
   local bestEval = -math.huge
   local bestInput = nil
   for i = 1, #inputs do
-    local input = inputs[i]
-    local newState, newUser, newIt = state:applyInput(input, it)
-    local eval
-    if depth == 0 then
-      eval = self:estimateEvaluation(party)
-    else
-      if newUser.battler.party == party then
-        eval = self:getMax(newIt, party, newState, newUser, depth - 1) -- Ally
-      else
-        eval = self:getMin(newIt, party, newState, newUser, depth - 1) -- Enemy
-      end
-    end
+    local eval = self:getEvaluation(it, state, inputs[i], depth)
     if eval > bestEval then
       bestEval = eval
-      bestInput = input
+      bestInput = inputs[i]
     end
     state:revert()
   end
+  print('ally', user, #inputs, bestEval, bestInput.action)
   return bestEval, bestInput
 end
 
--- @param(party : number) the party of the actual current user
 -- @param(state : BattleState) current simulated state
 -- @param(user : Character) current simulated user
 -- @param(depth : number) max depth of the tree
 -- @ret(number) the minimum possible score for the given party
 -- @ret(ActionInput) the action that leads to that score
-function MonteCarlo:getMin(it, party, state, user, depth)
+function MonteCarlo:getMin(it, state, user, depth)
   local inputs = self:getInputs(user)
   local worstEval = math.huge
   local bestInput = nil
   for i = 1, #inputs do
-    local input = inputs[i]
-    local newState, newUser, newIt = state:applyInput(input, it)
-    local eval
-    if depth == 0 then
-      eval = self:estimateEvaluation(party)
-    else
-      if newUser.battler.party == party then
-        eval = self:getMax(newIt, party, newState, newUser, depth - 1) -- Ally
-      else
-        eval = self:getMin(newIt, party, newState, newUser, depth - 1) -- Enemy
-      end
-    end
+    local eval = self:getEvaluation(it, state, inputs[i], depth)
     if eval < worstEval then
       worstEval = eval
-      bestInput = input
+      bestInput = inputs[i]
     end
     state:revert()
   end
+  print('enemy', user, #inputs, worstEval, bestInput.action)
   return worstEval, bestInput
+end
+
+function MonteCarlo:getEvaluation(it, state, input, depth)
+  local newState, newUser, newIt = state:applyInput(input, it)
+  if depth == 0 then
+    return self:estimateEvaluation()
+  else
+    if newUser.battler.party == self.battler.party then
+      return self:getMax(newIt, newState, newUser, depth - 1) -- Ally
+    else
+      return self:getMin(newIt, newState, newUser, depth - 1) -- Enemy
+    end
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -122,35 +114,7 @@ end
 -- @param(user : Character)
 -- @ret(table) array of ActionInput objects
 function MonteCarlo:getInputs(user)
-  --if PROFI then
-  --  PROFI:start()
-  --end
-  local input = ActionInput.newSimulation(nil, user)
-  local inputs = {}
-  local actions = self:getCharacterActions(user)
-  for i = 1, #actions do
-    input.action = actions[i]
-    self:addPotentialInputs(inputs, input)
-  end
-  --if PROFI then
-  --  PROFI:stop()
-  --  PROFI:writeReport('getInputs profi.txt' )
-  --  PROFI = nil
-  --end
-  print('Possible actions: ' .. #inputs)
-  return inputs
-end
-
--- Selects potential inputs for the given action.
--- By default, selects all tiles that are selectable and reachable.
--- @param(array : table) an array of ActionInputs
--- @param(input : ActionInput) input with the action
-function MonteCarlo:addPotentialInputs(array, input)
-  for tile in FieldManager.currentfield:gridIterator() do
-    if tile.gui.selectable and tile.gui.reachable then
-      array[#array] = ActionInput.newSimulation(input.action, input.user, tile)
-    end
-  end
+  return nil -- Abstract.
 end
 
 ---------------------------------------------------------------------------------------------------
