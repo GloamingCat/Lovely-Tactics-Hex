@@ -7,7 +7,7 @@ File run before main.
 
 function love.conf(t)
   love.filesystem.setRequirePath('scripts/?.lua;/?.lua')
-  --PROFI = require('ProFi')
+  PROFI = require('ProFi')
   JSON = require('core/save/JsonParser')
   local configjson = love.filesystem.read('data/config.json')
   Config = JSON.decode(configjson)

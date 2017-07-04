@@ -13,6 +13,7 @@ local PriorityQueue = require('core/algorithm/PriorityQueue')
 local PathFinder = require('core/battle/ai/PathFinder')
 
 -- Alias
+local tileDistance = math.field.tileDistance
 local expectation = math.randomExpectation
 local radiusIterator = math.field.radiusIterator
 local min = math.min
@@ -64,7 +65,7 @@ function BattleTactics.areaTargets(input)
   end
   local queue = PriorityQueue()
   for tile, dmg in pairs(map) do
-    queue:push(tile, dmg)
+    queue:enqueue(tile, dmg)
   end
   return queue
 end
@@ -83,7 +84,7 @@ function BattleTactics.getTotalEffectResult(input, target)
       if input.action:receivesEffect(targetChar) then
         local results = input.action:calculateEffectResults(input, targetChar, expectation)
         for j = 1, #results do
-          sum = sum + results[i][2]
+          sum = sum + results[j][2]
         end
       end
     end
@@ -147,7 +148,16 @@ end
 -- @param(input : ActionInput)
 -- @ret(boolean)
 function BattleTactics.potentialMoveTarget(tile, user, input)
-  return tile.gui.movable and (not input or BattleTactics.hasReachableTargets(tile, input))
+  if input then
+    if input.target then
+      local t = input.target
+      return tileDistance(t.x, t.y, tile.x, tile.y) <= input.action.range
+    else
+      return BattleTactics.hasReachableTargets(tile, input)
+    end
+  else
+    return tile.gui.movable
+  end
 end
 
 -- Checks if a given tile has reachable target for the given skill.
@@ -166,6 +176,21 @@ function BattleTactics.hasReachableTargets(tile, input)
     end
   end
   return false
+end
+
+function BattleTactics.reachableTargets(tile, input)
+  local h = tile.layer.height
+  local field = FieldManager.currentField
+  local t = {}
+  for i, j in radiusIterator(input.action.range, tile.x, tile.y) do
+    if i >= 1 and j >= 1 and i <= field.sizeX and j <= field.sizeY then
+      local n = field:getObjectTile(i, j, h)
+      if n.gui.selectable then
+        t[#t + 1] = n
+      end
+    end
+  end
+  return t
 end
 
 -- @param(party : number) character's party

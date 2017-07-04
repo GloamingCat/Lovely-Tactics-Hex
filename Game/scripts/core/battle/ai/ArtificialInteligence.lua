@@ -23,7 +23,7 @@ local ArtificialInteligence = class()
 -- @ret(table) array of actions
 function ArtificialInteligence:getCharacterActions(character)
   local b = character.battler
-  return {b.attackSkill, unpack(b.skillList)}
+  return {b.attackSkill, unpack(b.skillList)} -- TODO: add Wait
 end
 
 -- Gets a random action from the action list given by ArtificialInteligence:getCharacterActions.

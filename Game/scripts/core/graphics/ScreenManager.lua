@@ -61,7 +61,7 @@ function ScreenManager:draw()
   end
   lgraphics.setCanvas()
   lgraphics.draw(self.canvas, self.offsetX, self.offsetY)
-  --print(drawCalls)
+  --print('Draw calls: ' .. drawCalls)
 end
 
 ---------------------------------------------------------------------------------------------------

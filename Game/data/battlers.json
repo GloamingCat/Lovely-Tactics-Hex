@@ -180,7 +180,7 @@
     "money": 0,
     "exp": 5,
     "scriptAI": {
-      "path": "ai/script/Hidder.lua",
+      "path": "ai/script/DefaultMC.lua",
       "param": ""
     },
     "build": {

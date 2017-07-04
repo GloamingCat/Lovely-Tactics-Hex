@@ -132,7 +132,8 @@ function BattleAction:resetReachableTiles(input)
       local tile = self.field:getObjectTile(i, j, h)
       tile.gui.reachable = matrix:get(i, j) ~= nil
       if tile.gui.reachable then
-        for neighbor in tile.neighborList:iterator() do
+        for n = 1, #tile.neighborList do
+          local neighbor = tile.neighborList[n]
           -- If this tile has any non-reachable neighbors, it's a border tile
           if matrix:get(neighbor.x, neighbor.y) then
             borderTiles:add(tile)

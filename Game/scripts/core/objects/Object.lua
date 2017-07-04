@@ -63,8 +63,10 @@ function Object:getTile()
   y = round(y)
   h = round(h)
   local layer = FieldManager.currentField.objectLayers[h]
-  assert(layer, 'nil layer ' .. h)
-  return layer.grid[x][y]
+  assert(layer, 'height out of bounds: ' .. h)
+  layer = layer.grid[x]
+  assert(layer, 'x out of bounds: ' .. x)
+  return layer[y]
 end
 
 -- Sets object's position to the given tile.

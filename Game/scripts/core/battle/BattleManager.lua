@@ -153,13 +153,7 @@ end
 -- @param(char : Character) turn's character
 -- @param(iterations : number) the time since the last turn
 function BattleManager:runTurn(char, iterations)
-  -- Start turn
-  self.currentCharacter = char
-  char.battler:onSelfTurnStart()
-  self:updatePathMatrix()
-  for bc in TroopManager.characterList:iterator() do
-    bc.battler:onTurnStart(iterations)
-  end
+  self:startTurn(char, iterations)
   local actionCost = 0
   local AI = self.currentCharacter.battler.AI
   if not self.params.skipAnimations then
@@ -170,8 +164,26 @@ function BattleManager:runTurn(char, iterations)
   else
     actionCost = GUIManager:showGUIForResult('battle/BattleGUI')
   end
-  -- End Turn
-  self.currentCharacter.battler:onSelfTurnEnd(iterations, actionCost, turnLimit)
+  self:endTurn(actionCost, iterations)
+end
+
+-- Prepares for turn.
+-- @param(char : Character) the new character of the turn
+-- @param(iterations : number) the time since the last turn
+function BattleManager:startTurn(char, iterations)
+  self.currentCharacter = char
+  char.battler:onSelfTurnStart(iterations)
+  self:updatePathMatrix()
+  for bc in TroopManager.characterList:iterator() do
+    bc.battler:onTurnStart(iterations)
+  end
+end
+
+-- Closes turn.
+-- @param(actionCost : number) the time spend by the character of the turn
+-- @param(iterations : number) the time since the last turn
+function BattleManager:endTurn(actionCost, iterations)
+  self.currentCharacter.battler:onSelfTurnEnd(iterations, actionCost + 1)
   for bc in TroopManager.characterList:iterator() do
     bc.battler:onTurnEnd(iterations)
   end

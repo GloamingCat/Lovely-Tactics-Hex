@@ -24,7 +24,6 @@ local now = love.timer.getTime
 local random = math.random
 local round = math.round
 local ceil = math.ceil
-local expectation = math.randomExpectation
 
 -- Constants
 local stateValues = Config.battle.stateValues
@@ -133,6 +132,7 @@ end
 function SkillAction:execute(input)
   local moveAction = MoveAction(self.data.range, input.target)
   local moveInput = ActionInput(moveAction, input.user)
+  moveInput.skipAnimations = input.skipAnimations
   moveInput.path = PathFinder.findPath(moveAction, input.user, input.target)
   local useSkill = true
   if not moveInput.path then
@@ -226,9 +226,6 @@ function SkillAction:applyEffect(input, char)
   local results, dmg = self:calculateEffectResults(input, char, input.random)
   for i = 1, #results do
     char.battler:damage(results[i][1], results[i][2])
-    if not char.battler:isAlive() then
-      char:playAnimation(char.koAnim)
-    end
   end
 end
 
