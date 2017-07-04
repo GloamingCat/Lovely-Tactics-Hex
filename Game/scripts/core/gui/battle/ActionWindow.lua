@@ -21,7 +21,7 @@ local ActionWindow = class(ButtonWindow)
 --  (must inherit from BattleAction) 
 function ActionWindow:selectAction(action)
   -- Executes action grid selecting.
-  local input = ActionInput(action)
+  local input = ActionInput(action, nil, nil, nil, self.GUI)
   action:onSelect(input)
   self.GUI:hide()
   local actionCost = GUIManager:showGUIForResult('battle/ActionGUI', input)

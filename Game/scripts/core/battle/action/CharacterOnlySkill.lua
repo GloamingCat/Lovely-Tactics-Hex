@@ -19,11 +19,12 @@ local CharacterOnlySkill = class(SkillAction)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides BattleAction:onSelect.
-local old_onSelect = CharacterOnlySkill.onSelect
 function CharacterOnlySkill:onSelect(input)
-  old_onSelect(self, input)
-  self.index = 1
-  self.selectableTiles = self:getSelectableTiles(input)
+  SkillAction.onSelect(self, input)
+  if input.GUI then
+    self.index = 1
+    self.selectableTiles = self:getSelectableTiles(input)
+  end
 end
 
 -- Gets the list of all tiles that have a character.

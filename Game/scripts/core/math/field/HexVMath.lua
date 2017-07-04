@@ -234,20 +234,26 @@ end
 -- @param(sizeX : number) the max value of x
 -- @param(sizeY : number) the max value of y
 -- @ret(function) the iterator function
-function HexVMath.radiusIterator(radius, centerx, centery)
-	local i, maxdx = HexVMath.radiusLimitsX(radius)
-  local j, maxdy = HexVMath.radiusLimitsY(radius, i)
-  j = j - 1
+function HexVMath.radiusIterator(radius, centerX, centerY, sizeX, sizeY)
+  local maxX, maxY = sizeX - centerX, sizeY - centerY
+  local minX = 1 - centerX
+  local minY = 1 - centerY
+	local nradius = -radius
+  local i     = max(nradius, minX)
+  local maxdX = min(radius, maxX)
+  local j     = max(nradius, nradius - i, minY) - 1
+  local maxdY = min(radius, radius - i, maxY)
   return function()
     j = j + 1
-    if j > maxdy then
+    if j > maxdY then
       i = i + 1
-      if i > maxdx then
+      if i > maxdY then
         return
       end
-      j, maxdy = HexVMath.radiusLimitsY(radius, i)
+      j     = max(nradius, nradius - i, minY)
+      maxdY = min(radius, radius - i, maxY)
     end
-    return i + centerx, j + centery
+    return i + centerX, j + centerY
   end
 end
 

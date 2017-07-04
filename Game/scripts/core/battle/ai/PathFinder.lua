@@ -20,7 +20,6 @@ local max = math.max
 local min = math.min
 local mathf = math.field
 local floor = math.floor
-local radiusIterator = math.field.radiusIterator
 
 -- Constants
 local nan = 0 / 0

@@ -32,10 +32,12 @@ function BattleTactics.closestCharacters(input)
   local moveAction = MoveAction(range)
   local tempQueue = PriorityQueue()
   local initialTile = input.user:getTile()
+  local pathMatrix = BattleManager.pathMatrix
   for char in TroopManager.characterList:iterator() do
     local tile = char:getTile()
     if tile.gui.selectable then
-      local path = PathFinder.findPath(moveAction, input.user, tile, initialTile, true)
+      local path = pathMatrix:get(tile.x, tile.y) or
+        PathFinder.findPath(moveAction, input.user, tile, initialTile, true)
       if path then
         tempQueue:enqueue(tile, path.totalCost)
       else
@@ -167,12 +169,10 @@ end
 function BattleTactics.hasReachableTargets(tile, input)
   local h = tile.layer.height
   local field = FieldManager.currentField
-  for i, j in radiusIterator(input.action.range, tile.x, tile.y) do
-    if i >= 1 and j >= 1 and i <= field.sizeX and j <= field.sizeY then
-      local n = field:getObjectTile(i, j, h)
-      if n.gui.selectable then
-        return true
-      end
+  for i, j in radiusIterator(input.action.range, tile.x, tile.y, field.sizeX, field.sizeY) do
+    local n = field:getObjectTile(i, j, h)
+    if n.gui.selectable then
+      return true
     end
   end
   return false
@@ -182,12 +182,10 @@ function BattleTactics.reachableTargets(tile, input)
   local h = tile.layer.height
   local field = FieldManager.currentField
   local t = {}
-  for i, j in radiusIterator(input.action.range, tile.x, tile.y) do
-    if i >= 1 and j >= 1 and i <= field.sizeX and j <= field.sizeY then
-      local n = field:getObjectTile(i, j, h)
-      if n.gui.selectable then
-        t[#t + 1] = n
-      end
+  for i, j in radiusIterator(input.action.range, tile.x, tile.y, field.sizeX, field.sizeY) do
+    local n = field:getObjectTile(i, j, h)
+    if n.gui.selectable then
+      t[#t + 1] = n
     end
   end
   return t

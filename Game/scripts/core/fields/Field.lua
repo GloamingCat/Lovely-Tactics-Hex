@@ -15,6 +15,7 @@ local ObjectLayer = require('core/fields/ObjectLayer')
 local max = math.max
 local min = math.min
 local mathf = math.field
+local maxn = table.maxn
 
 local Field = class()
 
@@ -101,7 +102,7 @@ end
 -- Returns a iterator that navigates through all object tiles.
 -- @ret(function) the grid iterator
 function Field:gridIterator()
-  local maxl = table.maxn(self.objectLayers)
+  local maxl = maxn(self.objectLayers)
   local i, j, l = 1, 0, 0
   local layer = self.objectLayers[l]
   while layer == nil do

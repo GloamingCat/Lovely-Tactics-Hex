@@ -148,11 +148,10 @@ function BattleAction:resetReachableTiles(input)
   end
   -- Paint border tiles
   for tile in borderTiles:iterator() do
-    for i, j in mathf.radiusIterator(self.range, tile.x, tile.y) do
-      if i >= 1 and j >= 1 and i <= self.field.sizeX and j <= self.field.sizeY then
-        local n = self.field:getObjectTile(i, j, h) 
-        n.gui.reachable = true
-      end
+    for i, j in mathf.radiusIterator(self.range, tile.x, tile.y, 
+        self.field.sizeX, self.field.sizeY) do
+      local n = self.field:getObjectTile(i, j, h) 
+      n.gui.reachable = true
     end
   end
 end
@@ -226,11 +225,9 @@ end
 function BattleAction:getAllAffectedTiles(input)
   local tiles = {}
   local height = input.target.layer.height
-  for i, j in mathf.radiusIterator(self.radius - 1, 
-      input.target.x, input.target.y) do
-    if i >= 1 and j >= 0 and i <= self.field.sizeX and j <= self.field.sizeY then
-      tiles[#tiles + 1] = self.field:getObjectTile(i, j, height)
-    end
+  for i, j in mathf.radiusIterator(self.radius - 1, input.target.x, input.target.y,
+      self.field.sizeX, self.field.sizeY) do
+    tiles[#tiles + 1] = self.field:getObjectTile(i, j, height)
   end
   return tiles
 end
