@@ -12,28 +12,35 @@ local ActionInput = require('core/battle/action/ActionInput')
 local BattleTactics = require('core/battle/ai/BattleTactics')
 local MoveAction = require('core/battle/action/MoveAction')
 local PathFinder = require('core/battle/ai/PathFinder')
-local ScriptRule = require('core/battle/ai/script/ScriptRule')
+local AIRule = require('core/battle/ai/AIRule')
 
-local RunAwayRule = class(ScriptRule)
+local RunAwayRule = class(AIRule)
+
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
+-- Constructor.
+function RunAwayRule:init()
+  AIRule.init(self, 'RunAway', MoveAction())
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Execution
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ScriptRule:execute.
-function RunAwayRule:execute(user)
-  local action = MoveAction()
-  local input = ActionInput(action, user)
-  action:onSelect(input)
+-- Overrides AIRule:onSelect.
+function RunAwayRule:onSelect(it, user)
+  self.input.user = user
+  self.input.action:onSelect(self.input)
   
   -- Find tile to move
   local queue = BattleTactics.runAway(user)
   if queue:isEmpty() then
-    return nil
+    self.input = nil
+    return
   end
-  
-  input.target = queue:front()
-  return input:execute()
+  self.input.target = queue:front()
 end
 
 return RunAwayRule

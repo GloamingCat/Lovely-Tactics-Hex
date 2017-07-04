@@ -160,7 +160,7 @@ function BattleManager:runTurn(char, iterations)
     FieldManager.renderer:moveToObject(char, nil, true)
   end
   if AI and not self.training then
-    actionCost = AI:nextAction(iterations, char)
+    actionCost = AI:runTurn(iterations, char)
   else
     actionCost = GUIManager:showGUIForResult('battle/BattleGUI')
   end

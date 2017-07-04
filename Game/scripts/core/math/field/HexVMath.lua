@@ -247,7 +247,7 @@ function HexVMath.radiusIterator(radius, centerX, centerY, sizeX, sizeY)
     j = j + 1
     if j > maxdY then
       i = i + 1
-      if i > maxdY then
+      if i > maxdX then
         return
       end
       j     = max(nradius, nradius - i, minY)

@@ -17,13 +17,24 @@ local expectation = math.randomExpectation
 local Chicken = class(ArtificialInteligence)
 
 ---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
+-- Constructor.
+function Chicken:init(battler, param)
+  local key = 'Chicken ' .. battler.battlerID
+  ArtificialInteligence.init(self, key, battler, self:decodeParam(param))
+end
+
+---------------------------------------------------------------------------------------------------
 -- Execution
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ArtificialInteligence:nextAction.
-function Chicken:nextAction(it, user)
-  local rule = RunAwayRule()  
-  return rule:execute(user) or 0
+-- Overrides ArtificialInteligence:nextRule.
+function Chicken:nextRule(it, user)
+  local rule = RunAwayRule()
+  rule:onSelect(it, user)
+  return rule
 end
 
 return Chicken

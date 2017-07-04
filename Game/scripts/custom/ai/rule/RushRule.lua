@@ -10,23 +10,34 @@ Rule that just ends the turn. May be used when the other rules cannot be used.
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
 local BattleTactics = require('core/battle/ai/BattleTactics')
-local ScriptRule = require('core/battle/ai/script/ScriptRule')
+local AIRule = require('core/battle/ai/AIRule')
 
-local RushRule = class(ScriptRule)
+local RushRule = class(AIRule)
+
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
+-- Constructor.
+function RushRule:init(action)
+  local name = action.skillID or tostring(action)
+  AIRule.init(self, 'Rush: ' .. name, action)
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Execution
 ---------------------------------------------------------------------------------------------------
 
-function RushRule:execute(user)
-  local input = ActionInput(self.action, user)
-  self.action:onSelect(input)
-  local queue = BattleTactics.closestCharacters(input)
+-- Overrides AIRule:onSelect.
+function RushRule:onSelect(it, user)
+  self.input.user = user
+  self.input.action:onSelect(self.input)
+  local queue = BattleTactics.closestCharacters(self.input)
   if queue:isEmpty() then
-    return nil
+    self.input = nil
+    return
   end
-  input.target = queue:front()
-  return self.action:onConfirm(input)
+  self.input.target = queue:front()
 end
 
 return RushRule

@@ -17,13 +17,24 @@ local expectation = math.randomExpectation
 local Hidder = class(ArtificialInteligence)
 
 ---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
+-- Constructor.
+function Hidder:init(battler, param)
+  local key = 'Hidder ' .. battler.battlerID
+  ArtificialInteligence.init(self, key, battler, self:decodeParam(param))
+end
+
+---------------------------------------------------------------------------------------------------
 -- Execution
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ArtificialInteligence:nextAction.
-function Hidder:nextAction(it, user)
-  local rule = HideRule(nil, user.battler.attackSkill) 
-  return rule:execute(user) or 0
+-- Overrides ArtificialInteligence:nextRule.
+function Hidder:nextRule(it, user)
+  local rule = HideRule(user.battler.attackSkill) 
+  rule:onSelect(it, user)
+  return rule
 end
 
 return Hidder

@@ -27,8 +27,9 @@ local MonteCarlo = class(ArtificialInteligence)
 -- Constructor. Starts decision tree as empty.
 -- @param(battler : Battler)
 -- @param(param : string) the script param (used as the maximum tree depth)
-function MonteCarlo:init(battler, param)
-  self.steps = tonumber(param) or 1
+function MonteCarlo:init(key, battler, param)
+  self.steps = param and param.steps or 2
+  ArtificialInteligence.init(self, key, battler, param and param.parallel)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -36,8 +37,8 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides ArtificialInteligence:nextAction.
-function MonteCarlo:nextAction(it, user)
-  PROFI:start()
+function MonteCarlo:runTurn(it, user)
+  --PROFI:start()
   local state = BattleState()
   local eval, input = self:getMax(it, user.battler.party, state, user, self.steps)
   --print(eval, input.action, input.target)
@@ -45,8 +46,8 @@ function MonteCarlo:nextAction(it, user)
   input.random = nil
   print(input)
   print(user:getTile())
-  PROFI:stop()
-  PROFI:writeReport( 'montecarlo profi.txt' )
+  --PROFI:stop()
+  --PROFI:writeReport( 'montecarlo profi.txt' )
   return input:execute()
 end
 
@@ -121,6 +122,9 @@ end
 -- @param(user : Character)
 -- @ret(table) array of ActionInput objects
 function MonteCarlo:getInputs(user)
+  --if PROFI then
+  --  PROFI:start()
+  --end
   local input = ActionInput.newSimulation(nil, user)
   local inputs = {}
   local actions = self:getCharacterActions(user)
@@ -128,6 +132,11 @@ function MonteCarlo:getInputs(user)
     input.action = actions[i]
     self:addPotentialInputs(inputs, input)
   end
+  --if PROFI then
+  --  PROFI:stop()
+  --  PROFI:writeReport('getInputs profi.txt' )
+  --  PROFI = nil
+  --end
   print('Possible actions: ' .. #inputs)
   return inputs
 end

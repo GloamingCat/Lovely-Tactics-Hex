@@ -17,13 +17,24 @@ local expectation = math.randomExpectation
 local Defensive = class(ArtificialInteligence)
 
 ---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
+-- Constructor.
+function Defensive:init(battler, param)
+  local key = 'Defensive ' .. battler.battlerID
+  ArtificialInteligence.init(self, key, battler, self:decodeParam(param))
+end
+
+---------------------------------------------------------------------------------------------------
 -- Execution
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ArtificialInteligence:nextAction.
-function Defensive:nextAction(it, user)
-  local rule = DefendRule(nil, user.battler.attackSkill)  
-  return rule:execute(user) or 0
+-- Overrides ArtificialInteligence:nextRule.
+function Defensive:nextRule(it, user)
+  local rule = DefendRule(user.battler.attackSkill)  
+  rule:onSelect(it, user)
+  return rule
 end
 
 return Defensive

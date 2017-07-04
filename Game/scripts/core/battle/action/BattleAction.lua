@@ -80,6 +80,15 @@ function BattleAction:onCancel(input)
   return -1
 end
 
+---------------------------------------------------------------------------------------------------
+-- Selectable Tiles
+---------------------------------------------------------------------------------------------------
+
+-- Checks if the action can be executed.
+function BattleAction:canExecute(input)
+  return true -- Abstract.
+end
+
 -- Executes the action animations and applies effects.
 function BattleAction:execute(input)
   return 0 -- Abstract.

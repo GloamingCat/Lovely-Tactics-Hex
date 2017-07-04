@@ -14,13 +14,24 @@ local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
 local Ofensive = class(ArtificialInteligence)
 
 ---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
+-- Constructor.
+function Ofensive:init(battler, param)
+  local key = 'Ofensive ' .. battler.battlerID
+  ArtificialInteligence.init(self, key, battler, self:decodeParam(param))
+end
+
+---------------------------------------------------------------------------------------------------
 -- Execution
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ArtificialInteligence:nextAction.
-function Ofensive:nextAction(it, user)
-  local rule = AttackRule(nil, user.battler.attackSkill)
-  return rule:execute(user) or 0
+-- Overrides ArtificialInteligence:nextRule.
+function Ofensive:nextRule(it, user)
+  local rule = AttackRule(user.battler.attackSkill)
+  rule:onSelect(it, user)
+  return rule
 end
 
 return Ofensive

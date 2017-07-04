@@ -14,8 +14,22 @@ local BattleTactics = require('core/battle/ai/BattleTactics')
 
 local Stalker = class(ArtificialInteligence)
 
--- Overrides ArtificialInteligence:nextAction.
-function Stalker:nextAction(it, user)
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
+-- Constructor.
+function Stalker:init(battler, param)
+  local key = 'Stalker ' .. battler.battlerID
+  ArtificialInteligence.init(self, key, battler, self:decodeParam(param))
+end
+
+---------------------------------------------------------------------------------------------------
+-- Execution
+---------------------------------------------------------------------------------------------------
+
+-- Overrides ArtificialInteligence:runTurn.
+function Stalker:runTurn(it, user)
   if not self.target or not self.target.battler:isAlive() then
     local skill = user.battler.attackSkill
     self.input = ActionInput(skill, user)

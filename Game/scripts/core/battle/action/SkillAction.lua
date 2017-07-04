@@ -114,9 +114,9 @@ end
 -- Checks if the given character can use the skill, considering skill's costs
 -- @param(user : Character)
 -- @ret(boolean)
-function SkillAction:canExecute(user)
-  local att = user.battler.att
-  local state = user.battler.state
+function SkillAction:canExecute(input)
+  local att = input.user.battler.att
+  local state = input.user.battler.state
   for i = 1, #self.costs do
     local cost = self.costs[i].cost(self, att)
     local value = state[self.costs[i].attName]

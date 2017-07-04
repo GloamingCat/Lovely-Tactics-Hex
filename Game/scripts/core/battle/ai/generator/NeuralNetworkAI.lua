@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-ScriptNN
+NeuralNetworkAI
 ---------------------------------------------------------------------------------------------------
 Script that determines the rule to use using a neural network.
 
@@ -10,19 +10,16 @@ Script that determines the rule to use using a neural network.
 -- Imports
 local PriorityQueue = require('core/algorithm/PriorityQueue')
 local NeuralNetwork = require('core/battle/ai/generator/NeuralNetwork')
-local Script = require('core/battle/ai/script/Script')
+local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
 
 -- Alias
 local newArray = util.newArray
 local max = math.max
 
-local ScriptNN = class(Script)
-
----------------------------------------------------------------------------------------------------
--- Shared patterns
----------------------------------------------------------------------------------------------------
-
+-- Static
 local patterns = {}
+
+local NeuralNetworkAI = class(ArtificialInteligence)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -31,17 +28,16 @@ local patterns = {}
 -- @param(key : string)
 -- @param(battler : Battler)
 -- @param(param : string)
-local old_init = Script.init
-function ScriptNN:init(key, battler, param)
-  self.battler = battler
-  old_init(self, key)
+function NeuralNetworkAI:init(key, battler, param)
+  ArtificialInteligence.init(self, key, battler, param.parallel)
+  self.rules = self:createRules()
   self.inputs = self:createInputs()
-  if param == 'sample' then
+  if param.mode == 'sample' then
     -- Creating samples.
     if not patterns[key] then
       patterns[key] = BattleManager.params[key] or self:loadJsonData('_pat') or {}
     end
-  elseif param == 'train' then
+  elseif param.mode == 'train' then
     -- Train from samples.
     if not patterns[key] then
       self.network = self:createNetwork(nil, true)
@@ -62,7 +58,7 @@ end
 -- Creates the network from the data.
 -- @param(data : table) layer data (if nil, creates initial network)
 -- @param(training : boolean) true if in the training mode
-function ScriptNN:createNetwork(data, training)
+function NeuralNetworkAI:createNetwork(data, training)
   local inputCount = #self.inputs
   local outputCount = #self.rules
   return NeuralNetwork(inputCount, max(inputCount + outputCount), outputCount, data, training)
@@ -72,8 +68,8 @@ end
 -- Execution
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ArtificialInteligence:nextAction.
-function ScriptNN:nextAction(it, user)
+-- Overrides ArtificialInteligence:runTurn.
+function NeuralNetworkAI:runTurn(it, user)
   local inputs = {}
   for i = 1, #self.inputs do
     inputs[i] = self.inputs[i](self, user)
@@ -89,7 +85,7 @@ end
 -- @param(user : Character)
 -- @param(inputs : table) input values
 -- @ret(number) action time cost
-function ScriptNN:fromNetworkTest(user, inputs)
+function NeuralNetworkAI:fromNetworkTest(user, inputs)
   local outputs = self.network:test(inputs)
   local queue = PriorityQueue()
   for i = 1, #outputs do
@@ -109,7 +105,7 @@ end
 -- @param(user : Character)
 -- @param(inputs : table) input values
 -- @ret(number) action time cost
-function ScriptNN:fromPlayerInput(user, inputs)
+function NeuralNetworkAI:fromPlayerInput(user, inputs)
   local cost = nil
   repeat
     local id = GUIManager:showGUIForResult('battle/RuleGUI', self.rules)
@@ -126,7 +122,7 @@ end
 
 -- Callback to train the network and store the result.
 -- @param(user : Character)
-function ScriptNN:onBattleEnd(user)
+function NeuralNetworkAI:onBattleEnd(user)
   if not self.network and patterns[self.key] then
     local pat = patterns[self.key]
     patterns[self.key] = nil
@@ -140,13 +136,13 @@ end
 
 -- Generates the input vector from the current battle state.
 -- @ret(table) array of functions that generate each input value
-function ScriptNN:createInputs()
+function NeuralNetworkAI:createInputs()
   return { self.bias }
 end
 
 -- Neural network input bias.
-function ScriptNN:bias()
+function NeuralNetworkAI:bias()
   return 1
 end
 
-return ScriptNN
+return NeuralNetworkAI

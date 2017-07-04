@@ -10,28 +10,38 @@ The rule for an AI that moves to the safest tile that still has a reachable targ
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
 local BattleTactics = require('core/battle/ai/BattleTactics')
-local ScriptRule = require('core/battle/ai/script/ScriptRule')
+local AIRule = require('core/battle/ai/AIRule')
 
 -- Alias
 local expectation = math.randomExpectation
 
-local AttackRule = class(ScriptRule)
+local AttackRule = class(AIRule)
+
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
+-- Constructor.
+function AttackRule:init(action)
+  local name = action.skillID or tostring(action)
+  AIRule.init(self, 'Attack: ' .. name, action)
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Execution
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ScriptRule:execute.
-function AttackRule:execute(user)
-  local skill = self.action
-  local input = ActionInput(skill, user)
-  skill:onSelect(input)
+-- Overrides AIRule:onSelect.
+function AttackRule:onSelect(it, user)
+  local skill = self.input.action
+  self.input.user = user
+  skill:onSelect(self.input)
   local bestTile = nil
   local bestChance = -math.huge
   for char in TroopManager.characterList:iterator() do
     local tile = char:getTile()
     if tile.gui.selectable and tile.gui.reachable then
-      local dmg = skill:calculateEffectResult(input, char, expectation)
+      local dmg = skill:calculateEffectResult(self.input, char, expectation)
       if dmg then
         local chance = (char.battler.state.HP - dmg) / char.battler.att:MHP()
         if chance > bestChance then
@@ -42,16 +52,15 @@ function AttackRule:execute(user)
     end
   end
   if bestTile then
-    input.target = bestTile
+    self.input.taget = bestTile
   else
     local queue = BattleTactics.closestCharacters(input)
     if queue:isEmpty() then
-      return nil
+      self.input = nil
+    else
+      self.input.target = queue:front()
     end
-    input.target = queue:front()
   end
-  
-  return input.action:onConfirm(input)
 end
 
 return AttackRule

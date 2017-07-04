@@ -19,6 +19,16 @@ local stateValues = Config.battle.stateValues
 local DefaultMC = class(MonteCarlo)
 
 ---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
+-- Constructor.
+function DefaultMC:init(battler, param)
+  local key = 'DefaultMC ' .. battler.battlerID
+  MonteCarlo.init(self, key, battler, self:decodeParam(param))
+end
+
+---------------------------------------------------------------------------------------------------
 -- Potential inputs
 ---------------------------------------------------------------------------------------------------
 
@@ -33,7 +43,7 @@ function DefaultMC:addPotentialInputs(array, input)
   -- Get targets with greater damage
   local targets = BattleTactics.areaTargets(input):toList()
   print('targets', #targets)
-  if input.action.range > 1 and false then
+  if input.action.range > 1 then
     -- Ranged skills
     for i = 1, #targets do
       input.target = targets[i]

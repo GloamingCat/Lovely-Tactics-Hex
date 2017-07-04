@@ -9,7 +9,7 @@ Run Away and Wait rules.
 =================================================================================================]]
 
 -- Imports
-local ScriptNN = require('core/battle/ai/script/ScriptNN')
+local NeuralNetworkAI = require('core/battle/ai/generator/NeuralNetworkAI')
 local RushRule = require('custom/ai/rule/RushRule')
 local AttackRule = require('custom/ai/rule/AttackRule')
 local DefendRule = require('custom/ai/rule/DefendRule')
@@ -17,7 +17,7 @@ local HideRule = require('custom/ai/rule/HideRule')
 local RunAwayRule = require('custom/ai/rule/RunAwayRule')
 local WaitRule = require('custom/ai/rule/WaitRule')
 
-local DefaultNN = class(ScriptNN)
+local DefaultNN = class(NeuralNetworkAI)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -25,17 +25,17 @@ local DefaultNN = class(ScriptNN)
 
 -- @param(battler : Battler)
 -- @param(param : string)
-local old_init = ScriptNN.init
 function DefaultNN:init(battler, param)
-  old_init(self, 'DefaultNN' .. battler.battlerID, battler, param)
+  NeuralNetworkAI.init(self, 'DefaultNN' .. battler.battlerID, battler, self:decodeParam(param))
 end
 
+-- Inserts the default skill rules in the array.
 local function addRules(r, skill)
   local name = skill.skillID
-  r[#r + 1] = RushRule('Rush ' .. name, skill)
-  r[#r + 1] = AttackRule('Attack ' .. name, skill)
-  r[#r + 1] = DefendRule('Defend ' .. name, skill)
-  r[#r + 1] = HideRule('Hide ' .. name, skill)
+  r[#r + 1] = RushRule(skill)
+  r[#r + 1] = AttackRule(skill)
+  r[#r + 1] = DefendRule(skill)
+  r[#r + 1] = HideRule(skill)
 end
 
 -- Overrides ScriptNN:createRules.
@@ -46,8 +46,8 @@ function DefaultNN:createRules()
   for skill in self.battler.skillList:iterator() do
     addRules(r, skill)
   end
-  r[#r + 1] = RunAwayRule('RunArray')
-  r[#r + 1] = WaitRule('Wait')
+  r[#r + 1] = RunAwayRule()
+  r[#r + 1] = WaitRule()
   return r
 end
 

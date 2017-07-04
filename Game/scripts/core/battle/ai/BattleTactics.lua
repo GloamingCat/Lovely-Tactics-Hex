@@ -150,6 +150,9 @@ end
 -- @param(input : ActionInput)
 -- @ret(boolean)
 function BattleTactics.potentialMoveTarget(tile, user, input)
+  if not tile.gui.movable then
+    return false
+  end
   if input then
     if input.target then
       local t = input.target
@@ -158,7 +161,7 @@ function BattleTactics.potentialMoveTarget(tile, user, input)
       return BattleTactics.hasReachableTargets(tile, input)
     end
   else
-    return tile.gui.movable
+    return true
   end
 end
 
