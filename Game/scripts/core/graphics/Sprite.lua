@@ -12,6 +12,7 @@ the world's coordinate system) and the depth/render order (z axis).
 
 -- Imports
 local Vector = require('core/math/Vector')
+local Colorable = require('core/transform/Colorable')
 
 -- Alias
 local Quad = love.graphics.newQuad
@@ -22,7 +23,7 @@ local remove = table.remove
 -- Constants
 local colorf = Color.factor
 
-local Sprite = class()
+local Sprite = class(Colorable)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -32,6 +33,7 @@ local Sprite = class()
 -- @param(texture : Texture) sprite's texture
 -- @param(quad : Quad) the piece of the texture to render
 function Sprite:init(renderer, texture, quad)
+  Colorable.initColor(self)
   self.texture = texture
   self.quad = quad
   self.position = Vector(0, 0, 1)
@@ -41,7 +43,6 @@ function Sprite:init(renderer, texture, quad)
   self.offsetX = 0
   self.offsetY = 0
   self.offsetDepth = 0
-  self.color = { red = 100, green = 100, blue = 100, alpha = 100 }
   self.renderer = renderer
   self:insertSelf(1)
   self.visible = true
@@ -202,29 +203,13 @@ end
 -- Color
 ---------------------------------------------------------------------------------------------------
 
--- Sets sprite's color's rgb. If a component parameter is nil, it will not be changed.
--- @param(r : number) red component
--- @param(g : number) green component
--- @param(b : number) blue component
--- @param(a : number) alpha component
-function Sprite:setRGBA(r, g, b, a)
-  r = r or self.color.red
-  g = g or self.color.green
-  b = b or self.color.blue
-  a = a or self.color.alpha
-  if r ~= self.color.red or g ~= self.color.green or b ~= self.color.blue or a ~= self.color.alpha then
-    self.color.red = r
-    self.color.green = g
-    self.color.blue = b
-    self.color.alpha = a
+-- Overrides Colorable:setRGBA.
+function Sprite:setRGBA(newr, newg, newb, newa)
+  local r, g, b, a = self:getRGBA()
+  Colorable.setRGBA(self, newr, newg, newb, newa)
+  if r ~= newr or g ~= newg or b ~= newb or a ~= newa then
     self.renderer.needsRedraw = true
   end
-end
-
--- Sets sprite's color's rgb.
--- @param(color : table) a color table containing {red, green, blue, alpha} components
-function Sprite:setColor(color)
-  self:setRGBA(color.red, color.green, color.blue, color.alpha)
 end
 
 -------------------------------------------------------------------------------

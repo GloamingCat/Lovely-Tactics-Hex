@@ -122,7 +122,7 @@ end
 -- Movement
 ---------------------------------------------------------------------------------------------------
 
--- Overrides Transformable:instantMoveTo.
+-- Overrides Movable:instantMoveTo.
 -- @param(collisionCheck : boolean) if false, ignores collision
 -- @ret(number) the type of the collision, nil if none
 function CharacterBase:instantMoveTo(x, y, z, collisionCheck)

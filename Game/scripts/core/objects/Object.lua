@@ -8,7 +8,7 @@ A common class for Obstacles and Characters.
 =================================================================================================]]
 
 -- Imports
-local Transformable = require('core/math/Transformable')
+local Transformable = require('core/transform/Transformable')
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 
@@ -34,14 +34,14 @@ end
 -- Position
 ---------------------------------------------------------------------------------------------------
 
--- Overrides Transformable:setXYZ.
+-- Overrides Movable:setXYZ.
 -- Updates sprite position.
 function Object:setXYZ(x, y, z)
   Transformable.setXYZ(self, x, y, z)
   self.sprite:setXYZ(x, y, z)
 end
 
--- Overrides Transformable:instantMoveTo.
+-- Overrides Movable:instantMoveTo.
 -- Updates the tile's object list.
 function Object:instantMoveTo(position)
   local tiles = self:getAllTiles()

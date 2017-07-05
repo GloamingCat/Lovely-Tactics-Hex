@@ -10,7 +10,7 @@ Stores them in order and draws them using a batch.
 
 -- Imports
 local List = require('core/algorithm/List')
-local Transformable = require('core/math/Transformable')
+local Transformable = require('core/transform/Transformable')
 
 -- Alias
 local lgraphics = love.graphics
@@ -20,7 +20,7 @@ local rotate = math.rotate
 -- Constants
 local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
 
-local Renderer = class(Transformable)
+local Renderer = class(Transformable, Colored)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -29,9 +29,8 @@ local Renderer = class(Transformable)
 -- @param(size : number) the max number of sprites.
 -- @param(minDepth : number) the minimun depth of a sprite
 -- @param(maxDepth : number) the maximum depth of a sprite
-local old_init = Renderer.init
 function Renderer:init(size, minDepth, maxDepth, order)
-  old_init(self)
+  Transformable.init(self)
   self.minDepth = minDepth
   self.maxDepth = maxDepth
   self.size = size
@@ -134,12 +133,11 @@ end
 -- Sets Renderer's center position in the world coordinates.
 -- @param(x : number) pixel x
 -- @param(y : number) pixel y
-local old_setXYZ = Renderer.setXYZ
 function Renderer:setXYZ(x, y, z)
   x = round(x)
   y = round(y)
   if self.position.x ~= x or self.position.y ~= y then
-    old_setXYZ(self, x, y, 0)
+    Transformable.setXYZ(self, x, y, 0)
     self.needsRedraw = true
   end
 end
@@ -171,12 +169,10 @@ function Renderer:draw()
   if self.needsRedraw then
     self:redrawCanvas()
   end
+  local r, g, b, a = lgraphics.getColor()
+  lgraphics.setColor(self:getAbsoluteRGBA())
   lgraphics.draw(self.canvas, 0, 0)
-  --local ox = round(self.canvas:getWidth() / 2)
-  --local oy = round(self.canvas:getHeight() / 2)
-  --local x = round(ScreenManager.scaleX * ScreenManager.width / 2)
-  --local y = round(ScreenManager.scaleY * ScreenManager.height / 2)
-  --lgraphics.draw(self.canvas, x - ox, y - oy)
+  lgraphics.setColor(r, g, b, a)
 end
 
 -- Draws all sprites in the table to the canvas.

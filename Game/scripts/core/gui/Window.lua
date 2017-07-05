@@ -14,7 +14,7 @@ Every content element for the window must have all the following methods:
 =================================================================================================]]
 
 -- Imports
-local Transformable = require('core/math/Transformable')
+local Transformable = require('core/transform/Transformable')
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local List = require('core/algorithm/List')
