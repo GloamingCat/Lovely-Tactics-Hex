@@ -45,6 +45,11 @@ function Colorable:getRGBA()
   return self.color.red, self.color.green, self.color.blue, self.color.alpha
 end
 
+-- Gets each RGBA multiplies by the color factor.
+-- @ret(number) red compoent
+-- @ret(number) green compoent
+-- @ret(number) blue compoent
+-- @ret(number) alpha compoent
 function Colorable:getAbsoluteRGBA()
   return self.color.red * colorf, self.color.green * colorf, 
     self.color.blue * colorf, self.color.alpha * colorf
@@ -83,7 +88,7 @@ function Colorable:updateColor()
     local g = self.origGreen * (1 - self.colorTime) + self.destGreen * self.colorTime
     local b = self.origBlue * (1 - self.colorTime) + self.destBlue * self.colorTime
     local a = self.origAlpha * (1 - self.colorTime) + self.destAlpha * self.colorTime
-    if self:instanteColorizeTo(r, g, b, a) and self.interruptableColor then
+    if self:instantColorizeTo(r, g, b, a) and self.interruptableColor then
       self.colorTime = 1
     end
   end
@@ -97,7 +102,7 @@ end
 -- @param(speed : number) the speed of the colorizing (optional)
 -- @param(wait : boolean) flag to wait until the colorizing finishes (optional)
 function Colorable:colorizeTo(r, g, b, a, speed, wait)
-  if speed then
+  if speed and speed > 0 then
     self:gradativeColorizeTo(r, g, b, a, speed, wait)
   else
     self:instantColorizeTo(r, g, b, a)
@@ -111,7 +116,7 @@ end
 -- @param(a : number) alpha component
 -- @ret(boolean) true if the colorizing must be interrupted, nil or false otherwise
 function Colorable:instantColorizeTo(r, g, b, a)
-  self:setRGB(r, g, b, a)
+  self:setRGBA(r, g, b, a)
   return nil
 end
 
@@ -123,7 +128,7 @@ end
 -- @param(speed : number) the speed of the colorizing
 -- @param(wait : boolean) flag to wait until the colorizing finishes (optional)
 function Colorable:gradativeColorizeTo(r, g, b, a, speed, wait)
-  self.origRed, self.origGreen, self.origBlue, self.origAlpha = self:getRGB()
+  self.origRed, self.origGreen, self.origBlue, self.origAlpha = self:getRGBA()
   self.destRed, self.destGreen, self.destBlue, self.destAlpha = r, g, b, a
   self.colorTime = 0
   self.colorSpeed = speed

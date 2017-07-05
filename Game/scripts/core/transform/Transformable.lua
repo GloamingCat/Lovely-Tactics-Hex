@@ -3,7 +3,7 @@
 
 Transformable
 ---------------------------------------------------------------------------------------------------
-An object with physical properties (position, rotation, scale).
+An object with physical properties (position, rotation, scale) and color.
 
 =================================================================================================]]
 

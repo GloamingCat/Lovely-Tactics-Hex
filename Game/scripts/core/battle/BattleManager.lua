@@ -72,6 +72,8 @@ function BattleManager:battleIntro()
   if self.params.skipAnimations then
     return
   end
+  FieldManager.renderer:fadeout(0)
+  FieldManager.renderer:fadein(nil, true)
   local centers = TroopManager:getPartyCenters()
   local speed = 50
   for i = #centers, 0, -1 do
@@ -101,6 +103,7 @@ function BattleManager:battleEnd()
   for char in TroopManager.characterList:iterator() do
     char.battler:onBattleEnd()
   end
+  FieldManager.renderer:fadeout(nil, true)
   self:clear()
 end
 
