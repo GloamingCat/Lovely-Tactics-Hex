@@ -36,11 +36,53 @@
     "attStepID": 5,
     "attJumpID": 6,
     "attLifeID": 0,
-    "stateValues": [
-      { "name": "Health Points", "shortName": "HP", "min": "0", "max": "att:MHP()", "initAtMax": true },
-      { "name": "Skill Points", "shortName": "SP", "min": "0", "max": "att:MSP()", "initAtMax": true }
-    ]
   },
+  "stateVariables": [
+    { 
+      "name": "Health Points", 
+      "shortName": "HP", 
+      "targetGUI": true,
+      "min": "0", 
+      "max": "att.MHP()", 
+      "initial": "att.MHP()",
+      "reward": 0,
+      "backup": 100,
+      "divide": false
+    },
+    { 
+      "name": "Skill Points", 
+      "shortName": "SP", 
+      "targetGUI": true,
+      "min": "0", 
+      "max": "att.MSP()", 
+      "initial": "att.MSP()" ,
+      "reward": 0,
+      "backup": 100,
+      "divide": false
+    },
+    { 
+      "name": "Gold", 
+      "shortName": "G", 
+      "targetGUI": false,
+      "min": "0", 
+      "max": "999999", 
+      "initial": "100",
+      "reward": 2,
+      "backup": 100,
+      "divide": false
+    },
+    { 
+      "name": "Experience", 
+      "shortName": "EXP", 
+      "targetGUI": false,
+      "min": "0", 
+      "max": "", 
+      "initial": "0",
+      "reward": 1,
+      "backup": 50,
+      "divide": false
+    }
+  ]
   "grid": {
     "tileW": 36,
     "tileH": 22,
@@ -52,11 +94,8 @@
     "troopHeight": 3
   },
   "initialMembers": [
-    4,
-    4,
-    4,
-    5,
-    5
+    0,
+    1
   ],
   "battlerTypes": [
     {

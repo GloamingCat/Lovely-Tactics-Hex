@@ -99,9 +99,20 @@ end
 -- Searches for the Character with the given Battler.
 -- @param(battler : Battler) the battler to search for
 -- @ret(Character) the character with the battler (nil of not found)
-function TroopManager:getCharacter(battler)
+function TroopManager:getBattlerCharacter(battler)
   for bc in self.characterList:iterator() do 
     if bc.battler == battler then
+      return bc
+    end
+  end
+end
+
+-- Searches for the Character with the given battler ID.
+-- @param(id : number) the battler ID to search for
+-- @ret(Character) the character with the battler ID (nil of not found)
+function TroopManager:getBattlerIDCharacter(id)
+   for bc in self.characterList:iterator() do 
+    if bc.battler.battlerID == id then
       return bc
     end
   end

@@ -26,7 +26,7 @@ local round = math.round
 local ceil = math.ceil
 
 -- Constants
-local stateValues = Config.battle.stateValues
+local stateVariables = Config.stateVariables
 local elementCount = #Config.elements
 local introTime = 22.5
 local centerTime = 7.5
@@ -66,7 +66,7 @@ function SkillAction:init(skillID)
     self.effects[i] = {
       basicResult = loadformula(data.effects[i].basicResult, 'action, a, b, rand'),
       successRate = loadformula(data.effects[i].successRate, 'action, a, b, rand'),
-      attName = stateValues[data.effects[i].id + 1].shortName
+      attName = stateVariables[data.effects[i].id + 1].shortName
     }
   end
   -- Cost formulas
@@ -74,7 +74,8 @@ function SkillAction:init(skillID)
   for i = 1, #data.costs do
     self.costs[i] = {
       cost = loadformula(data.costs[i].value, 'action, att'),
-      attName = Database.attributes[data.costs[i].id + 1].shortName
+      name = stateVariables[data.costs[i].id + 1].shortName,
+      party = stateVariables[data.costs[i].id + 1].party
     }
   end
   -- Store elements
@@ -119,9 +120,15 @@ function SkillAction:canExecute(input)
   local state = input.user.battler.state
   for i = 1, #self.costs do
     local cost = self.costs[i].cost(self, att)
-    local value = state[self.costs[i].attName]
-    if cost > value then
-      return false
+    local name = self.costs[i].name
+    if self.costs[i].reward == 2 then
+      if cost > SaveManager.current.partyData[name] then
+        return false
+      end
+    else
+      if cost > state[name] then
+        return false
+      end
     end
   end
   return true

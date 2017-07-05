@@ -14,7 +14,7 @@ local Window = require('core/gui/Window')
 local SimpleText = require('core/gui/SimpleText')
 
 -- Constants
-local stateValues = Config.battle.stateValues
+local stateVariables = Config.stateVariables
 local battleConfig = Config.battle
 local attConfig = Config.attributes
 local font = Font.gui_small
@@ -37,31 +37,34 @@ function TargetWindow:init(GUI, skin)
   local x = - w / 2 + self.paddingw
   local y = - h / 2 + self.paddingh
   w = w - self.paddingw * 2
-  
-  local pos1 = Vector(x, y, -1)
-  local pos2 = Vector(x, y + 15 + #stateValues * 10, -1)
 
   -- Name text
-  self.textName = SimpleText('', pos1, w, 'center')
+  local posName = Vector(x, y, -1)
+  self.textName = SimpleText('', posName, w, 'center')
   self.content:add(self.textName)
   
   -- State values texts
   self.textState = {}
   self.textStateValues = {}
-  for i = 1, #stateValues do
-    local value = stateValues[i]
-    local pos = Vector(x, y + 5 +  i * 10, -1)
-    local textName = SimpleText(value.shortName .. ':', pos, w, 'left', font)
-    local textValue = SimpleText('', pos, w, 'right', font)
-    self.textState[value.shortName] = textName
-    self.textStateValues[value.shortName] = textValue
-    self.content:add(textName)
-    self.content:add(textValue)
+  local varCount = 0
+  for i = 1, #stateVariables do
+    local var = stateVariables[i]
+    if var.targetGUI then
+      varCount = varCount + 1
+      local pos = Vector(x, y + 5 + varCount * 10, -1)
+      local textName = SimpleText(var.shortName .. ':', pos, w, 'left', font)
+      local textValue = SimpleText('', pos, w, 'right', font)
+      self.textState[var.shortName] = textName
+      self.textStateValues[var.shortName] = textValue
+      self.content:add(textName)
+      self.content:add(textValue)
+    end
   end
   
   -- Turn count text
-  self.textTC = SimpleText(Vocab.turnCount .. ':', pos2, w, 'left', font)
-  self.textTCValue = SimpleText('', pos2, w, 'right', font)
+  local posTC = Vector(x, y + 15 + varCount * 10, -1)
+  self.textTC = SimpleText(Vocab.turnCount .. ':', posTC, w, 'left', font)
+  self.textTCValue = SimpleText('', posTC, w, 'right', font)
   self.content:add(self.textTC)
   self.content:add(self.textTCValue)
   
@@ -77,15 +80,17 @@ function TargetWindow:setBattler(battler)
   self.textName:setText(battler.data.name)
   
   -- State values text
-  for i = 1, #stateValues do
-    local v = stateValues[i]
-    local currentValue = battler.state[v.shortName]
-    local maxValue = battler.stateMax[v.shortName](battler.att)
-    local text = currentValue .. ''
-    if maxValue then
-      text = text .. '/' .. maxValue
+  for i = 1, #stateVariables do
+    local v = stateVariables[i]
+    if v.targetGUI then
+      local currentValue = battler.state[v.shortName]
+      local maxValue = battler.stateMax[v.shortName](battler.att)
+      local text = currentValue .. ''
+      if maxValue then
+        text = text .. '/' .. maxValue
+      end
+      self.textStateValues[v.shortName]:setText(text)
     end
-    self.textStateValues[v.shortName]:setText(text)
   end
 
   -- Turn count text

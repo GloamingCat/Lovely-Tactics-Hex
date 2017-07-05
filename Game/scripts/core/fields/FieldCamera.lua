@@ -24,13 +24,17 @@ local FieldCamera = class(Renderer)
 -- General
 ---------------------------------------------------------------------------------------------------
 
+function FieldCamera:init(...)
+  Renderer.init(self, ...)
+  self.cropMovement = true
+end
+
 -- Updates position and movement.
-local old_updateMovement = FieldCamera.updateMovement
 function FieldCamera:updateMovement()
   if self.focusObject then
     self:setXYZ(self.focusObject.position.x, self.focusObject.position.y)
   else
-    old_updateMovement(self)
+    Renderer.updateMovement(self)
   end
 end
 

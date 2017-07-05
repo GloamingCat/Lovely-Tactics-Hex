@@ -147,3 +147,18 @@ end
 function util.arrayMean(arr)
   return util.arraySum(arr) / #arr
 end
+
+---------------------------------------------------------------------------------------------------
+-- Other
+---------------------------------------------------------------------------------------------------
+
+-- Creates a tag map of JSON values.
+-- @param(tags : table) the array of tags from databse file
+-- @ret(table) a table mapping each tag name to its JSON value
+function util.createTags(tags)
+  local t = {}
+  for i = 1, #tags do
+    t[tags[i].name] = JSON.decode(tags[i].value)
+  end
+  return t
+end

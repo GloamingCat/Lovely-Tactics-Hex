@@ -21,11 +21,12 @@ local time = love.timer.getDelta
 
 -- Constants
 local turnLimit = Battle.turnLimit
+local defaultParams = { gameOver = true, skipAnimations = true }
 
 local BattleManager = class()
 
 ---------------------------------------------------------------------------------------------------
--- General
+-- Initialization
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
@@ -33,22 +34,18 @@ function BattleManager:init()
   self.turnLimit = turnLimit
   self.onBattle = false
   self.currentCharacter = nil
-  self.params = {}
 end
-
 -- Creates battle elements.
 -- @param(params : table) battle params to be used by custom scripts
 function BattleManager:setUp(params)
-  self.params = params or self.params
+  self.params = params or defaultParams
   self:setUpTiles()
   self:setUpCharacters()
 end
-
 -- Creates battle characters.
 function BattleManager:setUpCharacters()
   TroopManager:createTroops()
 end
-
 -- Creates tiles' GUI components.
 function BattleManager:setUpTiles()
   for tile in FieldManager.currentField:gridIterator() do
@@ -57,16 +54,29 @@ function BattleManager:setUpTiles()
   end
 end
 
--- Start a battle.
+---------------------------------------------------------------------------------------------------
+-- Battle Loop
+---------------------------------------------------------------------------------------------------
+
+-- Runs until battle finishes.
 function BattleManager:runBattle()
   self.onBattle = true
   self:battleIntro()
-  local winner = self:battleLoop()
+  local winner = nil
+  repeat
+    local char, it = self:getNextTurn()
+    self:runTurn(char, it)
+    winner = TroopManager:winnerParty()
+  until winner
+  if winner == 0 then
+    PartyManager:addRewards()
+  elseif self.params.gameOver then
+    self:gameOver()
+  end
   self:battleEnd()
   self.onBattle = false
   return winner
 end
-
 -- Runs before battle loop.
 function BattleManager:battleIntro()
   if self.params.skipAnimations then
@@ -85,28 +95,18 @@ function BattleManager:battleIntro()
   end
   _G.Fiber:wait(30)
 end
-
--- Runs until battle finishes.
-function BattleManager:battleLoop()
-  while true do
-    local char, it = self:getNextTurn()
-    self:runTurn(char, it)
-    local winner = TroopManager:winnerParty()
-    if winner then
-      return winner
-    end
-  end
-end
-
 -- Runs after winner was determined and battle loop ends.
 function BattleManager:battleEnd()
   for char in TroopManager.characterList:iterator() do
-    char.battler:onBattleEnd()
+    local b = char.battler
+    b:onBattleEnd()
+    if b.data.persistent then
+      SaveManager.current.battlerData[b.battlerID] = b:getPersistentData()
+    end
   end
   FieldManager.renderer:fadeout(nil, true)
   self:clear()
 end
-
 -- Clears batte information from characters and field.
 function BattleManager:clear()
   for tile in FieldManager.currentField:gridIterator() do
@@ -120,11 +120,21 @@ function BattleManager:clear()
   self.pathMatrix = nil
 end
 
+---------------------------------------------------------------------------------------------------
+-- Battle results
+---------------------------------------------------------------------------------------------------
+
+-- Called when player loses.
+function BattleManager:gameOver()
+  -- TODO: 
+  -- fade out screen
+  -- show game over GUI
+end
 -- Called when a deadlock is detected. 
 -- Only used when it is impossible to end the battle, so it just kills everybody.
 function BattleManager:deadLock()
   for char in TroopManager.characterList:iterator() do
-    char.battler:damageHP(math.huge)
+    char.battler:kill()
   end
 end
 
@@ -151,7 +161,6 @@ function BattleManager:getNextTurn(ignoreAnim)
   end
   return currentCharacter, iterations
 end
-
 -- [COROUTINE] Executes turn and returns when the turn finishes.
 -- @param(char : Character) turn's character
 -- @param(iterations : number) the time since the last turn
@@ -169,7 +178,6 @@ function BattleManager:runTurn(char, iterations)
   end
   self:endTurn(actionCost, iterations)
 end
-
 -- Prepares for turn.
 -- @param(char : Character) the new character of the turn
 -- @param(iterations : number) the time since the last turn
@@ -181,7 +189,6 @@ function BattleManager:startTurn(char, iterations)
     bc.battler:onTurnStart(iterations)
   end
 end
-
 -- Closes turn.
 -- @param(actionCost : number) the time spend by the character of the turn
 -- @param(iterations : number) the time since the last turn
@@ -192,7 +199,6 @@ function BattleManager:endTurn(actionCost, iterations)
   end
   self.currentCharacter = nil
 end
-
 -- Recalculates the distance matrix.
 function BattleManager:updatePathMatrix()
   local moveAction = MoveAction()

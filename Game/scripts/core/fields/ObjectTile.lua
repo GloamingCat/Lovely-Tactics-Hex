@@ -174,8 +174,8 @@ end
 function ObjectTile:getBattlerList()
   local battlers = nil
   if self.party == 0 then
-    --battlers = PartyManager:backupBattlersIDs()
-    battlers = PartyManager:currentBattlerIDs()
+    battlers = PartyManager:backupBattlersIDs()
+    --battlers = PartyManager:currentBattlerIDs()
   else
     battlers = List()
     for regionID in self.regionList:iterator() do

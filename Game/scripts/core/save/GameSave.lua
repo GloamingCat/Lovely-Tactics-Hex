@@ -7,17 +7,23 @@ Stores the game data.
 
 =================================================================================================]]
 
+-- Constants
+local stateVariables = Config.stateVariables
+
 local GameSave = class()
+
+
 
 -- Contructor.
 function GameSave:init()
   self.playTime = 0
   self.fieldData = {}
-  self.battlers = {}
-  local battlers = Database.battlers
-  for i = 1, #battlers do 
-    if battlers[i].persistent then
-      self.battlers[i] = battlers[i]
+  self.battlerData = {}
+  self.partyData = {}
+  for i = 1, #stateVariables do
+    if stateVariables[i].party then
+      local init = loadformula(stateVariables[i].initial)
+      self.state[stateVariables[i].name] = init()
     end
   end
   local startPos = Config.player.startPos
@@ -28,13 +34,6 @@ function GameSave:init()
     fieldID = startPos.fieldID or 0,
     direction = startPos.direction or 270
   }
-end
-
--- Loads persistent data in the database.
-function GameSave:load()
-  for i, battler in pairs(self.battlers) do
-    Database.battlers[i] = battler
-  end
 end
 
 return GameSave
