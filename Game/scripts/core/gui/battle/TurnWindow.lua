@@ -105,7 +105,7 @@ function TurnWindow:attackEnabled(button)
     local tile = user:getTile()
     local field = FieldManager.currentField
     local range = user.battler.attackSkill.data.range
-    for i, j in mathf.radiusIterator(range + 1, tile.x, tile.y, field.sizeX, field.sizeY) do
+    for i, j in mathf.radiusIterator(range, tile.x, tile.y, field.sizeX, field.sizeY) do
       if field:getObjectTile(i, j, tile.layer.height):hasEnemy(user.battler.party) then
         return true
       end
