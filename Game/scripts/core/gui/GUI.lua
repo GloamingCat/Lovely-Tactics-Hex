@@ -97,7 +97,7 @@ function GUI:show()
 end
 
 -- [COROUTINE] Hides all windows.
-function GUI:hide()
+function GUI:hide(destroy)
   if self.closed then
     return
   end
@@ -118,6 +118,9 @@ function GUI:hide()
     yield()
   until done
   self.closed = true
+  if destroy then
+    self:destroy()
+  end
 end
 
 return GUI

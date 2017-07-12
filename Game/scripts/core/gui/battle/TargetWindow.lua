@@ -26,12 +26,11 @@ local TargetWindow = class(Window)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides Window:init.
-local old_init = TargetWindow.init
 function TargetWindow:init(GUI, skin)
   local w = 100
   local h = 70
   local m = 12
-  old_init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - m, 
+  Window.init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - m, 
       -ScreenManager.height / 2 + h / 2 + m), skin)
   
   local x = - w / 2 + self.paddingw
@@ -98,6 +97,10 @@ function TargetWindow:setBattler(battler)
   self.textTCValue:setText(string.format( '%3.0f', tc ) .. '%')
   
   collectgarbage('collect')
+end
+
+function TargetWindow:__tostring()
+  return 'TargetWindow'
 end
 
 return TargetWindow

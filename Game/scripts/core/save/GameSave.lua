@@ -12,7 +12,9 @@ local stateVariables = Config.stateVariables
 
 local GameSave = class()
 
-
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
 
 -- Contructor.
 function GameSave:init()
@@ -21,9 +23,10 @@ function GameSave:init()
   self.battlerData = {}
   self.partyData = {}
   for i = 1, #stateVariables do
-    if stateVariables[i].party then
+    if stateVariables[i].reward == 2 then
       local init = loadformula(stateVariables[i].initial)
-      self.state[stateVariables[i].name] = init()
+      local name = stateVariables[i].shortName
+      self.partyData[name] = init()
     end
   end
   local startPos = Config.player.startPos

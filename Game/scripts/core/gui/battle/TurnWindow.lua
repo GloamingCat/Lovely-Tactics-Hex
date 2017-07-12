@@ -82,7 +82,7 @@ end
 
 -- "Wait" button callback. End turn.
 function TurnWindow:onWait(button)
-  self.GUI:hide()
+  --self.GUI:hide()
   self.result = 0
 end
 
@@ -151,7 +151,9 @@ end
 function TurnWindow:escapeEnabled()
   local userParty = BattleManager.currentCharacter.battler.party
   local tileParty = BattleManager.currentCharacter:getTile().party
-  return userParty == tileParty
+  -- return userParty == tileParty
+  -- TODO: implement escape
+  return false
 end
 
 -- Call Ally condition. Enabled if there any any backup members.
@@ -174,11 +176,10 @@ function TurnWindow:rowCount()
 end
 
 -- Overrides Window:show.
-local old_show = TurnWindow.show
 function TurnWindow:show(add)
   local user = BattleManager.currentCharacter
   self.userCursor:setCharacter(user)
-  old_show(self, add)
+  ActionWindow.show(self, add)
 end
 
 -- String identifier.
