@@ -36,7 +36,6 @@ function AnimatedObject:initializeGraphics(animations, animID, transform)
   local data = self.animationData[first]
   self:playAnimation(first)
 end
-
 -- Creates a new animation from the database.
 -- @param(name : string) the name of the animation for the character
 -- @param(id : number) the animation's ID in the database
@@ -93,7 +92,6 @@ function AnimatedObject:update()
     self.animation:update()
   end
 end
-
 -- Removes from draw and update list.
 function AnimatedObject:destroy()
   if self.sprite then

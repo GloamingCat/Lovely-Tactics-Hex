@@ -42,7 +42,6 @@ function Player:init(initTile)
   }
   Character.init(self, '0', data, initTile)
 end
-
 -- Player's extra and base character properties.
 function Player:initializeProperties(name, colliderSize, colliderHeight)
   Character.initializeProperties(self, 'Player', colliderSize, colliderHeight)
@@ -63,7 +62,6 @@ function Player:fieldInputEnabled()
   end
   return self.inputOn and self.moveTime >= 1 and self.blocks == 0
 end
-
 -- [COROUTINE] Moves player depending on input.
 -- @param(dx : number) input x
 -- @param(dy : number) input y
@@ -115,7 +113,6 @@ function Player:tileMovement(dx, dy)
   local angle = coord2Angle(dx, dy)
   return self:tryMoveTile(angle) or self:tryMoveTile(angle + 45) or self:tryMoveTile(angle - 45)
 end
-
 -- [COROUTINE] Tries to move in a given angle.
 -- @param(angle : number) the angle in degrees to move
 -- @ret(boolean) returns false if the next angle must be tried
@@ -155,7 +152,6 @@ function Player:pixelMovement(dx, dy)
   local angle = math.coord2Angle(dx, dy)
   return self:tryMovePixel(angle) or self:tryMovePixel(angle + 45) or self:tryMovePixel(angle - 45)
 end
-
 -- [COROUTINE] Tries to move in a given angle.
 -- @param(angle : number) the angle in degrees to move
 -- @ret(boolean) returns false if the next angle must be tried

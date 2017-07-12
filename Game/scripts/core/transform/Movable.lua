@@ -37,7 +37,6 @@ function Movable:initMovement(pos)
   self.cropMovement = true
   self.interruptableMove = true
 end
-
 -- Sets each coordinate of the position.
 -- @param(x : number) the pixel x of the object
 -- @param(y : number) the pixel y of the object
@@ -47,7 +46,6 @@ function Movable:setXYZ(x, y, z)
   self.position.y = y or self.position.y
   self.position.z = z or self.position.z
 end
-
 -- Sets the position of the object.
 -- @param(pos : Vector) the pixel position of the object
 function Movable:setPosition(p)
@@ -73,7 +71,6 @@ function Movable:updateMovement()
     end
   end
 end
-
 -- [COROUTINE] Moves to (x, y, z).
 -- @param(x : number) the pixel x
 -- @param(y : number) the pixel y
@@ -87,7 +84,6 @@ function Movable:moveTo(x, y, z, speed, wait)
     self:instantMoveTo(x, y, z)
   end
 end
-
 -- Moves instantly a character to a point, if possible.
 -- @param(x : number) the pixel x
 -- @param(y : number) the pixel y
@@ -97,7 +93,6 @@ function Movable:instantMoveTo(x, y, z)
   self:setXYZ(x, y, z)
   return nil
 end
-
 -- [COROUTINE] Moves gradativaly (through updateMovement) to the given point.
 -- @param(x : number) the pixel x
 -- @param(y : number) the pixel y
@@ -113,7 +108,6 @@ function Movable:gradativeMoveTo(x, y, z, speed, wait)
     self:waitForMovement()
   end
 end
-
 -- [COROUTINE] Waits until the move time is 1.
 function Movable:waitForMovement()
   local fiber = _G.Fiber

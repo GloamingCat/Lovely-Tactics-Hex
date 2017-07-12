@@ -32,14 +32,19 @@ function ActionInput:init(action, user, target, moveTarget, GUI)
   self.GUI = GUI
   self.skipAnimations = BattleManager.params.skipAnimations
 end
-
+-- Creates an ActionInput that skips animation and estimates random output.
+-- @param(user : Character)
+-- @param(target : ObjectTile) action target (optional)
+-- @param(moveTarget : ObjectTile) MoveAction target (optional)
+-- @param(GUI : ActionGUI) current ActionGUI, if any (optional)
 function ActionInput.newSimulation(action, user, target, moveTarget)
   local input = ActionInput(action, user, target, moveTarget)
   input.skipAnimations = true
   input.random = expectation
   return input
 end
-
+-- Creates an ActionInput copy that skips animation and estimates random output.
+-- @param(input : ActionInput) the input to be copied
 function ActionInput.newSimulationFromInput(input)
   local copy = ActionInput(input.action, input.user, input.target, input.moveTarget)
   copy.skipAnimations = true
@@ -62,7 +67,6 @@ function ActionInput:execute()
     return 0
   end
 end
-
 -- Executes the MoveAction to the specified move target.
 function ActionInput:executeMovement()
   if self.moveTarget then
@@ -71,7 +75,8 @@ function ActionInput:executeMovement()
     moveInput:execute()
   end
 end
-
+-- String representation.
+-- @ret(string) 
 function ActionInput:__tostring()
   return 'ActionInput: ' .. tostring(self.action) .. ' | ' .. tostring(self.user) .. 
     ' | ' .. tostring(self.target) .. ' | ' .. tostring(self.moveTarget)

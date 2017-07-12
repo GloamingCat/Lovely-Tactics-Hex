@@ -87,7 +87,6 @@ function MoveAction:isStandable(tile, user)
   end
   return true
 end
-
 -- Tells if a tile is last of the movement.
 -- @param(tile : ObjectTile) tile to check
 -- @ret(boolean) true if it's final, false otherwise
@@ -95,7 +94,6 @@ function MoveAction:isFinal(tile, final, user)
   local cost = self:estimateCost(tile, final, user)
   return cost <= self.range and self:isStandable(tile, user)
 end
-
 -- Checks passability between two tiles.
 -- @param(initial : ObjectTile) origin tile
 -- @param(final : ObjectTile) destination tile
@@ -114,7 +112,6 @@ function MoveAction:isPassableBetween(initial, final, user)
   local dh = final.layer.height - initial.layer.height
   return mindh <= dh and dh <= maxdh
 end
-
 -- Gets the move cost between the two tiles.
 -- @param(initial : ObjectTile) the initial tile
 -- @param(final : ObjectTile) the destination tile
@@ -122,7 +119,6 @@ end
 function MoveAction:getDistanceBetween(initial, final, user)
   return (initial:getMoveCost() + final:getMoveCost()) / 2
 end
-
 -- Calculas a minimum cost between two tiles.
 -- @param(initial : ObjectTile) the initial tile
 -- @param(final : ObjectTile) the destination tile
@@ -135,7 +131,6 @@ function MoveAction:estimateCost(initial, final, user)
     return baseCost - 0.0001
   end
 end
-
 -- The max distance the character can walk.
 -- @ret(number) the distance in tiles (may not be integer)
 function MoveAction:maxDistance(user)

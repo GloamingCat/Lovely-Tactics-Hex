@@ -65,7 +65,6 @@ function Character:walkToPoint(x, y, z, collisionCheck)
   end
   return self.position:almostEquals(x, y, z)
 end
-
 -- Walks a given distance in each axis.
 -- @param(dx : number) the distance in axis x (in pixels)
 -- @param(dy : number) the distance in axis y (in pixels)
@@ -76,7 +75,6 @@ function Character:walkDistance(dx, dy, dz, collisionCheck)
   local pos = self.position
   return self:walkToPoint(pos.x + dx, pos.y + dy, pos.z + dz, collisionCheck)
 end
-
 -- Walks the given distance in the given direction.
 -- @param(d : number) the distance to be walked
 -- @param(angle : number) the direction angle
@@ -85,10 +83,9 @@ end
 -- @ret(boolean) true if the movement was completed, false otherwise
 function Character:walkInAngle(d, angle, dz, collisionCheck)
   local dx, dy = angle2Coord(angle or self.direction)
-  dz = dz or -dy
-  return self:walkDistance(dx * d, dy * d, dz * d, collisionCheck)
+  dz = dz or dy
+  return self:walkDistance(dx * d, -dy * d, dz * d, collisionCheck)
 end
-
 -- [COROUTINE] Walks to the center of the tile (x, y).
 -- @param(x : number) coordinate x of the tile
 -- @param(y : number) coordinate y of the tile
@@ -99,7 +96,6 @@ function Character:walkToTile(x, y, h, collisionCheck)
   x, y, h = tile2Pixel(x, y, h or self:getTile().layer.height)
   return self:walkToPoint(x, y, h, collisionCheck)
 end
-
 -- [COROUTINE] Walks a distance in tiles defined by (dx, dy)
 -- @param(dx : number) the x-axis distance
 -- @param(dy : number) the y-axis distance
@@ -146,13 +142,11 @@ end
 -- @param(skill : table) skill data from database
 function Character:loadSkill(skill, dir, wait)
   local minTime = 0
-  
   -- Load animation (user)
   if skill.userLoadAnim ~= '' then
     local anim = self:playAnimation(skill.userLoadAnim)
     minTime = anim.duration
   end
-  
   -- Load animation (effect on tile)
   if skill.loadAnimID >= 0 then
     local mirror = skill.mirror and dir > 90 and dir <= 270
@@ -161,12 +155,10 @@ function Character:loadSkill(skill, dir, wait)
       pos.x, pos.y, pos.z - 1, mirror)
     minTime = max(minTime, anim.duration)
   end
-  
   if wait then
     _G.Fiber:wait(minTime)
   end
 end
-
 -- [COROUTINE] Plays cast animation.
 -- @param(skill : Skill)
 -- @param(dir : number) the direction of the cast
@@ -196,7 +188,6 @@ function Character:castSkill(skill, dir, wait)
     _G.Fiber:wait(minTime)
   end
 end
-
 -- [COROUTINE] Returns to original tile and stays idle.
 -- @param(origin : ObjectTile) the original tile of the character
 -- @param(skill : table) skill data from database

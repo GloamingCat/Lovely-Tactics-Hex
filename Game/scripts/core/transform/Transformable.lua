@@ -26,7 +26,6 @@ function Transformable:init(initPos, initScaleX, initScaleY, initRot, initColor)
   self:initRotation(initRot)
   self:initColor(initColor)
 end
-
 -- Called each frame.
 function Transformable:update()
   self:updateMovement()

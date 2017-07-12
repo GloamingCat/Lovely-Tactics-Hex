@@ -45,36 +45,33 @@ function CharacterBase:init(id, tileData, initTile)
   local data = db[tileData.id + 1]
   local x, y, z = tile2Pixel(initTile:coordinates())
   DirectedObject.init(self, data, Vector(x, y, z))
-  
+  -- General info
   self.id = id
   self.type = 'character'
   self.fiberList = FiberList()
-  
+  -- Add to FieldManager lists
   FieldManager.characterList:add(self)
   FieldManager.updateList:add(self)
-  
+  -- Initialize properties
   self:initializeProperties(data.name, data.tiles)
   self:initializeGraphics(data.animations, tileData.direction, tileData.animID, data.transform)
   self:initializeScripts(tileData)
-  
+  -- Initial position
   self:setXYZ(x, y, z)
   self:addToTiles()
 end
-
 -- Overrides AnimatedObject:update. 
 -- Updates fibers.
 function CharacterBase:update()
   DirectedObject.update(self)
   self.fiberList:update()
 end
-
 -- Removes from draw and update list.
 function CharacterBase:destroy()
   DirectedObject.destroy(self)
   FieldManager.characterList:removeElement(self)
   FieldManager.updateList:removeElement(self)
 end
-
 -- Converting to string.
 -- @ret(string) a string representation
 function CharacterBase:__tostring()
@@ -102,7 +99,6 @@ function CharacterBase:initializeProperties(name, tiles, colliderHeight)
   self.koAnim = 'KO'
   self.cropMovement = false
 end
-
 -- Creates listeners from data.
 -- @param(tileData : table) the data from tileset
 -- @param(data : table) the data from characters file
@@ -177,7 +173,6 @@ function CharacterBase:getAllTiles()
   end
   return tiles
 end
-
 -- Adds this object from to tiles it's occuping.
 -- @param(tiles : table) the list of occuped tiles
 function CharacterBase:addToTiles(tiles)
@@ -186,7 +181,6 @@ function CharacterBase:addToTiles(tiles)
     tiles[i].characterList:add(self)
   end
 end
-
 -- Removes this object from the tiles it's occuping.
 -- @param(tiles : table) the list of occuped tiles
 function CharacterBase:removeFromTiles(tiles)
@@ -216,7 +210,6 @@ function CharacterBase:setPersistentData(data)
     end
   end
 end
-
 -- Gets persistent data.
 -- @ret(table) character's data
 function CharacterBase:getPersistentData()

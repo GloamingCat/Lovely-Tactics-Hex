@@ -1,11 +1,11 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 TroopManager
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 Creates and manages battle troops.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local List = require('core/algorithm/List')
@@ -14,15 +14,17 @@ local Battler = require('core/battle/Battler')
 local PriorityQueue = require('core/algorithm/PriorityQueue')
 
 -- Alias
-local Random = love.math.random
+local rand = love.math.random
 local mathf = math.field
+
+-- Constants
 local charSpeed = (Config.player.dashSpeed + Config.player.walkSpeed) / 2
 
 local TroopManager = class()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Initialization
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Constructor.
 function TroopManager:init()
@@ -37,9 +39,9 @@ function TroopManager:clear()
   self.characterList = List()
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Character creation
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Creates all battle characters based on field's tile data.
 function TroopManager:createTroops()
@@ -62,7 +64,7 @@ function TroopManager:chooseBattler(tile)
   end
   local battlers = tile:getBattlerList()
   if battlers.size > 0 then
-    local r = Random(battlers.size)
+    local r = rand(battlers.size)
     return battlers[r]
   else
     return nil
@@ -92,9 +94,9 @@ function TroopManager:createBattleCharacter(tile, battlerID, field)
   return character
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Auxiliary Functions
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Searches for the Character with the given Battler.
 -- @param(battler : Battler) the battler to search for

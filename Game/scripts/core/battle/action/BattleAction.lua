@@ -3,13 +3,12 @@
 
 BattleAction
 ---------------------------------------------------------------------------------------------------
-A class that holds the behavior of a battle action: what happens when the 
-players first chooses what action, or if thet action need grid selecting, 
-if so, what tiles are selectables, etc.
+A class that holds the behavior of a battle action: what happens when the players first chooses 
+the action, or if that action need grid selecting, if so, what tiles are selectable, etc.
 
-Examples of battle actions: Move Action (needs grid and only blue tiles are 
-selectables), Escape Action (doesn't need grid, and instead opens a confirm 
-window), Call Action (only team tiles), etc. 
+Examples of battle actions: Move Action (needs grid and only blue tiles are selectables), Escape 
+Action (doesn't need grid, and instead opens a confirm window), Call Action (only team tiles), 
+etc. 
 
 =================================================================================================]]
 
@@ -27,10 +26,10 @@ local BattleAction = class()
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
--- @param(timeCost : number)
--- @param(range : number)
--- @param(radius : number)
--- @param(colorName : string)
+-- @param(timeCost : number) the action time cost
+-- @param(range : number) the range of the action to the target tile (in tiles)
+-- @param(radius : number) the radius of the action effect (in tiles)
+-- @param(colorName : string) the color of the selectable tiles
 function BattleAction:init(timeCost, range, radius, colorName)
   self.timeCost = timeCost
   self.range = range
@@ -47,7 +46,6 @@ end
 function BattleAction:onSelect(input)
   self:resetTileProperties(input)
 end
-
 -- Called when the ActionGUI is open.
 -- By default, just updates the "selectable" field in all tiles for grid selecting.
 -- @param(GUI : ActionGUI) the current Action GUI
@@ -57,7 +55,6 @@ function BattleAction:onActionGUI(input)
   input.GUI:createTargetWindow()
   input.GUI:startGridSelecting(self:firstTarget(input))
 end
-
 -- Called when player chooses a target for the action. 
 -- By default, calls confirmation window.
 -- @ret(number) the time cost of the action:
@@ -68,7 +65,6 @@ function BattleAction:onConfirm(input)
   end
   return self:execute(input)
 end
-
 -- Called when player chooses a target for the action. 
 -- By default, just ends grid selecting.
 -- @ret(number) the time cost of the action:
@@ -88,7 +84,6 @@ end
 function BattleAction:canExecute(input)
   return true -- Abstract.
 end
-
 -- Executes the action animations and applies effects.
 function BattleAction:execute(input)
   return 0 -- Abstract.
@@ -175,7 +170,6 @@ function BattleAction:resetTileProperties(input)
   self:resetReachableTiles(input)
   self:resetSelectableTiles(input)
 end
-
 -- Sets tile colors according to its properties (movable, reachable and selectable).
 function BattleAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
@@ -188,7 +182,6 @@ function BattleAction:resetTileColors(input)
     end
   end
 end
-
 -- Sets all tiles' colors as the "nothing" color.
 function BattleAction:clearTileColors()
   for tile in self.field:gridIterator() do
@@ -207,8 +200,8 @@ end
 function BattleAction:isSelectable(input, tile)
   return false
 end
-
--- @param(input : ActionInput)
+-- Called when players selects (highlights) a tile.
+-- @param(ActionInput : input) input with the tile as the target
 function BattleAction:onSelectTarget(input)
   if input.GUI then
     FieldManager.renderer:moveToTile(input.target)
@@ -218,8 +211,8 @@ function BattleAction:onSelectTarget(input)
     end
   end
 end
-
--- @param(input : ActionInput)
+-- Called when players deselects (highlights another tile) a tile.
+-- @param(ActionInput : input) input with the tile as the target
 function BattleAction:onDeselectTarget(input)
   if input.GUI and input.target then
     local oldTargets = self:getAllAffectedTiles(input)
@@ -228,7 +221,6 @@ function BattleAction:onDeselectTarget(input)
     end
   end
 end
-
 -- Gets all tiles that will be affected by skill's effect.
 -- @ret(table) an array of tiles
 function BattleAction:getAllAffectedTiles(input)
@@ -240,13 +232,11 @@ function BattleAction:getAllAffectedTiles(input)
   end
   return tiles
 end
-
 -- Gets the first selected target tile.
 -- @ret(ObjectTile) the first tile
 function BattleAction:firstTarget(input)
   return input.user:getTile()
 end
-
 -- Gets the next target given the player's input.
 -- @param(dx : number) the input in axis x
 -- @param(dy : number) the input in axis y

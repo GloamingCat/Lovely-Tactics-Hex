@@ -42,7 +42,6 @@ function Obstacle:init(data, tileData, initTile, group)
   self:setXYZ(x, y, z)
   self:addToTiles()
 end
-
 -- Creates neighborhood.
 -- @param(neighbors : table) the table of booleans indicating passability
 function Obstacle:initializeNeighbors(neighbors)
@@ -68,7 +67,6 @@ function Obstacle:setXYZ(x, y, z)
     self.ramp:setHeight(h)
   end
 end
-
 -- Checks if the object is passable from the given direction.
 -- @param(dx : number) the direction in axis x
 -- @param(dy : number) the direction in axis y
@@ -82,10 +80,9 @@ function Obstacle:isPassable(dx, dy, obj)
   end
   return self.neighbors[dx][dy] == true
 end
-
 -- Converting to string.
 function Obstacle:__tostring()
-  return 'Obstacle ' .. self.name
+  return 'Obstacle ' .. self.name .. ' ' .. tostring(self.position)
 end
 
 -------------------------------------------------------------------------------
@@ -96,7 +93,6 @@ end
 function Obstacle:addToTiles()
   self:getTile().obstacleList:add(self)
 end
-
 -- Overrides Object:removeFromTiles.
 function Obstacle:removeFromTiles()
   self:getTile().obstacleList:removeElement(self)

@@ -43,14 +43,12 @@ function DirectedObject:playAnimation(name, wait, row)
   row = row or angle2Row(self.direction)
   return AnimatedObject.playAnimation(self, name, wait, row)
 end
-
 -- Set's character direction
 -- @param(angle : number) angle in degrees
 function DirectedObject:setDirection(angle)
   self.direction = angle
   self.animation:setRow(angle2Row(angle))
 end
-
 -- The tile on front of the character, considering character's direction.
 -- @ret(ObjectTile) the front tile (nil if exceeds field border)
 function DirectedObject:frontTile(angle)
@@ -77,7 +75,6 @@ function DirectedObject:turnToVector(x, y)
   self:setDirection(angle)
   return angle
 end
-
 -- Turns to a pixel point.
 -- @param(x : number) the pixel x
 -- @param(y : number) the pixel y
@@ -87,7 +84,6 @@ function DirectedObject:turnToPoint(x, y)
   self:setDirection(angle)
   return angle
 end
-
 -- Turns to a grid point.
 -- @param(x : number) the tile x
 -- @param(y : number) the tile y
@@ -113,7 +109,6 @@ function DirectedObject:angleToVector(x, y)
     return self.direction
   end
 end
-
 -- Gets the angle to a given pixel point.
 -- @param(x : number) the pixel x
 -- @param(y : number) the pixel y
@@ -123,7 +118,6 @@ function DirectedObject:angleToPoint(x, y)
   local dy = y - self.position.z
   return self:angleToVector(dx, dy)
 end
-
 -- Gets the angle to a given grid point.
 -- @param(x : number) the tile x
 -- @param(y : number) the tile y

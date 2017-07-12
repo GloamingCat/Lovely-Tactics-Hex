@@ -1,11 +1,11 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 PopupText
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 A text sprite that is shown in the field with a popup animation.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Text = require('core/graphics/Text')
@@ -22,6 +22,14 @@ local properties = {nil, 'left'}
 
 local PopupText = class()
 
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
+
+-- Constructor. Starts with no lines.
+-- @param(x : number) origin pixel x
+-- @param(y : number) origin pixel y
+-- @param(z : number) origin pixel z (depth)
 function PopupText:init(x, y, z)
   self.x = x
   self.y = y
@@ -30,7 +38,10 @@ function PopupText:init(x, y, z)
   self.lineCount = 0
   self.resources = {}
 end
-
+-- Adds a new line.
+-- @param(text : string) the text content
+-- @param(color : table) the text color (red/green/blue/alpha table)
+-- @param(font : Font) the text font
 function PopupText:addLine(text, color, font)
   local l = self.lineCount
   local cl, fl = 'c' .. l, 'f' .. l
@@ -44,6 +55,12 @@ function PopupText:addLine(text, color, font)
   self.resources[fl] = font
 end
 
+---------------------------------------------------------------------------------------------------
+-- Execution
+---------------------------------------------------------------------------------------------------
+
+-- [COROUTINE] Show the text lines in a pop-up.
+-- @param(wait : boolean) true if the coroutine shoul wait until the animation finishes (optional)
 function PopupText:popup(wait)
   if not self.text then
     return
@@ -72,7 +89,7 @@ function PopupText:popup(wait)
     sprite:removeSelf()
   end
 end
-
+-- Destroys this popup's sprite.
 function PopupText:destroy()
   self.sprite:destroy()
 end

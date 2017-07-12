@@ -34,7 +34,6 @@ function Scalable:initScale(sx, sy)
   self.cropScale = true
   self.interruptableScale = true
 end
-
 -- Sets object's scale.
 -- @param(sx : number) initial axis-x scale
 -- @param(sy : number) initial axis-y scale
@@ -61,7 +60,6 @@ function Scalable:updateScale()
     end
   end
 end
-
 -- [COROUTINE] Scales to (sx, sy).
 -- @param(sx : number) initial axis-x scale
 -- @param(sy : number) initial axis-y scale
@@ -74,7 +72,6 @@ function Scalable:scaleTo(sx, sy, speed, wait)
     self:instantScaleTo(sx, sy)
   end
 end
-
 -- Scale instantly to (sx, sy).
 -- @param(sx : number) initial axis-x scale
 -- @param(sy : number) initial axis-y scale
@@ -83,7 +80,6 @@ function Scalable:instantScaleTo(sx, sy)
   self:setScale(sx, sy)
   return nil
 end
-
 -- [COROUTINE] Scales to (sx, sy).
 -- @param(sx : number) initial axis-x scale
 -- @param(sy : number) initial axis-y scale
@@ -98,7 +94,6 @@ function Scalable:gradativeScaleTo(sx, sy, speed, wait)
     self:waitForScale()
   end
 end
-
 -- [COROUTINE] Waits until the scale time is 1.
 function Scalable:waitForScale()
   local fiber = _G.Fiber

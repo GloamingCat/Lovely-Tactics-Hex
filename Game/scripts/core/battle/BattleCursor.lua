@@ -1,11 +1,11 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 BattleCursor
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 Cursor used to indicate current turn's character and the selected tile.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Animation = require('core/graphics/Animation')
@@ -22,10 +22,11 @@ local pph = Config.grid.pixelsPerHeight
 
 local BattleCursor = class()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- General
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
+-- Constructor.
 function BattleCursor:init()
   if cursorAnimID >= 0 then
     local animData = Database.animOther[cursorAnimID + 1]
@@ -35,28 +36,24 @@ function BattleCursor:init()
     self.offsetY = - tileH
   end
 end
-
 -- Updates animation.
 function BattleCursor:update()
   if self.anim then
     self.anim:update()
   end
 end
-
 -- Sets as visible.
 function BattleCursor:show()
   if self.anim then
     self.anim.sprite:setVisible(true)
   end
 end
-
 -- Sets as not visible.
 function BattleCursor:hide()
   if self.anim then
     self.anim.sprite:setVisible(false)
   end
 end
-
 -- Removes from renderer.
 function BattleCursor:destroy()
   if self.anim then
@@ -64,9 +61,9 @@ function BattleCursor:destroy()
   end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Position
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Sets the position to the given tile.
 -- @param(tile : ObjectTile) the target tile
@@ -85,7 +82,6 @@ function BattleCursor:setTile(tile)
   end
   self.anim.sprite:setXYZ(x + self.offsetX, y - maxH * pph + self.offsetY, z - 1)
 end
-
 -- Sets the position to the given character.
 -- @param(char : Character) the target character
 function BattleCursor:setCharacter(char)

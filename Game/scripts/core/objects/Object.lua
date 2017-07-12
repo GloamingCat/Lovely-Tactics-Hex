@@ -40,7 +40,6 @@ function Object:setXYZ(x, y, z)
   Transformable.setXYZ(self, x, y, z)
   self.sprite:setXYZ(x, y, z)
 end
-
 -- Overrides Movable:instantMoveTo.
 -- Updates the tile's object list.
 function Object:instantMoveTo(position)
@@ -68,37 +67,31 @@ function Object:getTile()
   assert(layer, 'x out of bounds: ' .. x)
   return layer[y]
 end
-
 -- Sets object's position to the given tile.
 -- @param(tile : ObjectTile) new tile 
 function Object:setTile(tile)
   local x, y, z = math.field.tile2Pixel(tile:coordinates())
   self:setXYZ(x, y, z)
 end
-
 -- Move to the given tile.
 -- @param(tile : ObjectTile) new tile
 function Object:moveToTile(tile, ...)
   local x, y, z = math.field.tile2Pixel(tile:coordinates())
   self:moveTo(x, y, z, ...)
 end
-
 -- Gets all tiles this object is occuping.
 -- @ret(table) the list of tiles
 function Object:getAllTiles()
   return { self:getTile() }
 end
-
 -- Adds this object to the tiles it's occuping.
 function Object:addToTiles()
   -- Abstract.
 end
-
 -- Removes this object from the tiles it's occuping.
 function Object:removeFromTiles()
   -- Abstract.
 end
-
 -- Sets this object to the center of its current tile.
 function Object:adjustToTile()
   local x, y, z = tile2Pixel(self:getTile():coordinates())

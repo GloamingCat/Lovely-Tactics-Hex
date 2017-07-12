@@ -35,7 +35,6 @@ function Colorable:initColor(color)
   self.cropColor = true
   self.interruptableColor = true
 end
-
 -- Gets each RGBA component.
 -- @ret(number) red compoent
 -- @ret(number) green compoent
@@ -44,7 +43,6 @@ end
 function Colorable:getRGBA()
   return self.color.red, self.color.green, self.color.blue, self.color.alpha
 end
-
 -- Gets each RGBA multiplies by the color factor.
 -- @ret(number) red compoent
 -- @ret(number) green compoent
@@ -54,7 +52,6 @@ function Colorable:getAbsoluteRGBA()
   return self.color.red * colorf, self.color.green * colorf, 
     self.color.blue * colorf, self.color.alpha * colorf
 end
-
 -- Sets color's rgb. If a component parameter is nil, it will not be changed.
 -- @param(r : number) red component
 -- @param(g : number) green component
@@ -66,7 +63,6 @@ function Colorable:setRGBA(r, g, b, a)
   self.color.blue = b or self.color.blue
   self.color.alpha = a or self.color.alpha
 end
-
 -- Sets color's rgb.
 -- @param(color : table) a color table containing {red, green, blue, alpha} components
 function Colorable:setColor(color)
@@ -93,7 +89,6 @@ function Colorable:updateColor()
     end
   end
 end
-
 -- [COROUTINE] Moves to (x, y).
 -- @param(r : number) red component
 -- @param(g : number) green component
@@ -108,7 +103,6 @@ function Colorable:colorizeTo(r, g, b, a, speed, wait)
     self:instantColorizeTo(r, g, b, a)
   end
 end
-
 -- Colorizes instantly the object.
 -- @param(r : number) red component
 -- @param(g : number) green component
@@ -119,7 +113,6 @@ function Colorable:instantColorizeTo(r, g, b, a)
   self:setRGBA(r, g, b, a)
   return nil
 end
-
 -- [COROUTINE] Moves gradativaly (through updateMovement) to the given point.
 -- @param(r : number) red component
 -- @param(g : number) green component
@@ -136,7 +129,6 @@ function Colorable:gradativeColorizeTo(r, g, b, a, speed, wait)
     self:waitForColor()
   end
 end
-
 -- [COROUTINE] Waits until the move time is 1.
 function Colorable:waitForColor()
   local fiber = _G.Fiber

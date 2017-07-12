@@ -43,7 +43,7 @@ local SkillAction = class(BattleAction)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
--- Constructor.
+-- Constructor. Creates the action from a skill ID.
 -- @param(skillID : number) the skill's ID from database
 local old_init = SkillAction.init
 function SkillAction:init(skillID)
@@ -90,8 +90,8 @@ function SkillAction:init(skillID)
   end
   self.elementFactors = e
 end
-
--- Creates an SkillAction given the skill's ID in the database.
+-- Creates an SkillAction given the skill's ID in the database, depending on the skill's script.
+-- @param(skillID : number) the skill's ID in database
 function SkillAction.fromData(skillID)
   local data = Database.skills[skillID + 1]
   if data.script.path ~= '' then
@@ -101,9 +101,8 @@ function SkillAction.fromData(skillID)
     return SkillAction(skillID)
   end
 end
-
 -- Converting to string.
--- @ret(string) a string representation
+-- @ret(string) a string with skill's ID and name
 function SkillAction:__tostring()
   return 'SkillAction (' .. self.skillID .. ': ' .. self.data.name .. ')'
 end
@@ -133,7 +132,6 @@ function SkillAction:canExecute(input)
   end
   return true
 end
-
 -- Overrides BattleAction:onConfirm.
 -- Executes the movement action and the skill's effect.
 function SkillAction:execute(input)
@@ -157,55 +155,13 @@ function SkillAction:execute(input)
     if input.skipAnimations then
       self:applyEffects(input)
     else
-      self:use(input)
+      self:applyAnimatedEffects(input)
     end
     input.user.battler:onSkillUse(self)
     return self.timeCost
   else
     return 0
   end
-end
-
----------------------------------------------------------------------------------------------------
--- Use
----------------------------------------------------------------------------------------------------
-
--- The effect applied when the user is prepared to use the skill.
--- It executes animations and applies damage/heal to the targets.
-function SkillAction:use(input)
-  -- Intro time.
-  _G.Fiber:wait(introTime)
-  
-  -- User's initial animation.
-  local originTile = input.user:getTile()
-  local dir = input.user:turnToTile(input.target.x, input.target.y)
-  input.user:loadSkill(self.data, dir, true)
-  
-  -- Cast animation
-  FieldManager.renderer:moveToTile(input.target)
-  input.user:castSkill(self.data, dir)
-  
-  -- Minimum time to wait (initially, a frame).
-  local minTime = 1
-  
-  -- Animation in center target tile 
-  --  (does not wait full animation, only the minimum time).
-  if self.data.centerAnimID >= 0 then
-    local mirror = input.user.direction > 90 and input.user.direction <= 270
-    local x, y, z = mathf.tile2Pixel(input.target:coordinates())
-    local animation = BattleManager:playAnimation(self.data.centerAnimID,
-      x, y, z - 1, mirror)
-    _G.Fiber:wait(centerTime)
-  end
-  
-  -- Animation for each of affected tiles.
-  self:allTargetsAnimation(input, originTile)
-  
-  -- Return user to original position and animation.
-  input.user:finishSkill(originTile, self.data)
-  
-  -- Wait until everything finishes.
-  _G.Fiber:wait(max (0, minTime - now()) + 60)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -245,7 +201,6 @@ end
 function SkillAction:receivesEffect(char)
   return char.battler and char.battler:isAlive()
 end
-
 -- Calculates the final damage / heal for the target.
 -- It considers all element bonuses provided by the skill data.
 -- @param(input : ActionInput) the target character
@@ -265,7 +220,6 @@ function SkillAction:calculateEffectResults(input, targetChar, rand)
   end
   return results, dmg
 end
-
 -- Calculates the final damage / heal for the target from an specific effect.
 -- It considers all element bonuses provided by the skill data.
 -- @param(effect : table) the effect data
@@ -293,10 +247,47 @@ function SkillAction:calculateEffectResult(effect, input, targetChar, rand)
 end
 
 ---------------------------------------------------------------------------------------------------
+-- Animations
+---------------------------------------------------------------------------------------------------
+
+-- The effect applied when the user is prepared to use the skill.
+-- It executes animations and applies damage/heal to the targets.
+function SkillAction:applyAnimatedEffects(input)
+  -- Intro time.
+  _G.Fiber:wait(introTime)
+  -- User's initial animation.
+  local originTile = input.user:getTile()
+  local dir = input.user:turnToTile(input.target.x, input.target.y)
+  dir = math.angle2Row(dir) * 45
+  input.user:loadSkill(self.data, dir, true)
+  -- Cast animation
+  FieldManager.renderer:moveToTile(input.target)
+  input.user:castSkill(self.data, dir)
+  -- Minimum time to wait (initially, a frame).
+  local minTime = 1
+  -- Animation in center target tile 
+  --  (does not wait full animation, only the minimum time).
+  if self.data.centerAnimID >= 0 then
+    local mirror = input.user.direction > 90 and input.user.direction <= 270
+    local x, y, z = mathf.tile2Pixel(input.target:coordinates())
+    local animation = BattleManager:playAnimation(self.data.centerAnimID,
+      x, y, z - 1, mirror)
+    _G.Fiber:wait(centerTime)
+  end
+  -- Animation for each of affected tiles.
+  self:allTargetsAnimation(input, originTile)
+  -- Return user to original position and animation.
+  input.user:finishSkill(originTile, self.data)
+  -- Wait until everything finishes.
+  _G.Fiber:wait(max (0, minTime - now()) + 60)
+end
+
+---------------------------------------------------------------------------------------------------
 -- Target Animations
 ---------------------------------------------------------------------------------------------------
 
 -- Executes individual animation for all the affected tiles.
+-- @param(originTile : ObjectTile) the user's original tile
 function SkillAction:allTargetsAnimation(input, originTile)
   local allTargets = self:getAllAffectedTiles(input)
   for i = #allTargets, 1, -1 do
@@ -308,8 +299,9 @@ function SkillAction:allTargetsAnimation(input, originTile)
     end
   end
 end
-
 -- Executes individual animation for a single tile.
+-- @param(targetChar : Character) the character that will be affected
+-- @param(originTile : ObjectTile) the user's original tile
 function SkillAction:singleTargetAnimation(input, targetChar, originTile)
   local results, dmg = self:calculateEffectResults(input, targetChar)
   if #results == 0 then
@@ -342,7 +334,6 @@ function SkillAction:singleTargetAnimation(input, targetChar, originTile)
   end
   _G.Fiber:wait(targetTime)
 end
-
 -- Applies results on the given battler and creates a popup for each value.
 -- @param(pos : Vector) the character's position
 -- @param(battler : Battler) the battler that will be affected

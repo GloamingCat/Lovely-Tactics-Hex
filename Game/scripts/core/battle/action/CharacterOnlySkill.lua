@@ -26,7 +26,6 @@ function CharacterOnlySkill:onSelect(input)
     self.selectableTiles = self:getSelectableTiles(input)
   end
 end
-
 -- Gets the list of all tiles that have a character.
 -- @ret(List) the list of ObjectTiles
 function CharacterOnlySkill:getSelectableTiles(input)
@@ -50,7 +49,6 @@ function CharacterOnlySkill:isSelectable(input, tile)
   end
   return false
 end
-
 -- Tells if the given character is selectable.
 -- @param(char : Character) the character to check
 -- @ret(boolean) true if selectable, false otherwise
@@ -66,7 +64,6 @@ end
 function CharacterOnlySkill:firstTarget(input)
   return self.selectableTiles[1]
 end
-
 -- Overrides BattleAction:nextTarget.
 function CharacterOnlySkill:nextTarget(input, dx, dy)
   if dx > 0 or dy > 0 then
