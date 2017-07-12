@@ -45,6 +45,7 @@ end
 
 -- Destroys all windows.
 function GUI:destroy()
+  print(self, self.windowList.size)
   for window in self.windowList:iterator() do
     window:destroy()
   end
@@ -74,50 +75,48 @@ end
 
 -- [COROUTINE] Shows all windows.
 function GUI:show()
-  if self.open then
-    return
-  end
-  self.closed = false
-  for window in self.windowList:iterator() do
-    GUIManager.fiberList:fork(function()
-      window:show()
-    end)
-  end
-  local done
-  repeat
-    done = true
+  if not self.open then
+    self.closed = false
     for window in self.windowList:iterator() do
-      if window.scaleY < 1 then
-        done = false
-      end
+      GUIManager.fiberList:fork(function()
+        window:show()
+      end)
     end
-    yield()
-  until done
+    local done
+    repeat
+      done = true
+      for window in self.windowList:iterator() do
+        if window.scaleY < 1 then
+          done = false
+        end
+      end
+      yield()
+    until done
+  end
   self.open = true
 end
 
 -- [COROUTINE] Hides all windows.
 function GUI:hide(destroy)
-  if self.closed then
-    return
-  end
-  self.open = false
-  for window in self.windowList:iterator() do
-    GUIManager.fiberList:fork(function()
-      window:hide()
-    end)
-  end
-  local done
-  repeat
-    done = true
+  if not self.closed then
+    self.open = false
     for window in self.windowList:iterator() do
-      if window.scaleY > 0 then
-        done = false
-      end
+      GUIManager.fiberList:fork(function()
+        window:hide()
+      end)
     end
-    yield()
-  until done
-  self.closed = true
+    local done
+    repeat
+      done = true
+      for window in self.windowList:iterator() do
+        if window.scaleY > 0 then
+          done = false
+        end
+      end
+      yield()
+    until done
+    self.closed = true
+  end
   if destroy then
     self:destroy()
   end

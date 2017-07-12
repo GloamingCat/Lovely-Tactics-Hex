@@ -38,8 +38,8 @@
           "param": ""
         },
         "interactScript": {
-          "path": "",
-          "param": ""
+          "path": "character/InteractionTest.lua",
+          "param": "1"
         },
         "id": 0,
         "type": 0,
@@ -57,8 +57,8 @@
           "param": ""
         },
         "interactScript": {
-          "path": "",
-          "param": ""
+          "path": "character/InteractionTest.lua",
+          "param": "2"
         },
         "id": 0,
         "type": 0,

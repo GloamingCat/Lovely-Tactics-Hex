@@ -28,7 +28,6 @@ function ActionWindow:selectAction(action)
   if actionCost >= 0 then
     -- End of turn.
     self.result = actionCost
-    self.GUI:destroy()
   else
     FieldManager.renderer:moveToObject(BattleManager.currentCharacter)
     self.GUI:show()

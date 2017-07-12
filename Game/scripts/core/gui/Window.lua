@@ -30,9 +30,8 @@ local Window = class(Transformable)
 -- @param(height : number) total height in pixels
 -- @param(position : Vector) the position of the center of the window
 -- @param(skin : Image) window skin (optional)
-local old_init = Window.init
 function Window:init(GUI, width, height, position, skin)
-  old_init(self, position)
+  Transformable.init(self, position)
   self.speed = 10
   self.width = width
   self.height = height
@@ -47,9 +46,8 @@ function Window:init(GUI, width, height, position, skin)
 end
 
 -- Updates all content elements.
-local old_update = Window.update
 function Window:update()
-  old_update(self)
+  Transformable.update(self)
   for c in self.content:iterator() do
     if c.update then
       c:update()
@@ -89,9 +87,8 @@ end
 
 -- Sets this window's position.
 -- @param(position : Vector) new position
-local old_setPosition = Window.setPosition
 function Window:setPosition(position)
-  old_setPosition(self, position)
+  Transformable.setPosition(self, position)
   self:updateSkinSprites()
   for c in self.content:iterator() do
     if c.updatePosition then
@@ -103,9 +100,8 @@ end
 -- Scales this window.
 -- @param(sx : number) scale in axis x
 -- @param(sy : number) scale in axis y
-local old_setScale = Window.setScale
 function Window:setScale(sx, sy)
-  old_setScale(self, sx, sy)
+  Transformable.setScale(self, sx, sy)
   self:updateSkinSprites()
 end
 

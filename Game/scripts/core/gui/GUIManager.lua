@@ -51,7 +51,8 @@ end
 function GUIManager:showGUIForResult(path, ...)
   local gui = self:showGUI(path, ...)
   local result = gui:waitForResult()
-  gui:hide(true)
+  self:returnGUI()
+  print(gui)
   return result
 end
 
@@ -70,15 +71,7 @@ end
 -- [COROUTINE] Closes current GUI and returns to the previous.
 function GUIManager:returnGUI()
   local lastGUI = self.current
-  if lastGUI.waitAnimation then
-    lastGUI:hide()
-    lastGUI:destroy()
-  else
-    self.fiberList:fork(function()
-      lastGUI:hide()
-      lastGUI:destroy()
-    end)
-  end
+  lastGUI:hide(true)
   if not self.stack:isEmpty() then
     self.current = self.stack:pop()
   else

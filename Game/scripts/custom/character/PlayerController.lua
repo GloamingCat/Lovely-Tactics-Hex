@@ -24,15 +24,15 @@ local function interact()
   if tile == nil then
     return
   end
-  local event = {
-    tile = tile,
-    origin = player
-  }
   for i = #tile.characterList, 1, -1 do
     local char = tile.characterList[i]
-    if char ~= player and char.interactListener ~= nil then
-      event.dest = char
-      local fiber = Fiber.fromScript(nil, char.interactListener, event)
+    if char ~= player and char.interactScript ~= nil then
+      local event = {
+        tile = tile,
+        origin = player,
+        dest = char
+      }
+      local fiber = Fiber.fromScript(nil, char.interactScript, event)
       fiber:execAll()
     end
   end

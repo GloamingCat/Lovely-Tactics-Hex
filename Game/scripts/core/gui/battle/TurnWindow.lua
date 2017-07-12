@@ -82,7 +82,6 @@ end
 
 -- "Wait" button callback. End turn.
 function TurnWindow:onWait(button)
-  --self.GUI:hide()
   self.result = 0
 end
 

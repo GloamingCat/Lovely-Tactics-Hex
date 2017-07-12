@@ -43,7 +43,6 @@ end
 
 -- Selects a rule.
 function RuleWindow:onButton(button)
-  --self.GUI:hide()
   self.result = button.index
 end
 

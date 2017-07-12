@@ -10,7 +10,7 @@ local ButtonWindow = require('core/gui/ButtonWindow')
 
 local TestWindow = class(ButtonWindow)
 
-local function buttonConfirm(button)
+local function buttonConfirm(window, button)
   print(button.index)
 end
 
