@@ -1,12 +1,12 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 ObjectLayer
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 An ObjectLayer is a matrix of ObjectTiles.
 There's only one ObjectLayer in the field per height.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local ObjectTile = require('core/fields/ObjectTile')
@@ -19,6 +19,10 @@ local floor = math.floor
 local newQuad = love.graphics.newQuad
 
 local ObjectLayer = class()
+
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
 
 -- @param(sizeX : number) the field's width
 -- @param(sizeY : number) the field's length
@@ -35,6 +39,10 @@ function ObjectLayer:init(sizeX, sizeY, height, defaultRegion)
     end
   end
 end
+
+---------------------------------------------------------------------------------------------------
+-- Merge
+---------------------------------------------------------------------------------------------------
 
 -- Creates all obstacles in data and adds them to the tiles.
 -- @param(layerData : table) the layer's data from field's file
@@ -67,7 +75,6 @@ function ObjectLayer:mergeObstacles(layerData, tileset)
     end
   end
 end
-
 -- Creates all characters in data and adds them to the tiles.
 -- @param(layerData : table) the layer's data from field's file
 -- @param(tileset : table) the tileset's data from file
@@ -84,7 +91,6 @@ function ObjectLayer:mergeCharacters(layerData, tileset)
     end
   end
 end
-
 -- Add all regions IDs to the tiles.
 -- @param(layerData : table) the layer's data from field's file
 -- @param(tileset : table) the tileset's data from file

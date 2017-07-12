@@ -1,12 +1,12 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 Obstacle
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 An Obstacle is a static object stored in the tile. 
 It may be passable or not, and have an image or not.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Vector = require('core/math/Vector')
@@ -20,9 +20,9 @@ local pph = Config.grid.pixelsPerHeight
 
 local Obstacle = class(Object)
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Initialization
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- @param(data : table) the obstacle's data from tileset file
 -- @param(tileData : table) the data about ramp and collision
@@ -46,17 +46,22 @@ end
 -- @param(neighbors : table) the table of booleans indicating passability
 function Obstacle:initializeNeighbors(neighbors)
   self.neighbors = {}
-  for i, n in ipairs(math.field.fullNeighborShift) do
-    if self.neighbors[n.x] == nil then
-      self.neighbors[n.x] = {}
+  local function addNeighbor(x, y, i)
+    if self.neighbors[x] == nil then
+      self.neighbors[x] = {}
     end
-    self.neighbors[n.x][n.y] = neighbors[i]
+    self.neighbors[x][y] = neighbors[i]
   end
+  local neighborShift = math.field.fullNeighborShift
+  for i, n in ipairs(neighborShift) do
+    addNeighbor(n.x, n.y, i)
+  end
+  addNeighbor(0, 0, #neighborShift + 1)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- General
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Overrides Object:setXYZ.
 function Obstacle:setXYZ(x, y, z)
@@ -85,9 +90,9 @@ function Obstacle:__tostring()
   return 'Obstacle ' .. self.name .. ' ' .. tostring(self.position)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Tiles
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Overrides Object:addToTiles.
 function Obstacle:addToTiles()

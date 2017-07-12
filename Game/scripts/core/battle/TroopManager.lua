@@ -79,7 +79,7 @@ function TroopManager:createTroop(troop, partyInfo, partyID)
       local battlerID = troop.grid:get(i, j)
       if battlerID >= 0 then
         local tile = field:getObjectTile(i + partyInfo.x - sizeX, j + partyInfo.y, partyInfo.h)
-        if tile then
+        if tile and not tile:collides(0, 0) then
           local dir = troop:getCharacterDirection()
           self:createBattleCharacter(field, tile, battlerID, partyID, dir)
         end
@@ -106,7 +106,6 @@ function TroopManager:createBattleCharacter(field, tile, battlerID, partyID, dir
   character.battler = Battler(character, battlerID, partyID)
   character.speed = charSpeed
   self.characterList:add(character)
-  print(partyID)
   return character
 end
 
