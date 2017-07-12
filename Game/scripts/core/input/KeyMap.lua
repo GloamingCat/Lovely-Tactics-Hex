@@ -25,5 +25,6 @@ return {
   w         = 'up',
   a         = 'left',
   d         = 'right',
-  s         = 'down'
+  s         = 'down',
+  k         = 'kill'
 }

@@ -269,11 +269,9 @@ end
 -- @param(action : BattleAction) the skill that the battler just used
 function Battler:onSkillUse(action)
   local costs = action.costs
-  print(self, action, #costs)
   for i = 1, #costs do
     local value = costs[i].cost(self.att)
     self:damage(costs[i].name, value)
-    print(value)
   end
 end
 

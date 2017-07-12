@@ -111,7 +111,7 @@ function PartyManager:addRewards()
   )
   for i = 1, #stateVariables do
     if stateVariables[i].reward == 2 then -- Party reward
-      self:addPartyRewards(stateVariables[i].name, enemies)
+      self:addPartyRewards(stateVariables[i].shortName, enemies)
     elseif stateVariables[i].reward == 1 then -- Battler reward
       self:addBattlerRewards(stateVariables[i], enemies, battlers, backup)
     end
@@ -137,19 +137,20 @@ function PartyManager:addBattlerRewards(var, enemies, battlers, backup)
   if var.divide then
     div = #battlers + #backup * var.backup / 100
   end
+  local name = var.shortName
   for e in enemies:iterator() do
     -- On field battlers
-    for b in battlers:iterator() do
-      b = b.data
+    for battler in battlers:iterator() do
+      local b = battler.data
       if b.persistent then
-        b.state[var.name] = b.state[var.name] + e.state[var.name] / div
+        b.state[name] = b.state[name] + e.state[name] / div
       end
     end
     -- Backup battlers
     for b in backup:iterator() do
       b = b.data
       if b.persistent then
-        b.state[var.name] = b.state[var.name] + e.state[var.name] / div * var.backup / 100
+        b.state[name] = b.state[name] + e.state[name] / div * var.backup / 100
       end
     end
   end

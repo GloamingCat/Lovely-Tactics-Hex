@@ -21,7 +21,7 @@ local time = love.timer.getDelta
 
 -- Constants
 local turnLimit = Battle.turnLimit
-local defaultParams = { gameOver = true, skipAnimations = true }
+local defaultParams = { gameOver = true, skipAnimations = false }
 
 local BattleManager = class()
 
@@ -64,6 +64,10 @@ function BattleManager:runBattle()
   self:battleIntro()
   local winner = nil
   repeat
+    if InputManager.keys['kill']:isPressing() then
+      self:killAll(0)
+      break
+    end
     local char, it = self:getNextTurn()
     self:runTurn(char, it)
     winner = TroopManager:winnerParty()
@@ -101,7 +105,7 @@ function BattleManager:battleEnd()
     local b = char.battler
     b:onBattleEnd()
     if b.data.persistent then
-      SaveManager.current.battlerData[b.battlerID] = b:getPersistentData()
+      SaveManager.current.battlerData[b.battlerID] = b.state
     end
   end
   FieldManager.renderer:fadeout(nil, true)
@@ -130,11 +134,13 @@ function BattleManager:gameOver()
   -- fade out screen
   -- show game over GUI
 end
--- Called when a deadlock is detected. 
--- Only used when it is impossible to end the battle, so it just kills everybody.
-function BattleManager:deadLock()
+-- Called to forcefully end battle by killing every battler which is not in the winner team.
+-- @param(party : number) winner team (nil to kill everybody)
+function BattleManager:killAll(party)
   for char in TroopManager.characterList:iterator() do
-    char.battler:kill()
+    if char.battler.party ~= party then
+      char.battler:kill()
+    end
   end
 end
 
