@@ -32,7 +32,8 @@ function Player:init(initTile)
   self.blocks = 0
   self.dashSpeed = conf.dashSpeed
   self.walkSpeed = conf.walkSpeed
-  local leaderBattler = Database.battlers[PartyManager.members[1] + 1]
+  local leaderID = SaveManager.current.partyMembers[1]
+  local leaderBattler = Database.battlers[leaderID + 1]
   local data = {
     animID = 0,
     direction = 270,

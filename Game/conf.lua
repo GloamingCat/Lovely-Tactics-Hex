@@ -13,7 +13,7 @@ function love.conf(t)
   Config = JSON.decode(configjson)
   Database = {}
 	local db = {'attributes', 'items', 'skills', 'skillDags', 'battlers', 'status', 'tilesets', 
-    'animCharacter', 'animBattle', 'animOther', 'terrains', 'obstacles', 'ramps',
+    'animCharacter', 'animBattle', 'animOther', 'terrains', 'obstacles', 'ramps', 'troops',
     'charBattle', 'charField', 'charOther'}
 	for i = #db, 1, -1 do
     local file = db[i]

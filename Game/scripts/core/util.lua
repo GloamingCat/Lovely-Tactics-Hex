@@ -19,7 +19,6 @@ function util.shallowCopyTable(table)
   util.addTable(copy, table)
   return copy
 end
-
 -- Adds the seconde table's key and values to the first one.
 -- @param(table : table) the table to be modified
 -- @param(entries : table) a table of (key, value) entries to be added
@@ -28,7 +27,6 @@ function util.shallowAddTable(table, entries)
     table[k] = v
   end
 end
-
 -- Creates a copy of the given table.
 -- @param(table : table) the table with the (key, value) entries to be copied
 -- @ret(table) the copy of the table
@@ -37,7 +35,6 @@ function util.deepCopyTable(table)
   util.deepAddTable(copy, table)
   return copy
 end
-
 -- Adds the seconde table's key and values to the first one.
 -- @param(table : table) the table to be modified
 -- @param(entries : table) a table of (key, value) entries to be added
@@ -51,7 +48,6 @@ function util.deepAddTable(table, entries)
     end
   end
 end
-
 -- Combines multiple tables' keys and values into a single one.
 -- @param(tables : table) a table of tables
 -- @ret(table) the joined tables
@@ -79,7 +75,6 @@ function util.newArray(size, value)
   end
   return a
 end
-
 -- Creates a copy of the given table.
 -- @param(table : table) the table with the (key, value) entries to be copied
 -- @ret(table) the copy of the table
@@ -88,7 +83,6 @@ function util.copyArray(array)
   util.addArray(copy, array)
   return copy
 end
-
 -- Combines an array of arrays into a single array.
 -- @param(arrays : table) array of arrays
 -- @ret(table) the joined arrays
@@ -100,7 +94,6 @@ function util.joinArrays(arrays)
   end
   return new
 end
-
 -- Inserts all the elements from the second array in the first one.
 -- @param(array : table) array to be modified
 -- @param(elements : table) array containing the elements to be inserted
@@ -124,7 +117,6 @@ function util.arraySum(arr)
   end
   return s
 end
-
 -- Gets the maximum element from an array of numbers (or objects with the > operator).
 -- @param(arr : table) array containing the elements
 -- @ret(unknown) the maximum element
@@ -140,12 +132,23 @@ function util.arrayMax(arr)
   end
   return arr[m], m
 end
-
 -- Gets the mean value from an array of numbers (or objects with + and / operators).
 -- @param(arr : table) array containing the elements
 -- @ret(unknown) the mean
 function util.arrayMean(arr)
   return util.arraySum(arr) / #arr
+end
+-- Gets the index of the given element in the given array.
+-- @param(arr : table) the array
+-- @param(el : unknown) the element
+-- @ret(number) the index of the element if found, nil if not found
+function util.arrayIndexOf(arr, el)
+  for i = 1, #arr do
+    if arr[i] == el then
+      return i
+    end
+  end
+  return nil
 end
 
 ---------------------------------------------------------------------------------------------------

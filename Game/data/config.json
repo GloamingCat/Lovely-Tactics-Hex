@@ -31,6 +31,7 @@
     "tileHLAnimID": 3
   },
   "battle": {
+    "playerTroopID": 0, 
     "tradeSkillID": 0,
     "attTurnID": 4,
     "attStepID": 5,
@@ -93,24 +94,6 @@
     "troopWidth": 5,
     "troopHeight": 3
   },
-  "initialMembers": [
-    0,
-    1
-  ],
-  "battlerTypes": [
-    {
-      "name": "Melee",
-      "code": "M"
-    },
-    {
-      "name": "Ranged",
-      "code": "R"
-    },
-    {
-      "name": "Healer",
-      "code": "H"
-    }
-  ],
   "elements": [
     "Physical",
     "Magical",

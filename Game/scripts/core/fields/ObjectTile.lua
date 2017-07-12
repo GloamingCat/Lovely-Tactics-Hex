@@ -34,7 +34,7 @@ function ObjectTile:init(layer, x, y, defaultRegion)
   self.characterList = List()
   self.regionList = List()
   self.battlerTypeList = List()
-  self.party = nil
+  self.parties = {}
   self.neighborList = nil
   if defaultRegion then
     self.regionList:add(defaultRegion)
@@ -163,46 +163,6 @@ function ObjectTile:collidesCharacters(char, other)
     return false
   end
   return true
-end
-
----------------------------------------------------------------------------------------------------
--- Troop
----------------------------------------------------------------------------------------------------
-
--- Returns the list of battlers that are suitable for this tile.
--- @ret(List) the list of battler IDs
-function ObjectTile:getBattlerList()
-  local battlers = nil
-  if self.party == 0 then
-    battlers = PartyManager:backupBattlersIDs()
-    --battlers = PartyManager:currentBattlerIDs()
-  else
-    battlers = List()
-    for regionID in self.regionList:iterator() do
-      local data = Config.regions[regionID + 1]
-      for i = 1, #data.battlers do
-        local id = data.battlers[i]
-        battlers:add(id)
-      end
-    end
-  end
-  battlers:conditionalRemove(function(battlerID) 
-      local battler = Database.battlers[battlerID + 1]
-      return not self.battlerTypeList:contains(battler.typeID)
-    end)
-  return battlers
-end
-
--- Checks if any of types in a table are in this tile.
--- @ret(boolean) true if contains one or more types, falsa otherwise
-function ObjectTile:containsBattleType(types)
-  for i = 1, #types do
-    local typeID = types[i]
-    if self.battlerTypeList:contains(typeID) then
-      return true
-    end
-  end
-  return false
 end
 
 ---------------------------------------------------------------------------------------------------

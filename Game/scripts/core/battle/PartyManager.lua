@@ -16,12 +16,28 @@ local stateVariables = Config.stateVariables
 local PartyManager = class()
 
 ---------------------------------------------------------------------------------------------------
--- General
+-- Operations
 ---------------------------------------------------------------------------------------------------
 
--- Constructor.
-function PartyManager:init()
-  self.members = List(Config.initialMembers)
+function PartyManager:addBattler(battlerID, noCopy)
+  local members = SaveManager.current.partyMembers
+  if noCopy and util.arrayIndexOf(members, battlerID) then
+    return
+  end
+  members[#members + 1] = battlerID
+end
+
+function PartyManager:removeBattler(battlerID, removeAll)
+  local members = SaveManager.current.partyMembers
+  if removeAll then
+    -- TODO
+  else
+    local i = util.arrayIndexOf(members, battlerID)
+    if i then 
+      table.remove(members, i)
+      -- TODO: remove from grid
+    end
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -32,7 +48,8 @@ end
 -- @ret(List) a list of battler tables
 function PartyManager:currentBattlers()
   local battlers = List()
-  for member in self.members:iterator() do
+  local members = SaveManager.current.partyMembers
+  for i, member in ipairs(members) do
     battlers:add(Database.battlers[member + 1])
   end
   return battlers
@@ -40,7 +57,8 @@ end
 -- Returns a list with the current members in the party.
 -- @ret(List) a list of battler IDs
 function PartyManager:currentBattlerIDs()
-  return List(self.members)
+  local members = SaveManager.current.partyMembers
+  return List(members)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -60,7 +78,7 @@ end
 -- Retuns the list of battlers that are in battle.
 -- @ret(List) a list of battler IDs
 function PartyManager:onFieldBattlersIDs()
-  local list = List(self.members)
+  local list = self:currentBattlerIDs()
   list:conditionalRemove(function(id)
     local battler = Database.battlers[id + 1]
     local c = TroopManager:battlerCount(battler)
@@ -86,7 +104,7 @@ end
 -- Retuns the list of battlers that are not in battle.
 -- @ret(List) a list of battler IDs
 function PartyManager:backupBattlersIDs()
-  local list = List(self.members)
+  local list = self:currentBattlerIDs()
   list:conditionalRemove(function(id)
     local battler = Database.battlers[id + 1]
     local c = TroopManager:battlerCount(battler)

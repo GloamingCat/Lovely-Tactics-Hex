@@ -100,30 +100,4 @@ function ObjectLayer:mergeRegions(layerData, tileset)
   end
 end
 
--- Merges battle types.
--- @param(layerData : table) the layer's data from field's file
-function ObjectLayer:mergeBattleTypes(layerData)
-  for i = 1, self.sizeX do
-    for j = 1, self.sizeY do
-      local id = layerData.grid[i][j]
-      if id >= 0 then
-        self.grid[i][j].battlerTypeList:add(id)
-      end
-    end
-  end
-end
-
--- Merges parties.
--- @param(layerData : table) the layer's data from field's file
-function ObjectLayer:mergeParties(layerData)
-  for i = 1, self.sizeX do
-    for j = 1, self.sizeY do
-      local id = layerData.grid[i][j]
-      if id >= 0 then
-        self.grid[i][j].party = id
-      end
-    end
-  end
-end
-
 return ObjectLayer

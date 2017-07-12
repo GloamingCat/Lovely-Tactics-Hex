@@ -37,6 +37,9 @@ function Field:init(data)
   if data.prefs.defaultRegion >= 0 then
     self.defaultRegion = data.prefs.defaultRegion
   end
+  -- Battle info
+  self.battleData = data.battle
+  -- Min / max height
   self.minh = 100
   self.maxh = 0
   self.tileset = Database.tilesets[data.prefs.tilesetID + 1]
@@ -48,6 +51,7 @@ function Field:init(data)
     self.terrainLayers[i] = {}
     self.objectLayers[i] = ObjectLayer(self.sizeX, self.sizeY, i, self.defaultRegion)
   end
+  -- Border and center
   self.centerX, self.centerY = math.field.pixelCenter(self)
   self.minx, self.miny, self.maxx, self.maxy = math.field.pixelBounds(self)
 end
@@ -176,10 +180,6 @@ function Field:mergeLayers(layers)
       self:addCharacterLayer(layerData)
     elseif t == 3 then
       self:addRegionLayer(layerData)
-    elseif t == 4 then
-      self:addBattleTypeLayer(layerData)
-    elseif t == 5 then
-      self:addPartyLayer(layerData)
     end
   end
 end
@@ -214,20 +214,6 @@ end
 -- @param(layerData : table) the data from field's file
 function Field:addRegionLayer(layerData)
   self.objectLayers[layerData.info.height]:mergeRegions(layerData, self.tileset)
-end
-
--- Merges the battle tile layers. If there's no layer in that height, creates a new one.
--- All layers are stored by height.
--- @param(layerData : table) the data from field's file
-function Field:addBattleTypeLayer(layerData)
-  self.objectLayers[layerData.info.height]:mergeBattleTypes(layerData)
-end
-
--- Merges the party layers. If there's no layer in that height, creates a new one.
--- All layers are stored by height.
--- @param(layerData : table) the data from field's file
-function Field:addPartyLayer(layerData)
-  self.objectLayers[layerData.info.height]:mergeParties(layerData)
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -11,6 +11,7 @@ Creates and manages battle troops.
 local List = require('core/algorithm/List')
 local Character = require('core/objects/Character')
 local Battler = require('core/battle/Battler')
+local Troop = require('core/battle/Troop')
 local PriorityQueue = require('core/algorithm/PriorityQueue')
 
 -- Alias
@@ -45,52 +46,67 @@ end
 
 -- Creates all battle characters based on field's tile data.
 function TroopManager:createTroops()
-  local field = FieldManager.currentField
-  local battleTypes = Config.battleTypes
-  for tile in field:gridIterator() do
-    local battlerData = self:chooseBattler(tile)
-    if battlerData then
-      self:createBattleCharacter(tile, battlerData, field)
+  local parties = FieldManager.currentField.battleData.parties
+  -- Player's party ID
+  local playerID = FieldManager.currentField.battleData.playerParty
+  if playerID == -1 then
+    playerID = rand(#parties)
+  else
+    playerID = playerID + 1
+  end
+  self.playerParty = playerID
+  -- Create parties
+  for i = 1, #parties do
+    if i == playerID then
+      local troop = SaveManager.current.partyTroop:clone()
+      self:createTroop(troop, parties[i], i - 1)
+    elseif #parties[i].troops > 0 then
+      local r = rand(#parties[i].troops)
+      local troopID = parties[i].troops[r]
+      self:createTroop(Troop.fromData(troopID), parties[i], i - 1)
     end
   end
 end
-
--- Chooses randomly a battler to be in the given tile.
--- @param(tile : ObjectTile) the tile of the battler
--- @ret(table) the data of the chosen battler, nil if no battler was avaiable
-function TroopManager:chooseBattler(tile)
-  if tile.battlerTypeList.size == 0 then
-    return
-  end
-  local battlers = tile:getBattlerList()
-  if battlers.size > 0 then
-    local r = rand(battlers.size)
-    return battlers[r]
-  else
-    return nil
+-- Creates the troop's characters.
+-- @param(troop : TroopManager)
+function TroopManager:createTroop(troop, partyInfo, partyID)
+  local field = FieldManager.currentField
+  local sizeX = troop.grid.width
+  local sizeY = troop.grid.height
+  troop:setRotation(partyInfo.rotation)
+  for i = 1, sizeX do
+    for j = 1, sizeY do
+      local battlerID = troop.grid:get(i, j)
+      if battlerID >= 0 then
+        local tile = field:getObjectTile(i + partyInfo.x - sizeX, j + partyInfo.y, partyInfo.h)
+        if tile then
+          local dir = troop:getCharacterDirection()
+          self:createBattleCharacter(field, tile, battlerID, partyID, dir)
+        end
+      end
+    end
   end
 end
-
 -- Creates a new battle character.
 -- @param(tile : ObjectTile) the initial tile of the character
 -- @param(battlerData : table) the battler's data from file
 -- @param(field : Field) the current field
 -- @ret(BattleCharacter) the newly created character
-function TroopManager:createBattleCharacter(tile, battlerID, field)
+function TroopManager:createBattleCharacter(field, tile, battlerID, partyID, dir)
   local charID = tile:generateCharacterID()
   local battlerData = Database.battlers[battlerID + 1]
   local characterData = {
     id = battlerData.battleCharID,
     type = 1,
-    direction = 0,
+    direction = dir,
     animID = 0,
     tags = {}
   }
   local character = Character(charID, characterData, tile)
-  character.battler = Battler(character, battlerID, tile.party)
-  character:turnToTile(field.sizeX / 2, field.sizeY / 2)
+  character.battler = Battler(character, battlerID, partyID)
   character.speed = charSpeed
   self.characterList:add(character)
+  print(partyID)
   return character
 end
 

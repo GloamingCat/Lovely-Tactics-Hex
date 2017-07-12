@@ -21,6 +21,7 @@ local paused = false
 -- This function is called exactly once at the beginning of the game.
 -- @param(arg : table) A sequence strings which are command line arguments given to the game
 function love.load(arg)
+  SaveManager:newSave()
   FieldManager:loadTransition(SaveManager.current.playerTransition)
 end
 
