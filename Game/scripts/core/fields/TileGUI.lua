@@ -12,7 +12,7 @@ local Animation = require('core/graphics/Animation')
 
 -- Alias
 local tile2Pixel = math.field.tile2Pixel
-local max = math.max
+local min = math.min
 
 -- Constants
 local tileW = Config.grid.tileW
@@ -56,16 +56,17 @@ end
 -- Updates graphics pixel depth according to the terrains' 
 --  depth in this tile's coordinates.
 function TileGUI:updateDepth()
-  local tiles = FieldManager.currentField.terrainLayers[self.h]
-  local maxDepth = tiles[1].grid[self.x][self.y].depth
-  for i = #tiles, 2, -1 do
-    maxDepth = max(maxDepth, tiles[i].grid[self.x][self.y].depth)
+  local layers = FieldManager.currentField.terrainLayers[self.h]
+  local minDepth = layers[1].grid[self.x][self.y].depth
+  for i = #layers, 2, -1 do
+    minDepth = min(minDepth, layers[i].grid[self.x][self.y].depth)
   end
+  print(minDepth)
   if self.baseAnim then
-    self.baseAnim.sprite:setOffset(nil, nil, maxDepth / 2)
+    self.baseAnim.sprite:setOffset(nil, nil, minDepth)
   end
   if self.highlightAnim then
-    self.highlightAnim.sprite:setOffset(nil, nil, maxDepth / 2 - 1)
+    self.highlightAnim.sprite:setOffset(nil, nil, minDepth - 1)
   end
 end
 

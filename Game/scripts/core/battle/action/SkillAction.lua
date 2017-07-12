@@ -75,7 +75,7 @@ function SkillAction:init(skillID)
     self.costs[i] = {
       cost = loadformula(data.costs[i].value, 'action, att'),
       name = stateVariables[data.costs[i].id + 1].shortName,
-      party = stateVariables[data.costs[i].id + 1].party
+      party = stateVariables[data.costs[i].id + 1].reward == 2
     }
   end
   -- Store elements

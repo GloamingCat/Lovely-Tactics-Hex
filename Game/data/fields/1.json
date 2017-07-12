@@ -5,7 +5,6 @@
   "prefs": {
     "name": "Battle Field",
     "background": "",
-    "tilesetID": 0,
     "defaultRegion": 0,
     "onStart": {
       "path": "",
@@ -31,8 +30,9 @@
         "troops": [1]
       }
     ],
-    "playerParty": 0
-  }
+    "playerParty": -1
+  },
+  "characters":[],
   "layers": [
     {
       "info": {

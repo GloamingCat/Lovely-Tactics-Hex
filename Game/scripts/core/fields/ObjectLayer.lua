@@ -11,7 +11,6 @@ There's only one ObjectLayer in the field per height.
 -- Imports
 local ObjectTile = require('core/fields/ObjectTile')
 local Obstacle = require('core/objects/Obstacle')
-local Character = require('core/objects/Character')
 local Sprite = require('core/graphics/Sprite')
 
 -- Alias
@@ -52,7 +51,6 @@ function ObjectLayer:mergeObstacles(layerData, tileset)
     for j = 1, self.sizeY do
       local id = layerData.grid[i][j]
       if id >= 0 then
-        id = tileset.obstacles[id + 1].id
         local obstacleData = Database.obstacles[id + 1]
         local group = {}
         -- Graphics
@@ -75,22 +73,6 @@ function ObjectLayer:mergeObstacles(layerData, tileset)
     end
   end
 end
--- Creates all characters in data and adds them to the tiles.
--- @param(layerData : table) the layer's data from field's file
--- @param(tileset : table) the tileset's data from file
-function ObjectLayer:mergeCharacters(layerData, tileset)
-  for i = 1, self.sizeX do
-    for j = 1, self.sizeY do
-      local id = layerData.grid[i][j]
-      if id >= 0 then
-        local tile = self.grid[i][j]
-        local charID = tile:generateCharacterID()
-        local characterData = tileset.characters[id + 1]
-        Character(charID, characterData, tile)
-      end
-    end
-  end
-end
 -- Add all regions IDs to the tiles.
 -- @param(layerData : table) the layer's data from field's file
 -- @param(tileset : table) the tileset's data from file
@@ -99,7 +81,6 @@ function ObjectLayer:mergeRegions(layerData, tileset)
     for j = 1, self.sizeY do
       local id = layerData.grid[i][j]
       if id >= 0 then
-        id = tileset.regions[id + 1].id
         self.grid[i][j].regionList:add(id)
       end
     end

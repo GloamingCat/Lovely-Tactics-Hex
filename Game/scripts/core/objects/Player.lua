@@ -35,13 +35,15 @@ function Player:init(initTile)
   local leaderID = SaveManager.current.partyMembers[1]
   local leaderBattler = Database.battlers[leaderID + 1]
   local data = {
+    id = -1,
+    charID = leaderBattler.fieldCharID,
     animID = 0,
     direction = 270,
     startScript = conf.script,
-    id = leaderBattler.fieldCharID,
     tags = {}
   }
-  Character.init(self, '0', data, initTile)
+  data.x, data.y, data.h = initTile:coordinates()
+  Character.init(self, data)
 end
 -- Player's extra and base character properties.
 function Player:initializeProperties(name, colliderSize, colliderHeight)

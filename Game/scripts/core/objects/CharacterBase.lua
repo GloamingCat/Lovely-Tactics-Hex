@@ -32,21 +32,21 @@ local CharacterBase = class(DirectedObject)
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
--- @param(id : string) an unique ID for the character in the field
--- @param(tileData : table) the character's data from tileset file
--- @param(initTile : ObjectTile) initial character's tile
-function CharacterBase:init(id, tileData, initTile)
+-- @param(instData : table) the character's data from field file
+function CharacterBase:init(instData)
+  -- Get character data
   local db = Database.charField
-  if tileData.type == 1 then
+  if instData.type == 1 then
     db = Database.charBattle
-  elseif tileData.type == 2 then
+  elseif instData.type == 2 then
     db = Database.charOther
   end
-  local data = db[tileData.id + 1]
-  local x, y, z = tile2Pixel(initTile:coordinates())
+  local data = db[instData.charID + 1]
+  -- Old init
+  local x, y, z = tile2Pixel(instData.x, instData.y, instData.h)
   DirectedObject.init(self, data, Vector(x, y, z))
   -- General info
-  self.id = id
+  self.id = instData.id
   self.type = 'character'
   self.fiberList = FiberList()
   -- Add to FieldManager lists
@@ -54,8 +54,8 @@ function CharacterBase:init(id, tileData, initTile)
   FieldManager.updateList:add(self)
   -- Initialize properties
   self:initializeProperties(data.name, data.tiles)
-  self:initializeGraphics(data.animations, tileData.direction, tileData.animID, data.transform)
-  self:initializeScripts(tileData)
+  self:initializeGraphics(data.animations, instData.direction, instData.animID, data.transform)
+  self:initializeScripts(instData)
   -- Initial position
   self:setXYZ(x, y, z)
   self:addToTiles()
@@ -99,18 +99,17 @@ function CharacterBase:initializeProperties(name, tiles, colliderHeight)
   self.koAnim = 'KO'
   self.cropMovement = false
 end
--- Creates listeners from data.
--- @param(tileData : table) the data from tileset
--- @param(data : table) the data from characters file
-function CharacterBase:initializeScripts(tileData)
-  if tileData.startScript and tileData.startScript.path ~= '' then
-    self.startScript = tileData.startScript
+-- Creates listeners from instData.
+-- @param(instData : table) the instData from field file
+function CharacterBase:initializeScripts(instData)
+  if instData.startScript and instData.startScript.path ~= '' then
+    self.startScript = instData.startScript
   end
-  if tileData.collisionScript and tileData.collisionScript.path ~= '' then
-    self.collisionScript = tileData.collisionScript
+  if instData.collideScript and instData.collideScript.path ~= '' then
+    self.collideScript = instData.collideScript
   end
-  if tileData.interactScript and tileData.interactScript.path ~= '' then
-    self.interactScript = tileData.interactScript
+  if instData.interactScript and instData.interactScript.path ~= '' then
+    self.interactScript = instData.interactScript
   end
 end
 

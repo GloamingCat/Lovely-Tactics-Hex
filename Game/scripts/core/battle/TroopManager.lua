@@ -93,16 +93,17 @@ end
 -- @param(field : Field) the current field
 -- @ret(BattleCharacter) the newly created character
 function TroopManager:createBattleCharacter(field, tile, battlerID, partyID, dir)
-  local charID = tile:generateCharacterID()
   local battlerData = Database.battlers[battlerID + 1]
-  local characterData = {
-    id = battlerData.battleCharID,
+  local charData = {
     type = 1,
-    direction = dir,
+    id = -1,
+    charID = battlerData.battleCharID,
     animID = 0,
+    direction = dir,
     tags = {}
   }
-  local character = Character(charID, characterData, tile)
+  charData.x, charData.y, charData.h = tile:coordinates()
+  local character = Character(charData, tile)
   character.battler = Battler(character, battlerID, partyID)
   character.speed = charSpeed
   self.characterList:add(character)
@@ -123,7 +124,6 @@ function TroopManager:getBattlerCharacter(battler)
     end
   end
 end
-
 -- Searches for the Character with the given battler ID.
 -- @param(id : number) the battler ID to search for
 -- @ret(Character) the character with the battler ID (nil of not found)
@@ -134,7 +134,6 @@ function TroopManager:getBattlerIDCharacter(id)
     end
   end
 end
-
 -- Increments all character's turn count.
 -- @param(time : number) the number of time iterations (1 by default)
 -- @ret(Character) the character that reached turn limit (nil if none did)
@@ -146,7 +145,6 @@ function TroopManager:incrementTurnCount(time)
     end
   end
 end
-
 -- Sorts the characters according to which one's turn will star first.
 -- @param(turnLimit : number) the turn count to start the turn
 -- @ret(PriorityQueue) the queue where which element is a character 
@@ -161,7 +159,6 @@ function TroopManager:getTurnQueue(turnLimit)
   end
   return queue
 end
-
 -- Counts the number of characters that have the given battler.
 -- @param(battler : table) the data of the battler
 -- @ret(number) the number of characters
@@ -174,7 +171,6 @@ function TroopManager:battlerCount(battler)
   end
   return c
 end
-
 -- Searchs for a winner party (when all alive characters belong to the same party).
 -- @ret(number) the number of the party (returns nil if no one won yet, -1 if there's a draw)
 function TroopManager:winnerParty()
@@ -192,7 +188,6 @@ function TroopManager:winnerParty()
   end
   return currentParty
 end
-
 -- Gets the pixel center of each party.
 -- @ret(table) array of vectors
 function TroopManager:getPartyCenters()

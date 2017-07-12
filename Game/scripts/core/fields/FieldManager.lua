@@ -14,6 +14,7 @@ local Stack = require('core/algorithm/Stack')
 local Vector = require('core/math/Vector')
 local Renderer = require('core/graphics/Renderer')
 local Field = require('core/fields/Field')
+local Character = require('core/objects/Character')
 local Player = require('core/objects/Player')
 local FiberList = require('core/fiber/FiberList')
 local FieldCamera = require('core/fields/FieldCamera')
@@ -27,6 +28,7 @@ local FieldManager = class()
 -- General
 ---------------------------------------------------------------------------------------------------
 
+-- Constructor.
 function FieldManager:init()
   self.renderer = nil
   self.currentField = nil
@@ -34,7 +36,6 @@ function FieldManager:init()
   self.blocks = 0
   self.fiberList = FiberList()
 end
-
 -- Calls all the update functions.
 function FieldManager:update()
   if self.blocks > 0 then
@@ -72,8 +73,8 @@ function FieldManager:loadField(fieldID)
     tile:createNeighborList()
   end
   collectgarbage('collect')
+  return fieldData
 end
-
 -- Create new field camera.
 -- @param(sizeX : number) the number of tiles in x axis
 -- @param(sizeY : number) the number of tiles in y axis
@@ -85,7 +86,6 @@ function FieldManager:createCamera(sizeX, sizeY, layerCount)
   renderer:setXYZ(mathf.pixelWidth(sizeX, sizeY) / 2, 0)
   return renderer
 end
-
 -- Creates a character representing player.
 -- @ret(Player) the newly created player
 function FieldManager:createPlayer(transition)
@@ -116,7 +116,6 @@ function FieldManager:getPlayerTransition()
     direction = self.player.direction
   }
 end
-
 -- Gets a generic variable of this field.
 -- @param(id : number) the ID of the variable
 -- @ret(unknown) the currently stored value for this variable
@@ -128,7 +127,6 @@ function FieldManager:getVariable(id)
     return nil
   end
 end
-
 -- Sets a generic variable of this field.
 -- @param(id : number) the ID of the variable
 -- @param(value : unknown) the content of the variable
@@ -140,7 +138,6 @@ function FieldManager:setVariable(id, value)
   persistentData.switches = persistentData.switches or {}
   persistentData.switches[id] = value
 end
-
 -- Gets manager's state (returns to a previous field).
 -- @ret(table) the table with the state's contents
 function FieldManager:getState()
@@ -153,7 +150,6 @@ function FieldManager:getState()
     characterList = self.characterList
   }
 end
-
 -- Sets manager's state (returns to a previous field).
 -- @param(state : table) the table with the state's contents
 function FieldManager:setState(state)
@@ -182,7 +178,6 @@ function FieldManager:loadPersistentData(id)
     char:setPersistentData(persistentData[char.id])
   end
 end
-
 -- Stores each character's persistent data.
 function FieldManager:storePersistentData()
   local id = self.currentField.id
@@ -195,7 +190,6 @@ function FieldManager:storePersistentData()
     persistentData[char.id] = char:getPersistentData()
   end
 end
-
 -- Gets current field's persistent data from save.
 -- @ret(table) the data table from save
 function FieldManager:getPersistentData()
@@ -214,7 +208,11 @@ end
 -- @param(transition : table) the transition data
 function FieldManager:loadTransition(transition, fromSave)
   local fieldID = transition.fieldID
-  self:loadField(fieldID)
+  local fieldData = self:loadField(fieldID)
+  -- Create characters
+  for i, char in ipairs(fieldData.characters) do
+    Character(char)
+  end
   self.player = self:createPlayer(transition)
   self.renderer.focusObject = self.player
   self:loadPersistentData(fieldID)
@@ -228,7 +226,6 @@ function FieldManager:loadTransition(transition, fromSave)
     end
   end
 end
-
 -- [COROUTINE] Loads a battle field and waits for the battle to finish.
 -- It MUST be called from a fiber in FieldManager's fiber list, or else the fiber will be 
 -- lost in the field transition. At the end of the battle, it reloads the previous field.
@@ -266,14 +263,12 @@ function FieldManager:search(name)
   end
   return list
 end
-
 -- Shows field grid GUI.
 function FieldManager:showGrid()
   for tile in self.currentField:gridIterator() do
     tile.gui:show()
   end
 end
-
 -- Hides field grid GUI.
 function FieldManager:hideGrid()
   for tile in self.currentField:gridIterator() do

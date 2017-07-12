@@ -42,7 +42,6 @@ function Field:init(data)
   -- Min / max height
   self.minh = 100
   self.maxh = 0
-  self.tileset = Database.tilesets[data.prefs.tilesetID + 1]
   for i, layerData in ipairs(data.layers) do
     self.maxh = max(layerData.info.height, self.maxh)
     self.minh = min(layerData.info.height, self.minh)
@@ -55,7 +54,6 @@ function Field:init(data)
   self.centerX, self.centerY = math.field.pixelCenter(self)
   self.minx, self.miny, self.maxx, self.maxy = math.field.pixelBounds(self)
 end
-
 -- Updates all ObjectTiles and TerrainTiles in field's layers.
 function Field:update()
   for l = self.minh, self.maxh do
@@ -95,14 +93,12 @@ function Field:getObjectTile(x, y, z)
   end
   return self.objectLayers[z].grid[x][y]
 end
-
 -- Return the Object Tile given the coordinates in a transition table.
 -- @param(t : table) the transition with (tileX, tileY, height)
 -- @ret(ObjectTile) the tile in the coordinates (nil of out of bounds)
 function Field:getObjectTileFromTransition(t)
   return self:getObjectTile(t.tileX + 1, t.tileY + 1, t.height)
 end
-
 -- Returns a iterator that navigates through all object tiles.
 -- @ret(function) the grid iterator
 function Field:gridIterator()
@@ -154,7 +150,6 @@ function Field:getMoveCost(x, y, height)
   end
   return cost
 end
-
 -- Checks if three given tiles are collinear.
 -- @param(tile1 ... tile3 : ObjectTile) the tiles to check
 -- @ret(boolean) true if collinear, false otherwise
@@ -170,50 +165,49 @@ end
 -- Merges layers' data.
 -- @param(layers : table) an array of layer data
 function Field:mergeLayers(layers)
+  local terrains = 0
+  for i,layerData in ipairs(layers) do
+    if layerData.info.type == 0 then
+      terrains = terrains + 1
+    end
+  end
   for i,layerData in ipairs(layers) do
     local t = layerData.info.type
     if t == 0 then
-      self:addTerrainLayer(layerData)
+      self:addTerrainLayer(layerData, terrains)
     elseif t == 1 then
       self:addObstacleLayer(layerData)
     elseif t == 2 then
-      self:addCharacterLayer(layerData)
-    elseif t == 3 then
       self:addRegionLayer(layerData)
     end
   end
 end
-
 -- Creates a new TerrainLayer. 
 -- All layers are stored by height.
 -- @param(layerData : table) the data from field's file
--- @param(tileset : table) the tileset's data from file
-function Field:addTerrainLayer(layerData)
+function Field:addTerrainLayer(layerData, depthOffset)
   local list = self.terrainLayers[layerData.info.height]
   local order = #list
-  local layer = TerrainLayer(layerData, self.sizeX, self.sizeY, order, self.tileset)
+  local layer = TerrainLayer(layerData, self.sizeX, self.sizeY, depthOffset - order)
   list[order + 1] = layer
 end
-
 -- Merges the obstacle layers. If there's no layer in that height, creates a new one.
 -- All layers are stored by height.
 -- @param(layerData : table) the data from field's file
 function Field:addObstacleLayer(layerData)
-  self.objectLayers[layerData.info.height]:mergeObstacles(layerData, self.tileset)
+  self.objectLayers[layerData.info.height]:mergeObstacles(layerData)
 end
-
 -- Merges the character layers. If there's no layer in that height, creates a new one.
 -- All layers are stored by height.
 -- @param(layerData : table) the data from field's file
 function Field:addCharacterLayer(layerData)
-  self.objectLayers[layerData.info.height]:mergeCharacters(layerData, self.tileset)
+  self.objectLayers[layerData.info.height]:mergeCharacters(layerData)
 end
-
 -- Merges the region layers. If there's no layer in that height, creates a new one.
 -- All layers are stored by height.
 -- @param(layerData : table) the data from field's file
 function Field:addRegionLayer(layerData)
-  self.objectLayers[layerData.info.height]:mergeRegions(layerData, self.tileset)
+  self.objectLayers[layerData.info.height]:mergeRegions(layerData)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -250,7 +244,6 @@ function Field:collisionXYZ(obj, origx, origy, origh, destx, desty, desth)
     return nil
   end
 end
-
 -- Checks if an object collides with something in the given point.
 -- @param(object : Object) the object to check
 -- @param(origCoord : Vector) the origin coordinates in tiles
@@ -273,7 +266,6 @@ end
 function Field:exceedsBorder(x, y)
   return x < 1 or y < 1 or x > self.sizeX or y > self.sizeY
 end
-
 -- Check if collides with terrains in the given coordinates.
 -- @param(x : number) the coordinate x of the tile
 -- @param(y : number) the coordinate y of the tile
@@ -299,7 +291,6 @@ function Field:collidesTerrain(x, y, h)
   end
   return noGround
 end
-
 -- Check if collides with obstacles.
 -- @param(object : Object) the object to check collision
 -- @param(origx : number) the object's origin x in tiles

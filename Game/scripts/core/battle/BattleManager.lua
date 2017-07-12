@@ -65,14 +65,14 @@ function BattleManager:runBattle()
   local winner = nil
   repeat
     if InputManager.keys['kill']:isPressing() then
-      self:killAll(0)
+      self:killAll(TroopManager.playerParty)
       break
     end
     local char, it = self:getNextTurn()
     self:runTurn(char, it)
     winner = TroopManager:winnerParty()
   until winner
-  if winner == 0 then
+  if winner == TroopManager.playerParty then
     PartyManager:addRewards()
   elseif self.params.gameOver then
     self:gameOver()

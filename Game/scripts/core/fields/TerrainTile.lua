@@ -1,12 +1,12 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 TerrainTile
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 A TerrainTile is a tile composed by a set of renderers (for each corner), 
 with possible animation, that stores the id of the associated terrain.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Vector = require('core/math/Vector')
@@ -31,6 +31,10 @@ viewports[4] = {tileW / 2, tileH / 2}
 
 local TerrainTile = class()
 
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
+
 -- @param(layer : Layer) the layer that the tile is in
 -- @param(x : number) the x coordinate of the tile
 -- @param(y : number) the x coordinate of the tile
@@ -44,16 +48,32 @@ function TerrainTile:init(layer, x, y, order, initialID)
   self.id = initialID
   self.terrainData = nil
   self.moveCost = 0
-  self.depth = 0
+  self.depth = self.order
   self.center = Vector(math.field.tile2Pixel(self.x, self.y, self.layer.height))
 end
-
 -- @ret(number) tile's grid x
 -- @ret(number) tile's grid y
 -- @ret(number) tile's height
 function TerrainTile:coordinates()
   return self.x, self.y, self.layer.height
 end
+-- Updates each animation.
+function TerrainTile:update()
+  if self.animations then
+    for i = 1, 4 do
+      self.animations[i]:update()
+    end
+  end
+end
+-- Converts to string.
+-- @ret(string) the string representation
+function TerrainTile:__tostring()
+  return 'TerrainTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ', ' .. self.layer.order .. ')' 
+end
+
+---------------------------------------------------------------------------------------------------
+-- Terrain graphics
+---------------------------------------------------------------------------------------------------
 
 -- Sets the terrain type.
 -- @param(id : number) the ID of the terrain
@@ -73,14 +93,14 @@ function TerrainTile:setTerrain(id)
   if id < 0 then
     self.terrainData = nil
     self.moveCost = 0
-    self.depth = 0
+    self.depth = self.order
     return
   end
   -- Create new terrain images.
   local terrainData = Database.terrains[id + 1]
   self.terrainData = terrainData
   self.moveCost = terrainData.moveCost / 100
-  self.depth = terrainData.depth - self.order
+  self.depth = terrainData.depth + self.order
   if terrainData.imagePath ~= '' then
     local rows = mathf.autoTileRows(self.layer.grid, self.x, self.y)
     self:setQuarters(terrainData.quad, rows)
@@ -96,7 +116,6 @@ function TerrainTile:setTerrain(id)
     end
   end
 end
-
 -- Creates the animations for the terrain type
 -- @param(quadData : table) the terrain's quad table
 -- @param(rows : table) the autotile row of each quarter
@@ -117,21 +136,6 @@ function TerrainTile:setQuarters(quadData, rows)
     self.quarters[i]:setPosition(self.center)
     self.quarters[i]:setOffset(tileW / 2 - x, tileH / 2 - y, depth)
   end
-end
-
--- Updates each animation.
-function TerrainTile:update()
-  if self.animations then
-    for i = 1, 4 do
-      self.animations[i]:update()
-    end
-  end
-end
-
--- Converts to string.
--- @ret(string) the string representation
-function TerrainTile:__tostring()
-  return 'TerrainTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ', ' .. self.layer.order .. ')' 
 end
 
 return TerrainTile
