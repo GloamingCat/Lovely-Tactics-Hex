@@ -175,7 +175,7 @@ function ButtonWindow:onMove(c, r, dx, dy)
   button = self:currentButton()
   button:setSelected(true)
   if button.enabled then
-    button.onMove(self, button, 0, 0)
+    button.onSelect(self, button)
   end
   self:updateViewport(c, r)
   self.cursor:updatePosition(self.position)

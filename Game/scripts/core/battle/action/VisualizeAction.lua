@@ -17,9 +17,9 @@ local VisualizeAction = class(BattleAction)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
-local old_init = VisualizeAction.init
+-- Constructor.
 function VisualizeAction:init()
-  old_init(self, nil, 0, 1)
+  BattleAction.init(self, -1, 0, 1)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -39,7 +39,6 @@ end
 function VisualizeAction:resetTileProperties(input)
   self:resetSelectableTiles(input)
 end
-
 -- Overrides BattleAction:resetTileColors.
 function VisualizeAction:resetTileColors(input)
   self:clearTileColors()

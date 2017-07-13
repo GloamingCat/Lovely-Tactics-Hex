@@ -1,11 +1,11 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 TileGUI
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 ObjectTile graphics for battle interface.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Animation = require('core/graphics/Animation')
@@ -22,6 +22,10 @@ local tileHLAnimID = Config.gui.tileHLAnimID
 local tileColors = Color
 
 local TileGUI = class()
+
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
 
 -- @param(tile : ObjectTile) the tile this object belongs to.
 function TileGUI:init(tile)
@@ -43,6 +47,10 @@ function TileGUI:init(tile)
   self:hide()
 end
 
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
+
 -- Updates graphics.
 function TileGUI:update()
   if self.highlightAnim then
@@ -52,6 +60,19 @@ function TileGUI:update()
     self.baseAnim:update()
   end
 end
+-- Erases any sprites.
+function TileGUI:destroy()
+  if self.baseAnim then
+    self.baseAnim:destroy()
+  end
+  if self.highlightAnim then
+    self.highlightAnim:destroy()
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Graphics
+---------------------------------------------------------------------------------------------------
 
 -- Updates graphics pixel depth according to the terrains' 
 --  depth in this tile's coordinates.
@@ -68,7 +89,6 @@ function TileGUI:updateDepth()
     self.highlightAnim.sprite:setOffset(nil, nil, minDepth - 1)
   end
 end
-
 -- Selects / deselects this tile.
 -- @param(value : boolean) true to select, false to deselect
 function TileGUI:setSelected(value)
@@ -76,7 +96,6 @@ function TileGUI:setSelected(value)
     self.highlightAnim.sprite:setVisible(value)
   end
 end
-
 -- Sets color to the color with the given label.
 -- @param(name : string) color label
 function TileGUI:setColor(name)
@@ -92,29 +111,22 @@ function TileGUI:setColor(name)
   self.baseAnim.sprite:setColor(c)
 end
 
+---------------------------------------------------------------------------------------------------
+-- Show / Hide
+---------------------------------------------------------------------------------------------------
+
 -- Shows tile edges.
 function TileGUI:show()
   if self.baseAnim then
     self.baseAnim.sprite:setVisible(true)
   end
 end
-
 -- Hides tile edges.
 function TileGUI:hide()
   if self.baseAnim then
     self.baseAnim.sprite:setVisible(false)
   end
   self:setSelected(false)
-end
-
--- Erases any sprites.
-function TileGUI:destroy()
-  if self.baseAnim then
-    self.baseAnim:destroy()
-  end
-  if self.highlightAnim then
-    self.highlightAnim:destroy()
-  end
 end
 
 return TileGUI

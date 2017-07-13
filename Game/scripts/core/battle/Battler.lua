@@ -36,10 +36,9 @@ local Battler = class()
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
--- @param(character : Character)
 -- @param(battlerID : table) the battler's ID in database
 -- @param(party : number) this battler's party number
-function Battler:init(character, battlerID, party)
+function Battler:init(battlerID, party)
   local data = Database.battlers[battlerID + 1]
   self.data = data
   self.battlerID = battlerID

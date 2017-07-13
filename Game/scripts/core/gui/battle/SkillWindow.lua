@@ -19,11 +19,10 @@ local SkillWindow = class(ActionWindow, ListButtonWindow)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
-local old_init = SkillWindow.init
+-- Constructor.
 function SkillWindow:init(GUI, skillList)
-  old_init(self, skillList, GUI)
+  ListButtonWindow.init(self, skillList, GUI)
 end
-
 -- Creates a button from a skill ID.
 -- @param(skill : SkillAction) the SkillAction from battler's skill list
 function SkillWindow:createButton(skill)
@@ -40,14 +39,12 @@ end
 function SkillWindow:onButtonConfirm(button)
   self:selectAction(button.skill)
 end
-
 -- Tells if a skill can be used.
 -- @param(button : Button) the button to check
 -- @ret(boolean)
 function SkillAction:buttonEnabled(button)
   return button.skill:canExecute(BattleManager.currentCharacter)
 end
-
 -- Called when player cancels.
 function SkillWindow:onCancel()
   self:changeWindow(self.GUI.turnWindow)
@@ -61,12 +58,10 @@ end
 function SkillWindow:buttonWidth()
   return 80
 end
-
 -- New row count.
 function SkillWindow:rowCount()
   return 6
 end
-
 -- String identifier.
 function SkillWindow:__tostring()
   return 'SkillWindow'

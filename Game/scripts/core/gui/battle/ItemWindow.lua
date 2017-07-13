@@ -19,11 +19,10 @@ local ItemWindow = class(ActionWindow, ListButtonWindow)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
-local old_init = ItemWindow.init
+-- Constructor.
 function ItemWindow:init(GUI, itemList)
-  old_init(self, itemList, GUI)
+  ListButtonWindow.init(self, itemList, GUI)
 end
-
 -- Creates a button from an item ID.
 -- @param(id : number) the item ID
 function ItemWindow:createButton(itemSlot)
@@ -46,7 +45,6 @@ function ItemWindow:onConfirm(button)
   self:selectAction(skill)
   -- TODO: remove item from inventory
 end
-
 -- Called when player cancels.
 function ItemWindow:onCancel()
   self:changeWindow(self.GUI.turnWindow)
@@ -60,12 +58,10 @@ end
 function ItemWindow:buttonWidth()
   return 80
 end
-
 -- New row count.
 function ItemWindow:rowCount()
   return 6
 end
-
 -- String identifier.
 function ItemWindow:__tostring()
   return 'ItemWindow'

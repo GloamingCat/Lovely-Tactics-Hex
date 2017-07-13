@@ -36,6 +36,8 @@ function BattleAction:init(timeCost, range, radius, colorName)
   self.radius = radius
   self.colorName = colorName
   self.field = FieldManager.currentField
+  self.showTargetWindow = true
+  self.showStepWindow = false
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -52,8 +54,13 @@ end
 -- @param(user : Character) the user of the action
 function BattleAction:onActionGUI(input)
   self:resetTileColors()
-  input.GUI:createTargetWindow()
+  if self.showTargetWindow then
+    input.GUI:createTargetWindow()
+  end
   input.GUI:startGridSelecting(self:firstTarget(input))
+  if self.showStepWindow then
+    input.GUI:createStepWindow():show()
+  end
 end
 -- Called when player chooses a target for the action. 
 -- By default, calls confirmation window.

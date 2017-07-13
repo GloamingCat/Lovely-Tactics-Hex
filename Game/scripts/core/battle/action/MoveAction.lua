@@ -25,20 +25,10 @@ local MoveAction = class(BattleAction)
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
-local old_init = MoveAction.init
 function MoveAction:init(range)
-  old_init(self, -1, range or 0, 1)
-end
-
----------------------------------------------------------------------------------------------------
--- Event handlers
----------------------------------------------------------------------------------------------------
-
--- Overrides BattleAction:onActionGUI.
-function MoveAction:onActionGUI(input)
-  self:resetTileColors()
-  input.GUI:startGridSelecting(self:firstTarget(input))
-  input.GUI:createStepWindow():show()
+  BattleAction.init(self, -1, range or 0, 1)
+  self.showTargetWindow = false
+  self.showStepWindow = true
 end
 
 ---------------------------------------------------------------------------------------------------

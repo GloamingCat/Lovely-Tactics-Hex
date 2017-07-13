@@ -26,9 +26,10 @@ local Window = class(Transformable)
 ---------------------------------------------------------------------------------------------------
 
 -- @param(GUI : GUI) parent GUI
--- @param(width : number) total width in pixels
--- @param(height : number) total height in pixels
--- @param(position : Vector) the position of the center of the window
+-- @param(width : number) total width in pixels (if nil, must be set later)
+-- @param(height : number) total height in pixels (if nil, must be set later)
+-- @param(position : Vector) the position of the center of the window 
+--  (optional, center of the screen by default)
 -- @param(skin : Image) window skin (optional)
 function Window:init(GUI, width, height, position, skin)
   Transformable.init(self, position)

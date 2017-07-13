@@ -30,6 +30,7 @@ local TroopManager = class()
 -- Constructor.
 function TroopManager:init()
   self.characterList = List()
+  self.troopDirections = {}
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -74,7 +75,9 @@ function TroopManager:createTroop(troop, partyInfo, partyID)
       if battlerID >= 0 then
         if tile and not tile:collides(0, 0) then
           local dir = troop:getCharacterDirection()
-          self:createBattleCharacter(field, tile, battlerID, partyID, dir)
+          self.troopDirections[partyID] = dir
+          local battler = Battler(battlerID, partyID)
+          self:createBattleCharacter(tile, battler)
         end
       end
     end
@@ -85,19 +88,19 @@ end
 -- @param(battlerData : table) the battler's data from file
 -- @param(field : Field) the current field
 -- @ret(BattleCharacter) the newly created character
-function TroopManager:createBattleCharacter(field, tile, battlerID, partyID, dir)
-  local battlerData = Database.battlers[battlerID + 1]
+function TroopManager:createBattleCharacter(tile, battler)
+  local dir = self.troopDirections[battler.party]
   local charData = {
     type = 1,
     id = -1,
-    charID = battlerData.battleCharID,
+    charID = battler.data.battleCharID,
     animID = 0,
     direction = dir,
     tags = {}
   }
   charData.x, charData.y, charData.h = tile:coordinates()
   local character = Character(charData, tile)
-  character.battler = Battler(character, battlerID, partyID)
+  character.battler = battler
   character.speed = charSpeed
   self.characterList:add(character)
   return character
@@ -113,6 +116,7 @@ function TroopManager:clear()
     bc.battler = nil
   end
   self.characterList = List()
+  self.troopDirections = {}
 end
 -- Removes the given character.
 function TroopManager:removeCharacter(char)

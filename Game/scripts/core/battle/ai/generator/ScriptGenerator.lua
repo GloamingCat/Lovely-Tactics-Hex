@@ -95,7 +95,7 @@ end
 
 function ScriptGenerator:createGA()
   -- Gets the network AI
-  local battler = Battler(nil, self.battlerID, -1)
+  local battler = Battler(self.battlerID, -1)
   assert(battler.AI.network, 'Battler ' .. self.battlerID .. ' (' .. 
     battler.data.name .. ') does not have a neural network AI.')
   -- Genetic Algorithm args

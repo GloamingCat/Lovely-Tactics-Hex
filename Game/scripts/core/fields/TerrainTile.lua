@@ -131,7 +131,7 @@ function TerrainTile:setQuarters(quadData, rows)
   for i = 1, 4 do
     local x, y = viewports[i][1], viewports[i][2]
     local quad = createQuad(x, y + rows[i] * tileH)
-    local depth = (1 - y / tileH) * self.depth
+    local depth = (1.5 - y / tileH) * self.depth
     self.quarters[i] = Sprite(FieldManager.renderer, texture, quad)
     self.quarters[i]:setPosition(self.center)
     self.quarters[i]:setOffset(tileW / 2 - x, tileH / 2 - y, depth)

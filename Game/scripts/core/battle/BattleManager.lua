@@ -18,9 +18,6 @@ local MoveAction = require('core/battle/action/MoveAction')
 local Animation = require('core/graphics/Animation')
 local TileGraphics = require('core/fields/TileGUI')
 
--- Alias
-local Random = love.math.random
-
 -- Constants
 local defaultParams = { 
   gameOverCondition = 2, 

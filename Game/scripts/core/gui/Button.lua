@@ -92,6 +92,10 @@ end
 function Button.onMove(window, button, dx, dy)
 end
 
+-- Called when this button is selected/highlighted.
+function Button.onSelect(window, button)
+end
+
 -------------------------------------------------------------------------------
 -- State
 -------------------------------------------------------------------------------

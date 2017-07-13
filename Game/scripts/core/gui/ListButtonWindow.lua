@@ -18,21 +18,20 @@ local ListButtonWindow = class(ButtonWindow)
 ----------------------------------------------------------------------------------------------------
 
 -- Overrides ButtonWindow:init.
-local old_init = ListButtonWindow.init
 function ListButtonWindow:init(list, ...)
   self.list = list
-  old_init(self, ...)
+  ButtonWindow.init(self, ...)
 end
-
 -- Overrides ButtonWindow:createButtons.
 function ListButtonWindow:createButtons()
   for i = 1, #self.list do
     self:createButton(self.list[i])
   end
 end
-
 -- Creates a button from an element in the list.
 function ListButtonWindow:createButton(element)
+  -- Abstract.
 end
 
 return ListButtonWindow
+
