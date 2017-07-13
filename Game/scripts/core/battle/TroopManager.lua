@@ -51,11 +51,11 @@ function TroopManager:createTroops()
   for i = 1, #parties do
     if i == playerID then
       local troop = SaveManager.current.partyTroop:clone()
-      self:createTroop(troop, parties[i], i - 1)
+      self:createTroop(troop, parties[i], i)
     elseif #parties[i].troops > 0 then
       local r = rand(#parties[i].troops)
       local troopID = parties[i].troops[r]
-      self:createTroop(Troop.fromData(troopID), parties[i], i - 1)
+      self:createTroop(Troop.fromData(troopID), parties[i], i)
     end
   end
 end
@@ -222,6 +222,16 @@ function TroopManager:getPartyCenters()
     end
   end
   return centers
+end
+-- Gets the number of characters in the given party.
+function TroopManager:getMemberCount(party)
+  local count = 0
+  for bc in self.characterList:iterator() do
+    if bc.battler.party == party then
+      count = count + 1
+    end
+  end
+  return count
 end
 
 return TroopManager

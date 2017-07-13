@@ -1,9 +1,11 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
+Test script
+---------------------------------------------------------------------------------------------------
 An example of usage of an eventsheet for a Field.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Window = require('core/gui/Window')
@@ -19,5 +21,16 @@ return function(param, event, ...)
   transition.tileY = transition.tileY + 10
   FieldManager:loadTransition(transition)
   self:wait(90)]]
-  FieldManager:loadBattle(1)
+  local party, result = FieldManager:loadBattle(1)
+  if BattleManager:playerWon() then
+    print 'You won!'
+  elseif BattleManager:enemyWon() then
+    print 'You lost...'
+  elseif BattleManager:drawed() then
+    print 'Draw.'
+  elseif BattleManager:playerEscaped() then
+    print 'You escaped!'
+  elseif BattleManager:enemyEscaped() then
+    print 'The enemy escaped...'
+  end
 end

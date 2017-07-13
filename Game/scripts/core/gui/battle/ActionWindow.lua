@@ -25,12 +25,12 @@ function ActionWindow:selectAction(action)
   action:onSelect(input)
   self.GUI:hide()
   local actionCost = GUIManager:showGUIForResult('battle/ActionGUI', input)
-  if actionCost >= 0 then
-    -- End of turn.
-    self.result = actionCost
-  else
+  if actionCost == -1 then
     FieldManager.renderer:moveToObject(BattleManager.currentCharacter)
     self.GUI:show()
+  else
+    -- End of turn.
+    self.result = actionCost
   end
 end
 

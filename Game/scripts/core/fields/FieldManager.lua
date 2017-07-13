@@ -240,11 +240,11 @@ function FieldManager:loadBattle(fieldID, params)
     self.fiberList:forkFromScript(self.currentField.startScript)
   end
   collectgarbage('collect')
-  local winner = BattleManager:runBattle()
+  local winner, result = BattleManager:runBattle()
   self:setState(previousState)
   previousState = nil
   collectgarbage('collect')
-  return winner
+  return winner, result
 end
 
 ---------------------------------------------------------------------------------------------------

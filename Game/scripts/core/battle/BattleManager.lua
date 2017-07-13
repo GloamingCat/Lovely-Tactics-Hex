@@ -74,7 +74,7 @@ function BattleManager:runBattle()
   until self.result
   self:battleEnd()
   self.onBattle = false
-  return self.winner
+  return self.winner, self.result
 end
 -- Runs before battle loop.
 function BattleManager:battleIntro()
