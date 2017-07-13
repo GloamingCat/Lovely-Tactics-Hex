@@ -167,6 +167,7 @@ function PartyManager:addBattlerRewards(var, enemies, battlers, backup)
     for id in backup:iterator() do
       local b = Database.battlers[id + 1]
       if b.persistent then
+        id = id .. ''
         data[id] = data[id] or {}
         data[id][name] = data[id][name] + e.battler.state[name] / div * var.backup / 100
       end
