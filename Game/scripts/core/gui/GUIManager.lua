@@ -18,13 +18,13 @@ local GUIManager = class()
 -- General
 ---------------------------------------------------------------------------------------------------
 
+-- Constructor.
 function GUIManager:init()
   self.renderer = Renderer(200, -100, 100, 2)
   self.stack = Stack()
   self.paused = false
   self.fiberList = FiberList()
 end
-
 -- Calls all the update functions.
 function GUIManager:update()
   for i = 1, #self.stack do
@@ -44,7 +44,6 @@ end
 function GUIManager:isWaitingInput()
   return self.current and self.current.activeWindow ~= nil
 end
-
 -- [COROUTINE] Shows GUI and waits until returns a result.
 -- @param(path : string) the GUI path from custom/gui folder.
 -- @param(block : boolean) tells if it's supposed to block FieldManager updates
@@ -52,10 +51,8 @@ function GUIManager:showGUIForResult(path, ...)
   local gui = self:showGUI(path, ...)
   local result = gui:waitForResult()
   self:returnGUI()
-  print(gui)
   return result
 end
-
 -- [COROUTINE] Shows GUI and adds to the stack.
 -- @param(path : string) the GUI path from custom/gui folder.
 function GUIManager:showGUI(path, ...)
@@ -67,7 +64,6 @@ function GUIManager:showGUI(path, ...)
   newGUI:show()
   return newGUI
 end
-
 -- [COROUTINE] Closes current GUI and returns to the previous.
 function GUIManager:returnGUI()
   local lastGUI = self.current

@@ -27,9 +27,10 @@ local defaultScaleY = Config.screen.heightScale
 local ScreenManager = class()
 
 ---------------------------------------------------------------------------------------------------
--- General
+-- Initialization
 ---------------------------------------------------------------------------------------------------
 
+-- Constructor.
 function ScreenManager:init()
   love.graphics.setDefaultFilter("nearest", "nearest")
   self.width = Config.screen.nativeWidth
@@ -43,6 +44,10 @@ function ScreenManager:init()
   self.renderers = {}
 end
 
+---------------------------------------------------------------------------------------------------
+-- Draw
+---------------------------------------------------------------------------------------------------
+
 -- Overrides love draw to count the calls.
 local drawCalls = 0
 local old_draw = love.graphics.draw
@@ -50,7 +55,6 @@ function love.graphics.draw(...)
   old_draw(...)
   drawCalls = drawCalls + 1
 end
-
 -- Draws game canvas.
 function ScreenManager:draw()
   drawCalls = 0
@@ -65,7 +69,7 @@ function ScreenManager:draw()
 end
 
 ---------------------------------------------------------------------------------------------------
--- Properties
+-- Size
 ---------------------------------------------------------------------------------------------------
 
 -- Scales the screen (deforms both field and GUI).
@@ -93,6 +97,18 @@ function ScreenManager:setScale(x, y)
     self.renderers[i]:resizeCanvas()
   end
 end
+-- Width in world size.
+function ScreenManager:totalWidth()
+  return self.scaleX * self.width
+end
+-- Height in world size.
+function ScreenManager:totalHeight()
+  return self.scaleY * self.height
+end
+
+---------------------------------------------------------------------------------------------------
+-- Mode
+---------------------------------------------------------------------------------------------------
 
 -- Changes screen to window mode.
 function ScreenManager:setWindowed()
@@ -100,7 +116,6 @@ function ScreenManager:setWindowed()
     self:scale(defaultScaleX, defaultScaleY)
   end
 end
-
 -- Changes screen to full screen mode.
 function ScreenManager:setFullscreen()
   if isFullScreen() then

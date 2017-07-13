@@ -26,7 +26,6 @@ function GUI:init()
   self.open = false
   self.closed = true
 end
-
 -- Creates the GUI's windows and sets the first active window.
 function GUI:createWindows()
   self.activeWindow = nil
@@ -42,16 +41,13 @@ function GUI:update()
     window:update()
   end
 end
-
 -- Destroys all windows.
 function GUI:destroy()
-  print(self, self.windowList.size)
   for window in self.windowList:iterator() do
     window:destroy()
   end
   collectgarbage('collect')
 end
-
 -- String representation.
 function GUI:__tostring()
   local name = self.name or 'Nameless'
@@ -72,7 +68,6 @@ function GUI:waitForResult()
   end
   return self.activeWindow.result
 end
-
 -- [COROUTINE] Shows all windows.
 function GUI:show()
   if not self.open then
@@ -95,7 +90,6 @@ function GUI:show()
   end
   self.open = true
 end
-
 -- [COROUTINE] Hides all windows.
 function GUI:hide(destroy)
   if not self.closed then

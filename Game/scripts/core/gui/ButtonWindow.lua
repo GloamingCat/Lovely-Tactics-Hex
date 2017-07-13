@@ -27,7 +27,6 @@ local ButtonWindow = class(Window)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides Window:createContent.
-local old_createContent = ButtonWindow.createContent
 function ButtonWindow:createContent()
   self.buttonMatrix = Matrix2(self:colCount(), 1)
   self:createButtons()
@@ -41,7 +40,7 @@ function ButtonWindow:createContent()
   self.height = self:totalHeight()
   self.loopVertical = true
   self.loopHorizontal = true
-  old_createContent(self)
+  Window.createContent(self)
   local button = self:currentButton()
   if button then
     button:setSelected(true)
@@ -71,19 +70,16 @@ end
 function ButtonWindow:colCount()
   return 3
 end
-
 -- Rows of the button matrix.
 -- @ret(number) the number of visible lines
 function ButtonWindow:rowCount()
   return 4
 end
-
 -- Gets the total width of the window.
 -- @ret(number) the window's width in pixels
 function ButtonWindow:totalWidth()
   return self.paddingw * 2 + self:colCount() * self:buttonWidth()
 end
-
 -- Gets the total height of the window.
 -- @ret(number) the window's height in pixels
 function ButtonWindow:totalHeight()
@@ -97,19 +93,16 @@ end
 -- Adds the buttons of the window.
 function ButtonWindow:createButtons()
 end
-
 -- Gets the width of a single button.
 -- @ret(number) the width in pixels
 function ButtonWindow:buttonWidth()
   return 50
 end
-
 -- Gets the height of a single button.
 -- @ret(number) the height in pixels
 function ButtonWindow:buttonHeight()
   return 13
 end
-
 -- Add a simple generic new button to the list.
 -- @param(name : string) the text the appears in the button
 -- @param(iconAnim : Animation) the icon's animation
@@ -125,13 +118,13 @@ function ButtonWindow:addButton(name, iconAnim, onConfirm, enableCondition)
   self.buttonMatrix[buttonCount] = button
   return button
 end
-
 -- Gets current selected button.
 -- @ret(Button) the selected button
 function ButtonWindow:currentButton()
   return self.buttonMatrix:get(self.currentCol, self.currentRow)
 end
-
+-- Gets the number of rows that where actually occupied by buttons.
+-- @ret(number) row count
 function ButtonWindow:actualRowCount()
   return self.buttonMatrix.height
 end
@@ -155,7 +148,6 @@ function ButtonWindow:checkInput()
     end
   end
 end
-
 -- Called when player confirms.
 function ButtonWindow:onConfirm()
   local button = self:currentButton()
@@ -163,7 +155,6 @@ function ButtonWindow:onConfirm()
     button.onConfirm(self, button)
   end
 end
-
 -- Called when player cancels.
 function ButtonWindow:onCancel()
   local button = self:currentButton()
@@ -172,7 +163,6 @@ function ButtonWindow:onCancel()
   end
   self.result = 0
 end
-
 -- Called when player moves cursor.
 function ButtonWindow:onMove(c, r, dx, dy)
   local button = self:currentButton()
@@ -227,7 +217,6 @@ function ButtonWindow:movedCoordinates(c, r, dx, dy)
   end
   return c, r
 end
-
 -- Loops row r to the right.
 function ButtonWindow:rightLoop(r)
   local c = 1
@@ -236,7 +225,6 @@ function ButtonWindow:rightLoop(r)
   end
   return c
 end
-
 -- Loops row r to the left.
 function ButtonWindow:leftLoop(r)
   local c = self.buttonMatrix.width
@@ -245,7 +233,6 @@ function ButtonWindow:leftLoop(r)
   end
   return c
 end
-
 -- Loops column c up.
 function ButtonWindow:upLoop(c)
   local r = 1
@@ -254,7 +241,6 @@ function ButtonWindow:upLoop(c)
   end
   return r
 end
-
 -- Loops column c down.
 function ButtonWindow:downLoop(c)
   local r = self.buttonMatrix.height
@@ -286,7 +272,6 @@ function ButtonWindow:updateViewport(c, r)
     end
   end
 end
-
 -- Determines the new (c, r) coordinates of the button matrix viewport.
 -- @param(newc : number) the selected button's column
 -- @param(newr : number) the selected button's row

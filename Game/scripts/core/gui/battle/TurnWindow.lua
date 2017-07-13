@@ -49,42 +49,34 @@ end
 function TurnWindow:onAttackAction(button)
   self:selectAction(BattleManager.currentCharacter.battler.attackSkill)
 end
-
 -- "Move" button callback.
 function TurnWindow:onMoveAction(button)
   self:selectAction(MoveAction())
 end
-
 -- "Trade" button callback.
 function TurnWindow:onTradeAction(button)
   self:selectAction(TradeSkill())
 end
-
 -- "Escape" button callback.
 function TurnWindow:onEscapeAction(button)
   self:selectAction(EscapeAction())
 end
-
 -- "Call Ally" button callback.
 function TurnWindow:onCallAllyAction(button)
   self:selectAction(CallAction())
 end
-
 -- "Skill" button callback. Opens Skill Window.
 function TurnWindow:onSkill(button)
   self:changeWindow(self.GUI.skillWindow)
 end
-
 -- "Item" button callback. Opens Item Window.
 function TurnWindow:onItem(button)
   self:changeWindow(self.GUI.itemWindow)
 end
-
 -- "Wait" button callback. End turn.
 function TurnWindow:onWait(button)
   self.result = 0
 end
-
 -- Overrides ButtonWindow:onCancel.
 function TurnWindow:onCancel()
   self:selectAction(VisualizeAction())
