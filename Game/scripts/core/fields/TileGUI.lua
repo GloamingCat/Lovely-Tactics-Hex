@@ -61,7 +61,6 @@ function TileGUI:updateDepth()
   for i = #layers, 2, -1 do
     minDepth = min(minDepth, layers[i].grid[self.x][self.y].depth)
   end
-  print(minDepth)
   if self.baseAnim then
     self.baseAnim.sprite:setOffset(nil, nil, minDepth)
   end

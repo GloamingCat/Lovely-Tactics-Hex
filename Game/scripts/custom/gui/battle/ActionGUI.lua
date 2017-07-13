@@ -30,7 +30,6 @@ local old_init = ActionGUI.init
 function ActionGUI:init(input)
   old_init(self)
   self.name = 'Action GUI'
-  self.cursor = BattleCursor()
   self.input = input
   input.GUI = self
 end
@@ -50,7 +49,6 @@ function ActionGUI:createStepWindow()
   end
   return self.stepWindow
 end
-
 -- Creates target window.
 -- @ret(TargetWindow) newly created window
 function ActionGUI:createTargetWindow()
@@ -70,7 +68,6 @@ end
 -- [COROUTINE] Overrides GUI:waitForResult.
 function ActionGUI:waitForResult()
   self.input.action:onActionGUI(self.input)
-  self:checkInput()
   while self.result == nil do
     if self.cursor then
       self.cursor:update()
@@ -78,10 +75,11 @@ function ActionGUI:waitForResult()
     coroutine.yield()
     self:checkInput()
   end
-  self.cursor:destroy()
+  if self.cursor then
+    self.cursor:destroy()
+  end
   return self.result
 end
-
 -- Verifies player's input. Stores result of action in self.result.
 function ActionGUI:checkInput()
   if InputManager.keys['confirm']:isTriggered() then
@@ -101,7 +99,6 @@ function ActionGUI:checkInput()
     end
   end
 end
-
 -- Sets given tile as current target.
 -- @param(target : ObjectTile) the new target tile
 function ActionGUI:selectTarget(target)
@@ -130,9 +127,10 @@ function ActionGUI:startGridSelecting(target)
     GUIManager.fiberList:fork(self.stepWindow.show, self.stepWindow)
   end
   FieldManager:showGrid()
+  self.cursor = self.cursor or BattleCursor()
   self:selectTarget(target or self.input.action.target)
+  self.gridSelecting = true
 end
-
 -- Hides grid and cursor.
 function ActionGUI:endGridSelecting()
   if self.stepWindow then
@@ -147,6 +145,7 @@ function ActionGUI:endGridSelecting()
   end
   FieldManager:hideGrid()
   self.cursor:hide()
+  self.gridSelecting = false
 end
 
 return ActionGUI

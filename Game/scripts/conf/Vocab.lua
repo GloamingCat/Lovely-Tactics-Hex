@@ -10,7 +10,11 @@ return {
   callAlly = 'Call Ally',
   wait = 'Wait',
   
-  -- Battler Window
+  -- Confirm Window
+  confirm = 'Confirm',
+  cancel = 'Cancel',
+  
+  -- Target Window
   steps = 'Steps',
   turnCount = 'TC',
   

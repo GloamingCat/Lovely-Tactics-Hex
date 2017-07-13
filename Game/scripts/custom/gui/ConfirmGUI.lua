@@ -20,7 +20,7 @@ local ConfirmGUI = class(GUI)
 function ConfirmGUI:createWindows()
   self.name = 'Confirm GUI'
   local confirmWindow = ConfirmWindow(self)
-  self.windows:add(confirmWindow)
+  self.windowList:add(confirmWindow)
   self.activeWindow = confirmWindow
 end
 

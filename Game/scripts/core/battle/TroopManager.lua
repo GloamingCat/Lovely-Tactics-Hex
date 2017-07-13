@@ -32,16 +32,8 @@ function TroopManager:init()
   self.characterList = List()
 end
 
--- Erases battlers and clears list.
-function TroopManager:clear()
-  for bc in self.characterList:iterator() do
-    bc.battler = nil
-  end
-  self.characterList = List()
-end
-
 ---------------------------------------------------------------------------------------------------
--- Character creation
+-- Troop creation
 ---------------------------------------------------------------------------------------------------
 
 -- Creates all battle characters based on field's tile data.
@@ -77,8 +69,9 @@ function TroopManager:createTroop(troop, partyInfo, partyID)
   for i = 1, sizeX do
     for j = 1, sizeY do
       local battlerID = troop.grid:get(i, j)
+      local tile = field:getObjectTile(i + partyInfo.x - sizeX, j + partyInfo.y, partyInfo.h)
+      tile.gui.party = partyID
       if battlerID >= 0 then
-        local tile = field:getObjectTile(i + partyInfo.x - sizeX, j + partyInfo.y, partyInfo.h)
         if tile and not tile:collides(0, 0) then
           local dir = troop:getCharacterDirection()
           self:createBattleCharacter(field, tile, battlerID, partyID, dir)
@@ -108,6 +101,23 @@ function TroopManager:createBattleCharacter(field, tile, battlerID, partyID, dir
   character.speed = charSpeed
   self.characterList:add(character)
   return character
+end
+
+---------------------------------------------------------------------------------------------------
+-- Remove
+---------------------------------------------------------------------------------------------------
+
+-- Erases battlers and clears list.
+function TroopManager:clear()
+  for bc in self.characterList:iterator() do
+    bc.battler = nil
+  end
+  self.characterList = List()
+end
+-- Removes the given character.
+function TroopManager:removeCharacter(char)
+  self.characterList:removeElement(char)
+  char:destroy()
 end
 
 ---------------------------------------------------------------------------------------------------

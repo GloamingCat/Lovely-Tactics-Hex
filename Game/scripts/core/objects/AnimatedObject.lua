@@ -80,22 +80,11 @@ function AnimatedObject:playAnimation(name, wait, row)
   end
   return anim
 end
-
----------------------------------------------------------------------------------------------------
--- General
----------------------------------------------------------------------------------------------------
-
 -- Updates animation.
 function AnimatedObject:update()
   Object.update(self)
   if self.animation then
     self.animation:update()
-  end
-end
--- Removes from draw and update list.
-function AnimatedObject:destroy()
-  if self.sprite then
-    self.sprite:destroy()
   end
 end
 

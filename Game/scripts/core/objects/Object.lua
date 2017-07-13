@@ -23,11 +23,19 @@ local Object = class(Transformable)
 -- General
 ---------------------------------------------------------------------------------------------------
 
+-- Constructor.
 -- @param(data : table) data from file (Obstacle or Character)
 function Object:init(data, pos)
   Transformable.init(self, pos)
   self.name = data.name
   self.colliderHeight = data.colliderHeight
+end
+-- Destructor.
+function Object:destroy()
+  if self.sprite then
+    self.sprite:destroy()
+  end
+  self:removeFromTiles()
 end
 
 ---------------------------------------------------------------------------------------------------

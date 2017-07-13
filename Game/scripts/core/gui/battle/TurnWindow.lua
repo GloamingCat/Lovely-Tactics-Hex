@@ -113,7 +113,6 @@ function TurnWindow:attackEnabled(button)
   end
   return false
 end
-
 -- Move condition. Enabled if there are any tiles for the character to move to.
 function TurnWindow:moveEnabled(button)
   local user = BattleManager.currentCharacter.battler
@@ -127,34 +126,27 @@ function TurnWindow:moveEnabled(button)
   end
   return false
 end
-
 -- Skill condition. Enabled if character has any skills to use.
 function TurnWindow:skillEnabled(button)
   local user = BattleManager.currentCharacter.battler
   return not user.skillList:isEmpty()
 end
-
 -- Item condition. Enabled if character has any items to use.
 function TurnWindow:itemEnabled(button)
   local user = BattleManager.currentCharacter.battler
   return not user.inventory:isEmpty()
 end
-
 -- Trade condition. Enabled if there are any characters nearby that have items.
 function TurnWindow:tradeEnabled()
   -- TODO
   return false
 end
-
 -- Escape condition. Only escapes if the character is in a tile of their party.
 function TurnWindow:escapeEnabled()
   local userParty = BattleManager.currentCharacter.battler.party
-  local tileParty = BattleManager.currentCharacter:getTile().party
-  -- return userParty == tileParty
-  -- TODO: implement escape
-  return false
+  local tileParty = BattleManager.currentCharacter:getTile().gui.party
+  return userParty == tileParty
 end
-
 -- Call Ally condition. Enabled if there any any backup members.
 function TurnWindow:callAllyEnabled()
   return not self.backupBattlers:isEmpty()
