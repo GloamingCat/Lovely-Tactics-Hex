@@ -70,8 +70,7 @@ end
 function PartyManager:onFieldBattlers()
   local battlers = self:currentBattlers()
   battlers:conditionalRemove(function(battler)
-    local c = TroopManager:battlerCount(battler)
-    return c == 0
+    return TroopManager:battlerCount(battler) == 0
   end)
   return battlers
 end
@@ -81,8 +80,7 @@ function PartyManager:onFieldBattlersIDs()
   local list = self:currentBattlerIDs()
   list:conditionalRemove(function(id)
     local battler = Database.battlers[id + 1]
-    local c = TroopManager:battlerCount(battler)
-    return c == 0
+    return TroopManager:battlerCount(battler) == 0
   end)
   return list
 end
@@ -96,8 +94,7 @@ end
 function PartyManager:backupBattlers()
   local battlers = self:currentBattlers()
   battlers:conditionalRemove(function(battler)
-    local c = TroopManager:battlerCount(battler)
-    return c > 0
+    return TroopManager:battlerCount(battler) > 0
   end)
   return battlers
 end
@@ -119,12 +116,12 @@ end
 
 -- Adds the rewards from the defeated enemies.
 function PartyManager:addRewards()
-  local backup = self:backupBattlers()
-  local battlers = self:onFieldBattlers()
+  local backup = self:backupBattlersIDs()
+  local battlers = self:onFieldBattlersIDs()
   local enemies = List(TroopManager.characterList)
   enemies:conditionalRemove(
     function(e) 
-      return e.battler.party == 0 or e.battler:isAlive() 
+      return e.battler.party == TroopManager.playerParty or e.battler:isAlive() 
     end
   )
   for i = 1, #stateVariables do
@@ -139,9 +136,9 @@ end
 -- @param(name : string) the name of the state variable
 -- @param(enemies : List) list of defeated enemies
 function PartyManager:addPartyRewards(name, enemies)
-  local state = SaveManager.current.partyData
+  local data = SaveManager.current.partyData
   for e in enemies:iterator() do
-    state[name] = state[name] + e.battler.state[name]
+    data[name] = data[name] + e.battler.state[name]
   end
 end
 -- Adds a battler reward type i.
@@ -150,7 +147,7 @@ end
 -- @param(battlers : List) list of battlers on the field
 -- @param(backup : List) list of backup battlers
 function PartyManager:addBattlerRewards(var, enemies, battlers, backup)
-  local state = SaveManager.current.partyData
+  local data = SaveManager.current.battlerData
   local div = 1
   if var.divide then
     div = #battlers + #backup * var.backup / 100
@@ -158,17 +155,20 @@ function PartyManager:addBattlerRewards(var, enemies, battlers, backup)
   local name = var.shortName
   for e in enemies:iterator() do
     -- On field battlers
-    for battler in battlers:iterator() do
-      local b = battler.data
+    for id in battlers:iterator() do
+      local b = Database.battlers[id + 1]
       if b.persistent then
-        b.state[name] = b.state[name] + e.state[name] / div
+        id = id .. ''
+        data[id] = data[id] or {}
+        data[id][name] = data[id][name] + e.battler.state[name] / div
       end
     end
     -- Backup battlers
-    for b in backup:iterator() do
-      b = b.data
+    for id in backup:iterator() do
+      local b = Database.battlers[id + 1]
       if b.persistent then
-        b.state[name] = b.state[name] + e.state[name] / div * var.backup / 100
+        data[id] = data[id] or {}
+        data[id][name] = data[id][name] + e.battler.state[name] / div * var.backup / 100
       end
     end
   end

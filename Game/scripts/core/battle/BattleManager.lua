@@ -3,8 +3,12 @@
 
 BattleManager
 ---------------------------------------------------------------------------------------------------
-Controls battle flow (initializes troops, coordenates turns, checks victory
-and game over).
+Controls battle flow (initializes troops, runs loop, checks victory and game over).
+Parameters:
+  gameOverCondition: 0 => no gameover, 1 => only when lost, 2 => only lost or draw
+  skipAnimations: for debugging purposes (skips battle/character animations)
+  escape: enable Escape action
+Results: 1 => win, 0 => draw, -1 => lost
 
 =================================================================================================]]
 
@@ -16,12 +20,13 @@ local TileGraphics = require('core/fields/TileGUI')
 
 -- Alias
 local Random = love.math.random
-local yield = coroutine.yield
-local time = love.timer.getDelta
 
 -- Constants
-local turnLimit = Battle.turnLimit
-local defaultParams = { gameOver = true, skipAnimations = false }
+local defaultParams = { 
+  gameOverCondition = 2, 
+  skipAnimations = false, 
+  escape = true 
+}
 
 local BattleManager = class()
 
@@ -31,7 +36,6 @@ local BattleManager = class()
 
 -- Constructor.
 function BattleManager:init()
-  self.turnLimit = turnLimit
   self.onBattle = false
   self.currentCharacter = nil
 end
@@ -59,27 +63,18 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Runs until battle finishes.
+-- @ret(number) the winner party
 function BattleManager:runBattle()
   self.onBattle = true
+  self.result = nil
+  self.winner = nil
   self:battleIntro()
-  local winner = nil
   repeat
-    if InputManager.keys['kill']:isPressing() then
-      self:killAll(TroopManager.playerParty)
-      break
-    end
-    local char, it = self:getNextTurn()
-    self:runTurn(char, it)
-    winner = TroopManager:winnerParty()
-  until winner
-  if winner == TroopManager.playerParty then
-    PartyManager:addRewards()
-  elseif self.params.gameOver then
-    self:gameOver()
-  end
+    self.result, self.winner = TurnManager:runTurn()
+  until self.result
   self:battleEnd()
   self.onBattle = false
-  return winner
+  return self.winner
 end
 -- Runs before battle loop.
 function BattleManager:battleIntro()
@@ -101,6 +96,17 @@ function BattleManager:battleIntro()
 end
 -- Runs after winner was determined and battle loop ends.
 function BattleManager:battleEnd()
+  if self.result == 1 then
+    PartyManager:addRewards()
+  elseif self.result == 0 then
+    if self.params.gameOverCondition >= 2 then
+      return self:gameOver()
+    end
+  elseif self.result == -1 then
+    if self.params.gameOverCondition >= 1 then
+      return self:gameOver()
+    end
+  end
   for char in TroopManager.characterList:iterator() do
     local b = char.battler
     b:onBattleEnd()
@@ -143,78 +149,36 @@ function BattleManager:killAll(party)
     end
   end
 end
-
----------------------------------------------------------------------------------------------------
--- Turn
----------------------------------------------------------------------------------------------------
-
--- [COROUTINE] Searchs for the next character turn and starts.
--- @param(ignoreAnim : boolean) true to skip bar increasing animation
--- @ret(Character) the next turn's character
--- @ret(number) the number of iterations it took from the previous turn
-function BattleManager:getNextTurn(ignoreAnim)
-  self.turnQueue = TroopManager:getTurnQueue(turnLimit)
-  local currentCharacter, iterations = self.turnQueue:front()
-  if Battle.turnBar and not ignoreAnim then
-    local i = 0
-    while i < iterations do
-      i = i + time() * 60
-      TroopManager:incrementTurnCount(time() * 60)
-      yield()
-    end
-  else
-    TroopManager:incrementTurnCount(iterations)
-  end
-  return currentCharacter, iterations
+-- Checks if player won battle.
+function BattleManager:playerWon()
+  return self.result == 1
 end
--- [COROUTINE] Executes turn and returns when the turn finishes.
--- @param(char : Character) turn's character
--- @param(iterations : number) the time since the last turn
-function BattleManager:runTurn(char, iterations)
-  self:startTurn(char, iterations)
-  local actionCost = 0
-  local AI = self.currentCharacter.battler.AI
-  if not self.params.skipAnimations then
-    FieldManager.renderer:moveToObject(char, nil, true)
-  end
-  if AI and not self.training then
-    actionCost = AI:runTurn(iterations, char)
-  else
-    actionCost = GUIManager:showGUIForResult('battle/BattleGUI')
-  end
-  self:endTurn(actionCost, iterations)
+-- Checks if player escaped.
+function BattleManager:playerEscaped()
+  return self.result == -2 and self.winner == TroopManager.playerParty
 end
--- Prepares for turn.
--- @param(char : Character) the new character of the turn
--- @param(iterations : number) the time since the last turn
-function BattleManager:startTurn(char, iterations)
-  self.currentCharacter = char
-  char.battler:onSelfTurnStart(iterations)
-  self:updatePathMatrix()
-  for bc in TroopManager.characterList:iterator() do
-    bc.battler:onTurnStart(iterations)
-  end
+-- Checks if enemy won battle.
+function BattleManager:enemyWon()
+  return self.result == -1
 end
--- Closes turn.
--- @param(actionCost : number) the time spend by the character of the turn
--- @param(iterations : number) the time since the last turn
-function BattleManager:endTurn(actionCost, iterations)
-  self.currentCharacter.battler:onSelfTurnEnd(iterations, actionCost + 1)
-  for bc in TroopManager.characterList:iterator() do
-    bc.battler:onTurnEnd(iterations)
-  end
-  self.currentCharacter = nil
+-- Checks if enemy escaped.
+function BattleManager:enemyEscaped()
+  return self.result == -2 and self.winner ~= TroopManager.playerParty
 end
--- Recalculates the distance matrix.
-function BattleManager:updatePathMatrix()
-  local moveAction = MoveAction()
-  self.pathMatrix = PathFinder.dijkstra(moveAction, self.currentCharacter)
+-- Checks if there was a draw.
+function BattleManager:drawed()
+  return self.result == 0
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Auxiliary functions
 ---------------------------------------------------------------------------------------------------
 
+-- Recalculates the distance matrix.
+function BattleManager:updatePathMatrix()
+  local moveAction = MoveAction()
+  self.pathMatrix = PathFinder.dijkstra(moveAction, self.currentCharacter)
+end
 -- [COROUTINE] Plays a battle animation.
 -- @param(animID : number) the animation's ID from database
 -- @param(x : number) pixel x of the animation

@@ -93,7 +93,7 @@ function TargetWindow:setBattler(battler)
   end
 
   -- Turn count text
-  local tc = (battler.state.turnCount / BattleManager.turnLimit * 100)
+  local tc = (battler.state.turnCount / Battle.turnLimit * 100)
   self.textTCValue:setText(string.format( '%3.0f', tc ) .. '%')
   
   collectgarbage('collect')

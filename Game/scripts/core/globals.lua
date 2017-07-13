@@ -35,6 +35,7 @@ GUIManager    = require('core/gui/GUIManager')()
 BattleManager = require('core/battle/BattleManager')()
 PartyManager  = require('core/battle/PartyManager')()
 TroopManager  = require('core/battle/TroopManager')()
+TurnManager  = require('core/battle/TurnManager')()
 
 ---------------------------------------------------------------------------------------------------
 -- Plugins

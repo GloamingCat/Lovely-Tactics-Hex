@@ -156,10 +156,9 @@ function TroopManager:incrementTurnCount(time)
   end
 end
 -- Sorts the characters according to which one's turn will star first.
--- @param(turnLimit : number) the turn count to start the turn
 -- @ret(PriorityQueue) the queue where which element is a character 
 --  and each key is the remaining turn count until it's the character's turn
-function TroopManager:getTurnQueue(turnLimit)
+function TroopManager:getTurnQueue()
   local queue = PriorityQueue()
   for char in self.characterList:iterator() do
     if char.battler:isAlive() then
