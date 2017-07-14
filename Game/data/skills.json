@@ -45,8 +45,8 @@
     "radius": 1,
     "range": 1,
     "script": {
-      "path": "skill/NormalAttack.lua",
-      "param": ""
+      "path": "skill/CharacterOnly.lua",
+      "param": "living enemy"
     },
     "effects": [
       {
@@ -88,8 +88,8 @@
     "radius": 1,
     "range": 4,
     "script": {
-      "path": "skill/NormalAttack.lua",
-      "param": ""
+      "path": "skill/CharacterOnly.lua",
+      "param": "living enemy"
     },
     "effects": [
       {
