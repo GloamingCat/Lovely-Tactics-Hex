@@ -70,7 +70,7 @@ end
 function PartyManager:onFieldBattlers()
   local battlers = self:currentBattlers()
   battlers:conditionalRemove(function(battler)
-    return TroopManager:battlerCount(battler) == 0
+    return TroopManager:getBattlerCount(battler) == 0
   end)
   return battlers
 end
@@ -80,7 +80,7 @@ function PartyManager:onFieldBattlersIDs()
   local list = self:currentBattlerIDs()
   list:conditionalRemove(function(id)
     local battler = Database.battlers[id + 1]
-    return TroopManager:battlerCount(battler) == 0
+    return TroopManager:getBattlerCount(battler) == 0
   end)
   return list
 end
@@ -94,7 +94,7 @@ end
 function PartyManager:backupBattlers()
   local battlers = self:currentBattlers()
   battlers:conditionalRemove(function(battler)
-    return TroopManager:battlerCount(battler) > 0
+    return TroopManager:getBattlerCount(battler) > 0
   end)
   return battlers
 end
@@ -104,7 +104,7 @@ function PartyManager:backupBattlersIDs()
   local list = self:currentBattlerIDs()
   list:conditionalRemove(function(id)
     local battler = Database.battlers[id + 1]
-    local c = TroopManager:battlerCount(battler)
+    local c = TroopManager:getBattlerCount(battler)
     return c > 0
   end)
   return list

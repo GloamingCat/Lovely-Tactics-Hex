@@ -125,7 +125,7 @@ function TroopManager:removeCharacter(char)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Auxiliary Functions
+-- Search Functions
 ---------------------------------------------------------------------------------------------------
 
 -- Searches for the Character with the given Battler.
@@ -148,17 +148,36 @@ function TroopManager:getBattlerIDCharacter(id)
     end
   end
 end
--- Increments all character's turn count.
--- @param(time : number) the number of time iterations (1 by default)
--- @ret(Character) the character that reached turn limit (nil if none did)
-function TroopManager:incrementTurnCount(time)
-  time = time or 1
-  for bc in self.characterList:iterator() do
-    if bc.battler:isAlive() then
-      bc.battler:incrementTurnCount(time)
+-- Counts the number of characters that have the given battler.
+-- @param(battler : table) the data of the battler
+-- @ret(number) the number of characters
+function TroopManager:getBattlerCount(battler)
+  local c = 0
+  for char in self.characterList:iterator() do
+    if char.battler.data == battler then
+      c = c + 1
     end
   end
+  return c
 end
+-- Gets the number of characters in the given party.
+-- @param(party : number) party of the character (optional, player's party by default)
+-- @ret(number) the number of battler in the party
+function TroopManager:getMemberCount(party)
+  party = party or self.playerParty
+  local count = 0
+  for bc in self.characterList:iterator() do
+    if bc.battler.party == party then
+      count = count + 1
+    end
+  end
+  return count
+end
+
+---------------------------------------------------------------------------------------------------
+-- Turn
+---------------------------------------------------------------------------------------------------
+
 -- Sorts the characters according to which one's turn will star first.
 -- @ret(PriorityQueue) the queue where which element is a character 
 --  and each key is the remaining turn count until it's the character's turn
@@ -172,18 +191,22 @@ function TroopManager:getTurnQueue()
   end
   return queue
 end
--- Counts the number of characters that have the given battler.
--- @param(battler : table) the data of the battler
--- @ret(number) the number of characters
-function TroopManager:battlerCount(battler)
-  local c = 0
-  for char in self.characterList:iterator() do
-    if char.battler.data == battler then
-      c = c + 1
+-- Increments all character's turn count.
+-- @param(time : number) the number of time iterations (1 by default)
+-- @ret(Character) the character that reached turn limit (nil if none did)
+function TroopManager:incrementTurnCount(time)
+  time = time or 1
+  for bc in self.characterList:iterator() do
+    if bc.battler:isAlive() then
+      bc.battler:incrementTurnCount(time)
     end
   end
-  return c
 end
+
+---------------------------------------------------------------------------------------------------
+-- Parties
+---------------------------------------------------------------------------------------------------
+
 -- Searchs for a winner party (when all alive characters belong to the same party).
 -- @ret(number) the number of the party (returns nil if no one won yet, -1 if there's a draw)
 function TroopManager:winnerParty()
@@ -226,16 +249,6 @@ function TroopManager:getPartyCenters()
     end
   end
   return centers
-end
--- Gets the number of characters in the given party.
-function TroopManager:getMemberCount(party)
-  local count = 0
-  for bc in self.characterList:iterator() do
-    if bc.battler.party == party then
-      count = count + 1
-    end
-  end
-  return count
 end
 
 return TroopManager

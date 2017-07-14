@@ -45,7 +45,6 @@ local SkillAction = class(BattleAction)
 
 -- Constructor. Creates the action from a skill ID.
 -- @param(skillID : number) the skill's ID from database
-local old_init = SkillAction.init
 function SkillAction:init(skillID)
   local data = Database.skills[skillID + 1]
   self.data = data
@@ -59,7 +58,7 @@ function SkillAction:init(skillID)
   elseif data.type == 2 then
     color = 'support'
   end
-  old_init(self, data.timeCost, data.range, data.radius, color)
+  BattleAction.init(self, data.timeCost, data.range, data.radius, color)
   -- Effect formulas
   self.effects = {}
   for i = 1, #data.effects do
@@ -179,7 +178,6 @@ function SkillAction:applyEffects(input)
     end
   end
 end
-
 -- Applies skill's effect with no animations in a single character.
 -- @param(input : ActionInput)
 function SkillAction:applyEffect(input, char)

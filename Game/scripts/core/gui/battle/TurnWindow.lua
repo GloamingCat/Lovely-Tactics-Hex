@@ -135,13 +135,18 @@ function TurnWindow:tradeEnabled()
 end
 -- Escape condition. Only escapes if the character is in a tile of their party.
 function TurnWindow:escapeEnabled()
+  if not BattleManager.params.escapeEnabled then
+    return false
+  elseif not Battle.partyTileEscape then
+    return true
+  end
   local userParty = BattleManager.currentCharacter.battler.party
   local tileParty = BattleManager.currentCharacter:getTile().gui.party
   return userParty == tileParty
 end
 -- Call Ally condition. Enabled if there any any backup members.
 function TurnWindow:callAllyEnabled()
-  return not self.backupBattlers:isEmpty()
+  return TroopManager:getMemberCount() < Battle.maxMembers and not self.backupBattlers:isEmpty()
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -152,19 +157,16 @@ end
 function TurnWindow:colCount()
   return 2
 end
-
 -- Overrides ButtonWindow:rowCount.
 function TurnWindow:rowCount()
   return 4
 end
-
 -- Overrides Window:show.
 function TurnWindow:show(add)
   local user = BattleManager.currentCharacter
   self.userCursor:setCharacter(user)
   ActionWindow.show(self, add)
 end
-
 -- String identifier.
 function TurnWindow:__tostring()
   return 'TurnWindow'

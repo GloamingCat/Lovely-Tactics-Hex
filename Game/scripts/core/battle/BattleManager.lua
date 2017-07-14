@@ -7,7 +7,7 @@ Controls battle flow (initializes troops, runs loop, checks victory and game ove
 Parameters:
   gameOverCondition: 0 => no gameover, 1 => only when lost, 2 => only lost or draw
   skipAnimations: for debugging purposes (skips battle/character animations)
-  escape: enable Escape action
+  escapeEnabled: enable Escape action
 Results: 1 => win, 0 => draw, -1 => lost
 
 =================================================================================================]]
@@ -22,7 +22,7 @@ local TileGraphics = require('core/fields/TileGUI')
 local defaultParams = { 
   gameOverCondition = 2, 
   skipAnimations = false, 
-  escape = true 
+  escapeEnabled = true 
 }
 
 local BattleManager = class()
