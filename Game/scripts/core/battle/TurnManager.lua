@@ -49,24 +49,24 @@ function TurnManager:runTurn()
   end
   local char, iterations = self:getNextTurn()
   self:startTurn(char, iterations)
-  local actionCost = 0
+  local result = 0
   local AI = char.battler.AI
   if not BattleManager.params.skipAnimations then
     FieldManager.renderer:moveToObject(char, nil, true)
   end
   if AI then
-    actionCost = AI:runTurn(iterations, char)
+    result = AI:runTurn(iterations, char)
   else
-    actionCost = GUIManager:showGUIForResult('battle/BattleGUI')
+    result = GUIManager:showGUIForResult('battle/BattleGUI')
   end
-  if actionCost >= 0 then
-    self:endTurn(char, actionCost, iterations)
+  if result.escaped then
+    return -2, char.battler.party
+  elseif result.timeCost then
+    self:endTurn(char, result.timeCost, iterations)
     local winner = TroopManager:winnerParty()
     if winner then
       return self:getResult(winner), winner
-    end
-  else
-    return -2, char.battler.party
+    end   
   end
 end
 -- Prepares for turn.

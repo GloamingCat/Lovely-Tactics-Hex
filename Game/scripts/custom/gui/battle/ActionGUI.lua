@@ -67,7 +67,7 @@ end
 
 -- [COROUTINE] Overrides GUI:waitForResult.
 function ActionGUI:waitForResult()
-  self.input.action:onActionGUI(self.input)
+  self.result = self.input.action:onActionGUI(self.input)
   while self.result == nil do
     if self.cursor then
       self.cursor:update()
@@ -87,8 +87,7 @@ function ActionGUI:checkInput()
       self.result = self.input.action:onConfirm(self.input)
     end
   elseif InputManager.keys['cancel']:isTriggered() then
-    self.input.action:onCancel(self.input)
-    self.result = -1
+    self.result = self.input.action:onCancel(self.input)
   else
     local dx, dy = InputManager:axis(0.5, 0.0625)
     if dx ~= 0 or dy ~= 0 then

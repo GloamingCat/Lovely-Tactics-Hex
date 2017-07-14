@@ -61,11 +61,14 @@ function BattleAction:onActionGUI(input)
   if self.showStepWindow then
     input.GUI:createStepWindow():show()
   end
+  return nil
 end
 -- Called when player chooses a target for the action. 
--- By default, calls confirmation window.
--- @ret(number) the time cost of the action:
---  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
+-- By default, just ends grid seleting and calls execute.
+-- @ret(table) the battle result:
+--  nil to stay on ActionGUI;
+--  table with nil timeCost empty to return to BattleGUI;
+--  table with non-nil tomeCost to end turn
 function BattleAction:onConfirm(input)
   if input.GUI then
     input.GUI:endGridSelecting()
@@ -74,13 +77,15 @@ function BattleAction:onConfirm(input)
 end
 -- Called when player chooses a target for the action. 
 -- By default, just ends grid selecting.
--- @ret(number) the time cost of the action:
---  nil to stay on ActionGUI, -1 to return to BattleGUI, other to end turn
+-- @ret(table) the battle result:
+--  nil to stay on ActionGUI;
+--  table with nil timeCost empty to return to BattleGUI;
+--  table with non-nil tomeCost to end turn
 function BattleAction:onCancel(input)
   if input.GUI then
     input.GUI:endGridSelecting()
   end
-  return -1
+  return {}
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -92,8 +97,16 @@ function BattleAction:canExecute(input)
   return true -- Abstract.
 end
 -- Executes the action animations and applies effects.
+-- By default, just ends turn.
+-- @ret(table) the battle result:
+--  nil to stay on ActionGUI;
+--  table with nil timeCost empty to return to BattleGUI;
+--  table with non-nil tomeCost to end turn
 function BattleAction:execute(input)
-  return 0 -- Abstract.
+  return {
+    timeCost = self.timeCost, 
+    executed = true
+  }
 end
 
 ---------------------------------------------------------------------------------------------------

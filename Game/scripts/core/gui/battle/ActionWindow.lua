@@ -24,13 +24,13 @@ function ActionWindow:selectAction(action)
   local input = ActionInput(action, nil, nil, nil, self.GUI)
   action:onSelect(input)
   self.GUI:hide()
-  local actionCost = GUIManager:showGUIForResult('battle/ActionGUI', input)
-  if actionCost == -1 then
+  local result = GUIManager:showGUIForResult('battle/ActionGUI', input)
+  if result.timeCost or result.escaped then
+    -- End of turn.
+    self.result = result
+  else
     FieldManager.renderer:moveToObject(BattleManager.currentCharacter)
     self.GUI:show()
-  else
-    -- End of turn.
-    self.result = actionCost
   end
 end
 

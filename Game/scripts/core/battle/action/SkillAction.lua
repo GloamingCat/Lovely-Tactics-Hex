@@ -134,32 +134,27 @@ end
 -- Overrides BattleAction:onConfirm.
 -- Executes the movement action and the skill's effect.
 function SkillAction:execute(input)
-  local moveAction = MoveAction(self.data.range, input.target)
-  local moveInput = ActionInput(moveAction, input.user)
+  local moveAction = MoveAction(self.data.range)
+  local moveInput = ActionInput(moveAction, input.user, input.target)
   moveInput.skipAnimations = input.skipAnimations
-  moveInput.path = PathFinder.findPath(moveAction, input.user, input.target)
-  local useSkill = true
-  if not moveInput.path then
-    moveInput.path = PathFinder.findPathToUnreachable(moveAction, input.user, input.target)
-    useSkill = false
+  local result = moveInput:execute(moveInput)
+  if result.executed then    
+    -- Deadlock detection (for simulation)
     deadLockCount = deadLockCount + 1
     if deadLockCount > maxDeadLocks then
       BattleManager:deadLock()
     end
-  else
-    deadLockCount = 0
-  end
-  moveInput:execute()
-  if useSkill then
+    -- Skill use
     if input.skipAnimations then
       self:applyEffects(input)
     else
       self:applyAnimatedEffects(input)
     end
     input.user.battler:onSkillUse(self)
-    return self.timeCost
+    return BattleAction.execute(self, input)
   else
-    return 0
+    deadLockCount = 0
+    return { timeCost = 0 }
   end
 end
 

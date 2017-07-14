@@ -33,9 +33,10 @@ function CallAction:onConfirm(input)
     if result ~= 0 then
       TroopManager:createBattleCharacter(input.target, result)
       input.GUI:endGridSelecting()
-      return self.timeCost
+      return self:execute()
     end
   end
+  return nil
 end
 
 ---------------------------------------------------------------------------------------------------

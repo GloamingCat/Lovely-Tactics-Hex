@@ -37,8 +37,16 @@ end
 
 -- Overrides BattleAction:execute.
 function MoveAction:execute(input)
-  local path = input.path or BattleManager.pathMatrix:get(input.target.x, input.target.y)
-    or PathFinder.findPath(self, input.user, input.target)
+  local path = input.path
+  if not path then
+    path = self.range == 0 and BattleManager.pathMatrix:get(input.target.x, input.target.y)
+    path = path or PathFinder.findPath(self, input.user, input.target)
+  end
+  local fullPath = true
+  if not path then
+    fullPath = false
+    path = PathFinder.findPathToUnreachable(self, input.user, input.target)
+  end
   if input.skipAnimations then
     input.user:moveToTile(path.lastStep)
   else
@@ -48,7 +56,7 @@ function MoveAction:execute(input)
   end
   input.user.battler:onMove(path)
   BattleManager:updatePathMatrix()
-  return self.timeCost
+  return { executed = fullPath }
 end
 
 ---------------------------------------------------------------------------------------------------

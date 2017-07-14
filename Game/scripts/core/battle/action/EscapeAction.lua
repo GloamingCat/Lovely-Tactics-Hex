@@ -35,13 +35,14 @@ end
 function EscapeAction:onActionGUI(input)
   local confirm = GUIManager:showGUIForResult('ConfirmGUI')
   if confirm == 1 then
-    input.GUI.result = self:escape(input.user)
+    return self:onConfirm(input)
   else
-    input.GUI.result = -1
+    return self:onCancel(input)
   end
 end
 -- Executes the escape animation for the given character.
-function EscapeAction:escape(char)
+function EscapeAction:onConfirm(input)
+  local char = input.user
   local party = char.battler.party
   while char.sprite.color.alpha > 0 do
     local a = char.sprite.color.alpha
@@ -51,9 +52,12 @@ function EscapeAction:escape(char)
   char.sprite:setRGBA(nil, nil, nil, 0)
   TroopManager:removeCharacter(char)
   if TroopManager:getMemberCount(party) == 0 then
-    return -2
+    return {
+      executed = true,
+      escaped = true
+    }
   else
-    return 0
+    return self:execute()
   end
 end
 
