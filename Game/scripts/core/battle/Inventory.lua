@@ -8,7 +8,7 @@ A special kind of list that stores pairs (item ID, quantity).
 =================================================================================================]]
 
 -- Imports
-local List = require('core/algorithm/List')
+local List = require('core/datastruct/List')
 
 -- Alias
 local rand = love.math.random

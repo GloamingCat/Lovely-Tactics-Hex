@@ -8,7 +8,7 @@ The BattleAction that is executed when players chooses a skill to use.
 =================================================================================================]]
 
 -- Imports
-local List = require('core/algorithm/List')
+local List = require('core/datastruct/List')
 local BattleAction = require('core/battle/action/BattleAction')
 local MoveAction = require('core/battle/action/MoveAction')
 local ActionInput = require('core/battle/action/ActionInput')

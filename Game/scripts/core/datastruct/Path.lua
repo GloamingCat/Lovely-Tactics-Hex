@@ -8,7 +8,7 @@ A generic path of nodes (steps).
 =============================================================================]]
 
 -- Imports
-local List = require('core/algorithm/List')
+local List = require('core/datastruct/List')
 
 local Path = class()
 

@@ -8,11 +8,11 @@ Creates and manages battle troops.
 =================================================================================================]]
 
 -- Imports
-local List = require('core/algorithm/List')
+local List = require('core/datastruct/List')
 local Character = require('core/objects/Character')
 local Battler = require('core/battle/Battler')
 local Troop = require('core/battle/Troop')
-local PriorityQueue = require('core/algorithm/PriorityQueue')
+local PriorityQueue = require('core/datastruct/PriorityQueue')
 
 -- Alias
 local rand = love.math.random

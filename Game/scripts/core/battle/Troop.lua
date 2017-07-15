@@ -8,7 +8,7 @@ Manipulates the matrix of battler IDs to the instatiated in the beginning of the
 =================================================================================================]]
 
 -- Imports
-local Matrix2 = require('core/algorithm/Matrix2')
+local Matrix2 = require('core/math/Matrix2')
 
 -- Alias
 local mod = math.mod

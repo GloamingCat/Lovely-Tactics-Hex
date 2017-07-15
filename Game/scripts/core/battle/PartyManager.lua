@@ -8,7 +8,7 @@ Stores and manages player's party members (active and backup).
 =================================================================================================]]
 
 -- Imports
-local List = require('core/algorithm/List')
+local List = require('core/datastruct/List')
 
 -- Constants
 local stateVariables = Config.stateVariables

@@ -32,16 +32,14 @@ function TargetWindow:init(GUI, skin)
   local m = 12
   Window.init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - m, 
       -ScreenManager.height / 2 + h / 2 + m), skin)
-  
+  -- Top-right position
   local x = - w / 2 + self.paddingw
   local y = - h / 2 + self.paddingh
   w = w - self.paddingw * 2
-
   -- Name text
   local posName = Vector(x, y, -1)
   self.textName = SimpleText('', posName, w, 'center')
   self.content:add(self.textName)
-  
   -- State values texts
   self.textState = {}
   self.textStateValues = {}
@@ -59,25 +57,22 @@ function TargetWindow:init(GUI, skin)
       self.content:add(textValue)
     end
   end
-  
   -- Turn count text
   local posTC = Vector(x, y + 15 + varCount * 10, -1)
   self.textTC = SimpleText(Vocab.turnCount .. ':', posTC, w, 'left', font)
   self.textTCValue = SimpleText('', posTC, w, 'right', font)
   self.content:add(self.textTC)
   self.content:add(self.textTCValue)
-  
   collectgarbage('collect')
 end
 
 ---------------------------------------------------------------------------------------------------
--- Update
+-- Content
 ---------------------------------------------------------------------------------------------------
 
 function TargetWindow:setBattler(battler)  
   -- Name text
   self.textName:setText(battler.data.name)
-  
   -- State values text
   for i = 1, #stateVariables do
     local v = stateVariables[i]
@@ -91,14 +86,17 @@ function TargetWindow:setBattler(battler)
       self.textStateValues[v.shortName]:setText(text)
     end
   end
-
   -- Turn count text
   local tc = (battler.state.turnCount / Battle.turnLimit * 100)
   self.textTCValue:setText(string.format( '%3.0f', tc ) .. '%')
-  
   collectgarbage('collect')
 end
 
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
+
+-- String representation.
 function TargetWindow:__tostring()
   return 'TargetWindow'
 end

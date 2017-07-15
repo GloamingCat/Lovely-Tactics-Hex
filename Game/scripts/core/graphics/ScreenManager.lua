@@ -142,17 +142,4 @@ function ScreenManager:setFullscreen()
   setWindowMode(mode.width, mode.height, {fullscreen = true})
 end
 
----------------------------------------------------------------------------------------------------
--- Event handlers
----------------------------------------------------------------------------------------------------
-
--- Callback function triggered when window receives or loses focus.
--- @param(f : boolean) window focus
-function love.focus(f)
-  local renderers = _G.ScreenManager.renderers
-  for i = 1, #renderers do
-    renderers[i].paused = not f
-  end
-end
-
 return ScreenManager

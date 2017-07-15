@@ -10,7 +10,7 @@ evaluation function.
 
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
-local Queue = require('core/algorithm/Queue')
+local Queue = require('core/datastruct/Queue')
 local BattleState = require('core/battle/ai/montecarlo/BattleState')
 local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
 

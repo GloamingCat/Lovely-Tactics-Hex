@@ -10,10 +10,10 @@ this module must inherit from this class.
 =================================================================================================]]
 
 -- Imports
-local List = require('core/algorithm/List')
-local Matrix2 = require('core/algorithm/Matrix2')
-local Path = require('core/algorithm/Path')
-local PriorityQueue = require('core/algorithm/PriorityQueue')
+local List = require('core/datastruct/List')
+local Matrix2 = require('core/math/Matrix2')
+local Path = require('core/datastruct/Path')
+local PriorityQueue = require('core/datastruct/PriorityQueue')
 
 -- Alias
 local max = math.max

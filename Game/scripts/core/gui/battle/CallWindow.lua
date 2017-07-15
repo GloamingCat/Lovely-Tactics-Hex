@@ -32,7 +32,7 @@ function CallWindow:createButtons()
 end
 
 ---------------------------------------------------------------------------------------------------
--- Initialization
+-- Callbacks
 ---------------------------------------------------------------------------------------------------
 
 -- Confirm callback for each button, returns the chosen battle.

@@ -1,5 +1,14 @@
 
 return {
+  -- Main Window
+  items = 'Items',
+  skills = 'Skills',
+  states = 'States',
+  party = 'Party',
+  config = 'Settings',
+  save = 'Save',
+  quit = 'Quit',
+  
   -- Turn Window
   attack = 'Attack',
   move = 'Move',

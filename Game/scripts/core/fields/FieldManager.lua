@@ -9,8 +9,8 @@ game's data.
 =================================================================================================]]
 
 -- Imports
-local List = require('core/algorithm/List')
-local Stack = require('core/algorithm/Stack')
+local List = require('core/datastruct/List')
+local Stack = require('core/datastruct/Stack')
 local Vector = require('core/math/Vector')
 local Renderer = require('core/graphics/Renderer')
 local Field = require('core/fields/Field')

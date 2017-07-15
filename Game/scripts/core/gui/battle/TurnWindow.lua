@@ -29,14 +29,14 @@ local TurnWindow = class(ActionWindow)
 -- Overrides ButtonWindow:createButtons.
 function TurnWindow:createButtons()
   self.backupBattlers = PartyManager:backupBattlers()
-  self:addButton('Attack', nil, self.onAttackAction, self.attackEnabled)
-  self:addButton('Move', nil, self.onMoveAction, self.moveEnabled)
-  self:addButton('Skill', nil, self.onSkill, self.skillEnabled)
-  self:addButton('Item', nil, self.onItem, self.itemEnabled)
-  self:addButton('Trade', nil, self.onTradeAction, self.tradeEnabled)
-  self:addButton('Escape', nil, self.onEscapeAction, self.escapeEnabled)
-  self:addButton('Wait', nil, self.onWait)
-  self:addButton('Call Ally', nil, self.onCallAllyAction, self.callAllyEnabled)
+  self:addButton(Vocab.attack, Icon.attack, self.onAttackAction, self.attackEnabled)
+  self:addButton(Vocab.move, Icon.move, self.onMoveAction, self.moveEnabled)
+  self:addButton(Vocab.skill, Icon.skill, self.onSkill, self.skillEnabled)
+  self:addButton(Vocab.item, Icon.item, self.onItem, self.itemEnabled)
+  self:addButton(Vocab.trade, Icon.trade, self.onTradeAction, self.tradeEnabled)
+  self:addButton(Vocab.escape, Icon.escape, self.onEscapeAction, self.escapeEnabled)
+  self:addButton(Vocab.wait, Icon.wait, self.onWait)
+  self:addButton(Vocab.callAlly, Icon.callAlly, self.onCallAllyAction, self.callAllyEnabled)
   self.userCursor = BattleCursor()
   self.content:add(self.userCursor)
 end
@@ -133,7 +133,7 @@ function TurnWindow:tradeEnabled()
 end
 -- Escape condition. Only escapes if the character is in a tile of their party.
 function TurnWindow:escapeEnabled()
-  if not BattleManager.params.escapeEnabled then
+  if not BattleManager.params.escapeEnabled and #PartyManager:onFieldBattlers() == 1 then
     return false
   elseif not Battle.partyTileEscape then
     return true

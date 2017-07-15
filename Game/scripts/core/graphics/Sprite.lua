@@ -11,6 +11,7 @@ the world's coordinate system) and the depth/render order (z axis).
 =================================================================================================]]
 
 -- Imports
+local Affine = require('core/math/Affine')
 local Vector = require('core/math/Vector')
 local Colorable = require('core/transform/Colorable')
 
@@ -47,7 +48,6 @@ function Sprite:init(renderer, texture, quad)
   self:insertSelf(1)
   self.visible = true
 end
-
 -- Creates a new Sprite from quad data.
 -- @param(quadData : table) data from database
 -- @param(renderer : Renderer) the renderer of the sprite
@@ -59,7 +59,6 @@ function Sprite.fromQuad(quadData, renderer)
     quadData.width, quadData.height, w, h)
   return Sprite(renderer, texture, quad)
 end
-
 -- Creates a deep copy of this sprite (does not clone texture).
 -- @param(renderer : Renderer) the renderer of the copy (optional)
 -- @ret(Sprite) the newly created copy
@@ -84,7 +83,6 @@ end
 function Sprite:isVisible()
   return self.visible
 end
-
 -- Sets if sprite is visible
 -- @param(value : boolean) if visible
 function Sprite:setVisible(value)
@@ -108,7 +106,6 @@ function Sprite:setTexture(texture)
     end
   end
 end
-
 -- Sets the quad based on texture.
 -- @param(x : number) quad's new x
 -- @param(y : number) quad's new y
@@ -134,7 +131,6 @@ function Sprite:setTransformation(data)
   self:setRotation(math.rad(data.rotation or 0))
   self:setRGBA(data.red, data.green, data.blue, data.alpha)
 end
-
 -- Merges sprite's current transformation with a new one.
 -- @param(data : table) transformation data
 function Sprite:applyTransformation(data)
@@ -146,7 +142,6 @@ function Sprite:applyTransformation(data)
   self:setRGBA(data.red * self.color.red / 100, data.green * self.color.green / 100, 
     data.blue * self.color.blue / 100, data.alpha * self.color.alpha / 100)
 end
-
 -- Sets the quad's scale.
 -- @param(sx : number) the X-axis scale
 -- @param(sy : number) the Y-axis scale
@@ -159,7 +154,6 @@ function Sprite:setScale(sx, sy)
   self.scaleX = sx
   self.scaleY = sy
 end
-
 -- Sets que quad's rotation
 -- @param(angle : number) the rotation's angle in degrees
 function Sprite:setRotation(angle)
@@ -167,6 +161,11 @@ function Sprite:setRotation(angle)
     self.renderer.needsRedraw = true
   end
   self.rotation = angle
+end
+-- Gets the extreme values for the bounding box.
+function Sprite:totalBounds()
+  local _, _, w, h = self.quad:getViewport()
+  return Affine.getBoundingBox(self, w, h)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -192,7 +191,6 @@ function Sprite:setOffset(ox, oy, depth)
     self:insertSelf(self.position.z)
   end
 end
-
 -- Sets the offset as the center of the image.
 function Sprite:setCenterOffset(offsetDepth)
   local _, _, w, h = self.quad:getViewport()
@@ -235,7 +233,6 @@ function Sprite:setXYZ(x, y, z)
     self.renderer.needsRedraw = true
   end  
 end
-
 -- Sets the sprite's pixel position the update's its position in the sprite list.
 -- @param(pos : Vector) the pixel position of the image
 function Sprite:setPosition(pos)
@@ -258,7 +255,6 @@ function Sprite:insertSelf(i)
   end
   self.renderer.needsRedraw = true
 end
-
 -- Removes sprite from its list.
 function Sprite:removeSelf()
   local depth = self.position.z + self.offsetDepth
@@ -276,7 +272,6 @@ function Sprite:removeSelf()
   end
   self.renderer.needsRedraw = true
 end
-
 -- Called when the renderer needs to draw this sprite.
 -- @param(renderer : Renderer) the renderer that is drawing this sprite
 function Sprite:draw(renderer)
@@ -290,7 +285,6 @@ function Sprite:draw(renderer)
     self.rotation, self.scaleX, self.scaleY, self.offsetX, self.offsetY)
   renderer.toDraw:add(self)
 end
-
 -- Deletes this sprite.
 function Sprite:destroy()
   self:removeSelf()

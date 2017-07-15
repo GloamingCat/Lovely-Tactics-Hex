@@ -9,7 +9,7 @@ There's only one ObjectTile for each (i, j, height) in the field.
 =================================================================================================]]
 
 -- Imports
-local List = require('core/algorithm/List')
+local List = require('core/datastruct/List')
 
 -- Constants
 local overpassAllies = Battle.overpassAllies

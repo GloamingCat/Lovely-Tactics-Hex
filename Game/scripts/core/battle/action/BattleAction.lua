@@ -13,7 +13,7 @@ etc.
 =================================================================================================]]
 
 -- Imports
-local List = require('core/algorithm/List')
+local List = require('core/datastruct/List')
 
 -- Alias
 local mathf = math.field

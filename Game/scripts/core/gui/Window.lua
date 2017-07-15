@@ -17,7 +17,7 @@ Every content element for the window must have all the following methods:
 local Transformable = require('core/transform/Transformable')
 local Vector = require('core/math/Vector')
 local SpriteGrid = require('core/graphics/SpriteGrid')
-local List = require('core/algorithm/List')
+local List = require('core/datastruct/List')
 
 -- Alias
 local floor = math.floor

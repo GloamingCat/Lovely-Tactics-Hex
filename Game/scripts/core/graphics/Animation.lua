@@ -1,55 +1,49 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 Animation
--------------------------------------------------------------------------------
-An Animation updates the quad of the associated Sprite, 
-assuming that the texture of the sprite is a spritesheet.
+---------------------------------------------------------------------------------------------------
+An Animation updates the quad of the associated Sprite, assuming that the texture of the sprite 
+is a spritesheet.
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Imports
 local Sprite = require('core/graphics/Sprite')
 
 local Animation = class()
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Initialization
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- @param(duration : number) the total duration
 -- @param(rowCount : number) how many rows the spritesheet has
 -- @param(colCount : number) how many columns the spritesheet has
 -- @param(quadWidth : number) the width of each quad
 -- @param(quadHeight : number) the height of each quad
--- @param(sprite : Sprite) the sprite that this animation if associated to (optional, but must be set later)
+-- @param(sprite : Sprite) the sprite that this animation if associated to 
+--  (optional, but must be set later)
 function Animation:init(duration, rowCount, colCount, quadWidth, quadHeight, 
     loop, allRows, sprite)
-  
   self.sprite = sprite
-  self.paused = sprite == nil
-
+  self.paused = sprite == nin
   -- The duration in frames of each quad of the animation
   self.duration = duration
-  
   -- The size of each quad
   self.quadWidth = quadWidth
   self.quadHeight = quadHeight
-  
   -- Number of rows and collunms of the spritesheet
   self.colCount = colCount
   self.rowCount = rowCount
-  
   -- Current quad indexes col/row in the spritesheet
   self.col = 0
   self.row = 0
-  
   -- Frame count (adapted to the frame rate)
   self.time = 0
   self.loop = loop
   self.allRows = allRows
 end
-
 -- Creates a new animation from file data.
 -- @param(data : table) the animation data from file
 -- @param(renderer : Renderer) the renderer this sprite will be rendered with
@@ -76,10 +70,20 @@ function Animation.fromData(data, renderer, sprite)
     w / data.cols, h / data.rows, data.loop, data.allRows, sprite, data.script.param)
   return animation, texture, quad
 end
+-- Creates a 1-quad animation for the given image.
+-- @param(texture : Image) the single image
+-- @param(renderer : Renderer) the renderer of the sprite
+function Animation.fromImage(texture, renderer)
+  local w, h = texture:getWidth(), texture:getHeight()
+  local quad = love.graphics.newQuad(0, 0, w, h, w, h)
+  local sprite = Sprite(renderer, texture, quad)
+  local Static = require('custom/animation/Static')
+  return Static(1, 1, 1, w, h, false, false, sprite, '')
+end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Update
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Increments the frame count and automatically changes que sprite.
 function Animation:update()
@@ -97,7 +101,6 @@ function Animation:update()
     end
   end
 end
-
 -- Changes the column of the current quad
 -- @param(col : number) the column number, starting from 0
 function Animation:setCol(col)
@@ -110,7 +113,6 @@ function Animation:setCol(col)
     self.sprite.renderer.needsRedraw = true
   end
 end
-
 -- Changes the row of the current quad
 -- @param(row : number) the row number, starting from 0
 function Animation:setRow(row)
@@ -123,6 +125,10 @@ function Animation:setRow(row)
     self.sprite.renderer.needsRedraw = true
   end
 end
+
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
 
 -- Destroy this animation.
 function Animation:destroy()

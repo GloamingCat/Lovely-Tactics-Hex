@@ -9,6 +9,7 @@ A group of sprites created from a 9-sliced skin.
 
 -- Imports
 local Sprite = require('core/graphics/Sprite')
+local Vector = require('core/math/Vector')
 
 -- Alias
 local Quad = love.graphics.newQuad
@@ -22,8 +23,9 @@ local SpriteGrid = class()
 
 -- Constructor.
 -- @param(skin : Image) the image to be 9-sliced
-function SpriteGrid:init(skin)
+function SpriteGrid:init(skin, relativePos)
   self.skin = skin
+  self.position = relativePos or Vector(0, 0)
 end
 -- Creates sprites and skinData.
 -- @param(renderer : Renderer) the renderer of the sprites
@@ -89,7 +91,7 @@ end
 -- @param(t : Transformable)
 function SpriteGrid:updateTransform(t)
   for i = 1, 9 do
-    self.sprites[i]:setPosition(t.position)
+    self.sprites[i]:setPosition(t.position + self.position)
     self.sprites[i]:setOffset(self.skinData[i].x, self.skinData[i].y)
     self.sprites[i]:setScale(self.skinData[i].sx * t.scaleX, self.skinData[i].sy * t.scaleY)
   end

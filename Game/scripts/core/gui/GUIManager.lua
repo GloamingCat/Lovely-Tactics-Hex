@@ -8,7 +8,7 @@ This class manages all GUI objects.
 =================================================================================================]]
 
 -- Imports
-local Stack = require('core/algorithm/Stack')
+local Stack = require('core/datastruct/Stack')
 local Renderer = require('core/graphics/Renderer')
 local FiberList = require('core/fiber/FiberList')
 

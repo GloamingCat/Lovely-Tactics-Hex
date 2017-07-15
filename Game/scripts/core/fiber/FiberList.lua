@@ -8,7 +8,7 @@ A List of Fibers. Must be updated every frame.
 =================================================================================================]]
 
 -- Imports
-local List = require('core/algorithm/List')
+local List = require('core/datastruct/List')
 local Fiber = require('core/fiber/Fiber')
 
 local FiberList = class(List)

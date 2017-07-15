@@ -7,7 +7,7 @@ Implements basic game callbacks (load, update and draw).
 
 =================================================================================================]]
 
-require('core/globals')
+require('core/base/globals')
 
 ---------------------------------------------------------------------------------------------------
 -- General
@@ -26,6 +26,19 @@ end
 -- Callback function used to draw on the screen every frame.
 function love.draw()
   GameManager:draw()
+end
+
+---------------------------------------------------------------------------------------------------
+-- Screen
+---------------------------------------------------------------------------------------------------
+
+-- Callback function triggered when window receives or loses focus.
+-- @param(f : boolean) window focus
+function love.focus(f)
+  local renderers = _G.ScreenManager.renderers
+  for i = 1, #renderers do
+    renderers[i].paused = not f
+  end
 end
 
 ---------------------------------------------------------------------------------------------------

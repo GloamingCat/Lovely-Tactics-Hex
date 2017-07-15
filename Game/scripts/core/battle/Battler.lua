@@ -8,7 +8,7 @@ A class the holds character's information for battle formula.
 =================================================================================================]]
 
 -- Imports
-local List = require('core/algorithm/List')
+local List = require('core/datastruct/List')
 local SkillAction = require('core/battle/action/SkillAction')
 local Inventory = require('core/battle/Inventory')
 
@@ -41,6 +41,7 @@ local Battler = class()
 function Battler:init(battlerID, party)
   local data = Database.battlers[battlerID + 1]
   self.data = data
+  self.name = data.name
   self.battlerID = battlerID
   self.party = party
   self.tags = util.createTags(data.tags)
@@ -111,7 +112,7 @@ end
 -- Converting to string.
 -- @ret(string) a string representation
 function Battler:__tostring()
-  return 'Battler: ' .. self.data.name .. ' [Party ' .. self.party .. ']'
+  return 'Battler: ' .. self.name .. ' [Party ' .. self.party .. ']'
 end
 
 ---------------------------------------------------------------------------------------------------

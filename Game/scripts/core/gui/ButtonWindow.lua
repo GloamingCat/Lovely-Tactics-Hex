@@ -8,8 +8,8 @@ Provides the base for windows with buttons.
 =================================================================================================]]
 
 -- Imports
-local List = require('core/algorithm/List')
-local Matrix2 = require('core/algorithm/Matrix2')
+local List = require('core/datastruct/List')
+local Matrix2 = require('core/math/Matrix2')
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local Button = require('core/gui/Button')
@@ -101,12 +101,12 @@ end
 -- Gets the width of a single button.
 -- @ret(number) the width in pixels
 function ButtonWindow:buttonWidth()
-  return 50
+  return 55
 end
 -- Gets the height of a single button.
 -- @ret(number) the height in pixels
 function ButtonWindow:buttonHeight()
-  return 13
+  return 15
 end
 -- Add a simple generic new button to the list.
 -- @param(name : string) the text the appears in the button
