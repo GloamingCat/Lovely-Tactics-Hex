@@ -29,7 +29,10 @@ function BattleGUI:createWindows()
     self.skillWindow = SkillWindow(self, skillList)
   end
   -- Item Window
-  local inventory = BattleManager.currentCharacter.battler.inventory
+  local inventory = SaveManager.current.partyInventory
+  if Battle.individualInventory then
+    inventory = BattleManager.currentCharacter.battler.inventory
+  end
   local itemList = inventory:getUsableItems(1)
   if #itemList > 0 then
     self.itemWindow = ItemWindow(self, inventory, itemList)

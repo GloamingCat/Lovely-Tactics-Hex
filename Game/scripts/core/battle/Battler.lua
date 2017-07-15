@@ -44,13 +44,8 @@ function Battler:init(battlerID, party)
   self.battlerID = battlerID
   self.party = party
   self.tags = util.createTags(data.tags)
-  local persistentData = nil
-  if data.persistent then
-    persistentData = SaveManager.current.battlerData[battlerID .. '']
-    if not persistentData then
-      persistentData = { inventory = Inventory(data.items) }
-      SaveManager.current.battlerData[battlerID .. ''] = persistentData
-    end
+  local persistentData = self:loadPersistentData(battlerID, data.persistent)
+  if persistentData then
     self.inventory = persistentData.inventory
   else
     self.inventory = Inventory(data.items)
@@ -61,6 +56,16 @@ function Battler:init(battlerID, party)
   self:setSkillList(data.skills, data.attackID)
   self:setElements(data.elements)
   self:setAI(data.scriptAI)
+end
+-- Gets the data from save if persistent, nil if not.
+-- @ret(table) the battler's data in the save
+function Battler:loadPersistentData(id, persistent)
+  local data = SaveManager.current.battlerData[id .. '']
+  if not data then
+    data = { inventory = Inventory(data.items) }
+    SaveManager.current.battlerData[id .. ''] = data
+  end
+  return data
 end
 -- Sets data of this battler's AI.
 -- @param(ai : table) the script data table (with strings path and param)
