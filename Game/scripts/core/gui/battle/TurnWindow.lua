@@ -120,13 +120,11 @@ function TurnWindow:moveEnabled(button)
 end
 -- Skill condition. Enabled if character has any skills to use.
 function TurnWindow:skillEnabled(button)
-  local user = BattleManager.currentCharacter.battler
-  return not user.skillList:isEmpty()
+  return self.GUI.skillWindow ~= nil
 end
 -- Item condition. Enabled if character has any items to use.
 function TurnWindow:itemEnabled(button)
-  local user = BattleManager.currentCharacter.battler
-  return not user.inventory:isEmpty()
+  return self.GUI.itemWindow ~= nil
 end
 -- Trade condition. Enabled if there are any characters nearby that have items.
 function TurnWindow:tradeEnabled()

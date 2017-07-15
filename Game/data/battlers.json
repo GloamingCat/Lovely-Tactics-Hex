@@ -59,7 +59,13 @@
     "skills": [
       3
     ],
-    "items": [],
+    "items": [
+      {
+        "id": 0,
+        "count": 3,
+        "rate": 100
+      }
+    ],
     "elements": [],
     "tags": []
   },
@@ -99,7 +105,18 @@
       0
     ],
     "skills": [],
-    "items": [],
+    "items": [
+      {
+        "id": 0,
+        "count": 1,
+        "rate": 100
+      },
+      {
+        "id": 0,
+        "count": 1
+        "rate": 50
+      }
+    ],
     "elements": [],
     "tags": []
   },

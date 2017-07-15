@@ -30,6 +30,13 @@
     "tileAnimID": 2,
     "tileHLAnimID": 3
   },
+  "initialItems": [
+    {
+      "id": 0,
+      "count": 10,
+      "rate": 100
+    }
+  ],
   "battle": {
     "playerTroopID": 0, 
     "tradeSkillID": 0,

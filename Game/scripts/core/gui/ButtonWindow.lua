@@ -85,6 +85,11 @@ end
 function ButtonWindow:totalHeight()
   return self.paddingh * 2 + self:rowCount() * self:buttonHeight()
 end
+-- Gets the number of rows that where actually occupied by buttons.
+-- @ret(number) row count
+function ButtonWindow:actualRowCount()
+  return self.buttonMatrix.height
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Buttons
@@ -123,10 +128,10 @@ end
 function ButtonWindow:currentButton()
   return self.buttonMatrix:get(self.currentCol, self.currentRow)
 end
--- Gets the number of rows that where actually occupied by buttons.
--- @ret(number) row count
-function ButtonWindow:actualRowCount()
-  return self.buttonMatrix.height
+-- Gets the number of buttons.
+-- @ret(number)
+function ButtonWindow:buttonCount()
+  return #self.buttonMatrix
 end
 
 ---------------------------------------------------------------------------------------------------

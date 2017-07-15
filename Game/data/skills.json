@@ -152,7 +152,7 @@
     "userLoadAnim": "Load0",
     "userCastAnim": "Attack1",
     "stepOnCast": true,
-    "loadAnimID": -1,
+    "loadAnimID": 4,
     "castAnimID": -1,
     "centerAnimID": 1,
     "individualAnimID": -1,
@@ -204,7 +204,7 @@
     "userLoadAnim": "Load0",
     "userCastAnim": "Attack1",
     "stepOnCast": true,
-    "loadAnimID": -1,
+    "loadAnimID": 4,
     "castAnimID": -1,
     "centerAnimID": 2,
     "individualAnimID": -1,
@@ -217,6 +217,58 @@
       {
         "id": 6,
         "value": 100
+      }
+    ],
+    "tags": []
+  },
+  {
+    "name": "Cure",
+    "description": "Cures a single ally character.",
+    "type": 1,
+    "icon": {
+      "imagePath": "Icon/Skills/Magical.png",
+      "x": 0,
+      "y": 0,
+      "width": 24,
+      "height": 24
+    },
+    "radius": 1,
+    "range": 3,
+    "script": {
+      "path": "skill/CharacterOnly.lua",
+      "param": "living ally"
+    },
+    "effects": [
+      {
+        "successRate": "100",
+        "basicResult": "-(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100",
+        "id": 0
+      }
+    ],
+    "costs": [
+      {
+        "value": "10",
+        "id": 1
+      }
+    ],
+    "timeCost": 100,
+    "restriction": 0,
+    "userLoadAnim": "",
+    "userCastAnim": "Attack0",
+    "stepOnCast": true,
+    "loadAnimID": -1,
+    "castAnimID": -1,
+    "centerAnimID": 4,
+    "individualAnimID": -1,
+    "mirror": true,
+    "elements": [
+      {
+        "id": 0,
+        "value": 50
+      },
+      {
+        "id": 1,
+        "value": 50
       }
     ],
     "tags": []

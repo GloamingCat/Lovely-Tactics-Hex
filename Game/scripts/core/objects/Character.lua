@@ -140,7 +140,7 @@ end
 -- [COROUTINE] Executes the intro animations (load and cast) for skill use.
 -- @param(target : ObjectTile) the target of the skill
 -- @param(skill : table) skill data from database
-function Character:loadSkill(skill, dir, wait)
+function Character:loadSkill(skill, dir)
   local minTime = 0
   -- Load animation (user)
   if skill.userLoadAnim ~= '' then
@@ -155,14 +155,12 @@ function Character:loadSkill(skill, dir, wait)
       pos.x, pos.y, pos.z - 1, mirror)
     minTime = max(minTime, anim.duration)
   end
-  if wait then
-    _G.Fiber:wait(minTime)
-  end
+  _G.Fiber:wait(minTime)
 end
 -- [COROUTINE] Plays cast animation.
 -- @param(skill : Skill)
 -- @param(dir : number) the direction of the cast
-function Character:castSkill(skill, dir, wait)
+function Character:castSkill(skill, dir)
   local minTime = 0
   -- Forward step
   if skill.stepOnCast then

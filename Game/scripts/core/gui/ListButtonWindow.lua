@@ -24,8 +24,13 @@ function ListButtonWindow:init(list, ...)
 end
 -- Overrides ButtonWindow:createButtons.
 function ListButtonWindow:createButtons()
-  for i = 1, #self.list do
-    self:createButton(self.list[i])
+  if #self.list > 0 then
+    for i = 1, #self.list do
+      self:createButton(self.list[i])
+    end
+  end
+  if self:buttonCount() == 0 then
+    self:addButton('', nil, function() end)
   end
 end
 -- Creates a button from an element in the list.

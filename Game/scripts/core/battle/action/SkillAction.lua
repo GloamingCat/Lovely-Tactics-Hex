@@ -252,10 +252,10 @@ function SkillAction:applyAnimatedEffects(input)
   local originTile = input.user:getTile()
   local dir = input.user:turnToTile(input.target.x, input.target.y)
   dir = math.angle2Row(dir) * 45
-  input.user:loadSkill(self.data, dir, true)
+  input.user:loadSkill(self.data, dir)
   -- Cast animation
   FieldManager.renderer:moveToTile(input.target)
-  input.user:castSkill(self.data, dir)
+  _G.Fiber:fork(input.user.castSkill, input.user, self.data, dir)
   -- Minimum time to wait (initially, a frame).
   local minTime = 1
   -- Animation in center target tile 
@@ -337,10 +337,11 @@ function SkillAction:popupResults(pos, battler, results)
     local popupName = results[i][1]
     if results[i][2] > 0 then
       popupName = 'popup_dmg' .. popupName
+      popupText:addLine(results[i][2], Color[popupName], Font[popupName])
     else
       popupName = 'popup_heal' .. popupName
+      popupText:addLine(-results[i][2], Color[popupName], Font[popupName])
     end
-    popupText:addLine(results[i][2], Color[popupName], Font[popupName])
     battler:damage(results[i][1], results[i][2])
   end
   popupText:popup()

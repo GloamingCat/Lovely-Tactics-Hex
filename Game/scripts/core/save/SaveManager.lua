@@ -9,6 +9,7 @@ Responsible for storing and loading game saves.
 
 -- Imports
 local Troop = require('core/battle/Troop')
+local Inventory = require('core/battle/Inventory')
 
 -- Constants
 local stateVariables = Config.stateVariables
@@ -29,8 +30,9 @@ function SaveManager:newSave()
   save.playTime = 0
   save.fieldData = {}
   save.battlerData = {}
+  -- Party inventory
   save.partyData = {}
-  -- Party money
+  save.partyInventory = Inventory(Config.initialItems)
   for i = 1, #stateVariables do
     if stateVariables[i].reward == 2 then
       local init = loadformula(stateVariables[i].initial)

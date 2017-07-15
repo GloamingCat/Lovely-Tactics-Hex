@@ -23,21 +23,22 @@ local BattleGUI = class(GUI)
 
 function BattleGUI:createWindows()
   self.name = 'Battle GUI'
-  
+  -- Skill Window
   local skillList = BattleManager.currentCharacter.battler.skillList
   if not skillList:isEmpty() then
     self.skillWindow = SkillWindow(self, skillList)
   end
-  
-  local itemList = BattleManager.currentCharacter.battler.inventory
-  if not itemList:isEmpty() then
-    self.itemWindow = ItemWindow(self, itemList)
+  -- Item Window
+  local inventory = BattleManager.currentCharacter.battler.inventory
+  local itemList = inventory:getUsableItems(1)
+  if #itemList > 0 then
+    self.itemWindow = ItemWindow(self, inventory, itemList)
   end
-  
+  -- Main Window
   self.turnWindow = TurnWindow(self)
   self.turnWindow:setPosition(Vector(-ScreenManager.width / 2 + self.turnWindow.width / 2 + 8, 
       -ScreenManager.height / 2 + self.turnWindow.height / 2 + 8))
-  
+  -- Initial state
   self.activeWindow = self.turnWindow
   self.windowList:add(self.turnWindow)
 end

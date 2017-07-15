@@ -20,18 +20,18 @@ local ItemWindow = class(ActionWindow, ListButtonWindow)
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
-function ItemWindow:init(GUI, itemList)
+function ItemWindow:init(GUI, inventory, itemList)
   ListButtonWindow.init(self, itemList, GUI)
+  self.inventory = inventory
 end
 -- Creates a button from an item ID.
 -- @param(id : number) the item ID
 function ItemWindow:createButton(itemSlot)
   local item = Database.items[itemSlot.id + 1]
-  if item.skillID >= 0 then
-    local name = item.name .. '(' .. itemSlot.count .. ')'
-    local button = self:addButton(name, nil, self.onButtonConfirm)
-    button.item = item
-  end
+  local name = item.name .. ' (' .. itemSlot.count .. ')'
+  local button = self:addButton(name, nil, self.onButtonConfirm)
+  button.item = item
+  button.itemID = itemSlot.id
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -40,10 +40,12 @@ end
 
 -- Called when player chooses an item.
 -- @param(button : Button) the button selected
-function ItemWindow:onConfirm(button)
-  local skill = Database.skills[button.item.skillID + 1]
+function ItemWindow:onButtonConfirm(button)
+  local skill = SkillAction.fromData(button.item.skillID)
   self:selectAction(skill)
-  -- TODO: remove item from inventory
+  if self.result and self.result.executed then
+    self.inventory:removeItem(button.itemID)
+  end
 end
 -- Called when player cancels.
 function ItemWindow:onCancel()

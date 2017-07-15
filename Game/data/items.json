@@ -9,14 +9,13 @@
       "width": 24,
       "height": 24
     },
-    "skillID": -1,
+    "skillID": 5,
     "statusID": -1,
     "price": 15,
     "weight": 10,
-    "canSell": true,
-    "canConsume": true,
-    "canUse": true,
-    "canEquip": false,
+    "sellable": true,
+    "equipment": false,
+    "consumeOnUse": true,
     "attributes": [
       0,
       0,
@@ -26,12 +25,7 @@
       0,
       0
     ],
-    "tags": [
-      {
-        "name": "newTag",
-        "value": "hbgfx"
-      }
-    ]
+    "tags": []
   },
   {
     "name": "Scythe",
@@ -47,10 +41,9 @@
     "statusID": 0,
     "price": 10,
     "weight": 10,
-    "canSell": true,
-    "canConsume": true,
-    "canUse": true,
-    "canEquip": false,
+    "sellable": true,
+    "equipment": false,
+    "consumeOnUse": true,
     "attributes": [],
     "tags": []
   }

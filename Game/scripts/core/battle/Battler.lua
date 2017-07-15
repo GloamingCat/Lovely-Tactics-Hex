@@ -43,15 +43,17 @@ function Battler:init(battlerID, party)
   self.data = data
   self.battlerID = battlerID
   self.party = party
-  self.inventory = Inventory(self, data.items)
   self.tags = util.createTags(data.tags)
   local persistentData = nil
   if data.persistent then
     persistentData = SaveManager.current.battlerData[battlerID .. '']
     if not persistentData then
-      persistentData = {}
+      persistentData = { inventory = Inventory(data.items) }
       SaveManager.current.battlerData[battlerID .. ''] = persistentData
     end
+    self.inventory = persistentData.inventory
+  else
+    self.inventory = Inventory(data.items)
   end
   self:createAttributes(data.attributes, data.level, data.build)
   self:createStateValues(persistentData)

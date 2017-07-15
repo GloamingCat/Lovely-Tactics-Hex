@@ -124,7 +124,7 @@
     }
   },
   {
-    "name": "Cast",
+    "name": "Load Skill",
     "imagePath": "Animation\\Battle/cast.png",
     "rows": 3,
     "cols": 5,
@@ -137,7 +137,7 @@
     },
     "transform": {
       "offsetX": 0,
-      "offsetY": 0,
+      "offsetY": 8,
       "offsetDepth": 0,
       "scaleX": 100,
       "scaleY": 100,
