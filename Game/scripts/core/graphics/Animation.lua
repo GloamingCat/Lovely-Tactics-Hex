@@ -11,6 +11,11 @@ is a spritesheet.
 -- Imports
 local Sprite = require('core/graphics/Sprite')
 
+-- Alias
+local Image = love.graphics.newImage
+local Quad = love.graphics.newQuad
+local deltaTime = love.timer.getDelta
+
 local Animation = class()
 
 ---------------------------------------------------------------------------------------------------
@@ -25,11 +30,9 @@ local Animation = class()
 -- @param(sprite : Sprite) the sprite that this animation if associated to 
 --  (optional, but must be set later)
 function Animation:init(duration, rowCount, colCount, quadWidth, quadHeight, 
-    loop, allRows, sprite)
+    loop, allRows, sprite, param)
   self.sprite = sprite
-  self.paused = sprite == nin
-  -- The duration in frames of each quad of the animation
-  self.duration = duration
+  self.paused = sprite == nil
   -- The size of each quad
   self.quadWidth = quadWidth
   self.quadHeight = quadHeight
@@ -43,6 +46,14 @@ function Animation:init(duration, rowCount, colCount, quadWidth, quadHeight,
   self.time = 0
   self.loop = loop
   self.allRows = allRows
+  -- Duration
+  self.duration = duration
+  if self.allRows then
+    self.frameDuration = duration / (rowCount * colCount)
+  else
+    self.frameDuration = duration / colCount
+  end
+  self.param = param
 end
 -- Creates a new animation from file data.
 -- @param(data : table) the animation data from file
@@ -52,9 +63,9 @@ end
 -- @ret(Texture) the new texture
 -- @ret(Quad) the new quad
 function Animation.fromData(data, renderer, sprite)
-  local texture = love.graphics.newImage('images/' .. data.imagePath)
+  local texture = Image('images/' .. data.imagePath)
   local w, h = texture:getWidth(), texture:getHeight()
-  local quad = love.graphics.newQuad(0, 0, w / data.cols, h / data.rows, w, h)
+  local quad = Quad(0, 0, w / data.cols, h / data.rows, w, h)
   if not sprite then
     sprite = Sprite(renderer, texture, quad)
   end
@@ -75,7 +86,7 @@ end
 -- @param(renderer : Renderer) the renderer of the sprite
 function Animation.fromImage(texture, renderer)
   local w, h = texture:getWidth(), texture:getHeight()
-  local quad = love.graphics.newQuad(0, 0, w, h, w, h)
+  local quad = Quad(0, 0, w, h, w, h)
   local sprite = Sprite(renderer, texture, quad)
   local Static = require('custom/animation/Static')
   return Static(1, 1, 1, w, h, false, false, sprite, '')
@@ -87,17 +98,28 @@ end
 
 -- Increments the frame count and automatically changes que sprite.
 function Animation:update()
-  local lastCol = self.col == self.colCount - 1
-  if not self.paused and (self.loop or not lastCol) then
-    self.time = self.time + love.timer.getDelta() * 60
-    if self.time >= self.duration / self.colCount then
-      self.time = self.time - self.duration / self.colCount
-      if lastCol and self.allRows then
+  if self.paused then
+    return
+  end
+  self.time = self.time + deltaTime() * 60
+  if self.time >= self.frameDuration then
+    self.time = self.time - self.frameDuration
+    if self.col < self.colCount - 1 then
+      self:setCol(self.col + 1)
+    elseif self.allRows then
+      if self.row < self.rowCount - 1 then
         self:setCol(0)
         self:setRow(self.row + 1)
+      elseif self.loop then
+        self:setCol(0)
+        self:setRow(0)
       else
-        self:setCol(self.col + 1)
+        self.paused = true
       end
+    elseif self.loop then
+      self:setCol(0)
+    else
+      self.paused = true
     end
   end
 end
