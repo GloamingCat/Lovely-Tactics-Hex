@@ -7,6 +7,8 @@ Window with the list of battles in the party backup.
 
 =================================================================================================]]
 
+-- Imports
+local Button = require('core/gui/Button')
 local Battler = require('core/battle/Battler')
 local ButtonWindow = require('core/gui/ButtonWindow')
 
@@ -25,7 +27,7 @@ function CallWindow:createButtons()
   local backup = PartyManager:backupBattlersIDs()
   for i = 1, #backup do
     local battler = Battler(backup[i], TroopManager.playerParty)
-    local button = self:addButton(battler.data.name, nil, self.onButtonConfirm)
+    local button = Button(self, battler.data.name, nil, self.onButtonConfirm)
     button.onSelect = self.onButtonSelect
     button.battler = battler
   end

@@ -24,7 +24,6 @@ function StepWindow:init(GUI, skin)
   Window.init(self, GUI, 80, 24, Vector(ScreenManager.width / 2 - 52, 
       ScreenManager.height / 2 - 24), skin)
 end
-
 -- Overrides Window:createContent.
 function StepWindow:createContent()
   Window.createContent(self)
@@ -36,7 +35,7 @@ function StepWindow:createContent()
   self.content:add(text)
   self.content:add(value)
 end
-
+-- String identifier.
 function StepWindow:__tostring()
   return 'StepWindow'
 end

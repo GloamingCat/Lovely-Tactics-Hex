@@ -108,21 +108,6 @@ end
 function ButtonWindow:buttonHeight()
   return 15
 end
--- Add a simple generic new button to the list.
--- @param(name : string) the text the appears in the button
--- @param(iconAnim : Animation) the icon's animation
--- @param(onConfirm : function) the function called when player confirms
--- @param(enableCondition : function) function automatically enable/disable button
--- @ret(Button) the button created
-function ButtonWindow:addButton(name, iconAnim, onConfirm, enableCondition)
-  local buttonCount = #self.buttonMatrix + 1
-  local row = ceil(buttonCount / self:colCount())
-  local col = buttonCount - (row - 1) * self:colCount()
-  local button = Button(self, buttonCount, col, row, 
-    name, self.font, iconAnim, onConfirm, nil, nil, enableCondition)
-  self.buttonMatrix[buttonCount] = button
-  return button
-end
 -- Gets current selected button.
 -- @ret(Button) the selected button
 function ButtonWindow:currentButton()

@@ -73,6 +73,7 @@ end
 function TargetWindow:setBattler(battler)  
   -- Name text
   self.textName:setText(battler.data.name)
+  self.textName:redraw()
   -- State values text
   for i = 1, #stateVariables do
     local v = stateVariables[i]
@@ -83,12 +84,15 @@ function TargetWindow:setBattler(battler)
       if maxValue then
         text = text .. '/' .. maxValue
       end
-      self.textStateValues[v.shortName]:setText(text)
+      local stateText = self.textStateValues[v.shortName]
+      stateText:setText(text)
+      stateText:redraw()
     end
   end
   -- Turn count text
   local tc = (battler.state.turnCount / Battle.turnLimit * 100)
   self.textTCValue:setText(string.format( '%3.0f', tc ) .. '%')
+  self.textTCValue:redraw()
   collectgarbage('collect')
 end
 

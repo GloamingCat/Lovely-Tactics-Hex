@@ -10,6 +10,7 @@ result = 1 -> confirm
 =================================================================================================]]
 
 -- Imports
+local Button = require('core/gui/Button')
 local ButtonWindow = require('core/gui/ButtonWindow')
 
 local ConfirmWindow = class(ButtonWindow)
@@ -20,8 +21,8 @@ local ConfirmWindow = class(ButtonWindow)
 
 -- Constructor.
 function ConfirmWindow:createButtons()
-  self:addButton(Vocab.confirm, nil, self.confirmButton)
-  self:addButton(Vocab.cancel, nil, self.cancelButton)
+  Button(self, Vocab.confirm, nil, self.confirmButton)
+  Button(self, Vocab.cancel, nil, self.cancelButton)
 end
 -- Overrides ButtonWindow:colCount.
 function ConfirmWindow:colCount()

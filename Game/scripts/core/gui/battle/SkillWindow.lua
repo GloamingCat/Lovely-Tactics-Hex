@@ -8,10 +8,11 @@ The window that is open to choose a skill from character's skill list.
 =================================================================================================]]
 
 -- Imports
-local ListButtonWindow = require('core/gui/ListButtonWindow')
-local ActionWindow = require('core/gui/battle/ActionWindow')
 local SkillAction = require('core/battle/action/SkillAction')
 local Vector = require('core/math/Vector')
+local Button = require('core/gui/Button')
+local ActionWindow = require('core/gui/battle/ActionWindow')
+local ListButtonWindow = require('core/gui/ListButtonWindow')
 
 local SkillWindow = class(ActionWindow, ListButtonWindow)
 
@@ -26,7 +27,7 @@ end
 -- Creates a button from a skill ID.
 -- @param(skill : SkillAction) the SkillAction from battler's skill list
 function SkillWindow:createButton(skill)
-  local button = self:addButton(skill.data.name, nil, self.onButtonConfirm, self.buttonEnabled)
+  local button = Button(self, skill.data.name, nil, self.onButtonConfirm, self.buttonEnabled)
   button.skill = skill
 end
 

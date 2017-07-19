@@ -12,6 +12,7 @@ local ListButtonWindow = require('core/gui/ListButtonWindow')
 local ActionWindow = require('core/gui/battle/ActionWindow')
 local SkillAction = require('core/battle/action/SkillAction')
 local Vector = require('core/math/Vector')
+local Button = require('core/gui/Button')
 
 local ItemWindow = class(ActionWindow, ListButtonWindow)
 
@@ -29,7 +30,7 @@ end
 function ItemWindow:createButton(itemSlot)
   local item = Database.items[itemSlot.id + 1]
   local name = item.name .. ' (' .. itemSlot.count .. ')'
-  local button = self:addButton(name, nil, self.onButtonConfirm)
+  local button = Button(self, name, nil, self.onButtonConfirm)
   button.item = item
   button.itemID = itemSlot.id
 end

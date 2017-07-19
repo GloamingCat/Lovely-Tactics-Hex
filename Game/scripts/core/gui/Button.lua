@@ -13,6 +13,9 @@ local Sprite = require('core/graphics/Sprite')
 local Animation = require('core/graphics/Animation')
 local SimpleText = require('core/gui/SimpleText')
 
+-- Alias
+local ceil = math.ceil
+
 local Button = class()
 
 ---------------------------------------------------------------------------------------------------
@@ -34,12 +37,14 @@ local Button = class()
 --  player moves cursor (optional)
 -- @param(enableCondition : function) the function that tells if 
 --  this button is enabled (optional)
-function Button:init(window, index, col, row, text, fontName, iconAnim, 
-    onConfirm, onCancel, onMove, enableCondition)
+function Button:init(window, text, iconAnim, onConfirm, enableCondition, fontName)
+  local buttonCount = #window.buttonMatrix + 1
   self.window = window
-  self.index = index
-  self.col = col
-  self.row = row
+  self.index = buttonCount + 1
+  self.row = ceil(buttonCount / window:colCount())
+  self.col = buttonCount - (self.row - 1) * window:colCount()
+  window.buttonMatrix[buttonCount] = self
+  window.content:add(self)
   self.enabled = true
   self.selected = false
   if text ~= '' then
@@ -58,8 +63,8 @@ function Button:init(window, index, col, row, text, fontName, iconAnim,
   self.onConfirm = onConfirm or self.onConfirm
   self.onCancel = onCancel or self.onCancel
   self.onMove = onMove or self.onMove
+  self.onSelect = onSelect or onSelect
   self.enableCondition = enableCondition
-  window.content:add(self)
 end
 
 ---------------------------------------------------------------------------------------------------

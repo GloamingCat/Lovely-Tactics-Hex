@@ -10,6 +10,7 @@ Window that opens when creating the battle database to manually decide a rule.
 -- Imports
 local ButtonWindow = require('core/gui/ButtonWindow')
 local BattleCursor = require('core/battle/BattleCursor')
+local Button = require('core/gui/Button')
 
 -- Alias
 local mathf = math.field
@@ -31,7 +32,7 @@ function RuleWindow:createButtons()
   self.ai = BattleManager.currentCharacter.battler.ai
   for i = 1, #self.rules do
     local rule = self.rules[i]
-    self:addButton(rule.name, nil, self.onButton)
+    Button(self, rule.name, nil, self.onButton)
   end
   self.userCursor = BattleCursor()
   self.content:add(self.userCursor)

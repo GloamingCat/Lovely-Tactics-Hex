@@ -7,18 +7,20 @@ Main GUI's selectable window.
 
 =================================================================================================]]
 
+-- Imports
+local Button = require('core/gui/Button')
 local ButtonWindow = require('core/gui/ButtonWindow')
 
 local MainWindow = class(ButtonWindow)
 
 function MainWindow:createButtons()
-  self:addButton(Vocab.items, nil, self.onItems)
-  self:addButton(Vocab.skills, nil, self.onSkills)
-  self:addButton(Vocab.states, nil, self.onStates)
-  self:addButton(Vocab.party, nil, self.onParty)
-  self:addButton(Vocab.config, nil, self.onConfig)
-  self:addButton(Vocab.save, nil, self.onSave)
-  self:addButton(Vocab.quit, nil, self.onQuit)
+  Button(self, Vocab.items, nil, self.onItems)
+  Button(self, Vocab.skills, nil, self.onSkills)
+  Button(self, Vocab.states, nil, self.onStates)
+  Button(self, Vocab.party, nil, self.onParty)
+  Button(self, Vocab.config, nil, self.onConfig)
+  Button(self, Vocab.save, nil, self.onSave)
+  Button(self, Vocab.quit, nil, self.onQuit)
 end
 
 ---------------------------------------------------------------------------------------------------
