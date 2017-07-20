@@ -26,9 +26,13 @@ end
 -- Event handlers
 ---------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:onConfirm.
-function VisualizeAction:onConfirm(input)
-  -- TODO: show BattlerWindow
+-- Overrides BattleAction:execute.
+function VisualizeAction:execute(input)
+  local character = input.target.characterList[1]
+  GUIManager:showGUIForResult('battle/VisualizeGUI', character)
+  if input.GUI then
+    input.GUI:startGridSelecting(input.target)
+  end
 end
 
 ---------------------------------------------------------------------------------------------------

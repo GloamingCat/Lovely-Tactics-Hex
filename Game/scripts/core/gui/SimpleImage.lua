@@ -33,7 +33,7 @@ function SimpleImage:init(sprite, x, y, w, h, depth)
   self.sprite:setQuad(mx, my, mw, mh)
   self.x = x + w / 2
   self.y = y + h / 2
-  self.sprite:setCenterOffset(depth)
+  self.sprite:setCenterOffset(depth or 0)
 end
 
 -- Creates a SimpleImage from quad data
@@ -61,7 +61,7 @@ function SimpleImage:hide()
 end
 
 function SimpleImage:destroy()
-  self.sprite:removeSelf()
+  self.sprite:destroy()
 end
 
 return SimpleImage

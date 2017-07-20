@@ -63,8 +63,9 @@ end
 -- @param(renderer : Renderer) the renderer of the copy (optional)
 -- @ret(Sprite) the newly created copy
 function Sprite:clone(renderer)
-  local copy = Sprite(renderer or self.renderer, self.texture)
-  copy:setQuad(self.quad:getViewport())
+  local sw, sh = self.quad:getTextureDimensions()
+  local x, y, w, h = self.quad:getViewport()
+  local copy = Sprite(renderer or self.renderer, self.texture, Quad(x, y, w, h, sw, sh))
   copy:setOffset(self.offsetX, self.offsetY, self.offsetDepth)
   copy:setScale(self.scaleX, self.scaleY)
   copy:setColor(self.color)
@@ -210,9 +211,9 @@ function Sprite:setRGBA(newr, newg, newb, newa)
   end
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Position
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 -- Sets the sprite's pixel position the update's its position in the sprite list.
 -- @param(x : number) the pixel x of the image
@@ -239,14 +240,23 @@ function Sprite:setPosition(pos)
   self:setXYZ(pos.x, pos.y, pos.z)
 end
 
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- Renderer
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
+-- Changes the sprite's renderer.
+-- @param(renderer : Renderer)
+function Sprite:setRenderer(renderer)
+  self.renderer.needsRedraw = true
+  self:removeSelf()
+  self.renderer = renderer
+  self:insertSelf()
+  self.renderer.needsRedraw = true
+end
 -- Inserts sprite from its list.
 -- @param(i : number) the position in the list
 function Sprite:insertSelf(i)
-  i = i + self.offsetDepth
+  i = (i or self.position.z) + self.offsetDepth
   if self.renderer.list[i] then
     insert(self.renderer.list[i], self)
   else

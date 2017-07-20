@@ -13,13 +13,15 @@ local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local Window = require('core/gui/Window')
 local SimpleText = require('core/gui/SimpleText')
+local SimpleImage = require('core/gui/SimpleImage')
 
 -- Alias
 local round = math.round
 local max = math.max
 
 -- Constants
-local attConfig = Config.attributes
+local attConfig = Database.attributes
+local font = Font.gui_small
 
 local BattlerWindow = class(Window)
 
@@ -27,32 +29,90 @@ local BattlerWindow = class(Window)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
-local old_init = BattlerWindow.init
-function BattlerWindow:init(GUI, skin)
-  local hsw = round(ScreenManager.width / 2)
-  local hsh = round(ScreenManager.height / 2)
-  old_init(self, GUI, hsw, hsh, hsw * 2 - 80, hsh * 2 - 80, skin)
-end
-
--- Overrides Window:createContent.
-local old_createContent = BattlerWindow.createContent
-function BattlerWindow:createContent()
-  old_createContent(self)
-  local battler = BattleManager.currentAction.currentTarget.characterList[1].battler
-  
-  local lineCount = 0
-  
+-- Constructor.
+-- @param(character : Character) the character of the battler to be shown
+function BattlerWindow:init(GUI, character)
+  local simple = {}
+  local comp = {}
   for i = 1, #attConfig do
-    local att = attConfig[i]
-    if att.script == '' then
-      local str1 = att.shortName .. ': ' .. att[att.shortName]()
-      local text = SimpleText(str1)
-      lineCount = lineCount + 1
+    if attConfig[i].script == '' then
+      simple[#simple + 1] = attConfig[i]
+    else
+      comp[#comp + 1] = attConfig[i]
     end
   end
-  self.width = self.paddingw * 2 + 100
-  self.height = max(lineCount * 20, self.portrait:getHeight()) + self.paddingh * 2
-  old_createContent(self)
+  self.simple, self.comp = simple, comp
+  self.character = character
+  local hsw = round(ScreenManager.width * 3 / 4)
+  local hsh = round(ScreenManager.height * 3 / 4)
+  local margin = 80
+  Window.init(self, GUI, hsw, hsh)
+end
+-- Overrides Window:createContent.
+function BattlerWindow:createContent()
+  Window.createContent(self)
+  -- Portrait
+  local sprite = self.character.portraits.status
+  if sprite then
+    sprite = Sprite.fromQuad(sprite, GUIManager.renderer)
+  else
+    sprite = self.character.sprite:clone(GUIManager.renderer)
+    self.portraitAnim = self.character.animation:clone(sprite)
+    self.portraitAnim:setRow(6)
+    self.portraitAnim:setCol(0)
+    sprite:setXYZ(0, 0, 0)
+  end
+  local portrait = SimpleImage(sprite, self:hpadding() - self.width / 2, self:vpadding() - self.height / 2, 
+      round(self.width / 3) - self:hpadding(), self.height - self:vpadding() * 2)
+  self.content:add(portrait)
+  portrait:updatePosition(self.position)
+  -- Content pos
+  local x = round(self.width / 3 - self.width / 2)
+  local y = round(self:vpadding() - self.height / 2)
+  local w = round((self.width - self:hpadding()) / 3)
+  -- Name
+  local textName = SimpleText(self.character.battler.name, Vector(x, y), w)
+  self.content:add(textName)
+  -- Attributes
+  self:createAtts(self.simple, x, y + 5, w - self:hpadding())
+  self:createAtts(self.comp, x + round(self.width / 3), y + 5, w - self:hpadding())
+end
+
+function BattlerWindow:createAtts(attList, x, y, w)
+  local attValues = self.character.battler.att
+  for i = 1, #attList do
+    local pos = Vector(x, y + 10 * i)
+    local att = attList[i]
+    -- Attribute name
+    local textName = SimpleText(att.shortName .. ':', pos, w, 'left', font)
+    self.content:add(textName)
+    -- Attribute value
+    local value = attValues[att.shortName]()
+    local textValue = SimpleText(value .. '', pos, w, 'right', font)
+    self.content:add(textValue)
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Input
+---------------------------------------------------------------------------------------------------
+
+function BattlerWindow:checkInput()
+  if InputManager.keys['cancel']:isTriggered() then
+    self.result = 0
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
+
+-- Overrides Window:destroy.
+function BattlerWindow:destroy()
+  Window.destroy(self)
+  if self.portraitAnim then
+    self.portraitAnim:destroy()
+  end
 end
 
 return BattlerWindow

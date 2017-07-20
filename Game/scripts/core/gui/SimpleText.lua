@@ -26,25 +26,39 @@ local SimpleText = class()
 -- @param(font : Font) font of the text (optional)
 -- @param(color : table) color of the text (optional)
 function SimpleText:init(text, relativePosition, width, align, font, color)
-  local r = {c = color or Color.gui_text_default, f = font or Font.gui_default}
+  local resources = {
+    c = color or Color.gui_text_default, 
+    f = font or Font.gui_default
+  }
   local p = {width, align or 'left'}
-  assert(text, 'Nil text')
+  assert(text, 'nil text')
   if text ~= '' then
     text = '{c}{f}' .. text
   end
-  self.resources = r
-  self.sprite = Text(text, r, p, GUIManager.renderer)
+  self.resources = resources
+  self.sprite = Text(text, resources, p, GUIManager.renderer)
   self.text = text
   self.relativePosition = relativePosition or Vector(0, 0, 0)
 end
-
--- Changes text content, using the same font and color.
+-- Changes text content.
 -- @param(text : string) the new text content
 function SimpleText:setText(text)
   if text ~= '' then
     text = '{c}{f}' .. text
   end
-  self.sprite:setText(text, self.resources)
+  self.text = text
+end
+-- Changes text color. 
+function SimpleText:setFont(font)
+  self.resources.f = font
+end
+-- Changes text font.
+function SimpleText:setColor(color)
+  self.resources.c = color
+end
+-- Redraws text.
+function SimpleText:redraw()
+  self.sprite:setText(self.text, self.resources)
 end
 
 -------------------------------------------------------------------------------
@@ -55,19 +69,16 @@ end
 function SimpleText:show()
   self.sprite:setVisible(true)
 end
-
 -- Shows text.
 function SimpleText:hide()
   self.sprite:setVisible(false)
 end
-
 -- Sets position relative to its parent window.
 -- @param(pos : Vector) window position
 function SimpleText:updatePosition(pos)
   local rpos = self.relativePosition
   self.sprite:setXYZ(pos.x + rpos.x, pos.y + rpos.y, pos.z + rpos.z)
 end
-
 -- Removes text.
 function SimpleText:destroy()
   self.sprite:removeSelf()

@@ -3,12 +3,10 @@
 
 CharacterBase
 ---------------------------------------------------------------------------------------------------
-A Character is a dynamic object stored in the tile. 
-It may be passable or not, and have an image or not.
-Player may also interact with this.
+A Character is a dynamic object stored in the tile. It may be passable or not, and have an image 
+or not. Player may also interact with this.
 
-A CharacterBase provides very basic functions that
-are necessary for every character.
+A CharacterBase provides very basic functions that are necessary for every character.
 
 =================================================================================================]]
 
@@ -55,6 +53,7 @@ function CharacterBase:init(instData)
   -- Initialize properties
   self:initializeProperties(data.name, data.tiles)
   self:initializeGraphics(data.animations, instData.direction, instData.animID, data.transform)
+  self:initializePortraits(data.portraits)
   self:initializeScripts(instData)
   -- Initial position
   self:setXYZ(x, y, z)
@@ -110,6 +109,15 @@ function CharacterBase:initializeScripts(instData)
   end
   if instData.interactScript and instData.interactScript.path ~= '' then
     self.interactScript = instData.interactScript
+  end
+end
+-- Creates portrait table.
+-- @param(portraits : table) the array of character's portraits from data
+function CharacterBase:initializePortraits(portraits)
+  self.portraits = {}
+  for i = 1, #portraits do
+    local p = portraits[i]
+    self.portraits[p.name] = p.quad
   end
 end
 

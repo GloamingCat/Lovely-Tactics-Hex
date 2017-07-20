@@ -91,6 +91,18 @@ function Animation.fromImage(texture, renderer)
   local Static = require('custom/animation/Static')
   return Static(1, 1, 1, w, h, false, false, sprite, '')
 end
+-- Creates a clone of this animation.
+-- @param(sprite : Sprite) the sprite of the animation, if cloned too (optional)
+-- @ret(Animation)
+function Animation:clone(sprite)
+  local anim = Animation(self.duration, self.rowCount, self.colCount, self.quadWidth, 
+    self.quadHeight, self.loop, self.allRows, sprite or self.sprite, self.param)
+  anim.col = self.col
+  anim.row = self.row
+  anim.paused = self.paused
+  anim.time = self.time
+  return anim
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Update

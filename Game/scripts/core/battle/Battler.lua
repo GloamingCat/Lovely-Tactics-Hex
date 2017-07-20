@@ -48,7 +48,6 @@ function Battler:init(battlerID, party)
   local persistentData = self:loadPersistentData(battlerID, data.persistent, data.items)
   self:createAttributes(data.attributes, data.level, data.build)
   self:createStateValues(persistentData)
-  self:setPortraits(data.battleCharID)
   self:setSkillList(data.skills, data.attackID)
   self:setElements(data.elements)
   self:setAI(data.scriptAI)
@@ -98,16 +97,6 @@ function Battler:setSkillList(skills, attackID)
     self.skillList:add(SkillAction.fromData(id))
   end
   self.attackSkill = SkillAction.fromData(attackID)
-end
--- Creates and sets a table of portraits.
--- @param(charID : number) the battler's character ID
-function Battler:setPortraits(charID)
-  self.portraits = {}
-  local charData = Database.charBattle[charID + 1]
-  for i = 1, #charData.portraits do
-    local p = charData.portraits[i]
-    self.portraits[p.name] = p.quad
-  end
 end
 -- Converting to string.
 -- @ret(string) a string representation

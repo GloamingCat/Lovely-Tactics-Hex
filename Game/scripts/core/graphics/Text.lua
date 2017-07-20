@@ -48,7 +48,9 @@ function Text:init(text, resources, properties, renderer)
   self.scaleY = 1 / Font.scale
   self.offsetX = 0
   self.offsetY = 0
-  if text ~= nil and text ~= '' then
+  if text == nil or text == '' then
+    self.lines = {}
+  else
     self:setText(text, resources)
   end
 end
