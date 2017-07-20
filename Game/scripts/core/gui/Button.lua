@@ -40,9 +40,7 @@ local Button = class()
 function Button:init(window, text, iconAnim, onConfirm, enableCondition, fontName)
   local buttonCount = #window.buttonMatrix + 1
   self.window = window
-  self.index = buttonCount + 1
-  self.row = ceil(buttonCount / window:colCount())
-  self.col = buttonCount - (self.row - 1) * window:colCount()
+  self:setIndex(buttonCount + 1)
   window.buttonMatrix[buttonCount] = self
   window.content:add(self)
   self.enabled = true
@@ -71,6 +69,14 @@ end
 -- General
 ---------------------------------------------------------------------------------------------------
 
+-- Changes the index.
+function Button:setIndex(i)
+  self.index = i
+  local buttonCount = i - 1
+  self.index = buttonCount + 1
+  self.row = ceil(buttonCount / self.window:colCount())
+  self.col = buttonCount - (self.row - 1) * self.window:colCount()
+end
 -- Updates icon animation.
 function Button:update()
   if self.icon then
@@ -162,9 +168,9 @@ end
 -- @ret(Vector) the offset from the window's position.
 function Button:relativePosition()
   local w = self.window
-  local x = -(w.width / 2 - w.paddingw) + 
+  local x = -(w.width / 2 - w:hpadding()) + 
     (self.col - w.offsetCol - 1) * w:buttonWidth()
-  local y = -(w.height / 2 - w.paddingh) + 
+  local y = -(w.height / 2 - w:vpadding()) + 
     (self.row - w.offsetRow - 1) * w:buttonHeight()
   return Vector(x, y, -1)
 end

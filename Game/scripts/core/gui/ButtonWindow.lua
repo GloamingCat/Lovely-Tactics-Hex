@@ -46,8 +46,8 @@ function ButtonWindow:createContent()
     button:setSelected(true)
   end
   if self:actualRowCount() > self:rowCount() then
-    self.vSlider = VSlider(self, Vector(self.width / 2 - self.paddingw, 0), 
-      self.height - self.paddingh * 2)
+    self.vSlider = VSlider(self, Vector(self.width / 2 - self:hpadding(), 0), 
+      self.height - self:vpadding() * 2)
   end
   self:updateViewport(1, 1)
 end
@@ -78,12 +78,12 @@ end
 -- Gets the total width of the window.
 -- @ret(number) the window's width in pixels
 function ButtonWindow:totalWidth()
-  return self.paddingw * 2 + self:colCount() * self:buttonWidth()
+  return self:hpadding() * 2 + self:colCount() * self:buttonWidth()
 end
 -- Gets the total height of the window.
 -- @ret(number) the window's height in pixels
 function ButtonWindow:totalHeight()
-  return self.paddingh * 2 + self:rowCount() * self:buttonHeight()
+  return self:vpadding() * 2 + self:rowCount() * self:buttonHeight()
 end
 -- Gets the number of rows that where actually occupied by buttons.
 -- @ret(number) row count

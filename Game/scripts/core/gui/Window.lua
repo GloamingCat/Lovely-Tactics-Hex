@@ -36,20 +36,16 @@ local Window = class(Transformable)
 -- @param(height : number) total height in pixels (if nil, must be set later)
 -- @param(position : Vector) the position of the center of the window 
 --  (optional, center of the screen by default)
--- @param(skin : Image) window skin (optional)
-function Window:init(GUI, width, height, position, skin)
+function Window:init(GUI, width, height, position)
   Transformable.init(self, position)
-  skin = skin or defaultSkin
   self.speed = 10
   self.width = width
   self.height = height
-  self.spriteGrid = SpriteGrid(skin)
-  self.paddingw = floor(skin:getWidth() / 3)
-  self.paddingh = floor(skin:getHeight() / 3)
+  self.spriteGrid = SpriteGrid(self:getSkin(), Vector(0, 0, 1))
   self.GUI = GUI
   self.content = List()
   self:createContent()
-  self:setPosition(position or Vector(0,0,0))
+  self:setPosition(position or Vector(0, 0, 0))
   self:setVisible(false)
 end
 -- Updates all content elements.
@@ -105,6 +101,17 @@ end
 function Window:setScale(sx, sy)
   Transformable.setScale(self, sx, sy)
   self.spriteGrid:updateTransform(self)
+end
+-- Window's skin.
+-- @ret(Image) 
+function Window:getSkin()
+  return defaultSkin
+end
+function Window:hpadding()
+  return 8
+end
+function Window:vpadding()
+  return 8
 end
 
 ---------------------------------------------------------------------------------------------------
