@@ -15,7 +15,7 @@ function MainGUI:createWindows()
   self.name = 'Main GUI'
   local mainWindow = MainWindow(self)
   self.windowList:add(mainWindow)
-  self.activeWindow = mainWindow
+  self:setActiveWindow(mainWindow)
 end
 
 return MainGUI

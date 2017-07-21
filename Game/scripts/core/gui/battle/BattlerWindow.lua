@@ -4,7 +4,6 @@
 BattlerWindow
 ---------------------------------------------------------------------------------------------------
 Window that shows on each character in the VisualizeAction.
-TODO
 
 =================================================================================================]]
 
@@ -44,7 +43,7 @@ function BattlerWindow:init(GUI, character)
   self.simple, self.comp = simple, comp
   self.character = character
   local hsw = round(ScreenManager.width * 3 / 4)
-  local hsh = round(ScreenManager.height * 3 / 4)
+  local hsh = max(#simple, #comp) * 10 + 15 + 2 * self:vpadding()
   local margin = 80
   Window.init(self, GUI, hsw, hsh)
 end
@@ -77,7 +76,11 @@ function BattlerWindow:createContent()
   self:createAtts(self.simple, x, y + 5, w - self:hpadding())
   self:createAtts(self.comp, x + round(self.width / 3), y + 5, w - self:hpadding())
 end
-
+-- Creates the text content from a list of attributes.
+-- @param(attList : table) array of attribute data
+-- @param(x : number) x of the texts
+-- @param(y : number) initial y of the texts
+-- @param(w : number) width of the text box
 function BattlerWindow:createAtts(attList, x, y, w)
   local attValues = self.character.battler.att
   for i = 1, #attList do
@@ -90,16 +93,6 @@ function BattlerWindow:createAtts(attList, x, y, w)
     local value = attValues[att.shortName]()
     local textValue = SimpleText(value .. '', pos, w, 'right', font)
     self.content:add(textValue)
-  end
-end
-
----------------------------------------------------------------------------------------------------
--- Input
----------------------------------------------------------------------------------------------------
-
-function BattlerWindow:checkInput()
-  if InputManager.keys['cancel']:isTriggered() then
-    self.result = 0
   end
 end
 

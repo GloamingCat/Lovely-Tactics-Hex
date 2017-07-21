@@ -30,7 +30,7 @@ end
 function GUI:createWindows()
   self.activeWindow = nil
 end
-
+  
 ---------------------------------------------------------------------------------------------------
 -- General 
 ---------------------------------------------------------------------------------------------------
@@ -55,9 +55,17 @@ function GUI:__tostring()
 end
 
 ---------------------------------------------------------------------------------------------------
--- Coroutine calls
+-- Active Window
 ---------------------------------------------------------------------------------------------------
 
+-- Changes GUI's active window.
+function GUI:setActiveWindow(window)
+  if self.activeWindow then
+    self.activeWindow.active = false
+  end
+  self.activeWindow = window
+  window.active = true
+end
 -- [COROUTINE] Waits until GUI closes and returns a result.
 -- @ret(unknown) the result of GUI (will never be nil)
 function GUI:waitForResult()
@@ -68,6 +76,11 @@ function GUI:waitForResult()
   end
   return self.activeWindow.result
 end
+
+---------------------------------------------------------------------------------------------------
+-- Coroutine calls
+---------------------------------------------------------------------------------------------------
+
 -- [COROUTINE] Shows all windows.
 function GUI:show()
   if not self.open then

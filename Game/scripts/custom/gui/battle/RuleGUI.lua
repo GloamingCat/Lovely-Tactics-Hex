@@ -21,15 +21,15 @@ local RuleGUI = class(GUI)
 local old_init = RuleGUI.init
 function RuleGUI:init(rules)
   self.rules = rules
-  old_init(self)
+  GUI.init(self)
 end
 
 -- Overrides GUI:createWindows.
 function RuleGUI:createWindows()
   self.name = 'Rule GUI'
-  self.ruleWindow = RuleWindow(self, self.rules)
-  self.activeWindow = self.ruleWindow
+  local ruleWindow = RuleWindow(self, self.rules)
   self.windowList:add(self.ruleWindow)
+  self:setActiveWindow(ruleWindow)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -37,10 +37,9 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides GUI:show.
-local old_show = RuleGUI.show
 function RuleGUI:show(...)
   FieldManager.renderer:moveToObject(BattleManager.currentCharacter)
-  old_show(self, ...)
+  GUI.show(self, ...)
 end
 
 return RuleGUI

@@ -42,8 +42,8 @@ function BattleGUI:createWindows()
   self.turnWindow:setPosition(Vector(-ScreenManager.width / 2 + self.turnWindow.width / 2 + 8, 
       -ScreenManager.height / 2 + self.turnWindow.height / 2 + 8))
   -- Initial state
-  self.activeWindow = self.turnWindow
   self.windowList:add(self.turnWindow)
+  self:setActiveWindow(self.turnWindow)
 end
 
 ---------------------------------------------------------------------------------------------------

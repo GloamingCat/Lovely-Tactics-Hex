@@ -22,7 +22,7 @@ function CallGUI:createWindows()
   self.name = 'Call GUI'
   local callWindow = CallWindow(self, self.tile)
   self.windowList:add(callWindow)
-  self.activeWindow = callWindow
+  self:setActiveWindow(callWindow)
 end
 
 return CallGUI

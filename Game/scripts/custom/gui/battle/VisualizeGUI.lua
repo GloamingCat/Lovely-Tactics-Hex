@@ -23,7 +23,7 @@ end
 function VisualizeGUI:createWindows()
   local mainWindow = BattlerWindow(self, self.character)
   self.windowList:add(mainWindow)
-  self.activeWindow = mainWindow
+  self:setActiveWindow(mainWindow)
 end
 
 return VisualizeGUI

@@ -58,7 +58,7 @@ end
 
 -- Sets this window as the active one.
 function ButtonWindow:activate()
-  self.GUI.activeWindow = self
+  self.GUI:setActiveWindow(self)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -151,7 +151,7 @@ function ButtonWindow:onCancel()
   if button.enabled then
     button.onCancel(self, button)
   end
-  self.result = 0
+  Window.onCancel(self)
 end
 -- Called when player moves cursor.
 function ButtonWindow:onMove(c, r, dx, dy)

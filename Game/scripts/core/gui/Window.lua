@@ -28,7 +28,7 @@ local defaultSkin = love.graphics.newImage('images/GUI/windowSkin.png')
 local Window = class(Transformable)
 
 ---------------------------------------------------------------------------------------------------
--- General
+-- Initialization
 ---------------------------------------------------------------------------------------------------
 
 -- @param(GUI : GUI) parent GUI
@@ -48,6 +48,16 @@ function Window:init(GUI, width, height, position)
   self:setPosition(position or Vector(0, 0, 0))
   self:setVisible(false)
 end
+-- Creates all content elements.
+-- By default, only creates the skin.
+function Window:createContent()
+  self.spriteGrid:createGrid(GUIManager.renderer, self.width, self.height)
+end
+
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
+
 -- Updates all content elements.
 function Window:update()
   Transformable.update(self)
@@ -86,12 +96,12 @@ function Window:setVisible(value)
 end
 -- Sets this window's position.
 -- @param(position : Vector) new position
-function Window:setPosition(position)
-  Transformable.setPosition(self, position)
+function Window:setXYZ(...)
+  Transformable.setXYZ(self, ...)
   self.spriteGrid:updateTransform(self)
   for c in self.content:iterator() do
     if c.updatePosition then
-      c:updatePosition(position)
+      c:updatePosition(self.position)
     end
   end
 end
@@ -107,36 +117,13 @@ end
 function Window:getSkin()
   return defaultSkin
 end
+-- Horizontal padding.
 function Window:hpadding()
   return 8
 end
+-- Vertical padding.
 function Window:vpadding()
   return 8
-end
-
----------------------------------------------------------------------------------------------------
--- Content
----------------------------------------------------------------------------------------------------
-
--- Creates all content elements.
--- By default, only creates the skin.
-function Window:createContent()
-  self.spriteGrid:createGrid(GUIManager.renderer, self.width, self.height)
-end
--- Shows all content elements.
-function Window:showContent()
-  for c in self.content:iterator() do
-    if c.updatePosition then
-      c:updatePosition(self.position)
-    end
-    c:show()
-  end
-end
--- Hides all content elements.
-function Window:hideContent()
-  for c in self.content:iterator() do
-    c:hide()
-  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -176,6 +163,43 @@ end
 -- Removes this window from the GUI's list.
 function Window:removeSelf()
   self.GUI.windowList:removeElement(self)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Content
+---------------------------------------------------------------------------------------------------
+
+-- Shows all content elements.
+function Window:showContent()
+  for c in self.content:iterator() do
+    if c.updatePosition then
+      c:updatePosition(self.position)
+    end
+    c:show()
+  end
+end
+-- Hides all content elements.
+function Window:hideContent()
+  for c in self.content:iterator() do
+    c:hide()
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Input
+---------------------------------------------------------------------------------------------------
+
+-- Checks if player pressed any GUI button.
+-- By default, only checks the "cancel" key.
+function Window:checkInput()
+  if InputManager.keys['cancel']:isTriggered() then
+    self:onCancel()
+  end
+end
+-- Called when player presses "cancel" key.
+-- By default, only dets the result to 0.
+function Window:onCancel()
+  self.result = 0
 end
 
 return Window
