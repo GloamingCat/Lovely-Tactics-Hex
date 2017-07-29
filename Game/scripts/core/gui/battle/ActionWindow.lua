@@ -10,11 +10,11 @@ Its result is the action time that the character spent.
 =================================================================================================]]
 
 -- Imports
-local ButtonWindow = require('core/gui/ButtonWindow')
+local GridWindow = require('core/gui/GridWindow')
 local SkillAction = require('core/battle/action/SkillAction')
 local ActionInput = require('core/battle/action/ActionInput')
 
-local ActionWindow = class(ButtonWindow)
+local ActionWindow = class(GridWindow)
 
 -- Select an action.
 -- @param(actionType : class) the class of the action
@@ -35,7 +35,7 @@ function ActionWindow:selectAction(action)
 end
 
 -- Closes this window to be replaced by another one.
--- @param(window : ButtonWindow) the new active window
+-- @param(window : GridWindow) the new active window
 function ActionWindow:changeWindow(window)
   self:hide()
   self:removeSelf()

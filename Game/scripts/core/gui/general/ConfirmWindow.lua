@@ -11,9 +11,9 @@ result = 1 -> confirm
 
 -- Imports
 local Button = require('core/gui/Button')
-local ButtonWindow = require('core/gui/ButtonWindow')
+local GridWindow = require('core/gui/GridWindow')
 
-local ConfirmWindow = class(ButtonWindow)
+local ConfirmWindow = class(GridWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- General
@@ -24,12 +24,12 @@ function ConfirmWindow:createButtons()
   Button(self, Vocab.confirm, nil, self.confirmButton)
   Button(self, Vocab.cancel, nil, self.cancelButton)
 end
--- Overrides ButtonWindow:colCount.
+-- Overrides GridWindow:colCount.
 function ConfirmWindow:colCount()
   return 1
 end
 
--- Overrides ButtonWindow:rowCount.
+-- Overrides GridWindow:rowCount.
 function ConfirmWindow:rowCount()
   return 2
 end

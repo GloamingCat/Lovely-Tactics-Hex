@@ -19,7 +19,7 @@ local ButtonCursor = class()
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
--- @param(window : ButtonWindow) cursor's window
+-- @param(window : GridWindow) cursor's window
 function ButtonCursor:init(window)
   self.window = window
   local animData = Database.animOther[Config.gui.cursorAnimID + 1]

@@ -12,38 +12,39 @@ local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local SimpleText = require('core/gui/SimpleText')
 local SimpleImage = require('core/gui/SimpleImage')
-local IndexedWidget = require('core/gui/IndexedWidget')
+local GridWidget = require('core/gui/GridWidget')
 
 -- Alias
 local Image = love.graphics.newImage
 
-local Spinner = class(IndexedWidget)
+local Spinner = class(GridWidget)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
--- @param(window  : ButtonWindow) the window this spinner belongs to.
+-- @param(window  : GridWindow) the window this spinner belongs to.
 function Spinner:init(window, initValue, minValue, maxValue)
-  IndexedWidget.init(self, window)
+  GridWidget.init(self, window)
   self.minValue = minValue or -math.huge
   self.maxValue = maxValue or math.huge
   self:initializeContent(initValue or 0)
 end
 -- Creates arrows and value test.
 function Spinner:initializeContent(initValue)
-  local dx = self.window:buttonWidth() / 2 - self.window:hpadding()
+  local dx = self.window:buttonWidth()
+  local dy = self.window:buttonHeight() / 2
   -- Left arrow icon
   local leftArrow = Image('images/GUI/Spinner/leftArrow.png')
   local leftArrowSprite = Sprite(GUIManager.renderer, leftArrow)
   leftArrowSprite:setQuad()
-  self.leftArrow = SimpleImage(leftArrowSprite, -dx, 0)
+  self.leftArrow = SimpleImage(leftArrowSprite, 0, dy)
   -- Right arrow icon
   local rightArrow = Image('images/GUI/Spinner/rightArrow.png')
   local rightArrowSprite = Sprite(GUIManager.renderer, rightArrow)
   rightArrowSprite:setQuad()
-  self.rightArrow = SimpleImage(rightArrowSprite, dx, 0)
+  self.rightArrow = SimpleImage(rightArrowSprite, dx, dy)
   -- Value text in the middle
   self.value = initValue
   local textPos = Vector(leftArrow:getWidth(), 0)

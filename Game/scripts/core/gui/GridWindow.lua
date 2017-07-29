@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-ButtonWindow
+GridWindow
 ---------------------------------------------------------------------------------------------------
 Provides the base for windows with buttons.
 
@@ -20,14 +20,14 @@ local Window = require('core/gui/Window')
 -- Alias
 local ceil = math.ceil
 
-local ButtonWindow = class(Window)
+local GridWindow = class(Window)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides Window:createContent.
-function ButtonWindow:createContent()
+function GridWindow:createContent()
   self.buttonMatrix = Matrix2(self:colCount(), 1)
   self:createButtons()
   self.buttonMatrix.height = ceil(#self.buttonMatrix / self:colCount())
@@ -46,7 +46,7 @@ function ButtonWindow:createContent()
     button:setSelected(true)
   end
   if self:actualRowCount() > self:rowCount() then
-    self.vSlider = VSlider(self, Vector(self.width / 2 - self:hpadding(), 0), 
+    self.vSlider = VSlider(self, Vector(self.width / 2 - self:hPadding(), 0), 
       self.height - self:vpadding() * 2)
   end
   self:updateViewport(1, 1)
@@ -58,28 +58,34 @@ end
 
 -- Columns of the button matrix.
 -- @ret(number) the number of visible columns
-function ButtonWindow:colCount()
+function GridWindow:colCount()
   return 3
 end
 -- Rows of the button matrix.
 -- @ret(number) the number of visible lines
-function ButtonWindow:rowCount()
+function GridWindow:rowCount()
   return 4
-end
--- Gets the total width of the window.
--- @ret(number) the window's width in pixels
-function ButtonWindow:calculateWidth()
-  return self:hpadding() * 2 + self:colCount() * self:buttonWidth()
-end
--- Gets the total height of the window.
--- @ret(number) the window's height in pixels
-function ButtonWindow:calculateHeight()
-  return self:vpadding() * 2 + self:rowCount() * self:buttonHeight()
 end
 -- Gets the number of rows that where actually occupied by buttons.
 -- @ret(number) row count
-function ButtonWindow:actualRowCount()
+function GridWindow:actualRowCount()
   return self.buttonMatrix.height
+end
+function GridWindow:gridX()
+  return 0
+end
+function GridWindow:gridY()
+  return 0
+end
+-- Gets the total width of the window.
+-- @ret(number) the window's width in pixels
+function GridWindow:calculateWidth()
+  return self:hPadding() * 2 + self:colCount() * self:buttonWidth()
+end
+-- Gets the total height of the window.
+-- @ret(number) the window's height in pixels
+function GridWindow:calculateHeight()
+  return self:vpadding() * 2 + self:rowCount() * self:buttonHeight()
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -87,32 +93,32 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Adds the buttons of the window.
-function ButtonWindow:createButtons()
+function GridWindow:createButtons()
 end
 -- Gets the width of a single button.
 -- @ret(number) the width in pixels
-function ButtonWindow:buttonWidth()
+function GridWindow:buttonWidth()
   return 55
 end
 -- Gets the height of a single button.
 -- @ret(number) the height in pixels
-function ButtonWindow:buttonHeight()
+function GridWindow:buttonHeight()
   return 15
 end
 -- Gets current selected button.
 -- @ret(Button) the selected button
-function ButtonWindow:currentButton()
+function GridWindow:currentButton()
   return self.buttonMatrix:get(self.currentCol, self.currentRow)
 end
 -- Gets the number of buttons.
 -- @ret(number)
-function ButtonWindow:buttonCount()
+function GridWindow:buttonCount()
   return #self.buttonMatrix
 end
 -- Insert button at the given index.
 -- @param(button : Button) the button to insert
 -- @param(pos : number) the index of the button (optional, last position by default)
-function ButtonWindow:insertButton(button, pos)
+function GridWindow:insertButton(button, pos)
   pos = pos or #self.buttonMatrix + 1
   local last = #self.buttonMatrix
   assert(pos >= 1 and pos <= last + 1, 'invalid button index: ' .. pos)
@@ -128,7 +134,7 @@ end
 -- Removes button at the given index.
 -- @param(pos : number) the index of the button
 -- @ret(Button) the removed button
-function ButtonWindow:removeButton(pos)
+function GridWindow:removeButton(pos)
   local last = #self.buttonMatrix
   assert(pos >= 1 and pos <= last, 'invalid button index: ' .. pos)
   self.buttonMatrix[pos]:destroy()
@@ -147,7 +153,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides Window:checkInput.
-function ButtonWindow:checkInput()
+function GridWindow:checkInput()
   if InputManager.keys['confirm']:isTriggered() then
     self:onConfirm()
   elseif InputManager.keys['cancel']:isTriggered() then
@@ -162,14 +168,14 @@ function ButtonWindow:checkInput()
   end
 end
 -- Called when player confirms.
-function ButtonWindow:onConfirm()
+function GridWindow:onConfirm()
   local button = self:currentButton()
   if button.enabled then
     button.onConfirm(self, button)
   end
 end
 -- Called when player cancels.
-function ButtonWindow:onCancel()
+function GridWindow:onCancel()
   local button = self:currentButton()
   if button.enabled then
     button.onCancel(self, button)
@@ -177,7 +183,7 @@ function ButtonWindow:onCancel()
   Window.onCancel(self)
 end
 -- Called when player moves cursor.
-function ButtonWindow:onMove(c, r, dx, dy)
+function GridWindow:onMove(c, r, dx, dy)
   local button = self:currentButton()
   button:setSelected(false)
   if button.enabled then
@@ -208,7 +214,7 @@ end
 -- @ret(number) new column number
 -- @ret(number) new row number
 -- @ret(boolean) true if visible buttons changed
-function ButtonWindow:movedCoordinates(c, r, dx, dy)
+function GridWindow:movedCoordinates(c, r, dx, dy)
   local button = self.buttonMatrix:get(c + dx, r - dy)
   if button then
     return c + dx, r - dy
@@ -233,7 +239,7 @@ function ButtonWindow:movedCoordinates(c, r, dx, dy)
   return c, r
 end
 -- Loops row r to the right.
-function ButtonWindow:rightLoop(r)
+function GridWindow:rightLoop(r)
   local c = 1
   while not self.buttonMatrix:get(c,r) do
     c = c + 1
@@ -241,7 +247,7 @@ function ButtonWindow:rightLoop(r)
   return c
 end
 -- Loops row r to the left.
-function ButtonWindow:leftLoop(r)
+function GridWindow:leftLoop(r)
   local c = self.buttonMatrix.width
   while not self.buttonMatrix:get(c,r) do
     c = c - 1
@@ -249,7 +255,7 @@ function ButtonWindow:leftLoop(r)
   return c
 end
 -- Loops column c up.
-function ButtonWindow:upLoop(c)
+function GridWindow:upLoop(c)
   local r = 1
   while not self.buttonMatrix:get(c,r) do
     r = r + 1
@@ -257,7 +263,7 @@ function ButtonWindow:upLoop(c)
   return r
 end
 -- Loops column c down.
-function ButtonWindow:downLoop(c)
+function GridWindow:downLoop(c)
   local r = self.buttonMatrix.height
   while not self.buttonMatrix:get(c,r) do
     r = r - 1
@@ -272,7 +278,7 @@ end
 -- Adapts the visible buttons.
 -- @param(c : number) the current button's column
 -- @param(r : number) the current button's row
-function ButtonWindow:updateViewport(c, r)
+function GridWindow:updateViewport(c, r)
   local newOffsetCol, newOffsetRow = self:newViewport(c, r)
   if newOffsetCol ~= self.offsetCol or newOffsetRow ~= self.offsetRow then
     self.offsetCol = newOffsetCol
@@ -290,7 +296,7 @@ end
 -- Determines the new (c, r) coordinates of the button matrix viewport.
 -- @param(newc : number) the selected button's column
 -- @param(newr : number) the selected button's row
-function ButtonWindow:newViewport(newc, newr)
+function GridWindow:newViewport(newc, newr)
   local c, r = self.offsetCol, self.offsetRow
   if newc < c + 1 then
     c = newc - 1
@@ -305,4 +311,4 @@ function ButtonWindow:newViewport(newc, newr)
   return c, r
 end
 
-return ButtonWindow
+return GridWindow

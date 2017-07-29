@@ -28,8 +28,8 @@ end
 function StepWindow:createContent()
   Window.createContent(self)
   local steps = BattleManager.currentCharacter.battler.state.steps
-  local w = self.width - self:hpadding() * 2
-  local pos = Vector(self:hpadding() - self.width / 2, self:vpadding() - self.height / 2 - 3)
+  local w = self.width - self:hPadding() * 2
+  local pos = Vector(self:hPadding() - self.width / 2, self:vpadding() - self.height / 2 - 3)
   local text = SimpleText(Vocab.steps .. ':', pos, w)
   local value = SimpleText('' .. steps, pos, w, 'right')
   self.content:add(text)

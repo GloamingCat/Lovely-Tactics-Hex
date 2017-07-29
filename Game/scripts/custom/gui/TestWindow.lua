@@ -6,9 +6,9 @@ Just an example window.
 =================================================================================================]]
 
 -- Imports
-local ButtonWindow = require('core/gui/ButtonWindow')
+local GridWindow = require('core/gui/GridWindow')
 
-local TestWindow = class(ButtonWindow)
+local TestWindow = class(GridWindow)
 
 local function buttonConfirm(window, button)
   print(button.index)

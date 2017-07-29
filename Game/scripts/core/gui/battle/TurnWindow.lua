@@ -36,7 +36,7 @@ function TurnWindow:init(...)
   ActionWindow.init(self, ...)
 end
 
--- Overrides ButtonWindow:createButtons.
+-- Overrides GridWindow:createButtons.
 function TurnWindow:createButtons()
   self.backupBattlers = PartyManager:backupBattlers()
   Button(self, Vocab.attack, Icon.attack, self.onAttackAction, self.attackEnabled)
@@ -87,7 +87,7 @@ end
 function TurnWindow:onWait(button)
   self.result = 0
 end
--- Overrides ButtonWindow:onCancel.
+-- Overrides GridWindow:onCancel.
 function TurnWindow:onCancel()
   self:selectAction(self.visualizeAction)
   self.result = nil
@@ -165,11 +165,11 @@ end
 -- General info
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ButtonWindow:colCount.
+-- Overrides GridWindow:colCount.
 function TurnWindow:colCount()
   return 2
 end
--- Overrides ButtonWindow:rowCount.
+-- Overrides GridWindow:rowCount.
 function TurnWindow:rowCount()
   return 4
 end

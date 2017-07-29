@@ -10,12 +10,12 @@ Horizontal window to select a character.
 -- Imports
 local Button = require('core/gui/Button')
 local Battler = require('core/battle/Battler')
-local ButtonWindow = require('core/gui/ButtonWindow')
+local GridWindow = require('core/gui/GridWindow')
 
 -- Constants
 local stateVariables = Config.stateVariables
 
-local CharacterWindow = class(ButtonWindow)
+local CharacterWindow = class(GridWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -33,7 +33,7 @@ function CharacterWindow:init(GUI, members)
   end
   self.vars = vars
   self.members = members or PartyManager:currentBattlersIDs()
-  ButtonWindow.init(self, GUI)
+  GridWindow.init(self, GUI)
 end
 -- Creates a button for each character.
 function CharacterWindow:createButtons()

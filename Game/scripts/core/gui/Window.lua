@@ -122,7 +122,7 @@ function Window:getSkin()
   return defaultSkin
 end
 -- Horizontal padding.
-function Window:hpadding()
+function Window:hPadding()
   return 8
 end
 -- Vertical padding.

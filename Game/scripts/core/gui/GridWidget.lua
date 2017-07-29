@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-IndexedWidget
+GridWidget
 ---------------------------------------------------------------------------------------------------
 Generic widget for windows (like button or spinner).
 
@@ -14,16 +14,16 @@ local List = require('core/datastruct/List')
 -- Alias
 local ceil = math.ceil
 
-local IndexedWidget = class()
+local GridWidget = class()
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
--- @param(window : ButtonWindow) the window this widget belongs to
+-- @param(window : GridWindow) the window this widget belongs to
 -- @param(index : number) the child index of this widget
-function IndexedWidget:init(window)
+function GridWidget:init(window)
   local index = #window.buttonMatrix + 1
   self.window = window
   self:setIndex(index)
@@ -34,17 +34,17 @@ function IndexedWidget:init(window)
   self.selected = false
 end
 -- Changes the index.
-function IndexedWidget:setIndex(i)
+function GridWidget:setIndex(i)
   self.index = i
   self.row = ceil(i / self.window:colCount())
   self.col = i - (self.row - 1) * self.window:colCount()
 end
 -- @ret(Vector) the offset from the window's position.
-function IndexedWidget:relativePosition()
+function GridWidget:relativePosition()
   local w = self.window
-  local x = -(w.width / 2 - w:hpadding()) + 
+  local x = w:gridX() - (w.width / 2 - w:hPadding()) + 
     (self.col - w.offsetCol - 1) * w:buttonWidth()
-  local y = -(w.height / 2 - w:vpadding()) + 
+  local y = w:gridY() - (w.height / 2 - w:vpadding()) + 
     (self.row - w.offsetRow - 1) * w:buttonHeight()
   return Vector(x, y, -1)
 end
@@ -54,16 +54,16 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Called when player presses "Confirm" on this widget.
-function IndexedWidget.onConfirm(window, button)
+function GridWidget.onConfirm(window, button)
 end
 -- Called when player presses "Cancel" on this widget.
-function IndexedWidget.onCancel(window, button)
+function GridWidget.onCancel(window, button)
 end
 -- Called when player presses arrows on this widget.
-function IndexedWidget.onMove(window, button, dx, dy)
+function GridWidget.onMove(window, button, dx, dy)
 end
 -- Called when this widget is selected (highlighted).
-function IndexedWidget.onSelect(window, button)
+function GridWidget.onSelect(window, button)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -72,14 +72,14 @@ end
 
 -- Enables/disables this button.
 -- @param(value : boolean) true to enable, false to disable
-function IndexedWidget:setEnabled(value)
+function GridWidget:setEnabled(value)
 end
 -- Selects/deselects this button.
 -- @param(value : boolean) true to select, false to deselect
-function IndexedWidget:setSelected(value)
+function GridWidget:setSelected(value)
 end
 -- Updates each content widget's position.
-function IndexedWidget:updatePosition(windowPos)
+function GridWidget:updatePosition(windowPos)
   local pos = self:relativePosition()
   pos:add(windowPos)
   for i = 1, #self.content do
@@ -89,7 +89,7 @@ function IndexedWidget:updatePosition(windowPos)
   end
 end
 -- Updates each content widget (called once per frame).
-function IndexedWidget:update()
+function GridWidget:update()
   for i = 1, #self.content do
     if self.content[i].udpate then
       self.content[i]:update()
@@ -97,7 +97,7 @@ function IndexedWidget:update()
   end
 end
 -- Destroys each content widget.
-function IndexedWidget:destroy()
+function GridWidget:destroy()
   for i = 1, #self.content do
     if self.content[i].destroy then
       self.content[i]:destroy()
@@ -105,7 +105,7 @@ function IndexedWidget:destroy()
   end
 end
 -- Shows each content widget.
-function IndexedWidget:show()
+function GridWidget:show()
   for i = 1, #self.content do
     if self.content[i].show then
       self.content[i]:show()
@@ -113,7 +113,7 @@ function IndexedWidget:show()
   end
 end
 -- Hides each content widget.
-function IndexedWidget:hide()
+function GridWidget:hide()
   for i = 1, #self.content do
     if self.content[i].hide then
       self.content[i]:hide()
@@ -121,5 +121,5 @@ function IndexedWidget:hide()
   end
 end
 
-return IndexedWidget
+return GridWidget
   

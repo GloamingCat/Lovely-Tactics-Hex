@@ -82,7 +82,7 @@ function Text:alignOffset(w)
   if self.maxWidth then
     if self.align == 'right' then
       return self.maxWidth - w
-    elseif self.aling == 'center' then
+    elseif self.align == 'center' then
       return (self.maxWidth - w) / 2
     end
   end

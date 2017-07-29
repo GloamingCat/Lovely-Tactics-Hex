@@ -9,9 +9,9 @@ Main GUI's selectable window.
 
 -- Imports
 local Button = require('core/gui/Button')
-local ButtonWindow = require('core/gui/ButtonWindow')
+local GridWindow = require('core/gui/GridWindow')
 
-local MainWindow = class(ButtonWindow)
+local MainWindow = class(GridWindow)
 
 function MainWindow:createButtons()
   Button(self, Vocab.items, nil, self.onItems)

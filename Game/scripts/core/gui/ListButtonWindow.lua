@@ -9,20 +9,20 @@ arbitrary elements.
 =================================================================================================]]
 
 -- Imports
-local ButtonWindow = require('core/gui/ButtonWindow')
+local GridWindow = require('core/gui/GridWindow')
 
-local ListButtonWindow = class(ButtonWindow)
+local ListButtonWindow = class(GridWindow)
 
 ----------------------------------------------------------------------------------------------------
 -- Initialization
 ----------------------------------------------------------------------------------------------------
 
--- Overrides ButtonWindow:init.
+-- Overrides GridWindow:init.
 function ListButtonWindow:init(list, ...)
   self.list = list
-  ButtonWindow.init(self, ...)
+  GridWindow.init(self, ...)
 end
--- Overrides ButtonWindow:createButtons.
+-- Overrides GridWindow:createButtons.
 function ListButtonWindow:createButtons()
   if #self.list > 0 then
     for i = 1, #self.list do

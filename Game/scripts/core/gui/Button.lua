@@ -12,15 +12,15 @@ local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local Animation = require('core/graphics/Animation')
 local SimpleText = require('core/gui/SimpleText')
-local IndexedWidget = require('core/gui/IndexedWidget')
+local GridWidget = require('core/gui/GridWidget')
 
-local Button = class(IndexedWidget)
+local Button = class(GridWidget)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
--- @param(window : ButtonWindow) the window that this button is component of
+-- @param(window : GridWindow) the window that this button is component of
 -- @param(index : number) the index of the button in the window
 -- @param(col : number) the column of the button in the window
 -- @param(row : number) the row of the button in the window
@@ -36,7 +36,7 @@ local Button = class(IndexedWidget)
 -- @param(enableCondition : function) the function that tells if 
 --  this button is enabled (optional)
 function Button:init(window, text, iconAnim, onConfirm, enableCondition, fontName)
-  IndexedWidget.init(self, window, index)
+  GridWidget.init(self, window, index)
   self.onConfirm = onConfirm or self.onConfirm
   self.enableCondition = enableCondition
   self:initializeContent(text, iconAnim, fontName)
@@ -137,7 +137,8 @@ function Button:updatePosition(windowPos)
   pos:add(windowPos)
   if self.icon then
     self.icon.sprite:setPosition(pos)
-    local x, y, w = self.icon.sprite:totalBounds()
+    local x, y, w, h = self.icon.sprite:totalBounds()
+    self.icon.sprite:setXYZ(nil, pos.y + (self.window:buttonHeight() - h) / 2)
     pos:add(Vector(w - (self.icon.sprite.position.x - x), 0))
   end
   if self.textSprite then
@@ -167,7 +168,7 @@ function Button:show()
       self:setEnabled(false)
     end
   end
-  IndexedWidget.show(self)
+  GridWidget.show(self)
 end
 
 return Button

@@ -45,9 +45,9 @@ end
 function TargetWindow:createContent(width, height)
   Window.createContent(self, width, height)
   -- Top-left position
-  local x = -self.width / 2 + self:hpadding()
+  local x = -self.width / 2 + self:hPadding()
   local y = -self.height / 2 + self:vpadding()
-  local w = self.width - self:hpadding() * 2
+  local w = self.width - self:hPadding() * 2
   -- Name text
   local posName = Vector(x, y)
   self.textName = SimpleText('', posName, w, 'center')

@@ -8,9 +8,9 @@ Window to choose the item count in a trade action.
 =================================================================================================]]
 
 local Spinner = require('core/gui/Spinner')
-local ButtonWindow = require('core/gui/ButtonWindow')
+local GridWindow = require('core/gui/GridWindow')
 
-local TradeCountWindow = class(ButtonWindow)
+local TradeCountWindow = class(GridWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -49,11 +49,11 @@ end
 -- Properties
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ButtonWindow:colCount.
+-- Overrides GridWindow:colCount.
 function TradeCountWindow:colCount()
   return 1
 end
--- Overrides ButtonWindow:rowCount.
+-- Overrides GridWindow:rowCount.
 function TradeCountWindow:rowCount()
   return 1
 end

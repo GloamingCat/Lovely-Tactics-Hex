@@ -61,20 +61,20 @@ function BattlerWindow:createContent()
     self.portraitAnim:setCol(0)
     sprite:setXYZ(0, 0, 0)
   end
-  local portrait = SimpleImage(sprite, self:hpadding() - self.width / 2, self:vpadding() - self.height / 2, 
-      nil, round(self.width / 3) - self:hpadding(), self.height - self:vpadding() * 2)
+  local portrait = SimpleImage(sprite, self:hPadding() - self.width / 2, self:vpadding() - self.height / 2, 
+      nil, round(self.width / 3) - self:hPadding(), self.height - self:vpadding() * 2)
   self.content:add(portrait)
   portrait:updatePosition(self.position)
   -- Content pos
   local x = round(self.width / 3 - self.width / 2)
   local y = round(self:vpadding() - self.height / 2)
-  local w = round((self.width - self:hpadding()) / 3)
+  local w = round((self.width - self:hPadding()) / 3)
   -- Name
   local textName = SimpleText(self.character.battler.name, Vector(x, y), w)
   self.content:add(textName)
   -- Attributes
-  self:createAtts(self.simple, x, y + 5, w - self:hpadding())
-  self:createAtts(self.comp, x + round(self.width / 3), y + 5, w - self:hpadding())
+  self:createAtts(self.simple, x, y + 5, w - self:hPadding())
+  self:createAtts(self.comp, x + round(self.width / 3), y + 5, w - self:hPadding())
 end
 -- Creates the text content from a list of attributes.
 -- @param(attList : table) array of attribute data

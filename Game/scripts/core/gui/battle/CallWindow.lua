@@ -10,9 +10,9 @@ Window with the list of battles in the party backup.
 -- Imports
 local Button = require('core/gui/Button')
 local Battler = require('core/battle/Battler')
-local ButtonWindow = require('core/gui/ButtonWindow')
+local GridWindow = require('core/gui/GridWindow')
 
-local CallWindow = class(ButtonWindow)
+local CallWindow = class(GridWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -20,7 +20,7 @@ local CallWindow = class(ButtonWindow)
 
 -- Constructor.
 function CallWindow:init(GUI)
-  ButtonWindow.init(self, GUI)
+  GridWindow.init(self, GUI)
 end
 -- Creates a button for each backup member.
 function CallWindow:createButtons()
@@ -50,15 +50,15 @@ end
 -- Properties
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ButtonWindow:buttonWidth.
+-- Overrides GridWindow:buttonWidth.
 function CallWindow:buttonWidth()
   return 70
 end
--- Overrides ButtonWindow:colCount.
+-- Overrides GridWindow:colCount.
 function CallWindow:colCount()
   return 1
 end
--- Overrides ButtonWindow:rowCount.
+-- Overrides GridWindow:rowCount.
 function CallWindow:rowCount()
   return 4
 end

@@ -11,13 +11,13 @@ Window that shows each item of the inventory to be moved to another inventory.
 local Animation = require('core/graphics/Animation')
 local GUI = require('core/gui/GUI')
 local Button = require('core/gui/Button')
-local ButtonWindow = require('core/gui/ButtonWindow')
+local GridWindow = require('core/gui/GridWindow')
 
 -- Alias
 local max = math.max
 local floor = math.floor
 
-local TradeWindow = class(ButtonWindow)
+local TradeWindow = class(GridWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -29,7 +29,7 @@ local TradeWindow = class(ButtonWindow)
 function TradeWindow:init(GUI, inventory, totalWeight)
   self.inventory = inventory
   self.remainingWeight = (totalWeight or math.huge) - inventory:getTotalWeight()
-  ButtonWindow.init(self, GUI)
+  GridWindow.init(self, GUI)
 end
 -- Creates a button for each item.
 function TradeWindow:createButtons()
@@ -126,15 +126,15 @@ end
 -- Properties
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ButtonWindow:colCount.
+-- Overrides GridWindow:colCount.
 function TradeWindow:colCount()
   return 1
 end
--- Overrides ButtonWindow:rowCount.
+-- Overrides GridWindow:rowCount.
 function TradeWindow:rowCount()
   return 5
 end
--- Overrides ButtonWindow:buttonWidth.
+-- Overrides GridWindow:buttonWidth.
 function TradeWindow:buttonWidth()
   return 100
 end

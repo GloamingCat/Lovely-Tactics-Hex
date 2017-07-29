@@ -8,14 +8,14 @@ Window that opens when creating the battle database to manually decide a rule.
 =================================================================================================]]
 
 -- Imports
-local ButtonWindow = require('core/gui/ButtonWindow')
+local GridWindow = require('core/gui/GridWindow')
 local BattleCursor = require('core/battle/BattleCursor')
 local Button = require('core/gui/Button')
 
 -- Alias
 local mathf = math.field
 
-local RuleWindow = class(ButtonWindow)
+local RuleWindow = class(GridWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -27,7 +27,7 @@ function RuleWindow:init(GUI, rules, ...)
   old_init(self, GUI, ...)
 end
 
--- Overrides ButtonWindow:createButtons.
+-- Overrides GridWindow:createButtons.
 function RuleWindow:createButtons()
   self.ai = BattleManager.currentCharacter.battler.ai
   for i = 1, #self.rules do
@@ -47,7 +47,7 @@ function RuleWindow:onButton(button)
   self.result = button.index
 end
 
--- Overrides ButtonWindow:onCancel.
+-- Overrides GridWindow:onCancel.
 function RuleWindow:onCancel()
 end
 
@@ -55,17 +55,17 @@ end
 -- General info
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ButtonWindow:colCount.
+-- Overrides GridWindow:colCount.
 function RuleWindow:colCount()
   return 2
 end
 
--- Overrides ButtonWindow:rowCount.
+-- Overrides GridWindow:rowCount.
 function RuleWindow:rowCount()
   return 4
 end
 
--- Overrides ButtonWindow:buttonWidth.
+-- Overrides GridWindow:buttonWidth.
 function RuleWindow:buttonWidth()
   return 100
 end
