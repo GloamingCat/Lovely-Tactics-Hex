@@ -28,7 +28,7 @@ function GUI:init()
 end
 -- Creates the GUI's windows and sets the first active window.
 function GUI:createWindows()
-  self.activeWindow = nil
+ -- Abstract.
 end
   
 ---------------------------------------------------------------------------------------------------

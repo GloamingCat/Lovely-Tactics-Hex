@@ -35,12 +35,12 @@ function ButtonWindow:createContent()
   self.currentRow = 1
   self.offsetCol = 0
   self.offsetRow = 0
-  self.cursor = ButtonCursor(self)
-  self.width = self:totalWidth()
-  self.height = self:totalHeight()
+  if not self.noCursor then
+    self.cursor = ButtonCursor(self)
+  end
   self.loopVertical = true
   self.loopHorizontal = true
-  Window.createContent(self)
+  Window.createContent(self, self:calculateWidth(), self:calculateHeight())
   local button = self:currentButton()
   if button then
     button:setSelected(true)
@@ -50,15 +50,6 @@ function ButtonWindow:createContent()
       self.height - self:vpadding() * 2)
   end
   self:updateViewport(1, 1)
-end
-
----------------------------------------------------------------------------------------------------
--- General
----------------------------------------------------------------------------------------------------
-
--- Sets this window as the active one.
-function ButtonWindow:activate()
-  self.GUI:setActiveWindow(self)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -77,12 +68,12 @@ function ButtonWindow:rowCount()
 end
 -- Gets the total width of the window.
 -- @ret(number) the window's width in pixels
-function ButtonWindow:totalWidth()
+function ButtonWindow:calculateWidth()
   return self:hpadding() * 2 + self:colCount() * self:buttonWidth()
 end
 -- Gets the total height of the window.
 -- @ret(number) the window's height in pixels
-function ButtonWindow:totalHeight()
+function ButtonWindow:calculateHeight()
   return self:vpadding() * 2 + self:rowCount() * self:buttonHeight()
 end
 -- Gets the number of rows that where actually occupied by buttons.
@@ -118,12 +109,44 @@ end
 function ButtonWindow:buttonCount()
   return #self.buttonMatrix
 end
+-- Insert button at the given index.
+-- @param(button : Button) the button to insert
+-- @param(pos : number) the index of the button (optional, last position by default)
+function ButtonWindow:insertButton(button, pos)
+  pos = pos or #self.buttonMatrix + 1
+  local last = #self.buttonMatrix
+  assert(pos >= 1 and pos <= last + 1, 'invalid button index: ' .. pos)
+  for i = last + 1, pos + 1, -1 do
+    self.buttonMatrix[i] = self.buttonMatrix[i - 1]
+    self.buttonMatrix[i]:setIndex(i)
+    self.buttonMatrix[i]:updatePosition(self.position)
+  end
+  self.buttonMatrix[pos] = button
+  button:setIndex(pos)
+  button:updatePosition(self.position)
+end
+-- Removes button at the given index.
+-- @param(pos : number) the index of the button
+-- @ret(Button) the removed button
+function ButtonWindow:removeButton(pos)
+  local last = #self.buttonMatrix
+  assert(pos >= 1 and pos <= last, 'invalid button index: ' .. pos)
+  self.buttonMatrix[pos]:destroy()
+  for i = pos, last - 1 do
+    self.buttonMatrix[i] = self.buttonMatrix[i+1]
+    self.buttonMatrix[i]:setIndex(i)
+    self.buttonMatrix[i]:updatePosition(self.position)
+  end
+  local button = self.buttonMatrix[last]
+  self.buttonMatrix[last] = nil
+  return button
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Input
 ---------------------------------------------------------------------------------------------------
 
--- Check if player pressed any GUI button.
+-- Overrides Window:checkInput.
 function ButtonWindow:checkInput()
   if InputManager.keys['confirm']:isTriggered() then
     self:onConfirm()
@@ -168,7 +191,9 @@ function ButtonWindow:onMove(c, r, dx, dy)
     button.onSelect(self, button)
   end
   self:updateViewport(c, r)
-  self.cursor:updatePosition(self.position)
+  if self.cursor then
+    self.cursor:updatePosition(self.position)
+  end
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -43,6 +43,16 @@ function Inventory:getCount(id)
   end
   return 0
 end
+-- Gets the weight sum of all items.
+-- @ret(number)
+function Inventory:getTotalWeight()
+  local sum = 0
+  for i = 1, self.size do
+    local item = Database.items[self[i].id + 1]
+    sum = sum + item.weight * self[i].count
+  end
+  return sum
+end
 -- Converting to string.
 -- @ret(string) A string representation
 function Inventory:__tostring()
@@ -63,15 +73,17 @@ end
 -- Adds new item to inventory.
 -- @param(id : number) the item ID
 -- @param(count : number) the quantity (optional, 1 by default)
+-- @ret(boolean) true if new slot was created, false if item already existed in inventory
 function Inventory:addItem(id, count)
   count = count or 1
   for i = 1, self.size do
     if self[i].id == id then
       self[i].count = self[i].count + count
-      return
+      return false
     end
   end
   self:add({id = id, count = count})
+  return true
 end
 -- Removes items from the bag.
 -- @param(id : number) the ID of the item type in the database

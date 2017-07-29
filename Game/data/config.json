@@ -40,10 +40,11 @@
   "battle": {
     "playerTroopID": 0, 
     "tradeSkillID": 0,
+    "attLifeID": 0,
     "attTurnID": 4,
     "attStepID": 5,
     "attJumpID": 6,
-    "attLifeID": 0,
+    "attWeightID": 0
   },
   "stateVariables": [
     { 

@@ -12,11 +12,9 @@ local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local Animation = require('core/graphics/Animation')
 local SimpleText = require('core/gui/SimpleText')
+local IndexedWidget = require('core/gui/IndexedWidget')
 
--- Alias
-local ceil = math.ceil
-
-local Button = class()
+local Button = class(IndexedWidget)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -38,17 +36,18 @@ local Button = class()
 -- @param(enableCondition : function) the function that tells if 
 --  this button is enabled (optional)
 function Button:init(window, text, iconAnim, onConfirm, enableCondition, fontName)
-  local buttonCount = #window.buttonMatrix + 1
-  self.window = window
-  self:setIndex(buttonCount + 1)
-  window.buttonMatrix[buttonCount] = self
-  window.content:add(self)
-  self.enabled = true
-  self.selected = false
+  IndexedWidget.init(self, window, index)
+  self.onConfirm = onConfirm or self.onConfirm
+  self.enableCondition = enableCondition
+  self:initializeContent(text, iconAnim, fontName)
+end
+-- Creates button basic content (text and icon).
+function Button:initializeContent(text, iconAnim, fontName)
   if text ~= '' then
-    local width = window:buttonWidth()
+    local width = self.window:buttonWidth()
     self.textSprite = SimpleText(text, nil, width, nil, Font.gui_button)
     self.textSprite.sprite:setColor(Color.gui_text_default)
+    self.content:add(self.textSprite)
   end
   if iconAnim ~= nil then
     if type(iconAnim) == 'string' then
@@ -57,41 +56,14 @@ function Button:init(window, text, iconAnim, onConfirm, enableCondition, fontNam
     end
     self.icon = iconAnim
     iconAnim.sprite:setColor(Color.gui_icon_default)
+    self.content:add(iconAnim)
   end
-  self.onConfirm = onConfirm or self.onConfirm
-  self.onCancel = onCancel or self.onCancel
-  self.onMove = onMove or self.onMove
-  self.onSelect = onSelect or onSelect
-  self.enableCondition = enableCondition
 end
 
 ---------------------------------------------------------------------------------------------------
 -- General
 ---------------------------------------------------------------------------------------------------
 
--- Changes the index.
-function Button:setIndex(i)
-  self.index = i
-  local buttonCount = i - 1
-  self.index = buttonCount + 1
-  self.row = ceil(buttonCount / self.window:colCount())
-  self.col = buttonCount - (self.row - 1) * self.window:colCount()
-end
--- Updates icon animation.
-function Button:update()
-  if self.icon then
-    self.icon:update()
-  end
-end
--- Deletes text and icon sprites.
-function Button:destroy()
-  if self.textSprite then
-    self.textSprite:destroy()
-  end
-  if self.icon then
-    self.icon:destroy()
-  end
-end
 -- Converting to string.
 function Button:__tostring()
   if not self.textSprite then
@@ -111,12 +83,6 @@ end
 -- Called when player presses "Cancel" on this button.
 function Button.onCancel(window, button)
   window.result = 0
-end
--- Called when player presses arrows on this button.
-function Button.onMove(window, button, dx, dy)
-end
--- Called when this button is selected/highlighted.
-function Button.onSelect(window, button)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -165,15 +131,6 @@ end
 -- Position
 ---------------------------------------------------------------------------------------------------
 
--- @ret(Vector) the offset from the window's position.
-function Button:relativePosition()
-  local w = self.window
-  local x = -(w.width / 2 - w:hpadding()) + 
-    (self.col - w.offsetCol - 1) * w:buttonWidth()
-  local y = -(w.height / 2 - w:vpadding()) + 
-    (self.row - w.offsetRow - 1) * w:buttonHeight()
-  return Vector(x, y, -1)
-end
 -- Updates position based on window's position.
 function Button:updatePosition(windowPos)
   local pos = self:relativePosition()
@@ -210,21 +167,7 @@ function Button:show()
       self:setEnabled(false)
     end
   end
-  if self.textSprite then
-    self.textSprite:show()
-  end
-  if self.icon then
-    self.icon.sprite:setVisible(true)
-  end
-end
--- Hides button's text and icon.
-function Button:hide()
-  if self.textSprite then
-    self.textSprite:hide()
-  end
-  if self.icon then
-    self.icon.sprite:setVisible(false)
-  end
+  IndexedWidget.show(self)
 end
 
 return Button

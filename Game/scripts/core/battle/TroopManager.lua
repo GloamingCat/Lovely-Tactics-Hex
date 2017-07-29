@@ -241,7 +241,7 @@ function TroopManager:getPartyCenters()
       }
     end
   end
-  for i = 0, #centers do
+  for i = 1, #centers do
     local c = centers[i]
     if c then
       c.vector:mul(1 / c.count)

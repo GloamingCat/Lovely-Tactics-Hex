@@ -62,7 +62,7 @@ function BattlerWindow:createContent()
     sprite:setXYZ(0, 0, 0)
   end
   local portrait = SimpleImage(sprite, self:hpadding() - self.width / 2, self:vpadding() - self.height / 2, 
-      round(self.width / 3) - self:hpadding(), self.height - self:vpadding() * 2)
+      nil, round(self.width / 3) - self:hpadding(), self.height - self:vpadding() * 2)
   self.content:add(portrait)
   portrait:updatePosition(self.position)
   -- Content pos

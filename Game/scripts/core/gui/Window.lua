@@ -39,19 +39,19 @@ local Window = class(Transformable)
 function Window:init(GUI, width, height, position)
   Transformable.init(self, position)
   self.speed = 10
-  self.width = width
-  self.height = height
   self.spriteGrid = SpriteGrid(self:getSkin(), Vector(0, 0, 1))
   self.GUI = GUI
   self.content = List()
-  self:createContent()
+  self:createContent(width, height)
   self:setPosition(position or Vector(0, 0, 0))
   self:setVisible(false)
 end
 -- Creates all content elements.
 -- By default, only creates the skin.
-function Window:createContent()
-  self.spriteGrid:createGrid(GUIManager.renderer, self.width, self.height)
+function Window:createContent(width, height)
+  self.width = width
+  self.height = height
+  self.spriteGrid:createGrid(GUIManager.renderer, width, height)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -73,6 +73,10 @@ function Window:destroy()
   for c in self.content:iterator() do
     c:destroy()
   end
+end
+-- Sets this window as the active one.
+function Window:activate()
+  self.GUI:setActiveWindow(self)
 end
 
 ---------------------------------------------------------------------------------------------------

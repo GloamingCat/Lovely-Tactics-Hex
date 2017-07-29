@@ -84,12 +84,25 @@ end
 -- Creates a 1-quad animation for the given image.
 -- @param(texture : Image) the single image
 -- @param(renderer : Renderer) the renderer of the sprite
+-- @ret(Animation)
 function Animation.fromImage(texture, renderer)
   local w, h = texture:getWidth(), texture:getHeight()
   local quad = Quad(0, 0, w, h, w, h)
   local sprite = Sprite(renderer, texture, quad)
   local Static = require('custom/animation/Static')
   return Static(1, 1, 1, w, h, false, false, sprite, '')
+end
+-- Creates a 1-quad animation for the given quad.
+-- @param(quadData : table) the quad from database, with bounds and image path
+-- @param(renderer : Renderer) the renderer of the sprite
+-- @ret(Animation)
+function Animation.fromQuad(quadData, renderer)
+  local texture = Image('images/' .. quadData.imagePath)
+  local quad = Quad(quadData.x, quadData.y, quadData.width, quadData.height, 
+    texture:getWidth(), texture:getHeight())
+  local sprite = Sprite(renderer, texture, quad)
+  local Static = require('custom/animation/Static')
+  return Static(1, 1, 1, quadData.width, quadData.height, false, false, sprite, '')
 end
 -- Creates a clone of this animation.
 -- @param(sprite : Sprite) the sprite of the animation, if cloned too (optional)
@@ -169,6 +182,14 @@ function Animation:destroy()
   if self.sprite then
     self.sprite:destroy()
   end
+end
+-- Sets this animation as visible.
+function Animation:show()
+  self.sprite:setVisible(true)
+end
+-- Sets this animation as invisible.
+function Animation:hide()
+  self.sprite:setVisible(false)
 end
 
 return Animation

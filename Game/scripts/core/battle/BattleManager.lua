@@ -66,6 +66,7 @@ function BattleManager:runBattle()
   self.result = nil
   self.winner = nil
   self:battleIntro()
+  TurnManager:introTurn()
   repeat
     self.result, self.winner = TurnManager:runTurn()
   until self.result
@@ -82,14 +83,16 @@ function BattleManager:battleIntro()
   FieldManager.renderer:fadein(nil, true)
   local centers = TroopManager:getPartyCenters()
   local speed = 50
-  for i = #centers, 0, -1 do
-    local p = centers[i]
-    if p then
+  for i = 1, #centers do
+    if i ~= TroopManager.playerParty then
+      local p = centers[i]
       FieldManager.renderer:moveToPoint(p.x, p.y, speed, true)
-      _G.Fiber:wait(30)
+      _G.Fiber:wait(45)
     end
   end
-  _G.Fiber:wait(30)
+  local p = centers[TroopManager.playerParty]
+  FieldManager.renderer:moveToPoint(p.x, p.y, speed, true)
+  _G.Fiber:wait(60)
 end
 -- Runs after winner was determined and battle loop ends.
 function BattleManager:battleEnd()

@@ -27,6 +27,15 @@ local TurnWindow = class(ActionWindow)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
+function TurnWindow:init(...)
+  self.tradeSkill = TradeSkill(Config.battle.tradeSkillID)
+  self.moveAction = MoveAction()
+  self.callAction = CallAction()
+  self.escapeAction = EscapeAction()
+  self.visualizeAction = VisualizeAction()
+  ActionWindow.init(self, ...)
+end
+
 -- Overrides ButtonWindow:createButtons.
 function TurnWindow:createButtons()
   self.backupBattlers = PartyManager:backupBattlers()
@@ -52,19 +61,19 @@ function TurnWindow:onAttackAction(button)
 end
 -- "Move" button callback.
 function TurnWindow:onMoveAction(button)
-  self:selectAction(MoveAction())
+  self:selectAction(self.moveAction)
 end
 -- "Trade" button callback.
 function TurnWindow:onTradeAction(button)
-  self:selectAction(TradeSkill())
+  self:selectAction(self.tradeSkill)
 end
 -- "Escape" button callback.
 function TurnWindow:onEscapeAction(button)
-  self:selectAction(EscapeAction())
+  self:selectAction(self.escapeAction)
 end
 -- "Call Ally" button callback.
 function TurnWindow:onCallAllyAction(button)
-  self:selectAction(CallAction())
+  self:selectAction(self.callAction)
 end
 -- "Skill" button callback. Opens Skill Window.
 function TurnWindow:onSkill(button)
@@ -80,7 +89,7 @@ function TurnWindow:onWait(button)
 end
 -- Overrides ButtonWindow:onCancel.
 function TurnWindow:onCancel()
-  self:selectAction(VisualizeAction())
+  self:selectAction(self.visualizeAction)
   self.result = nil
 end
 
@@ -91,20 +100,8 @@ end
 -- Attack condition. Enabled if there are tiles to move to or if there are any
 --  enemies that the skill can reach.
 function TurnWindow:attackEnabled(button)
-  if self:moveEnabled(button) then
-    return true
-  else
-    local user = BattleManager.currentCharacter
-    local tile = user:getTile()
-    local field = FieldManager.currentField
-    local range = user.battler.attackSkill.data.range
-    for i, j in mathf.radiusIterator(range, tile.x, tile.y, field.sizeX, field.sizeY) do
-      if field:getObjectTile(i, j, tile.layer.height):hasEnemy(user.battler.party) then
-        return true
-      end
-    end
-  end
-  return false
+  local user = BattleManager.currentCharacter
+  return self:skillActionEnabled(button, user.battler.attackSkill)
 end
 -- Move condition. Enabled if there are any tiles for the character to move to.
 function TurnWindow:moveEnabled(button)
@@ -128,9 +125,8 @@ function TurnWindow:itemEnabled(button)
   return self.GUI.itemWindow ~= nil
 end
 -- Trade condition. Enabled if there are any characters nearby that have items.
-function TurnWindow:tradeEnabled()
-  -- TODO
-  return false
+function TurnWindow:tradeEnabled(button)
+  return self:skillActionEnabled(button, self.tradeSkill)
 end
 -- Escape condition. Only escapes if the character is in a tile of their party.
 function TurnWindow:escapeEnabled()
@@ -146,6 +142,23 @@ end
 -- Call Ally condition. Enabled if there any any backup members.
 function TurnWindow:callAllyEnabled()
   return TroopManager:getMemberCount() < Battle.maxMembers and not self.backupBattlers:isEmpty()
+end
+-- Checks if a given skill action is enabled to use.
+function TurnWindow:skillActionEnabled(button, skill)
+  if self:moveEnabled(button) then
+    return true
+  else
+    local user = BattleManager.currentCharacter
+    local tile = user:getTile()
+    local field = FieldManager.currentField
+    local range = skill.data.range
+    for i, j in mathf.radiusIterator(range, tile.x, tile.y, field.sizeX, field.sizeY) do
+      if field:getObjectTile(i, j, tile.layer.height):hasEnemy(user.battler.party) then
+        return true
+      end
+    end
+    return false
+  end
 end
 
 ---------------------------------------------------------------------------------------------------

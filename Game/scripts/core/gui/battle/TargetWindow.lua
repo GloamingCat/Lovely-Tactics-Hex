@@ -42,8 +42,8 @@ function TargetWindow:init(GUI)
       -ScreenManager.height / 2 + h / 2 + margin))
 end
 -- Initializes name and status texts.
-function TargetWindow:createContent()
-  Window.createContent(self)
+function TargetWindow:createContent(width, height)
+  Window.createContent(self, width, height)
   -- Top-left position
   local x = -self.width / 2 + self:hpadding()
   local y = -self.height / 2 + self:vpadding()
@@ -78,6 +78,8 @@ end
 -- Content
 ---------------------------------------------------------------------------------------------------
 
+-- Changes the window's content to show the given battler's stats.
+-- @param(battler : Battler)
 function TargetWindow:setBattler(battler)  
   -- Name text
   self.textName:setText(battler.data.name)

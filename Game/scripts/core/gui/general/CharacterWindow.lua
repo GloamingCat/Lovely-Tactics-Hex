@@ -8,11 +8,12 @@ Horizontal window to select a character.
 =================================================================================================]]
 
 -- Imports
+local Button = require('core/gui/Button')
 local Battler = require('core/battle/Battler')
 local ButtonWindow = require('core/gui/ButtonWindow')
 
 -- Constants
-
+local stateVariables = Config.stateVariables
 
 local CharacterWindow = class(ButtonWindow)
 
@@ -21,8 +22,7 @@ local CharacterWindow = class(ButtonWindow)
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
--- @param(members : table) array of battler data tables (from database)
---  (optional, all party members by default)
+-- @param(members : table) array of battler IDs (optional, all party members by default)
 function CharacterWindow:init(GUI, members)
   local vars = {}
   for i = 1, #stateVariables do
@@ -32,16 +32,16 @@ function CharacterWindow:init(GUI, members)
     end
   end
   self.vars = vars
-  self.members = members or PartyManager:currentBattlers()
+  self.members = members or PartyManager:currentBattlersIDs()
   ButtonWindow.init(self, GUI)
 end
 -- Creates a button for each character.
 function CharacterWindow:createButtons()
-  for i, member in ipairs(self.members) do
-    local battler = Battler(member, TroopManager.playerParty or 0)
+  for i, id in ipairs(self.members) do
+    local battler = Battler(id, TroopManager.playerParty or 0)
     local text = self:battlerText(battler)
     local icon = self:battlerIcon(battler)
-    self:addButton(text, icon, self.onButtonConfirm)
+    Button(self, text, icon, self.onButtonConfirm)
   end
 end
 
@@ -65,6 +65,10 @@ end
 ---------------------------------------------------------------------------------------------------
 -- Properties
 ---------------------------------------------------------------------------------------------------
+
+function CharacterWindow:buttonWidth()
+  return 80
+end
 
 function CharacterWindow:buttonHeight()
   return #self.vars * 10 + 5

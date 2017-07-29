@@ -3,8 +3,8 @@
     "name": "Potion",
     "description": "Cures 100HP.",
     "icon": {
-      "imagePath": "Icon/Items/Potion.png",
-      "x": 0,
+      "imagePath": "Icon/Items/Usable.png",
+      "x": 24,
       "y": 0,
       "width": 24,
       "height": 24

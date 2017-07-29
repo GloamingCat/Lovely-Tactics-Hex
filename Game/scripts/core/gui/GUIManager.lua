@@ -54,12 +54,15 @@ function GUIManager:showGUIForResult(path, ...)
   return result
 end
 -- [COROUTINE] Shows GUI and adds to the stack.
--- @param(path : string) the GUI path from custom/gui folder.
+-- @param(path : string or GUI) the GUI path from custom/gui folder or the GUI itself.
 function GUIManager:showGUI(path, ...)
   if self.current then
     self.stack:push(self.current)
   end
-  local newGUI = require('custom/gui/' .. path)(...)
+  local newGUI = path
+  if type(path) == 'string' then
+    newGUI = require('custom/gui/' .. path)(...)
+  end
   self.current = newGUI
   newGUI:show()
   return newGUI

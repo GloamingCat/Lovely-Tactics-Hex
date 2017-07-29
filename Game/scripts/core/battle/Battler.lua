@@ -25,10 +25,11 @@ local stateVariables = Config.stateVariables
 local attConfig = Database.attributes
 local elementCount = #Config.elements
 local turnLimit = Battle.turnLimit
+local lifeName = stateVariables[Config.battle.attLifeID + 1].shortName
 local turnName = attConfig[Config.battle.attTurnID + 1].shortName
 local jumpName = attConfig[Config.battle.attJumpID + 1].shortName
 local stepName = attConfig[Config.battle.attStepID + 1].shortName
-local lifeName = stateVariables[Config.battle.attLifeID + 1].shortName
+local weightName = attConfig[Config.battle.attWeightID + 1].shortName
 
 local Battler = class()
 
@@ -135,6 +136,7 @@ function Battler:createAttributes(base, level, build)
   self.turnStep = self.att[turnName]
   self.jumpPoints = self.att[jumpName]
   self.maxSteps = self.att[stepName]
+  self.maxWeight = self.att[weightName]
 end
 -- Initializes battler's state.
 -- @param(data : table) persistent data
