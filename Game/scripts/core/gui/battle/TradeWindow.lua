@@ -35,14 +35,18 @@ end
 function TradeWindow:createButtons()
   for i = 1, #self.inventory do
     local slot = self.inventory[i]
-    local item = Database.items[slot.id + 1]
-    local text = item.name .. ' (' .. slot.count .. ')'
-    local icon = item.icon.imagePath ~= '' and Animation.fromQuad(item.icon, GUIManager.renderer)
-    local button = Button(self, text, icon, self.onButtonConfirm, self.buttonEnabled)
-    button.item = item
-    button.slot = slot
-    button.onMove = self.onButtonMove
+    self:newItemButton(slot)
   end
+end
+function TradeWindow:newItemButton(slot)
+  local item = Database.items[slot.id + 1]
+  local text = item.name .. ' (' .. slot.count .. ')'
+  local icon = item.icon.imagePath ~= '' and Animation.fromQuad(item.icon, GUIManager.renderer)
+  local button = Button(self, text, icon, self.onButtonConfirm, self.buttonEnabled)
+  button.item = item
+  button.slot = slot
+  button.onMove = self.onButtonMove
+  return button
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -66,8 +70,8 @@ function TradeWindow:onButtonConfirm(button)
       return
     end
   end
-  self:removeItem(button, count)
   other:addItem(button.slot.id, count)
+  self:removeItem(button, count)
 end
 -- Changes active window to the other one when player presses right/left buttons.
 function TradeWindow:onButtonMove(button, dx, dy)
@@ -82,10 +86,14 @@ end
 function TradeWindow:changeTradeWindow(window)
   if window and #window.buttonMatrix > 0 then
     local button = self:currentButton()
-    button:setSelected(false)
+    if button then
+      button:setSelected(false)
+    end
+    self.cursor:hide()
     self.GUI:setActiveWindow(window)
     button = window:currentButton()
     button:setSelected(true)
+    window.cursor:show()
   end
 end
 -- Shows the count window.
@@ -107,18 +115,35 @@ end
 
 -- Adds items to this window's inventory.
 function TradeWindow:addItem(id, count)
-  if self.inventory:getCount(id) > 0 then
-    -- TODO: change button count
+  if self.inventory:addItem(id, count) then
+    local slot = self.inventory:getSlot(id)
+    local button = self:newItemButton(slot)
+    self:packWidgets()
+    button:updatePosition(self.position)
   else
-    -- TODO: add new button
+    for i = 1, #self.buttonMatrix do
+      local button = self.buttonMatrix[i]
+      if button.slot.id == id then
+        button.slot = self.inventory:getSlot(id)
+        local text = button.item.name .. ' (' .. button.slot.count .. ')'
+        button:setText(text)
+      end
+    end
   end
 end
 -- Removes items from this window's inventory.
 function TradeWindow:removeItem(button, count)
-  if button.slot.count > count then
-    -- TODO: change button count
+  local id = button.slot.id
+  if self.inventory:removeItem(id, count) then
+    button.slot = self.inventory:getSlot(id)
+    local text = button.item.name .. ' (' .. button.slot.count .. ')'
+    button:setText(text)
   else
-    -- TODO: delete button
+    self:removeButton(button.index)
+    if #self.buttonMatrix == 0 then
+      self.cursor:hide()
+      self:changeTradeWindow(self.left or self.right)
+    end
   end
 end
 

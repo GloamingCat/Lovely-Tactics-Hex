@@ -54,7 +54,6 @@ function Text:init(text, resources, properties, renderer)
     self:setText(text, resources)
   end
 end
-
 -- Sets/changes the text content.
 -- @param(text : string) the rich text
 -- @param(resources : table) table of resources used in text
@@ -88,7 +87,6 @@ function Text:alignOffset(w)
   end
   return 0
 end
-
 -- Called when renderer is iterating through its rendering list.
 -- @param(renderer : Renderer)
 function Text:draw(renderer)

@@ -35,7 +35,6 @@ function TextParser.parse(text, resources)
 	end
   return fragments
 end
-
 -- Parse and insert new fragment(s).
 function TextParser.parseFragment(fragments, textFragment)
 	-- break up fragments with newlines
@@ -105,7 +104,6 @@ function TextParser.addTextFragment(lines, currentLine, fragment, font, width)
     return currentLine
   end
 end
-
 -- Wraps text fragment (may have to add new lines).
 -- @param(lines : table) the array of lines
 -- @param(currentLine : table) the line of the fragment

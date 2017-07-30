@@ -64,6 +64,10 @@ end
 -- General
 ---------------------------------------------------------------------------------------------------
 
+function Button:setText(text)
+  self.textSprite:setText(text)
+  self.textSprite:redraw()
+end
 -- Converting to string.
 function Button:__tostring()
   if not self.textSprite then

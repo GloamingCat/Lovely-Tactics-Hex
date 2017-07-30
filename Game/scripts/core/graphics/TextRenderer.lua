@@ -48,7 +48,6 @@ function TextRenderer.createLineBuffers(lines, defaultFont)
   lgraphics.setCanvas(canvas)
   return renderedLines
 end
-
 -- Renders texture with the shader in a buffer with the correct size.
 -- @param(texture : Canvas) rendered text
 -- @ret(Canvas) pre-shaded texture

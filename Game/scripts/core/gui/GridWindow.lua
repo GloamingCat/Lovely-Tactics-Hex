@@ -30,7 +30,6 @@ local GridWindow = class(Window)
 function GridWindow:createContent()
   self.buttonMatrix = Matrix2(self:colCount(), 1)
   self:createButtons()
-  self.buttonMatrix.height = ceil(#self.buttonMatrix / self:colCount())
   self.currentCol = 1
   self.currentRow = 1
   self.offsetCol = 0
@@ -45,11 +44,21 @@ function GridWindow:createContent()
   if button then
     button:setSelected(true)
   end
+  self:packWidgets()
+end
+function GridWindow:packWidgets()
+  self.buttonMatrix.height = ceil(#self.buttonMatrix / self:colCount())
   if self:actualRowCount() > self:rowCount() then
-    self.vSlider = VSlider(self, Vector(self.width / 2 - self:hPadding(), 0), 
+    self.vSlider = self.vSlider or VSlider(self, Vector(self.width / 2 - self:hPadding(), 0), 
       self.height - self:vpadding() * 2)
+  elseif self.vSlider then
+    self.vSlider:destroy()
+    self.vSlider = nil
   end
-  self:updateViewport(1, 1)
+  self:updateViewport(self.currentCol, self.currentRow)
+  if self.cursor then
+    self.cursor:updatePosition()
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -71,9 +80,13 @@ end
 function GridWindow:actualRowCount()
   return self.buttonMatrix.height
 end
+-- Grid X-axis displacement.
+-- @ret(number) displacement in pixels
 function GridWindow:gridX()
   return 0
 end
+-- Grid X-axis displacement.
+-- @ret(number) displacement in pixels
 function GridWindow:gridY()
   return 0
 end
@@ -198,7 +211,7 @@ function GridWindow:onMove(c, r, dx, dy)
   end
   self:updateViewport(c, r)
   if self.cursor then
-    self.cursor:updatePosition(self.position)
+    self.cursor:updatePosition()
   end
 end
 

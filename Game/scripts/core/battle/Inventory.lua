@@ -36,12 +36,19 @@ end
 -- @param(id : number) item's ID in databse
 -- @ret(number) the item's count
 function Inventory:getCount(id)
+  local slot = self:getSlot(id)
+  return slot and slot.count or 0
+end
+-- Gets the slot of the given item.
+-- @param(id : number) item's ID in database
+-- @ret(table) the item's slot
+function Inventory:getSlot(id)
   for i = 1, self.size do
     if self[i].id == id then
-      return self[i].count
+      return self[i]
     end
   end
-  return 0
+  return nil
 end
 -- Gets the weight sum of all items.
 -- @ret(number)
@@ -94,12 +101,14 @@ function Inventory:removeItem(id, count)
     if self[i].id == id then
       if self[i].count <= count then
         self:remove(i)
+        return false
       else
         self[i].count = self[i].count - count
+        return true
       end
-      return
     end
   end
+  return false
 end
 
 ---------------------------------------------------------------------------------------------------
