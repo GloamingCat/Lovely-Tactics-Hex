@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-ButtonCursor
+WindowCursor
 ---------------------------------------------------------------------------------------------------
 A cursor for button windows.
 It's a type of window content.
@@ -12,7 +12,7 @@ It's a type of window content.
 local Animation = require('core/graphics/Animation')
 local Vector = require('core/math/Vector')
 
-local ButtonCursor = class()
+local WindowCursor = class()
 
 ---------------------------------------------------------------------------------------------------
 -- Initialize
@@ -20,7 +20,7 @@ local ButtonCursor = class()
 
 -- Constructor.
 -- @param(window : GridWindow) cursor's window
-function ButtonCursor:init(window)
+function WindowCursor:init(window)
   self.window = window
   local animData = Database.animOther[Config.gui.cursorAnimID + 1]
   self.anim = Animation.fromData(animData, GUIManager.renderer)
@@ -36,13 +36,13 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Updates animation.
-function ButtonCursor:update()
+function WindowCursor:update()
   if self.window.active then
     self.anim:update()
   end
 end
 -- Updates position to the selected button.
-function ButtonCursor:updatePosition()
+function WindowCursor:updatePosition()
   local button = self.window:currentButton()
   if button then
     self.anim.sprite:setPosition(self.window.position + 
@@ -52,16 +52,16 @@ function ButtonCursor:updatePosition()
   end
 end
 -- Shows sprite.
-function ButtonCursor:show()
+function WindowCursor:show()
   self.anim.sprite:setVisible(#self.window.buttonMatrix > 0)
 end
 -- Hides sprite.
-function ButtonCursor:hide()
+function WindowCursor:hide()
   self.anim.sprite:setVisible(false)
 end
 -- Removes sprite.
-function ButtonCursor:destroy()
+function WindowCursor:destroy()
   self.anim:destroy()
 end
 
-return ButtonCursor
+return WindowCursor

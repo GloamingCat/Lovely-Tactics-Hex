@@ -44,7 +44,7 @@
     "attTurnID": 4,
     "attStepID": 5,
     "attJumpID": 6,
-    "attWeightID": 0
+    "attWeightID": 17
   },
   "stateVariables": [
     { 

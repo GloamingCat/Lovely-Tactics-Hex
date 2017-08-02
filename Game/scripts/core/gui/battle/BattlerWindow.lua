@@ -48,8 +48,8 @@ function BattlerWindow:init(GUI, character)
   Window.init(self, GUI, hsw, hsh)
 end
 -- Overrides Window:createContent.
-function BattlerWindow:createContent()
-  Window.createContent(self)
+function BattlerWindow:createContent(width, height)
+  Window.createContent(self, width, height)
   -- Portrait
   local sprite = self.character.portraits.status
   if sprite then

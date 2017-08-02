@@ -102,5 +102,11 @@
     "shortName": "EVDM",
     "script": "att:AGI() * 5 + att:MAG() * 5",
     "mutable": false
+  },
+  {
+    "name": "Carry",
+    "shortName": "CAR",
+    "script": "att:STR() * 100",
+    "mutable": false
   }
 ]

@@ -13,7 +13,7 @@ local Matrix2 = require('core/math/Matrix2')
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local Button = require('core/gui/Button')
-local ButtonCursor = require('core/gui/ButtonCursor')
+local WindowCursor = require('core/gui/WindowCursor')
 local VSlider = require('core/gui/VSlider')
 local Window = require('core/gui/Window')
 
@@ -35,7 +35,7 @@ function GridWindow:createContent()
   self.offsetCol = 0
   self.offsetRow = 0
   if not self.noCursor then
-    self.cursor = ButtonCursor(self)
+    self.cursor = WindowCursor(self)
   end
   self.loopVertical = true
   self.loopHorizontal = true

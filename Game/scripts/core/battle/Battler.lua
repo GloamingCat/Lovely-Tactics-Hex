@@ -47,8 +47,8 @@ function Battler:init(battlerID, party)
   self.party = party
   self.tags = util.createTags(data.tags)
   local persistentData = self:loadPersistentData(battlerID, data.persistent, data.items)
-  self:createAttributes(data.attributes, data.level, data.build)
-  self:createStateValues(persistentData)
+  self:createAttributes(persistentData)
+  self:createStateValues(persistentData, data.attributes, data.build, data.level)
   self:setSkillList(data.skills, data.attackID)
   self:setElements(data.elements)
   self:setAI(data.scriptAI)
@@ -110,29 +110,24 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Creates attribute functions from script data.
--- @param(base : table) a table of base values
--- @param(level : number) battler's level
--- @param(build : table) the build with the base functions for each attribute
-function Battler:createAttributes(base, level, build)
-  if build.path ~= '' then
-    build = require('custom/' .. build.path)
-  else
-    build = nil
-  end
+function Battler:createAttributes()
   self.att = {}
   for i = 1, #attConfig do
     local shortName = attConfig[i].shortName
     local script = attConfig[i].script
-    local b = base[i] or 0
-    if build and script == '' then
-      b = b + build[shortName](level)
+    if script == '' then
+      self.att[shortName] = function()
+        return self.state.attAdd[shortName] + self.state.attMul[shortName] * 
+          self.state.attBase[shortName] 
+      end
+    else
+      local base = loadformula(script, 'att')
+      self.att[shortName] = function()
+        return self.state.attAdd[shortName] + self.state.attMul[shortName] *
+          (self.state.attBase[shortName] + base(self.att))
+      end
     end
-    local base = self:createAttributeBase(b, script)
-    self.att[shortName] = function()
-      return base(self.att) * self.state.attMul[shortName]
-        + self.state.attAdd[shortName]
-    end
-  end  
+  end
   self.turnStep = self.att[turnName]
   self.jumpPoints = self.att[jumpName]
   self.maxSteps = self.att[stepName]
@@ -140,7 +135,10 @@ function Battler:createAttributes(base, level, build)
 end
 -- Initializes battler's state.
 -- @param(data : table) persistent data
-function Battler:createStateValues(data)
+-- @param(attBase : table) array of the base values of each attribute
+-- @param(build : table) the build with the base functions for each attribute
+-- @param(level : number) battler's level
+function Battler:createStateValues(data, attBase, build, level)
   local initState = {}
   for i = 1, #self.data.stateVariables do
     local var = self.data.stateVariables[i]
@@ -150,12 +148,23 @@ function Battler:createStateValues(data)
   self.state = data or {}
   self.state.steps = 0
   self.state.turnCount = 0
-  -- Attribute bonus
-  if not data or not data.attAdd or not data.attMul then
+  -- Attribute bonud
+  if not data or not data.attAdd or not data.attMul or not data.attBase then
     self.state.attAdd = {}
     self.state.attMul = {}
+    self.state.attBase = {}
+    if build.path ~= '' then
+      build = require('custom/' .. build.path)
+    else
+      build = nil
+    end
     for i = 1, #attConfig do
       local shortName = attConfig[i].shortName
+      local b = attBase[i] or 0
+      if build and build[shortName] then
+        b = b + build[shortName](level)
+      end
+      self.state.attBase[shortName] = b
       self.state.attAdd[shortName] = 0
       self.state.attMul[shortName] = 1
     end
@@ -182,21 +191,6 @@ function Battler:createStateValues(data)
       self:setStateValue(shortName, init(self.att))
     end
   end
-end
--- Creates an attribute access function.
--- @param(baseValue : number) attribute's base value from battler
--- @param(script : number) attribute's formula script
--- @ret(function) the function for this attribute
-function Battler:createAttributeBase(baseValue, script)
-  if script == '' then
-    return function()
-      return baseValue
-    end
-  end
-  if baseValue > 0 then
-    script = script .. ' + ' .. baseValue
-  end
-  return loadformula(script, 'att')
 end
 
 ---------------------------------------------------------------------------------------------------

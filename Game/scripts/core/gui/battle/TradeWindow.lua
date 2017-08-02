@@ -120,6 +120,7 @@ function TradeWindow:addItem(id, count)
     local button = self:newItemButton(slot)
     self:packWidgets()
     button:updatePosition(self.position)
+    self.remainingWeight = self.remainingWeight - button.item.weight * count
   else
     for i = 1, #self.buttonMatrix do
       local button = self.buttonMatrix[i]
@@ -127,12 +128,14 @@ function TradeWindow:addItem(id, count)
         button.slot = self.inventory:getSlot(id)
         local text = button.item.name .. ' (' .. button.slot.count .. ')'
         button:setText(text)
+        self.remainingWeight = self.remainingWeight - button.item.weight * count
       end
     end
   end
 end
 -- Removes items from this window's inventory.
 function TradeWindow:removeItem(button, count)
+  self.remainingWeight = self.remainingWeight + button.item.weight * count
   local id = button.slot.id
   if self.inventory:removeItem(id, count) then
     button.slot = self.inventory:getSlot(id)
