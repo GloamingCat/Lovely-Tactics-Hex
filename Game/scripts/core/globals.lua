@@ -8,7 +8,6 @@ This module creates all global variables.
 =================================================================================================]]
 
 require('core/base/class')
-require('core/base/override')
 require('core/base/util')
 require('core/math/lib')
 

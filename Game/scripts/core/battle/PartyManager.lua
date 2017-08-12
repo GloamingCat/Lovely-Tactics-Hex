@@ -11,7 +11,8 @@ Stores and manages player's party members (active and backup).
 local List = require('core/datastruct/List')
 
 -- Constants
-local stateVariables = Config.stateVariables
+local battlerRewards = Database.variables.battlerRewards
+local partyRewards = Database.variables.partyRewards
 
 local PartyManager = class()
 
@@ -124,12 +125,11 @@ function PartyManager:addRewards()
       return e.battler.party == TroopManager.playerParty or e.battler:isAlive() 
     end
   )
-  for i = 1, #stateVariables do
-    if stateVariables[i].reward == 2 then -- Party reward
-      self:addPartyRewards(stateVariables[i].shortName, enemies)
-    elseif stateVariables[i].reward == 1 then -- Battler reward
-      self:addBattlerRewards(stateVariables[i], enemies, battlers, backup)
-    end
+  for i = 1, #battlerRewards do
+    self:addBattlerRewards(battlerRewards[i], enemies, battlers, backup)
+  end
+  for i = 1, #partyRewards do
+    self:addPartyRewards(partyRewards[i].shortName, enemies)
   end
 end
 -- Adds a party reward type i.
@@ -138,7 +138,7 @@ end
 function PartyManager:addPartyRewards(name, enemies)
   local data = SaveManager.current.partyData
   for e in enemies:iterator() do
-    data[name] = data[name] + e.battler.state[name]
+    data[name] = data[name] + e.battler.partyRewards[name]
   end
 end
 -- Adds a battler reward type i.
@@ -160,7 +160,7 @@ function PartyManager:addBattlerRewards(var, enemies, battlers, backup)
       if b.persistent then
         id = id .. ''
         data[id] = data[id] or {}
-        data[id][name] = data[id][name] + e.battler.state[name] / div
+        data[id][name] = (data[id][name] or 0) + e.battler.battlerRewards[name] / div
       end
     end
     -- Backup battlers
@@ -169,7 +169,7 @@ function PartyManager:addBattlerRewards(var, enemies, battlers, backup)
       if b.persistent then
         id = id .. ''
         data[id] = data[id] or {}
-        data[id][name] = data[id][name] + e.battler.state[name] / div * var.backup / 100
+        data[id][name] = (data[id][name] or 0) + e.battler.battlerRewards[name] / div * var.backup / 100
       end
     end
   end

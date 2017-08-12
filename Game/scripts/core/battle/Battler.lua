@@ -21,11 +21,11 @@ local readFile = love.filesystem.read
 local copyArray = util.copyArray
 
 -- Constants
-local stateVariables = Config.stateVariables
+local battlerVariables = Database.variables.battler
 local attConfig = Database.attributes
 local elementCount = #Config.elements
 local turnLimit = Battle.turnLimit
-local lifeName = stateVariables[Config.battle.attLifeID + 1].shortName
+local lifeName = battlerVariables[Config.battle.attLifeID + 1].shortName
 local turnName = attConfig[Config.battle.attTurnID + 1].shortName
 local jumpName = attConfig[Config.battle.attJumpID + 1].shortName
 local stepName = attConfig[Config.battle.attStepID + 1].shortName
@@ -52,6 +52,7 @@ function Battler:init(id, party)
   self:setSkillList(data.skills, data.attackID)
   self:setElements(data.elements)
   self:setAI(data.scriptAI)
+  self:setRewards(data.partyRewards, data.battlerRewards)
 end
 -- Gets the data from save if persistent, nil if not.
 -- @ret(table) the battler's data in the save
@@ -99,6 +100,19 @@ function Battler:setSkillList(skills, attackID)
   end
   self.attackSkill = SkillAction.fromData(attackID)
 end
+-- Initializes reward tables.
+function Battler:setRewards(partyRewards, battlerRewards)
+  local function initRewards(name, rewards)
+    self[name] = {}
+    for i = 1, #rewards do
+      local reward = Database.variables[name][i]
+      local init = loadformula(rewards[i] or '0', 'att, level')
+      self[name][reward.shortName] = init(self.att, self.data.level)
+    end
+  end
+  initRewards('partyRewards', partyRewards)
+  initRewards('battlerRewards', battlerRewards)
+end
 -- Converting to string.
 -- @ret(string) a string representation
 function Battler:__tostring()
@@ -139,12 +153,6 @@ end
 -- @param(build : table) the build with the base functions for each attribute
 -- @param(level : number) battler's level
 function Battler:createStateValues(data, attBase, build, level)
-  local initState = {}
-  for i = 1, #self.data.stateVariables do
-    local var = self.data.stateVariables[i]
-    local name = stateVariables[var.id + 1].name
-    initState[name] = var.value
-  end
   self.state = data or {}
   self.state.steps = 0
   self.state.turnCount = 0
@@ -172,10 +180,10 @@ function Battler:createStateValues(data, attBase, build, level)
   -- Min / max
   self.stateMax = {}
   self.stateMin = {}
-  for i = 1, #stateVariables do
-    local shortName = stateVariables[i].shortName
-    local max = loadformula(stateVariables[i].max, 'att')
-    local min = loadformula(stateVariables[i].min, 'att')
+  for i = 1, #battlerVariables do
+    local shortName = battlerVariables[i].shortName
+    local max = loadformula(battlerVariables[i].max, 'att')
+    local min = loadformula(battlerVariables[i].min, 'att')
     self.stateMax[shortName] = function()
       return max(self.att)
     end
@@ -184,10 +192,8 @@ function Battler:createStateValues(data, attBase, build, level)
     end
     if data and data[shortName] then
       self:setStateValue(shortName, data[shortName])
-    elseif initState[shortName] then
-      self:setStateValue(shortName, initState[shortName])
     else
-      local init = loadformula(stateVariables[i].initial, 'att')
+      local init = loadformula(battlerVariables[i].initial, 'att')
       self:setStateValue(shortName, init(self.att))
     end
   end

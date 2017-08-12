@@ -710,5 +710,16 @@ if always_try_using_lpeg then
   pcall (json.use_lpeg)
 end
 
-return json
+---------------------------------------------------------------------------------------------------
+-- Data load
+---------------------------------------------------------------------------------------------------
 
+local readFile = love.filesystem.read
+function json.load(path)
+  local content = readFile(path .. '.json')
+  local clearContent = content:gsub('#[^#]*[#\r\n]', '')
+  print(clearContent)
+  return json.decode(clearContent)
+end
+
+return json

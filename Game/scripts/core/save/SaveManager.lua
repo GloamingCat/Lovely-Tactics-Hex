@@ -12,7 +12,7 @@ local Troop = require('core/battle/Troop')
 local Inventory = require('core/battle/Inventory')
 
 -- Constants
-local stateVariables = Config.stateVariables
+local partyRewards = Database.variables.partyRewards
 
 local SaveManager = class()
 
@@ -33,12 +33,10 @@ function SaveManager:newSave()
   -- Party inventory
   save.partyData = {}
   save.partyInventory = Inventory(Config.initialItems)
-  for i = 1, #stateVariables do
-    if stateVariables[i].reward == 2 then
-      local init = loadformula(stateVariables[i].initial)
-      local name = stateVariables[i].shortName
-      save.partyData[name] = init()
-    end
+  for i = 1, #partyRewards do
+    local init = loadformula(partyRewards[i].initial)
+    local name = partyRewards[i].shortName
+    save.partyData[name] = init()
   end
   -- Party troop
   save.partyTroop = Troop.fromData(Config.battle.playerTroopID)

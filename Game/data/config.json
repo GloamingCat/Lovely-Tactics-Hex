@@ -46,52 +46,6 @@
     "attJumpID": 6,
     "attWeightID": 17
   },
-  "stateVariables": [
-    { 
-      "name": "Health Points", 
-      "shortName": "HP", 
-      "targetGUI": true,
-      "min": "0", 
-      "max": "att.MHP()", 
-      "initial": "att.MHP()",
-      "reward": 0,
-      "backup": 100,
-      "divide": false
-    },
-    { 
-      "name": "Skill Points", 
-      "shortName": "SP", 
-      "targetGUI": true,
-      "min": "0", 
-      "max": "att.MSP()", 
-      "initial": "att.MSP()" ,
-      "reward": 0,
-      "backup": 100,
-      "divide": false
-    },
-    { 
-      "name": "Gold", 
-      "shortName": "G", 
-      "targetGUI": false,
-      "min": "0", 
-      "max": "999999", 
-      "initial": "100",
-      "reward": 2,
-      "backup": 100,
-      "divide": false
-    },
-    { 
-      "name": "Experience", 
-      "shortName": "EXP", 
-      "targetGUI": false,
-      "min": "0", 
-      "max": "", 
-      "initial": "0",
-      "reward": 1,
-      "backup": 50,
-      "divide": false
-    }
-  ]
   "grid": {
     "tileW": 36,
     "tileH": 22,

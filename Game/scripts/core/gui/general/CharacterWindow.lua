@@ -13,7 +13,7 @@ local Battler = require('core/battle/Battler')
 local GridWindow = require('core/gui/GridWindow')
 
 -- Constants
-local stateVariables = Config.stateVariables
+local battlerVariables = Database.variables.battler
 
 local CharacterWindow = class(GridWindow)
 
@@ -25,8 +25,8 @@ local CharacterWindow = class(GridWindow)
 -- @param(members : table) array of battler IDs (optional, all party members by default)
 function CharacterWindow:init(GUI, members)
   local vars = {}
-  for i = 1, #stateVariables do
-    local var = stateVariables[i]
+  for i = 1, #battlerVariables do
+    local var = battlerVariables[i]
     if var.targetGUI then
       vars[#vars + 1] = var
     end

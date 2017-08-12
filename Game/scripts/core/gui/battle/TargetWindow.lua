@@ -14,9 +14,8 @@ local Window = require('core/gui/Window')
 local SimpleText = require('core/gui/SimpleText')
 
 -- Constants
-local stateVariables = Config.stateVariables
+local battlerVariables = Database.variables.battler
 local battleConfig = Config.battle
-local attConfig = Config.attributes
 local font = Font.gui_small
 
 local TargetWindow = class(Window)
@@ -28,8 +27,8 @@ local TargetWindow = class(Window)
 -- Overrides Window:init.
 function TargetWindow:init(GUI)
   local vars = {}
-  for i = 1, #stateVariables do
-    local var = stateVariables[i]
+  for i = 1, #battlerVariables do
+    local var = battlerVariables[i]
     if var.targetGUI then
       vars[#vars + 1] = var
     end

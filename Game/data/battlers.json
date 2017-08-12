@@ -7,7 +7,8 @@
     "fieldCharID": 0,
     "attackID": 1,
     "skillDagID": -1,
-    "stateVariables": [],
+    "battlerRewards": ["0"],
+    "partyRewards": ["0"],
     "scriptAI": {
       "path": "",
       "param": ""
@@ -38,7 +39,8 @@
     "fieldCharID": 0,
     "attackID": 2,
     "skillDagID": 0,
-    "stateVariables": [],
+    "battlerRewards": ["0"],
+    "partyRewards": ["0"],
     "scriptAI": {
       "path": "",
       "param": ""
@@ -77,16 +79,8 @@
     "fieldCharID": -1,
     "attackID": 1,
     "skillDagID": -1,
-    "stateVariables": [
-      {
-        "id": 2,
-        "value": 50
-      },
-      {
-        "id": 3,
-        "value": 10
-      }
-    ],
+    "battlerRewards": ["10"],
+    "partyRewards": ["50"],
     "scriptAI": {
       "path": "ai/script/Rusher.lua",
       "param": ""
@@ -128,16 +122,8 @@
     "fieldCharID": -1,
     "attackID": 2,
     "skillDagID": -1,
-    "stateVariables": [
-      {
-        "id": 2,
-        "value": 50
-      },
-      {
-        "id": 3,
-        "value": 10
-      }
-    ],
+    "battlerRewards": ["10"],
+    "partyRewards": ["50"],
     "scriptAI": {
       "path": "ai/script/Rusher.lua",
       "param": ""
@@ -170,7 +156,8 @@
     "fieldCharID": 0,
     "attackID": 1,
     "skillDagID": -1,
-    "stateVariables": [],
+    "battlerRewards": [0],
+    "partyRewards": [0],
     "scriptAI": {
       "path": "",
       "param": ""
@@ -201,7 +188,8 @@
     "fieldCharID": -1,
     "attackID": 2,
     "skillDagID": -1,
-    "stateVariables": [],
+    "battlerRewards": [0],
+    "partyRewards": [0],
     "scriptAI": {
       "path": "",
       "param": ""
