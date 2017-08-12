@@ -22,7 +22,7 @@ local Hidder = class(ArtificialInteligence)
 
 -- Constructor.
 function Hidder:init(battler, param)
-  local key = 'Hidder ' .. battler.battlerID
+  local key = 'Hidder ' .. battler.id
   ArtificialInteligence.init(self, key, battler, self:decodeParam(param))
 end
 

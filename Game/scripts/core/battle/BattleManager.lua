@@ -111,7 +111,7 @@ function BattleManager:battleEnd()
     local b = char.battler
     b:onBattleEnd()
     if b.data.persistent then
-      SaveManager.current.battlerData[b.battlerID] = b.state
+      SaveManager.current.battlerData[b.id] = b.state
     end
   end
   FieldManager.renderer:fadeout(nil, true)

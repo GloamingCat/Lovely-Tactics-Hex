@@ -19,7 +19,7 @@ local Rusher = class(ArtificialInteligence)
 
 -- Constructor.
 function Rusher:init(battler, param)
-  local key = 'Rusher ' .. battler.battlerID
+  local key = 'Rusher ' .. battler.id
   ArtificialInteligence.init(self, key, battler, self:decodeParam(param))
 end
 

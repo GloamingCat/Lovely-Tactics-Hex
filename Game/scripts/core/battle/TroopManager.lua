@@ -143,7 +143,7 @@ end
 -- @ret(Character) the character with the battler ID (nil of not found)
 function TroopManager:getBattlerIDCharacter(id)
    for bc in self.characterList:iterator() do 
-    if bc.battler.battlerID == id then
+    if bc.battler.id == id then
       return bc
     end
   end

@@ -19,7 +19,7 @@ local Ofensive = class(ArtificialInteligence)
 
 -- Constructor.
 function Ofensive:init(battler, param)
-  local key = 'Ofensive ' .. battler.battlerID
+  local key = 'Ofensive ' .. battler.id
   ArtificialInteligence.init(self, key, battler, self:decodeParam(param))
 end
 

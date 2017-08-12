@@ -20,7 +20,7 @@ local Stalker = class(ArtificialInteligence)
 
 -- Constructor.
 function Stalker:init(battler, param)
-  local key = 'Stalker ' .. battler.battlerID
+  local key = 'Stalker ' .. battler.id
   ArtificialInteligence.init(self, key, battler, self:decodeParam(param))
 end
 

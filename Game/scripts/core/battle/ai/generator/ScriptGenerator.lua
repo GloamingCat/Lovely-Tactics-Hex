@@ -30,7 +30,7 @@ local ScriptGenerator = class()
 function ScriptGenerator:init(matches, repeats, battlerID)
   self.matches = matches
   self.repeats = repeats
-  self.battlerID = battlerID
+  self.id = battlerID
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -95,8 +95,8 @@ end
 
 function ScriptGenerator:createGA()
   -- Gets the network AI
-  local battler = Battler(self.battlerID, -1)
-  assert(battler.AI.network, 'Battler ' .. self.battlerID .. ' (' .. 
+  local battler = Battler(self.id, -1)
+  assert(battler.AI.network, 'Battler ' .. self.id .. ' (' .. 
     battler.data.name .. ') does not have a neural network AI.')
   -- Genetic Algorithm args
   local ic = battler.AI.network.inputCount

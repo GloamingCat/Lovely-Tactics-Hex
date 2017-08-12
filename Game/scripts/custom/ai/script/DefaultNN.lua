@@ -26,7 +26,7 @@ local DefaultNN = class(NeuralNetworkAI)
 -- @param(battler : Battler)
 -- @param(param : string)
 function DefaultNN:init(battler, param)
-  NeuralNetworkAI.init(self, 'DefaultNN' .. battler.battlerID, battler, self:decodeParam(param))
+  NeuralNetworkAI.init(self, 'DefaultNN' .. battler.id, battler, self:decodeParam(param))
 end
 
 -- Inserts the default skill rules in the array.

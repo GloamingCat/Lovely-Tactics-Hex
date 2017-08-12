@@ -22,7 +22,7 @@ local Chicken = class(ArtificialInteligence)
 
 -- Constructor.
 function Chicken:init(battler, param)
-  local key = 'Chicken ' .. battler.battlerID
+  local key = 'Chicken ' .. battler.id
   ArtificialInteligence.init(self, key, battler, self:decodeParam(param))
 end
 

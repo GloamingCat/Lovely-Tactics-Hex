@@ -29,7 +29,7 @@ local DefaultMC = class(MonteCarlo)
 
 -- Constructor.
 function DefaultMC:init(battler, param)
-  local key = 'DefaultMC ' .. battler.battlerID
+  local key = 'DefaultMC ' .. battler.id
   param = self:decodeParam(param)
   MonteCarlo.init(self, key, battler, param)
   self.moves = param and param.moves or 2

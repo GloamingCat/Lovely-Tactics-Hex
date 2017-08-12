@@ -37,16 +37,16 @@ local Battler = class()
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
--- @param(battlerID : table) the battler's ID in database
+-- @param(id : table) the battler's ID in database
 -- @param(party : number) this battler's party number
-function Battler:init(battlerID, party)
-  local data = Database.battlers[battlerID + 1]
+function Battler:init(id, party)
+  local data = Database.battlers[id + 1]
+  self.id = id
   self.data = data
   self.name = data.name
-  self.battlerID = battlerID
   self.party = party
   self.tags = util.createTags(data.tags)
-  local persistentData = self:loadPersistentData(battlerID, data.persistent, data.items)
+  local persistentData = self:loadPersistentData(data.persistent, data.items)
   self:createAttributes(persistentData)
   self:createStateValues(persistentData, data.attributes, data.build, data.level)
   self:setSkillList(data.skills, data.attackID)
@@ -55,12 +55,12 @@ function Battler:init(battlerID, party)
 end
 -- Gets the data from save if persistent, nil if not.
 -- @ret(table) the battler's data in the save
-function Battler:loadPersistentData(id, persistent, items)
+function Battler:loadPersistentData(persistent, items)
   if persistent then
-    local data = SaveManager.current.battlerData[id .. '']
+    local data = SaveManager.current.battlerData[self.id .. '']
     if not data then
       data = { inventory = Inventory(items) }
-      SaveManager.current.battlerData[id .. ''] = data
+      SaveManager.current.battlerData[self.id .. ''] = data
     end
     self.inventory = data.inventory
     return data
