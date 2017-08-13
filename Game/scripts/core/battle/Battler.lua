@@ -19,6 +19,7 @@ local ceil = math.ceil
 local newArray = util.newArray
 local readFile = love.filesystem.read
 local copyArray = util.copyArray
+local copyTable = util.shallowCopyTable
 
 -- Constants
 local battlerVariables = Database.variables.battler
@@ -46,53 +47,19 @@ function Battler:init(id, party)
   self.name = data.name
   self.party = party
   self.tags = util.createTags(data.tags)
-  local persistentData = self:loadPersistentData(data.persistent, data.items)
+  local persistentData = self:loadPersistentData(data.persistent)
   self:createAttributes(persistentData)
   self:createStateValues(persistentData, data.attributes, data.build, data.level)
-  self:setSkillList(data.skills, data.attackID)
-  self:setElements(data.elements)
-  self:setAI(data.scriptAI)
-  self:setRewards(data.partyRewards, data.battlerRewards)
-end
--- Gets the data from save if persistent, nil if not.
--- @ret(table) the battler's data in the save
-function Battler:loadPersistentData(persistent, items)
-  if persistent then
-    local data = SaveManager.current.battlerData[self.id .. '']
-    if not data then
-      data = { inventory = Inventory(items) }
-      SaveManager.current.battlerData[self.id .. ''] = data
-    end
-    self.inventory = data.inventory
-    return data
-  else
-    self.inventory = Inventory(items)
-    return nil
-  end
-end
--- Sets data of this battler's AI.
--- @param(ai : table) the script data table (with strings path and param)
-function Battler:setAI(ai)
-  if ai.path ~= '' then
-    self.AI = require('custom/' .. ai.path)(self, ai.param)
-  else
-    self.AI = nil
-  end
-end
--- Creates and sets and array of element factors.
--- @param(elements : table) array of element factors 
---  (in percentage, 100 is neutral)
-function Battler:setElements(elements)
-  local e = newArray(elementCount, 0)
-  for i = 1, #elements do
-    e[elements[i].id + 1] = elements[i].value - 100
-  end
-  self.elementFactors = e
+  self:initializeSkillList(data.skills, data.attackID)
+  self:initializeElements(persistentData, data.elements or {})
+  self:initializeInventory(persistentData, data.items or {})
+  self:initializeAI(data.scriptAI)
+  self:initializeRewards(data.partyRewards, data.battlerRewards)
 end
 -- Creates and sets the list of usable skills.
 -- @param(skills : table) array of skill IDs
 -- @param(attackID : number) ID of the battler's "Attack" skill
-function Battler:setSkillList(skills, attackID)
+function Battler:initializeSkillList(skills, attackID)
   self.skillList = List()
   for i = 1, #skills do
     local id = skills[i]
@@ -100,8 +67,35 @@ function Battler:setSkillList(skills, attackID)
   end
   self.attackSkill = SkillAction.fromData(attackID)
 end
+-- Creates and sets and array of element factors.
+-- @param(elements : table) array of element factors 
+--  (in percentage, 100 is neutral)
+function Battler:initializeElements(persistentData, elements)
+  if persistentData then
+    self.elementFactors = persistentData.elementFactors
+  else
+    local e = newArray(elementCount, 0)
+    for i = 1, #elements do
+      e[elements[i].id + 1] = elements[i].value - 100
+    end
+    self.elementFactors = e
+  end
+end
+-- Initializes inventory from the given initial items slots.
+function Battler:initializeInventory(persistentData, items)
+  self.inventory = Inventory(persistentData and persistentData.items or items)
+end
+-- Sets data of this battler's AI.
+-- @param(ai : table) the script data table (with strings path and param)
+function Battler:initializeAI(ai)
+  if ai.path ~= '' then
+    self.AI = require('custom/' .. ai.path)(self, ai.param)
+  else
+    self.AI = nil
+  end
+end
 -- Initializes reward tables.
-function Battler:setRewards(partyRewards, battlerRewards)
+function Battler:initializeRewards(partyRewards, battlerRewards)
   local function initRewards(name, rewards)
     self[name] = {}
     for i = 1, #rewards do
@@ -120,6 +114,32 @@ function Battler:__tostring()
 end
 
 ---------------------------------------------------------------------------------------------------
+-- Persistent Data
+---------------------------------------------------------------------------------------------------
+
+-- Gets the data from save if persistent, nil if not.
+-- @ret(table) the battler's data in the save
+function Battler:loadPersistentData()
+  return SaveManager.current.battlerData[self.id .. '']
+end
+-- Stores battler's persistent data in game save.
+function Battler:savePersistentData()
+  SaveManager.current.battlerData[self.id .. ''] = self:createPersistentData()
+end
+-- Creates a table that holds all battler's persistent data.
+-- @ret(table)
+function Battler:createPersistentData()
+  local data = {}
+  data.attAdd = copyArray(self.attAdd)
+  data.attMul = copyArray(self.attMul)
+  data.attBase = copyArray(self.attBase)
+  data.state = copyTable(self.state)
+  data.elementFactors = copyArray(self.elementFactors)
+  data.inventory = self.inventory:asTable()
+  return data
+end
+
+---------------------------------------------------------------------------------------------------
 -- Attributes
 ---------------------------------------------------------------------------------------------------
 
@@ -131,14 +151,14 @@ function Battler:createAttributes()
     local script = attConfig[i].script
     if script == '' then
       self.att[shortName] = function()
-        return self.state.attAdd[shortName] + self.state.attMul[shortName] * 
-          self.state.attBase[shortName] 
+        return self.attAdd[shortName] + self.attMul[shortName] * 
+          self.attBase[shortName]
       end
     else
       local base = loadformula(script, 'att')
       self.att[shortName] = function()
-        return self.state.attAdd[shortName] + self.state.attMul[shortName] *
-          (self.state.attBase[shortName] + base(self.att))
+        return self.attAdd[shortName] + self.attMul[shortName] *
+          (self.attBase[shortName] + base(self.att))
       end
     end
   end
@@ -153,14 +173,14 @@ end
 -- @param(build : table) the build with the base functions for each attribute
 -- @param(level : number) battler's level
 function Battler:createStateValues(data, attBase, build, level)
-  self.state = data or {}
-  self.state.steps = 0
-  self.state.turnCount = 0
+  self.steps = 0
+  self.turnCount = 0
+  self.state = data and data.state or {}
   -- Attribute bonud
   if not data or not data.attAdd or not data.attMul or not data.attBase then
-    self.state.attAdd = {}
-    self.state.attMul = {}
-    self.state.attBase = {}
+    self.attAdd = {}
+    self.attMul = {}
+    self.attBase = {}
     if build.path ~= '' then
       build = require('custom/' .. build.path)
     else
@@ -172,9 +192,9 @@ function Battler:createStateValues(data, attBase, build, level)
       if build and build[shortName] then
         b = b + build[shortName](level)
       end
-      self.state.attBase[shortName] = b
-      self.state.attAdd[shortName] = 0
-      self.state.attMul[shortName] = 1
+      self.attBase[shortName] = b
+      self.attAdd[shortName] = 0
+      self.attMul[shortName] = 1
     end
   end
   -- Min / max
@@ -206,42 +226,47 @@ end
 -- Increments turn count by the turn attribute.
 -- @param(time : number) a multiplier to the step (used for time bar animation)
 function Battler:incrementTurnCount(time)
-  self.state.turnCount = self.state.turnCount + self.turnStep() * time
+  self.turnCount = self.turnCount + self.turnStep() * time
 end
 -- Decrements turn count by a value. It never reaches a negative value.
 -- @param(value : number)
 function Battler:decrementTurnCount(value)
-  self.state.turnCount = max(self.state.turnCount - value, 0)
+  self.turnCount = max(self.turnCount - value, 0)
 end
 -- Returns the number of steps needed to reach turn limit.
 -- @ret(number) the number of steps (float)
 function Battler:remainingTurnCount()
-  return (turnLimit - self.state.turnCount) / self.turnStep()
+  return (turnLimit - self.turnCount) / self.turnStep()
 end
+
+---------------------------------------------------------------------------------------------------
+-- Turn callbacks
+---------------------------------------------------------------------------------------------------
+
 -- Callback for when a new turn begins.
 -- @param(iterations : number) the number of turn iterations since the previous turn
-function Battler:onTurnStart(iterations)
+function Battler:onTurnStart(char, iterations)
   if self.AI and self.AI.onTurnStart then
-    self.AI:onTurnStart(self, iterations)
+    self.AI:onTurnStart(char, iterations)
   end
 end
 -- Callback for when a turn ends.
 -- @param(iterations : number) the number of turn iterations since the previous turn
-function Battler:onTurnEnd(iterations)
+function Battler:onTurnEnd(char, iterations)
   if self.AI and self.AI.onTurnEnd then
-    self.AI:onTurnEnd(self, iterations)
+    self.AI:onTurnEnd(char, iterations)
   end
 end
 -- Callback for when this battler's turn starts.
 -- @param(iterations : number) the number of turn iterations since the previous turn
-function Battler:onSelfTurnStart(iterations)
-  self.state.steps = self.maxSteps()
+function Battler:onSelfTurnStart(char, iterations)
+  self.steps = self.maxSteps()
 end
 -- Callback for when this battler's turn ends.
 -- @param(iterations : number) the number of turn iterations since the previous turn
 -- @param(actionCost : number) the time the battler spent during the turn
-function Battler:onSelfTurnEnd(iterations, actionCost)
-  local stepCost = self.state.steps / self.maxSteps()
+function Battler:onSelfTurnEnd(char, iterations, actionCost)
+  local stepCost = self.steps / self.maxSteps()
   self:decrementTurnCount(ceil((stepCost + actionCost) * turnLimit / 2))
 end
 
@@ -250,18 +275,24 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Callback for when the battle ends.
-function Battler:onBattleEnd()
+function Battler:onBattleStart(char)
+  if self.AI and self.AI.onBattleStart then
+    self.AI:onBattleStart(char)
+  end
+end
+-- Callback for when the battle ends.
+function Battler:onBattleEnd(char)
   if self.AI and self.AI.onBattleEnd then
-    self.AI:onBattleEnd(self)
+    self.AI:onBattleEnd(char)
   end
 end
 -- Callback for when the character moves.
 -- @param(path : Path) the path that the battler just walked
 function Battler:onMove(path)
   if path.lastStep:isControlZone(self) then
-    self.state.steps = 0
+    self.steps = 0
   else
-    self.state.steps = self.state.steps - path.totalCost
+    self.steps = self.steps - path.totalCost
   end
 end
 -- Callback for when the character uses a skill.
@@ -306,7 +337,7 @@ end
 -- Gets the normalized turn count.
 -- @ret(number) the turn count
 function Battler:relativeTurnCount()
-  return self.state.turnCount / turnLimit
+  return self.turnCount / turnLimit
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -26,11 +26,23 @@ function Inventory:init(list)
   if list then
     for i = 1, #list do
       local r = rand(100)
-      if r <= list[i].rate then
+      if r <= (list[i].rate or 100) then
         self:addItem(list[i].id, list[i].count)
       end
     end
   end
+end
+-- Gets all slots of this inventory in a simple table.
+-- @ret(table)
+function Inventory:asTable()
+  local table = {}
+  for i = 1, self.size do
+    table[i] = {
+      id = self[i].id, 
+      count = self[i].count
+    }
+  end
+  return table
 end
 -- Gets the number of items of given ID.
 -- @param(id : number) item's ID in databse

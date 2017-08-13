@@ -132,7 +132,7 @@ end
 -- The max distance the character can walk.
 -- @ret(number) the distance in tiles (may not be integer)
 function MoveAction:maxDistance(user)
-  return user.battler.state.steps
+  return user.battler.steps
 end
 
 return MoveAction

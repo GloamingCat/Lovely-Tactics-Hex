@@ -65,7 +65,7 @@ function BattleManager:runBattle()
   self.onBattle = true
   self.result = nil
   self.winner = nil
-  self:battleIntro()
+  self:battleStart()
   TurnManager:introTurn()
   repeat
     self.result, self.winner = TurnManager:runTurn()
@@ -75,7 +75,7 @@ function BattleManager:runBattle()
   return self.winner, self.result
 end
 -- Runs before battle loop.
-function BattleManager:battleIntro()
+function BattleManager:battleStart()
   if self.params.skipAnimations then
     return
   end
@@ -93,6 +93,9 @@ function BattleManager:battleIntro()
   local p = centers[TroopManager.playerParty]
   FieldManager.renderer:moveToPoint(p.x, p.y, speed, true)
   _G.Fiber:wait(60)
+  for char in TroopManager.characterList:iterator() do
+    char.battler:onBattleStart(char)
+  end
 end
 -- Runs after winner was determined and battle loop ends.
 function BattleManager:battleEnd()
@@ -108,11 +111,7 @@ function BattleManager:battleEnd()
     end
   end
   for char in TroopManager.characterList:iterator() do
-    local b = char.battler
-    b:onBattleEnd()
-    if b.data.persistent then
-      SaveManager.current.battlerData[b.id] = b.state
-    end
+    char.battler:onBattleEnd(char)
   end
   FieldManager.renderer:fadeout(nil, true)
   self:clear()

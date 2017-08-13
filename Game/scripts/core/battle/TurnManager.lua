@@ -3,7 +3,7 @@
 
 TurnManager
 ---------------------------------------------------------------------------------------------------
-
+Provides methods for battle's turn management.
 
 =================================================================================================]]
 
@@ -82,10 +82,10 @@ end
 -- @param(iterations : number) the time since the last turn
 function TurnManager:startTurn(char, iterations)
   BattleManager.currentCharacter = char
-  char.battler:onSelfTurnStart(iterations)
+  char.battler:onSelfTurnStart(char, iterations)
   BattleManager:updatePathMatrix()
   for bc in TroopManager.characterList:iterator() do
-    bc.battler:onTurnStart(iterations)
+    bc.battler:onTurnStart(char, iterations)
   end
 end
 -- Closes turn.
@@ -93,13 +93,15 @@ end
 -- @param(actionCost : number) the time spend by the character of the turn
 -- @param(iterations : number) the time since the last turn
 function TurnManager:endTurn(char, actionCost, iterations)
-  char.battler:onSelfTurnEnd(iterations, actionCost + 1)
+  char.battler:onSelfTurnEnd(char, iterations, actionCost + 1)
   for bc in TroopManager.characterList:iterator() do
-    bc.battler:onTurnEnd(iterations)
+    bc.battler:onTurnEnd(char, iterations)
   end
   BattleManager.currentCharacter = nil
 end
-
+-- Gets the code of the battle result based on the winner party.
+-- @param(winner : number) the ID of the winner party
+-- @ret(number) 1 is victory, 0 is draw, -1 is lost
 function TurnManager:getResult(winner)
   if winner == TroopManager.playerParty then
     return 1 -- Victory.
