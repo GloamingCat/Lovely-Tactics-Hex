@@ -85,7 +85,7 @@ function TurnManager:startTurn(char, iterations)
   char.battler:onSelfTurnStart(char, iterations)
   BattleManager:updatePathMatrix()
   for bc in TroopManager.characterList:iterator() do
-    bc.battler:onTurnStart(char, iterations)
+    bc.battler:onTurnStart(bc, char, iterations)
   end
 end
 -- Closes turn.
@@ -95,7 +95,7 @@ end
 function TurnManager:endTurn(char, actionCost, iterations)
   char.battler:onSelfTurnEnd(char, iterations, actionCost + 1)
   for bc in TroopManager.characterList:iterator() do
-    bc.battler:onTurnEnd(char, iterations)
+    bc.battler:onTurnEnd(bc, char, iterations)
   end
   BattleManager.currentCharacter = nil
 end

@@ -13,6 +13,7 @@ return  {
   popup_healHP = default_font,
   popup_healEP = default_font,
   popup_miss = default_font,
+  popup_status = default_font,
   fps = love.graphics.newFont('fonts/FogSans.otf', 12),
   -- Settings
   scale = 4,

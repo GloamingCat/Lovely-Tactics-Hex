@@ -153,5 +153,36 @@
       "pitch": 100,
       "speed": 100
     }
+  },
+  {
+    "name": "Poison",
+    "imagePath": "Animation/Battle/poison.png",
+    "rows": 6,
+    "cols": 5,
+    "duration": 30,
+    "loop": false,
+    "allRows": true,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "transform": {
+      "offsetX": 0,
+      "offsetY": 24,
+      "offsetDepth": 0,
+      "scaleX": 50,
+      "scaleY": 50,
+      "rotation": 0,
+      "red": 100,
+      "green": 100,
+      "blue": 100,
+      "alpha": 100
+    },
+    "audio": {
+      "path": "",
+      "volume": 100,
+      "pitch": 100,
+      "speed": 100
+    }
   }
 ]

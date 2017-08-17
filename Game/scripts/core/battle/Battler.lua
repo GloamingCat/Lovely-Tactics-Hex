@@ -11,6 +11,7 @@ A class the holds character's information for battle formula.
 local List = require('core/datastruct/List')
 local SkillAction = require('core/battle/action/SkillAction')
 local Inventory = require('core/battle/Inventory')
+local StatusList = require('core/battle/StatusList')
 
 -- Alias
 local max = math.max
@@ -52,6 +53,7 @@ function Battler:init(id, party)
   self:createStateValues(persistentData, data.attributes, data.build, data.level)
   self:initializeSkillList(data.skills, data.attackID)
   self:initializeElements(persistentData, data.elements or {})
+  self:initializeStatusList(persistentData, data.status or {})
   self:initializeInventory(persistentData, data.items or {})
   self:initializeAI(data.scriptAI)
   self:initializeRewards(data.partyRewards, data.battlerRewards)
@@ -80,6 +82,10 @@ function Battler:initializeElements(persistentData, elements)
     end
     self.elementFactors = e
   end
+end
+-- Creates the initial status list.
+function Battler:initializeStatusList(persistentData, initialStatus)
+  self.statusList = StatusList(persistentData, initialStatus)
 end
 -- Initializes inventory from the given initial items slots.
 function Battler:initializeInventory(persistentData, items)
@@ -136,6 +142,7 @@ function Battler:createPersistentData()
   data.state = copyTable(self.state)
   data.elementFactors = copyArray(self.elementFactors)
   data.inventory = self.inventory:asTable()
+  data.status = self.statusList:asTable()
   return data
 end
 
@@ -245,17 +252,19 @@ end
 
 -- Callback for when a new turn begins.
 -- @param(iterations : number) the number of turn iterations since the previous turn
-function Battler:onTurnStart(char, iterations)
+function Battler:onTurnStart(char, turnChar, iterations)
   if self.AI and self.AI.onTurnStart then
-    self.AI:onTurnStart(char, iterations)
+    self.AI:onTurnStart(char, turnChar, iterations)
   end
+  self.statusList:onTurnStart(char, turnChar, iterations)
 end
 -- Callback for when a turn ends.
 -- @param(iterations : number) the number of turn iterations since the previous turn
-function Battler:onTurnEnd(char, iterations)
+function Battler:onTurnEnd(char, turnChar, iterations)
   if self.AI and self.AI.onTurnEnd then
-    self.AI:onTurnEnd(char, iterations)
+    self.AI:onTurnEnd(char, turnChar, iterations)
   end
+  self.statusList:onTurnEnd(char, turnChar, iterations)
 end
 -- Callback for when this battler's turn starts.
 -- @param(iterations : number) the number of turn iterations since the previous turn
@@ -271,6 +280,32 @@ function Battler:onSelfTurnEnd(char, iterations, actionCost)
 end
 
 ---------------------------------------------------------------------------------------------------
+-- Skill callbacks
+---------------------------------------------------------------------------------------------------
+
+-- Callback for when the character finished using a skill.
+function Battler:onSkillUseStart(input)
+  self.statusList:onSkillUseStart(input.user, input)
+end
+-- Callback for when the character finished using a skill.
+function Battler:onSkillUseEnd(input)
+  local costs = input.action.costs
+  for i = 1, #costs do
+    local value = costs[i].cost(self.att)
+    self:damage(costs[i].name, value)
+  end
+  self.statusList:onSkillUseEnd(input.user, input)
+end
+-- Callback for when the characters starts receiving a skill's effect.
+function Battler:onSkillEffectStart(char, input, dmg)
+  self.statusList:onSkillEffectStart(char, input, dmg)
+end
+-- Callback for when the characters ends receiving a skill's effect.
+function Battler:onSkillEffectEnd(char, input, dmg)
+  self.statusList:onSkillEffectEnd(char, input, dmg)
+end
+
+---------------------------------------------------------------------------------------------------
 -- Other callbacks
 ---------------------------------------------------------------------------------------------------
 
@@ -279,12 +314,14 @@ function Battler:onBattleStart(char)
   if self.AI and self.AI.onBattleStart then
     self.AI:onBattleStart(char)
   end
+  self.statusList:onBattleStart(char)
 end
 -- Callback for when the battle ends.
 function Battler:onBattleEnd(char)
   if self.AI and self.AI.onBattleEnd then
     self.AI:onBattleEnd(char)
   end
+  self.statusList:onBattleEnd(char)
 end
 -- Callback for when the character moves.
 -- @param(path : Path) the path that the battler just walked
@@ -293,15 +330,6 @@ function Battler:onMove(path)
     self.steps = 0
   else
     self.steps = self.steps - path.totalCost
-  end
-end
--- Callback for when the character uses a skill.
--- @param(action : BattleAction) the skill that the battler just used
-function Battler:onSkillUse(action)
-  local costs = action.costs
-  for i = 1, #costs do
-    local value = costs[i].cost(self.att)
-    self:damage(costs[i].name, value)
   end
 end
 
@@ -362,6 +390,11 @@ end
 -- @ret(number) between 0 and 1
 function Battler:relativeLifePoints()
   return self.state[lifeName] / self.stateMax[lifeName](self.att)
+end
+-- Gets the maximum life points.
+-- @ret(number)
+function Battler:maxLifePoints()
+  return self.stateMax[lifeName](self.att)
 end
 
 return Battler

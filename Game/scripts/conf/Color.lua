@@ -36,6 +36,7 @@ return {
   popup_healHP = {red = 20, green = 100, blue = 20, alpha = 100},
   popup_healSP = {red = 20, green = 20, blue = 100, alpha = 100},
   popup_miss = {red = 80, green = 80, blue = 80, alpha = 100},
+  popup_status = {red = 100, green = 100, blue = 100, alpha = 100},
 
   -- Convertion from percentage to byte value
   factor = 255 / 100

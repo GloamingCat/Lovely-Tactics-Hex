@@ -1,20 +1,27 @@
 [
   {
-    "name": "Sleep",
+    "name": "Poison",
     "icon": {
-      "imagePath": "Icon/Skills/Sleep.png",
+      "imagePath": "Icon/Skills/Poison.png",
       "x": 0,
       "y": 0,
       "width": 1,
       "height": 1
     },
+    "priority": 100,
     "script": {
-      "path": "",
+      "path": "status/Poison.lua",
       "param": ""
     },
+    "debuff": true,
+    "cumulative": false,
+    "animID": 5,
     "duration": -1,
-    "attributes": [],
+    "attAdd": [],
+    "attMul": [],
     "elements": [],
+    "cancel": [],
+    "pauseTurn": false,
     "tags": []
   }
 ]

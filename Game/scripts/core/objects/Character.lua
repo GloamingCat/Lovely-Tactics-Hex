@@ -207,11 +207,20 @@ end
 
 -- [COROUTINE] Plays damage animation and shows the result in a pop-up.
 -- @param(skill : Skill) the skill used
--- @param(result : number) the the damage caused
 -- @param(origin : ObjectTile) the tile of the skill user
-function Character:damage(skill, results, origin)
+function Character:damage(skill, origin, results)
   local currentTile = self:getTile()
   self:turnToTile(origin.x, origin.y)
+  local pos = self.position
+  FieldManager.fiberList:fork(function()
+    for i = 1, #results.status do
+      local s = Database.status[results.status[i] + 1]
+      if s.animID >= 0 then
+        BattleManager:playAnimation(s.animID, pos.x, pos.y, pos.z - 1)
+      end
+    end
+  end)
+  _G.Fiber:wait(1)
   self:playAnimation(self.damageAnim, true)
   self:playAnimation(self.idleAnim)
   if not self.battler:isAlive() then
