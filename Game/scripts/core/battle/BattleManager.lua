@@ -22,8 +22,7 @@ local TileGraphics = require('core/fields/TileGUI')
 local defaultParams = { 
   gameOverCondition = 2, 
   skipAnimations = false, 
-  escapeEnabled = true 
-}
+  escapeEnabled = true }
 
 local BattleManager = class()
 
@@ -192,7 +191,7 @@ function BattleManager:playAnimation(animID, x, y, z, mirror, wait)
   animation.sprite:setXYZ(x, y, z)
   animation.sprite:setTransformation(animationData.transform)
   if mirror then
-    animation.sprite:setScale(-1)
+    animation.sprite:setScale(-animation.sprite.scaleX, animation.sprite.scaleY)
   end
   FieldManager.updateList:add(animation)
   FieldManager.fiberList:fork(function()

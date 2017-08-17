@@ -103,10 +103,8 @@ end
 --  table with nil timeCost empty to return to BattleGUI;
 --  table with non-nil tomeCost to end turn
 function BattleAction:execute(input)
-  return {
-    timeCost = self.timeCost, 
-    executed = true
-  }
+  return { timeCost = self.timeCost, 
+    executed = true }
 end
 
 ---------------------------------------------------------------------------------------------------

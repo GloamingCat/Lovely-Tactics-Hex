@@ -25,8 +25,8 @@ function StepWindow:init(GUI)
       ScreenManager.height / 2 - 24))
 end
 -- Overrides Window:createContent.
-function StepWindow:createContent()
-  Window.createContent(self)
+function StepWindow:createContent(width, height)
+  Window.createContent(self, width, height)
   local steps = BattleManager.currentCharacter.battler.steps
   local w = self.width - self:hPadding() * 2
   local pos = Vector(self:hPadding() - self.width / 2, self:vpadding() - self.height / 2 - 3)

@@ -85,7 +85,8 @@ function TurnWindow:onItem(button)
 end
 -- "Wait" button callback. End turn.
 function TurnWindow:onWait(button)
-  self.result = 0
+  self.result = { timeCost = 50, 
+    executed = true }
 end
 -- Overrides GridWindow:onCancel.
 function TurnWindow:onCancel()

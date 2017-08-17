@@ -204,7 +204,6 @@ end
 -- Sets persistent data.
 -- @param(data : table) data from save
 function CharacterBase:setPersistentData(data)
-  self.data = data
   if data then
     if data.lastx and data.lasty and data.lastz then
       self:setPosition(data.lastx, data.lasty, data.lastz)
@@ -220,13 +219,13 @@ end
 -- Gets persistent data.
 -- @ret(table) character's data
 function CharacterBase:getPersistentData()
-  self.data = self.data or {}
-  self.data.lastx = self.position.x
-  self.data.lasty = self.position.y
-  self.data.lastz = self.position.z
-  self.data.lastDir = self.direction
-  self.data.lastAnim = self.animName
-  return self.data
+  local data = {}
+  data.lastx = self.position.x
+  data.lasty = self.position.y
+  data.lastz = self.position.z
+  data.lastDir = self.direction
+  data.lastAnim = self.animName
+  return data
 end
 
 return CharacterBase

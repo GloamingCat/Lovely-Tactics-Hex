@@ -106,10 +106,10 @@
     },
     "transform": {
       "offsetX": 0,
-      "offsetY": 16,
+      "offsetY": 20,
       "offsetDepth": 0,
-      "scaleX": 100,
-      "scaleY": 100,
+      "scaleX": 40,
+      "scaleY": 40,
       "rotation": 0,
       "red": 100,
       "green": 100,
