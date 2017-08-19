@@ -27,9 +27,10 @@ local Troop = class()
 -- Constructor. 
 -- @param(grid : Matrix2) the matrix of battler IDs (optiontal, empty by default)
 -- @param(r : number) the rotation of the troop (optional, 0 by default)
-function Troop:init(grid, r)
+function Troop:init(grid, r, AI)
   self.grid = grid or Matrix2(sizeX, sizeY, -1)
   self.rotation = r or 0
+  self.AI = AI
 end
 -- Creates a new troop from database data.
 -- @param(troopID : number) the ID of the troop in the database
@@ -42,7 +43,12 @@ function Troop.fromData(troopID)
       grid:set(id, i, j)
     end
   end
-  return Troop(grid)
+  local AI = nil
+  local ai = data.scriptAI
+  if ai.path ~= '' then
+    AI = require('custom/' .. ai.path)(ai.param)
+  end
+  return Troop(grid, nil, AI)
 end
 -- Creates a copy of this troop.
 -- @param(rotation : number) rotation of the copy (optional)

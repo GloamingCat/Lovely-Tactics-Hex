@@ -38,7 +38,7 @@ end
 
 -- Overrides GUI:show.
 function RuleGUI:show(...)
-  FieldManager.renderer:moveToObject(BattleManager.currentCharacter)
+  FieldManager.renderer:moveToObject(TurnManager:currentCharacter())
   GUI.show(self, ...)
 end
 

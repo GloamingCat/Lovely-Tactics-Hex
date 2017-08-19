@@ -26,16 +26,11 @@ local round = math.round
 local ceil = math.ceil
 
 -- Constants
-local battlerVariables = Database.variables.battler
 local elementCount = #Config.elements
 local introTime = 22.5
 local centerTime = 7.5
 local targetTime = 2.2
 local useTime = 2
-local maxDeadLocks = 100
-
--- Static
-local deadLockCount = 0
 
 local SkillAction = class(BattleAction)
 
@@ -59,6 +54,7 @@ function SkillAction:init(skillID)
     color = 'support'
   end
   BattleAction.init(self, data.timeCost, data.range, data.radius, color)
+  local battlerVariables = Database.variables.battler
   -- Effect formulas
   self.effects = {}
   for i = 1, #data.effects do
@@ -92,6 +88,7 @@ function SkillAction:init(skillID)
     end
   end
   self.elementFactors = e
+  self.tags = util.createTags(data.tags)
 end
 -- Creates an SkillAction given the skill's ID in the database, depending on the skill's script.
 -- @param(skillID : number) the skill's ID in database
@@ -143,11 +140,6 @@ function SkillAction:execute(input)
   moveInput.skipAnimations = input.skipAnimations
   local result = moveInput:execute(moveInput)
   if result.executed then    
-    -- Deadlock detection (for simulation)
-    deadLockCount = deadLockCount + 1
-    if deadLockCount > maxDeadLocks then
-      BattleManager:deadLock()
-    end
     -- Skill use
     input.user.battler:onSkillUseStart(input)
     if input.skipAnimations then
@@ -158,8 +150,7 @@ function SkillAction:execute(input)
     input.user.battler:onSkillUseEnd(input)
     return BattleAction.execute(self, input)
   else
-    deadLockCount = 0
-    return { timeCost = 0 }
+    return { executed = false }
   end
 end
 

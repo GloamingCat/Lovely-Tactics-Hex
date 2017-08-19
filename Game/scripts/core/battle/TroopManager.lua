@@ -12,7 +12,6 @@ local List = require('core/datastruct/List')
 local Character = require('core/objects/Character')
 local Battler = require('core/battle/Battler')
 local Troop = require('core/battle/Troop')
-local PriorityQueue = require('core/datastruct/PriorityQueue')
 
 -- Alias
 local rand = love.math.random
@@ -31,6 +30,7 @@ local TroopManager = class()
 function TroopManager:init()
   self.characterList = List()
   self.troopDirections = {}
+  self.troopAI = {}
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -48,6 +48,7 @@ function TroopManager:createTroops()
     playerID = playerID + 1
   end
   self.playerParty = playerID
+  self.partyCount = #parties
   -- Create parties
   for i = 1, #parties do
     if i == playerID then
@@ -76,6 +77,7 @@ function TroopManager:createTroop(troop, partyInfo, partyID)
         if tile and not tile:collides(0, 0) then
           local dir = troop:getCharacterDirection()
           self.troopDirections[partyID] = dir
+          self.troopAI[partyID] = troop.AI
           local battler = Battler(battlerID, partyID)
           self:createBattleCharacter(tile, battler)
         end
@@ -172,35 +174,6 @@ function TroopManager:getMemberCount(party)
     end
   end
   return count
-end
-
----------------------------------------------------------------------------------------------------
--- Turn
----------------------------------------------------------------------------------------------------
-
--- Sorts the characters according to which one's turn will star first.
--- @ret(PriorityQueue) the queue where which element is a character 
---  and each key is the remaining turn count until it's the character's turn
-function TroopManager:getTurnQueue()
-  local queue = PriorityQueue()
-  for char in self.characterList:iterator() do
-    if char.battler:isAlive() then
-      local time = char.battler:remainingTurnCount()
-      queue:enqueue(char, time)
-    end
-  end
-  return queue
-end
--- Increments all character's turn count.
--- @param(time : number) the number of time iterations (1 by default)
--- @ret(Character) the character that reached turn limit (nil if none did)
-function TroopManager:incrementTurnCount(time)
-  time = time or 1
-  for bc in self.characterList:iterator() do
-    if bc.battler:isAlive() then
-      bc.battler:incrementTurnCount(time)
-    end
-  end
 end
 
 ---------------------------------------------------------------------------------------------------

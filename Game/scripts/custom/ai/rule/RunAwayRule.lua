@@ -30,10 +30,9 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides AIRule:onSelect.
-function RunAwayRule:onSelect(it, user)
+function RunAwayRule:onSelect(user)
   self.input.user = user
   self.input.action:onSelect(self.input)
-  
   -- Find tile to move
   local queue = BattleTactics.runAway(user)
   if queue:isEmpty() then

@@ -50,9 +50,8 @@ end
 -- @param(scancode : string) the code of the key
 -- @param(isrepeat : boolean) if the call is a repeat
 function love.keypressed(code, scancode, isrepeat)
-  local map = InputManager.keyMap
   local keys = InputManager.keys
-  code = map[code]
+  code = KeyMap[code]
   if code then
     keys[code]:onPress(isrepeat)
   end
@@ -61,9 +60,8 @@ end
 -- @param(code : string) the code of the key based on keyboard layout
 -- @param(scancode : string) the code of the key
 function love.keyreleased(code, scancode)
-  local map = InputManager.keyMap
   local keys = InputManager.keys
-  code = map[code]
+  code = KeyMap[code]
   if code then
     keys[code]:onRelease()
   end

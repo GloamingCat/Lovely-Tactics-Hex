@@ -29,7 +29,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides AIRule:onSelect.
-function RushRule:onSelect(it, user)
+function RushRule:onSelect(user)
   self.input.user = user
   self.input.action:onSelect(self.input)
   local queue = BattleTactics.closestCharacters(self.input)

@@ -26,5 +26,6 @@ return {
   a         = 'left',
   d         = 'right',
   s         = 'down',
-  k         = 'kill'
+  n         = 'prev',
+  m         = 'next'
 }

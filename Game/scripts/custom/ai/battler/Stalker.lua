@@ -8,11 +8,11 @@ An AI that selects a close character and keeps attacking until it's defeated.
 =================================================================================================]]
 
 -- Imports
-local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
+local BattlerAI = require('core/battle/ai/BattlerAI')
 local ActionInput = require('core/battle/action/ActionInput')
 local BattleTactics = require('core/battle/ai/BattleTactics')
 
-local Stalker = class(ArtificialInteligence)
+local Stalker = class(BattlerAI)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -21,15 +21,16 @@ local Stalker = class(ArtificialInteligence)
 -- Constructor.
 function Stalker:init(battler, param)
   local key = 'Stalker ' .. battler.id
-  ArtificialInteligence.init(self, key, battler, self:decodeParam(param))
+  BattlerAI.init(self, key, battler, self:decodeParam(param))
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Execution
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ArtificialInteligence:runTurn.
-function Stalker:runTurn(it, user)
+-- Overrides BattlerAI:runTurn.
+function Stalker:runTurn()
+  local user = TurnManager:currentCharacter()
   if not self.target or not self.target.battler:isAlive() then
     local skill = user.battler.attackSkill
     self.input = ActionInput(skill, user)

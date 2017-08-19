@@ -26,7 +26,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides AIRule:onSelect.
-function WaitRule:onSelect(it, user)
+function WaitRule:onSelect()
 end
 
 -- Overrides AIRule:canExecute.

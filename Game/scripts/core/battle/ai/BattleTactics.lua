@@ -32,7 +32,7 @@ function BattleTactics.closestCharacters(input)
   local moveAction = MoveAction(range)
   local tempQueue = PriorityQueue()
   local initialTile = input.user:getTile()
-  local pathMatrix = BattleManager.pathMatrix
+  local pathMatrix = TurnManager:pathMatrix()
   for char in TroopManager.characterList:iterator() do
     local tile = char:getTile()
     if tile.gui.selectable then

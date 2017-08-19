@@ -44,7 +44,7 @@ end
 -- @param(button : Button) the button to check
 -- @ret(boolean)
 function SkillAction:buttonEnabled(button)
-  return button.skill:canExecute(BattleManager.currentCharacter)
+  return button.skill:canExecute(TurnManager:currentCharacter())
 end
 -- Called when player cancels.
 function SkillWindow:onCancel()

@@ -39,17 +39,33 @@ end
 ---------------------------------------------------------------------------------------------------
 
 function StatusList:addStatus(id, char)
-  local s = Status.fromData(id, nil, char)
-  self:add(s)
-  s:onAdd(char)
-  print(char.battler)
-  return s
+  local data = Database.status[id + 1]
+  if data.cumulative then
+    local s = self:findStatus(id)
+    s.state.lifeTime = 0
+    return s
+  else
+    local s = Status.fromData(id, nil, char)
+    self:add(s)
+    s:onAdd(char)
+    print(char.battler)
+    return s
+  end
 end
 
 function StatusList:addAllStatus(status, char)
   for i = 1, #status do
     self:addStatus(status[i], char)
   end
+end
+
+function StatusList:findStatus(id)
+  for status in #self:iterator() do
+    if status.id == id then
+      return status
+    end
+  end
+  return nil
 end
 
 function StatusList:asTable()
@@ -96,15 +112,15 @@ end
 -- Turn Callbacks
 ---------------------------------------------------------------------------------------------------
 
-function StatusList:onTurnStart(char, turnChar, it)
+function StatusList:onTurnStart(char)
   for status in self:iterator() do
-    status:onTurnStart(char, turnChar, it)
+    status:onTurnStart(char)
   end
 end
 
-function StatusList:onTurnEnd(char, turnChar, it)
+function StatusList:onTurnEnd(char)
   for status in self:iterator() do
-    status:onTurnEnd(char, turnChar, it)
+    status:onTurnEnd(char)
   end
 end
 

@@ -13,8 +13,6 @@ Results: 1 => win, 0 => draw, -1 => lost
 =================================================================================================]]
 
 -- Imports
-local PathFinder = require('core/battle/ai/PathFinder')
-local MoveAction = require('core/battle/action/MoveAction')
 local Animation = require('core/graphics/Animation')
 local TileGraphics = require('core/fields/TileGUI')
 
@@ -33,7 +31,6 @@ local BattleManager = class()
 -- Constructor.
 function BattleManager:init()
   self.onBattle = false
-  self.currentCharacter = nil
 end
 -- Creates battle elements.
 -- @param(params : table) battle params to be used by custom scripts
@@ -125,7 +122,6 @@ function BattleManager:clear()
     self.cursor:destroy()
   end
   TroopManager:clear()
-  self.pathMatrix = nil
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -137,15 +133,6 @@ function BattleManager:gameOver()
   -- TODO: 
   -- fade out screen
   -- show game over GUI
-end
--- Called to forcefully end battle by killing every battler which is not in the winner team.
--- @param(party : number) winner team (nil to kill everybody)
-function BattleManager:killAll(party)
-  for char in TroopManager.characterList:iterator() do
-    if char.battler.party ~= party then
-      char.battler:kill()
-    end
-  end
 end
 -- Checks if player won battle.
 function BattleManager:playerWon()
@@ -172,11 +159,6 @@ end
 -- Auxiliary functions
 ---------------------------------------------------------------------------------------------------
 
--- Recalculates the distance matrix.
-function BattleManager:updatePathMatrix()
-  local moveAction = MoveAction()
-  self.pathMatrix = PathFinder.dijkstra(moveAction, self.currentCharacter)
-end
 -- [COROUTINE] Plays a battle animation.
 -- @param(animID : number) the animation's ID from database
 -- @param(x : number) pixel x of the animation

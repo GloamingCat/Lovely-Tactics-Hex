@@ -29,8 +29,8 @@ end
 -- Prepares the rule to be executed (or not, if it1s not possible).
 -- @param(it : number)
 -- @param(user : Character)
-function AIRule:onSelect(it, user)
-  self.input.user = user
+function AIRule:onSelect(user)
+  self.input.user = user or TurnManager:currentCharacter()
   self.input.action:onSelect(self.input)
 end
 

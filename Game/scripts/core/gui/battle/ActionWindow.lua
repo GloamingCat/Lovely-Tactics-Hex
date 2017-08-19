@@ -25,11 +25,11 @@ function ActionWindow:selectAction(action)
   action:onSelect(input)
   self.GUI:hide()
   local result = GUIManager:showGUIForResult('battle/ActionGUI', input)
-  if result.timeCost or result.escaped then
+  if result.endCharacterTurn or result.escaped then
     -- End of turn.
     self.result = result
   else
-    FieldManager.renderer:moveToObject(BattleManager.currentCharacter)
+    FieldManager.renderer:moveToObject(TurnManager:currentCharacter())
     self.GUI:show()
   end
 end

@@ -1,40 +1,41 @@
 
 --[[===============================================================================================
 
-Chicken AI
+Defensive AI
 ---------------------------------------------------------------------------------------------------
-An AI that moves to the farest tile that still has a reachable target.
+
 
 =================================================================================================]]
 
 -- Imports
-local RunAwayRule = require('custom/ai/rule/RunAwayRule')
-local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
+local DefendRule = require('custom/ai/rule/DefendRule')
+local BattlerAI = require('core/battle/ai/BattlerAI')
 
 -- Alias
 local expectation = math.randomExpectation
 
-local Chicken = class(ArtificialInteligence)
+local Defensive = class(BattlerAI)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
-function Chicken:init(battler, param)
-  local key = 'Chicken ' .. battler.id
-  ArtificialInteligence.init(self, key, battler, self:decodeParam(param))
+function Defensive:init(battler, param)
+  local key = 'Defensive ' .. battler.id
+  BattlerAI.init(self, key, battler, self:decodeParam(param))
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Execution
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ArtificialInteligence:nextRule.
-function Chicken:nextRule(it, user)
-  local rule = RunAwayRule()
-  rule:onSelect(it, user)
+-- Overrides BattlerAI:nextRule.
+function Defensive:nextRule()
+  local user = TurnManager:currentCharacter()
+  local rule = DefendRule(user.battler.attackSkill)  
+  rule:onSelect(user)
   return rule
 end
 
-return Chicken
+return Defensive

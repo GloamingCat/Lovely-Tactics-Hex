@@ -82,7 +82,7 @@
     "battlerRewards": ["10"],
     "partyRewards": ["50"],
     "scriptAI": {
-      "path": "ai/script/Rusher.lua",
+      "path": "ai/battler/Rusher.lua",
       "param": ""
     },
     "build": {
@@ -125,7 +125,7 @@
     "battlerRewards": ["10"],
     "partyRewards": ["50"],
     "scriptAI": {
-      "path": "ai/script/Rusher.lua",
+      "path": "ai/battler/Rusher.lua",
       "param": ""
     },
     "build": {

@@ -23,15 +23,16 @@ local BattleGUI = class(GUI)
 
 function BattleGUI:createWindows()
   self.name = 'Battle GUI'
+  local character = TurnManager:currentCharacter()
   -- Skill Window
-  local skillList = BattleManager.currentCharacter.battler.skillList
+  local skillList = character.battler.skillList
   if not skillList:isEmpty() then
     self.skillWindow = SkillWindow(self, skillList)
   end
   -- Item Window
   local inventory = SaveManager.current.partyInventory
   if Battle.individualInventory then
-    inventory = BattleManager.currentCharacter.battler.inventory
+    inventory = character.battler.inventory
   end
   local itemList = inventory:getUsableItems(1)
   if #itemList > 0 then
@@ -53,7 +54,7 @@ end
 -- Overrides GUI:show.
 local old_show = BattleGUI.show
 function BattleGUI:show(...)
-  FieldManager.renderer:moveToObject(BattleManager.currentCharacter)
+  FieldManager.renderer:moveToObject(TurnManager:currentCharacter())
   old_show(self, ...)
 end
 

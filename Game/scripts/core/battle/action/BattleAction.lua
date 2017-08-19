@@ -31,7 +31,6 @@ local BattleAction = class()
 -- @param(radius : number) the radius of the action effect (in tiles)
 -- @param(colorName : string) the color of the selectable tiles
 function BattleAction:init(timeCost, range, radius, colorName)
-  self.timeCost = timeCost
   self.range = range
   self.radius = radius
   self.colorName = colorName
@@ -65,10 +64,7 @@ function BattleAction:onActionGUI(input)
 end
 -- Called when player chooses a target for the action. 
 -- By default, just ends grid seleting and calls execute.
--- @ret(table) the battle result:
---  nil to stay on ActionGUI;
---  table with nil timeCost empty to return to BattleGUI;
---  table with non-nil tomeCost to end turn
+-- @ret(table) the battle result
 function BattleAction:onConfirm(input)
   if input.GUI then
     input.GUI:endGridSelecting()
@@ -103,8 +99,7 @@ end
 --  table with nil timeCost empty to return to BattleGUI;
 --  table with non-nil tomeCost to end turn
 function BattleAction:execute(input)
-  return { timeCost = self.timeCost, 
-    executed = true }
+  return { executed = true, endCharacterTurn = true }
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -125,8 +120,8 @@ end
 
 -- Sets all movable tiles as selectable or not and resets color to default.
 function BattleAction:resetMovableTiles(input)
-  local matrix = BattleManager.pathMatrix
-  local h = BattleManager.currentCharacter:getTile().layer.height
+  local matrix = TurnManager:pathMatrix()
+  local h = TurnManager:currentCharacter():getTile().layer.height
   for i = 1, self.field.sizeX do
     for j = 1, self.field.sizeY do
       local tile = self.field:getObjectTile(i, j, h)
@@ -143,8 +138,8 @@ end
 -- By default, paints all movable tile with movable color, and non-movable but 
 -- reachable (within skill's range) tiles with the skill's type color.
 function BattleAction:resetReachableTiles(input)
-  local matrix = BattleManager.pathMatrix
-  local charTile = BattleManager.currentCharacter:getTile()
+  local matrix = TurnManager:pathMatrix()
+  local charTile = TurnManager:currentCharacter():getTile()
   local h = charTile.layer.height
   local borderTiles = List()
   -- Find all border tiles

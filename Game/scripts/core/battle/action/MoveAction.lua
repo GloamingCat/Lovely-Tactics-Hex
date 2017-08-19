@@ -39,7 +39,7 @@ end
 function MoveAction:execute(input)
   local path = input.path
   if not path then
-    path = self.range == 0 and BattleManager.pathMatrix:get(input.target.x, input.target.y)
+    path = self.range == 0 and TurnManager:pathMatrix():get(input.target.x, input.target.y)
     path = path or PathFinder.findPath(self, input.user, input.target)
   end
   local fullPath = true
@@ -55,7 +55,7 @@ function MoveAction:execute(input)
     input.user:walkPath(path)
   end
   input.user.battler:onMove(path)
-  BattleManager:updatePathMatrix()
+  TurnManager:updatePathMatrix()
   return { executed = fullPath }
 end
 

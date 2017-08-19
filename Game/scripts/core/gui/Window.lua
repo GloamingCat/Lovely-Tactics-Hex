@@ -198,12 +198,22 @@ end
 function Window:checkInput()
   if InputManager.keys['cancel']:isTriggered() then
     self:onCancel()
+  elseif InputManager.keys['next']:isTriggered() then
+    self:onNext()
+  elseif InputManager.keys['prev']:isTriggered() then
+    self:onPrev()
   end
 end
 -- Called when player presses "cancel" key.
 -- By default, only dets the result to 0.
 function Window:onCancel()
   self.result = 0
+end
+-- Called when player presses "next" key.
+function Window:onNext()
+end
+-- Called when player presses "prev" key.
+function Window:onPrev()
 end
 
 return Window

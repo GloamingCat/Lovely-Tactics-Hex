@@ -14,9 +14,6 @@ local Inventory = require('core/battle/Inventory')
 local StatusList = require('core/battle/StatusList')
 
 -- Alias
-local max = math.max
-local min = math.min
-local ceil = math.ceil
 local newArray = util.newArray
 local readFile = love.filesystem.read
 local copyArray = util.copyArray
@@ -26,9 +23,7 @@ local copyTable = util.shallowCopyTable
 local battlerVariables = Database.variables.battler
 local attConfig = Database.attributes
 local elementCount = #Config.elements
-local turnLimit = Battle.turnLimit
 local lifeName = battlerVariables[Config.battle.attLifeID + 1].shortName
-local turnName = attConfig[Config.battle.attTurnID + 1].shortName
 local jumpName = attConfig[Config.battle.attJumpID + 1].shortName
 local stepName = attConfig[Config.battle.attStepID + 1].shortName
 local weightName = attConfig[Config.battle.attWeightID + 1].shortName
@@ -169,7 +164,6 @@ function Battler:createAttributes()
       end
     end
   end
-  self.turnStep = self.att[turnName]
   self.jumpPoints = self.att[jumpName]
   self.maxSteps = self.att[stepName]
   self.maxWeight = self.att[weightName]
@@ -181,7 +175,6 @@ end
 -- @param(level : number) battler's level
 function Battler:createStateValues(data, attBase, build, level)
   self.steps = 0
-  self.turnCount = 0
   self.state = data and data.state or {}
   -- Attribute bonud
   if not data or not data.attAdd or not data.attMul or not data.attBase then
@@ -227,56 +220,29 @@ function Battler:createStateValues(data, attBase, build, level)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Turn
----------------------------------------------------------------------------------------------------
-
--- Increments turn count by the turn attribute.
--- @param(time : number) a multiplier to the step (used for time bar animation)
-function Battler:incrementTurnCount(time)
-  self.turnCount = self.turnCount + self.turnStep() * time
-end
--- Decrements turn count by a value. It never reaches a negative value.
--- @param(value : number)
-function Battler:decrementTurnCount(value)
-  self.turnCount = max(self.turnCount - value, 0)
-end
--- Returns the number of steps needed to reach turn limit.
--- @ret(number) the number of steps (float)
-function Battler:remainingTurnCount()
-  return (turnLimit - self.turnCount) / self.turnStep()
-end
-
----------------------------------------------------------------------------------------------------
 -- Turn callbacks
 ---------------------------------------------------------------------------------------------------
 
 -- Callback for when a new turn begins.
--- @param(iterations : number) the number of turn iterations since the previous turn
-function Battler:onTurnStart(char, turnChar, iterations)
+function Battler:onTurnStart(char)
   if self.AI and self.AI.onTurnStart then
-    self.AI:onTurnStart(char, turnChar, iterations)
+    self.AI:onTurnStart(char)
   end
-  self.statusList:onTurnStart(char, turnChar, iterations)
+  self.statusList:onTurnStart(char)
 end
 -- Callback for when a turn ends.
--- @param(iterations : number) the number of turn iterations since the previous turn
-function Battler:onTurnEnd(char, turnChar, iterations)
+function Battler:onTurnEnd(char)
   if self.AI and self.AI.onTurnEnd then
-    self.AI:onTurnEnd(char, turnChar, iterations)
+    self.AI:onTurnEnd(char)
   end
-  self.statusList:onTurnEnd(char, turnChar, iterations)
+  self.statusList:onTurnEnd(char)
 end
 -- Callback for when this battler's turn starts.
--- @param(iterations : number) the number of turn iterations since the previous turn
-function Battler:onSelfTurnStart(char, iterations)
+function Battler:onSelfTurnStart(char)
   self.steps = self.maxSteps()
 end
 -- Callback for when this battler's turn ends.
--- @param(iterations : number) the number of turn iterations since the previous turn
--- @param(actionCost : number) the time the battler spent during the turn
-function Battler:onSelfTurnEnd(char, iterations, actionCost)
-  local stepCost = self.steps / self.maxSteps()
-  self:decrementTurnCount(ceil((stepCost + actionCost) * turnLimit / 2))
+function Battler:onSelfTurnEnd(char, result)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -361,11 +327,6 @@ end
 -- @ret(number) -1 if it's less than the minimum, 1 if it's more than the maximum, nil otherwise
 function Battler:damage(name, value)
   return self:setStateValue(name, self.state[name] - value)
-end
--- Gets the normalized turn count.
--- @ret(number) the turn count
-function Battler:relativeTurnCount()
-  return self.turnCount / turnLimit
 end
 
 ---------------------------------------------------------------------------------------------------

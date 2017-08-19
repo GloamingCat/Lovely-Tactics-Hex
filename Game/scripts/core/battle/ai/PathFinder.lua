@@ -39,7 +39,7 @@ local PathFinder = {}
 -- @ret(Matrix) the path matrix
 function PathFinder.dijkstra(action, user, initial)
   local field = FieldManager.currentField
-  user = user or BattleManager.currentCharacter
+  user = user or TurnManager:currentCharacter()
   initial = initial or user:getTile()
   
   local md = floor(action:maxDistance(user))

@@ -21,7 +21,7 @@
     "attMul": [],
     "elements": [],
     "cancel": [],
-    "pauseTurn": false,
+    "skipTurn": false,
     "tags": []
   }
 ]

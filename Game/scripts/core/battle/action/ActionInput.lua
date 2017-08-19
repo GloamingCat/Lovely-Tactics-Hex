@@ -26,7 +26,7 @@ local ActionInput = class()
 -- @param(GUI : ActionGUI) current ActionGUI, if any (optional)
 function ActionInput:init(action, user, target, moveTarget, GUI)
   self.action = action
-  self.user = user or BattleManager.currentCharacter
+  self.user = user or TurnManager:currentCharacter()
   self.target = target
   self.moveTarget = moveTarget
   self.GUI = GUI

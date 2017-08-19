@@ -171,6 +171,10 @@ function GridWindow:checkInput()
     self:onConfirm()
   elseif InputManager.keys['cancel']:isTriggered() then
     self:onCancel()
+  elseif InputManager.keys['next']:isTriggered() then
+    self:onNext()
+  elseif InputManager.keys['prev']:isTriggered() then
+    self:onPrev()
   else
     local dx, dy = InputManager:ortAxis(0.5, 0.0625)
     if dx ~= 0 or dy ~= 0 then

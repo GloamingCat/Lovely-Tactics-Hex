@@ -57,7 +57,7 @@ end
 
 -- "Attack" button callback.
 function TurnWindow:onAttackAction(button)
-  self:selectAction(BattleManager.currentCharacter.battler.attackSkill)
+  self:selectAction(TurnManager:currentCharacter().battler.attackSkill)
 end
 -- "Move" button callback.
 function TurnWindow:onMoveAction(button)
@@ -85,8 +85,7 @@ function TurnWindow:onItem(button)
 end
 -- "Wait" button callback. End turn.
 function TurnWindow:onWait(button)
-  self.result = { timeCost = 50, 
-    executed = true }
+  self.result = { endTurn = true, endCharacterTurn = true }
 end
 -- Overrides GridWindow:onCancel.
 function TurnWindow:onCancel()
@@ -101,16 +100,16 @@ end
 -- Attack condition. Enabled if there are tiles to move to or if there are any
 --  enemies that the skill can reach.
 function TurnWindow:attackEnabled(button)
-  local user = BattleManager.currentCharacter
+  local user = TurnManager:currentCharacter()
   return self:skillActionEnabled(button, user.battler.attackSkill)
 end
 -- Move condition. Enabled if there are any tiles for the character to move to.
 function TurnWindow:moveEnabled(button)
-  local user = BattleManager.currentCharacter.battler
+  local user = TurnManager:currentCharacter().battler
   if user.steps <= 0 then
     return false
   end
-  for path in BattleManager.pathMatrix:iterator() do
+  for path in TurnManager:pathMatrix():iterator() do
     if path and path.totalCost <= user.steps then
       return true
     end
@@ -136,8 +135,9 @@ function TurnWindow:escapeEnabled()
   elseif not Battle.partyTileEscape then
     return true
   end
-  local userParty = BattleManager.currentCharacter.battler.party
-  local tileParty = BattleManager.currentCharacter:getTile().gui.party
+  local char = TurnManager:currentCharacter()
+  local userParty = char.battler.party
+  local tileParty = char:getTile().gui.party
   return userParty == tileParty
 end
 -- Call Ally condition. Enabled if there any any backup members.
@@ -149,7 +149,7 @@ function TurnWindow:skillActionEnabled(button, skill)
   if self:moveEnabled(button) then
     return true
   else
-    local user = BattleManager.currentCharacter
+    local user = TurnManager:currentCharacter()
     local tile = user:getTile()
     local field = FieldManager.currentField
     local range = skill.data.range
@@ -176,7 +176,7 @@ function TurnWindow:rowCount()
 end
 -- Overrides Window:show.
 function TurnWindow:show(add)
-  local user = BattleManager.currentCharacter
+  local user = TurnManager:currentCharacter()
   self.userCursor:setCharacter(user)
   ActionWindow.show(self, add)
 end

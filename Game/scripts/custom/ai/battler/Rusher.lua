@@ -1,37 +1,38 @@
 
 --[[===============================================================================================
 
-Ofensive AI
+Berserker AI
 ---------------------------------------------------------------------------------------------------
-An AI that picks the character with the higher chance to be defeated in a single attack.
+An AI that picks the first character and attacks them.
 
 =================================================================================================]]
 
 -- Imports
-local AttackRule = require('custom/ai/rule/AttackRule')
-local ArtificialInteligence = require('core/battle/ai/ArtificialInteligence')
+local RushRule = require('custom/ai/rule/RushRule')
+local BattlerAI = require('core/battle/ai/BattlerAI')
 
-local Ofensive = class(ArtificialInteligence)
+local Rusher = class(BattlerAI)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
-function Ofensive:init(battler, param)
-  local key = 'Ofensive ' .. battler.id
-  ArtificialInteligence.init(self, key, battler, self:decodeParam(param))
+function Rusher:init(battler, param)
+  local key = 'Rusher ' .. battler.id
+  BattlerAI.init(self, key, battler, self:decodeParam(param))
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Execution
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ArtificialInteligence:nextRule.
-function Ofensive:nextRule(it, user)
-  local rule = AttackRule(user.battler.attackSkill)
-  rule:onSelect(it, user)
+-- Overrides BattlerAI:nextRule.
+function Rusher:nextRule()
+  local user = TurnManager:currentCharacter()
+  local rule = RushRule(user.battler.attackSkill)
+  rule:onSelect(user)
   return rule
 end
 
-return Ofensive
+return Rusher

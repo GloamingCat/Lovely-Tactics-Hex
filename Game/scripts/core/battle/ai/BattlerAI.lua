@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-ArtificialInteligence
+BattlerAI
 ---------------------------------------------------------------------------------------------------
 Implements basic functions to be used in AI classes.
 
@@ -18,7 +18,7 @@ local writeFile = love.filesystem.write
 -- Static
 local thread = nil
 
-local ArtificialInteligence = class()
+local BattlerAI = class()
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -28,7 +28,7 @@ local ArtificialInteligence = class()
 -- @param(key : string) the AI's identifier (needs to be set by children of this class)
 -- @param(battler : Battler)
 -- @param(parallel : boolean)
-function ArtificialInteligence:init(key, battler, parallel)
+function BattlerAI:init(key, battler, parallel)
   self.key = key
   self.battler = battler
   self.parallel = parallel
@@ -36,11 +36,11 @@ end
 
 -- String identifier.
 -- @ret(string)
-function ArtificialInteligence:__tostring()
+function BattlerAI:__tostring()
   return 'AI: ' .. self.key
 end
 
-function ArtificialInteligence:decodeParam(param)
+function BattlerAI:decodeParam(param)
   if param == '' then
     return nil
   else
@@ -57,7 +57,8 @@ end
 -- @param(it : number) the number of iterations since last turn
 -- @param(user : Character)
 -- @ret(number) action time cost
-function ArtificialInteligence:runTurn(it, user)
+function BattlerAI:runTurn()
+  TurnManager:characterTurnStart()
   local rule = nil
   if self.parallel then
     thread = thread or love.thread.newThread('core/Thread')
@@ -68,17 +69,20 @@ function ArtificialInteligence:runTurn(it, user)
     end
     rule = channel:peek()
   else
-    rule = self:nextRule(it, user)
+    rule = self:nextRule()
   end
-  if rule:canExecute(user) then
-    return rule:execute(user)
+  local result = nil
+  if rule:canExecute() then
+    result = rule:execute()
   else
-    return 0
+    result = { endTurn = true, endCharacterTurn = true }
   end
+  TurnManager:characterTurnEnd(result)
+  return result
 end
 
 -- Selects a rule to be executed.
-function ArtificialInteligence:nextRule()
+function BattlerAI:nextRule()
   return nil -- Abstract.
 end
 
@@ -88,15 +92,15 @@ end
 
 -- @param(character : Character)
 -- @ret(table) array of actions
-function ArtificialInteligence:getCharacterActions(character)
+function BattlerAI:getCharacterActions(character)
   local b = character.battler
   return {b.attackSkill, unpack(b.skillList)} -- TODO: add Wait
 end
 
--- Gets a random action from the action list given by ArtificialInteligence:getCharacterActions.
+-- Gets a random action from the action list given by BattlerAI:getCharacterActions.
 -- @param(character : Character)
 -- @ret(BattleAction)
-function ArtificialInteligence:getRandomAction(character)
+function BattlerAI:getRandomAction(character)
   local actions = self:getCharacterActions(character)
   return actions[rand(#actions)]
 end
@@ -107,7 +111,7 @@ end
 
 -- Loads the file from AI data folder and decodes from JSON.
 -- @ret(unknown) the data in the file
-function ArtificialInteligence:loadJsonData(sufix)
+function BattlerAI:loadJsonData(sufix)
   local data = self:loadData(sufix)
   if data then
     return JSON.decode(data)
@@ -118,20 +122,20 @@ end
 
 -- Encodes the data as JSON saves in AI data folder.
 -- @param(data : unknown) the data to write
-function ArtificialInteligence:saveJsonData(data, sufix)
+function BattlerAI:saveJsonData(data, sufix)
   self:saveData(JSON.encode(data), sufix)
 end
 
 -- Loads the file from AI data folder.
 -- @ret(string) the data in the file
-function ArtificialInteligence:loadData(sufix)
+function BattlerAI:loadData(sufix)
   return readFile(self.key .. (sufix or '') .. '.json')
 end
 
 -- Saves the data in AI data folder.
 -- @param(data : string) the data to write
-function ArtificialInteligence:saveData(data, sufix)
+function BattlerAI:saveData(data, sufix)
   writeFile(self.key .. (sufix or '')  .. '.json', data)
 end
 
-return ArtificialInteligence
+return BattlerAI

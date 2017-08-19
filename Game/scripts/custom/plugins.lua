@@ -8,17 +8,30 @@ The second value may be nil/empty if it is not used in the plugin.
 
 =================================================================================================]]
 
-local plugins = {
-  -- { 'plugin1', { a = 10, b = 'hello' } },
-  -- { 'plugin2', { c = 20, d = 'world' } },
-  -- { 'plugin3' }
+local killCheat = { 'KillCheat',
+  key = 'k'
 }
+
+local individualTurn = { 'IndividualTurn',
+  attName = 'AGI',
+  turnLimit = 2000,
+  animation = false
+}
+
+---------------------------------------------------------------------------------------------------
+-- Plugin list
+---------------------------------------------------------------------------------------------------
+
+local plugins = { killCheat, individualTurn }
 
 ---------------------------------------------------------------------------------------------------
 -- Load
 ---------------------------------------------------------------------------------------------------
 
 for i = 1, #plugins do
-  local path = 'custom/plugins/' .. plugins[i][1]
-  loadfile(path, plugins[i][2])
+  --local path = 'scripts/custom/plugins/' .. plugins[i][1] .. '.lua'
+  --loadfile(path)(plugins[i])
+  args = plugins[i]
+  require('custom/plugins/' .. plugins[i][1])
 end
+args = nil

@@ -8,9 +8,6 @@ The effects of them on battle and field depend on each individual implementation
 
 =================================================================================================]]
 
--- Constants
-local attConfig = Database.attributes
-
 local Status = class()
 
 ---------------------------------------------------------------------------------------------------
@@ -27,7 +24,7 @@ function Status:init(id, state, char, param)
     self.duration = math.huge
   end
   self.tags = util.createTags(self.data.tags)
-  self:addAttributeBonus(char)
+  --self:addAttributeBonus(char)
   self:addElements(char)
 end
 
@@ -45,7 +42,7 @@ function Status:remove(char)
   local status = char.battler.state.status
   local i = util.arrayIndexOf(status, self)
   table.remove(status, i)
-  self:removeAttributeBonus(char)
+  --self:removeAttributeBonus(char)
   self:removeElements(char)
 end
 
@@ -131,8 +128,8 @@ function Status:onBattleEnd(char)
   end
 end
 
-function Status:onTurnStart(char, turnChar, it)
-  self.state.lifeTime = self.state.lifeTime + it
+function Status:onTurnStart(char)
+  self.state.lifeTime = self.state.lifeTime + 1
   if self.state.lifeTime > self.duration then
     self:remove(char)
   end

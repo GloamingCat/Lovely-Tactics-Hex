@@ -1,6 +1,10 @@
 [
   {
     "name": "Player Party",
+    "scriptAI": {
+      "path": "",
+      "param": ""
+    },
     "grid": [
       [ -1, -1, -1 ],
       [ -1, -1,  0 ],
@@ -11,6 +15,10 @@
   },
   {
     "name": "Enemy Party",
+    "scriptAI": {
+      "path": "",
+      "param": ""
+    },
     "grid": [
       [ -1, -1,  2 ],
       [  3, -1, -1 ],

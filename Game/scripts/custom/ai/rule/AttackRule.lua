@@ -32,7 +32,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides AIRule:onSelect.
-function AttackRule:onSelect(it, user)
+function AttackRule:onSelect(user)
   local skill = self.input.action
   self.input.user = user
   skill:onSelect(self.input)

@@ -1,7 +1,5 @@
 
 return { 
-  turnLimit = 2000,
-  individualTurn = true,
   groupEscape = true,
   partyTileEscape = true,
   turnBar = false,

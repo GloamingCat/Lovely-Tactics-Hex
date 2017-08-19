@@ -31,7 +31,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides AIRule:onSelect.
-function HideRule:onSelect(it, user)
+function HideRule:onSelect(user)
   local skill = self.input.action
   self.input.user = user
   skill:onSelect(self.input)
