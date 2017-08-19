@@ -50,7 +50,7 @@ end
 -- @param(y : number) the max value
 local mod = math.mod
 function math.mod1(x, y)
-  return mod(x, y) + 1
+  return mod(x - 1, y) + 1
 end
 
 -- Rotates a point.

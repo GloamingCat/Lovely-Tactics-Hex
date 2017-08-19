@@ -8,12 +8,17 @@ System of turns per characters instead of per party.
 =================================================================================================]]
 
 -- Imports
+local TurnManager = require('core/battle/TurnManager')
 local Battler = require('core/battle/Battler')
 local Status = require('core/battle/Status')
 local BattleAction = require('core/battle/action/BattleAction')
 local SkillAction = require('core/battle/action/SkillAction')
+local WaitAction = require('core/battle/action/WaitAction')
+local TargetWindow = require('core/gui/battle/TargetWindow')
+local TurnWindow = require('core/gui/battle/TurnWindow')
+local SimpleText = require('core/gui/SimpleText')
 local PriorityQueue = require('core/datastruct/PriorityQueue')
-local TurnManager = require('core/battle/TurnManager')
+local Vector = require('core/math/Vector')
 
 -- Alias
 local max = math.max
@@ -36,13 +41,13 @@ function TurnManager:init()
   old_init(self)
   self.turnLimit = turnLimit
 end
-
 -- Override.
-function TurnManager:updateTurnCharacters()
+function TurnManager:nextParty()
   local char, iterations = self:getNextTurn()
   self.iterations = iterations
   self.turnCharacters = { char }
   self.characterIndex = 1
+  self.party = char.battler.party
 end
 -- [COROUTINE] Searchs for the next character turn and starts.
 -- @ret(Character) the next turn's character
@@ -116,7 +121,7 @@ end
 function Battler:onSelfTurnEnd(char, result)
   local stepCost = self.steps / self.maxSteps()
   local cost = result.timeCost or 0
-  self:decrementTurnCount(ceil((stepCost + result.timeCost) * turnLimit / 2))
+  self:decrementTurnCount(ceil((stepCost + cost) * turnLimit / 2))
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -132,21 +137,10 @@ function Status:onTurnStart(char)
 end
 
 ---------------------------------------------------------------------------------------------------
--- SkillAction
----------------------------------------------------------------------------------------------------
-
-local SkillAction_init = SkillAction.init
-function SkillAction:init(...)
-  SkillAction_init(self, ...)
-  if self.tags.timeCost then
-    self.timeCost = loadformula(self.tags.timeCost, 'action, att')
-  end
-end
-
----------------------------------------------------------------------------------------------------
 -- BattleAction
 ---------------------------------------------------------------------------------------------------
 
+-- Override.
 local BattleAction_execute = BattleAction.execute
 function BattleAction:execute(input)
   local result = BattleAction_execute(self, input)
@@ -159,6 +153,59 @@ function BattleAction:execute(input)
 end
 
 ---------------------------------------------------------------------------------------------------
--- TurnWindow
+-- SkillAction
 ---------------------------------------------------------------------------------------------------
+
+-- Override.
+local SkillAction_init = SkillAction.init
+function SkillAction:init(...)
+  SkillAction_init(self, ...)
+  if self.tags.timeCost then
+    self.timeCost = loadformula(self.tags.timeCost, 'action, att')
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- WaitAction
+---------------------------------------------------------------------------------------------------
+
+-- Override.
+local WaitAction_confirm = WaitAction.onConfirm
+function WaitAction:onConfirm(...)
+  local result = WaitAction_confirm(self, ...)
+    result.timeCost = 50
+  return result
+end
+
+---------------------------------------------------------------------------------------------------
+-- TargetWindow
+---------------------------------------------------------------------------------------------------
+
+-- Override.
+local TargetWindow_height = TargetWindow.calculateHeight
+function TargetWindow:calculateHeight()
+  return TargetWindow_height(self) + 10
+end
+-- Override.
+local TargetWindow_content = TargetWindow.createContent
+function TargetWindow:createContent(width, height)
+  TargetWindow_content(self, width, height)
+  local x = -self.width / 2 + self:hPadding()
+  local y = -self.height / 2 + self:vpadding()
+  local w = self.width - self:hPadding() * 2
+  local posTC = Vector(x, y + 15 + #self.vars * 10)
+  self.textTC = SimpleText(Vocab.turnCount .. ':', posTC, w, 'left', Font.gui_small)
+  self.textTCValue = SimpleText('', posTC, w, 'right', Font.gui_small)
+  self.content:add(self.textTC)
+  self.content:add(self.textTCValue)
+end
+-- Override.
+local TargetWindow_setBattler = TargetWindow.setBattler
+function TargetWindow:setBattler(battler)
+  -- Turn count text
+  local tc = (battler.turnCount / _G.TurnManager.turnLimit * 100)
+  self.textTCValue:setText(string.format( '%3.0f', tc ) .. '%')
+  self.textTCValue:redraw()
+  TargetWindow_setBattler(self, battler)
+end
 

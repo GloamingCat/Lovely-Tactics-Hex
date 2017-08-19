@@ -24,7 +24,7 @@ local EscapeAction = class(BattleAction)
 
 -- Constructor.
 function EscapeAction:init()
-  BattleAction.init(self, 100, 0, 0, '')
+  BattleAction.init(self, 0, 0, '')
 end
 
 ---------------------------------------------------------------------------------------------------

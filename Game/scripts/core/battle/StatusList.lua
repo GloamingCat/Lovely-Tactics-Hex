@@ -48,7 +48,6 @@ function StatusList:addStatus(id, char)
     local s = Status.fromData(id, nil, char)
     self:add(s)
     s:onAdd(char)
-    print(char.battler)
     return s
   end
 end

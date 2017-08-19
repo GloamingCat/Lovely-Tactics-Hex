@@ -19,7 +19,7 @@ local VisualizeAction = class(BattleAction)
 
 -- Constructor.
 function VisualizeAction:init()
-  BattleAction.init(self, nil, 0, 1)
+  BattleAction.init(self, 0, 1)
 end
 
 ---------------------------------------------------------------------------------------------------

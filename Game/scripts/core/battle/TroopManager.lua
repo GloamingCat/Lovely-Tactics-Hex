@@ -68,6 +68,9 @@ function TroopManager:createTroop(troop, partyInfo, partyID)
   local sizeX = troop.grid.width
   local sizeY = troop.grid.height
   troop:setRotation(partyInfo.rotation)
+  local dir = troop:getCharacterDirection()
+  self.troopDirections[partyID] = dir
+  self.troopAI[partyID] = troop.AI
   for i = 1, sizeX do
     for j = 1, sizeY do
       local battlerID = troop.grid:get(i, j)
@@ -75,9 +78,6 @@ function TroopManager:createTroop(troop, partyInfo, partyID)
       tile.gui.party = partyID
       if battlerID >= 0 then
         if tile and not tile:collides(0, 0) then
-          local dir = troop:getCharacterDirection()
-          self.troopDirections[partyID] = dir
-          self.troopAI[partyID] = troop.AI
           local battler = Battler(battlerID, partyID)
           self:createBattleCharacter(tile, battler)
         end

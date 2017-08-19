@@ -54,7 +54,7 @@ function AttackRule:onSelect(user)
   if bestTile then
     self.input.taget = bestTile
   else
-    local queue = BattleTactics.closestCharacters(input)
+    local queue = BattleTactics.closestCharacters(self.input)
     if queue:isEmpty() then
       self.input = nil
     else

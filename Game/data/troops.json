@@ -16,7 +16,7 @@
   {
     "name": "Enemy Party",
     "scriptAI": {
-      "path": "",
+      "path": "ai/troop/TroopAI.lua",
       "param": ""
     },
     "grid": [

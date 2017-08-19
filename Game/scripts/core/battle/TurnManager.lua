@@ -35,10 +35,6 @@ end
 -- Turn Info
 ---------------------------------------------------------------------------------------------------
 
--- Gets the ID of the current party.
-function TurnManager:currentParty()
-  return TroopManager.parties[self.party]
-end
 -- Gets the current selected character.
 function TurnManager:currentCharacter()
   return self.turnCharacters[self.characterIndex]
@@ -55,19 +51,6 @@ function TurnManager:updatePathMatrix()
     self.pathMatrixes[self.characterIndex] = path
   end
 end
--- Updates the list of 
-function TurnManager:updateTurnCharacters()
-  self.turnCharacters = {}
-  local party = self:currentParty()
-  local i = 1
-  for char in TroopManager.characterList:iterator() do
-    if char.battler.party == party then
-      self.turnCharacter[i] = char
-      i = i + 1
-    end
-  end
-  self.characterIndex = 1
-end
 
 ---------------------------------------------------------------------------------------------------
 -- Execution
@@ -76,7 +59,13 @@ end
 -- [COROUTINE] Executes turn and returns when the turn finishes.
 function TurnManager:runTurn()
   self:startTurn()
-  local result = self:getTurnResult()
+  local result = nil
+  local AI = TroopManager.troopAI[self.party]
+  if AI then
+    result = AI:runTurn()
+  else
+    result = self:runPlayerTurn()
+  end
   if result.escaped then
     return -2, TroopManager.playerParty
   else
@@ -88,33 +77,18 @@ function TurnManager:runTurn()
   end
 end
 
-function TurnManager:getTurnResult()
-  local AI = self:getAI()
-  if AI then
-    return AI:runTurn()
-  else
-    repeat
-      self:characterTurnStart()
-      local result = GUIManager:showGUIForResult('battle/BattleGUI')
-      if result.characterIndex then
-        self.characterIndex = result.characterIndex
-      elseif result.endTurn then
+function TurnManager:runPlayerTurn()
+  while true do
+    self:characterTurnStart()
+    local result = GUIManager:showGUIForResult('battle/BattleGUI')
+    if result.characterIndex then
+      self.characterIndex = result.characterIndex
+    else
+      self:characterTurnEnd(result)
+      if result.endTurn or #self.turnCharacters == 0 then
         return result
-      else
-        self:characterTurnEnd(result)
-        if #self.turnCharacters == 0 then
-          return result
-        end
       end
-    until false
-  end
-end
-function TurnManager:getAI()
-  local char = self:currentCharacter()
-  if char.battler.AI then
-    return char.battler.AI 
-  else
-    return TroopManager.troopAI[self.party]
+    end
   end
 end
 -- Gets the code of the battle result based on the winner party.
@@ -131,30 +105,15 @@ function TurnManager:getResult(winner)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Character Turn
+-- Party Turn
 ---------------------------------------------------------------------------------------------------
 
-function TurnManager:characterTurnStart()
-  self:updatePathMatrix()
-  local char = self:currentCharacter()
-  char.battler:onSelfTurnStart(char)
-  FieldManager.renderer:moveToObject(char, nil, true)
-end
-function TurnManager:characterTurnEnd(result)
-  local char = self:currentCharacter()
-  char.battler:onSelfTurnEnd(char, result)
-  table.remove(self.turnCharacters, self.characterIndex)
-  if self.characterIndex > #self.turnCharacters then
-    self.characterIndex = 1
-  end
-end
 -- Prepares for turn.
 -- @param(char : Character) the new character of the turn
 -- @param(iterations : number) the time since the last turn
 function TurnManager:startTurn()
   repeat
-    self.party = math.mod1(self.party + 1, TroopManager.partyCount)
-    self:updateTurnCharacters()
+    self:nextParty()
   until #self.turnCharacters > 0
   self.pathMatrixes = {}
   for bc in TroopManager.characterList:iterator() do
@@ -168,6 +127,41 @@ end
 function TurnManager:endTurn(char, actionCost, iterations)
   for bc in TroopManager.characterList:iterator() do
     bc.battler:onTurnEnd(bc, char, iterations)
+  end
+end
+-- Gets the next party.
+function TurnManager:nextParty()
+  self.party = math.mod1(self.party + 1, TroopManager.partyCount)
+  self.turnCharacters = {}
+  local i = 1
+  for char in TroopManager.characterList:iterator() do
+    if char.battler.party == self.party then
+      self.turnCharacter[i] = char
+      i = i + 1
+    end
+  end
+  self.characterIndex = 1
+end
+
+---------------------------------------------------------------------------------------------------
+-- Character Turn
+---------------------------------------------------------------------------------------------------
+
+-- Called when a character is selected so it's their turn.
+function TurnManager:characterTurnStart()
+  local char = self:currentCharacter()
+  char.battler:onSelfTurnStart(char)
+  self:updatePathMatrix()
+  FieldManager.renderer:moveToObject(char, nil, true)
+end
+-- Called the character's turn ended
+-- @param(result : table) the action result returned by the BattleAction (or wait)
+function TurnManager:characterTurnEnd(result)
+  local char = self:currentCharacter()
+  char.battler:onSelfTurnEnd(char, result)
+  table.remove(self.turnCharacters, self.characterIndex)
+  if self.characterIndex > #self.turnCharacters then
+    self.characterIndex = 1
   end
 end
 

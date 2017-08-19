@@ -53,7 +53,7 @@ function SkillAction:init(skillID)
   elseif data.type == 2 then
     color = 'support'
   end
-  BattleAction.init(self, data.timeCost, data.range, data.radius, color)
+  BattleAction.init(self, data.range, data.radius, color)
   local battlerVariables = Database.variables.battler
   -- Effect formulas
   self.effects = {}
@@ -150,7 +150,7 @@ function SkillAction:execute(input)
     input.user.battler:onSkillUseEnd(input)
     return BattleAction.execute(self, input)
   else
-    return { executed = false }
+    return { executed = false, endCharacterTurn = true }
   end
 end
 

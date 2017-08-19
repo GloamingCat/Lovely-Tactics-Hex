@@ -18,7 +18,7 @@ local CallAction = class(BattleAction)
 
 -- Constructor.
 function CallAction:init()
-  BattleAction.init(self, 100, 0, 1, 'general')
+  BattleAction.init(self, 0, 1, 'general')
   self.showTargetWindow = false
 end
 

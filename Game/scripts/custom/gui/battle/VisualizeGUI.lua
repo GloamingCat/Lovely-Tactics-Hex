@@ -16,7 +16,6 @@ local VisualizeGUI = class(GUI)
 function VisualizeGUI:init(character)
   self.name = 'Visualize GUI'
   self.character = character
-  print(character)
   GUI.init(self)
 end
 

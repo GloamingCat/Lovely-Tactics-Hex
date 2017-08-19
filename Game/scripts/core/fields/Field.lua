@@ -188,7 +188,7 @@ end
 function Field:addTerrainLayer(layerData, depthOffset)
   local list = self.terrainLayers[layerData.info.height]
   local order = #list
-  local layer = TerrainLayer(layerData, self.sizeX, self.sizeY, depthOffset - order)
+  local layer = TerrainLayer(layerData, self.sizeX, self.sizeY, depthOffset - order + 1)
   list[order + 1] = layer
 end
 -- Merges the obstacle layers. If there's no layer in that height, creates a new one.

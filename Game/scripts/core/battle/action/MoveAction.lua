@@ -26,7 +26,7 @@ local MoveAction = class(BattleAction)
 
 -- Constructor.
 function MoveAction:init(range)
-  BattleAction.init(self, -1, range or 0, 1)
+  BattleAction.init(self, range or 0, 1)
   self.showTargetWindow = false
   self.showStepWindow = true
 end

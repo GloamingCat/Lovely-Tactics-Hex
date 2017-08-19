@@ -54,7 +54,7 @@ end
 -- @param(rotation : number) rotation of the copy (optional)
 -- @ret(Troop)
 function Troop:clone(rotation)
-  return Troop(self.grid:clone(), self.rotation)
+  return Troop(self.grid:clone(), self.rotation, self.AI)
 end
 
 ---------------------------------------------------------------------------------------------------

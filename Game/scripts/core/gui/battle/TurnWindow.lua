@@ -14,6 +14,7 @@ local MoveAction = require('core/battle/action/MoveAction')
 local EscapeAction = require('core/battle/action/EscapeAction')
 local VisualizeAction = require('core/battle/action/VisualizeAction')
 local CallAction = require('core/battle/action/CallAction')
+local WaitAction = require('core/battle/action/WaitAction')
 local TradeSkill = require('custom/skill/TradeSkill')
 local BattleCursor = require('core/battle/BattleCursor')
 local Button = require('core/gui/Button')
@@ -33,9 +34,9 @@ function TurnWindow:init(...)
   self.callAction = CallAction()
   self.escapeAction = EscapeAction()
   self.visualizeAction = VisualizeAction()
+  self.waitAction = WaitAction()
   ActionWindow.init(self, ...)
 end
-
 -- Overrides GridWindow:createButtons.
 function TurnWindow:createButtons()
   self.backupBattlers = PartyManager:backupBattlers()
@@ -85,12 +86,26 @@ function TurnWindow:onItem(button)
 end
 -- "Wait" button callback. End turn.
 function TurnWindow:onWait(button)
-  self.result = { endTurn = true, endCharacterTurn = true }
+  self:selectAction(self.waitAction)
 end
 -- Overrides GridWindow:onCancel.
 function TurnWindow:onCancel()
   self:selectAction(self.visualizeAction)
   self.result = nil
+end
+-- Overrides Window:onNext.
+function TurnWindow:onNext()
+  local count = #TurnManager.turnCharacters
+  if count > 1 then
+    self.result = { characterIndex = math.mod1(TurnManager.characterIndex + 1, count) }
+  end
+end
+-- Overrides Window:onPrev.
+function TurnWindow:onPrev()
+  local count = #TurnManager.turnCharacters
+  if count > 1 then
+    self.result = { characterIndex = math.mod1(TurnManager.characterIndex - 1, count) }
+  end
 end
 
 ---------------------------------------------------------------------------------------------------

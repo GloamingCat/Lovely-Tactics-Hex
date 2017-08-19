@@ -35,10 +35,14 @@ function TargetWindow:init(GUI)
   end
   self.vars = vars
   local w = 100
-  local h = self:vpadding() * 2 + 25 + #vars * 10
+  local h = self:calculateHeight()
   local margin = 12
   Window.init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - margin, 
       -ScreenManager.height / 2 + h / 2 + margin))
+end
+-- Calculates the height given the shown variables.
+function TargetWindow:calculateHeight()
+  return self:vpadding() * 2 + 15 + #self.vars * 10
 end
 -- Initializes name and status texts.
 function TargetWindow:createContent(width, height)
@@ -64,12 +68,6 @@ function TargetWindow:createContent(width, height)
     self.content:add(textName)
     self.content:add(textValue)
   end
-  -- Turn count text
-  local posTC = Vector(x, y + 15 + #self.vars * 10)
-  self.textTC = SimpleText(Vocab.turnCount .. ':', posTC, w, 'left', font)
-  self.textTCValue = SimpleText('', posTC, w, 'right', font)
-  self.content:add(self.textTC)
-  self.content:add(self.textTCValue)
   collectgarbage('collect')
 end
 
@@ -96,10 +94,6 @@ function TargetWindow:setBattler(battler)
     stateText:setText(text)
     stateText:redraw()
   end
-  -- Turn count text
-  local tc = (battler.turnCount / TurnManager.turnLimit * 100)
-  self.textTCValue:setText(string.format( '%3.0f', tc ) .. '%')
-  self.textTCValue:redraw()
   collectgarbage('collect')
 end
 

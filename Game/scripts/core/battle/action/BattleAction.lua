@@ -26,11 +26,10 @@ local BattleAction = class()
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
--- @param(timeCost : number) the action time cost
 -- @param(range : number) the range of the action to the target tile (in tiles)
 -- @param(radius : number) the radius of the action effect (in tiles)
 -- @param(colorName : string) the color of the selectable tiles
-function BattleAction:init(timeCost, range, radius, colorName)
+function BattleAction:init(range, radius, colorName)
   self.range = range
   self.radius = radius
   self.colorName = colorName

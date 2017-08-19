@@ -75,7 +75,7 @@ function BattlerAI:runTurn()
   if rule:canExecute() then
     result = rule:execute()
   else
-    result = { endTurn = true, endCharacterTurn = true }
+    result = self.waitRule:execute()
   end
   TurnManager:characterTurnEnd(result)
   return result

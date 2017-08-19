@@ -1,42 +1,37 @@
 
 --[[===============================================================================================
 
-WaitRule
+WaitAction
 ---------------------------------------------------------------------------------------------------
-Rule that just ends the turn. May be used when the other rules cannot be used.
+The BattleAction that is executed when players chooses the "Wait" button.
 
 =================================================================================================]]
 
 -- Imports
-local AIRule = require('core/battle/ai/AIRule')
+local BattleAction = require('core/battle/action/BattleAction')
 
-local WaitRule = class(AIRule)
+local WaitAction = class(BattleAction)
 
 ---------------------------------------------------------------------------------------------------
--- Initialization
+-- Initilization
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
-function WaitRule:init()
-  AIRule.init(self, 'Wait')
+function WaitAction:init()
+  BattleAction.init(self, 0, 0, '')
 end
 
 ---------------------------------------------------------------------------------------------------
--- Execution
+-- Callback
 ---------------------------------------------------------------------------------------------------
 
--- Overrides AIRule:onSelect.
-function WaitRule:onSelect()
+-- Overrides BattoeAction:onActionGUI.
+function WaitAction:onActionGUI(input)
+  return self:onConfirm(input)
 end
 
--- Overrides AIRule:canExecute.
-function WaitRule:canExecute()
-  return true
+function WaitAction:onConfirm(input)
+  return { endTurn = true, endCharacterTurn = true }
 end
 
--- Overrides AIRule:execute.
-function WaitRule:execute()
-  return 0
-end
-
-return WaitRule
+return WaitAction
