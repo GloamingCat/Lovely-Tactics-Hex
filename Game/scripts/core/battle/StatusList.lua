@@ -111,15 +111,15 @@ end
 -- Turn Callbacks
 ---------------------------------------------------------------------------------------------------
 
-function StatusList:onTurnStart(char)
+function StatusList:onTurnStart(char, partyTurn)
   for status in self:iterator() do
-    status:onTurnStart(char)
+    status:onTurnStart(char, partyTurn)
   end
 end
 
-function StatusList:onTurnEnd(char)
+function StatusList:onTurnEnd(char, partyTurn)
   for status in self:iterator() do
-    status:onTurnEnd(char)
+    status:onTurnEnd(char, partyTurn)
   end
 end
 

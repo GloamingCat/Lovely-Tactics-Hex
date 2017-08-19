@@ -20,9 +20,8 @@ local lifeName = battlerVariables[Config.battle.attLifeID + 1].shortName
 
 local Poison = class(Status)
 
-function Poison:onTurnStart(char)
-  if char == TurnManager:currentCharacter() then
-    assert(char.battler.statusList.size > 0)
+function Poison:onTurnStart(char, partyTurn)
+  if partyTurn then
     local pos = char.position
     local popupText = PopupText(pos.x, pos.y - 20, pos.z - 10)
     local value = floor(char.battler:maxLifePoints() / 10)
@@ -31,7 +30,7 @@ function Poison:onTurnStart(char)
     char.battler:damage(lifeName, value)
     popupText:popup()
   end
-  Status.onTurnStart(self, char)
+  Status.onTurnStart(self, char, partyTurn)
 end
 
 return Poison

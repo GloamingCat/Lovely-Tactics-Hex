@@ -224,22 +224,24 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Callback for when a new turn begins.
-function Battler:onTurnStart(char)
+function Battler:onTurnStart(char, partyTurn)
   if self.AI and self.AI.onTurnStart then
-    self.AI:onTurnStart(char)
+    self.AI:onTurnStart(char, partyTurn)
   end
-  self.statusList:onTurnStart(char)
+  self.statusList:onTurnStart(char, partyTurn)
+  if partyTurn then
+    self.steps = self.maxSteps()
+  end
 end
 -- Callback for when a turn ends.
-function Battler:onTurnEnd(char)
+function Battler:onTurnEnd(char, partyTurn)
   if self.AI and self.AI.onTurnEnd then
-    self.AI:onTurnEnd(char)
+    self.AI:onTurnEnd(char, partyTurn)
   end
-  self.statusList:onTurnEnd(char)
+  self.statusList:onTurnEnd(char, partyTurn)
 end
 -- Callback for when this battler's turn starts.
 function Battler:onSelfTurnStart(char)
-  self.steps = self.maxSteps()
 end
 -- Callback for when this battler's turn ends.
 function Battler:onSelfTurnEnd(char, result)

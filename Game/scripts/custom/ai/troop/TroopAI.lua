@@ -13,16 +13,18 @@ function TroopAI:init(param)
 end
 
 function TroopAI:runTurn()
-  local result = nil
-  for i = 1, #TurnManager.turnCharacters do
+  local result, i = nil, 1
+  while i <= #TurnManager.turnCharacters do
+    TurnManager.characterIndex = i
     local char = TurnManager:currentCharacter()
     local AI = char.battler.AI
     if AI then
-      TurnManager.characterIndex = i
       result = AI:runTurn()
       if result.endTurn then
         break
       end
+    else
+      i = i + 1
     end
   end
   return result

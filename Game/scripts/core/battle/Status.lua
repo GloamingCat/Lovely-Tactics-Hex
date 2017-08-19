@@ -128,14 +128,14 @@ function Status:onBattleEnd(char)
   end
 end
 
-function Status:onTurnStart(char)
+function Status:onTurnStart(char, partyTurn)
   self.state.lifeTime = self.state.lifeTime + 1
   if self.state.lifeTime > self.duration then
     self:remove(char)
   end
 end
 
-function Status:onTurnEnd(char, turnChar, it)
+function Status:onTurnEnd(char, partyTurn)
 end
 
 function Status:onSkillUseStart(char, input)

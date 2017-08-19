@@ -28,7 +28,7 @@ local yield = coroutine.yield
 local time = love.timer.getDelta
 
 -- Parameters
-local turnBarAnim = args.animation
+local turnBarAnim = args.turnBarAnim
 local turnLimit = args.turnLimit
 local attName = args.attName
 
@@ -129,7 +129,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Override.
-function Status:onTurnStart(char)
+function Status:onTurnStart(char, partyTurn)
   self.state.lifeTime = self.state.lifeTime + _G.TurnManager.iterations
   if self.state.lifeTime > self.duration then
     self:remove(char)

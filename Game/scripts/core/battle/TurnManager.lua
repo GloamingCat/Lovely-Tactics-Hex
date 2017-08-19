@@ -45,11 +45,9 @@ function TurnManager:pathMatrix()
 end
 -- Recalculates the distance matrix.
 function TurnManager:updatePathMatrix()
-  if not self.pathMatrixes[self.characterIndex] then
-    local moveAction = MoveAction()
-    local path = PathFinder.dijkstra(moveAction, self:currentCharacter())
-    self.pathMatrixes[self.characterIndex] = path
-  end
+  local moveAction = MoveAction()
+  local path = PathFinder.dijkstra(moveAction, self:currentCharacter())
+  self.pathMatrixes[self.characterIndex] = path
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -116,8 +114,16 @@ function TurnManager:startTurn()
     self:nextParty()
   until #self.turnCharacters > 0
   self.pathMatrixes = {}
-  for bc in TroopManager.characterList:iterator() do
-    bc.battler:onTurnStart(bc)
+  local partyChars = {}
+  for i = 1, #self.turnCharacters do
+    local char = self.turnCharacters[i]
+    partyChars[char] = true
+    char.battler:onTurnStart(char, true)
+  end
+  for char in TroopManager.characterList:iterator() do
+    if not partyChars[char] then
+      char.battler:onTurnStart(char, false)
+    end
   end
 end
 -- Closes turn.
@@ -135,8 +141,8 @@ function TurnManager:nextParty()
   self.turnCharacters = {}
   local i = 1
   for char in TroopManager.characterList:iterator() do
-    if char.battler.party == self.party then
-      self.turnCharacter[i] = char
+    if char.battler.party == self.party and char.battler:isAlive() then
+      self.turnCharacters[i] = char
       i = i + 1
     end
   end

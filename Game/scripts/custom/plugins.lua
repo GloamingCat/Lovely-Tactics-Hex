@@ -15,7 +15,7 @@ local killCheat = { 'KillCheat',
 local individualTurn = { 'IndividualTurn',
   attName = 'AGI',
   turnLimit = 2000,
-  animation = false
+  turnBarAnim = false
 }
 
 ---------------------------------------------------------------------------------------------------
