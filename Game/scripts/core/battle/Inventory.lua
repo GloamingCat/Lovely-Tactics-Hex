@@ -34,7 +34,7 @@ function Inventory:init(list)
 end
 -- Gets all slots of this inventory in a simple table.
 -- @ret(table)
-function Inventory:asTable()
+function Inventory:getState()
   local table = {}
   for i = 1, self.size do
     table[i] = {

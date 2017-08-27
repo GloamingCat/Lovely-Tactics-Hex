@@ -136,8 +136,8 @@ function Battler:createPersistentData()
   data.attBase = copyArray(self.attBase)
   data.state = copyTable(self.state)
   data.elementFactors = copyArray(self.elementFactors)
-  data.inventory = self.inventory:asTable()
-  data.status = self.statusList:asTable()
+  data.inventory = self.inventory:getState()
+  data.status = self.statusList:getState()
   return data
 end
 
@@ -358,6 +358,10 @@ end
 -- @ret(number)
 function Battler:maxLifePoints()
   return self.stateMax[lifeName](self.att)
+end
+-- Checks if the character is considered active in the battle.
+function Battler:isActive()
+  return self:isAlive()
 end
 
 return Battler

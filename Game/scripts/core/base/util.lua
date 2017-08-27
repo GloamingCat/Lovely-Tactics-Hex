@@ -161,7 +161,7 @@ end
 function util.createTags(tags)
   local t = {}
   for i = 1, #tags do
-    t[tags[i].name] = JSON.decode(tags[i].value)
+    t[tags[i].name] = tags[i].value
   end
   return t
 end

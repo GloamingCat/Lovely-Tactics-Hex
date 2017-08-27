@@ -232,7 +232,7 @@ function Sprite:setXYZ(x, y, z)
     self.position.x = x
     self.position.y = y
     self.renderer.needsRedraw = true
-  end  
+  end
 end
 -- Sets the sprite's pixel position the update's its position in the sprite list.
 -- @param(pos : Vector) the pixel position of the image
@@ -285,6 +285,9 @@ end
 -- Called when the renderer needs to draw this sprite.
 -- @param(renderer : Renderer) the renderer that is drawing this sprite
 function Sprite:draw(renderer)
+  if self.texture == nil then
+    return
+  end
   if self.texture ~= renderer.batch:getTexture() then
     renderer:clearBatch()
     renderer.batch:setTexture(self.texture)

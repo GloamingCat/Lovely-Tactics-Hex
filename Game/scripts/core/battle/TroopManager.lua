@@ -8,6 +8,7 @@ Creates and manages battle troops.
 =================================================================================================]]
 
 -- Imports
+local Animation = require('core/graphics/Animation')
 local List = require('core/datastruct/List')
 local Character = require('core/objects/Character')
 local Battler = require('core/battle/Battler')
@@ -98,18 +99,21 @@ function TroopManager:createBattleCharacter(tile, battler)
     charID = battler.data.battleCharID,
     animID = 0,
     direction = dir,
-    tags = {}
-  }
+    tags = {} }
   charData.x, charData.y, charData.h = tile:coordinates()
   local character = Character(charData, tile)
   character.battler = battler
   character.speed = charSpeed
   self.characterList:add(character)
+  local balloonAnim = Database.animOther[Config.battle.statusBalloonID + 1]
+  character.balloon = Animation.fromData(balloonAnim, FieldManager.renderer)
+  character.balloon.sprite:setTransformation(balloonAnim.transform)
+  character:setPosition(character.position)
   return character
 end
 
 ---------------------------------------------------------------------------------------------------
--- Remove
+-- Clear
 ---------------------------------------------------------------------------------------------------
 
 -- Erases battlers and clears list.
@@ -185,7 +189,7 @@ end
 function TroopManager:winnerParty()
   local currentParty = -1
   for bc in self.characterList:iterator() do
-    if bc.battler:isAlive() then
+    if bc.battler:isActive() then
       if currentParty == -1 then
         currentParty = bc.battler.party
       else
@@ -210,8 +214,7 @@ function TroopManager:getPartyCenters()
     else
       centers[party] = {
         vector = bc.position:clone(),
-        count = 1
-      }
+        count = 1 }
     end
   end
   for i = 1, #centers do

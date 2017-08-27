@@ -11,10 +11,14 @@ The effects of them on battle and field depend on each individual implementation
 local Status = class()
 
 ---------------------------------------------------------------------------------------------------
--- General
+-- Initialization
 ---------------------------------------------------------------------------------------------------
 
-function Status:init(id, state, char, param)
+-- Constructor.
+-- @param(id : number) the ID of the status in the database
+-- @param(state : table) the persistent state of the status
+-- @param(char : Character) the character with the status
+function Status:init(id, state, char)
   self.id = id
   self.data = Database.status[id + 1]
   self.state = state or { lifeTime = 0 }
@@ -24,109 +28,53 @@ function Status:init(id, state, char, param)
     self.duration = math.huge
   end
   self.tags = util.createTags(self.data.tags)
-  --self:addAttributeBonus(char)
-  self:addElements(char)
+  -- Attribute bonus
+  self.attAdd = {}
+  self.attMul = {}
+  for i = 1, #self.data.attributes do
+    local bonus = self.data.attributes[i]
+    local name = Database.attributes[bonus.id + 1].shortName
+    self.attAdd[name] = bonus.add
+    self.attMul[name] = bonus.mul
+  end
+  -- Element bonus
+  self.elements = {}
+  for i = 1, #self.data.elements do
+    local bonus = self.data.elements[i]
+    self.elements[bonus.id] = bonus.value
+  end
 end
-
+-- Creates the status from its ID in the database, loading the correct script.
+-- @param(id : number) the ID of the status in the database
+-- @param(state : table) the persistent state of the status
+-- @param(char : Character) the character with the status
 function Status.fromData(id, state, char)
   local data = Database.status[id + 1]
   if data.script.path ~= '' then
     local class = require('custom/' .. data.script.path)
-    return class(id, state, char, data.script.param)
+    return class(id, state, char)
   else
     return Status(id, state, char)
   end
 end
 
-function Status:remove(char)
-  local status = char.battler.state.status
-  local i = util.arrayIndexOf(status, self)
-  table.remove(status, i)
-  --self:removeAttributeBonus(char)
-  self:removeElements(char)
-end
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
 
+-- Removes this status from the character's status list.
+-- @param(char : Character) the character with the status
+function Status:remove(char)
+  char.battler.statusList:removeElement(self)
+end
+-- String representation.
 function Status:__tostring()
   return 'Status: ' .. self.id .. ' (' .. self.data.name .. ')'
 end
 
 ---------------------------------------------------------------------------------------------------
--- Attribute bonus
+-- Turn Callbacks
 ---------------------------------------------------------------------------------------------------
-
-function Status:addAttributeBonus(char)
-  local attAdd = self.data.attAdd
-  local bAttAdd = char.battler.attAdd
-  for i = 1, #bAttAdd do 
-    local bonus = bAttAdd[i]
-    local name = attConfig[bonus.id + 1].shortName
-    bAttAdd[name] = bAttAdd[name] + bonus.value
-  end
-  local attMul = self.data.attMul
-  local bAttMul = char.battler.attMul
-  for i = 1, #bAttMul do 
-    local bonus = bAttMul[i]
-    local name = attConfig[bonus.id + 1].shortName
-    bAttMul[name] = bAttMul[name] * bonus.value
-  end
-end
-
-function Status:removeAttributeBonus(char)
-  local attAdd = self.data.attAdd
-  local bAttAdd = char.battler.attAdd
-  for i = 1, #bAttAdd do 
-    local bonus = char.attAdd[i]
-    local name = attConfig[bonus.id + 1].shortName
-    bAttAdd[name] = bAttAdd[name] - bonus.value
-  end
-  local attMul = self.data.attMul
-  local bAttMul = char.battler.attMul
-  for i = 1, #bAttMul do 
-    local bonus = char.attMul[i]
-    local name = attConfig[bonus.id + 1].shortName
-    bAttMul[name] = bAttMul[name] / bonus.value
-  end
-end
-
----------------------------------------------------------------------------------------------------
--- Elements
----------------------------------------------------------------------------------------------------
-
-function Status:addElements(char)
-  local el = self.data.elements
-  local elements = char.battler.elementFactors
-  for i = 1, #el do
-    local id = el[i].id
-    elements[id] = elements[id] + el[i].value
-  end
-end
-
-function Status:removeElements(char)
-  local el = self.data.elements
-  local elements = char.battler.elementFactors
-  for i = 1, #el do
-    local id = el[i].id
-    elements[id] = elements[id] - el[i].value
-  end
-end
-
----------------------------------------------------------------------------------------------------
--- Callbacks
----------------------------------------------------------------------------------------------------
-
-function Status:onAdd(char)
-  
-end
-
-function Status:onBattleStart(char)
-  self:onAdd(char)
-end
-
-function Status:onBattleEnd(char)
-  if self.data.removeOnBattleEnd then
-    self:remove(char)
-  end
-end
 
 function Status:onTurnStart(char, partyTurn)
   self.state.lifeTime = self.state.lifeTime + 1
@@ -138,16 +86,36 @@ end
 function Status:onTurnEnd(char, partyTurn)
 end
 
+function Status:onSelfTurnStart(char)
+end
+
+function Status:onSelfTurnEnd(char, result)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Skill Callbacks
+---------------------------------------------------------------------------------------------------
+
 function Status:onSkillUseStart(char, input)
 end
 
 function Status:onSkillUseEnd(char, input)
 end
 
-function Status:onSkillEffectStart(char, input, dmg)
+function Status:onSkillEffectStart(char, input, results)
 end
 
-function Status:onSkillEffectEnd(char, skill, dmg)
+function Status:onSkillEffectEnd(char, input, results)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Other Callbacks
+---------------------------------------------------------------------------------------------------
+
+function Status:onBattleStart(char)
+end
+
+function Status:onBattleEnd(char)
 end
 
 return Status

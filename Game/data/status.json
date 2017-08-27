@@ -5,23 +5,53 @@
       "imagePath": "Icon/Skills/Poison.png",
       "x": 0,
       "y": 0,
-      "width": 1,
-      "height": 1
+      "width": 24,
+      "height": 24
     },
     "priority": 100,
     "script": {
       "path": "status/Poison.lua",
       "param": ""
     },
-    "debuff": true,
-    "cumulative": false,
     "animID": 5,
     "duration": -1,
-    "attAdd": [],
-    "attMul": [],
+    "deactivate": false,
+    "debuff": true,
+    "cumulative": false,
+    "removeOnBattleEnd": false,
+    "attributes": [],
     "elements": [],
     "cancel": [],
-    "skipTurn": false,
     "tags": []
+  },
+  {
+    "name": "Sleep",
+    "icon": {
+      "imagePath": "Icon/Skills/Sleep.png",
+      "x": 0,
+      "y": 0,
+      "width": 24,
+      "height": 24
+    },
+    "priority": 99,
+    "script": {
+      "path": "",
+      "param": ""
+    },
+    "animID": 5,
+    "duration": 4000,
+    "deactivate": true,
+    "debuff": true,
+    "cumulative": false,
+    "removeOnBattleEnd": true,
+    "attributes": [],
+    "elements": [],
+    "cancel": [],
+    "tags": [ 
+      {
+        "name": "removeOnDamage",
+        "value": ""
+      }
+    ]
   }
 ]

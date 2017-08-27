@@ -24,19 +24,29 @@ local E = 0.000001
 -- General
 ---------------------------------------------------------------------------------------------------
 
+-- Gets the sign of x.
+-- @param(x : number) the number to get the sign of
+-- @ret(number) -1 if x is negative, 1 if x is positive, 0 if x is 0 
+function math.sign(x)
+  if x < 0 then
+    return -1
+  elseif x > 0 then
+    return 1
+  else
+    return 0
+  end
+end
 -- Rounds a number to integer.
 -- @param(x : number) the float number
 -- @ret(number) the integer
 function math.round(x)
   return floor(x + 0.5)
 end
-
 -- Checks if a value is not a number.
 -- @param(x : number) the value to check
 function math.isnan(x)
   return not (x == x)
 end
-
 -- Returns the positive remainder after division of x by y.
 -- @param(x : number) the dividend
 -- @param(y : number) the divisor
@@ -44,7 +54,6 @@ end
 function math.mod(x, y)
   return ((x % y) + y) % y
 end
-
 -- Returns a number between 1 and y.
 -- @param(x : number) the value possiblity out of the interval
 -- @param(y : number) the max value
@@ -52,7 +61,6 @@ local mod = math.mod
 function math.mod1(x, y)
   return mod(x - 1, y) + 1
 end
-
 -- Rotates a point.
 -- @param(x : number) the point's x
 -- @param(y : number) the point's y
@@ -64,7 +72,6 @@ function math.rotate(x, y, phi)
 	x, y = c * x - s * y, s * x + c * y
   return x, y
 end
-
 -- Calculates the expectation of the default random function.
 -- @param(a : number) upper value (optional)
 -- @param(b : number) lower value (optional)
@@ -77,7 +84,6 @@ function math.randomExpectation(a, b)
     return 0.5
   end
 end
-
 -- Checks if two number values and pratically equal, given the defined epsilon (E).
 -- @param(x : number) the first value
 -- @param(y : number) the second value
@@ -109,14 +115,12 @@ end
 
 -- Euler constant.
 math.e = 2.718281828459045
-
 -- Sigmoid function to normalize input value.
 -- @param(x : number) input value
 local euler = math.e
 function math.sigmoid(x)
   return 1 / (pow(euler, -x) + 1)
 end
-
 -- Derivative of the sigmoid function.
 -- @param(x : number) input value
 function math.dsigmoid(x)
@@ -135,7 +139,6 @@ end
 function math.coord2Angle(x, y)
   return deg(atan2(y, x)) % 360
 end
-
 -- Converts an angle to a normalized vector.
 -- @param(angle : number) the angle in degrees
 -- @ret(number) the x-axis coordinate of the vector
@@ -158,7 +161,6 @@ function math.len2D(x, y, z)
   z = z + y
   return sqrt(x*x + y*y + z*z)
 end
-
 -- Calculates length of vector in a 3D coordinate system.
 -- @param(x : number) vector's x coordinates
 -- @param(y : number) vector's y coordinates
@@ -198,14 +200,12 @@ local dir = {0, diag, 90, 180 - diag, 180, 180 + diag, 270, 360 - diag}
 local int = {dir[2] / 2, (dir[2] + dir[3]) / 2, (dir[3] + dir[4]) / 2, 
   (dir[4] + dir[5]) / 2, (dir[5] + dir[6]) / 2, (dir[6] + dir[7]) / 2,
   (dir[7] + dir[8]) / 2, (dir[8] + 360) / 2}
-
 -- Converts row [0, 7] to float angle.
 -- @param(row : number) the rown from 0 to 7
 -- @ret(number) the angle in radians
 function math.row2Angle(row)
   return dir[row + 1]
 end
-
 -- Converts float angle to row [0, 7].
 -- @param(angle : number) the angle in radians
 -- @ret(number) the row from 0 to 7

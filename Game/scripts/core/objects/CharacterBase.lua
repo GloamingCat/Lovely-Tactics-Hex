@@ -64,6 +64,9 @@ end
 function CharacterBase:update()
   DirectedObject.update(self)
   self.fiberList:update()
+  if self.balloon then
+    self.balloon:update()
+  end
 end
 -- Removes from draw and update list.
 function CharacterBase:destroy()
@@ -158,6 +161,13 @@ function CharacterBase:instantMoveTo(x, y, z, collisionCheck)
   end
   return nil
 end
+-- Overrides Transform:setXYZ.
+function CharacterBase:setXYZ(x, y, z)
+  DirectedObject.setXYZ(self, x, y, z)
+  if self.balloon then
+    self.balloon:updatePosition(self)
+  end
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Tiles
@@ -201,6 +211,17 @@ end
 -- Persistent Data
 ---------------------------------------------------------------------------------------------------
 
+-- Gets persistent data.
+-- @ret(table) character's data
+function CharacterBase:getPersistentData()
+  local data = {}
+  data.lastx = self.position.x
+  data.lasty = self.position.y
+  data.lastz = self.position.z
+  data.lastDir = self.direction
+  data.lastAnim = self.animName
+  return data
+end
 -- Sets persistent data.
 -- @param(data : table) data from save
 function CharacterBase:setPersistentData(data)
@@ -215,17 +236,6 @@ function CharacterBase:setPersistentData(data)
       self:playAnimation(data.lastAnim)
     end
   end
-end
--- Gets persistent data.
--- @ret(table) character's data
-function CharacterBase:getPersistentData()
-  local data = {}
-  data.lastx = self.position.x
-  data.lasty = self.position.y
-  data.lastz = self.position.z
-  data.lastDir = self.direction
-  data.lastAnim = self.animName
-  return data
 end
 
 return CharacterBase

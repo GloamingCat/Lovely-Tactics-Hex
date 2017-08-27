@@ -142,11 +142,7 @@ function SkillAction:execute(input)
   if result.executed then    
     -- Skill use
     input.user.battler:onSkillUseStart(input)
-    if input.skipAnimations then
-      self:applyEffects(input)
-    else
-      self:applyAnimatedEffects(input)
-    end
+    self:use(input)
     input.user.battler:onSkillUseEnd(input)
     return BattleAction.execute(self, input)
   else
@@ -226,43 +222,12 @@ function SkillAction:calculateEffectResult(effect, input, targetChar, rand)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Simulate
----------------------------------------------------------------------------------------------------
-
--- Applies skill's effect with no animations.
--- By default, just applies the damage result in the affected characters.
--- @param(input : ActionInput)
-function SkillAction:applyEffects(input)
-  local tiles = self:getAllAffectedTiles(input)
-  for i = #tiles, 1, -1 do
-    for char in tiles[i].characterList:iterator() do
-      self:applyEffect(input, char)
-    end
-  end
-end
--- Applies skill's effect with no animations in a single character.
--- @param(input : ActionInput)
-function SkillAction:applyEffect(input, char)
-  if not self:receivesEffect(char) then
-    return
-  end
-  local results = self:calculateEffectResults(input, char, input.random)
-  char.battler:onSkillEffectStart(char, input, results)
-  for i = 1, #results.points do
-    local r = results.points[i]
-    char.battler:damage(r.name, r.value)
-  end
-  char.battler.statusList:addAllStatus(results.status, char)
-  char.battler:onSkillEffectEnd(char, input, results)
-end
-
----------------------------------------------------------------------------------------------------
 -- Animations
 ---------------------------------------------------------------------------------------------------
 
 -- The effect applied when the user is prepared to use the skill.
 -- It executes animations and applies damage/heal to the targets.
-function SkillAction:applyAnimatedEffects(input)
+function SkillAction:use(input)
   -- Intro time.
   _G.Fiber:wait(introTime)
   -- User's initial animation.

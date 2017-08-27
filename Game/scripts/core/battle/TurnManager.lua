@@ -74,7 +74,8 @@ function TurnManager:runTurn()
     end
   end
 end
-
+-- Runs the player's turn.
+-- @ret(table) the result action of the turn
 function TurnManager:runPlayerTurn()
   while true do
     self:characterTurnStart()
@@ -114,14 +115,14 @@ function TurnManager:startTurn()
     self:nextParty()
   until #self.turnCharacters > 0
   self.pathMatrixes = {}
-  local partyChars = {}
+  self.initialTurnCharacters = {}
   for i = 1, #self.turnCharacters do
     local char = self.turnCharacters[i]
-    partyChars[char] = true
+    self.initialTurnCharacters[char] = true
     char.battler:onTurnStart(char, true)
   end
   for char in TroopManager.characterList:iterator() do
-    if not partyChars[char] then
+    if not self.initialTurnCharacters[char] then
       char.battler:onTurnStart(char, false)
     end
   end
@@ -130,9 +131,9 @@ end
 -- @param(char : Character) the character of the turn
 -- @param(actionCost : number) the time spend by the character of the turn
 -- @param(iterations : number) the time since the last turn
-function TurnManager:endTurn(char, actionCost, iterations)
+function TurnManager:endTurn(char)
   for bc in TroopManager.characterList:iterator() do
-    bc.battler:onTurnEnd(bc, char, iterations)
+    bc.battler:onTurnEnd(bc, self.initialTurnCharacters[bc] ~= nil)
   end
 end
 -- Gets the next party.
@@ -141,7 +142,7 @@ function TurnManager:nextParty()
   self.turnCharacters = {}
   local i = 1
   for char in TroopManager.characterList:iterator() do
-    if char.battler.party == self.party and char.battler:isAlive() then
+    if char.battler.party == self.party and char.battler:isActive() then
       self.turnCharacters[i] = char
       i = i + 1
     end

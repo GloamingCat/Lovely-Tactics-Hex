@@ -21,13 +21,12 @@ local function killAll(party)
   end
 end
 
-local old_runTurn = TurnManager.runTurn
+local TurnManager_runTurn = TurnManager.runTurn
 function TurnManager:runTurn()
   if InputManager.keys['kill']:isPressing() then
     killAll(TroopManager.playerParty)
     return 1, TroopManager.playerParty
   else
-   return old_runTurn(self)
+   return TurnManager_runTurn(self)
   end
 end
-

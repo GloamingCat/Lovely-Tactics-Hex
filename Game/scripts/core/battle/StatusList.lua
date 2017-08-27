@@ -20,6 +20,9 @@ local StatusList = class(List)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
+-- Constructor.
+-- @param(persistentData : table) the battler's saved data (optional)
+-- @param(initialStatus : table) the array with the battler's initiat status (optional)
 function StatusList:init(persistentData, initialStatus)
   List.init(self)
   if persistentData then
@@ -30,44 +33,74 @@ function StatusList:init(persistentData, initialStatus)
   elseif initialStatus then
     for i = 1, #initialStatus do
       self:add(Status(initialStatus[i], nil, self))
-    end    
+    end
   end
 end
 
 ---------------------------------------------------------------------------------------------------
--- General
+-- Add / Remove
 ---------------------------------------------------------------------------------------------------
 
+-- Add a new status.
+-- @param(id : number) the status' ID
+-- @param(char : Character) the character with the status
 function StatusList:addStatus(id, char)
   local data = Database.status[id + 1]
-  if data.cumulative then
-    local s = self:findStatus(id)
+  local s = self:findStatus(id)
+  if s and not data.cumulative then
     s.state.lifeTime = 0
-    return s
   else
-    local s = Status.fromData(id, nil, char)
+    s = Status.fromData(id, nil, char)
     self:add(s)
-    s:onAdd(char)
-    return s
+    char.balloon:addStatus(s.data.icon)
+  end
+  return s
+end
+-- Removes a status from the list.
+function StatusList:removeStatus(id, char)
+  local status = self:findStatus(id)
+  if status then
+    local icon = status.data.icon
+    while status do
+      self:removeElement(status)
+      status = self:findStatus(id)
+    end
+    char.balloon:removeStatus(icon)
   end
 end
 
-function StatusList:addAllStatus(status, char)
-  for i = 1, #status do
-    self:addStatus(status[i], char)
-  end
-end
+---------------------------------------------------------------------------------------------------
+-- Search
+---------------------------------------------------------------------------------------------------
 
+-- Gets the status with the higher priority.
+-- @ret(Status)
+function StatusList:getTopStatus()
+  if #self == 0 then
+    return nil
+  end
+  local s = self[1]
+  for i = 2, #self do
+    if self[i].data.priority > s.data.priority then
+      s = self[i]
+    end
+  end
+  return s
+end
+-- Gets the status with the given ID (the first created).
+-- @param(id : number) the status' ID in the database
+-- @ret(Status)
 function StatusList:findStatus(id)
-  for status in #self:iterator() do
+  for status in self:iterator() do
     if status.id == id then
       return status
     end
   end
   return nil
 end
-
-function StatusList:asTable()
+-- Gets all the status states.
+-- @ret(table) an array with the state tables
+function StatusList:getState()
   local status = {}
   for i = 1, #self do
     local s = self[i]
@@ -76,6 +109,37 @@ function StatusList:asTable()
       state = copyTable(s.state) }
   end
   return status
+end
+
+---------------------------------------------------------------------------------------------------
+-- Status effects
+---------------------------------------------------------------------------------------------------
+
+function StatusList:attBonus(name)
+  local mul = 1
+  local add = 0
+  for i = 1, #self do
+    add = add + self[i].attAdd[name] or 0
+    mul = mul * self[i].attMul[name] or 1
+  end
+  return add, mul
+end
+
+function StatusList:elementBonus(id)
+  local e = 0
+  for i = 1, #self do
+    e = e + (self[i].elements[id] or 0)
+  end
+  return e
+end
+
+function StatusList:isDeactive()
+  for i = 1, #self do
+    if self[i].data.deactivate then
+      return true
+    end
+  end
+  return false
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -123,6 +187,18 @@ function StatusList:onTurnEnd(char, partyTurn)
   end
 end
 
+function StatusList:onSelfTurnStart(char)
+  for status in self:iterator() do
+    status:onSelfTurnStart(char)
+  end
+end
+
+function StatusList:onTurnEnd(char, result)
+  for status in self:iterator() do
+    status:onSelfTurnEnd(char, result)
+  end
+end
+
 ---------------------------------------------------------------------------------------------------
 -- Other Callbacks
 ---------------------------------------------------------------------------------------------------
@@ -134,8 +210,13 @@ function StatusList:onBattleStart(char)
 end
 
 function StatusList:onBattleEnd(char)
-  for status in self:iterator() do
-    status:onBattleEnd(char)
+  local i = 1
+  while i < #self do
+    if self[i].data.removeOnBattleEnd then
+      self[i]:remove(char)
+    else
+      i = i + 1
+    end
   end
 end
 

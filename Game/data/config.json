@@ -41,10 +41,10 @@
     "playerTroopID": 0, 
     "tradeSkillID": 0,
     "attLifeID": 0,
-    "attTurnID": 4,
     "attStepID": 5,
     "attJumpID": 6,
-    "attWeightID": 17
+    "attWeightID": 17,
+    "statusBalloonID": 4
   },
   "grid": {
     "tileW": 36,

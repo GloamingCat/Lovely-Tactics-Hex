@@ -1,18 +1,22 @@
 
---[[===========================================================================
+--[[===============================================================================================
 
 List
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 A list datatype implementation. See more in:
 http://en.wikipedia.org/wiki/List_(abstract_data_type)
 
-=============================================================================]]
+=================================================================================================]]
 
 -- Alias
 local insert = table.insert
 local remove = table.remove
 
 local List = class()
+
+---------------------------------------------------------------------------------------------------
+-- Initialization
+---------------------------------------------------------------------------------------------------
 
 -- @param(content : table) an array of initial elements, 
 --  indexed continously starting from 1 (optional)
@@ -27,6 +31,10 @@ function List:init(content)
   end
 end
 
+---------------------------------------------------------------------------------------------------
+-- Add
+---------------------------------------------------------------------------------------------------
+
 -- Insert new element to the list.
 -- @param(element : unknown) The new element
 function List:add(element, pos)
@@ -38,6 +46,18 @@ function List:add(element, pos)
   end
   self.size = self.size + 1
 end
+-- Add all elements in the given array/list.
+-- @param(arr : table) array with the elements
+function List:addAll(arr)
+  for i = 1, #arr do
+    self[self.size + i] = arr[i]
+  end
+  self.size = self.size + #arr
+end
+
+---------------------------------------------------------------------------------------------------
+-- Remove
+---------------------------------------------------------------------------------------------------
 
 -- Removes the element in the given position.
 -- @param(pos) the position
@@ -49,7 +69,6 @@ function List:remove(pos)
     return element
   end
 end
-
 -- Removes given element from the list.
 -- @param(element : unknown) element to remove
 -- @ret(boolean) true if the element was found, false otherwise
@@ -63,7 +82,6 @@ function List:removeElement(element)
     return false
   end
 end
-
 -- Removes all elements that satisfy a given condition.
 -- @param(remove : function) a function that receives an element 
 --  and returns true if it must be removed or false if not
@@ -83,6 +101,10 @@ function List:conditionalRemove(remove)
   return oldsize - self.size
 end
 
+---------------------------------------------------------------------------------------------------
+-- Search
+---------------------------------------------------------------------------------------------------
+
 -- Searchs for the element in the list.
 -- @param(element : unknown) the element to search for
 -- @ret(number) the index of the element in the list (nil if not in the list)
@@ -97,7 +119,6 @@ function List:indexOf(element)
   end
   return nil
 end
-
 -- Checks if given element is in the list.
 -- @param(element : unknown) the element to check
 -- @ret(boolean) either if it's in the list or not
@@ -105,11 +126,14 @@ function List:contains(element)
   return self:indexOf(element) ~= nil
 end
 
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
+
 -- @ret(boolean) whether or not the list is empty
 function List:isEmpty()
   return self.size == 0
 end
-
 -- List iterator to user in a for.
 -- @ret(function) the iterator function
 function List:iterator()
@@ -121,7 +145,6 @@ function List:iterator()
     end
   end
 end
-
 -- Converting to string.
 -- @ret(string) A string representation
 function List:__tostring()

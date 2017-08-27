@@ -46,8 +46,7 @@ function AnimatedObject:addAnimation(name, id)
     transform = data.transform,
     animation = animation,
     texture = texture,
-    quad = quad
-  }
+    quad = quad }
 end
 
 ---------------------------------------------------------------------------------------------------

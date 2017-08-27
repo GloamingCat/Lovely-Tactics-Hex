@@ -12,9 +12,12 @@ is a spritesheet.
 local Sprite = require('core/graphics/Sprite')
 
 -- Alias
+local abs = math.abs
+local mod = math.mod
+local sign = math.sign
+local deltaTime = love.timer.getDelta
 local Image = love.graphics.newImage
 local Quad = love.graphics.newQuad
-local deltaTime = love.timer.getDelta
 
 local Animation = class()
 
@@ -44,7 +47,12 @@ function Animation:init(duration, rowCount, colCount, quadWidth, quadHeight,
   self.row = 0
   -- Frame count (adapted to the frame rate)
   self.time = 0
-  self.loop = loop
+  -- Loop type
+  if loop then
+    self.loop = 1
+  else
+    self.loop = 0
+  end
   self.allRows = allRows
   -- Duration
   self.duration = duration
@@ -53,6 +61,7 @@ function Animation:init(duration, rowCount, colCount, quadWidth, quadHeight,
   else
     self.frameDuration = duration / colCount
   end
+  self.speed = 1
   self.param = param
 end
 -- Creates a new animation from file data.
@@ -62,10 +71,11 @@ end
 -- @ret(Animation) the new animation
 -- @ret(Texture) the new texture
 -- @ret(Quad) the new quad
-function Animation.fromData(data, renderer, sprite)
+function Animation.fromData(data, renderer, sprite, ...)
   local texture = Image('images/' .. data.imagePath)
   local w, h = texture:getWidth(), texture:getHeight()
   local quad = Quad(0, 0, w / data.cols, h / data.rows, w, h)
+  local transform = nil
   if not sprite then
     sprite = Sprite(renderer, texture, quad)
   end
@@ -78,7 +88,7 @@ function Animation.fromData(data, renderer, sprite)
     AnimClass = require('custom/' .. data.script.path)
   end
   local animation = AnimClass(data.duration, data.rows, data.cols, 
-    w / data.cols, h / data.rows, data.loop, data.allRows, sprite, data.script.param)
+    w / data.cols, h / data.rows, data.loop, data.allRows, sprite, data.script.param, ...)
   return animation, texture, quad
 end
 -- Creates a 1-quad animation for the given image.
@@ -126,32 +136,59 @@ function Animation:update()
   if self.paused then
     return
   end
-  self.time = self.time + deltaTime() * 60
+  self.time = self.time + deltaTime() * 60 * abs(self.speed)
   if self.time >= self.frameDuration then
     self.time = self.time - self.frameDuration
-    if self.col < self.colCount - 1 then
-      self:setCol(self.col + 1)
-    elseif self.allRows then
-      if self.row < self.rowCount - 1 then
-        self:setCol(0)
-        self:setRow(self.row + 1)
-      elseif self.loop then
-        self:setCol(0)
-        self:setRow(0)
-      else
-        self.paused = true
-      end
-    elseif self.loop then
-      self:setCol(0)
+    self:nextFrame()
+  end
+end
+-- Sets to next frame.
+function Animation:nextFrame()
+  local lastCol, lastRow = 0, 0
+  if self.speed > 0 then
+    lastCol, lastRow = self.colCount - 1, self.rowCount - 1
+  end
+  if self.allRows then
+    lastRow = self.row
+  end
+  if self.col ~= lastCol then
+    self:nextCol()
+  elseif self.row ~= lastRow and self.allRows then
+    self:nextRow()
+  else
+    self:onEnd()
+  end
+end
+-- What happens when the animations finishes.
+function Animation:onEnd()
+  if self.loop == 0 then
+    self.paused = true
+  elseif self.loop == 1 then
+    self:nextCol()
+    if self.allRows then
+      self:nextRow()
+    end
+  elseif self.loop == 2 then
+    self.speed = -self.speed
+    if self.colCount > 1 then
+      self:nextCol()
     else
-      self.paused = true
+      self:nextRow()
     end
   end
+end
+-- Sets to the next column.
+function Animation:nextCol()
+  self:setCol(self.col + sign(self.speed))
+end
+-- Sets to the next row.
+function Animation:nextRow()
+  self:setRow(self.row + sign(self.speed))
 end
 -- Changes the column of the current quad
 -- @param(col : number) the column number, starting from 0
 function Animation:setCol(col)
-  col = col % self.colCount
+  col = mod(col, self.colCount)
   if self.col ~= col then
     local x, y, w, h = self.sprite.quad:getViewport()
     x = x + (col - self.col) * self.quadWidth
@@ -163,7 +200,7 @@ end
 -- Changes the row of the current quad
 -- @param(row : number) the row number, starting from 0
 function Animation:setRow(row)
-  row = row % self.rowCount
+  row = mod(row, self.rowCount)
   if self.row ~= row then
     local x, y, w, h = self.sprite.quad:getViewport()
     y = y + (row - self.row) * self.quadHeight
@@ -177,6 +214,11 @@ end
 -- General
 ---------------------------------------------------------------------------------------------------
 
+function Animation:reset()
+  self.time = 0
+  self:setCol(0)
+  self:setRow(0)
+end
 -- Destroy this animation.
 function Animation:destroy()
   if self.sprite then

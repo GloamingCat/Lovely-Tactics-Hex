@@ -20,6 +20,10 @@ local lifeName = battlerVariables[Config.battle.attLifeID + 1].shortName
 
 local Poison = class(Status)
 
+---------------------------------------------------------------------------------------------------
+-- Callbacks
+---------------------------------------------------------------------------------------------------
+
 function Poison:onTurnStart(char, partyTurn)
   if partyTurn then
     local pos = char.position

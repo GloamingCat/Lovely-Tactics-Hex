@@ -36,9 +36,9 @@ local attName = args.attName
 -- Turn Manager
 ---------------------------------------------------------------------------------------------------
 
-local old_init = TurnManager.init
+local TurnManager_init = TurnManager.init
 function TurnManager:init()
-  old_init(self)
+  TurnManager_init(self)
   self.turnLimit = turnLimit
 end
 -- Override.
@@ -86,7 +86,7 @@ end
 function TurnManager:incrementTurnCount(time)
   time = time or 1
   for bc in TroopManager.characterList:iterator() do
-    if bc.battler:isAlive() then
+    if bc.battler:isActive() then
       bc.battler:incrementTurnCount(time)
     end
   end
@@ -97,10 +97,10 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Override.
-local old_createStateValues = Battler.createStateValues
+local Battler_createStateValues = Battler.createStateValues
 function Battler:createStateValues(...)
   self.turnCount = 0
-  old_createStateValues(self, ...)
+  Battler_createStateValues(self, ...)
 end
 -- Increments turn count by the turn attribute.
 -- @param(time : number) a multiplier to the step (used for time bar animation)
