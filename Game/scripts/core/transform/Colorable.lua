@@ -11,9 +11,6 @@ An object with color properties.
 local time = love.timer.getDelta
 local yield = coroutine.yield
 
--- Constants
-local colorf = Color.factor
-
 local Colorable = class()
 
 ---------------------------------------------------------------------------------------------------
@@ -23,7 +20,7 @@ local Colorable = class()
 -- Initalizes color.
 -- @param(color : table) a color table containing {red, green, blue, alpha} components (optional)
 function Colorable:initColor(color)
-  color = color or { red = 100, green = 100, blue = 100, alpha = 100 }
+  color = color or { red = 255, green = 255, blue = 255, alpha = 255 }
   self.color = color
   self.colorSpeed = 0
   self.origRed = color.red
@@ -42,15 +39,6 @@ end
 -- @ret(number) alpha compoent
 function Colorable:getRGBA()
   return self.color.red, self.color.green, self.color.blue, self.color.alpha
-end
--- Gets each RGBA multiplies by the color factor.
--- @ret(number) red compoent
--- @ret(number) green compoent
--- @ret(number) blue compoent
--- @ret(number) alpha compoent
-function Colorable:getAbsoluteRGBA()
-  return self.color.red * colorf, self.color.green * colorf, 
-    self.color.blue * colorf, self.color.alpha * colorf
 end
 -- Sets color's rgb. If a component parameter is nil, it will not be changed.
 -- @param(r : number) red component

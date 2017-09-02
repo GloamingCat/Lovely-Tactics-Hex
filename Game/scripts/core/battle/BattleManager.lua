@@ -14,7 +14,7 @@ Results: 1 => win, 0 => draw, -1 => lost
 
 -- Imports
 local Animation = require('core/graphics/Animation')
-local TileGraphics = require('core/fields/TileGUI')
+local TileGraphics = require('core/field/TileGUI')
 
 -- Constants
 local defaultParams = { 

@@ -155,7 +155,7 @@ end
 -- Auto Tile
 -----------------------------------------------------------------------------------------------
 
-function HexVMath.autoTileRows(grid, i, j)
+function HexVMath.autoTileRows(grid, i, j, sameType)
   local shift = HexVMath.neighborShift
   local rows = { 0, 0, 0, 0 }
   local step1, step2 = 1, 2
@@ -163,7 +163,7 @@ function HexVMath.autoTileRows(grid, i, j)
   local n = 0
   
   local function localSameType()
-    return HexVMath.sameType(grid, i, j, i + shift[n+1].x, j + shift[n+1].y)
+    return sameType(grid, i, j, i + shift[n+1].x, j + shift[n+1].y)
   end
   
   for k = -1, 1 do
@@ -213,7 +213,6 @@ function HexVMath.tileDistance(x1, y1, x2, y2)
   local dz = abs((x2 + y2) - (x1 + y1))
   return max(dx, dy, dz)
 end
-
 -- Checks if three given tiles are collinear.
 -- @param(x1 : number) the x if the first tile
 -- @param(y1 : number) the y if the first tile
@@ -226,7 +225,6 @@ function HexVMath.isCollinear(x1, y1, x2, y2, x3, y3)
   return x1 == x2 and x2 == x3 or y1 == y2 and y2 == y3 or
     x1 + y1 == x2 + y2 and x2 + y2 == x3 + y3
 end
-
 -- Iterates through the set of tiles inside the given radius (a max distance in tiles)
 -- @param(radius : number) the max distance
 -- @param(centerx : number) the starting tile's x
@@ -256,7 +254,6 @@ function HexVMath.radiusIterator(radius, centerX, centerY, sizeX, sizeY)
     return i + centerX, j + centerY
   end
 end
-
 -- Used for iterating the tiles in a given radius.
 -- @param(radius : number) the radius of the area (the max distance in tiles from the center)
 -- @ret(number) the minimum x among the tiles
@@ -264,7 +261,6 @@ end
 function HexVMath.radiusLimitsX(radius)
 	return -radius, radius
 end
-
 -- Used for iterating the tiles in a given radius.
 -- @param(radius : number) the radius of the area (the max distance in tiles from the center)
 -- @param(i : number) the current line in the iteration (for hexagonal only)
@@ -273,7 +269,6 @@ end
 function HexVMath.radiusLimitsY(radius, i)
   return max(-radius, -radius - i), min(radius, radius - i)
 end
-
 -- Gets the next tile coordinates given the current tile and an input.
 -- @param(x : number) current tile's x
 -- @param(y : number) current tile's y

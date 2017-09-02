@@ -26,6 +26,7 @@ local Obstacle = class(Object)
 
 -- @param(data : table) the obstacle's data from tileset file
 -- @param(tileData : table) the data about ramp and collision
+-- @param(initTile : ObjectTile) the object this tile is in
 -- @param(group : table) the group this obstacle is part of
 function Obstacle:init(data, tileData, initTile, group)
   local x, y, z = tile2Pixel(initTile:coordinates())
@@ -35,10 +36,6 @@ function Obstacle:init(data, tileData, initTile, group)
   self.sprite = group.sprite
   initTile.obstacleList:add(self)
   self:initializeNeighbors(tileData.neighbors)
-  if tileData.rampID >= 0 then
-    local rampData = Database.ramps[tileData.rampID + 1]
-    --self.ramp = Ramp(rampData)
-  end
   self:setXYZ(x, y, z)
   self:addToTiles()
 end
@@ -63,15 +60,6 @@ end
 -- General
 ---------------------------------------------------------------------------------------------------
 
--- Overrides Object:setXYZ.
-function Obstacle:setXYZ(x, y, z)
-  Object.setXYZ(self, x, y, z)
-  if self.ramp then
-    local h = -(y + z) / pph
-    self.ramp:setPosition(x, y)
-    self.ramp:setHeight(h)
-  end
-end
 -- Checks if the object is passable from the given direction.
 -- @param(dx : number) the direction in axis x
 -- @param(dy : number) the direction in axis y

@@ -4,7 +4,6 @@
   "sizeY": 15,
   "prefs": {
     "name": "Battle Field",
-    "background": "",
     "defaultRegion": 0,
     "onStart": {
       "path": "",

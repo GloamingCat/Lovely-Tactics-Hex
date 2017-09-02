@@ -170,7 +170,7 @@ function Renderer:draw()
     self:redrawCanvas()
   end
   local r, g, b, a = lgraphics.getColor()
-  lgraphics.setColor(self:getAbsoluteRGBA())
+  lgraphics.setColor(self:getRGBA())
   lgraphics.draw(self.canvas, 0, 0)
   lgraphics.setColor(r, g, b, a)
 end

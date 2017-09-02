@@ -32,27 +32,21 @@ local CharacterBase = class(DirectedObject)
 -- Constructor.
 -- @param(instData : table) the character's data from field file
 function CharacterBase:init(instData)
-  -- Get character data
-  local db = Database.charField
-  if instData.type == 1 then
-    db = Database.charBattle
-  elseif instData.type == 2 then
-    db = Database.charOther
-  end
-  local data = db[instData.charID + 1]
+  local data = Database.characters[instData.charID]
   -- Old init
   local x, y, z = tile2Pixel(instData.x, instData.y, instData.h)
   DirectedObject.init(self, data, Vector(x, y, z))
   -- General info
-  self.id = instData.id
+  self.data = data
+  self.battlerID = instData.battlerID
   self.type = 'character'
   self.fiberList = FiberList()
   -- Add to FieldManager lists
   FieldManager.characterList:add(self)
   FieldManager.updateList:add(self)
   -- Initialize properties
-  self:initializeProperties(data.name, data.tiles)
-  self:initializeGraphics(data.animations, instData.direction, instData.animID, data.transform)
+  self:initializeProperties(data.name, data.tiles, data.collider)
+  self:initializeGraphics(data.animations, instData.direction, instData.anim, data.transform)
   self:initializePortraits(data.portraits)
   self:initializeScripts(instData)
   -- Initial position

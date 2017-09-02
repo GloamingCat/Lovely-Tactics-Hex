@@ -97,8 +97,7 @@ function Text:draw(renderer)
     local line = self.lines[i]
     r, g, b, a = lgraphics.getColor()
     ox = self:alignOffset(line.buffer:getWidth() / Font.scale) * Font.scale
-    lgraphics.setColor(self.color.red * colorf, self.color.green * colorf, 
-      self.color.blue * colorf, self.color.alpha * colorf)
+    lgraphics.setColor(self.color.red, self.color.green, self.color.blue, self.color.alpha)
     lgraphics.draw(line.buffer, line.quad, self.position.x, self.position.y, 
       self.rotation, self.scaleX, self.scaleY, self.offsetX - ox, self.offsetY - oy)
     lgraphics.setColor(r, g, b, a)

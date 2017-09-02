@@ -36,5 +36,5 @@ return function(param, event, ...)
   transition.tileY = transition.tileY + 10
   FieldManager:loadTransition(transition)
   self:wait(90)]]
-  testBattle()
+  --testBattle()
 end

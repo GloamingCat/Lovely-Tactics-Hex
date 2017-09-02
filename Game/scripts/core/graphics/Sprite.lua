@@ -113,9 +113,8 @@ end
 -- @param(w : number) quad's new width
 -- @param(h : number) quad's new height
 function Sprite:setQuad(x, y, w, h)
-  self.quad = Quad(x or 0, y or 0, 
-    w or self.texture:getWidth(), h or self.texture:getHeight(), 
-    self.texture:getWidth(), self.texture:getHeight())
+  self.quad:setViewport(x or 0, y or 0, 
+    w or self.texture:getWidth(), h or self.texture:getHeight())
   self.renderer.needsRedraw = true
 end
 
@@ -127,7 +126,7 @@ end
 -- @param(data : table) transformation data
 function Sprite:setTransformation(data)
   local x, y, w, h = self.quad:getViewport()
-  self:setOffset(w / 2 - data.offsetX, h - data.offsetY, data.offsetDepth)
+  self:setOffset(data.offsetX, data.offsetY, data.offsetDepth)
   self:setScale(data.scaleX / 100, data.scaleY / 100)
   self:setRotation(math.rad(data.rotation or 0))
   self:setRGBA(data.red, data.green, data.blue, data.alpha)
@@ -136,12 +135,12 @@ end
 -- @param(data : table) transformation data
 function Sprite:applyTransformation(data)
   local x, y, w, h = self.quad:getViewport()
-  self:setOffset(data.offsetX + self.offsetX, self.offsetY - data.offsetY, 
+  self:setOffset(data.offsetX + self.offsetX, self.offsetY + data.offsetY, 
     data.offsetDepth + self.offsetDepth)
   self:setScale(data.scaleX / 100 * self.scaleX, data.scaleY / 100 * self.scaleY)
   self:setRotation(math.rad(data.rotation or 0 + self.rotation))
-  self:setRGBA(data.red * self.color.red / 100, data.green * self.color.green / 100, 
-    data.blue * self.color.blue / 100, data.alpha * self.color.alpha / 100)
+  self:setRGBA(data.red * self.color.red / 255, data.green * self.color.green / 255, 
+    data.blue * self.color.blue / 255, data.alpha * self.color.alpha / 255)
 end
 -- Sets the quad's scale.
 -- @param(sx : number) the X-axis scale
@@ -292,8 +291,7 @@ function Sprite:draw(renderer)
     renderer:clearBatch()
     renderer.batch:setTexture(self.texture)
   end
-  renderer.batch:setColor(self.color.red * colorf, self.color.green * colorf, 
-    self.color.blue * colorf, self.color.alpha * colorf)
+  renderer.batch:setColor(self.color.red, self.color.green, self.color.blue, self.color.alpha)
   renderer.batch:add(self.quad, self.position.x, self.position.y, 
     self.rotation, self.scaleX, self.scaleY, self.offsetX, self.offsetY)
   renderer.toDraw:add(self)
@@ -304,6 +302,11 @@ function Sprite:destroy()
   self.quad = nil
   self.texture = nil
   self.renderer.needsRedraw = true
+end
+-- String representation.
+-- @ret(string)
+function Sprite:__tostring()
+  return 'Sprite'
 end
 
 return Sprite

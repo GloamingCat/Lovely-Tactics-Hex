@@ -11,9 +11,6 @@ Responsible for storing and loading game saves.
 local Troop = require('core/battle/Troop')
 local Inventory = require('core/battle/Inventory')
 
--- Constants
-local partyRewards = Database.variables.partyRewards
-
 local SaveManager = class()
 
 ---------------------------------------------------------------------------------------------------
@@ -28,27 +25,8 @@ end
 function SaveManager:newSave()
   local save = {}
   save.playTime = 0
-  save.fieldData = {}
-  save.battlerData = {}
-  -- Party inventory
-  save.partyData = {}
-  save.partyInventory = Inventory(Config.initialItems)
-  for i = 1, #partyRewards do
-    local init = loadformula(partyRewards[i].initial)
-    local name = partyRewards[i].shortName
-    save.partyData[name] = init()
-  end
-  -- Party troop
-  save.partyTroop = Troop.fromData(Config.battle.playerTroopID)
-  save.partyMembers = {}
-  for i = 1, Config.grid.troopWidth do
-    for j = 1, Config.grid.troopHeight do
-      local id = save.partyTroop.grid:get(i, j)
-      if id >= 0 then
-        save.partyMembers[#save.partyMembers + 1] = id
-      end
-    end
-  end
+  -- Initial party
+  save.party = {}
   -- Initial position
   local startPos = Config.player.startPos
   save.playerTransition = {

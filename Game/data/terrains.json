@@ -1,80 +1,97 @@
 [
-  {
-    "name": "Plain",
-    "passable": true,
-    "depth": 12,
-    "quad": {
-      "imagePath": "Terrain/HexV.png",
-      "x": 0,
-      "y": 0,
-      "width": 36,
-      "height": 198
-    },
-    "frameCount": 1,
-    "duration": 60,
-    "moveCost": 100,
-    "statusID": -1,
-    "removeOnExit": false,
-    "resetTime": true,
-    "lifeTime": -1,
-    "audio": {
-      "path": "",
-      "volume": 100,
-      "pitch": 100,
-      "speed": 100
-    },
-    "tags": []
+	{
+		"name": "Plain",
+		"data": {
+			"id": 0,
+			"image": 23,
+			"passable": true,
+			"depth": 12,
+			"moveCost": 100,
+			"attributes": {
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"res": 0,
+				"agi": 0,
+				"mov": 0,
+				"jmp": 0,
+				"mhp": 0,
+				"msp": 0,
+				"atkp": 0,
+				"atkm": 0,
+				"defp": 0,
+				"defm": 0,
+				"prep": 0,
+				"prem": 0,
+				"evdp": 0,
+				"evdm": 0,
+				"car": 0
+			},
+			"tags": []
+		}
+	},
+	{
+		"name": "Sand",
+		"data": {
+			"id": 1,
+			"image": 24,
+			"passable": true,
+			"depth": 12,
+			"moveCost": 100,
+			"attributes": {
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"res": 0,
+				"agi": 0,
+				"mov": 0,
+				"jmp": 0,
+				"mhp": 0,
+				"msp": 0,
+				"atkp": 0,
+				"atkm": 0,
+				"defp": 0,
+				"defm": 0,
+				"prep": 0,
+				"prem": 0,
+				"evdp": 0,
+				"evdm": 0,
+				"car": 0
+			},
+			"elements": [],
+			"tags": []
+	}
   },
-  {
-    "name": "Sand",
-    "passable": true,
-    "depth": 12,
-    "quad": {
-      "imagePath": "Terrain/HexV.png",
-      "x": 36,
-      "y": 0,
-      "width": 36,
-      "height": 198
-    },
-    "frameCount": 1,
-    "duration": 60,
-    "moveCost": 100,
-    "statusID": -1,
-    "removeOnExit": false,
-    "resetTime": true,
-    "lifeTime": -1,
-    "audio": {
-      "path": "",
-      "volume": 100,
-      "pitch": 100,
-      "speed": 100
-    },
-    "tags": []
-  },
-  {
-    "name": "Water",
-    "passable": false,
-    "depth": 12,
-    "quad": {
-      "imagePath": "Terrain/HexV.png",
-      "x": 72,
-      "y": 0,
-      "width": 108,
-      "height": 198
-    },
-    "frameCount": 3,
-    "duration": 60,
-    "moveCost": 100,
-    "statusID": -1,
-    "removeOnExit": false,
-    "resetTime": true,
-    "lifeTime": -1,
-    "audio": {
-      "path": "",
-      "volume": 100,
-      "pitch": 100,
-      "speed": 100
-    },
-    "tags": []
-  }
+	{
+		"name": "Water",
+		"data": {
+			"id": 2,
+			"image": 34,
+			"passable": false,
+			"depth": 12,
+			"moveCost": 100,
+			"attributes": {
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"res": 0,
+				"agi": 0,
+				"mov": 0,
+				"jmp": 0,
+				"mhp": 0,
+				"msp": 0,
+				"atkp": 0,
+				"atkm": 0,
+				"defp": 0,
+				"defm": 0,
+				"prep": 0,
+				"prem": 0,
+				"evdp": 0,
+				"evdm": 0,
+				"car": 0
+			},
+			"elements": [],
+			"tags": []
+		}
+	}
 ]

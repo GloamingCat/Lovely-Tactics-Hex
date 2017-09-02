@@ -1,10 +1,27 @@
 
+local function toArray(arr, children)
+  for i = 1, #children do
+    local node = children[i]
+    if node.data then
+      arr[node.data.id] = node.data
+    else
+      toArray(arr, node.children)
+    end
+  end
+  return arr
+end
+
 Database = {}
-local db = {'attributes', 'items', 'skills', 'skillDags', 'battlers', 'status', 
-  'animCharacter', 'animBattle', 'animOther', 'terrains', 'obstacles', 'ramps', 
-  'troops', 'charBattle', 'charField', 'charOther', 'variables'}
+local db = {'animations', 'battlers', 'characters', 'classes', 'items', 'obstacles', 'skills', 'status', 'terrains', 'troops'}
 for i = 1, #db do
   local file = db[i]
-  local datajson = love.filesystem.read('data/' .. file .. '.json')
-  Database[file] = JSON.decode(datajson)
+  print (file)
+  local data = JSON.load('data/' .. file)
+  Database[file] = toArray({}, data)
+end
+local sys = {'attributes', 'elements', 'regions', 'variables'}
+for i = 1, #sys do
+  local file = sys[i]
+  local data = JSON.load('data/system/' .. file)
+  Config[file] = data
 end

@@ -1,50 +1,43 @@
 [
-  {
-    "name": "Potion",
-    "description": "Cures 100HP.",
-    "icon": {
-      "imagePath": "Icon/Items/Usable.png",
-      "x": 24,
-      "y": 0,
-      "width": 24,
-      "height": 24
-    },
-    "skillID": 5,
-    "statusID": -1,
-    "price": 15,
-    "weight": 10,
-    "sellable": true,
-    "equipment": false,
-    "consumeOnUse": true,
-    "attributes": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ],
-    "tags": []
-  },
-  {
-    "name": "Scythe",
-    "description": "nanananananannan BATMAN",
-    "icon": {
-      "imagePath": "/Icon/Items/Weapons.png",
-      "x": 0,
-      "y": 0,
-      "width": 40,
-      "height": 40
-    },
-    "skillID": 0,
-    "statusID": 0,
-    "price": 10,
-    "weight": 10,
-    "sellable": true,
-    "equipment": false,
-    "consumeOnUse": true,
-    "attributes": [],
-    "tags": []
-  }
+	{
+		"name": "Potions",
+		"children": [
+			{
+				"name": "Potion",
+				"data": {
+					"id": 1,
+					"description": "Cures 100HP.",
+					"icon": {
+						"id": 25,
+						"col": 0,
+						"row": 0
+					},
+					"price": 15,
+					"sellable": true,
+					"use": {
+						"consume": true,
+						"skillID": -1,
+						"statusRemove": [],
+						"statusAdd": [],
+						"cure": [
+							{
+								"key": "hp",
+								"value": "100"
+							}
+						]
+					},
+					"equip": {
+						"status": [],
+						"attributes": []
+					},
+					"tags": [
+						{
+							"name": "weight",
+							"value": "10"
+						}
+					]
+				}
+			}
+		]
+	}
 ]

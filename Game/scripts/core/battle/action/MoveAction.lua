@@ -15,9 +15,6 @@ local PathFinder = require('core/battle/ai/PathFinder')
 -- Alias
 local mathf = math.field
 
--- Constants
-local controlZone = Battle.controlZone
-
 local MoveAction = class(BattleAction)
 
 ---------------------------------------------------------------------------------------------------
@@ -100,9 +97,6 @@ function MoveAction:isPassableBetween(initial, final, user)
   local c = self.field:collisionXYZ(user, initial.x, initial.y, 
     initial.layer.height, final:coordinates())
   if c then
-    return false
-  end
-  if controlZone and initial:isControlZone(user.battler) then
     return false
   end
   local maxdh = user.battler.jumpPoints()

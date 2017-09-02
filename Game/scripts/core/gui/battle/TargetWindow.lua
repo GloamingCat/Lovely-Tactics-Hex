@@ -14,8 +14,8 @@ local Window = require('core/gui/Window')
 local SimpleText = require('core/gui/SimpleText')
 
 -- Constants
-local battlerVariables = Database.variables.battler
-local battleConfig = Config.battle
+local hpName = Config.battle.attHP
+local spName = Config.battle.attSP
 local font = Font.gui_small
 
 local TargetWindow = class(Window)
@@ -26,23 +26,11 @@ local TargetWindow = class(Window)
 
 -- Overrides Window:init.
 function TargetWindow:init(GUI)
-  local vars = {}
-  for i = 1, #battlerVariables do
-    local var = battlerVariables[i]
-    if var.targetGUI then
-      vars[#vars + 1] = var
-    end
-  end
-  self.vars = vars
   local w = 100
   local h = self:calculateHeight()
   local margin = 12
   Window.init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - margin, 
       -ScreenManager.height / 2 + h / 2 + margin))
-end
--- Calculates the height given the shown variables.
-function TargetWindow:calculateHeight()
-  return self:vpadding() * 2 + 15 + #self.vars * 10
 end
 -- Initializes name and status texts.
 function TargetWindow:createContent(width, height)
@@ -55,20 +43,23 @@ function TargetWindow:createContent(width, height)
   local posName = Vector(x, y)
   self.textName = SimpleText('', posName, w, 'center')
   self.content:add(self.textName)
-  -- State values texts
-  self.textState = {}
-  self.textStateValues = {}
-  for i = 1, #self.vars do
-    local var = self.vars[i]
-    local pos = Vector(x, y + 5 + i * 10)
-    local textName = SimpleText(var.shortName .. ':', pos, w, 'left', font)
-    local textValue = SimpleText('', pos, w, 'right', font)
-    self.textState[var.shortName] = textName
-    self.textStateValues[var.shortName] = textValue
-    self.content:add(textName)
-    self.content:add(textValue)
-  end
+  -- State values texts  
+  local posHP = Vector(x, y + 15)
+  self.textHP = TargetWindow:addStateVariable(hpName, posHP, w)
+  local posSP = Vector(x, y + 25)
+  self.textSP = TargetWindow:addStateVariable(spName, posSP, w)
   collectgarbage('collect')
+end
+-- Creates texts for the given state variable.
+-- @param(name : string) the name of the variable
+-- @param(pos : Vector) the position of the text
+-- @param(w : width) the max width of the text
+function TargetWindow:addStateVariable(name, pos, w)
+  local textName = SimpleText(name .. ':', pos, w, 'left', font)
+  local textValue = SimpleText('', pos, w, 'right', font)
+  self.content:add(textName)
+  self.content:add(textValue)
+  return textValue
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -81,19 +72,14 @@ function TargetWindow:setBattler(battler)
   -- Name text
   self.textName:setText(battler.data.name)
   self.textName:redraw()
-  -- State values text
-  for i = 1, #self.vars do
-    local v = self.vars[i]
-    local currentValue = battler.state[v.shortName]
-    local maxValue = battler.stateMax[v.shortName](battler.att)
-    local text = currentValue .. ''
-    if maxValue then
-      text = text .. '/' .. maxValue
-    end
-    local stateText = self.textStateValues[v.shortName]
-    stateText:setText(text)
-    stateText:redraw()
-  end
+  -- HP text
+  local textHP = battler.state[hpName] .. '/' .. battler.att[hpName]()
+  self.textHP:setText(textHP)
+  self.textHP:redraw()
+  -- SP text
+  local textSP = battler.state[spName] .. '/' .. battler.att[spName]()
+  self.textSP:setText(textSP)
+  self.textSP:redraw()
   collectgarbage('collect')
 end
 
@@ -101,6 +87,10 @@ end
 -- General
 ---------------------------------------------------------------------------------------------------
 
+-- Calculates the height given the shown variables.
+function TargetWindow:calculateHeight()
+  return self:vpadding() * 2 + 35
+end
 -- String representation.
 function TargetWindow:__tostring()
   return 'TargetWindow'

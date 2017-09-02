@@ -28,29 +28,26 @@ local Player = class(Character)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides BaseCharacter:init.
-function Player:init(initTile)
+function Player:init(initTile, dir)
   self.blocks = 0
   self.dashSpeed = conf.dashSpeed
   self.walkSpeed = conf.walkSpeed
-  local leaderID = SaveManager.current.partyMembers[1]
-  local leaderBattler = Database.battlers[leaderID + 1]
+  local leaderID = PartyManager.current.members[1].charID
   local data = {
     id = -1,
-    charID = leaderBattler.fieldCharID,
-    animID = 0,
-    direction = 270,
-    startScript = conf.script,
-    tags = {}
+    charID = leaderID,
+    anim = 'Idle',
+    direction = dir or 270,
+    startScript = conf.script
   }
   data.x, data.y, data.h = initTile:coordinates()
   Character.init(self, data)
 end
 -- Player's extra and base character properties.
-function Player:initializeProperties(name, colliderSize, colliderHeight)
-  Character.initializeProperties(self, 'Player', colliderSize, colliderHeight)
+function Player:initializeProperties(name, collisionTiles, colliderHeight)
+  Character.initializeProperties(self, 'Player', collisionTiles, colliderHeight)
   self.inputOn = true
   self.speed = conf.walkSpeed
-  self.interruptableMove = conf.stopOnCollision
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -70,7 +67,6 @@ end
 -- @param(dy : number) input y
 function Player:moveByInput(dx, dy)
   if dx ~= 0 or dy ~= 0 then
-    local moved = false
     local autoAnim = self.autoAnim
     self.autoAnim = false
     if autoAnim then
@@ -80,21 +76,16 @@ function Player:moveByInput(dx, dy)
         self:playAnimation(self.dashAnim)
       end
     end
-    if conf.pixelMovement == true then
-      moved = self:pixelMovement(dx, dy)
-    else
-      moved = self:tileMovement(dx, dy)
-    end
+    local moved = self:tryMovement(dx, dy)
     if not moved then
-      if self.autoTurn then
-        self:setDirection(math.coord2Angle(dx, dy))
-      end
       if autoAnim then
         self:playAnimation(self.idleAnim)
       end
-      if conf.pixelMovement == false then
-        self:adjustToTile()
+      if self.autoTurn then
+        local dir = math.coord2Angle(dx, dy)
+        self:setDirection(dir)
       end
+      self:adjustToTile()
     end
     self.autoAnim = autoAnim
   else
@@ -112,14 +103,16 @@ end
 -- @param(dx : number) input x
 -- @param(dy : number) input y
 -- @ret(boolean) true if player actually moved, false otherwise
-function Player:tileMovement(dx, dy)
+function Player:tryMovement(dx, dy)
   local angle = coord2Angle(dx, dy)
-  return self:tryMoveTile(angle) or self:tryMoveTile(angle + 45) or self:tryMoveTile(angle - 45)
+  return self:tryAngleMovement(angle) or 
+    self:tryAngleMovement(angle + 45) or 
+    self:tryAngleMovement(angle - 45)
 end
 -- [COROUTINE] Tries to move in a given angle.
 -- @param(angle : number) the angle in degrees to move
 -- @ret(boolean) returns false if the next angle must be tried
-function Player:tryMoveTile(angle)
+function Player:tryAngleMovement(angle)
   local nextTile = self:frontTile(angle)
   if nextTile == nil then
     return false
@@ -141,39 +134,6 @@ function Player:tryMoveTile(angle)
     return true
   end
   return false
-end
-
----------------------------------------------------------------------------------------------------
--- Pixel Movement
----------------------------------------------------------------------------------------------------
-
--- [COROUTINE] Moves player with keyboard input.
--- @param(dx : number) input x
--- @param(dy : number) input y
--- @ret(boolean) true if player actually moved, false otherwise
-function Player:pixelMovement(dx, dy)
-  local angle = math.coord2Angle(dx, dy)
-  return self:tryMovePixel(angle) or self:tryMovePixel(angle + 45) or self:tryMovePixel(angle - 45)
-end
--- [COROUTINE] Tries to move in a given angle.
--- @param(angle : number) the angle in degrees to move
--- @ret(boolean) returns false if the next angle must be tried
-function Player:tryMovePixel(angle)
-  local dx, dy = math.angle2Coord(angle)
-  dy = dy * tg
-  local v = Vector(dx, -dy, 0)
-  v:normalize()
-  v.z = - v.y
-  v:mul(self.speed * timer.getDelta())
-  self:turnToVector(v.x, v.z)
-  local p = self.position
-  local collision = self:instantMoveTo(p.x + v.x, p.y + v.y, p.z + v.z)
-  if collision == nil then
-    self:playAnimation(self.walkAnimation)
-    return true
-  else
-    return collision == 3
-  end
 end
 
 return Player

@@ -48,18 +48,4 @@ function FieldMath.createFullNeighborShift()
   return s
 end
 
----------------------------------------------------------------------------
--- Auto Tile
----------------------------------------------------------------------------
-
-function FieldMath.sameType(grid, i1, j1, i2, j2)
-  if (i1 < 1 or i1 > #grid or i2 < 1 or i2 > #grid) then
-    return true
-  end
-  if (j1 < 1 or j1 > #grid[i1] or j2 < 1 or j2 > #grid[i2]) then
-    return true
-  end
-  return grid[i1][j1].id == grid[i2][j2].id
-end
-
 return FieldMath

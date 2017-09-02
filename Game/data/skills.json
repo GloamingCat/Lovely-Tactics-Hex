@@ -1,283 +1,303 @@
 [
-  {
-    "name": "Trade",
-    "description": "",
-    "type": 0,
-    "icon": {
-      "imagePath": "",
-      "x": 0,
-      "y": 0,
-      "width": 0,
-      "height": 0
-    },
-    "radius": 1,
-    "range": 1,
-    "script": {
-      "path": "",
-      "param": ""
-    },
-    "effects": [],
-    "costs": [],
-    "timeCost": 50,
-    "restriction": 1,
-    "userLoadAnim": "",
-    "userCastAnim": "",
-    "stepOnCast": true,
-    "loadAnimID": -1,
-    "castAnimID": -1,
-    "centerAnimID": -1,
-    "individualAnimID": -1,
-    "mirror": true,
-    "elements": [],
-    "status": [],
-    "tags": []
-  },
-  {
-    "name": "Blade Attack",
-    "description": "cb\r\n",
-    "type": 1,
-    "icon": {
-      "imagePath": "Icon/Skills/Physical.png",
-      "x": 0,
-      "y": 0,
-      "width": 24,
-      "height": 24
-    },
-    "radius": 1,
-    "range": 1,
-    "script": {
-      "path": "skill/CharacterOnly.lua",
-      "param": "living enemy"
-    },
-    "effects": [
-      {
-        "successRate": "((a:PREP() * 2 - b:EVDP()) / b:EVDP()) * 50",
-        "basicResult": "(a:ATKP() * 2 - b:DEFP()) * rand(80, 120) / 100",
-        "id": 0
-      }
-    ],
-    "costs": [],
-    "timeCost": 50,
-    "restriction": 1,
-    "userLoadAnim": "",
-    "userCastAnim": "Attack0",
-    "stepOnCast": true,
-    "loadAnimID": -1,
-    "castAnimID": -1,
-    "centerAnimID": 3,
-    "individualAnimID": -1,
-    "mirror": true,
-    "elements": [
-      {
-        "id": 0,
-        "value": 100
-      }
-    ],
-    "tags": []
-  },
-  {
-    "name": "Magical Attack",
-    "description": "",
-    "type": 1,
-    "icon": {
-      "imagePath": "Icon/Skills/Magical.png",
-      "x": 0,
-      "y": 0,
-      "width": 24,
-      "height": 24
-    },
-    "radius": 1,
-    "range": 4,
-    "script": {
-      "path": "skill/CharacterOnly.lua",
-      "param": "living enemy"
-    },
-    "effects": [
-      {
-        "successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
-        "basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100",
-        "id": 0
-      }
-    ],
-    "status": [
-      {
-        "id": 1,
-        "rate": 100
-      }
-    ],
-    "costs": [],
-    "timeCost": 50,
-    "restriction": 1,
-    "userLoadAnim": "",
-    "userCastAnim": "Attack0",
-    "stepOnCast": true,
-    "loadAnimID": -1,
-    "castAnimID": -1,
-    "centerAnimID": 0,
-    "individualAnimID": -1,
-    "mirror": true,
-    "elements": [
-      {
-        "id": 1,
-        "value": 100
-      }
-    ],
-    "tags": []
-  },
-  {
-    "name": "Super Fireball",
-    "description": "Attacks an area of 2 tiles of radius.",
-    "type": 1,
-    "icon": {
-      "imagePath": "Icon/Skills/Magical.png",
-      "x": 0,
-      "y": 0,
-      "width": 24,
-      "height": 24
-    },
-    "radius": 2,
-    "range": 4,
-    "script": {
-      "path": "skill/AreaAttack.lua",
-      "param": ""
-    },
-    "effects": [
-      {
-        "successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
-        "basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100",
-        "id": 0
-      }
-    ],
-    "costs": [
-      {
-        "value": "10",
-        "id": 1
-      }
-    ],
-    "timeCost": 100,
-    "restriction": 1,
-    "userLoadAnim": "Load0",
-    "userCastAnim": "Attack1",
-    "stepOnCast": true,
-    "loadAnimID": 4,
-    "castAnimID": -1,
-    "centerAnimID": 1,
-    "individualAnimID": -1,
-    "mirror": true,
-    "elements": [
-      {
-        "id": 1,
-        "value": 100
-      },
-      {
-        "id": 5,
-        "value": 100
-      }
-    ],
-    "tags": []
-  },
-  {
-    "name": "Blizzard",
-    "description": "Attacks an area of 3 radius.",
-    "type": 1,
-    "icon": {
-      "imagePath": "Icon/Skills/Magical.png",
-      "x": 0,
-      "y": 0,
-      "width": 24,
-      "height": 24
-    },
-    "radius": 3,
-    "range": 4,
-    "script": {
-      "path": "skill/AreaAttack.lua",
-      "param": ""
-    },
-    "effects": [
-      {
-        "successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
-        "basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100",
-        "id": 0
-      }
-    ],
-    "costs": [
-      {
-        "value": "20",
-        "id": 1
-      }
-    ],
-    "timeCost": 100,
-    "restriction": 1,
-    "userLoadAnim": "Load0",
-    "userCastAnim": "Attack1",
-    "stepOnCast": true,
-    "loadAnimID": 4,
-    "castAnimID": -1,
-    "centerAnimID": 2,
-    "individualAnimID": -1,
-    "mirror": true,
-    "elements": [
-      {
-        "id": 1,
-        "value": 100
-      },
-      {
-        "id": 6,
-        "value": 100
-      }
-    ],
-    "tags": []
-  },
-  {
-    "name": "Cure",
-    "description": "Cures a single ally character.",
-    "type": 1,
-    "icon": {
-      "imagePath": "Icon/Skills/Magical.png",
-      "x": 0,
-      "y": 0,
-      "width": 24,
-      "height": 24
-    },
-    "radius": 1,
-    "range": 3,
-    "script": {
-      "path": "skill/CharacterOnly.lua",
-      "param": "living ally"
-    },
-    "effects": [
-      {
-        "successRate": "100",
-        "basicResult": "-(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100",
-        "id": 0
-      }
-    ],
-    "costs": [
-      {
-        "value": "10",
-        "id": 1
-      }
-    ],
-    "timeCost": 100,
-    "restriction": 0,
-    "userLoadAnim": "",
-    "userCastAnim": "Attack0",
-    "stepOnCast": true,
-    "loadAnimID": -1,
-    "castAnimID": -1,
-    "centerAnimID": 4,
-    "individualAnimID": -1,
-    "mirror": true,
-    "elements": [
-      {
-        "id": 0,
-        "value": 50
-      },
-      {
-        "id": 1,
-        "value": 50
-      }
-    ],
-    "tags": []
-  }
+	{
+		"name": "Trade",
+		"data": {
+			"id": 1,
+			"description": "",
+			"icon": {
+				"id": -1,
+				"col": 0,
+				"row": 0
+			},
+			"radius": 1,
+			"range": 1,
+			"script": {
+				"path": "",
+				"param": ""
+			},
+			"effects": [],
+			"costs": [],
+			"restriction": 1,
+			"userAnim": {
+				"loadAnim": "",
+				"castAnim": "",
+				"stepOnCast": true
+			},
+			"battleAnim": {
+				"loadID": -1,
+				"castID": -1,
+				"centerID": -1,
+				"individualID": -1,
+				"mirror": true
+			},
+			"elements": [],
+			"statusAdd": [],
+			"statusRemove": [],
+			"tags": []
+		}
+	},
+	{
+		"name": "Blade Attack",
+		"data": {
+			"id": 2,
+			"description": "Simple melee physical attack.",
+			"icon": {
+			  "id": 27,
+			  "col": 1,
+			  "row": 0
+			},
+			"radius": 1,
+			"range": 1,
+			"script": {
+			  "path": "skill/CharacterOnly.lua",
+			  "param": "living enemy"
+			},
+			"effects": [
+			  {
+			  	"key": "hp",
+				"successRate": "((a:PREP() * 2 - b:EVDP()) / b:EVDP()) * 50",
+				"basicResult": "(a:ATKP() * 2 - b:DEFP()) * rand(80, 120) / 100"
+			  }
+			],
+			"costs": [],
+			"restriction": 1,
+			"userAnim": {
+				"loadAnim": "",
+				"castAnim": "Skill1",
+				"stepOnCast": true
+			},
+			"battleAnim": {
+				"loadID": -1,
+				"castID": -1,
+				"centerID": 1,
+				"individualID": -1,
+				"mirror": true
+			},
+			"elements": [
+			  {
+				"id": 0,
+				"value": 100
+			  }
+			],
+			"statusAdd": [],
+			"statusRemove": [],
+			"tags": []
+		}
+	},
+	{
+		"name": "Magical Attack",
+		"data": {
+			"id": 3,
+			"description": "Simple ranged magical attack.",
+			"icon": {
+			  "id": 27,
+			  "col": 0,
+			  "row": 0
+			},
+			"radius": 1,
+			"range": 4,
+			"script": {
+			  "path": "skill/CharacterOnly.lua",
+			  "param": "living enemy"
+			},
+			"effects": [
+			  {
+			  	"key": "hp",
+				"successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
+				"basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100"
+			  }
+			],
+			"costs": [],
+			"restriction": 1,
+			"userAnim": {
+				"loadAnim": "",
+				"castAnim": "Skill1",
+				"stepOnCast": true
+			},
+			"battleAnim": {
+				"loadID": -1,
+				"castID": -1,
+				"centerID": 2,
+				"individualID": -1,
+				"mirror": true
+			},
+			"elements": [
+			  {
+				"id": 1,
+				"value": 100
+			  }
+			],
+			"statusAdd": [],
+			"statusRemove": [],
+			"tags": []
+		}
+	},
+	{
+		"name": "Super Fireball",
+		"data": {
+			"id": 4,
+			"description": "Attacks an area of 2 tiles of radius.",
+			"icon": {
+			  "id": 27,
+			  "col": 0,
+			  "row": 0
+			},
+			"radius": 2,
+			"range": 4,
+			"script": {
+			  "path": "skill/AreaAttack.lua",
+			  "param": ""
+			},
+			"effects": [
+			  {
+			  	"key": "hp",
+				"successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
+				"basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100"
+			  }
+			],
+			"costs": [
+			  {
+			  	"key": "sp",
+				"value": "10"
+			  }
+			],
+			"restriction": 1,
+			"userAnim": {
+				"loadAnim": "Cast1",
+				"castAnim": "Skill2",
+				"stepOnCast": true
+			},
+			"battleAnim": {
+				"loadID": -1,
+				"castID": -1,
+				"centerID": 3,
+				"individualID": -1,
+				"mirror": true
+			},
+			"elements": [
+			  {
+				"id": 1,
+				"value": 100
+			  },
+			  {
+				"id": 5,
+				"value": 100
+			  }
+			],
+			"statusAdd": [],
+			"statusRemove": [],
+			"tags": []
+		}
+	},
+	{
+		"name": "Blizzard",
+		"data": {
+			"id": 5,
+			"description": "Attacks an area of 3 tiles of radius.",
+			"icon": {
+			  "id": 27,
+			  "col": 0,
+			  "row": 0
+			},
+			"radius": 3,
+			"range": 4,
+			"script": {
+			  "path": "skill/AreaAttack.lua",
+			  "param": ""
+			},
+			"effects": [
+			  {
+			  	"key": "hp",
+				"successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
+				"basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100"
+			  }
+			],
+			"costs": [
+			  {
+			  	"key": "sp",
+				"value": "20"
+			  }
+			],
+			"timeCost": 100,
+			"restriction": 1,
+			"userAnim": {
+				"loadAnim": "Cast1",
+				"castAnim": "Skill2",
+				"stepOnCast": true
+			},
+			"battleAnim": {
+				"loadID": -1,
+				"castID": -1,
+				"centerID": 4,
+				"individualID": -1,
+				"mirror": true
+			},
+			"elements": [
+			  {
+				"id": 1,
+				"value": 100
+			  },
+			  {
+				"id": 6,
+				"value": 100
+			  }
+			],
+			"statusAdd": [],
+			"statusRemove": [],
+			"tags": []
+		}
+	},
+	{
+		"name": "Cure",
+		"data": {
+			"id": 6,
+			"description": "Cures a single ally character.",
+			"icon": {
+			  "id": 27,
+			  "col": 0,
+			  "row": 0
+			},
+			"radius": 1,
+			"range": 3,
+			"script": {
+			  "path": "skill/CharacterOnly.lua",
+			  "param": "living ally"
+			},
+			"effects": [
+			  {
+			  	"key": "hp",
+				"successRate": "100",
+				"basicResult": "-(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100"
+			  }
+			],
+			"costs": [
+			  {
+			  	"key": "sp",
+				"value": "10"
+			  }
+			],
+			"restriction": 0,
+			"userAnim": {
+				"loadAnim": "",
+				"castAnim": "Skill1",
+				"stepOnCast": true
+			},
+			"battleAnim": {
+				"loadID": -1,
+				"castID": -1,
+				"centerID": -1,
+				"individualID": 5,
+				"mirror": true
+			},
+			"elements": [
+			  {
+				"id": 1,
+				"value": 100
+			  }
+			],
+			"statusAdd": [],
+			"statusRemove": [],
+			"tags": []
+		}
+	}
 ]

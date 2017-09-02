@@ -15,7 +15,7 @@ local mathf = math.field
 local max = math.max
 
 -- Constants
-local cursorAnimID = Config.gui.battleCursorAnimID
+local cursorAnimID = Config.animations.battleCursorID
 local tileW = Config.grid.tileW
 local tileH = Config.grid.tileH
 local pph = Config.grid.pixelsPerHeight

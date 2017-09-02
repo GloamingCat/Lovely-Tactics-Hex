@@ -5,7 +5,7 @@ extern vec2 scale = vec2(1, 1);
 uniform vec4 outlineColor = vec4(0,0,0,1); // the color of the outline
 uniform number outlineSize = 1; // in pixels
 
-vec4 effect( vec4 color, sampler2D texture, vec2 texture_coords, vec2 screen_coords ) {
+vec4 effect(vec4 color, sampler2D texture, vec2 texture_coords, vec2 screen_coords) {
   vec4 initialColor = texture2D(texture, texture_coords);
   number initialAlpha = initialColor[3];
   

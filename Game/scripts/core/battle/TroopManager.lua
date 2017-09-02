@@ -61,6 +61,9 @@ function TroopManager:createTroops()
       self:createTroop(Troop.fromData(troopID), parties[i], i)
     end
   end
+  for char in FieldManager.currentField.characterList:iterator() do
+    self:createBattler(char)
+  end
 end
 -- Creates the troop's characters.
 -- @param(troop : TroopManager)
@@ -74,13 +77,12 @@ function TroopManager:createTroop(troop, partyInfo, partyID)
   self.troopAI[partyID] = troop.AI
   for i = 1, sizeX do
     for j = 1, sizeY do
-      local battlerID = troop.grid:get(i, j)
+      local charID = troop.grid:get(i, j)
       local tile = field:getObjectTile(i + partyInfo.x - sizeX, j + partyInfo.y, partyInfo.h)
       tile.gui.party = partyID
-      if battlerID >= 0 then
+      if charID >= 0 then
         if tile and not tile:collides(0, 0) then
-          local battler = Battler(battlerID, partyID)
-          self:createBattleCharacter(tile, battler)
+          self:createCharacter(tile, charID, partyID)
         end
       end
     end
@@ -91,25 +93,33 @@ end
 -- @param(battlerData : table) the battler's data from file
 -- @param(field : Field) the current field
 -- @ret(BattleCharacter) the newly created character
-function TroopManager:createBattleCharacter(tile, battler)
-  local dir = self.troopDirections[battler.party]
+function TroopManager:createCharacter(tile, charID, partyID)
+  local dir = self.troopDirections[partyID]
   local charData = {
-    type = 1,
     id = -1,
-    charID = battler.data.battleCharID,
-    animID = 0,
+    charID = charID,
+    partyID = partyID,
+    anim = 'Idle',
     direction = dir,
     tags = {} }
   charData.x, charData.y, charData.h = tile:coordinates()
   local character = Character(charData, tile)
-  character.battler = battler
   character.speed = charSpeed
-  self.characterList:add(character)
-  local balloonAnim = Database.animOther[Config.battle.statusBalloonID + 1]
-  character.balloon = Animation.fromData(balloonAnim, FieldManager.renderer)
-  character.balloon.sprite:setTransformation(balloonAnim.transform)
-  character:setPosition(character.position)
   return character
+end
+-- Creates the battler of the character and add the character to the battle character list.
+-- @param(character : Character)
+-- @param(partyID : number)
+function TroopManager:createBattler(character)
+  if character.data.battlerID >= 0 and character.data.partyID >= 0 then
+    local battler = Battler(character.data.battlerID, character.data.partyID)
+    character.battler = battler
+    local balloonAnim = Database.animations[Config.animations.statusBalloonID]
+    character.balloon = Animation.fromData(balloonAnim, FieldManager.renderer)
+    character.balloon.sprite:setTransformation(balloonAnim.transform)
+    character:setPosition(character.position)
+    self.characterList:add(character)
+  end
 end
 
 ---------------------------------------------------------------------------------------------------

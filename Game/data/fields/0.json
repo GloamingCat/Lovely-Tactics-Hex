@@ -4,9 +4,7 @@
   "sizeY": 15,
   "prefs": {
     "name": "New Field",
-    "background": "Background/07.jpg",
     "defaultRegion": 0,
-    "partyCount": 2,
     "onStart": {
       "path": "field/Test.lua",
       "param": ""
@@ -20,13 +18,13 @@
   },
   "characters": [
     {
-      "type": 0,
-      "id": 0,
+      "id": 1,
       "x": 5,
       "y": 5,
       "h": 0,
-      "charID": 0,
-      "animID": 0,
+      "charID": 1,
+      "partyID": -1,
+      "anim": "Idle",
       "direction": 0,
       "startScript": {
         "path": "",

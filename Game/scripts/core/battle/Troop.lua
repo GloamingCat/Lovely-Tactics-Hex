@@ -14,8 +14,8 @@ local Matrix2 = require('core/math/Matrix2')
 local mod = math.mod
 
 -- Constants
-local sizeX = Config.grid.troopWidth
-local sizeY = Config.grid.troopHeight
+local sizeX = Config.troop.width
+local sizeY = Config.troop.height
 local baseDirection = 315 -- characters' direction at rotation 0
 
 local Troop = class()
@@ -27,8 +27,14 @@ local Troop = class()
 -- Constructor. 
 -- @param(grid : Matrix2) the matrix of battler IDs (optiontal, empty by default)
 -- @param(r : number) the rotation of the troop (optional, 0 by default)
-function Troop:init(grid, r, AI)
-  self.grid = grid or Matrix2(sizeX, sizeY, -1)
+function Troop:init(data, r, AI)
+  self.grid = Matrix2(sizeX, sizeY)
+  self.members = {}
+  local battlers = data.current
+  for i = 1, #battlers do
+    self.grid:set(battlers[i], battlers[i].x + 1, battlers[i].y + 1) 
+    self.members[#self.members + 1] = battlers[i]
+  end
   self.rotation = r or 0
   self.AI = AI
 end

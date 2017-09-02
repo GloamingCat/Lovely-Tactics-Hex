@@ -9,12 +9,14 @@ Stores and manages player's party members (active and backup).
 
 -- Imports
 local List = require('core/datastruct/List')
-
--- Constants
-local battlerRewards = Database.variables.battlerRewards
-local partyRewards = Database.variables.partyRewards
+local Troop = require('core/battle/Troop')
 
 local PartyManager = class()
+
+function PartyManager:init()
+  local data = Database.troops[Config.troop.initial]
+  self.current = Troop(data)
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Operations

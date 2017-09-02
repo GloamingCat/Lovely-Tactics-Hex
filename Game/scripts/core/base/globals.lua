@@ -24,9 +24,7 @@ require('core/base/database')
 
 Vocab   = require('conf/Vocab')
 Color   = require('conf/Color')
-Icon    = require('conf/Icon')
 Font    = require('conf/Font')
-Battle  = require('conf/Battle')
 Sound   = require('conf/Sound')
 KeyMap  = require('conf/KeyMap')
 
@@ -40,16 +38,17 @@ require('custom/plugins')
 -- Managers
 ---------------------------------------------------------------------------------------------------
 
-GameManager   = require('core/base/GameManager')()
-InputManager  = require('core/input/InputManager')()
-SaveManager   = require('core/save/SaveManager')()
-ScreenManager = require('core/graphics/ScreenManager')()
-FieldManager  = require('core/fields/FieldManager')()
-GUIManager    = require('core/gui/GUIManager')()
-BattleManager = require('core/battle/BattleManager')()
-PartyManager  = require('core/battle/PartyManager')()
-TroopManager  = require('core/battle/TroopManager')()
-TurnManager  = require('core/battle/TurnManager')()
+GameManager     = require('core/base/GameManager')()
+ResourceManager = require('core/base/ResourceManager')()
+InputManager    = require('core/input/InputManager')()
+SaveManager     = require('core/save/SaveManager')()
+ScreenManager   = require('core/graphics/ScreenManager')()
+FieldManager    = require('core/field/FieldManager')()
+GUIManager      = require('core/gui/GUIManager')()
+BattleManager   = require('core/battle/BattleManager')()
+PartyManager    = require('core/battle/PartyManager')()
+TroopManager    = require('core/battle/TroopManager')()
+TurnManager     = require('core/battle/TurnManager')()
 
 ---------------------------------------------------------------------------------------------------
 -- Profile

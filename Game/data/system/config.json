@@ -1,0 +1,58 @@
+{
+	"name": "LTH Example",
+	"screen": {
+		"nativeWidth": 400,
+		"nativeHeight": 225,
+		"widthScale": 2,
+		"heightScale": 2,
+		"scaleType": 1
+	},
+	"player": {
+		"walkSpeed": 90,
+		"dashSpeed": 200
+		"script": {
+			"path": "character/PlayerController.lua",
+			"param": ""
+		},
+		"startPos": {
+			"fieldID": 0,
+			"x": 0,
+			"y": 0,
+			"z": 0,
+			"direction": 270
+		}
+	},
+	"animations": {
+		"windowSkinID": 28,
+		"cursorID": 29,
+		"battleCursorID": 30,
+		"tileCursorID": 31,
+		"tileHLID": 32,
+		"statusBalloonID": 33
+	},
+	"battle": {
+		"overpassAllies": false,
+		"overpassDeads" true,
+		"tradeSkillID": 0,
+		"attHP": "hp",
+		"attSP": "sp",
+		"attStep": "mov",
+		"attJump": "jmp",
+		"attWeight": "car"
+	},
+	"troop": {
+		"initial": 1,
+		"maxMembers": 6,
+		"width": 5,
+		"height": 3
+	}
+	"grid": {
+		"tileW": 36,
+		"tileH": 22,
+		"tileB": 16,
+		"tileS": 0,
+		"pixelsPerHeight": 8,
+		"allNeighbors": false,
+	}
+	"tags": []
+}

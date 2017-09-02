@@ -1,217 +1,179 @@
 [
-  {
-    "name": "Hero Lancer",
-    "persistent": true,
-    "level": 5,
-    "battleCharID": 0,
-    "fieldCharID": 0,
-    "attackID": 1,
-    "skillDagID": -1,
-    "battlerRewards": ["0"],
-    "partyRewards": ["0"],
-    "scriptAI": {
-      "path": "",
-      "param": ""
-    },
-    "build": {
-      "path": "build/Lancer.lua",
-      "param": ""
-    },
-    "attributes": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ],
-    "skills": [],
-    "items": [],
-    "elements": [],
-    "tags": []
-  },
-  {
-    "name": "Hero Mage",
-    "persistent": true,
-    "level": 5,
-    "battleCharID": 1,
-    "fieldCharID": 0,
-    "attackID": 2,
-    "skillDagID": 0,
-    "battlerRewards": ["0"],
-    "partyRewards": ["0"],
-    "scriptAI": {
-      "path": "",
-      "param": ""
-    },
-    "build": {
-      "path": "build/Mage.lua",
-      "param": ""
-    },
-    "attributes": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ],
-    "skills": [
-      3
-    ],
-    "items": [
-      {
-        "id": 0,
-        "count": 3,
-        "rate": 100
-      }
-    ],
-    "elements": [],
-    "tags": []
-  },
-  {
-    "name": "Green Lancer",
-    "persistent": false,
-    "level": 3,
-    "battleCharID": 2,
-    "fieldCharID": -1,
-    "attackID": 1,
-    "skillDagID": -1,
-    "battlerRewards": ["10"],
-    "partyRewards": ["50"],
-    "scriptAI": {
-      "path": "ai/battler/Rusher.lua",
-      "param": ""
-    },
-    "build": {
-      "path": "build/Lancer.lua",
-      "param": ""
-    },
-    "attributes": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ],
-    "skills": [],
-    "items": [
-      {
-        "id": 0,
-        "count": 1,
-        "rate": 100
-      },
-      {
-        "id": 0,
-        "count": 1
-        "rate": 50
-      }
-    ],
-    "elements": [],
-    "tags": []
-  },
-  {
-    "name": "Blue Mage",
-    "persistent": false,
-    "level": 3,
-    "battleCharID": 3,
-    "fieldCharID": -1,
-    "attackID": 2,
-    "skillDagID": -1,
-    "battlerRewards": ["10"],
-    "partyRewards": ["50"],
-    "scriptAI": {
-      "path": "ai/battler/Rusher.lua",
-      "param": ""
-    },
-    "build": {
-      "path": "build/Mage.lua",
-      "param": ""
-    },
-    "attributes": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ],
-    "skills":  [
-      3
-    ],
-    "items": [],
-    "elements": [],
-    "tags": []
-  },
-  {
-    "name": "Yellow Lancer",
-    "persistent": false,
-    "level": 3,
-    "battleCharID": 4,
-    "fieldCharID": 0,
-    "attackID": 1,
-    "skillDagID": -1,
-    "battlerRewards": [0],
-    "partyRewards": [0],
-    "scriptAI": {
-      "path": "",
-      "param": ""
-    },
-    "build": {
-      "path": "build/Lancer.lua",
-      "param": ""
-    },
-    "attributes": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ],
-    "skills": [],
-    "items": [],
-    "elements": [],
-    "tags": []
-  },
-  {
-    "name": "Magenta Mage",
-    "persistent": false,
-    "level": 3,
-    "battleCharID": 5,
-    "fieldCharID": -1,
-    "attackID": 2,
-    "skillDagID": -1,
-    "battlerRewards": [0],
-    "partyRewards": [0],
-    "scriptAI": {
-      "path": "",
-      "param": ""
-    },
-    "build": {
-      "path": "build/Mage.lua",
-      "param": ""
-    },
-    "attributes": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ],
-    "skills":  [
-      3
-    ],
-    "items": [],
-    "elements": [],
-    "tags": []
-  }
+	{
+		"name": "Hero Lancer",
+		"data": {
+			"id": 1,
+			"persistent": true,
+			"level": 5,
+			"attackID": 1,
+			"classID": 1,
+			"exp": 0,
+			"gold": 0,
+			"scriptAI": {
+			  "path": "",
+			  "param": ""
+			},
+			"attributes": {
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"res": 0,
+				"agi": 0,
+				"mov": 0,
+				"jmp": 0,
+				"hp": 0,
+				"sp": 0,
+				"atkp": 0,
+				"atkm": 0,
+				"defp": 0,
+				"defm": 0,
+				"prep": 0,
+				"prem": 0,
+				"evdp": 0,
+				"evdm": 0,
+				"car": 0
+			},
+			"skills": [],
+			"items": [],
+			"elements": [],
+			"tags": []
+		}
+	},
+	{
+		"name": "Hero Mage",
+		"data": {
+			"id": 2,
+			"persistent": true,
+			"level": 5,
+			"attackID": 2,
+			"classID": 2,
+			"exp": 0,
+			"gold": 0,
+			"scriptAI": {
+			  "path": "",
+			  "param": ""
+			},
+			"attributes": {
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"res": 0,
+				"agi": 0,
+				"mov": 0,
+				"jmp": 0,
+				"hp": 0,
+				"sp": 0,
+				"atkp": 0,
+				"atkm": 0,
+				"defp": 0,
+				"defm": 0,
+				"prep": 0,
+				"prem": 0,
+				"evdp": 0,
+				"evdm": 0,
+				"car": 0
+			},
+			"skills": [5],
+			"items": [
+			  {
+				"id": 1,
+				"count": 3,
+				"rate": 100
+			  }
+			],
+			"elements": [],
+			"tags": []
+		}
+	},
+	{
+		"name": "Green Lancer",
+		"data": {
+			"id": 3,
+			"persistent": false,
+			"level": 3,
+			"attackID": 1,
+			"classID": 1,
+			"exp": 0,
+			"gold": 0,
+			"scriptAI": {
+			  "path": "ai/battler/Rusher.lua",
+			  "param": ""
+			},
+			"attributes": {
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"res": 0,
+				"agi": 0,
+				"mov": 0,
+				"jmp": 0,
+				"hp": 0,
+				"sp": 0,
+				"atkp": 0,
+				"atkm": 0,
+				"defp": 0,
+				"defm": 0,
+				"prep": 0,
+				"prem": 0,
+				"evdp": 0,
+				"evdm": 0,
+				"car": 0
+			},
+			"skills": [],
+			"items": [
+			  {
+				"id": 1,
+				"count": 1,
+				"rate": 100
+			  },
+			  {
+				"id": 1,
+				"count": 1,
+				"rate": 50
+			  }
+			],
+			"elements": [],
+			"tags": []
+		}
+	},
+	{
+		"name": "Blue Mage",
+		"data": {
+			"id": 4,
+			"persistent": false,
+			"level": 3,
+			"attackID": 2,
+			"classID": 2,
+			"exp": 0,
+			"gold": 0,
+			"scriptAI": {
+			  "path": "ai/battler/Rusher.lua",
+			  "param": ""
+			},
+			"attributes": {
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"res": 0,
+				"agi": 0,
+				"mov": 0,
+				"jmp": 0,
+				"hp": 0,
+				"sp": 0,
+				"atkp": 0,
+				"atkm": 0,
+				"defp": 0,
+				"defm": 0,
+				"prep": 0,
+				"prem": 0,
+				"evdp": 0,
+				"evdm": 0,
+				"car": 0
+			},
+			"skills":  [],
+			"items": [],
+			"elements": [],
+			"tags": []
+		}
+	}
 ]

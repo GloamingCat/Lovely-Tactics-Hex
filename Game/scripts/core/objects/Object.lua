@@ -28,7 +28,6 @@ local Object = class(Transformable)
 function Object:init(data, pos)
   Transformable.init(self, pos)
   self.name = data.name
-  self.colliderHeight = data.colliderHeight
 end
 -- Destructor.
 function Object:destroy()
