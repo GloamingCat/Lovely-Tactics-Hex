@@ -10,6 +10,7 @@ is a spritesheet.
 
 -- Imports
 local Sprite = require('core/graphics/Sprite')
+local TagMap = require('core/datastruct/TagMap')
 
 -- Alias
 local abs = math.abs
@@ -53,6 +54,10 @@ function Animation:init(sprite, data)
       else
         self.frameDuration = self.duration / self.colCount
       end
+    end
+    -- Tags
+    if data.tags and #data.tags > 0 then
+      self.tags = TagMap(data.tags)
     end
   else
     self.quadWidth = sprite.texture:getWidth()

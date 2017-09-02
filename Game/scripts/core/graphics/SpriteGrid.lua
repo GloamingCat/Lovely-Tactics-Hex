@@ -32,8 +32,8 @@ end
 -- @param(width : number) the width of the final image
 -- @param(height : number) the height of the final image
 function SpriteGrid:createGrid(renderer, width, height)
-  local w = floor(self.skin:getWidth() / 3)
-  local h = floor(self.skin:getHeight() / 3)
+  local w = floor(self.skin.width / 3)
+  local h = floor(self.skin.height / 3)
   local mw = width - 2 * w
   local mh = height - 2 * h
   self.skinData = {}
@@ -66,20 +66,22 @@ function SpriteGrid:createGrid(renderer, width, height)
       oy = -mh / 2
     end
     self.skinData[i] = {}
-    self.skinData[i].quad = Quad(x, y, w, h, self.skin:getWidth(), self.skin:getHeight())
+    self.skinData[i].quad = Quad(self.skin.x + x, self.skin.y + y, w, h, self.skin.width, self.skin.height)
     self.skinData[i].sx = sx / w
     self.skinData[i].sy = sy / h
-    self.skinData[i].x = ox / self.skinData[i].sx 
+    self.skinData[i].x = ox / self.skinData[i].sx
     self.skinData[i].y = oy / self.skinData[i].sy
   end
-  if self.sprites then
+  if self.slices then
     for i = 1, 9 do
-      self.sprites[i]:dispose()
+      self.slices[i]:destroy()
     end
   end
-  self.sprites = {}
+  self.slices = {}
+  local texture = ResourceManager:loadTexture(self.skin.path)
   for i = 1, 9 do
-    self.sprites[i] = Sprite(renderer, self.skin, self.skinData[i].quad)
+    local sprite = Sprite(renderer, texture, self.skinData[i].quad)
+    self.slices[i] = ResourceManager:loadAnimation(self.skin, sprite)
   end
 end
 
@@ -87,19 +89,25 @@ end
 -- General
 ---------------------------------------------------------------------------------------------------
 
+function SpriteGrid:update()
+  for i = 1, 9 do
+    self.slices[i]:update()
+  end
+end
 -- Updates position and scale according to the given parent transformable.
 -- @param(t : Transformable)
 function SpriteGrid:updateTransform(t)
   for i = 1, 9 do
-    self.sprites[i]:setPosition(t.position + self.position)
-    self.sprites[i]:setOffset(self.skinData[i].x, self.skinData[i].y)
-    self.sprites[i]:setScale(self.skinData[i].sx * t.scaleX, self.skinData[i].sy * t.scaleY)
+    local sprite = self.slices[i].sprite
+    sprite:setPosition(t.position + self.position)
+    sprite:setOffset(self.skinData[i].x, self.skinData[i].y)
+    sprite:setScale(self.skinData[i].sx * t.scaleX, self.skinData[i].sy * t.scaleY)
   end
 end
 -- Destroys all sprites.
 function SpriteGrid:destroy()
   for i = 1, 9 do
-    self.sprites[i]:destroy()
+    self.slices[i]:destroy()
   end
 end
 

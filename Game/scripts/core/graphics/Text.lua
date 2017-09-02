@@ -20,7 +20,6 @@ local round = math.round
 
 -- Constants
 local defaultFont = Font.gui_default
-local colorf = Color.factor
 
 local Text = class(Sprite)
 

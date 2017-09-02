@@ -21,9 +21,6 @@ local round = math.round
 local insert = table.insert
 local remove = table.remove
 
--- Constants
-local colorf = Color.factor
-
 local Sprite = class(Colorable)
 
 ---------------------------------------------------------------------------------------------------

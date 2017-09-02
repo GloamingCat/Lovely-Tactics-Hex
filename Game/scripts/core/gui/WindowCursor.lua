@@ -9,7 +9,6 @@ It's a type of window content.
 =================================================================================================]]
 
 -- Imports
-local Animation = require('core/graphics/Animation')
 local Vector = require('core/math/Vector')
 
 local WindowCursor = class()
@@ -22,8 +21,8 @@ local WindowCursor = class()
 -- @param(window : GridWindow) cursor's window
 function WindowCursor:init(window)
   self.window = window
-  local animData = Database.animOther[Config.gui.cursorAnimID + 1]
-  self.anim = Animation.fromData(animData, GUIManager.renderer)
+  local animData = Database.animations[Config.animations.cursorID]
+  self.anim = ResourceManager:loadAnimation(animData, GUIManager.renderer)
   self.anim.sprite:setTransformation(animData.transform)
   self.anim.sprite:setVisible(false)
   local x, y, w, h = self.anim.sprite.quad:getViewport()

@@ -22,9 +22,6 @@ local List = require('core/datastruct/List')
 -- Alias
 local floor = math.floor
 
--- Constants
-local defaultSkin = love.graphics.newImage('images/GUI/windowSkin.png')
-
 local Window = class(Transformable)
 
 ---------------------------------------------------------------------------------------------------
@@ -61,6 +58,7 @@ end
 -- Updates all content elements.
 function Window:update()
   Transformable.update(self)
+  self.spriteGrid:update()
   for c in self.content:iterator() do
     if c.update then
       c:update()
@@ -119,7 +117,7 @@ end
 -- Window's skin.
 -- @ret(Image) 
 function Window:getSkin()
-  return defaultSkin
+  return Database.animations[Config.animations.windowSkinID]
 end
 -- Horizontal padding.
 function Window:hPadding()

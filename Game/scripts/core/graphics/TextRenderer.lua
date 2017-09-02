@@ -13,7 +13,6 @@ local Quad = lgraphics.newQuad
 
 -- Constants
 local textShader = love.graphics.newShader('shaders/text.glsl')
-local colorf = Color.factor
 
 local TextRenderer = {}
 
@@ -84,8 +83,7 @@ function TextRenderer.createLineBuffer(line)
     local t = type(fragment.content)
     if t == 'table' then
       local c = fragment.content
-      lgraphics.setColor(c.red * colorf, c.green * colorf, 
-        c.blue * colorf, c.alpha * colorf)
+      lgraphics.setColor(c.red, c.green, c.blue, c.alpha)
     elseif t == 'userdata' then
       lgraphics.setFont(fragment.content)
     else

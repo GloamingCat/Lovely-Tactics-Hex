@@ -49,7 +49,7 @@ function ResourceManager:loadAnimation(data, dest)
   end
   local AnimClass = Animation
   if data.animation.script.path ~= '' then
-    AnimClass = require('custom/animation/' .. data.animation.script.path)
+    AnimClass = require('custom/' .. data.animation.script.path)
   end
   return AnimClass(dest, data)
 end
