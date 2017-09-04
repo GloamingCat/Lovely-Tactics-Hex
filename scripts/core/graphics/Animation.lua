@@ -46,6 +46,9 @@ function Animation:init(sprite, data)
     -- Loop type
     self.loop = data.animation.loop
     self.allRows = data.animation.allRows
+    if self.allRows then
+      print('all rows')
+    end
     -- Duration
     if data.animation.duration > 0 then
       self.duration = data.animation.duration

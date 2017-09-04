@@ -321,7 +321,7 @@ function SkillAction:popupResults(char, results)
       local popupName = 'popup_heal' .. points.key
       popupText:addLine(-points.key, Color[popupName], Font[popupName])
     end
-    char.battler[points.key] = char.battler[points.key], points.value)
+    char.battler:damage(points.key, points.value)
   end
   for i = 1, #results.status do
     local id = results.status[i]
