@@ -227,11 +227,9 @@ end
 --  nil => none, 0 => border, 1 => terrain, 2 => obstacle, 3 => character
 function Field:collisionXYZ(obj, origx, origy, origh, destx, desty, desth)
   if self:exceedsBorder(destx, desty) then
-    print('border')
     return 0
   end
   if self:collidesTerrain(destx, desty, desth) then
-    print('terrain')
     return 1
   end
   local layer = self.objectLayers[desth]

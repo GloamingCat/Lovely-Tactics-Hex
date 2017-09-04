@@ -247,9 +247,7 @@ end
 -- Gets the first selected target tile.
 -- @ret(ObjectTile) the first tile
 function BattleAction:firstTarget(input)
-  local tile = input.user:getTile()
-  print(tile)
-  return tile
+  return input.user:getTile()
 end
 -- Gets the next target given the player's input.
 -- @param(dx : number) the input in axis x

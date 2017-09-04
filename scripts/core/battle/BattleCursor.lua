@@ -29,11 +29,8 @@ local BattleCursor = class()
 -- Constructor.
 function BattleCursor:init()
   if cursorAnimID >= 0 then
-    local animData = Database.animations[cursorAnimID + 1]
+    local animData = Database.animations[cursorAnimID]
     self.anim = ResourceManager:loadAnimation(animData, FieldManager.renderer)
-    local _, _, w = self.anim.sprite.quad:getViewport()
-    self.offsetX = - w / 2
-    self.offsetY = - tileH
   end
 end
 -- Updates animation.
@@ -75,20 +72,20 @@ function BattleCursor:setTile(tile)
   self.anim.sprite:setVisible(tile.gui.selectable)
   local maxH = 0
   for obj in tile.obstacleList:iterator() do
-    maxH = max(maxH, obj.sprite.texture:getHeight())
+    maxH = max(maxH, obj:getHeight())
   end
   for obj in tile.characterList:iterator() do
-    maxH = max(maxH, obj.sprite.texture:getHeight())
+    maxH = max(maxH, obj:getHeight())
   end
-  self.anim.sprite:setXYZ(x + self.offsetX, y - maxH + self.offsetY, z - 1)
+  self.anim.sprite:setXYZ(x, y - maxH * pph, z - 1)
 end
 -- Sets the position to the given character.
 -- @param(char : Character) the target character
 function BattleCursor:setCharacter(char)
     local x, y, z = char.position:coordinates()
     self.anim.sprite:setVisible(true)
-    local maxH = char.sprite.texture:getHeight()
-    self.anim.sprite:setXYZ(x + self.offsetX, y - maxH + self.offsetY, z - 1)
+    local maxH = char:getHeight()
+    self.anim.sprite:setXYZ(x, y - maxH * pph, z - 1)
 end
 
 return BattleCursor

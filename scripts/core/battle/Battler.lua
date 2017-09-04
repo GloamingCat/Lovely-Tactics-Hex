@@ -108,11 +108,7 @@ end
 -- Callback for when the character moves.
 -- @param(path : Path) the path that the battler just walked
 function Battler:onMove(path)
-  if path.lastStep:isControlZone(self) then
-    self.steps = 0
-  else
-    self.steps = self.steps - path.totalCost
-  end
+  self.steps = self.steps - path.totalCost
 end
 
 ---------------------------------------------------------------------------------------------------

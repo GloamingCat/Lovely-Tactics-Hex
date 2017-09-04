@@ -48,7 +48,6 @@
 		"name": "Rock",
 		"data": {
 			"id": 1,
-			"colliderHeight": 0,
 			"image": {
 			  "id": 36,
 			  "col": 0,

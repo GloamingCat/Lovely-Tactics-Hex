@@ -10,7 +10,8 @@
 					"tiles": [
 						{
 							"dx": 0,
-							"dy": 0
+							"dy": 0,
+							"height": 4
 						}
 					],
 					"animations": [
@@ -78,7 +79,8 @@
 					"tiles": [
 						{
 							"dx": 0,
-							"dy": 0
+							"dy": 0,
+							"height": 4
 						}
 					],
 					"animations": [
@@ -150,7 +152,8 @@
 					"tiles": [
 						{
 							"dx": 0,
-							"dy": 0
+							"dy": 0,
+							"height": 4
 						}
 					],
 					"animations": [
@@ -217,7 +220,8 @@
 					"tiles": [
 						{
 							"dx": 0,
-							"dy": 0
+							"dy": 0,
+							"height": 4
 						}
 					],
 					"animations": [

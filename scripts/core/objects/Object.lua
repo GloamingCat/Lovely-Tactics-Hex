@@ -120,5 +120,11 @@ function Object:collision(tile, dx, dy, dh)
   dest:add(orig)
   return FieldManager:collision(self, orig, dest)
 end
+-- Gets the collider's height in grid coordinates.
+-- @param(x : number) the x of the tile of check the height
+-- @param(y : number) the y of the tile of check the height
+function Object:getHeight(x, y)
+  return 0
+end
 
 return Object

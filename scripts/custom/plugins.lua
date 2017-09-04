@@ -16,7 +16,7 @@ local individualTurn = { 'IndividualTurn', on = true,
   turnLimit = 2000,
   turnBarAnim = false }
 
-local controlZone = { 'ControlZone', on = true }
+local controlZone = { 'ControlZone', on = false }
 
 local removeStatusOnDamage = { 'RemoveStatusOnDamage', on = true }
 

@@ -34,6 +34,7 @@ function Obstacle:init(data, tileData, initTile, group)
   self.type = 'obstacle'
   self.group = group
   self.sprite = group.sprite
+  self.collisionHeight = tileData.height
   initTile.obstacleList:add(self)
   self:initializeNeighbors(tileData.neighbors)
   self:setXYZ(x, y, z)
@@ -57,7 +58,7 @@ function Obstacle:initializeNeighbors(neighbors)
 end
 
 ---------------------------------------------------------------------------------------------------
--- General
+-- Collision
 ---------------------------------------------------------------------------------------------------
 
 -- Checks if the object is passable from the given direction.
@@ -73,9 +74,9 @@ function Obstacle:isPassable(dx, dy, obj)
   end
   return self.neighbors[dx][dy] == true
 end
--- Converting to string.
-function Obstacle:__tostring()
-  return 'Obstacle ' .. self.name .. ' ' .. tostring(self.position)
+-- Override.
+function Obstacle:getHeight(x, y)
+  return self.collisionHeight
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -89,6 +90,15 @@ end
 -- Overrides Object:removeFromTiles.
 function Obstacle:removeFromTiles()
   self:getTile().obstacleList:removeElement(self)
+end
+
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
+
+-- Converting to string.
+function Obstacle:__tostring()
+  return 'Obstacle ' .. self.name .. ' ' .. tostring(self.position)
 end
 
 return Obstacle

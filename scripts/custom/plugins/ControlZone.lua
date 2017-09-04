@@ -10,6 +10,7 @@ ControlZone
 -- Imports
 local MoveAction = require('core/battle/action/MoveAction')
 local ObjectTile = require('core/field/ObjectTile')
+local Battler = require('core/battle/Battler')
 
 ---------------------------------------------------------------------------------------------------
 -- MoveAction
@@ -54,4 +55,19 @@ function ObjectTile:isControlZone(you, noneighbours)
     end
   end
   return false
+end
+
+---------------------------------------------------------------------------------------------------
+-- Battler
+---------------------------------------------------------------------------------------------------
+
+-- Callback for when the character moves.
+-- @param(path : Path) the path that the battler just walked
+local Battler_onMove = Battler.onMove
+function Battler:onMove(path)
+  if path.lastStep:isControlZone(self) then
+    self.steps = 0
+  else
+    Battler_onMove(self, path)
+  end
 end

@@ -44,13 +44,9 @@ function MoveAction:execute(input)
     fullPath = false
     path = PathFinder.findPathToUnreachable(self, input.user, input.target)
   end
-  if input.skipAnimations then
-    input.user:moveToTile(path.lastStep)
-  else
-    FieldManager.renderer:moveToObject(input.user, nil, true)
-    FieldManager.renderer.focusObject = input.user
-    input.user:walkPath(path)
-  end
+  FieldManager.renderer:moveToObject(input.user, nil, true)
+  FieldManager.renderer.focusObject = input.user
+  input.user:walkPath(path)
   input.user.battler:onMove(path)
   TurnManager:updatePathMatrix()
   return { executed = fullPath }
@@ -64,7 +60,7 @@ end
 -- By default, no tile is selectable.
 -- @ret(boolean) true if can be chosen, false otherwise
 function MoveAction:isSelectable(input, tile)
-  return tile.gui.movable
+  return tile.gui.movable and tile.characterList:isEmpty()
 end
 
 ---------------------------------------------------------------------------------------------------

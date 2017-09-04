@@ -16,6 +16,7 @@ local DirectedObject = require('core/objects/DirectedObject')
 local FiberList = require('core/fiber/FiberList')
 
 -- Alias
+local max = math.max
 local mathf = math.field
 local angle2Row = math.angle2Row
 local Quad = love.graphics.newQuad
@@ -122,6 +123,22 @@ end
 -- @ret(string) a string representation
 function CharacterBase:__tostring()
   return 'Character ' .. self.name .. ' ' .. self.id
+end
+
+---------------------------------------------------------------------------------------------------
+-- Collision
+---------------------------------------------------------------------------------------------------
+
+-- Override.
+function CharacterBase:getHeight(dx, dy)
+  x, y = x or 0, y or 0
+  for i = 1, #self.collisionTiles do
+    local tile = self.collisionTiles[i]
+    if tile.dx == x and tile.dy == y then
+      return tile.height
+    end
+  end
+  return 0
 end
 
 ---------------------------------------------------------------------------------------------------
