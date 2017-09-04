@@ -14,44 +14,48 @@
 							"height": 4
 						}
 					],
-					"animations": [
-						{
-							"name": "Idle",
-							"id": 7
-						},
-						{
-							"name": "Walk",
-							"id": 8
-						},
-						{
-							"name": "Dash",
-							"id": 9
-						},
-						{
-							"name": "Idle_battle",
-							"id": 10,
-						},
-						{
-							"name": "Dash_battle",
-							"id": 11,
-						},
-						{
-							"name": "Cast1_battle",
-							"id": 12,
-						},
-						{
-							"name": "Skill1_battle",
-							"id": 13,
-						},
-						{
-							"name": "Damage_battle",
-							"id": 14,
-						},
-						{
-							"name": "KO_battle",
-							"id": 15,
-						}
-					],
+					"animations": {
+						"default": [
+							{
+								"name": "Idle",
+								"id": 7
+							},
+							{
+								"name": "Walk",
+								"id": 8
+							},
+							{
+								"name": "Dash",
+								"id": 9
+							}
+						],
+						"battle": [
+							{
+								"name": "Idle",
+								"id": 10,
+							},
+							{
+								"name": "Dash",
+								"id": 11,
+							},
+							{
+								"name": "Cast1",
+								"id": 12,
+							},
+							{
+								"name": "Skill1",
+								"id": 13,
+							},
+							{
+								"name": "Damage",
+								"id": 14,
+							},
+							{
+								"name": "KO",
+								"id": 15,
+							}
+						]
+					},
 					"transform":  {
 					  "offsetX": 0,
 					  "offsetY": 0,
@@ -83,44 +87,52 @@
 							"height": 4
 						}
 					],
-					"animations": [
-						{
-							"name": "Idle",
-							"id": 7
-						},
-						{
-							"name": "Walk",
-							"id": 8
-						},
-						{
-							"name": "Dash",
-							"id": 9
-						},
-						{
-							"name": "Idle_battle",
-							"id": 16,
-						},
-						{
-							"name": "Dash_battle",
-							"id": 17,
-						},
-						{
-							"name": "Cast1_battle",
-							"id": 18,
-						},
-						{
-							"name": "Skill1_battle",
-							"id": 19,
-						},
-						{
-							"name": "Damage_battle",
-							"id": 20,
-						},
-						{
-							"name": "KO_battle",
-							"id": 21,
-						}
-					],
+					"animations": {
+						"default": [
+							{
+								"name": "Idle",
+								"id": 7
+							},
+							{
+								"name": "Walk",
+								"id": 8
+							},
+							{
+								"name": "Dash",
+								"id": 9
+							}
+						],
+						"battle": [
+							{
+								"name": "Idle",
+								"id": 16,
+							},
+							{
+								"name": "Dash",
+								"id": 17,
+							},
+							{
+								"name": "Cast1",
+								"id": 18,
+							},
+							{
+								"name": "Skill1",
+								"id": 19,
+							},
+							{
+								"name": "Skill2",
+								"id": 20,
+							},
+							{
+								"name": "Damage",
+								"id": 21,
+							},
+							{
+								"name": "KO",
+								"id": 22,
+							}
+						]
+					},
 					"transform":  {
 					  "offsetX": 0,
 					  "offsetY": 0,
@@ -156,44 +168,48 @@
 							"height": 4
 						}
 					],
-					"animations": [
-						{
-							"name": "Idle",
-							"id": 7
-						},
-						{
-							"name": "Walk",
-							"id": 8
-						},
-						{
-							"name": "Dash",
-							"id": 9
-						},
-						{
-							"name": "Idle_battle",
-							"id": 10,
-						},
-						{
-							"name": "Dash_battle",
-							"id": 11,
-						},
-						{
-							"name": "Cast1_battle",
-							"id": 12,
-						},
-						{
-							"name": "Skill1_battle",
-							"id": 13,
-						},
-						{
-							"name": "Damage_battle",
-							"id": 14,
-						},
-						{
-							"name": "KO_battle",
-							"id": 15,
-						}
-					],
+					"animations": {
+						"default": [
+							{
+								"name": "Idle",
+								"id": 7
+							},
+							{
+								"name": "Walk",
+								"id": 8
+							},
+							{
+								"name": "Dash",
+								"id": 9
+							}
+						],
+						"battle": [
+							{
+								"name": "Idle",
+								"id": 10,
+							},
+							{
+								"name": "Dash",
+								"id": 11,
+							},
+							{
+								"name": "Cast1",
+								"id": 12,
+							},
+							{
+								"name": "Skill1",
+								"id": 13,
+							},
+							{
+								"name": "Damage",
+								"id": 14,
+							},
+							{
+								"name": "KO",
+								"id": 15,
+							}
+						]
+					},
 					"transform":  {
 					  "offsetX": 0,
 					  "offsetY": 0,
@@ -224,44 +240,52 @@
 							"height": 4
 						}
 					],
-					"animations": [
-						{
-							"name": "Idle",
-							"id": 7
-						},
-						{
-							"name": "Walk",
-							"id": 8
-						},
-						{
-							"name": "Dash",
-							"id": 9
-						},
-						{
-							"name": "Idle_battle",
-							"id": 16,
-						},
-						{
-							"name": "Dash_battle",
-							"id": 17,
-						},
-						{
-							"name": "Cast1_battle",
-							"id": 18,
-						},
-						{
-							"name": "Skill1_battle",
-							"id": 19,
-						},
-						{
-							"name": "Damage_battle",
-							"id": 20,
-						},
-						{
-							"name": "KO_battle",
-							"id": 21,
-						}
-					],
+					"animations": {
+						"default": [
+							{
+								"name": "Idle",
+								"id": 7
+							},
+							{
+								"name": "Walk",
+								"id": 8
+							},
+							{
+								"name": "Dash",
+								"id": 9
+							}
+						],
+						"battle": [
+							{
+								"name": "Idle",
+								"id": 16,
+							},
+							{
+								"name": "Dash",
+								"id": 17,
+							},
+							{
+								"name": "Cast1",
+								"id": 18,
+							},
+							{
+								"name": "Skill1",
+								"id": 19,
+							},
+							{
+								"name": "Skill2",
+								"id": 20,
+							},
+							{
+								"name": "Damage",
+								"id": 21,
+							},
+							{
+								"name": "KO",
+								"id": 22,
+							}
+						]
+					},
 					"transform":  {
 					  "offsetX": 0,
 					  "offsetY": 0,

@@ -19,8 +19,8 @@
 			"costs": [],
 			"restriction": 1,
 			"userAnim": {
-				"loadAnim": "",
-				"castAnim": "",
+				"load": "",
+				"cast": "",
 				"stepOnCast": true
 			},
 			"battleAnim": {
@@ -62,8 +62,8 @@
 			"costs": [],
 			"restriction": 1,
 			"userAnim": {
-				"loadAnim": "",
-				"castAnim": "Skill1",
+				"load": "",
+				"cast": "Skill1",
 				"stepOnCast": true
 			},
 			"battleAnim": {
@@ -110,8 +110,8 @@
 			"costs": [],
 			"restriction": 1,
 			"userAnim": {
-				"loadAnim": "",
-				"castAnim": "Skill1",
+				"load": "",
+				"cast": "Skill1",
 				"stepOnCast": true
 			},
 			"battleAnim": {
@@ -163,8 +163,8 @@
 			],
 			"restriction": 1,
 			"userAnim": {
-				"loadAnim": "Cast1",
-				"castAnim": "Skill2",
+				"load": "Cast1",
+				"cast": "Skill2",
 				"stepOnCast": true
 			},
 			"battleAnim": {
@@ -221,8 +221,8 @@
 			"timeCost": 100,
 			"restriction": 1,
 			"userAnim": {
-				"loadAnim": "Cast1",
-				"castAnim": "Skill2",
+				"load": "Cast1",
+				"cast": "Skill2",
 				"stepOnCast": true
 			},
 			"battleAnim": {
@@ -278,8 +278,8 @@
 			],
 			"restriction": 0,
 			"userAnim": {
-				"loadAnim": "",
-				"castAnim": "Skill1",
+				"load": "",
+				"cast": "Skill1",
 				"stepOnCast": true
 			},
 			"battleAnim": {

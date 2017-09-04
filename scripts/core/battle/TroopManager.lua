@@ -17,6 +17,7 @@ local Troop = require('core/battle/Troop')
 -- Alias
 local rand = love.math.random
 local mathf = math.field
+local angle2row = math.angle2Row
 
 -- Constants
 local charSpeed = (Config.player.dashSpeed + Config.player.walkSpeed) / 2
@@ -116,6 +117,8 @@ function TroopManager:createBattler(character)
     character.balloon.sprite:setTransformation(balloonAnim.transform)
     character:setPosition(character.position)
     self.characterList:add(character)
+    character:setAnimations('battle')
+    character:replayAnimation(character.idleAnim, false, angle2row(character.direction))
   end
 end
 

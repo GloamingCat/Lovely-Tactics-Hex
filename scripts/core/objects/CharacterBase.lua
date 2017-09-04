@@ -59,6 +59,17 @@ function CharacterBase:init(instData)
   self:setXYZ(x, y, z)
   self:addToTiles()
 end
+-- Overrides to create the animation sets.
+function CharacterBase:initializeGraphics(animations, dir, initAnim, transform)
+  DirectedObject.initializeGraphics(self, animations.default, dir, initAnim, transform)
+  self.animationSets = {}
+  local default = self.animationData
+  for k, v in pairs(animations) do
+    self:initializeAnimationTable(v)
+    self.animationSets[k] = self.animationData
+  end
+  self.animationData = default
+end
 -- Sets generic properties.
 -- @param(name : string) the name of the character
 -- @param(tiles : table) a list of collision tiles
@@ -97,6 +108,19 @@ function CharacterBase:initializePortraits(portraits)
   for i = 1, #portraits do
     local p = portraits[i]
     self.portraits[p.name] = p.quad
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Animation Sets
+---------------------------------------------------------------------------------------------------
+
+-- Changes the animations in the current set.
+-- @param(name : string) the name of the set
+function CharacterBase:setAnimations(name)
+  assert(self.animationSets[name], 'Animation set does not exist: ' .. name)
+  for k, v in pairs(self.animationSets[name]) do
+    self.animationData[k] = v
   end
 end
 

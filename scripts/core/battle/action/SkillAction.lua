@@ -236,10 +236,10 @@ function SkillAction:use(input)
   local minTime = 1
   -- Animation in center target tile 
   --  (does not wait full animation, only the minimum time).
-  if self.data.centerAnimID >= 0 then
+  if self.data.battleAnim.centerID >= 0 then
     local mirror = input.user.direction > 90 and input.user.direction <= 270
     local x, y, z = mathf.tile2Pixel(input.target:coordinates())
-    local animation = BattleManager:playAnimation(self.data.centerAnimID,
+    local animation = BattleManager:playAnimation(self.data.battleAnim.centerID,
       x, y, z - 1, mirror)
     _G.Fiber:wait(centerTime)
   end
@@ -283,11 +283,11 @@ function SkillAction:singleTargetAnimation(input, targetChar, originTile)
   else
     local wasAlive = targetChar.battler:isAlive()
     self:popupResults(targetChar, results)
-    if self.data.individualAnimID >= 0 then
+    if self.data.battleAnim.individualID >= 0 then
       local dir = targetChar:angleToPoint(originTile.x, originTile.y)
       local mirror = dir > 90 and dir <= 270
       local pos = targetChar.position
-      BattleManager:playAnimation(self.data.individualAnimID,
+      BattleManager:playAnimation(self.data.battleAnim.individualID,
         pos.x, pos.y, pos.z - 10, mirror)
     end
     if results.damage and wasAlive then

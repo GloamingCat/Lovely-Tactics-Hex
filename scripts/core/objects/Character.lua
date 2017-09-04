@@ -143,15 +143,15 @@ end
 function Character:loadSkill(skill, dir)
   local minTime = 0
   -- Load animation (user)
-  if skill.userLoadAnim ~= '' then
-    local anim = self:playAnimation(skill.userLoadAnim)
+  if skill.userAnim.load ~= '' then
+    local anim = self:playAnimation(skill.userAnim.load)
     minTime = anim.duration
   end
   -- Load animation (effect on tile)
-  if skill.loadAnimID >= 0 then
+  if skill.battleAnim.loadID >= 0 then
     local mirror = skill.mirror and dir > 90 and dir <= 270
     local pos = self.position
-    local anim = BattleManager:playAnimation(skill.loadAnimID, 
+    local anim = BattleManager:playAnimation(skill.battleAnim.loadID, 
       pos.x, pos.y, pos.z - 1, mirror)
     minTime = max(minTime, anim.duration)
   end
@@ -170,15 +170,15 @@ function Character:castSkill(skill, dir, wait)
     self.autoTurn = oldAutoTurn
   end
   -- Cast animation (user)
-  if skill.userCastAnim ~= '' then
-    local anim = self:playAnimation(skill.userCastAnim)
+  if skill.userAnim.cast ~= '' then
+    local anim = self:playAnimation(skill.userAnim.cast)
     minTime = anim.duration
   end
   -- Cast animation (effect on tile)
-  if skill.castAnimID >= 0 then
+  if skill.battleAnim.castID >= 0 then
     local mirror = skill.mirror and dir > 90 and dir <= 270
     local pos = self.position
-    local anim = BattleManager:playAnimation(skill.castAnimID, 
+    local anim = BattleManager:playAnimation(skill.battleAnim.castID, 
       pos.x, pos.y, pos.z - 1, mirror)
     minTime = max(minTime, anim.duration)
   end

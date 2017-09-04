@@ -28,13 +28,18 @@ local AnimatedObject = class(Object)
 function AnimatedObject:initializeGraphics(animations, initAnim, transform)
   self.animName = nil
   self.transform = transform
-  self.animationData = {}
   self.sprite = Sprite(FieldManager.renderer)
-  for i = #animations, 1, -1 do
-    self:addAnimation(animations[i].name, animations[i].id)
-  end
+  self:initializeAnimationTable(animations)
   if initAnim then
     self:playAnimation(initAnim)
+  end
+end
+-- Creates the animation table from the animation list.
+-- @param(animations : table) array of animations
+function AnimatedObject:initializeAnimationTable(animations)
+  self.animationData = {}
+  for i = #animations, 1, -1 do
+    self:addAnimation(animations[i].name, animations[i].id)
   end
 end
 -- Creates a new animation from the database.
@@ -61,7 +66,12 @@ end
 function AnimatedObject:playAnimation(name, wait, row)
   if self.animName == name then
     return self.animation
+  else
+    return self:replayAnimation(name, wait, row)
   end
+end
+
+function AnimatedObject:replayAnimation(name, wait, row)
   local data = self.animationData[name]
   assert(data, "Animation does not exist: " .. name)
   self.animName = name
