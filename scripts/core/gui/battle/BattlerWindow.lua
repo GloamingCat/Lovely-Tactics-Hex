@@ -19,7 +19,7 @@ local round = math.round
 local max = math.max
 
 -- Constants
-local attConfig = Database.attributes
+local attConfig = Config.attributes
 local font = Font.gui_small
 
 local BattlerWindow = class(Window)
@@ -90,7 +90,7 @@ function BattlerWindow:createAtts(attList, x, y, w)
     local textName = SimpleText(att.shortName .. ':', pos, w, 'left', font)
     self.content:add(textName)
     -- Attribute value
-    local value = attValues[att.shortName]()
+    local value = attValues[att.key]()
     local textValue = SimpleText(value .. '', pos, w, 'right', font)
     self.content:add(textValue)
   end

@@ -65,7 +65,6 @@ end
 -- Creates the troop's characters.
 -- @param(troop : TroopManager)
 function TroopManager:createTroop(troopID, partyInfo, party)
-  print('created troop', troopID, party)
   local troop = Troop(Database.troops[troopID], party)
   local field = FieldManager.currentField
   local sizeX = troop.grid.width
@@ -77,7 +76,6 @@ function TroopManager:createTroop(troopID, partyInfo, party)
     for j = 1, sizeY do
       local battler = troop.grid:get(i, j)
       if battler then
-        print(battler, i, j)
         local tile = field:getObjectTile(i + partyInfo.x - sizeX, j + partyInfo.y, partyInfo.h)
         if tile and not tile:collides(0, 0) then
           self:createCharacter(tile, dir, battler.charID, battler.battlerID, party)
@@ -103,7 +101,6 @@ function TroopManager:createCharacter(tile, dir, charID, battlerID, party)
   charData.x, charData.y, charData.h = tile:coordinates()
   local character = Character(charData, tile)
   character.speed = charSpeed
-  print(character.data.name)
   return character
 end
 -- Creates the battler of the character and add the character to the battle character list.
@@ -225,7 +222,6 @@ function TroopManager:getPartyCenters()
       centers[party] = {
         vector = bc.position:clone(),
         count = 1 }
-      print('center', party)
     end
   end
   for i = 1, #centers do

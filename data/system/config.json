@@ -9,7 +9,7 @@
 	},
 	"player": {
 		"walkSpeed": 90,
-		"dashSpeed": 200
+		"dashSpeed": 200,
 		"script": {
 			"path": "character/PlayerController.lua",
 			"param": ""
@@ -27,12 +27,12 @@
 		"cursorID": 29,
 		"battleCursorID": 30,
 		"tileCursorID": 31,
-		"tileHLID": 32,
+		"tileID": 32,
 		"statusBalloonID": 33
 	},
 	"battle": {
 		"overpassAllies": false,
-		"overpassDeads" true,
+		"overpassDeads": true,
 		"tradeSkillID": 0,
 		"attHP": "hp",
 		"attSP": "sp",
@@ -45,7 +45,7 @@
 		"maxMembers": 6,
 		"width": 5,
 		"height": 3
-	}
+	},
 	"grid": {
 		"tileW": 36,
 		"tileH": 22,

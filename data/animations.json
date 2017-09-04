@@ -1337,7 +1337,7 @@
 				}
 			},
 			{
-				"name": "Tile Highlight",
+				"name": "Tile",
 				"data": {
 					"id": 32,
 					"path": "GUI/Battle/tile.png",

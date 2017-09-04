@@ -24,7 +24,6 @@ local Battler = class(BattlerBase)
 function Battler:init(data, character, troop)
   BattlerBase.init(self, data)
   self.party = character.party
-  print('battler party', self.party)
   -- Initialize AI
   local ai = data.scriptAI
   if ai.path ~= '' then

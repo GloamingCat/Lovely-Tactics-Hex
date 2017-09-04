@@ -193,7 +193,7 @@ function TargetWindow:createContent(width, height)
   local x = -self.width / 2 + self:hPadding()
   local y = -self.height / 2 + self:vpadding()
   local w = self.width - self:hPadding() * 2
-  local posTC = Vector(x, y + 15 + #self.vars * 10)
+  local posTC = Vector(x, y + 35)
   self.textTC = SimpleText(Vocab.turnCount .. ':', posTC, w, 'left', Font.gui_small)
   self.textTCValue = SimpleText('', posTC, w, 'right', Font.gui_small)
   self.content:add(self.textTC)

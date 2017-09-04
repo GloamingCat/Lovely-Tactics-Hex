@@ -17,8 +17,8 @@ local min = math.min
 -- Constants
 local tileW = Config.grid.tileW
 local tileH = Config.grid.tileH
-local tileAnimID = Config.animations.tileCursorID
-local tileHLAnimID = Config.animations.tileHLID
+local tileAnimID = Config.animations.tileID
+local tileCursorAnimID = Config.animations.tileCursorID
 
 local TileGUI = class()
 
@@ -30,15 +30,13 @@ local TileGUI = class()
 function TileGUI:init(tile)
   local renderer = FieldManager.renderer
   local x, y, z = tile2Pixel(tile:coordinates())
-  x = x - tileW / 2
-  y = y - tileH / 2
   if tileAnimID >= 0 then
     local baseAnim = Database.animations[tileAnimID]
     self.baseAnim = ResourceManager:loadAnimation(baseAnim, renderer)
     self.baseAnim.sprite:setXYZ(x, y, z)
   end
-  if tileHLAnimID >= 0 then
-    local hlAnim = Database.animations[tileHLAnimID]
+  if tileCursorAnimID >= 0 then
+    local hlAnim = Database.animations[tileCursorAnimID]
     self.highlightAnim = ResourceManager:loadAnimation(hlAnim, renderer)
     self.highlightAnim.sprite:setXYZ(x, y, z)
   end
