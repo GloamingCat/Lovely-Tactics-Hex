@@ -575,7 +575,7 @@
 						"loop": 1,
 						"allRows": false,
 						"script": {
-							"path": "",
+							"path": "Knockback.lua",
 							"param": ""
 						},
 						"audio": []
@@ -841,7 +841,7 @@
 						"loop": 1,
 						"allRows": false,
 						"script": {
-							"path": "",
+							"path": "Knockback.lua",
 							"param": ""
 						},
 						"audio": []

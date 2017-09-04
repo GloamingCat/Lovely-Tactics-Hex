@@ -11,6 +11,10 @@ Used to represent a battler during battle.roops[self.party]
 -- Imports
 local BattlerBase = require('core/battle/BattlerBase')
 
+-- Constants
+local mhpName = Config.battle.attHP
+local mspName = Config.battle.attSP
+
 local Battler = class(BattlerBase)
 
 ---------------------------------------------------------------------------------------------------
@@ -139,6 +143,16 @@ function Battler:damageSP(value)
   else
     self.state.sp = value
     return false
+  end
+end
+
+function Battler:damage(key, value)
+  if key == mhpName then
+    self:damageHP(value)
+  elseif key == mspName then
+    self:damageSP(value)
+  else
+    print(key)
   end
 end
 

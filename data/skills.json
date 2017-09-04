@@ -55,8 +55,8 @@
 			"effects": [
 			  {
 			  	"key": "hp",
-				"successRate": "((a:PREP() * 2 - b:EVDP()) / b:EVDP()) * 50",
-				"basicResult": "(a:ATKP() * 2 - b:DEFP()) * rand(80, 120) / 100"
+				"successRate": "((a.prep() * 2 - b.evdp()) / b.evdp()) * 50",
+				"basicResult": "(a.atkp() * 2 - b.defp()) * rand(80, 120) / 100"
 			  }
 			],
 			"costs": [],
@@ -103,8 +103,8 @@
 			"effects": [
 			  {
 			  	"key": "hp",
-				"successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
-				"basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100"
+				"successRate": "((a.prem() * 2 - b.evdm()) / b.evdm()) * 50",
+				"basicResult": "(a.atkm() * 2 - b.defm()) * rand(80, 120) / 100"
 			  }
 			],
 			"costs": [],
@@ -151,8 +151,8 @@
 			"effects": [
 			  {
 			  	"key": "hp",
-				"successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
-				"basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100"
+				"successRate": "((a.prem() * 2 - b.evdm()) / b.evdm()) * 50",
+				"basicResult": "(a.atkm() * 2 - b.defm()) * rand(80, 120) / 100"
 			  }
 			],
 			"costs": [
@@ -208,8 +208,8 @@
 			"effects": [
 			  {
 			  	"key": "hp",
-				"successRate": "((a:PREM() * 2 - b:EVDM()) / b:EVDM()) * 50",
-				"basicResult": "(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100"
+				"successRate": "((a.prem() * 2 - b.evdm()) / b.evdm()) * 50",
+				"basicResult": "(a.atkm() * 2 - b.defm()) * rand(80, 120) / 100"
 			  }
 			],
 			"costs": [
@@ -267,7 +267,7 @@
 			  {
 			  	"key": "hp",
 				"successRate": "100",
-				"basicResult": "-(a:ATKM() * 2 - b:DEFM()) * rand(80, 120) / 100"
+				"basicResult": "-(a.atkm() * 2 - b.defm()) * rand(80, 120) / 100"
 			  }
 			],
 			"costs": [

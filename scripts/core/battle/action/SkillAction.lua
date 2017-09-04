@@ -169,7 +169,7 @@ function SkillAction:calculateEffectResults(input, targetChar, rand)
     if r then
       dmg = dmg or r > 0
       points[#points + 1] = { value = r,
-        name = self.effects[i].attName }
+        key = self.effects[i].key }
     end
   end
   local status = {}
@@ -315,13 +315,13 @@ function SkillAction:popupResults(char, results)
   for i = 1, #results.points do
     local points = results.points[i]
     if points.value > 0 then
-      local popupName = 'popup_dmg' .. points.name
+      local popupName = 'popup_dmg' .. points.key
       popupText:addLine(points.value, Color[popupName], Font[popupName])
     else
-      local popupName = 'popup_heal' .. points.name
-      popupText:addLine(-points.name, Color[popupName], Font[popupName])
+      local popupName = 'popup_heal' .. points.key
+      popupText:addLine(-points.key, Color[popupName], Font[popupName])
     end
-    char.battler:damage(points.name, points.value)
+    char.battler[points.key] = char.battler[points.key], points.value)
   end
   for i = 1, #results.status do
     local id = results.status[i]

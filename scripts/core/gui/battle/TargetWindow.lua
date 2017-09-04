@@ -45,9 +45,9 @@ function TargetWindow:createContent(width, height)
   self.content:add(self.textName)
   -- State values texts  
   local posHP = Vector(x, y + 15)
-  self.textHP = self:addStateVariable(hpName, posHP, w)
+  self.textHP = self:addStateVariable(Config.attributes[hpName].shortName, posHP, w)
   local posSP = Vector(x, y + 25)
-  self.textSP = self:addStateVariable(spName, posSP, w)
+  self.textSP = self:addStateVariable(Config.attributes[spName].shortName, posSP, w)
   collectgarbage('collect')
 end
 -- Creates texts for the given state variable.
