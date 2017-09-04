@@ -1,0 +1,35 @@
+[
+    {
+		"name": "Forest",
+		"rgb": {
+			"red": 0,
+			"green": 255,
+			"blue": 128
+		},
+		"battlers": [
+			2,
+			3
+		],
+		"tags": []
+    },
+    {
+		"name": "Cave",
+		"rgb": {
+			"red": 128,
+			"green": 64,
+			"blue": 64
+		},
+		"battlers": [],
+		"tags": []
+    },
+    {
+		"name": "Ice Field",
+		"rgb": {
+			"red": 128,
+			"green": 255,
+			"blue": 255
+		},
+		"battlers": [],
+		"tags": []
+    }
+]

@@ -1,0 +1,97 @@
+[
+	{
+		"name": "Plain",
+		"data": {
+			"id": 0,
+			"image": 23,
+			"passable": true,
+			"depth": 12,
+			"moveCost": 100,
+			"attributes": {
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"res": 0,
+				"agi": 0,
+				"mov": 0,
+				"jmp": 0,
+				"mhp": 0,
+				"msp": 0,
+				"atkp": 0,
+				"atkm": 0,
+				"defp": 0,
+				"defm": 0,
+				"prep": 0,
+				"prem": 0,
+				"evdp": 0,
+				"evdm": 0,
+				"car": 0
+			},
+			"tags": []
+		}
+	},
+	{
+		"name": "Sand",
+		"data": {
+			"id": 1,
+			"image": 24,
+			"passable": true,
+			"depth": 12,
+			"moveCost": 100,
+			"attributes": {
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"res": 0,
+				"agi": 0,
+				"mov": 0,
+				"jmp": 0,
+				"mhp": 0,
+				"msp": 0,
+				"atkp": 0,
+				"atkm": 0,
+				"defp": 0,
+				"defm": 0,
+				"prep": 0,
+				"prem": 0,
+				"evdp": 0,
+				"evdm": 0,
+				"car": 0
+			},
+			"elements": [],
+			"tags": []
+	}
+  },
+	{
+		"name": "Water",
+		"data": {
+			"id": 2,
+			"image": 34,
+			"passable": false,
+			"depth": 12,
+			"moveCost": 100,
+			"attributes": {
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"res": 0,
+				"agi": 0,
+				"mov": 0,
+				"jmp": 0,
+				"mhp": 0,
+				"msp": 0,
+				"atkp": 0,
+				"atkm": 0,
+				"defp": 0,
+				"defm": 0,
+				"prep": 0,
+				"prem": 0,
+				"evdp": 0,
+				"evdm": 0,
+				"car": 0
+			},
+			"elements": [],
+			"tags": []
+		}
+	}
+]

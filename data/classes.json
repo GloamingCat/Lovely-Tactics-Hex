@@ -1,0 +1,67 @@
+[
+	{
+		"name": "Lancer",
+		"data": {
+			"id": 1,
+			"build": {
+				"str": "5 * lvl",
+				"mag": "0.5 * lvl",
+				"dex": "3 * lvl",
+				"res": "4 * lvl",
+				"agi": "2.5 * lvl",
+				"mov": "6",
+				"jmp": "2",
+				"mhp": "0",
+				"msp": "0",
+				"atkp": "0",
+				"atkm": "0",
+				"defp": "0",
+				"defm": "0",
+				"prep": "0",
+				"prem": "0",
+				"evdp": "0",
+				"evdm": "0",
+				"car": "0"
+			},
+			"skills": [],
+			"tags": []
+		}
+	},
+	{
+		"name": "Mage",
+		"data": {
+			"id": 2,
+			"build": {
+				"str": "0.5 * lvl",
+				"mag": "6 * lvl",
+				"dex": "4 * lvl",
+				"res": "1 * lvl",
+				"agi": "3.5 * lvl",
+				"mov": "5",
+				"jmp": "1.5",
+				"mhp": "0",
+				"msp": "0",
+				"atkp": "0",
+				"atkm": "0",
+				"defp": "0",
+				"defm": "0",
+				"prep": "0",
+				"prem": "0",
+				"evdp": "0",
+				"evdm": "0",
+				"car": "0"
+			},
+			"skills": [
+				{
+					"id": 4,
+					"level": 0,
+					"cost": {
+						"lp": "100"
+					},
+					"requirements": []
+				}
+			],
+			"tags": []
+		}
+	}
+]

@@ -1,0 +1,1417 @@
+[
+	{
+		"name": "Skills",
+		"children": [
+			{
+				"name": "Slash",
+				"data": {
+					"id": 1,
+					"path": "Battle/sword slash.png",
+					"x": 0,
+					"y": 0,
+					"width": 768,
+					"height": 384,
+					"cols": 4,
+					"rows": 2,
+					"transform": {
+					  "offsetX": 96,
+					  "offsetY": 96,
+					  "offsetDepth": 0,
+					  "scaleX": 50,
+					  "scaleY": 50,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 30,
+						"loop": 0,
+						"allRows": true,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Fireball",
+				"data": {
+					"id": 2,
+					"path": "Battle/fireball.png",
+					"x": 0,
+					"y": 0,
+					"width": 640,
+					"height": 512,
+					"cols": 5,
+					"rows": 4,
+					"transform": {
+					  "offsetX": 64,
+					  "offsetY": 64,
+					  "offsetDepth": 0,
+					  "scaleX": 50,
+					  "scaleY": 50,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 30,
+						"loop": 0,
+						"allRows": true,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Fireball2",
+				"data": {
+					"id": 3,
+					"path": "Battle/fireball.png",
+					"x": 0,
+					"y": 0,
+					"width": 640,
+					"height": 512,
+					"cols": 5,
+					"rows": 4,
+					"transform": {
+					  "offsetX": 64,
+					  "offsetY": 64,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 90,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 30,
+						"loop": 0,
+						"allRows": true,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Fireball3",
+				"data": {
+					"id": 4,
+					"path": "Battle/fireball.png",
+					"x": 0,
+					"y": 0,
+					"width": 640,
+					"height": 512,
+					"cols": 5,
+					"rows": 4,
+					"transform": {
+					  "offsetX": 64,
+					  "offsetY": 64,
+					  "offsetDepth": 0,
+					  "scaleX": 200,
+					  "scaleY": 200,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 180,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 30,
+						"loop": 0,
+						"allRows": true,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Cast",
+				"data": {
+					"id": 5,
+					"path": "Battle/cast.png",
+					"x": 0,
+					"y": 0,
+					"width": 240,
+					"height": 144,
+					"cols": 5,
+					"rows": 3,
+					"transform": {
+					  "offsetX": 24,
+					  "offsetY": 24,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 30,
+						"loop": 0,
+						"allRows": true,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Poison",
+				"data": {
+					"id": 6,
+					"path": "Battle/poison.png",
+					"x": 0,
+					"y": 0,
+					"width": 480,
+					"height": 576,
+					"cols": 5,
+					"rows": 6,
+					"transform": {
+					  "offsetX": 48,
+					  "offsetY": 48,
+					  "offsetDepth": 0,
+					  "scaleX": 50,
+					  "scaleY": 50,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 30,
+						"loop": 0,
+						"allRows": true,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			}
+		]
+	},
+	{
+		"name": "Characters",
+		"children": [
+			{
+				"name": "Template - Idle",
+				"data": {
+					"id": 7,
+					"path": "Character/Template/idle.png",
+					"x": 0,
+					"y": 0,
+					"width": 40,
+					"height": 400,
+					"cols": 1,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 20,
+					  "offsetY": 42,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 0,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Template - Walk",
+				"data": {
+					"id": 8,
+					"path": "Character/Template/walk.png",
+					"x": 0,
+					"y": 0,
+					"width": 240,
+					"height": 400,
+					"cols": 6,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 20,
+					  "offsetY": 42,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 40,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Template - Dash",
+				"data": {
+					"id": 9,
+					"path": "Character/Template/dash.png",
+					"x": 0,
+					"y": 0,
+					"width": 240,
+					"height": 400,
+					"cols": 6,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 20,
+					  "offsetY": 42,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 30,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			}
+		]
+	},
+	{
+		"name": "Battlers",
+		"children": [
+			{
+				"name": "Lancer - Idle",
+				"data": {
+					"id": 10,
+					"path": "Character/Lancer/idle.png",
+					"x": 0,
+					"y": 0,
+					"width": 70,
+					"height": 480,
+					"cols": 1,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 35,
+					  "offsetY": 46,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 60,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Lancer - Dash",
+				"data": {
+					"id": 11,
+					"path": "Character/Lancer/dash.png",
+					"x": 0,
+					"y": 0,
+					"width": 420,
+					"height": 480,
+					"cols": 6,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 35,
+					  "offsetY": 46,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 40,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Lancer - Cast",
+				"data": {
+					"id": 12,
+					"path": "Character/Lancer/cast.png",
+					"x": 0,
+					"y": 0,
+					"width": 70,
+					"height": 480,
+					"cols": 1,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 35,
+					  "offsetY": 46,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 30,
+						"loop": 0,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Lancer - Skill",
+				"data": {
+					"id": 13,
+					"path": "Character/Lancer/skill1.png",
+					"x": 0,
+					"y": 0,
+					"width": 350,
+					"height": 480,
+					"cols": 5,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 35,
+					  "offsetY": 46,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 30,
+						"loop": 0,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Lancer - Damage",
+				"data": {
+					"id": 14,
+					"path": "Character/Lancer/damage.png",
+					"x": 0,
+					"y": 0,
+					"width": 70,
+					"height": 480,
+					"cols": 1,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 35,
+					  "offsetY": 46,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 12,
+						"loop": 0,
+						"allRows": false,
+						"script": {
+							"path": "Knockback.lua",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Lancer - KO",
+				"data": {
+					"id": 15,
+					"path": "Character/Lancer/ko.png",
+					"x": 0,
+					"y": 0,
+					"width": 70,
+					"height": 480,
+					"cols": 1,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 35,
+					  "offsetY": 46,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 50,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 60,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Mage - Idle",
+				"data": {
+					"id": 16,
+					"path": "Character/Mage/idle.png",
+					"x": 0,
+					"y": 0,
+					"width": 40,
+					"height": 400,
+					"cols": 1,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 20,
+					  "offsetY": 42,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 30,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Mage - Dash",
+				"data": {
+					"id": 17,
+					"path": "Character/Mage/dash.png",
+					"x": 0,
+					"y": 0,
+					"width": 240,
+					"height": 400,
+					"cols": 6,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 20,
+					  "offsetY": 42,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 40,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Mage - Cast",
+				"data": {
+					"id": 18,
+					"path": "Character/Mage/cast.png",
+					"x": 0,
+					"y": 0,
+					"width": 40,
+					"height": 400,
+					"cols": 1,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 20,
+					  "offsetY": 42,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 30,
+						"loop": 0,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Mage - Skill 1",
+				"data": {
+					"id": 19,
+					"path": "Character/Mage/skill1.png",
+					"x": 0,
+					"y": 0,
+					"width": 40,
+					"height": 400,
+					"cols": 1,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 20,
+					  "offsetY": 42,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 30,
+						"loop": 0,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Mage - Skill 2",
+				"data": {
+					"id": 20,
+					"path": "Character/Mage/skill2.png",
+					"x": 0,
+					"y": 0,
+					"width": 40,
+					"height": 400,
+					"cols": 1,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 20,
+					  "offsetY": 42,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 30,
+						"loop": 0,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Mage - Damage",
+				"data": {
+					"id": 21,
+					"path": "Character/Mage/damage.png",
+					"x": 0,
+					"y": 0,
+					"width": 40,
+					"height": 400,
+					"cols": 1,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 20,
+					  "offsetY": 42,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 12,
+						"loop": 0,
+						"allRows": false,
+						"script": {
+							"path": "Knockback.lua",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Mage - KO",
+				"data": {
+					"id": 22,
+					"path": "Character/Mage/ko.png",
+					"x": 0,
+					"y": 0,
+					"width": 40,
+					"height": 400,
+					"cols": 1,
+					"rows": 8,
+					"transform": {
+					  "offsetX": 20,
+					  "offsetY": 42,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 50,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 60,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			}
+		]
+	},
+	{
+		"name": "Terrains",
+		"children": [
+			{
+				"name": "Plain",
+				"data": {
+					"id": 23,
+					"path": "Terrain/HexV.png",
+					"x": 0,
+					"y": 0,
+					"width": 36,
+					"height": 198,
+					"cols": 1,
+					"rows": 9,
+					"transform": {
+					  "offsetX": 18,
+					  "offsetY": 11,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 0,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Sand",
+				"data": {
+					"id": 24,
+					"path": "Terrain/HexV.png",
+					"x": 36,
+					"y": 0,
+					"width": 36,
+					"height": 198,
+					"cols": 1,
+					"rows": 9,
+					"transform": {
+					  "offsetX": 18,
+					  "offsetY": 11,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 0,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Water",
+				"data": {
+					"id": 34,
+					"path": "Terrain/HexV.png",
+					"x": 72,
+					"y": 0,
+					"width": 108,
+					"height": 198,
+					"cols": 3,
+					"rows": 9,
+					"transform": {
+					  "offsetX": 18,
+					  "offsetY": 11,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 60,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			}
+		]
+	},
+	{
+		"name": "Obstacle",
+		"children": [
+			{
+				"name": "Tree 1",
+				"data": {
+					"id": 35,
+					"path": "Obstacle/Tree0.png",
+					"x": 0,
+					"y": 0,
+					"width": 96,
+					"height": 105,
+					"cols": 1,
+					"rows": 1,
+					"transform": {
+					  "offsetX": 48,
+					  "offsetY": 96,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 0,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Rock 1",
+				"data": {
+					"id": 36,
+					"path": "Obstacle/Rock0.png",
+					"x": 0,
+					"y": 0,
+					"width": 48,
+					"height": 48,
+					"cols": 1,
+					"rows": 1,
+					"transform": {
+					  "offsetX": 25,
+					  "offsetY": 40,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 0,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			}
+		]
+	},
+	{
+		"name": "Icon",
+		"children": [
+			{
+				"name": "Usable",
+				"data": {
+					"id": 25,
+					"path": "Icon/usable.png",
+					"x": 0,
+					"y": 0,
+					"width": 48,
+					"height": 24,
+					"cols": 2,
+					"rows": 1,
+					"transform": {
+					  "offsetX": 12,
+					  "offsetY": 12,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 60,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Weapon",
+				"data": {
+					"id": 26,
+					"path": "Icon/weapon.png",
+					"x": 0,
+					"y": 0,
+					"width": 80,
+					"height": 80,
+					"cols": 2,
+					"rows": 2,
+					"transform": {
+					  "offsetX": 20,
+					  "offsetY": 20,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 60,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Skill",
+				"data": {
+					"id": 27,
+					"path": "Icon/skill.png",
+					"x": 0,
+					"y": 0,
+					"width": 96,
+					"height": 24,
+					"cols": 4,
+					"rows": 1,
+					"transform": {
+					  "offsetX": 12,
+					  "offsetY": 12,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 60,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			}
+		]
+	},
+	{
+		"name": "GUI",
+		"children": [
+			{
+				"name": "Window Skin",
+				"data": {
+					"id": 28,
+					"path": "GUI/windowSkin.png",
+					"x": 0,
+					"y": 0,
+					"width": 27,
+					"height": 27,
+					"cols": 1,
+					"rows": 1,
+					"transform": {
+					  "offsetX": 0,
+					  "offsetY": 0,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 0,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Cursor",
+				"data": {
+					"id": 29,
+					"path": "GUI/cursor.png",
+					"x": 0,
+					"y": 0,
+					"width": 14,
+					"height": 14,
+					"cols": 1,
+					"rows": 1,
+					"transform": {
+					  "offsetX": 0,
+					  "offsetY": 0,
+					  "offsetDepth": -2,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 20,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "Pointer.lua",
+							"param": ""
+						},
+						"audio": []
+					},
+					"tags": [
+						{
+							"name": "dx",
+							"value": "2"
+						}
+					]
+				}
+			},
+			{
+				"name": "Battle Cursor",
+				"data": {
+					"id": 30,
+					"path": "GUI/Battle/battle cursor.png",
+					"x": 0,
+					"y": 0,
+					"width": 14,
+					"height": 14,
+					"cols": 1,
+					"rows": 1,
+					"transform": {
+					  "offsetX": 7,
+					  "offsetY": 7,
+					  "offsetDepth": -2,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 20,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "Pointer.lua",
+							"param": ""
+						},
+						"audio": []
+					},
+					"tags": [
+						{
+							"name": "dy",
+							"value": "2"
+						}
+					]
+				}
+			},
+			{
+				"name": "Tile Cursor",
+				"data": {
+					"id": 31,
+					"path": "GUI/Battle/tile cursor.png",
+					"x": 0,
+					"y": 0,
+					"width": 36,
+					"height": 22,
+					"cols": 1,
+					"rows": 1,
+					"transform": {
+					  "offsetX": 18,
+					  "offsetY": 11,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 60,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "Static.lua",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Tile Highlight",
+				"data": {
+					"id": 32,
+					"path": "GUI/Battle/tile.png",
+					"x": 0,
+					"y": 0,
+					"width": 36,
+					"height": 22,
+					"cols": 1,
+					"rows": 1,
+					"transform": {
+					  "offsetX": 18,
+					  "offsetY": 11,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 60,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "Static.lua",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			},
+			{
+				"name": "Status Balloon",
+				"data": {
+					"id": 33,
+					"path": "GUI/balloon.png",
+					"x": 0,
+					"y": 0,
+					"width": 96,
+					"height": 32,
+					"cols": 3,
+					"rows": 1,
+					"transform": {
+					  "offsetX": 16,
+					  "offsetY": 32,
+					  "offsetDepth": 0,
+					  "scaleX": 100,
+					  "scaleY": 100,
+					  "rotation": 0,
+					  "red": 255,
+					  "green": 255,
+					  "blue": 255,
+					  "alpha": 255,
+					  "hue": 0,
+					  "saturation": 100,
+					  "brightness": 100
+					},
+					"animation": {
+						"duration": 12,
+						"loop": 1,
+						"allRows": false,
+						"script": {
+							"path": "StatusBalloon.lua",
+							"param": ""
+						},
+						"audio": []
+					}
+				}
+			}
+		]
+	}
+]

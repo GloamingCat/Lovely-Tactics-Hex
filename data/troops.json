@@ -1,0 +1,86 @@
+[
+	{
+		"name": "Player Party",
+		"data": {
+			"id": 1,
+			"persistent": true,
+			"scriptAI": {
+				"path": "",
+				"param": ""
+			},
+			"gold": 100,
+			"items": [
+			    {
+					"id": 0,
+					"count": 10,
+					"rate": 100
+				}
+			],
+			"current": [
+				{
+					"battlerID": 1,
+					"charID": 1,
+					"x": 1,
+					"y": 2
+				},
+				{
+					"battlerID": 2,
+					"charID": 2,
+					"x": 3,
+					"y": 1
+				}
+			],
+			"backup": [],
+			"hidden": [],
+			"tags": []
+		}
+	},
+	{
+		"name": "Enemy Party",
+		"data": {
+			"id": 2,
+			"persistent": false,
+			"scriptAI": {
+				"path": "ai/troop/TroopAI.lua",
+				"param": ""
+			},
+			"gold": 0,
+			"items": [],
+			"current": [
+				{
+					"battlerID": 3,
+					"charID": -1,
+					"x": 0,
+					"y": 2
+				},
+				{
+					"battlerID": 3,
+					"charID": -1,
+					"x": 2,
+					"y": 2
+				},
+				{
+					"battlerID": 3,
+					"charID": -1,
+					"x": 4,
+					"y": 2
+				},
+				{
+					"battlerID": 4,
+					"charID": -1,
+					"x": 1,
+					"y": 0
+				},
+				{
+					"battlerID": 4,
+					"charID": -1,
+					"x": 3,
+					"y": 0
+				}
+			],
+			"backup": [],
+			"hidden": [],
+			"tags": []
+		}
+	}
+]
