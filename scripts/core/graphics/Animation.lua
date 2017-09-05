@@ -46,9 +46,6 @@ function Animation:init(sprite, data)
     -- Loop type
     self.loop = data.animation.loop
     self.allRows = data.animation.allRows
-    if self.allRows then
-      print('all rows')
-    end
     -- Duration
     if data.animation.duration > 0 then
       self.duration = data.animation.duration
@@ -62,6 +59,7 @@ function Animation:init(sprite, data)
     if data.tags and #data.tags > 0 then
       self.tags = TagMap(data.tags)
     end
+    self.param = data.animation.script.param
   else
     if sprite and sprite.texture then
       self.quadWidth = sprite.texture:getWidth()
@@ -106,9 +104,6 @@ function Animation:nextFrame()
   local lastCol, lastRow = 0, 0
   if self.speed > 0 then
     lastCol, lastRow = self.colCount - 1, self.rowCount - 1
-  end
-  if self.allRows then
-    lastRow = self.row
   end
   if self.col ~= lastCol then
     self:nextCol()

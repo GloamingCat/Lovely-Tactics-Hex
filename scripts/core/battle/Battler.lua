@@ -11,6 +11,10 @@ Used to represent a battler during battle.roops[self.party]
 -- Imports
 local BattlerBase = require('core/battle/BattlerBase')
 
+-- Alias
+local max = math.max
+local min = math.min
+
 -- Constants
 local mhpName = Config.battle.attHP
 local mspName = Config.battle.attSP
@@ -128,7 +132,7 @@ function Battler:damageHP(value)
     self.state.hp = 0
     return true
   else
-    self.state.hp = value
+    self.state.hp = min(value, self.mhp())
     return false
   end
 end
@@ -141,11 +145,13 @@ function Battler:damageSP(value)
     self.state.sp = 0
     return true
   else
-    self.state.sp = value
+    self.state.sp = min(value, self.msp())
     return false
   end
 end
-
+-- Decreases the points given by the key.
+-- @param(key : string) HP, SP or other designer-defined point type
+-- @param(value : number) value to be decreased
 function Battler:damage(key, value)
   if key == mhpName then
     self:damageHP(value)

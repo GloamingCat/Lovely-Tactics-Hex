@@ -32,6 +32,7 @@ local introTime = 22.5
 local centerTime = 7.5
 local targetTime = 2.2
 local useTime = 2
+local finishTime = 45
 
 local SkillAction = class(BattleAction)
 
@@ -42,7 +43,7 @@ local SkillAction = class(BattleAction)
 -- Constructor. Creates the action from a skill ID.
 -- @param(skillID : number) the skill's ID from database
 function SkillAction:init(skillID)
-  local data = Database.skills[skillID + 1]
+  local data = Database.skills[skillID]
   self.data = data
   self.skillID = skillID
   local color = nil
@@ -93,7 +94,7 @@ end
 -- Creates an SkillAction given the skill's ID in the database, depending on the skill's script.
 -- @param(skillID : number) the skill's ID in database
 function SkillAction.fromData(skillID)
-  local data = Database.skills[skillID + 1]
+  local data = Database.skills[skillID]
   if data.script.path ~= '' then
     local class = require('custom/' .. data.script.path)
     return class(skillID, data.script.param)
@@ -232,8 +233,6 @@ function SkillAction:use(input)
   -- Cast animation
   FieldManager.renderer:moveToTile(input.target)
   _G.Fiber:fork(input.user.castSkill, input.user, self.data, dir)
-  -- Minimum time to wait (initially, a frame).
-  local minTime = 1
   -- Animation in center target tile 
   --  (does not wait full animation, only the minimum time).
   if self.data.battleAnim.centerID >= 0 then
@@ -241,14 +240,14 @@ function SkillAction:use(input)
     local x, y, z = mathf.tile2Pixel(input.target:coordinates())
     local animation = BattleManager:playAnimation(self.data.battleAnim.centerID,
       x, y, z - 1, mirror)
-    _G.Fiber:wait(centerTime)
   end
+  _G.Fiber:wait(centerTime)
   -- Animation for each of affected tiles.
   self:allTargetsAnimation(input, originTile)
   -- Return user to original position and animation.
   input.user:finishSkill(originTile, self.data)
   -- Wait until everything finishes.
-  _G.Fiber:wait(max (0, minTime - now()) + 60)
+  _G.Fiber:wait(finishTime)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -319,7 +318,7 @@ function SkillAction:popupResults(char, results)
       popupText:addLine(points.value, Color[popupName], Font[popupName])
     else
       local popupName = 'popup_heal' .. points.key
-      popupText:addLine(-points.key, Color[popupName], Font[popupName])
+      popupText:addLine(-points.value, Color[popupName], Font[popupName])
     end
     char.battler:damage(points.key, points.value)
   end

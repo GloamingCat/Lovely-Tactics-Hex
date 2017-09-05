@@ -189,10 +189,10 @@ function HexVMath.autoTileRows(grid, i, j, sameType)
   end
   
   if rows[1] == 0 and rows[2] == 0 and rows[3] == 0 and rows[4] == 0 then
-    rows[1] = 0
-    rows[2] = 0
-    rows[3] = 0
-    rows[4] = 0
+    rows[1] = 8
+    rows[2] = 8
+    rows[3] = 8
+    rows[4] = 8
   end
   
   return rows

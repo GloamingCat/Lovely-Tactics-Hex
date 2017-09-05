@@ -20,11 +20,11 @@ local newQuad = love.graphics.newQuad
 -- Constants
 local tileW = Config.grid.tileW
 local tileH = Config.grid.tileH
-local viewports = {}
-viewports[1] = {0, 0}
-viewports[2] = {0.5, 0}
-viewports[3] = {0, 0.5}
-viewports[4] = {0.5, 0.5}
+local origins = {}
+origins[1] = {0, 0}
+origins[2] = {0.5, 0}
+origins[3] = {0, 0.5}
+origins[4] = {0.5, 0.5}
 
 local TerrainTile = class()
 
@@ -86,7 +86,7 @@ function TerrainTile:updateGraphics()
   -- Delete previous terrain's images.
   if self.quarters then
     for i = 1, 4 do
-      self.quarters[i]:dispose()
+      self.quarters[i]:destroy()
     end
   end
   -- Check if id representes a terrain.
@@ -101,7 +101,7 @@ function TerrainTile:updateGraphics()
   if self.data.image >= 0 then
     local rows = mathf.autoTileRows(self.layer, self.x, self.y, self.layer.sameType)
     local imageData = Database.animations[self.data.image]
-    self:setQuarters(imageData, rows)
+    self.quarters = self:createQuarters(imageData, rows)
     -- Create animation.
     if imageData.cols > 1 then
       self.animations = {}
@@ -114,19 +114,21 @@ end
 -- Creates the animations for the terrain type
 -- @param(quadData : table) the terrain's quad table
 -- @param(rows : table) the autotile row of each quarter
-function TerrainTile:setQuarters(data, rows)
+-- @ret(table) array with each quarter graphics
+function TerrainTile:createQuarters(data, rows)
   local texture = ResourceManager:loadTexture(data.path)
   -- Create quarter renderers
-  self.quarters = {}
+  local quarters = {}
   for i = 1, 4 do
     local w, h = data.width / data.cols, data.height / data.rows
-    local x, y = viewports[i][1] * w, viewports[i][2] * h
+    local x, y = origins[i][1] * w, origins[i][2] * h
     local quad = newQuad(x + data.x, y + data.y + rows[i] * h, w / 2, h / 2, texture:getWidth(), texture:getHeight())
     local depth = (1.5 - y / h) * self.depth
-    self.quarters[i] = Sprite(FieldManager.renderer, texture, quad)
-    self.quarters[i]:setPosition(self.center)
-    self.quarters[i]:setOffset(w / 2 - x, h / 2 - y, depth)
+    quarters[i] = Sprite(FieldManager.renderer, texture, quad)
+    quarters[i]:setPosition(self.center)
+    quarters[i]:setOffset(w / 2 - x, h / 2 - y, depth)
   end
+  return quarters
 end
 
 return TerrainTile

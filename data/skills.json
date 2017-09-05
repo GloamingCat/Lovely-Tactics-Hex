@@ -3,6 +3,7 @@
 		"name": "Trade",
 		"data": {
 			"id": 1,
+			"type": 0,
 			"description": "",
 			"icon": {
 				"id": -1,
@@ -40,6 +41,7 @@
 		"name": "Blade Attack",
 		"data": {
 			"id": 2,
+			"type": 1,
 			"description": "Simple melee physical attack.",
 			"icon": {
 			  "id": 27,
@@ -88,6 +90,7 @@
 		"name": "Magical Attack",
 		"data": {
 			"id": 3,
+			"type": 1,
 			"description": "Simple ranged magical attack.",
 			"icon": {
 			  "id": 27,
@@ -136,6 +139,7 @@
 		"name": "Super Fireball",
 		"data": {
 			"id": 4,
+			"type": 1,
 			"description": "Attacks an area of 2 tiles of radius.",
 			"icon": {
 			  "id": 27,
@@ -163,12 +167,12 @@
 			],
 			"restriction": 1,
 			"userAnim": {
-				"load": "Cast1",
+				"load": "Load1",
 				"cast": "Skill2",
 				"stepOnCast": true
 			},
 			"battleAnim": {
-				"loadID": -1,
+				"loadID": 5,
 				"castID": -1,
 				"centerID": 3,
 				"individualID": -1,
@@ -193,6 +197,7 @@
 		"name": "Blizzard",
 		"data": {
 			"id": 5,
+			"type": 1,
 			"description": "Attacks an area of 3 tiles of radius.",
 			"icon": {
 			  "id": 27,
@@ -221,12 +226,12 @@
 			"timeCost": 100,
 			"restriction": 1,
 			"userAnim": {
-				"load": "Cast1",
+				"load": "Load1",
 				"cast": "Skill2",
 				"stepOnCast": true
 			},
 			"battleAnim": {
-				"loadID": -1,
+				"loadID": 5,
 				"castID": -1,
 				"centerID": 4,
 				"individualID": -1,
@@ -251,6 +256,7 @@
 		"name": "Cure",
 		"data": {
 			"id": 6,
+			"type": 2,
 			"description": "Cures a single ally character.",
 			"icon": {
 			  "id": 27,
@@ -279,7 +285,7 @@
 			"restriction": 0,
 			"userAnim": {
 				"load": "",
-				"cast": "Skill1",
+				"cast": "Skill2",
 				"stepOnCast": true
 			},
 			"battleAnim": {

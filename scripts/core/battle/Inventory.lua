@@ -135,9 +135,9 @@ function Inventory:getUsableItems(restriction)
   restriction = restriction or 0
   local items = {}
   for itemSlot in self:iterator() do
-    local item = Database.items[itemSlot.id + 1]
+    local item = Database.items[itemSlot.id]
     if item.use.skillID >= 0 then
-      local skill = Database.skills[item.use.skillID + 1]
+      local skill = Database.skills[item.use.skillID]
       if skill.restriction == 0 or skill.restriction == restriction then
         items[#items + 1] = itemSlot
       end

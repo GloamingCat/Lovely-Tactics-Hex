@@ -41,7 +41,6 @@ function Renderer:init(size, minDepth, maxDepth, order)
   self:activate()
   self:resizeCanvas()
 end
-
 -- Resize canvas acording to the zoom.
 function Renderer:resizeCanvas()
   local newW = ScreenManager.width * ScreenManager.scaleX
@@ -51,12 +50,10 @@ function Renderer:resizeCanvas()
     self.needsRedraw = true
   end
 end
-
 -- Inserts self in the screen renderers.
 function Renderer:activate()
   ScreenManager.renderers[self.order] = self
 end
-
 -- Removes self from the screen renderers.
 function Renderer:deactivate()
   ScreenManager.renderers[self.order] = nil
@@ -75,27 +72,21 @@ function Renderer:screen2World(x, y)
   -- Canvas center
   local ox = ScreenManager.width / 2
   local oy = ScreenManager.height / 2
-  
   -- Total scale
   local sx = ScreenManager.scaleX * self.scaleX
   local sy = ScreenManager.scaleY * self.scaleY
-  
   -- Screen black border offset
   x, y = x - ScreenManager.offsetX, y - ScreenManager.offsetY
-  
   -- Set to origin
   x = x + (self.position.x - ox) * sx
   y = y + (self.position.y - oy) * sy
-  
   -- Revert Transformation
   x, y = x - ox * sx, y - oy * sy
   x, y = rotate(x, y, -self.rotation)
   x, y = x / sx, y / sy
   x, y = x + ox, y + oy
-  
   return x, y
 end
-
 -- Converts a world point to a screen point.
 -- @param(x : number) the world x
 -- @param(y : number) the world y
@@ -105,24 +96,19 @@ function Renderer:world2Screen(x, y)
   -- Canvas center
   local ox = ScreenManager.width / 2
   local oy = ScreenManager.height / 2
-  
   -- Total scale
   local sx = ScreenManager.scaleX * self.scaleX
   local sy = ScreenManager.scaleY * self.scaleY
-
   -- Apply Transformation
   x, y = x - ox, y - oy
   x, y = x * sx, y * sy
   x, y = rotate(x, y, self.rotation)
   x, y = x + ox * sx, y + oy * sy
-
   -- Set to position
   x = x - (self.position.x - ox) * sx
   y = y - (self.position.y - oy) * sy
-
   -- Screen black border offset
   x, y = x + ScreenManager.offsetX, y + ScreenManager.offsetY
-  
   return x, y
 end
 
@@ -141,7 +127,6 @@ function Renderer:setXYZ(x, y, z)
     self.needsRedraw = true
   end
 end
-
 -- Sets Renderer's zoom. 1 is normal.
 -- @param(zoom : number) new zoom
 function Renderer:setZoom(zoom)
@@ -150,7 +135,6 @@ function Renderer:setZoom(zoom)
     self.needsRedraw = true
   end
 end
-
 -- Sets Renderer's rotation.
 -- @param(angle : number) rotation in degrees
 function Renderer:setRotation(angle)
@@ -174,7 +158,6 @@ function Renderer:draw()
   lgraphics.draw(self.canvas, 0, 0)
   lgraphics.setColor(r, g, b, a)
 end
-
 -- Draws all sprites in the table to the canvas.
 function Renderer:redrawCanvas()
   -- Center of the canvas
@@ -209,7 +192,6 @@ function Renderer:redrawCanvas()
   self.toDraw = nil
   self.needsRedraw = false
 end
-
 -- Draws all sprites in the same depth.
 -- @param(list : Sprite Table) the list of sprites to be drawn
 function Renderer:drawList(list)
@@ -221,7 +203,6 @@ function Renderer:drawList(list)
     end
   end
 end
-
 -- Draws current and clears.
 function Renderer:clearBatch()
   if self.batch and self.toDraw.size > 0 then
@@ -231,7 +212,6 @@ function Renderer:clearBatch()
     self.toDraw.size = 0
   end
 end
-
 -- Organizes current sprite list by texture.
 -- @param(list : Sprite Table) list of sprites to be sorted
 function Renderer:sortList(list)

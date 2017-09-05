@@ -47,7 +47,7 @@ end
 -- @param(id : number) the animation's ID in the database
 function AnimatedObject:addAnimation(name, id)
   local data = Database.animations[id]
-  local animation = Animation(self.sprite, data)
+  local animation = ResourceManager:loadAnimation(data, self.sprite)
   local quad, texture = ResourceManager:loadQuad(data)
   self.animationData[name] = {
     transform = data.transform,

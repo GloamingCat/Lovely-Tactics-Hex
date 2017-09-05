@@ -53,7 +53,7 @@
 					"rows": 4,
 					"transform": {
 					  "offsetX": 64,
-					  "offsetY": 64,
+					  "offsetY": 72,
 					  "offsetDepth": 0,
 					  "scaleX": 50,
 					  "scaleY": 50,
@@ -67,7 +67,7 @@
 					  "brightness": 100
 					},
 					"animation": {
-						"duration": 30,
+						"duration": 60,
 						"loop": 0,
 						"allRows": true,
 						"script": {
@@ -155,7 +155,7 @@
 				}
 			},
 			{
-				"name": "Cast",
+				"name": "Load",
 				"data": {
 					"id": 5,
 					"path": "Battle/cast.png",
@@ -167,7 +167,7 @@
 					"rows": 3,
 					"transform": {
 					  "offsetX": 24,
-					  "offsetY": 24,
+					  "offsetY": 40,
 					  "offsetDepth": 0,
 					  "scaleX": 100,
 					  "scaleY": 100,
@@ -575,7 +575,7 @@
 						"loop": 1,
 						"allRows": false,
 						"script": {
-							"path": "Knockback.lua",
+							"path": "",
 							"param": ""
 						},
 						"audio": []
@@ -841,7 +841,7 @@
 						"loop": 1,
 						"allRows": false,
 						"script": {
-							"path": "Knockback.lua",
+							"path": "",
 							"param": ""
 						},
 						"audio": []

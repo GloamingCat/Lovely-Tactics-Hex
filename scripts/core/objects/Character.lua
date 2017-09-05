@@ -163,7 +163,7 @@ end
 function Character:castSkill(skill, dir, wait)
   local minTime = 0
   -- Forward step
-  if skill.stepOnCast then
+  if skill.userAnim.stepOnCast then
     local oldAutoTurn = self.autoTurn
     self.autoTurn = false
     self:walkInAngle(castStep, dir)
@@ -191,7 +191,7 @@ end
 -- @param(skill : table) skill data from database
 function Character:finishSkill(origin, skill)
   local x, y, z = tile2Pixel(origin:coordinates())
-  if skill.stepOnCast then
+  if skill.userAnim.stepOnCast then
     local autoTurn = self.autoTurn
     self.autoTurn = false
     self:walkToPoint(x, y, z)
@@ -214,7 +214,7 @@ function Character:damage(skill, origin, results)
   local pos = self.position
   FieldManager.fiberList:fork(function()
     for i = 1, #results.status do
-      local s = Database.status[results.status[i] + 1]
+      local s = Database.status[results.status[i]]
       if s.animID >= 0 then
         BattleManager:playAnimation(s.animID, pos.x, pos.y, pos.z - 1)
       end

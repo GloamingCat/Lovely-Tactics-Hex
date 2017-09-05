@@ -41,19 +41,23 @@ function Field:init(data)
   self.battleData = data.battle
   self.charData = data.characters
   -- Min / max height
-  self.minh = 100
+  self.minh = 100 -- arbitrary limit
   self.maxh = 0
   for i, layerData in ipairs(data.layers) do
     self.maxh = max(layerData.info.height, self.maxh)
     self.minh = min(layerData.info.height, self.minh)
   end
+  self:initializeLayers()
+  -- Border and center
+  self.centerX, self.centerY = math.field.pixelCenter(self)
+  self.minx, self.miny, self.maxx, self.maxy = math.field.pixelBounds(self)
+end
+-- Creates initial empty terrain and object layers.
+function Field:initializeLayers()
   for i = self.minh, self.maxh do
     self.terrainLayers[i] = {}
     self.objectLayers[i] = ObjectLayer(self.sizeX, self.sizeY, i, self.defaultRegion)
   end
-  -- Border and center
-  self.centerX, self.centerY = math.field.pixelCenter(self)
-  self.minx, self.miny, self.maxx, self.maxy = math.field.pixelBounds(self)
 end
 -- Updates all ObjectTiles and TerrainTiles in field's layers.
 function Field:update()
@@ -103,8 +107,8 @@ end
 -- Returns a iterator that navigates through all object tiles.
 -- @ret(function) the grid iterator
 function Field:gridIterator()
-  local maxl = maxn(self.objectLayers)
-  local i, j, l = 1, 0, 0
+  local maxl = self.maxh
+  local i, j, l = 1, 0, self.minh
   local layer = self.objectLayers[l]
   while layer == nil do
     l = l + 1

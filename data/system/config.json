@@ -33,7 +33,7 @@
 	"battle": {
 		"overpassAllies": false,
 		"overpassDeads": true,
-		"tradeSkillID": 0,
+		"tradeSkillID": 1,
 		"attHP": "hp",
 		"attSP": "sp",
 		"attStep": "mov",
