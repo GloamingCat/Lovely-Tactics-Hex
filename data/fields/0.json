@@ -18,22 +18,35 @@
   },
   "characters": [
     {
-      "id": 1,
+      // Identifier. Used to find the character and also to refer the a troop member, 
+      // in case it's a battle character.
+      "key": "bob",
+      // Character's position in the field.
       "x": 5,
       "y": 5,
       "h": 0,
-      "charID": 1,
+      // The party this character is member of, in case it's a battle field.
+      // It's from 1 to #battle.parties.
       "party": -1,
+      // The ID of this character's data, from the "characters" table in the databse.
+      "charID": 1,
+      // Battle associated to this character (if -1, it's the default battler from original data).
+      "battlerID": -1,
+      // Initial animation.
       "anim": "Idle",
+      // Initial direction.
       "direction": 0,
+      // Script executed when field is loaded.
       "startScript": {
         "path": "",
         "param": ""
       },
+      // Script executed when this character collides with other.
       "collideScript": {
         "path": "",
         "param": ""
       },
+      // Script executed when player interacts with this character.
       "interactScript": {
         "path": "",
         "param": ""

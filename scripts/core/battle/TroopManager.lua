@@ -75,11 +75,11 @@ function TroopManager:createTroop(troopID, partyInfo, party)
   self.troops[party] = troop
   for i = 1, sizeX do
     for j = 1, sizeY do
-      local battler = troop.grid:get(i, j)
-      if battler then
+      local slot = troop.grid:get(i, j)
+      if slot then
         local tile = field:getObjectTile(i + partyInfo.x - sizeX, j + partyInfo.y, partyInfo.h)
         if tile and not tile:collides(0, 0) then
-          self:createCharacter(tile, dir, battler.charID, battler.battlerID, party)
+          self:createCharacter(tile, dir, slot, party)
         end
       end
     end
@@ -90,17 +90,17 @@ end
 -- @param(battlerData : table) the battler's data from file
 -- @param(field : Field) the current field
 -- @ret(BattleCharacter) the newly created character
-function TroopManager:createCharacter(tile, dir, charID, battlerID, party)
+function TroopManager:createCharacter(tile, dir, slot, party)
   local charData = {
-    id = -1,
-    battlerID = battlerID,
-    charID = charID,
+    key = slot.key,
+    charID = slot.charID,
+    battlerID = slot.battlerID,
     party = party,
     anim = 'Idle',
     direction = dir,
     tags = {} }
   charData.x, charData.y, charData.h = tile:coordinates()
-  local character = Character(charData, tile)
+  local character = Character(charData)
   character.speed = charSpeed
   return character
 end
@@ -111,7 +111,7 @@ function TroopManager:createBattler(character)
   if character.battlerID >= 0 and character.party >= 0 then
     local battlerData = Database.battlers[character.battlerID]
     local troop = self.troops[character.party]
-    character.battler = Battler(battlerData, character)
+    character.battler = Battler(battlerData, character, troop)
     local balloonAnim = Database.animations[Config.animations.statusBalloonID]
     character.balloon = ResourceManager:loadAnimation(balloonAnim, FieldManager.renderer)
     character.balloon.sprite:setTransformation(balloonAnim.transform)
@@ -130,6 +130,7 @@ end
 function TroopManager:clear()
   for bc in self.characterList:iterator() do
     bc.battler = nil
+    bc.troopSlot = nil
   end
   self.characterList = List()
   self.troopDirections = {}
@@ -194,6 +195,11 @@ end
 -- Parties
 ---------------------------------------------------------------------------------------------------
 
+-- Gets the troop controlled by the player.
+-- @ret(Troop)
+function TroopManager:getPlayerTroop()
+  return self.troops[self.playerParty]
+end
 -- Searchs for a winner party (when all alive characters belong to the same party).
 -- @ret(number) the number of the party (returns nil if no one won yet, -1 if there's a draw)
 function TroopManager:winnerParty()
@@ -235,6 +241,27 @@ function TroopManager:getPartyCenters()
     end
   end
   return centers
+end
+
+---------------------------------------------------------------------------------------------------
+-- Save
+---------------------------------------------------------------------------------------------------
+
+function TroopManager:saveTroops()
+  -- Store member data in troops
+  for char in self.characterList:iterator() do
+    local troop = self.troops[char.party]
+    if troop.data.persistent then
+      troop:setMemberData(char.key, char.battler:createPersistentData())
+    end
+  end
+  -- Store troop data in save
+  for i = 1, #self.troops do
+    local troop = self.troops[i]
+    if troop.data.persistent then
+      SaveManager.current.troops[troop.data.id] = troop:createPersistentData()
+    end
+  end
 end
 
 return TroopManager

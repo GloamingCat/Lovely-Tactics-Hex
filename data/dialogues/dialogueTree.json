@@ -2,18 +2,12 @@
   "root": {
     "children": [
       {
-        "children": [],
-        "data": {
-          "name": "Intro - Nameless Friend",
-          "id": 0
-        }
+        "name": "Intro - Nameless Friend",
+        "id": 0
       },
       {
-        "children": [],
-        "data": {
-          "name": "Intro - Tutor",
-          "id": 1
-        }
+        "name": "Intro - Tutor",
+        "id": 1
       }
     ]
   },

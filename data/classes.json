@@ -23,6 +23,7 @@
 				"evdm": "0",
 				"car": "0"
 			},
+			"expCurve": "10 * lvl",
 			"skills": [],
 			"tags": []
 		}
@@ -51,6 +52,7 @@
 				"evdm": "0",
 				"car": "0"
 			},
+			"expCurve": "10 * lvl",
 			"skills": [
 				{
 					"id": 4,

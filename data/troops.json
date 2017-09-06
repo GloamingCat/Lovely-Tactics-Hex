@@ -3,7 +3,7 @@
 		"name": "Player Party",
 		"data": {
 			"id": 1,
-			"persistent": true,
+			"persistent": true, // True if the troop should be saved.
 			"scriptAI": {
 				"path": "",
 				"param": ""
@@ -18,19 +18,27 @@
 			],
 			"current": [
 				{
-					"battlerID": 1,
+					// Member's identifier. Mey be left empty if the member should not me saved.
+					"key": "HeroLancer",
+					// Member's character
 					"charID": 1,
-					"x": 1,
-					"y": 2
+					// Member's battler (uses the character's default if invalid)
+					"battlerID": -1,
+					// Member's position in the grid
+					"x": 2,
+					"y": 3
 				},
 				{
-					"battlerID": 2,
+					"key": "HeroMage",
+					"battlerID": -1,
 					"charID": 2,
-					"x": 3,
-					"y": 1
+					"x": 4,
+					"y": 2
 				}
 			],
-			"backup": [],
+			// Members that are currently not the grid, but may be put in it during battle or in a menu.
+			"backup": [], 
+			// Members that are currently anot accesible, but they are still saved.
 			"hidden": [],
 			"tags": []
 		}
@@ -48,34 +56,39 @@
 			"items": [],
 			"current": [
 				{
-					"battlerID": 3,
-					"charID": -1,
-					"x": 0,
-					"y": 2
-				},
-				{
-					"battlerID": 3,
-					"charID": -1,
-					"x": 2,
-					"y": 2
-				},
-				{
-					"battlerID": 3,
-					"charID": -1,
-					"x": 4,
-					"y": 2
-				},
-				{
-					"battlerID": 4,
-					"charID": -1,
+					"key": "",
+					"battlerID": -1,
+					"charID": 3,
 					"x": 1,
-					"y": 0
+					"y": 3
 				},
 				{
-					"battlerID": 4,
-					"charID": -1,
+					"key": "",
+					"battlerID": -1,
+					"charID": 3,
 					"x": 3,
-					"y": 0
+					"y": 3
+				},
+				{
+					"key": "",
+					"battlerID": -1,
+					"charID": 3,
+					"x": 5,
+					"y": 3
+				},
+				{
+					"key": "",
+					"battlerID": -1,
+					"charID": 4,
+					"x": 2,
+					"y": 1
+				},
+				{
+					"key": "",
+					"battlerID": -1,
+					"charID": 4,
+					"x": 4,
+					"y": 1
 				}
 			],
 			"backup": [],

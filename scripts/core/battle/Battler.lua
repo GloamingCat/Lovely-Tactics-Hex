@@ -30,15 +30,84 @@ local Battler = class(BattlerBase)
 -- @param(character : Character)
 -- @param(troop : Troop)
 function Battler:init(data, character, troop)
-  BattlerBase.init(self, data)
+  local save = troop.persistent and troop:getMemberData(character.key)
+  BattlerBase.init(self, data, save, troop.id)
   self.party = character.party
   -- Initialize AI
   local ai = data.scriptAI
   if ai.path ~= '' then
-    self.AI = require('custom/' .. ai.path)(self, ai.param)
+    self.AI = require('custom/ai/battler/' .. ai.path)(self, ai.param)
   else
     self.AI = nil
   end
+end
+
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
+
+-- Checks if battler is still alive by its HP.
+-- @ret(boolean) true if HP greater then zero, false otherwise
+function Battler:isAlive()
+  return self.state.hp > 0
+end
+-- Sets its life points to 0.
+function Battler:kill()
+  self.state.hp = 0
+end
+-- Checks if the character is considered active in the battle.
+-- @ret(boolean)
+function Battler:isActive()
+  return self:isAlive()
+end
+-- Converting to string.
+-- @ret(string) a string representation
+function Battler:__tostring()
+  return 'Battler: ' .. self.name .. ' [Party ' .. self.party .. ']'
+end
+
+---------------------------------------------------------------------------------------------------
+-- HP and SP damage
+---------------------------------------------------------------------------------------------------
+
+-- Damages HP.
+-- @param(value : number) the number of the damage
+-- @ret(boolean) true if reached 0, otherwise
+function Battler:damageHP(value)
+  value = self.state.hp - value
+  if value <= 0 then
+    self.state.hp = 0
+    return true
+  else
+    self.state.hp = min(value, self.mhp())
+    return false
+  end
+end
+-- Damages SP.
+-- @param(value : number) the number of the damage
+-- @ret(boolean) true if reached 0, otherwise
+function Battler:damageSP(value)
+  value = self.state.sp - value
+  if value <= 0 then
+    self.state.sp = 0
+    return true
+  else
+    self.state.sp = min(value, self.msp())
+    return false
+  end
+end
+-- Decreases the points given by the key.
+-- @param(key : string) HP, SP or other designer-defined point type
+-- @param(value : number) value to be decreased
+function Battler:damage(key, value)
+  if key == mhpName then
+    self:damageHP(value)
+  elseif key == mspName then
+    self:damageSP(value)
+  else
+    return false
+  end
+  return true
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -117,73 +186,6 @@ end
 -- @param(path : Path) the path that the battler just walked
 function Battler:onMove(path)
   self.steps = self.steps - path.totalCost
-end
-
----------------------------------------------------------------------------------------------------
--- HP and SP damage
----------------------------------------------------------------------------------------------------
-
--- Damages HP.
--- @param(value : number) the number of the damage
--- @ret(boolean) true if reached 0, otherwise
-function Battler:damageHP(value)
-  value = self.state.hp - value
-  if value <= 0 then
-    self.state.hp = 0
-    return true
-  else
-    self.state.hp = min(value, self.mhp())
-    return false
-  end
-end
--- Damages SP.
--- @param(value : number) the number of the damage
--- @ret(boolean) true if reached 0, otherwise
-function Battler:damageSP(value)
-  value = self.state.sp - value
-  if value <= 0 then
-    self.state.sp = 0
-    return true
-  else
-    self.state.sp = min(value, self.msp())
-    return false
-  end
-end
--- Decreases the points given by the key.
--- @param(key : string) HP, SP or other designer-defined point type
--- @param(value : number) value to be decreased
-function Battler:damage(key, value)
-  if key == mhpName then
-    self:damageHP(value)
-  elseif key == mspName then
-    self:damageSP(value)
-  else
-    print(key)
-  end
-end
-
----------------------------------------------------------------------------------------------------
--- General
----------------------------------------------------------------------------------------------------
-
--- Checks if battler is still alive by its HP.
--- @ret(boolean) true if HP greater then zero, false otherwise
-function Battler:isAlive()
-  return self.state.hp > 0
-end
--- Sets its life points to 0.
-function Battler:kill()
-  self.state.hp = 0
-end
--- Checks if the character is considered active in the battle.
--- @ret(boolean)
-function Battler:isActive()
-  return self:isAlive()
-end
--- Converting to string.
--- @ret(string) a string representation
-function Battler:__tostring()
-  return 'Battler: ' .. self.name .. ' [Party ' .. self.party .. ']'
 end
 
 return Battler

@@ -11,6 +11,7 @@ Manipulates the matrix of battler IDs to the instatiated in the beginning of the
 local List = require('core/datastruct/List')
 local Matrix2 = require('core/math/Matrix2')
 local TagMap = require('core/datastruct/TagMap')
+local Battler = require('core/battle/Battler')
 local Inventory = require('core/battle/Inventory')
 
 -- Alias
@@ -33,19 +34,23 @@ local Troop = class()
 function Troop:init(data, party)
   self.data = data
   self.party = party
-  -- Grid and members
-  self.grid = Matrix2(sizeX, sizeY)
-  self.backup = List(data.backup)
-  self.hidden = List(data.hidden)
-  self.battlers = List()
-  for i = 1, #data.current do
-    local battler = data.current[i]
-    self.grid:set(battler, battler.x + 1, battler.y + 1)
-    self.battlers:add(battler)
+  -- Members' persistent data
+  if data.persistent then
+    local save = SaveManager.current.troops[data.id]
+    self:initState(save or data)
+    -- Member data table
+    self.memberData = {}
+    self:setMembersData(self.current)
+    self:setMembersData(self.backup)
+  else
+    self:initState(data)
   end
-  -- Inventory and money
-  self.inventory = Inventory(data.items)
-  self.gold = data.gold
+  -- Grid
+  self.grid = Matrix2(sizeX, sizeY)
+  for i = 1, #data.current do
+    local member = data.current[i]
+    self.grid:set(member, member.x, member.y)
+  end
   -- Rotation
   self.rotation = 0
   -- AI
@@ -54,8 +59,14 @@ function Troop:init(data, party)
     self.AI = require('custom/' .. ai.path)(self)
   end
   -- Tags
-  self.tags = TagMap(data.tags or {})
-  -- TODO: load persistent data from data's ID
+  self.tags = TagMap(data.tags)
+end
+
+function Troop:initState(data)
+  self.current = List(data.current)
+  self.backup = List(data.backup)
+  self.inventory = Inventory(data.inventory)
+  self.gold = data.gold
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -75,8 +86,8 @@ function Troop:rotate()
   local grid = Matrix2(sizeY, sizeX)
   for i = 1, sizeX do
     for j = 1, sizeY do
-      local id = self.grid:get(i, j)
-      grid:set(id, sizeY - j + 1, i)
+      local battler = self.grid:get(i, j)
+      grid:set(battler, sizeY - j + 1, i)
     end
   end
   self.grid = grid
@@ -94,28 +105,75 @@ end
 
 -- Adds the rewards from the defeated enemies.
 function Troop:addRewards()
+  -- List of living party members
+  local characters = List(TroopManager.characterList)
+  characters:conditionalRemove(
+    function(c)
+      return c.battler.party ~= self.party or not c.battler:isAlive() 
+    end)
+  -- List of dead enemies
   local enemies = List(TroopManager.characterList)
   enemies:conditionalRemove(
-    function(e) 
+    function(e)
       return e.battler.party == self.party or e.battler:isAlive() 
     end)
   for enemy in enemies:iterator() do
     self:addTroopRewards(enemy)
-    self:addMemberRewards(enemy)
+    self:addMemberRewards(enemy, characters)
   end
+  self.gold = self.gold + 1000
 end
 -- Adds the troop's rewards (money).
 -- @param(enemy : Character)
 function Troop:addTroopRewards(enemy)
-  self.gold = self.gold + enemy.battler.gold
+  self.gold = self.gold + enemy.battler.data.gold
 end
 -- Adds each troop member's rewards (experience).
 -- @param(enemy : Character)
-function Troop:addMemberRewards(enemy)
-  for battler in self.battlers:iterator() do
-    battler.exp = battler.exp + enemy.battler.exp
+function Troop:addMemberRewards(enemy, characters)
+  for char in characters:iterator() do
+    char.battler.exp = char.battler.exp + enemy.battler.data.exp
+  end
+  for member in self.backup:iterator() do
+    member.data.exp = (member.data.exp or 0) + enemy.battler.data.exp / 2
   end
 end
 
+---------------------------------------------------------------------------------------------------
+-- Persistent Data
+---------------------------------------------------------------------------------------------------
+
+function Troop:getMemberData(key)
+  return self.memberData[key].data
+end
+
+function  Troop:setMemberData(key, data)
+  self.memberData[key].data = data
+end
+
+function Troop:getMembersData(arr)
+  local data = {}
+  for i = 1, #arr do
+    local member = arr[i]
+    data[i] = self.memberData[member.key] or member
+  end
+  return data
+end
+
+function Troop:setMembersData(arr)
+  for i = 1, #arr do
+    local member = arr[i]
+    self.memberData[member.key] = member
+  end
+end
+
+function Troop:createPersistentData()
+  local data = {}
+  data.gold = self.gold
+  data.items = self.inventory:getState()
+  data.current = self:getMembersData(self.data.current)
+  data.backup = self:getMembersData(self.data.backup)
+  return data
+end
+
 return Troop
-  

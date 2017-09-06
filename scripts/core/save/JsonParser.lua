@@ -716,8 +716,9 @@ end
 
 local readFile = love.filesystem.read
 function json.load(path)
+  local comments = "//.*?\n"
   local content = readFile(path .. '.json')
-  local clearContent = content:gsub('#[^#]*[#\r\n]', '')
+  local clearContent = content:gsub(comments, '')
   return json.decode(clearContent)
 end
 

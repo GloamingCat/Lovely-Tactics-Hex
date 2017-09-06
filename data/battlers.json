@@ -7,12 +7,11 @@
 			"level": 5,
 			"attackID": 2,
 			"classID": 1,
-			"charID": 1,
 			"exp": 0,
 			"gold": 0,
 			"scriptAI": {
-			  "path": "",
-			  "param": ""
+				"path": "",
+				"param": ""
 			},
 			"attributes": {
 				"str": 0,
@@ -48,7 +47,6 @@
 			"level": 5,
 			"attackID": 3,
 			"classID": 2,
-			"charID": 2,
 			"exp": 0,
 			"gold": 0,
 			"scriptAI": {
@@ -95,11 +93,10 @@
 			"level": 3,
 			"attackID": 2,
 			"classID": 1,
-			"charID": 3,
 			"exp": 0,
 			"gold": 0,
 			"scriptAI": {
-			  "path": "ai/battler/Rusher.lua",
+			  "path": "Rusher.lua",
 			  "param": ""
 			},
 			"attributes": {
@@ -147,11 +144,10 @@
 			"level": 3,
 			"attackID": 3,
 			"classID": 2,
-			"charID": 4,
 			"exp": 0,
 			"gold": 0,
 			"scriptAI": {
-			  "path": "ai/battler/Rusher.lua",
+			  "path": "Rusher.lua",
 			  "param": ""
 			},
 			"attributes": {

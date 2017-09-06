@@ -5,31 +5,47 @@
   "prefs": {
     "name": "Battle Field",
     "defaultRegion": 0,
+    // The script to be forked when the field is loaded.
     "onStart": {
       "path": "",
       "param": ""
     },
+    // Automatic transitions to other fields.
     "transitions": [],
     "tags": []
   },
   "battle": {
     "parties": [
       {
+        // How member's characters are generated.
+        // 0 => They are not. The characters from the field are used.
+        // 1 => Using pre-defined spots from "memberPos".
+        // 2 => Using the troop's grid.
+        "memberGen": 2,
+        "memberPos": [],
+        // Position of the top-left corner of the party (or left corner, in isometrics).
         "x": 10,
         "y": 10,
         "h": 0,
+        // The initial direction of the characters.
+        // The troop's grid is also rotated to reposition them, in case they are generated from grid.
         "rotation": 2,
-        "troops": [2]
+        // The possible troops to occupate this party spot.
+        "troops": [2],
+        "tags": []
       },
       {
+        "memberGen": 2,
+        "memberPos": [],
         "x": 10,
         "y": 2,
         "h": 0,
         "rotation": 0,
-        "troops": [2]
+        "troops": [2],
+        "tags": []
       }
     ],
-    "playerParty": -1
+    "playerParty": -1 // The player's party. 
   },
   "characters":[],
   "layers": [

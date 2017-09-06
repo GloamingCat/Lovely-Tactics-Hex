@@ -34,19 +34,17 @@ local CharacterBase = class(DirectedObject)
 -- @param(instData : table) the character's data from field file
 function CharacterBase:init(instData)
   -- Character data
-  local id = instData.charID
-  if id < 0 then
-    local battlerData = Database.battlers[instData.battlerID]
-    assert(battlerData, 'Character data not specified.')
-    id = battlerData.charID
-  end
-  local data = Database.characters[id]
+  local data = Database.characters[instData.charID]
   -- Old init
   local x, y, z = tile2Pixel(instData.x, instData.y, instData.h)
   DirectedObject.init(self, data, Vector(x, y, z))
   -- Battle info
-  self.battlerID = instData.battlerID
+  self.key = instData.key
   self.party = instData.party
+  self.battlerID = instData.battlerID
+  if self.battlerID == -1 then
+    self.battlerID = data.battlerID
+  end
   -- Add to FieldManager lists
   FieldManager.characterList:add(self)
   FieldManager.updateList:add(self)
@@ -146,7 +144,7 @@ end
 -- Converting to string.
 -- @ret(string) a string representation
 function CharacterBase:__tostring()
-  return 'Character ' .. self.name .. ' ' .. self.id
+  return 'Character ' .. self.name .. ' (' .. self.key .. ')'
 end
 
 ---------------------------------------------------------------------------------------------------

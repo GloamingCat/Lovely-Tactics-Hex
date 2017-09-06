@@ -6,12 +6,12 @@
 				"name": "Hero Lancer",
 				"data": {
 					"id": 1,
-					"battlerID": 1,
+					"battlerID": 1, // Default battler ID
 					"tiles": [
 						{
-							"dx": 0,
+							"dx": 0, // Displacement from the character's center
 							"dy": 0,
-							"height": 4
+							"height": 4 // The collision height
 						}
 					],
 					"animations": {
@@ -161,6 +161,7 @@
 				"name": "Evil Lancer",
 				"data": {
 					"id": 3,
+					"battlerID": 3,
 					"tiles": [
 						{
 							"dx": 0,
@@ -233,6 +234,7 @@
 				"name": "Evil Mage",
 				"data": {
 					"id": 4,
+					"battlerID": 4,
 					"tiles": [
 						{
 							"dx": 0,

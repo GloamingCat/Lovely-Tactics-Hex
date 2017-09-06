@@ -38,8 +38,10 @@ local BattlerBase = class()
 
 -- Constructor.
 -- @param(data : table) battler's data from database
-function BattlerBase:init(data)
+function BattlerBase:init(data, save, troopID)
+  self.troopID = troopID
   self.data = data
+  self.save = save
   self.classData = Database.classes[data.classID]
   self.name = data.name
   self.tags = TagMap(data.tags)
@@ -54,6 +56,11 @@ end
 -- @param(skills : table) array of skill IDs
 -- @param(attackID : number) ID of the battler's "Attack" skill
 function BattlerBase:initializeSkillList(skills, attackID)
+  -- Get from troop's persistent data
+  if self.save then
+    skills = self.save.skills or skills
+    attackID = self.save.attackID or attackID
+  end
   self.skillList = List()
   for i = 1, #skills do
     local id = skills[i]
@@ -65,18 +72,23 @@ end
 -- @param(elements : table) array of element factors 
 --  (in percentage, 100 is neutral)
 function BattlerBase:initializeElements(elements)
-  local e = newArray(elementCount, 0)
-  for i = 1, #elements do
-    e[elements[i].id + 1] = elements[i].value - 100
+  self.elementFactors = self.save and self.save.elements
+  if not self.elementFactors then
+    local e = newArray(elementCount, 0)
+    for i = 1, #elements do
+      e[elements[i].id] = elements[i].value - 100
+    end
+    self.elementFactors = e
   end
-  self.elementFactors = e
 end
 -- Creates the initial status list.
 function BattlerBase:initializeStatusList(initialStatus)
+  initialStatus = self.save and self.save.status
   self.statusList = StatusList(initialStatus)
 end
 -- Initializes inventory from the given initial items slots.
 function BattlerBase:initializeInventory(items)
+  items = self.save and self.save.items
   self.inventory = Inventory(items)
 end
 
@@ -114,24 +126,44 @@ end
 -- @param(level : number) battler's level
 function BattlerBase:createStateValues(attBase, level)
   self.steps = 0
-  self.state = {}
-  self.attAdd = {}
-  self.attMul = {}
-  self.attBase = {}
-  -- Attribute bonus
-  for i = 1, #attConfig do
-    local key = attConfig[i].key
-    local b = attBase[key] or 0
-    if self.classData.build[key] then
-      local formula = loadformula(self.classData.build[key], 'lvl')
-      b = b + formula(level)
+  if self.save then
+    self.state = save.state
+    self.attAdd = save.attAdd
+    self.attMul = save.attMul
+    self.attBase = save.attBase
+    self.exp = save.exp
+  else
+    self.state = {}
+    self.attAdd = {}
+    self.attMul = {}
+    self.attBase = {}
+    for i = 1, #attConfig do
+      local key = attConfig[i].key
+      local b = attBase[key] or 0
+      if self.classData.build[key] then
+        local formula = loadformula(self.classData.build[key], 'lvl')
+        b = b + formula(level)
+      end
+      self.attBase[key] = b
+      self.attAdd[key] = 0
+      self.attMul[key] = 1
     end
-    self.attBase[key] = b
-    self.attAdd[key] = 0
-    self.attMul[key] = 1
+    self.exp = loadformula(self.classData.expCurve, 'lvl')(level)
+    self.state.hp = self.mhp()
+    self.state.sp = self.msp()
   end
-  self.state.hp = self.state.hp or self.mhp()
-  self.state.sp = self.state.sp or self.msp()
+end
+
+---------------------------------------------------------------------------------------------------
+-- Save
+---------------------------------------------------------------------------------------------------
+
+function BattlerBase:createPersistentData()
+  local data = {}
+  data.exp = self.exp
+  data.elements = self.elementFactors
+  -- TODO
+  return data
 end
 
 return BattlerBase
