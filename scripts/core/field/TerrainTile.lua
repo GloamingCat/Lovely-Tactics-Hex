@@ -109,10 +109,12 @@ function TerrainTile:updateGraphics()
     self.quarters = self:createQuarters(imageData, rows)
     -- Create animation.
     if imageData.cols > 1 then
-      self.animations = {}
+      self.animations = self.animations or {}
       for i = 1, 4 do
         self.animations[i] = Animation(self.quarters[i], imageData)
       end
+    else
+      self.animations = nil
     end
   end
 end

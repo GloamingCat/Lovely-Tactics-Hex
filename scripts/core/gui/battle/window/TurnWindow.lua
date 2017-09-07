@@ -42,7 +42,9 @@ function TurnWindow:init(...)
 end
 -- Overrides GridWindow:createButtons.
 function TurnWindow:createButtons()
-  self.backupBattlers = TurnManager:currentTroop().backup
+  local troop = TurnManager:currentTroop()
+  self.backupBattlers = troop.backup
+  self.currentBattlers = troop:currentCharacters(true)
   Button(self, Vocab.attack, nil, self.onAttackAction, self.attackEnabled)
   Button(self, Vocab.move, nil, self.onMoveAction, self.moveEnabled)
   Button(self, Vocab.skill, nil, self.onSkill, self.skillEnabled)
@@ -148,13 +150,13 @@ function TurnWindow:tradeEnabled(button)
 end
 -- Escape condition. Only escapes if the character is in a tile of their party.
 function TurnWindow:escapeEnabled()
-  if not BattleManager.params.escapeEnabled and #PartyManager:onFieldBattlers() == 1 then
+  if not BattleManager.params.escapeEnabled and #self.currentBattlers == 1 then
     return false
   end
   local char = TurnManager:currentCharacter()
   local userParty = char.battler.party
   local tileParty = char:getTile().gui.party
-  return userParty == tileParty
+  return userParty == tileParty or true
 end
 -- Call Ally condition. Enabled if there any any backup members.
 function TurnWindow:callAllyEnabled()

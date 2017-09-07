@@ -30,9 +30,10 @@ end
 -- Overrides BattleAction:onConfirm.
 function CallAction:onConfirm(input)
   if input.GUI then
-    local result = GUIManager:showGUIForResult(CallGUI(input.target))
+    local troop = TroopManager:currentTroop()
+    local result = GUIManager:showGUIForResult(CallGUI(troop))
     if result ~= 0 then
-      TroopManager:createBattleCharacter(input.target, result)
+      troop:callMember(result)
       input.GUI:endGridSelecting()
       return self:execute()
     end

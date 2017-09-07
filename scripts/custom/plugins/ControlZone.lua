@@ -17,9 +17,9 @@ local Battler = require('core/battle/Battler')
 ---------------------------------------------------------------------------------------------------
 
 -- Override.
-local old_passable = MoveAction.isPassableBetween
+local MoveAction_passable = MoveAction.isPassableBetween
 function MoveAction:isPassableBetween(initial, final, user)
-  local passable = old_passable(self, initial, final, user)
+  local passable = MoveAction_passable(self, initial, final, user)
   return passable and initial:isControlZone(user.battler)
 end
 

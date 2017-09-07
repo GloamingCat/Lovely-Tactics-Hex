@@ -85,16 +85,22 @@ function TroopManager:createTroop(troopID, partyInfo, party)
     end
   end
 end
+
+---------------------------------------------------------------------------------------------------
+-- Battle characters
+---------------------------------------------------------------------------------------------------
+
 -- Creates a new battle character.
 -- @param(tile : ObjectTile) the initial tile of the character
--- @param(battlerData : table) the battler's data from file
--- @param(field : Field) the current field
+-- @param(dir : number) the initial direction of the character
+-- @param(member : table) the troop member which this character represents
+-- @param(party : number) the number of the field's party spot this character belongs to
 -- @ret(BattleCharacter) the newly created character
-function TroopManager:createCharacter(tile, dir, slot, party)
+function TroopManager:createCharacter(tile, dir, member, party)
   local charData = {
-    key = slot.key,
-    charID = slot.charID,
-    battlerID = slot.battlerID,
+    key = member.key,
+    charID = member.charID,
+    battlerID = member.battlerID,
     party = party,
     anim = 'Idle',
     direction = dir,
@@ -121,20 +127,6 @@ function TroopManager:createBattler(character)
     character:setAnimations('battle')
     character:replayAnimation(character.idleAnim, false, angle2row(character.direction))
   end
-end
-
----------------------------------------------------------------------------------------------------
--- Clear
----------------------------------------------------------------------------------------------------
-
--- Erases battlers and clears list.
-function TroopManager:clear()
-  for bc in self.characterList:iterator() do
-    bc.battler = nil
-    bc.troopSlot = nil
-  end
-  self.characterList = List()
-  self.troopDirections = {}
 end
 -- Removes the given character.
 function TroopManager:removeCharacter(char)
@@ -263,6 +255,20 @@ function TroopManager:saveTroops()
       SaveManager.current.troops[troop.data.id] = troop:createPersistentData()
     end
   end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Clear
+---------------------------------------------------------------------------------------------------
+
+-- Erases battlers and clears list.
+function TroopManager:clear()
+  for bc in self.characterList:iterator() do
+    bc.battler = nil
+    bc.troopSlot = nil
+  end
+  self.characterList = List()
+  self.troopDirections = {}
 end
 
 return TroopManager

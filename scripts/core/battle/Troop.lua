@@ -10,9 +10,8 @@ Manipulates the matrix of battler IDs to the instatiated in the beginning of the
 -- Imports
 local List = require('core/datastruct/List')
 local Matrix2 = require('core/math/Matrix2')
-local TagMap = require('core/datastruct/TagMap')
 local Battler = require('core/battle/Battler')
-local Inventory = require('core/battle/Inventory')
+local TroopBase = require('core/battle/TroopBase')
 
 -- Alias
 local mod = math.mod
@@ -22,30 +21,18 @@ local sizeX = Config.troop.width
 local sizeY = Config.troop.height
 local baseDirection = 315 -- characters' direction at rotation 0
 
-local Troop = class()
+local Troop = class(TroopBase)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor. 
--- @param(grid : Matrix2) the matrix of battler IDs (optiontal, empty by default)
--- @param(r : number) the rotation of the troop (optional, 0 by default)
+-- @param(data : table) troop's data from database
+-- @param(party : number) the number of the field party spot this troops was spawned in
 function Troop:init(data, party)
-  self.data = data
+  TroopBase.init(self, data)
   self.party = party
-  -- Members' persistent data
-  if data.persistent then
-    local save = SaveManager.current.troops[data.id]
-    self:initState(save or data)
-    -- Member data table
-    self.memberData = {}
-    self:setMembersData(self.current)
-    self:setMembersData(self.backup)
-    self:setMembersData(self.hidden)
-  else
-    self:initState(data)
-  end
   -- Grid
   self.grid = Matrix2(sizeX, sizeY)
   for i = 1, #data.current do
@@ -59,19 +46,6 @@ function Troop:init(data, party)
   if ai.path ~= '' then
     self.AI = require('custom/' .. ai.path)(self)
   end
-  -- Tags
-  self.tags = TagMap(data.tags)
-end
--- Sets troop's state given the initial state data.
--- @param(data : table) data from save file or database file
-function Troop:initState(data)
-  self.current = List(data.current)
-  self.backup = List(data.backup)
-  self.hidden = List(data.hidden)
-  self.members = List(data.current)
-  self.members:addAll(data.backup)
-  self.inventory = Inventory(data.inventory)
-  self.gold = data.gold
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -105,23 +79,53 @@ function Troop:getCharacterDirection()
 end
 
 ---------------------------------------------------------------------------------------------------
+-- Characters
+---------------------------------------------------------------------------------------------------
+
+-- Adds a character to the field that represents the member with the given key.
+-- @param(key : string) member's key
+-- @param(tile : ObjectTile) the tile the character will be put in
+-- @ret(Character) the newly created character for the member
+function Troop:callMember(key, tile)
+  local i = self:findMember(key, self.backup)
+  assert(i, 'Could not call member ' .. key .. ': not in backup list.')
+  local member = self.backup:remove(i)
+  self.current:add(member)
+  local dir = self:getCharacterDirection()
+  local character = TroopManager:createCharacter(tile, dir, member, self.party)
+  TroopManager:createBattler(character)
+  return character
+end
+-- Removes a member character.
+-- @param(char : Character)
+function Troop:removeMember(char)
+  local i = self:findMember(char.key, self.current)
+  assert(i, 'Could not remove member ' .. char.key .. ': not in current list.')
+  local member = self.current:remove(i)
+  self.backup:add(member)
+  self:setMemberData(char.key, char.battler:createPersistentData())
+  TroopManager:removeCharacter(char)
+end
+-- Gets the characters in the field that are in this troop.
+-- @param(alive) true to include only alive character, false to only dead, nil to both
+-- @ret(List)
+function Troop:currentCharacters(alive)
+  local characters = List(TroopManager.characterList)
+  characters:conditionalRemove(
+    function(c)
+      return c.battler.party ~= self.party or c.battler:isAlive() == not alive
+    end)
+  return characters
+end
+
+---------------------------------------------------------------------------------------------------
 -- Rewards
 ---------------------------------------------------------------------------------------------------
 
 -- Adds the rewards from the defeated enemies.
 function Troop:addRewards()
   -- List of living party members
-  local characters = List(TroopManager.characterList)
-  characters:conditionalRemove(
-    function(c)
-      return c.battler.party ~= self.party or not c.battler:isAlive() 
-    end)
-  -- List of backup party members
-  local backup = List(self.members)
-  characters:conditionalRemove(
-    function(m)
-      return m.battler.party ~= self.party or not m.battler:isAlive() 
-    end)
+  local characters = self:currentCharacters(true)
   -- List of dead enemies
   local enemies = List(TroopManager.characterList)
   enemies:conditionalRemove(
@@ -130,7 +134,7 @@ function Troop:addRewards()
     end)
   for enemy in enemies:iterator() do
     self:addTroopRewards(enemy)
-    self:addMemberRewards(enemy, characters)
+    self:addMembersRewards(enemy, characters)
   end
   self.gold = self.gold + 1000
 end
@@ -141,66 +145,12 @@ function Troop:addTroopRewards(enemy)
 end
 -- Adds each troop member's rewards (experience).
 -- @param(enemy : Character)
-function Troop:addMemberRewards(enemy, characters)
+function Troop:addMembersRewards(enemy, characters)
+  characters = characters or self:currentCharacters(true)
   for char in characters:iterator() do
     char.battler.exp = char.battler.exp + enemy.battler.data.exp
+    -- TODO: check level up
   end
-  for member in self.backup:iterator() do
-    member.data.exp = (member.data.exp or 0) + enemy.battler.data.exp / 2
-  end
-end
-
----------------------------------------------------------------------------------------------------
--- Change members
----------------------------------------------------------------------------------------------------
-
-function Troop:createMember(member)
-end
-
-function Troop:deleteMember(key)
-
-end
-
----------------------------------------------------------------------------------------------------
--- Persistent Data
----------------------------------------------------------------------------------------------------
-
-function Troop:getMemberData(key)
-  if self.data.persistent then
-    return self.memberData[key].data
-  end
-end
-
-function  Troop:setMemberData(key, data)
-  if self.data.persistent then
-    self.memberData[key].data = data
-  end
-end
-
-function Troop:getMembersData(arr)
-  local data = {}
-  for i = 1, #arr do
-    local member = arr[i]
-    data[i] = self.memberData[member.key] or member
-  end
-  return data
-end
-
-function Troop:setMembersData(arr)
-  for i = 1, #arr do
-    local member = arr[i]
-    self.memberData[member.key] = member
-  end
-end
-
-function Troop:createPersistentData()
-  local data = {}
-  data.gold = self.gold
-  data.items = self.inventory:getState()
-  data.current = self:getMembersData(self.current)
-  data.backup = self:getMembersData(self.backup)
-  data.hidden = self:getMembersData(self.hidden)
-  return data
 end
 
 return Troop

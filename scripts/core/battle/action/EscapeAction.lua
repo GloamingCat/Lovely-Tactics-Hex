@@ -13,6 +13,7 @@ local ConfirmGUI = require('core/gui/general/ConfirmGUI')
 
 -- Alias
 local yield = coroutine.yield
+local max = math.max
 
 -- Constants
 local animSpeed = 10
@@ -47,16 +48,15 @@ function EscapeAction:onConfirm(input)
   local party = char.battler.party
   while char.sprite.color.alpha > 0 do
     local a = char.sprite.color.alpha
-    char.sprite:setRGBA(nil, nil, nil, a - animSpeed)
+    char.sprite:setRGBA(nil, nil, nil, max(a - animSpeed, 0))
     yield()
   end
-  char.sprite:setRGBA(nil, nil, nil, 0)
-  TroopManager:removeCharacter(char)
+  local troop = TurnManager:currentTroop()
+  troop:removeMember(char)
   if TroopManager:getMemberCount(party) == 0 then
     return {
       executed = true,
-      escaped = true
-    }
+      escaped = true }
   else
     return self:execute()
   end

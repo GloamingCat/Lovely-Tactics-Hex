@@ -22,15 +22,15 @@ local CallWindow = class(GridWindow)
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
-function CallWindow:init(GUI)
+function CallWindow:init(GUI, troop)
   GridWindow.init(self, GUI)
+  self.troop = troop
 end
 -- Creates a button for each backup member.
 function CallWindow:createButtons()
-  local troop = TurnManager:currentTroop()
-  for i = 1, #troop.backup do
-    local member = troop.backup[i]
-    local save = troop:getMemberData(member.key)
+  for i = 1, #self.troop.backup do
+    local member = self.troop.backup[i]
+    local save = self.troop:getMemberData(member.key)
     local battler = BattlerBase:fromMember(member, save)
     local button = Button(self, battler.data.name, nil, self.onButtonConfirm)
     button.onSelect = self.onButtonSelect
@@ -49,7 +49,9 @@ function CallWindow:onButtonConfirm(button)
 end
 -- Select callback for each button, show the battler's info.
 function CallWindow:onButtonSelect(button)
-  -- TODO: show target window
+  if self.GUI.targetWindow then
+    self.GUI.targetWindow:setBattler(button.battler)
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
