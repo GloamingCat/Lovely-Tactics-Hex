@@ -9,7 +9,7 @@ Result = 1 means that the turn ended.
 =================================================================================================]]
 
 -- Imports
-local ActionWindow = require('core/gui/battle/ActionWindow')
+local ActionWindow = require('core/gui/battle/window/ActionWindow')
 local MoveAction = require('core/battle/action/MoveAction')
 local EscapeAction = require('core/battle/action/EscapeAction')
 local VisualizeAction = require('core/battle/action/VisualizeAction')

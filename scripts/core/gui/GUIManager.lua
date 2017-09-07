@@ -45,23 +45,17 @@ function GUIManager:isWaitingInput()
   return self.current and self.current.activeWindow ~= nil
 end
 -- [COROUTINE] Shows GUI and waits until returns a result.
--- @param(path : string) the GUI path from custom/gui folder.
--- @param(block : boolean) tells if it's supposed to block FieldManager updates
-function GUIManager:showGUIForResult(path, ...)
-  local gui = self:showGUI(path, ...)
+function GUIManager:showGUIForResult(...)
+  local gui = self:showGUI(...)
   local result = gui:waitForResult()
   self:returnGUI()
   return result
 end
 -- [COROUTINE] Shows GUI and adds to the stack.
 -- @param(path : string or GUI) the GUI path from custom/gui folder or the GUI itself.
-function GUIManager:showGUI(path, ...)
+function GUIManager:showGUI(newGUI)
   if self.current then
     self.stack:push(self.current)
-  end
-  local newGUI = path
-  if type(path) == 'string' then
-    newGUI = require('custom/gui/' .. path)(...)
   end
   self.current = newGUI
   newGUI:show()

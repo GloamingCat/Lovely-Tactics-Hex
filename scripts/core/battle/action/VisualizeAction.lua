@@ -8,8 +8,8 @@ The BattleAction that is executed when players cancels in the Turn Window.
 =================================================================================================]]
 
 -- Imports
-local BattlerWindow = require('core/gui/battle/BattlerWindow')
 local BattleAction = require('core/battle/action/BattleAction')
+local VisualizeGUI = require('core/gui/battle/VisualizeGUI')
 
 local VisualizeAction = class(BattleAction)
 
@@ -29,7 +29,7 @@ end
 -- Overrides BattleAction:execute.
 function VisualizeAction:execute(input)
   local character = input.target.characterList[1]
-  GUIManager:showGUIForResult('battle/VisualizeGUI', character)
+  GUIManager:showGUIForResult(VisualizeGUI(character))
   if input.GUI then
     input.GUI:startGridSelecting(input.target)
   end

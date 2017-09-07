@@ -10,6 +10,7 @@ Provides methods for battle's turn management.
 -- Imports
 local MoveAction = require('core/battle/action/MoveAction')
 local PathFinder = require('core/battle/ai/PathFinder')
+local BattleGUI = require('core/gui/battle/BattleGUI')
 
 -- Alias
 local indexOf = util.arrayIndexOf
@@ -84,7 +85,7 @@ end
 function TurnManager:runPlayerTurn()
   while true do
     self:characterTurnStart()
-    local result = GUIManager:showGUIForResult('battle/BattleGUI')
+    local result = GUIManager:showGUIForResult(BattleGUI())
     if result.characterIndex then
       self.characterIndex = result.characterIndex
     else

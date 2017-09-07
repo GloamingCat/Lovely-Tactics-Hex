@@ -120,7 +120,7 @@ function StatusList:attBonus(name)
   local add = 0
   for i = 1, #self do
     add = add + self[i].attAdd[name] or 0
-    mul = mul * self[i].attMul[name] or 1
+    mul = mul + self[i].attMul[name] or 0
   end
   return add, mul
 end

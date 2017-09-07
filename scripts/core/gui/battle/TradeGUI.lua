@@ -9,8 +9,8 @@ GUI that is shown when player selects a battler during Visualize action.
 
 -- Imports
 local GUI = require('core/gui/GUI')
-local TradeWindow = require('core/gui/battle/TradeWindow')
-local TradeCountWindow = require('core/gui/battle/TradeCountWindow')
+local TradeWindow = require('core/gui/battle/window/TradeWindow')
+local TradeCountWindow = require('core/gui/battle/window/TradeCountWindow')
 
 local TradeGUI = class(GUI)
 

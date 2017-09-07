@@ -1,0 +1,32 @@
+[
+	{
+		"name": "Hands",
+		"key": "hands",
+		"count": 1,
+		"tags": []
+	},
+	{
+		"name": "Body",
+		"key": "body",
+		"count": 1,
+		"tags": []
+	},
+	{
+		"name": "Neck",
+		"key": "neck",
+		"count": 1,
+		"tags": []
+	},
+	{
+		"name": "Feet",
+		"key": "feet",
+		"count": 1,
+		"tags": []
+	},
+	{
+		"name": "Accessory",
+		"key": "accessory",
+		"count": 2,
+		"tags": []
+	}
+]

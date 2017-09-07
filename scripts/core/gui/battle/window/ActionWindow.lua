@@ -13,6 +13,7 @@ Its result is the action time that the character spent.
 local GridWindow = require('core/gui/GridWindow')
 local SkillAction = require('core/battle/action/SkillAction')
 local ActionInput = require('core/battle/action/ActionInput')
+local ActionGUI = require('core/gui/battle/ActionGUI')
 
 local ActionWindow = class(GridWindow)
 
@@ -24,7 +25,7 @@ function ActionWindow:selectAction(action)
   local input = ActionInput(action, nil, nil, nil, self.GUI)
   action:onSelect(input)
   self.GUI:hide()
-  local result = GUIManager:showGUIForResult('battle/ActionGUI', input)
+  local result = GUIManager:showGUIForResult(ActionGUI(input))
   if result.endCharacterTurn or result.escaped then
     -- End of turn.
     self.result = result

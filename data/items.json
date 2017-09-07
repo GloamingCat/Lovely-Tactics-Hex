@@ -15,8 +15,8 @@
 					"price": 15,
 					"sellable": true,
 					"use": {
-						"consume": true,
 						"skillID": -1,
+						"consume": true,
 						"statusRemove": [],
 						"statusAdd": [],
 						"cure": [
@@ -27,6 +27,7 @@
 						]
 					},
 					"equip": {
+						"type": -1,
 						"status": [],
 						"attributes": []
 					},

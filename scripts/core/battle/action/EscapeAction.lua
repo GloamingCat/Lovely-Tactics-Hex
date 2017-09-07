@@ -9,6 +9,7 @@ The BattleAction that is executed when players chooses the "Escape" button.
 
 -- Imports
 local BattleAction = require('core/battle/action/BattleAction')
+local ConfirmGUI = require('core/gui/general/ConfirmGUI')
 
 -- Alias
 local yield = coroutine.yield
@@ -33,7 +34,7 @@ end
 
 -- Overrides BattoeAction:onActionGUI.
 function EscapeAction:onActionGUI(input)
-  local confirm = GUIManager:showGUIForResult('ConfirmGUI')
+  local confirm = GUIManager:showGUIForResult(ConfirmGUI())
   if confirm == 1 then
     return self:onConfirm(input)
   else

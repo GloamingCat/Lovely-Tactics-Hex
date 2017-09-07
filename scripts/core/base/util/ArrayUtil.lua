@@ -58,6 +58,16 @@ function util.sum(arr)
   end
   return s
 end
+-- Multiples all the elements in a array of numbers (or objects with the * operator).
+-- @param(arr : table) array containing the elements
+-- @ret(unknown) the product of all elements
+function util.mul(arr)
+  local m = 1
+  for i = 1, #arr do
+    m = m * arr[i]
+  end
+  return m
+end
 -- Gets the maximum element from an array of numbers (or objects with the > operator).
 -- @param(arr : table) array containing the elements
 -- @ret(unknown) the maximum element

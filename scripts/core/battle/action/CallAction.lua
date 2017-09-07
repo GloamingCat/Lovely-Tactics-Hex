@@ -9,6 +9,7 @@ The BattleAction that is executed when players chooses the "Call Ally" button.
 
 -- Imports
 local BattleAction = require('core/battle/action/BattleAction')
+local CallGUI = require('core/gui/battle/CallGUI')
 
 local CallAction = class(BattleAction)
 
@@ -29,7 +30,7 @@ end
 -- Overrides BattleAction:onConfirm.
 function CallAction:onConfirm(input)
   if input.GUI then
-    local result = GUIManager:showGUIForResult('battle/CallGUI', input.target)
+    local result = GUIManager:showGUIForResult(CallGUI(input.target))
     if result ~= 0 then
       TroopManager:createBattleCharacter(input.target, result)
       input.GUI:endGridSelecting()

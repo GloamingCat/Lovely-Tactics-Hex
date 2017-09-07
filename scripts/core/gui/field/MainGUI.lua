@@ -7,7 +7,7 @@ The GUI that is openned when player presses the menu button in the field.
 
 -- Imports
 local GUI = require('core/gui/GUI')
-local MainWindow = require('core/gui/field/MainWindow')
+local MainWindow = require('core/gui/field/window/MainWindow')
 
 local MainGUI = class(GUI)
 

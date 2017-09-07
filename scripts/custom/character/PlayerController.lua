@@ -9,6 +9,7 @@ The player's start fiber. It describes the game's behavior according to the play
 
 -- Imports
 local Fiber = require('core/fiber/Fiber')
+local MainGUI = require('core/gui/field/MainGUI')
 
 -- Alias
 local yield = coroutine.yield
@@ -40,7 +41,7 @@ end
 
 -- Opens game's main GUI.
 local function openGUI()
-  GUIManager:showGUIForResult('MainGUI')
+  GUIManager:showGUIForResult(MainGUI())
 end
 
 ---------------------------------------------------------------------------------------------------

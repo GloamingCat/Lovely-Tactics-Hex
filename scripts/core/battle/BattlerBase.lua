@@ -20,6 +20,7 @@ local readFile = love.filesystem.read
 local newArray = util.array.new
 local copyArray = util.array.copy
 local copyTable = util.table.shallowCopy
+local sum = util.array.sum
 
 -- Constants
 local attConfig = Config.attributes
@@ -45,12 +46,12 @@ function BattlerBase:init(data, save, troopID)
   self.classData = Database.classes[data.classID]
   self.name = data.name
   self.tags = TagMap(data.tags)
-  self:createAttributes()
-  self:createStateValues(data.attributes, data.level)
   self:initializeSkillList(data.skills or {}, data.attackID)
   self:initializeElements(data.elements or {})
   self:initializeStatusList(data.status or {})
   self:initializeInventory(data.items or {})
+  self:createAttributes()
+  self:createStateValues(data.attributes, data.level)
 end
 -- Creates and sets the list of usable skills.
 -- @param(skills : table) array of skill IDs
@@ -72,11 +73,11 @@ end
 -- @param(elements : table) array of element factors 
 --  (in percentage, 100 is neutral)
 function BattlerBase:initializeElements(elements)
-  self.elementFactors = self.save and self.save.elements
+  self.elementFactors = self.save and copyArray(self.save.elements)
   if not self.elementFactors then
     local e = newArray(elementCount, 0)
     for i = 1, #elements do
-      e[elements[i].id] = elements[i].value - 100
+      e[elements[i].id] = (elements[i].value - 100) / 100
     end
     self.elementFactors = e
   end
@@ -104,12 +105,14 @@ function BattlerBase:createAttributes()
     local script = attConfig[i].script
     if script == '' then
       self.att[key] = function()
-        return self.attAdd[key] + self.attMul[key] * self.attBase[key]
+        local add, mul = self.statusList:attBonus(key)
+        return add + mul * self.attBase[key]
       end
     else
       local base = loadformula(script, 'att')
       self.att[key] = function()
-        return self.attAdd[key] + self.attMul[key] * (self.attBase[key] + base(self.att))
+        local add, mul = self.statusList:attBonus(key)
+        return add + mul * (self.attBase[key] + base(self.att))
       end
     end
   end
@@ -127,15 +130,12 @@ end
 function BattlerBase:createStateValues(attBase, level)
   self.steps = 0
   if self.save then
-    self.state = save.state
-    self.attAdd = save.attAdd
-    self.attMul = save.attMul
-    self.attBase = save.attBase
+    self.state = copyTable(save.state)
+    self.attBase = copyTable(save.attBase)
     self.exp = save.exp
+    self.level = save.level
   else
     self.state = {}
-    self.attAdd = {}
-    self.attMul = {}
     self.attBase = {}
     for i = 1, #attConfig do
       local key = attConfig[i].key
@@ -145,10 +145,9 @@ function BattlerBase:createStateValues(attBase, level)
         b = b + formula(level)
       end
       self.attBase[key] = b
-      self.attAdd[key] = 0
-      self.attMul[key] = 1
     end
     self.exp = loadformula(self.classData.expCurve, 'lvl')(level)
+    self.level = level
     self.state.hp = self.mhp()
     self.state.sp = self.msp()
   end
@@ -160,9 +159,10 @@ end
 
 function BattlerBase:createPersistentData()
   local data = {}
+  data.level = self.level
   data.exp = self.exp
-  data.elements = self.elementFactors
-  -- TODO
+  data.state = self.state
+  data.attBase = self.attBase
   return data
 end
 

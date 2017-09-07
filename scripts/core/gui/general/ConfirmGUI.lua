@@ -9,7 +9,7 @@ The GUI that contains only a confirm window.
 
 -- Imports
 local GUI = require('core/gui/GUI')
-local ConfirmWindow = require('core/gui/general/ConfirmWindow')
+local ConfirmWindow = require('core/gui/general/window/ConfirmWindow')
 
 local ConfirmGUI = class(GUI)
 

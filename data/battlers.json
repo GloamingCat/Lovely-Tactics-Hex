@@ -144,7 +144,7 @@
 			"level": 3,
 			"attackID": 3,
 			"classID": 2,
-			"exp": 0,
+			"exp": 50,
 			"gold": 0,
 			"scriptAI": {
 			  "path": "Rusher.lua",

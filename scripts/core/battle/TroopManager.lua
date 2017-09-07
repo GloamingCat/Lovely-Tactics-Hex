@@ -262,6 +262,7 @@ function TroopManager:saveTroops()
       SaveManager.current.troops[troop.data.id] = troop:createPersistentData()
     end
   end
+  print (SaveManager.current.troops[1].current[1].data.exp)
 end
 
 return TroopManager

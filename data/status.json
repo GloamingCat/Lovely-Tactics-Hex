@@ -13,6 +13,7 @@
 			  "path": "status/Poison.lua",
 			  "param": ""
 			},
+			"charAnim": "",
 			"animID": 5,
 			"duration": -1,
 			"deactivate": false,
@@ -40,6 +41,7 @@
 			  "path": "",
 			  "param": ""
 			},
+			"charAnim": "sleep",
 			"animID": 5,
 			"duration": 4000,
 			"deactivate": true,

@@ -9,6 +9,7 @@ The SkillAction that is executed when players chooses the Trade action.
 
 -- Imports
 local CharacterOnlySkill = require('core/battle/action/CharacterOnlySkill')
+local TradeGUI = require('core/gui/battle/TradeGUI')
 
 local TradeSkill = class(CharacterOnlySkill)
 
@@ -21,7 +22,7 @@ end
 function TradeSkill:applyAnimatedEffects(input)
   input.user:turnToTile(input.target.x, input.target.y)
   local char = input.target.characterList[1]
-  GUIManager:showGUIForResult('battle/TradeGUI', input.user, char)
+  GUIManager:showGUIForResult(TradeGUI(input.user, char))
 end
 
 return TradeSkill
