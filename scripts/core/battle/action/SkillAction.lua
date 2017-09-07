@@ -200,7 +200,6 @@ end
 function SkillAction:calculateEffectResult(effect, input, targetChar, rand)
   local rate = effect.successRate(self, input.user.battler.att, 
     targetChar.battler.att, random)
-  local r = rand() * 100
   if rand() * 100 > rate then
     return nil
   end

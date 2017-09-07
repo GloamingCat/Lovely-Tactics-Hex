@@ -106,7 +106,7 @@
 			"effects": [
 			  {
 			  	"key": "hp",
-				"successRate": "((a.prem() * 2 - b.evdm()) / b.evdm()) * 50",
+				"successRate": "(a.prem() * 2 - b.evdm()) / b.evdm() * 50",
 				"basicResult": "(a.atkm() * 2 - b.defm()) * rand(80, 120) / 100"
 			  }
 			],
@@ -162,7 +162,7 @@
 			"costs": [
 			  {
 			  	"key": "sp",
-				"value": "10"
+				"value": "15"
 			  }
 			],
 			"restriction": 1,
@@ -307,11 +307,11 @@
 		}
 	},
 	{
-		"name": "Cure",
+		"name": "Poison",
 		"data": {
-			"id": 6,
+			"id": 7,
 			"type": 2,
-			"description": "Cures a single ally character.",
+			"description": "Poisons an enemy.",
 			"icon": {
 			  "id": 27,
 			  "col": 0,
@@ -321,22 +321,16 @@
 			"range": 3,
 			"script": {
 			  "path": "skill/CharacterOnly.lua",
-			  "param": "living ally"
+			  "param": "living enemy"
 			},
-			"effects": [
-			  {
-			  	"key": "hp",
-				"successRate": "100",
-				"basicResult": "-(a.atkm() * 2 - b.defm()) * rand(80, 120) / 100"
-			  }
-			],
+			"effects": [],
 			"costs": [
 			  {
 			  	"key": "sp",
 				"value": "10"
 			  }
 			],
-			"restriction": 0,
+			"restriction": 1,
 			"userAnim": {
 				"load": "",
 				"cast": "Skill2",
@@ -355,10 +349,14 @@
 				"value": 100
 			  }
 			],
-			"statusAdd": [],
+			"statusAdd": [
+				{
+					"id": 1,
+					"rate": "80"
+				}
+			],
 			"statusRemove": [],
 			"tags": []
 		}
 	}
-
 ]

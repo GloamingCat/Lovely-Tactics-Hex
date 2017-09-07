@@ -29,10 +29,10 @@ local Battler = class(BattlerBase)
 -- @param(data : table) battler's data rom database
 -- @param(character : Character)
 -- @param(troop : Troop)
-function Battler:init(data, character, troop)
-  local save = troop.persistent and troop:getMemberData(character.key)
-  BattlerBase.init(self, data, save, troop.id)
+function Battler:init(data, character, save)
+  BattlerBase.init(self, data, save)
   self.party = character.party
+  self.character = character
   -- Initialize AI
   local ai = data.scriptAI
   if ai.path ~= '' then
@@ -133,9 +133,11 @@ function Battler:onTurnEnd(char, partyTurn)
 end
 -- Callback for when this battler's turn starts.
 function Battler:onSelfTurnStart(char)
+  self.statusList:onSelfTurnStart(char)
 end
 -- Callback for when this battler's turn ends.
 function Battler:onSelfTurnEnd(char, result)
+  self.statusList:onSelfTurnEnd(char, result)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -151,7 +153,7 @@ function Battler:onSkillUseEnd(input)
   local costs = input.action.costs
   for i = 1, #costs do
     local value = costs[i].cost(self.att)
-    self:damage(costs[i].name, value)
+    self:damage(costs[i].key, value)
   end
   self.statusList:onSkillUseEnd(input.user, input)
 end

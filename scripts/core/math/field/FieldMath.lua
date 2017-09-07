@@ -28,7 +28,6 @@ function FieldMath.init()
   FieldMath.neighborShift = FieldMath.createNeighborShift()
   FieldMath.vertexShift = FieldMath.createVertexShift()
 end
-
 -- A neighbor shift is a list of "offset" values in tile coordinates (x, y)
 --  from the center tile to each neighbor.
 -- @ret(List) the list of vectors

@@ -9,8 +9,11 @@ Window with the list of battles in the party backup.
 
 -- Imports
 local Button = require('core/gui/Button')
-local Battler = require('core/battle/Battler')
+local BattlerBase = require('core/battle/BattlerBase')
 local GridWindow = require('core/gui/GridWindow')
+
+-- Alias
+local max = math.max
 
 local CallWindow = class(GridWindow)
 
@@ -24,12 +27,15 @@ function CallWindow:init(GUI)
 end
 -- Creates a button for each backup member.
 function CallWindow:createButtons()
-  local backup = PartyManager:backupBattlersIDs()
-  for i = 1, #backup do
-    local battler = Battler(backup[i], TroopManager.playerParty)
+  local troop = TurnManager:currentTroop()
+  for i = 1, #troop.backup do
+    local member = troop.backup[i]
+    local save = troop:getMemberData(member.key)
+    local battler = BattlerBase:fromMember(member, save)
     local button = Button(self, battler.data.name, nil, self.onButtonConfirm)
     button.onSelect = self.onButtonSelect
     button.battler = battler
+    button.memberKey = member.key
   end
 end
 
@@ -39,7 +45,7 @@ end
 
 -- Confirm callback for each button, returns the chosen battle.
 function CallWindow:onButtonConfirm(button)
-  self.result = button.battler
+  self.result = button.memberKey
 end
 -- Select callback for each button, show the battler's info.
 function CallWindow:onButtonSelect(button)

@@ -247,13 +247,23 @@ end
 -- Auxiliary Functions
 ---------------------------------------------------------------------------------------------------
 
--- Searchs for characters with the given name
--- @param(name : string) the name of the character(s)
--- @ret(List) list of all characters with the given name
-function FieldManager:search(name)
+-- Search for a character with the given key
+-- @param(key : string) the key of the character
+-- @ret(Character) the first character found with the given key (nil if none was found)
+function FieldManager:search(key)
+  for char in self.characterList:iterator() do
+    if char.key == key then
+      return char
+    end
+  end
+end
+-- Searchs for characters with the given key
+-- @param(key : string) the key of the character(s)
+-- @ret(List) list of all characters with the given key
+function FieldManager:searchAll(key)
   local list = List()
   for char in self.characterList:iterator() do
-    if char.name == name then
+    if char.key == key then
       list:add(char)
     end
   end

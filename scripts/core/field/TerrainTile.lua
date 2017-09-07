@@ -80,6 +80,9 @@ function TerrainTile:setTerrain(id)
   end
   self.data = Database.terrains[id]
   self:updateGraphics()
+  for x, y in mathf.radiusIterator(1, self.x, self.y, self.layer.sizeX, self.layer.sizeY) do
+    self.layer.grid[x][y]:updateGraphics()
+  end
 end
 -- Updates the terrain's graphics.
 function TerrainTile:updateGraphics()
@@ -89,10 +92,12 @@ function TerrainTile:updateGraphics()
       self.quarters[i]:destroy()
     end
   end
+  self.quarters = nil
   -- Check if id representes a terrain.
   if self.data == nil then
     self.moveCost = 0
     self.depth = self.order
+    self.animations = nil
     return
   end
   -- Create new terrain images.

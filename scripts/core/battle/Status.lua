@@ -21,13 +21,13 @@ local Status = class()
 -- @param(id : number) the ID of the status in the database
 -- @param(state : table) the persistent state of the status
 -- @param(char : Character) the character with the status
-function Status:init(id, state, char)
+function Status:init(data, state, char)
   -- General
-  self.id = id
-  self.data = Database.status[id + 1]
+  self.character = char
+  self.data = data
   self.state = state or { lifeTime = 0 }
   if self.data.duration >= 0 then
-    self.duration = self.data.duration * 60
+    self.duration = self.data.duration
   else
     self.duration = math.huge
   end
@@ -37,9 +37,9 @@ function Status:init(id, state, char)
   self.attMul = {}
   for i = 1, #self.data.attributes do
     local bonus = self.data.attributes[i]
-    local name = Database.attributes[bonus.id + 1].shortName
-    self.attAdd[name] = bonus.add
-    self.attMul[name] = bonus.mul
+    local name = Database.attributes[bonus.id].shortName
+    self.attAdd[name] = bonus.add / 100
+    self.attMul[name] = bonus.mul / 100
   end
   -- Element bonus
   self.elements = {}
@@ -53,12 +53,12 @@ end
 -- @param(state : table) the persistent state of the status
 -- @param(char : Character) the character with the status
 function Status.fromData(id, state, char)
-  local data = Database.status[id + 1]
+  local data = Database.status[id]
   if data.script.path ~= '' then
     local class = require('custom/' .. data.script.path)
-    return class(id, state, char)
+    return class(data, state, char)
   else
-    return Status(id, state, char)
+    return Status(data, state, char)
   end
 end
 

@@ -26,6 +26,8 @@ function TerrainLayer:init(data, sizeX, sizeY, order)
   self.grid = {}
   self.order = order
   self.height = data.info.height
+  self.sizeX = sizeX
+  self.sizeY = sizeY
   -- Initializes all tiles
   for i = 1, sizeX do
     self.grid[i] = {}

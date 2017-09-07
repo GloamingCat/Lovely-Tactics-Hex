@@ -35,13 +35,12 @@ local HexVMath = require('core/math/field/FieldMath')
 function HexVMath.createNeighborShift()
   local s = HexVMath.createFullNeighborShift()
   if allNeighbors then
-    return s
+    --return s
   end
   table.remove(s, 2)
   table.remove(s, 5)
   return s
 end
-
 -- Creates an array with Vectors representing all Vertex by its distance from the center.
 -- @ret(table) array of Vectors
 function HexVMath.createVertexShift()
@@ -51,13 +50,13 @@ function HexVMath.createVertexShift()
   end
   put(tileB / 2, -tileH / 2)
   if allNeighbors then
-    put(tileW / 2, 0)
+    --put(tileW / 2, 0)
   end
   put(tileW / 2, 0)
   put(tileB / 2, tileH / 2)
   put(-tileB / 2, tileH / 2)
   if allNeighbors then
-    put(-tileW / 2, 0)
+    --put(-tileW / 2, 0)
   end
   put(-tileW / 2, 0)
   put(tileB / 2, -tileH / 2)
@@ -65,23 +64,13 @@ function HexVMath.createVertexShift()
 end
 
 -----------------------------------------------------------------------------------------------
--- Next Coordinates
------------------------------------------------------------------------------------------------
-
-function HexVMath.nextCoordDir(direction)
-  local dx, dy = angle2Coord(direction)
-  return HexVMath.nextCoordAxis(dx, dy)
-end
-
-function HexVMath.nextCoordAxis(dx, dy)
-  dy, dx = dx - dy, dx + dy
-  return max(min(round(dx), 1), -1),  max(min(round(dy), 1), -1)
-end
-
------------------------------------------------------------------------------------------------
 -- Field center
 -----------------------------------------------------------------------------------------------
 
+-- Gets the world center of the given field.
+-- @param(field : Field)
+-- @ret(number) center x
+-- @ret(number) center y
 function HexVMath.pixelCenter(field)
   local x1 = HexVMath.tile2Pixel(1, 1, 0)
   local x2 = HexVMath.tile2Pixel(field.sizeX, field.sizeY, 0)
@@ -89,24 +78,30 @@ function HexVMath.pixelCenter(field)
 end
 
 -----------------------------------------------------------------------------------------------
--- Field center
+-- Field bounds
 -----------------------------------------------------------------------------------------------
 
+-- Gets the world bounds of the given field.
+-- @param(field : Field)
+-- @ret(number) bounding rect x
+-- @ret(number) bounding rect y
+-- @ret(number) bounding rect width
+-- @ret(number) bounding rect height
 function HexVMath.pixelBounds(field)
   local x, y = HexVMath.pixelCenter(field)
   local w = HexVMath.pixelWidth(field.sizeX, field.sizeY)
   local h = HexVMath.pixelHeight(field.sizeX, field.sizeY, #field.objectLayers + 1)
-  -- TODO
+  return x - w / 2, y - h / 2, w, h
 end
-
------------------------------------------------------------------------------------------------
--- Field size
------------------------------------------------------------------------------------------------
-
+-- Gets the world width of the given field.
+-- @param(field : Field)
+-- @ret(number) width in world coordinates
 function HexVMath.pixelWidth(sizeX, sizeY)
   return (sizeX + sizeY - 1) * (tileW + tileB) / 2 + (tileW - tileB) / 2
 end
-
+-- Gets the world height of the given field.
+-- @param(field : Field)
+-- @ret(number) height in world coordinates
 function HexVMath.pixelHeight(sizeX, sizeY, lastLayer)
   return (sizeX + sizeY - 1) * tileH / 2 + tileH / 2 + lastLayer * pph
 end
@@ -269,6 +264,11 @@ end
 function HexVMath.radiusLimitsY(radius, i)
   return max(-radius, -radius - i), min(radius, radius - i)
 end
+
+-----------------------------------------------------------------------------------------------
+-- Next Coordinates
+-----------------------------------------------------------------------------------------------
+
 -- Gets the next tile coordinates given the current tile and an input.
 -- @param(x : number) current tile's x
 -- @param(y : number) current tile's y
@@ -306,6 +306,23 @@ function HexVMath.nextTile(x, y, axisX, axisY, sizeX, sizeY)
     y = y + dy
   end
   return x, y
+end
+-- Gets the next coordinates given a input direction.
+-- @param(direction : number) the input direction as an angle in world coordinates
+-- @ret(number) the new x
+-- @ret(number) the new y
+function HexVMath.nextCoordDir(direction)
+  local dx, dy = angle2Coord(direction)
+  return HexVMath.nextCoordAxis(dx, dy)
+end
+-- Gets the next coordinates given a input direction.
+-- @param(dx : number) the input's delta x in world coordinates
+-- @param(dy : number) the input's delta y in world coordinates
+-- @ret(number) the new x
+-- @ret(number) the new y
+function HexVMath.nextCoordAxis(dx, dy)
+  dy, dx = dx - dy, dx + dy
+  return max(min(round(dx), 1), -1),  max(min(round(dy), 1), -1)
 end
 
 return HexVMath

@@ -42,6 +42,7 @@ function Troop:init(data, party)
     self.memberData = {}
     self:setMembersData(self.current)
     self:setMembersData(self.backup)
+    self:setMembersData(self.hidden)
   else
     self:initState(data)
   end
@@ -61,10 +62,14 @@ function Troop:init(data, party)
   -- Tags
   self.tags = TagMap(data.tags)
 end
-
+-- Sets troop's state given the initial state data.
+-- @param(data : table) data from save file or database file
 function Troop:initState(data)
   self.current = List(data.current)
   self.backup = List(data.backup)
+  self.hidden = List(data.hidden)
+  self.members = List(data.current)
+  self.members:addAll(data.backup)
   self.inventory = Inventory(data.inventory)
   self.gold = data.gold
 end
@@ -111,6 +116,12 @@ function Troop:addRewards()
     function(c)
       return c.battler.party ~= self.party or not c.battler:isAlive() 
     end)
+  -- List of backup party members
+  local backup = List(self.members)
+  characters:conditionalRemove(
+    function(m)
+      return m.battler.party ~= self.party or not m.battler:isAlive() 
+    end)
   -- List of dead enemies
   local enemies = List(TroopManager.characterList)
   enemies:conditionalRemove(
@@ -140,15 +151,30 @@ function Troop:addMemberRewards(enemy, characters)
 end
 
 ---------------------------------------------------------------------------------------------------
+-- Change members
+---------------------------------------------------------------------------------------------------
+
+function Troop:createMember(member)
+end
+
+function Troop:deleteMember(key)
+
+end
+
+---------------------------------------------------------------------------------------------------
 -- Persistent Data
 ---------------------------------------------------------------------------------------------------
 
 function Troop:getMemberData(key)
-  return self.memberData[key].data
+  if self.data.persistent then
+    return self.memberData[key].data
+  end
 end
 
 function  Troop:setMemberData(key, data)
-  self.memberData[key].data = data
+  if self.data.persistent then
+    self.memberData[key].data = data
+  end
 end
 
 function Troop:getMembersData(arr)
@@ -171,8 +197,9 @@ function Troop:createPersistentData()
   local data = {}
   data.gold = self.gold
   data.items = self.inventory:getState()
-  data.current = self:getMembersData(self.data.current)
-  data.backup = self:getMembersData(self.data.backup)
+  data.current = self:getMembersData(self.current)
+  data.backup = self:getMembersData(self.backup)
+  data.hidden = self:getMembersData(self.hidden)
   return data
 end
 

@@ -39,8 +39,7 @@ local BattlerBase = class()
 
 -- Constructor.
 -- @param(data : table) battler's data from database
-function BattlerBase:init(data, save, troopID)
-  self.troopID = troopID
+function BattlerBase:init(data, save)
   self.data = data
   self.save = save
   self.classData = Database.classes[data.classID]
@@ -52,6 +51,16 @@ function BattlerBase:init(data, save, troopID)
   self:initializeInventory(data.items or {})
   self:createAttributes()
   self:createStateValues(data.attributes, data.level)
+end
+function BattlerBase:fromMember(member, save)
+  local id = save and save.battlerID or member.battlerID
+  if id < 0 then
+    local charID = save and save.charID or member.charID
+    local charData = Database.characters[charID]
+    id = charData.battlerID
+  end
+  local data = Database.battlers[id]
+  return self(data, save)
 end
 -- Creates and sets the list of usable skills.
 -- @param(skills : table) array of skill IDs
