@@ -1,8 +1,20 @@
 
+/*=================================================================================================
+
+Text Shader 
+--------------------------------------------------------------------------------------------------
+Draws the text with an outline.
+
+=================================================================================================*/
+
+// Size of the outline. It depends on the text's texture size.
 extern vec2 stepSize = vec2(0.001f, 0.001f);
+// Scale of the font.
 extern vec2 scale = vec2(1, 1);
 
-uniform vec4 outlineColor = vec4(0,0,0,1); // the color of the outline
+// Color of the outline (customized). Black by default.
+uniform vec4 outlineColor = vec4(0,0,0,1);
+// Width of the outline. 1 pixel by default.
 uniform number outlineSize = 1; // in pixels
 
 vec4 effect(vec4 color, sampler2D texture, vec2 texture_coords, vec2 screen_coords) {

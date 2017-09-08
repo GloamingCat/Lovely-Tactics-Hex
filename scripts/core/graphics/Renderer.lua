@@ -19,8 +19,10 @@ local rotate = math.rotate
 
 -- Constants
 local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
+local spriteShader = lgraphics.newShader('shaders/sprite.glsl')
+local vertexFormat = { { 'vhsv', 'float', 3 } }
 
-local Renderer = class(Transformable, Colored)
+local Renderer = class(Transformable)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -36,6 +38,7 @@ function Renderer:init(size, minDepth, maxDepth, order)
   self.size = size
   self.list = {}
   self.batch = lgraphics.newSpriteBatch(blankTexture, size, 'dynamic')
+  self.mesh = lgraphics.newMesh(vertexFormat, size * 4)
   self.canvas = lgraphics.newCanvas(1, 1)
   self.order = order
   self:activate()
@@ -154,6 +157,7 @@ function Renderer:draw()
     self:redrawCanvas()
   end
   local r, g, b, a = lgraphics.getColor()
+  lgraphics.setShader(spriteShader)
   lgraphics.setColor(self:getRGBA())
   lgraphics.draw(self.canvas, 0, 0)
   lgraphics.setColor(r, g, b, a)
@@ -206,11 +210,26 @@ end
 -- Draws current and clears.
 function Renderer:clearBatch()
   if self.batch and self.toDraw.size > 0 then
-    -- TODO: attach mesh from sprites in the toDraw list
-    love.graphics.draw(self.batch)
+    self:setMeshAttributes(self.toDraw)
+    self.batch:attachAttribute('vhsv', self.mesh)
+    lgraphics.draw(self.batch)
     self.batch:clear()
     self.toDraw.size = 0
   end
+end
+-- Updates vertices in the mesh.
+function Renderer:setMeshAttributes(list)
+  local n = #list - 1
+  for i = 0, n do
+    local h, s, v = list[i + 1]:getHSV()
+    local i4 = i * 4
+    h, s, v = 0, 1, 1
+    self.mesh:setVertex(i4 + 1, h, s, v)
+    self.mesh:setVertex(i4 + 2, h, s, v)
+    self.mesh:setVertex(i4 + 3, h, s, v)
+    self.mesh:setVertex(i4 + 4, h, s, v)
+  end
+  self.mesh:setDrawRange(1, #list * 4)
 end
 -- Organizes current sprite list by texture.
 -- @param(list : Sprite Table) list of sprites to be sorted
