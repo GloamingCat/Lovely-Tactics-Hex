@@ -52,8 +52,7 @@ end
 function Sprite.fromQuad(quadData, renderer)
   local texture = love.graphics.newImage('images/' .. quadData.imagePath)
   local w, h = texture:getWidth(), texture:getHeight()
-  local quad = love.graphics.newQuad(quadData.x, quadData.y, 
-    quadData.width, quadData.height, w, h)
+  local quad = Quad(quadData.x, quadData.y, quadData.width, quadData.height, w, h)
   return Sprite(renderer, texture, quad)
 end
 -- Creates a deep copy of this sprite (does not clone texture).
@@ -66,6 +65,7 @@ function Sprite:clone(renderer)
   copy:setOffset(self.offsetX, self.offsetY, self.offsetDepth)
   copy:setScale(self.scaleX, self.scaleY)
   copy:setColor(self.color)
+  copy:setHSV(self.hsv)
   copy:setPosition(self.position)
   copy:setRotation(self.rotation)
   copy:setVisible(self.visible)
@@ -127,6 +127,7 @@ function Sprite:setTransformation(data)
   self:setScale(data.scaleX / 100, data.scaleY / 100)
   self:setRotation(math.rad(data.rotation or 0))
   self:setRGBA(data.red, data.green, data.blue, data.alpha)
+  self:setHSV(data.hue / 360, data.saturation / 100, data.brightness / 100)
 end
 -- Merges sprite's current transformation with a new one.
 -- @param(data : table) transformation data
@@ -138,6 +139,8 @@ function Sprite:applyTransformation(data)
   self:setRotation(math.rad(data.rotation or 0 + self.rotation))
   self:setRGBA(data.red * self.color.red / 255, data.green * self.color.green / 255, 
     data.blue * self.color.blue / 255, data.alpha * self.color.alpha / 255)
+  self:setHSV(data.hue / 360 + self.hsv.h, data.saturation / 100 * self.hsv.s, 
+    data.brightness / 100 * self.hsv.v)
 end
 -- Sets the quad's scale.
 -- @param(sx : number) the X-axis scale
