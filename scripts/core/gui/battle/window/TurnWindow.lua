@@ -155,8 +155,8 @@ function TurnWindow:escapeEnabled()
   end
   local char = TurnManager:currentCharacter()
   local userParty = char.battler.party
-  local tileParty = char:getTile().gui.party
-  return userParty == tileParty or true
+  local tileParty = char:getTile().party
+  return userParty == tileParty
 end
 -- Call Ally condition. Enabled if there any any backup members.
 function TurnWindow:callAllyEnabled()

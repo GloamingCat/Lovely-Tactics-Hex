@@ -21,7 +21,7 @@ end
 -- @ret(table) the copy of the table
 function util.copy(array)
   local copy = {}
-  util.addArray(copy, array)
+  util.addAll(copy, array)
   return copy
 end
 -- Combines an array of arrays into a single array.

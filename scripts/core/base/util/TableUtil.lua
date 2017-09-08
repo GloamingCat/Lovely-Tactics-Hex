@@ -10,7 +10,7 @@ local util = {}
 -- @ret(table) the copy of the table
 function util.shallowCopy(table)
   local copy = {}
-  util.addTable(copy, table)
+  util.shallowAdd(copy, table)
   return copy
 end
 -- Adds the seconde table's key and values to the first one.
@@ -26,7 +26,7 @@ end
 -- @ret(table) the copy of the table
 function util.deepCopy(table)
   local copy = {}
-  util.deepAddTable(copy, table)
+  util.deepAdd(copy, table)
   return copy
 end
 -- Adds the seconde table's key and values to the first one.
@@ -36,7 +36,7 @@ function util.deepAdd(table, entries)
   for k, v in pairs(entries) do
     local typ = type(v)
     if typ == 'table' then
-      table[k] = util.deepCopyTable(v)
+      table[k] = util.deepCopy(v)
     else
       table[k] = v
     end
@@ -49,7 +49,7 @@ function util.join(tables)
   local new = {}
   for i = 1, #tables do
     local table = tables[i]
-    util.shallowAddTable(new, table)
+    util.shallowAdd(new, table)
   end
   return new
 end

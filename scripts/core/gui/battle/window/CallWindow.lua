@@ -23,8 +23,8 @@ local CallWindow = class(GridWindow)
 
 -- Constructor.
 function CallWindow:init(GUI, troop)
-  GridWindow.init(self, GUI)
   self.troop = troop
+  GridWindow.init(self, GUI)
 end
 -- Creates a button for each backup member.
 function CallWindow:createButtons()

@@ -45,8 +45,7 @@ end
 
 -- Creates all obstacles in data and adds them to the tiles.
 -- @param(layerData : table) the layer's data from field's file
--- @param(tileset : table) the tileset's data from file
-function ObjectLayer:mergeObstacles(layerData, tileset)
+function ObjectLayer:mergeObstacles(layerData)
   for i = 1, self.sizeX do
     for j = 1, self.sizeY do
       local id = layerData.grid[i][j]
@@ -74,13 +73,23 @@ function ObjectLayer:mergeObstacles(layerData, tileset)
 end
 -- Add all regions IDs to the tiles.
 -- @param(layerData : table) the layer's data from field's file
--- @param(tileset : table) the tileset's data from file
-function ObjectLayer:mergeRegions(layerData, tileset)
+function ObjectLayer:mergeRegions(layerData)
   for i = 1, self.sizeX do
     for j = 1, self.sizeY do
       local id = layerData.grid[i][j]
       if id >= 0 then
         self.grid[i][j].regionList:add(id)
+      end
+    end
+  end
+end
+
+function ObjectLayer:setParties(layerData)
+  for i = 1, self.sizeX do
+    for j = 1, self.sizeY do
+      local id = layerData.grid[i][j]
+      if id >= 0 then
+        self.grid[i][j].party = id
       end
     end
   end

@@ -206,10 +206,10 @@ function SkillAction:calculateEffectResult(effect, input, targetChar, rand)
   local result = effect.basicResult(self, input.user.battler.att, 
     targetChar.battler.att, rand)
   local bonus = 0
-  local skillElementFactors = self.elementFactors
-  local targetElementFactors = targetChar.battler.elementFactors
+  local skillElements = self.elementFactors
+  local target = targetChar.battler
   for i = 1, elementCount do
-    bonus = bonus + skillElementFactors[i] * targetElementFactors[i]
+    bonus = bonus + skillElements[i] * target:element(i)
   end
   bonus = result * bonus
   return round(bonus + result)

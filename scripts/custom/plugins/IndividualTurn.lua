@@ -16,6 +16,7 @@ local SkillAction = require('core/battle/action/SkillAction')
 local WaitAction = require('core/battle/action/WaitAction')
 local TargetWindow = require('core/gui/battle/window/TargetWindow')
 local TurnWindow = require('core/gui/battle/window/TurnWindow')
+local ActionGUI = require('core/gui/battle/ActionGUI')
 local SimpleText = require('core/gui/SimpleText')
 local PriorityQueue = require('core/datastruct/PriorityQueue')
 local Vector = require('core/math/Vector')
@@ -36,6 +37,7 @@ local attName = args.attName
 -- Turn Manager
 ---------------------------------------------------------------------------------------------------
 
+-- Override.
 local TurnManager_init = TurnManager.init
 function TurnManager:init()
   TurnManager_init(self)
@@ -182,30 +184,58 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Override.
+local TargetWindow_init = TargetWindow.init
+function TargetWindow:init(GUI, showTC)
+  self.showTC = showTC
+  TargetWindow_init(self, GUI)
+end
+-- Override.
 local TargetWindow_height = TargetWindow.calculateHeight
 function TargetWindow:calculateHeight()
-  return TargetWindow_height(self) + 10
+  if self.showTC then
+    return TargetWindow_height(self) + 10
+  else
+    return TargetWindow_height(self)
+  end
 end
 -- Override.
 local TargetWindow_content = TargetWindow.createContent
 function TargetWindow:createContent(width, height)
   TargetWindow_content(self, width, height)
-  local x = -self.width / 2 + self:hPadding()
-  local y = -self.height / 2 + self:vpadding()
-  local w = self.width - self:hPadding() * 2
-  local posTC = Vector(x, y + 35)
-  self.textTC = SimpleText(Vocab.turnCount .. ':', posTC, w, 'left', Font.gui_small)
-  self.textTCValue = SimpleText('', posTC, w, 'right', Font.gui_small)
-  self.content:add(self.textTC)
-  self.content:add(self.textTCValue)
+  -- Turn count text
+  if self.showTC then
+    local x = -self.width / 2 + self:hPadding()
+    local y = -self.height / 2 + self:vpadding()
+    local w = self.width - self:hPadding() * 2
+    local posTC = Vector(x, y + 35)
+    self.textTC = SimpleText(Vocab.turnCount .. ':', posTC, w, 'left', Font.gui_small)
+    self.textTCValue = SimpleText('', posTC, w, 'right', Font.gui_small)
+    self.content:add(self.textTC)
+    self.content:add(self.textTCValue)
+  end
 end
 -- Override.
 local TargetWindow_setBattler = TargetWindow.setBattler
 function TargetWindow:setBattler(battler)
-  -- Turn count text
-  local tc = (battler.turnCount / _G.TurnManager.turnLimit * 100)
-  self.textTCValue:setText(string.format( '%3.0f', tc ) .. '%')
-  self.textTCValue:redraw()
   TargetWindow_setBattler(self, battler)
+  -- Turn count value
+  if self.showTC then
+    local tc = (battler.turnCount / _G.TurnManager.turnLimit * 100)
+    self.textTCValue:setText(string.format( '%3.0f', tc ) .. '%')
+    self.textTCValue:redraw()
+  end
 end
 
+---------------------------------------------------------------------------------------------------
+-- ActionGUI
+---------------------------------------------------------------------------------------------------
+
+function ActionGUI:createTargetWindow()
+  if not self.targetWindow then
+    local window = TargetWindow(self, true)
+    self.targetWindow = window
+    self.windowList:add(window)
+    window:setVisible(false)
+  end
+  return self.targetWindow
+end

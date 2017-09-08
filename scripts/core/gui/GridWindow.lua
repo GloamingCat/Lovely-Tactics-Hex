@@ -43,6 +43,9 @@ function GridWindow:createContent()
   local button = self:currentButton()
   if button then
     button:setSelected(true)
+    if button.enabled then
+      button.onSelect(self, button)
+    end
   end
   self:packWidgets()
 end

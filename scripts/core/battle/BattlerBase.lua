@@ -139,10 +139,11 @@ end
 function BattlerBase:createStateValues(attBase, level)
   self.steps = 0
   if self.save then
-    self.state = copyTable(save.state)
-    self.attBase = copyTable(save.attBase)
-    self.exp = save.exp
-    self.level = save.level
+    self.state = copyTable(self.save.state)
+    self.attBase = copyTable(self.save.attBase)
+    self.exp = self.save.exp
+    self.level = self.save.level
+    self.elementFactors = self.save.elements
   else
     self.state = {}
     self.attBase = {}
@@ -163,6 +164,14 @@ function BattlerBase:createStateValues(attBase, level)
 end
 
 ---------------------------------------------------------------------------------------------------
+-- Elements
+---------------------------------------------------------------------------------------------------
+
+function BattlerBase:element(i)
+  return self.elementFactors[i] + self.statusList:elementBonus(i)
+end
+
+---------------------------------------------------------------------------------------------------
 -- Save
 ---------------------------------------------------------------------------------------------------
 
@@ -172,6 +181,7 @@ function BattlerBase:createPersistentData()
   data.exp = self.exp
   data.state = self.state
   data.attBase = self.attBase
+  data.elements = self.elementFactors
   return data
 end
 

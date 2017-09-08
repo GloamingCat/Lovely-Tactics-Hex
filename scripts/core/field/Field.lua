@@ -184,6 +184,8 @@ function Field:mergeLayers(layers)
       self:addObstacleLayer(layerData)
     elseif t == 2 then
       self:addRegionLayer(layerData)
+    elseif t == 3 then
+      self:addPartyLayer(layerData)
     end
   end
 end
@@ -213,6 +215,10 @@ end
 -- @param(layerData : table) the data from field's file
 function Field:addRegionLayer(layerData)
   self.objectLayers[layerData.info.height]:mergeRegions(layerData)
+end
+
+function Field:addPartyLayer(layerData)
+  self.objectLayers[layerData.info.height]:setParties(layerData)
 end
 
 ---------------------------------------------------------------------------------------------------

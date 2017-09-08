@@ -15,8 +15,8 @@ local TargetWindow = require('core/gui/battle/window/TargetWindow')
 local CallGUI = class(GUI)
 
 function CallGUI:init(troop)
-  GUI.init(self)
   self.troop = troop
+  GUI.init(self)
 end
 
 function CallGUI:createWindows()
