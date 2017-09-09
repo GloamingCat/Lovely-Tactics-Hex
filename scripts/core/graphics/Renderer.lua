@@ -182,8 +182,6 @@ function Renderer:redrawCanvas()
   lgraphics.translate(-self.position.x + ox * 2 / sx, -self.position.y + oy * 2 / sy)
   lgraphics.clear()
   -- Now we set the sprite shader for everythng else
-  -- the text is messed up now because we are using
-  -- hue values != 1, 1, 1 for it
   lgraphics.setShader(spriteShader)
   local drawCalls = 0
   local started = false
@@ -228,9 +226,7 @@ end
 function Renderer:setMeshAttributes(list)
   local n = #list - 1
   for i = 0, n do
-    -- FIXME: No getHSV fn defined for those yet!
     local h, s, v = list[i + 1]:getHSV()
-    --local h, s, v = 0, 1, 1
     local i4 = i * 4
 
     self.mesh:setVertex(i4 + 1, h, s, v)
