@@ -17,7 +17,7 @@ function love.conf(t)
   t.window.width = Config.screen.nativeWidth * Config.screen.widthScale
   t.window.height = Config.screen.nativeHeight * Config.screen.heightScale
   t.window.fullscreentype = 'desktop'
-  t.window.vsync = true 
+  t.window.vsync = true
   t.modules.joystick = false
   t.modules.physics = false
 end

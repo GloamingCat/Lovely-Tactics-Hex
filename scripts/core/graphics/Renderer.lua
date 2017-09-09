@@ -157,7 +157,10 @@ function Renderer:draw()
     self:redrawCanvas()
   end
   local r, g, b, a = lgraphics.getColor()
-  lgraphics.setShader(spriteShader)
+  -- When drawing the canvas to the screen, the default shader should be used
+  -- because we aren't passing hsv information here, so it will just
+  -- turn everything to black (the default Love values for attributes is 0)
+  lgraphics.setShader()
   lgraphics.setColor(self:getRGBA())
   lgraphics.draw(self.canvas, 0, 0)
   lgraphics.setColor(r, g, b, a)
@@ -178,6 +181,10 @@ function Renderer:redrawCanvas()
   lgraphics.rotate(self.rotation)
   lgraphics.translate(-self.position.x + ox * 2 / sx, -self.position.y + oy * 2 / sy)
   lgraphics.clear()
+  -- Now we set the sprite shader for everythng else
+  -- the text is messed up now because we are using
+  -- hue values != 1, 1, 1 for it
+  lgraphics.setShader(spriteShader)
   local drawCalls = 0
   local started = false
   for i = self.maxDepth, self.minDepth, -1 do
@@ -221,9 +228,11 @@ end
 function Renderer:setMeshAttributes(list)
   local n = #list - 1
   for i = 0, n do
+    -- FIXME: No getHSV fn defined for those yet!
     local h, s, v = list[i + 1]:getHSV()
+    --local h, s, v = 0, 1, 1
     local i4 = i * 4
-    h, s, v = 0, 1, 1
+
     self.mesh:setVertex(i4 + 1, h, s, v)
     self.mesh:setVertex(i4 + 2, h, s, v)
     self.mesh:setVertex(i4 + 3, h, s, v)
