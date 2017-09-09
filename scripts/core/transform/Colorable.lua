@@ -19,19 +19,27 @@ local Colorable = class()
 
 -- Initalizes color.
 -- @param(color : table) a color table containing {red, green, blue, alpha} components (optional)
-function Colorable:initColor(color)
+function Colorable:initColor(color, hsv)
   color = color or { red = 255, green = 255, blue = 255, alpha = 255 }
+  self.hsv = hsv or { h = 0, s = 1, v = 1 }
   self.color = color
   self.colorSpeed = 0
   self.origRed = color.red
   self.origGreen = color.green
+  self.origBlue = color.blue
   self.destRed = color.red
   self.destGreen = color.green
+  self.destBlue = color.blue
   self.colorTime = 1
   self.colorFiber = nil
   self.cropColor = true
   self.interruptableColor = true
 end
+
+---------------------------------------------------------------------------------------------------
+-- RGBA
+---------------------------------------------------------------------------------------------------
+
 -- Gets each RGBA component.
 -- @ret(number) red compoent
 -- @ret(number) green compoent
@@ -55,6 +63,20 @@ end
 -- @param(color : table) a color table containing {red, green, blue, alpha} components
 function Colorable:setColor(color)
   self:setRGBA(color.red, color.green, color.blue, color.alpha)
+end
+
+---------------------------------------------------------------------------------------------------
+-- HSV
+---------------------------------------------------------------------------------------------------
+
+function Colorable:setHSV(h, s, v)
+  self.hsv.h = h
+  self.hsv.s = s
+  self.hsv.v = v
+end
+
+function Colorable:getHSV()
+  return self.hsv.h, self.hsv.s, self.hsv.v
 end
 
 ---------------------------------------------------------------------------------------------------
