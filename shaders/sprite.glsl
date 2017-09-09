@@ -49,9 +49,6 @@ vec4 effect(vec4 color, sampler2D texture, vec2 texture_coords, vec2 screen_coor
   hsv.x = mod(phsv.x + hsv.x, 1.0);
   hsv.yz = clamp(phsv.yz * hsv.yz, 0, 1);
 
-  // Testing if hsv values are being passed down
-  return vec4(initialColor.rgb*phsv, initialColor.a);
-
-  //return vec4(hsv2rgb(hsv), initialColor.a);
+  return vec4(hsv2rgb(hsv), initialColor.a);
 }
 #endif

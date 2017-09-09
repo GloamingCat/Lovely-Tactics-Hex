@@ -47,6 +47,9 @@ function Text:init(text, resources, properties, renderer)
   self.scaleY = 1 / Font.scale
   self.offsetX = 0
   self.offsetY = 0
+
+  self:setHSV(1, 1, 1)
+
   if text == nil or text == '' then
     self.lines = {}
   else
@@ -94,12 +97,15 @@ function Text:draw(renderer)
   local r, g, b, a
   for i = 1, #self.lines do
     local line = self.lines[i]
+    local shader = lgraphics.getShader()
     r, g, b, a = lgraphics.getColor()
+    lgraphics.setShader()
     ox = self:alignOffset(line.buffer:getWidth() / Font.scale) * Font.scale
     lgraphics.setColor(self.color.red, self.color.green, self.color.blue, self.color.alpha)
     lgraphics.draw(line.buffer, line.quad, self.position.x, self.position.y, 
       self.rotation, self.scaleX, self.scaleY, self.offsetX - ox, self.offsetY - oy)
     lgraphics.setColor(r, g, b, a)
+    lgraphics.setShader(shader)
     oy = oy + line.height
   end
 end
