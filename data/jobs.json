@@ -1,0 +1,99 @@
+[
+  {
+    "data": {
+      "build": [
+        "4 * lvl",
+        "5 * lvl",
+        "2 * lvl",
+        "3 * lvl",
+        "2 * lvl",
+        "0",
+        "0",
+        "0",
+        "0",
+        "5 + math.round(lvl / 25)",
+        "3",
+        "0",
+        "10",
+        "5",
+        "5",
+        "10",
+        "10",
+        "0"
+      ],
+      "expCurve": "lvl * (lvl + 1) * 2",
+      "skills": [],
+      "name": "Fighter",
+      "tags": []
+    },
+    "id": 1,
+    "children": []
+  },
+  {
+    "data": {
+      "build": [
+        "3 * lvl",
+        "2 * lvl",
+        "5 * lvl",
+        "3 * lvl",
+        "3 * lvl",
+        "0",
+        "0",
+        "0",
+        "0",
+        "5 + math.round(lvl / 25)",
+        "3",
+        "0",
+        "10",
+        "5",
+        "5",
+        "10",
+        "10",
+        "0"
+      ],
+      "expCurve": "lvl * (lvl + 1) * 2",
+      "skills": [
+        {
+          "id": 8,
+          "level": 2,
+          "requirements": [],
+          "tags": []
+        }
+      ],
+      "name": "Mage",
+      "tags": []
+    },
+    "id": 2,
+    "children": []
+  },
+  {
+    "data": {
+      "build": [
+        "5 * lvl",
+        "4 * lvl",
+        "1 * lvl",
+        "3 * lvl",
+        "2 * lvl",
+        "0",
+        "0",
+        "0",
+        "0",
+        "6 + math.round(lvl / 25)",
+        "3",
+        "0",
+        "5",
+        "10",
+        "10",
+        "5",
+        "5",
+        "0"
+      ],
+      "expCurve": "lvl * (lvl + 1) * 2",
+      "skills": [],
+      "name": "Jelly",
+      "tags": []
+    },
+    "id": 0,
+    "children": []
+  }
+]

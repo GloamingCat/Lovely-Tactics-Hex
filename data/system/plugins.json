@@ -1,0 +1,129 @@
+[
+  {
+    "on": false,
+    "name": "plugins/BatchMesh",
+    "tags": []
+  },
+  {
+    "on": true,
+    "name": "plugins/FocusPause",
+    "tags": [
+      {
+        "key": "pauseAudio",
+        "value": "true"
+      }
+    ]
+  },
+  {
+    "on": true,
+    "name": "plugins/QuickSave",
+    "tags": [
+      {
+        "key": "save",
+        "value": "f1"
+      },
+      {
+        "key": "load",
+        "value": "f5"
+      }
+    ]
+  },
+  {
+    "on": true,
+    "name": "plugins/DebugBox",
+    "tags": [
+      {
+        "key": "key",
+        "value": "escape"
+      }
+    ]
+  },
+  {
+    "on": true,
+    "name": "plugins/SpeedButton.lua",
+    "tags": [
+      {
+        "key": "key",
+        "value": "j"
+      },
+      {
+        "key": "speed",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "on": true,
+    "name": "plugins/EmotionBalloon.lua",
+    "tags": []
+  },
+  {
+    "on": true,
+    "name": "plugins/DialoguePortrait.lua",
+    "tags": [
+      {
+        "key": "indent",
+        "value": "100"
+      }
+    ]
+  },
+  {
+    "on": true,
+    "name": "plugins/battle/KillCheat.lua",
+    "tags": [
+      {
+        "key": "win",
+        "value": "k"
+      },
+      {
+        "key": "lose",
+        "value": "l"
+      }
+    ]
+  },
+  {
+    "on": true,
+    "name": "plugins/skill/RingArea.lua",
+    "tags": []
+  },
+  {
+    "on": true,
+    "name": "plugins/skill/Critical.lua",
+    "tags": [
+      {
+        "key": "attName",
+        "value": "crit"
+      }
+    ]
+  },
+  {
+    "on": true,
+    "name": "plugins/skill/SkillProjectile.lua",
+    "tags": []
+  },
+  {
+    "on": true,
+    "name": "plugins/status/StatusBalloon.lua",
+    "tags": []
+  },
+  {
+    "on": true,
+    "name": "plugins/status/StatusAnimation.lua",
+    "tags": []
+  },
+  {
+    "on": true,
+    "name": "plugins/status/Counter.lua",
+    "tags": []
+  },
+  {
+    "on": true,
+    "name": "plugins/status/Reflect.lua",
+    "tags": [
+      {
+        "key": "animID",
+        "value": "18"
+      }
+    ]
+  }
+]

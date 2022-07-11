@@ -1,0 +1,119 @@
+[
+  {
+    "data": {
+      "ai": "",
+      "persistent": true,
+      "money": 100,
+      "items": [
+        {
+          "count": 10,
+          "id": 2,
+          "value": 100
+        },
+        {
+          "count": 5,
+          "id": 3,
+          "value": 100
+        },
+        {
+          "count": 5,
+          "id": 4,
+          "value": 100
+        },
+        {
+          "count": 1,
+          "id": 9,
+          "value": 100
+        }
+      ],
+      "members": [
+        {
+          "key": "Arthur",
+          "charID": 1,
+          "battlerID": -1,
+          "x": 4,
+          "y": 2,
+          "equip": [],
+          "list": 0
+        },
+        {
+          "key": "Merlin",
+          "charID": 2,
+          "battlerID": -1,
+          "x": 2,
+          "y": 2,
+          "equip": [],
+          "list": 2
+        }
+      ],
+      "name": "Player Party",
+      "tags": []
+    },
+    "id": 0,
+    "children": []
+  },
+  {
+    "data": {
+      "ai": "troop/DefaultAI.lua",
+      "persistent": false,
+      "money": 0,
+      "items": [],
+      "members": [
+        {
+          "key": "e1",
+          "charID": 0,
+          "battlerID": -1,
+          "x": 2,
+          "y": 2,
+          "equip": [],
+          "list": 0
+        },
+        {
+          "key": "e2",
+          "charID": 4,
+          "battlerID": -1,
+          "x": 4,
+          "y": 2,
+          "equip": [],
+          "list": 0
+        }
+      ],
+      "name": "Jelly Party 1",
+      "tags": []
+    },
+    "id": 2,
+    "children": []
+  },
+  {
+    "data": {
+      "ai": "troop/DefaultAI.lua",
+      "persistent": false,
+      "money": 0,
+      "items": [],
+      "members": [
+        {
+          "key": "e1",
+          "charID": 0,
+          "battlerID": -1,
+          "x": 2,
+          "y": 2,
+          "equip": [],
+          "list": 0
+        },
+        {
+          "key": "e2",
+          "charID": 3,
+          "battlerID": -1,
+          "x": 4,
+          "y": 2,
+          "equip": [],
+          "list": 0
+        }
+      ],
+      "name": "Jelly Party 2",
+      "tags": []
+    },
+    "id": 1,
+    "children": []
+  }
+]

@@ -1,0 +1,879 @@
+{
+  "id": 10,
+  "sizeX": 8,
+  "sizeY": 8,
+  "prefs": {
+    "persistent": false,
+    "defaultRegion": -1,
+    "maxHeight": 1,
+    "bgm": {
+      "name": "worldTheme",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    "loadScript": {
+      "global": false,
+      "block": true,
+      "wait": true,
+      "onLoad": true,
+      "onInteract": false,
+      "onCollide": false,
+      "name": "tumtum/Player Animations.lua",
+      "tags": [
+        {
+          "key": "name",
+          "value": "World"
+        }
+      ]
+    },
+    "images": [
+      {
+        "foreground": false,
+        "glued": true,
+        "visible": true,
+        "name": "Sky",
+        "id": 110,
+        "col": 0,
+        "row": 0
+      }
+    ],
+    "transitions": [
+      {
+        "destination": {
+          "fieldID": 7,
+          "x": 12,
+          "y": 4,
+          "h": 1,
+          "direction": 270
+        },
+        "origin": [],
+        "fade": 30
+      },
+      {
+        "destination": {
+          "fieldID": 6,
+          "x": 8,
+          "y": 2,
+          "h": 1,
+          "direction": 315
+        },
+        "origin": [],
+        "fade": 30
+      },
+      {
+        "destination": {
+          "fieldID": 1,
+          "x": 8,
+          "y": 6,
+          "h": 1,
+          "direction": 135
+        },
+        "origin": [],
+        "fade": 30
+      },
+      {
+        "destination": {
+          "fieldID": 15,
+          "x": 9,
+          "y": 11,
+          "h": 1,
+          "direction": 225
+        },
+        "origin": [],
+        "fade": 30
+      },
+      {
+        "destination": {
+          "fieldID": 23,
+          "x": 5,
+          "y": 2,
+          "h": 1,
+          "direction": 315
+        },
+        "origin": [],
+        "fade": 30
+      },
+      {
+        "destination": {
+          "fieldID": 26,
+          "x": 7,
+          "y": 20,
+          "h": 1,
+          "direction": 135
+        },
+        "origin": [],
+        "fade": 30
+      }
+    ],
+    "name": "Overworld",
+    "tags": []
+  },
+  "layers": {
+    "terrain": [
+      {
+        "info": {
+          "name": "Rock",
+          "height": 1,
+          "noAuto": true,
+          "tags": []
+        },
+        "visible": true,
+        "grid": [
+          [
+            -1,
+            -1,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          [
+            -1,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            -1
+          ],
+          [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            -1,
+            -1
+          ]
+        ]
+      },
+      {
+        "info": {
+          "name": "Sand",
+          "height": 1,
+          "noAuto": false,
+          "tags": []
+        },
+        "visible": true,
+        "grid": [
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            2,
+            2,
+            2,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            -1,
+            -1
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            -1,
+            -1
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      {
+        "info": {
+          "name": "Grass",
+          "height": 1,
+          "noAuto": false,
+          "tags": []
+        },
+        "visible": true,
+        "grid": [
+          [
+            -1,
+            -1,
+            0,
+            0,
+            0,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            0,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            -1,
+            -1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            -1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            -1,
+            -1,
+            0,
+            -1,
+            0
+          ],
+          [
+            0,
+            -1,
+            0,
+            0,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      {
+        "info": {
+          "name": "Bush",
+          "height": 1,
+          "noAuto": false,
+          "tags": []
+        },
+        "visible": true,
+        "grid": [
+          [
+            -1,
+            -1,
+            -1,
+            1,
+            1,
+            1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            1,
+            1,
+            1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            1,
+            1,
+            1,
+            1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            1,
+            1,
+            1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      }
+    ],
+    "obstacle": [
+      {
+        "info": {
+          "name": "Places",
+          "height": 1,
+          "noAuto": false,
+          "tags": []
+        },
+        "visible": true,
+        "grid": [
+          [
+            -1,
+            -1,
+            44,
+            44,
+            44,
+            45,
+            45,
+            45
+          ],
+          [
+            -1,
+            45,
+            -1,
+            -1,
+            -1,
+            44,
+            44,
+            45
+          ],
+          [
+            45,
+            45,
+            44,
+            44,
+            44,
+            44,
+            44,
+            44
+          ],
+          [
+            45,
+            44,
+            44,
+            45,
+            44,
+            -1,
+            44,
+            44
+          ],
+          [
+            45,
+            45,
+            46,
+            44,
+            44,
+            -1,
+            44,
+            44
+          ],
+          [
+            45,
+            -1,
+            45,
+            44,
+            -1,
+            44,
+            45,
+            44
+          ],
+          [
+            45,
+            -1,
+            44,
+            44,
+            44,
+            45,
+            45,
+            -1
+          ],
+          [
+            45,
+            45,
+            45,
+            45,
+            45,
+            45,
+            -1,
+            -1
+          ]
+        ]
+      },
+      {
+        "info": {
+          "name": "Anti-Block",
+          "height": 1,
+          "noAuto": false,
+          "tags": []
+        },
+        "visible": true,
+        "grid": [
+          [
+            -1,
+            -1,
+            47,
+            47,
+            47,
+            47,
+            47,
+            47
+          ],
+          [
+            -1,
+            47,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            47
+          ],
+          [
+            47,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            47
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            47
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            47
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            47
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            47,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            47,
+            -1,
+            -1
+          ]
+        ]
+      }
+    ],
+    "region": []
+  },
+  "characters": [
+    {
+      "key": "Town",
+      "persistent": false,
+      "passable": false,
+      "visible": true,
+      "x": 5,
+      "y": 3,
+      "h": 1,
+      "party": -1,
+      "charID": -1,
+      "battlerID": -1,
+      "animation": "Idle",
+      "direction": 315,
+      "scripts": [
+        {
+          "global": false,
+          "block": false,
+          "wait": false,
+          "onLoad": false,
+          "onInteract": false,
+          "onCollide": true,
+          "name": "tumtum/Entrance.lua",
+          "tags": [
+            {
+              "key": "name",
+              "value": "Hexalia Town"
+            },
+            {
+              "key": "dest",
+              "value": "1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "Forest1",
+      "persistent": false,
+      "passable": false,
+      "visible": true,
+      "x": 7,
+      "y": 2,
+      "h": 1,
+      "party": -1,
+      "charID": -1,
+      "battlerID": -1,
+      "animation": "Idle",
+      "direction": 315,
+      "scripts": [
+        {
+          "global": false,
+          "block": false,
+          "wait": false,
+          "onLoad": false,
+          "onInteract": false,
+          "onCollide": true,
+          "name": "tumtum/Entrance.lua",
+          "tags": [
+            {
+              "key": "name",
+              "value": "Happy Fields"
+            },
+            {
+              "key": "dest",
+              "value": "2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "Forest2",
+      "persistent": false,
+      "passable": false,
+      "visible": true,
+      "x": 6,
+      "y": 5,
+      "h": 1,
+      "party": -1,
+      "charID": -1,
+      "battlerID": -1,
+      "animation": "Idle",
+      "direction": 315,
+      "scripts": [
+        {
+          "global": false,
+          "block": false,
+          "wait": false,
+          "onLoad": false,
+          "onInteract": false,
+          "onCollide": true,
+          "name": "tumtum/Entrance.lua",
+          "tags": [
+            {
+              "key": "name",
+              "value": "Happy Fields"
+            },
+            {
+              "key": "dest",
+              "value": "3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "Jungle1",
+      "persistent": false,
+      "passable": false,
+      "visible": true,
+      "x": 4,
+      "y": 6,
+      "h": 1,
+      "party": -1,
+      "charID": -1,
+      "battlerID": -1,
+      "animation": "Idle",
+      "direction": 315,
+      "scripts": [
+        {
+          "global": false,
+          "block": false,
+          "wait": false,
+          "onLoad": false,
+          "onInteract": false,
+          "onCollide": true,
+          "name": "tumtum/Entrance.lua",
+          "tags": [
+            {
+              "key": "name",
+              "value": "Deep Jungle"
+            },
+            {
+              "key": "dest",
+              "value": "4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "Jungle2",
+      "persistent": false,
+      "passable": false,
+      "visible": true,
+      "x": 2,
+      "y": 5,
+      "h": 1,
+      "party": -1,
+      "charID": -1,
+      "battlerID": -1,
+      "animation": "Idle",
+      "direction": 315,
+      "scripts": [
+        {
+          "global": false,
+          "block": false,
+          "wait": false,
+          "onLoad": false,
+          "onInteract": false,
+          "onCollide": true,
+          "name": "tumtum/Entrance.lua",
+          "tags": [
+            {
+              "key": "name",
+              "value": "Deep Jungle"
+            },
+            {
+              "key": "dest",
+              "value": "5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "Cave",
+      "persistent": false,
+      "passable": false,
+      "visible": true,
+      "x": 2,
+      "y": 3,
+      "h": 1,
+      "party": -1,
+      "charID": -1,
+      "battlerID": -1,
+      "animation": "Idle",
+      "direction": 315,
+      "scripts": [
+        {
+          "global": false,
+          "block": false,
+          "wait": false,
+          "onLoad": false,
+          "onInteract": false,
+          "onCollide": true,
+          "name": "tumtum/Entrance.lua",
+          "tags": [
+            {
+              "key": "name",
+              "value": "Lost Cave"
+            },
+            {
+              "key": "dest",
+              "value": "6"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "parties": [],
+  "playerParty": -1
+}

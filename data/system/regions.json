@@ -1,0 +1,52 @@
+[
+  {
+    "rgb": {
+      "red": 0,
+      "green": 0,
+      "blue": 255
+    },
+    "troops": [],
+    "name": "Party 0",
+    "tags": []
+  },
+  {
+    "rgb": {
+      "red": 255,
+      "green": 0,
+      "blue": 0
+    },
+    "troops": [],
+    "name": "Party 1",
+    "tags": []
+  },
+  {
+    "rgb": {
+      "red": 198,
+      "green": 255,
+      "blue": 140
+    },
+    "troops": [],
+    "name": "Forest",
+    "tags": []
+  },
+  {
+    "rgb": {
+      "red": 214,
+      "green": 173,
+      "blue": 173
+    },
+    "troops": [],
+    "name": "Cave",
+    "tags": []
+  },
+  {
+    "rgb": {
+      "red": 166,
+      "green": 255,
+      "blue": 255
+    },
+    "troops": [],
+    "name": "Ice Field",
+    "tags": []
+  }
+]

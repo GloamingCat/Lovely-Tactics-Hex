@@ -1,0 +1,11 @@
+
+{
+  
+  "actor": {
+    "Hi": "Hi.",
+    "CanIJoin": "Can I join your party?",
+    "ThatsGood": "That's {i}great!{r}.",
+    "ThatsBad": "Meh."
+  }
+  
+}

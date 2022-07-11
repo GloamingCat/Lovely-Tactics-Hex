@@ -1,0 +1,386 @@
+[
+  {
+    "data": {
+      "description": "",
+      "icon": {
+        "id": 36,
+        "col": 0,
+        "row": 0
+      },
+      "price": 10,
+      "sellable": true,
+      "skillID": -1,
+      "consume": true,
+      "needsUser": false,
+      "effects": [],
+      "statusAdd": [],
+      "statusRemove": [],
+      "attributes": [],
+      "slot": "",
+      "allSlots": false,
+      "blocked": [],
+      "equipStatus": [],
+      "elements": [],
+      "equipAttributes": [],
+      "name": "Usable",
+      "tags": []
+    },
+    "id": 0,
+    "children": [
+      {
+        "data": {
+          "description": "Cures 200HP.",
+          "icon": {
+            "id": 32,
+            "col": 0,
+            "row": 1
+          },
+          "price": 15,
+          "sellable": true,
+          "skillID": 1,
+          "consume": true,
+          "needsUser": false,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "200",
+              "successRate": "100",
+              "heal": true,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [],
+          "attributes": [],
+          "slot": "",
+          "allSlots": false,
+          "blocked": [],
+          "equipStatus": [],
+          "elements": [],
+          "equipAttributes": [],
+          "name": "Health Potion",
+          "tags": []
+        },
+        "id": 2,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Cures 100SP.",
+          "icon": {
+            "id": 32,
+            "col": 0,
+            "row": 0
+          },
+          "price": 15,
+          "sellable": true,
+          "skillID": 1,
+          "consume": true,
+          "needsUser": false,
+          "effects": [
+            {
+              "key": "sp",
+              "basicResult": "100",
+              "successRate": "100",
+              "heal": true,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [],
+          "attributes": [],
+          "slot": "",
+          "allSlots": false,
+          "blocked": [],
+          "equipStatus": [],
+          "elements": [],
+          "equipAttributes": [],
+          "name": "Energy Potion",
+          "tags": []
+        },
+        "id": 3,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Cures Poison.",
+          "icon": {
+            "id": 32,
+            "col": 0,
+            "row": 3
+          },
+          "price": 15,
+          "sellable": true,
+          "skillID": 1,
+          "consume": true,
+          "needsUser": false,
+          "effects": [],
+          "statusAdd": [],
+          "statusRemove": [
+            {
+              "id": 0,
+              "rate": "100"
+            }
+          ],
+          "attributes": [],
+          "slot": "",
+          "allSlots": false,
+          "blocked": [],
+          "equipStatus": [],
+          "elements": [],
+          "equipAttributes": [],
+          "name": "Antidote",
+          "tags": []
+        },
+        "id": 4,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Awakes a knocked-out ally.",
+          "icon": {
+            "id": 32,
+            "col": 0,
+            "row": 2
+          },
+          "price": 30,
+          "sellable": true,
+          "skillID": 2,
+          "consume": true,
+          "needsUser": false,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "b.hp() / 10",
+              "successRate": "100",
+              "heal": true,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [],
+          "attributes": [],
+          "slot": "",
+          "allSlots": false,
+          "blocked": [],
+          "equipStatus": [],
+          "elements": [],
+          "equipAttributes": [],
+          "name": "Reviving Potion",
+          "tags": []
+        },
+        "id": 8,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "description": "",
+      "icon": {
+        "id": 33,
+        "col": 0,
+        "row": 0
+      },
+      "price": 10,
+      "sellable": true,
+      "skillID": -1,
+      "consume": true,
+      "needsUser": false,
+      "effects": [],
+      "statusAdd": [],
+      "statusRemove": [],
+      "attributes": [],
+      "slot": "",
+      "allSlots": false,
+      "blocked": [],
+      "equipStatus": [],
+      "elements": [],
+      "equipAttributes": [],
+      "name": "Equip",
+      "tags": []
+    },
+    "id": 1,
+    "children": [
+      {
+        "data": {
+          "description": "Increases 5ATK.",
+          "icon": {
+            "id": 33,
+            "col": 0,
+            "row": 1
+          },
+          "price": 100,
+          "sellable": true,
+          "skillID": -1,
+          "consume": false,
+          "needsUser": false,
+          "effects": [],
+          "statusAdd": [],
+          "statusRemove": [],
+          "attributes": [],
+          "slot": "hand",
+          "allSlots": false,
+          "blocked": [],
+          "equipStatus": [],
+          "elements": [],
+          "equipAttributes": [
+            {
+              "key": "atk",
+              "add": 5,
+              "mul": 0
+            }
+          ],
+          "name": "Sword",
+          "tags": []
+        },
+        "id": 5,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Increases 10ATK.",
+          "icon": {
+            "id": 33,
+            "col": 0,
+            "row": 0
+          },
+          "price": 200,
+          "sellable": true,
+          "skillID": -1,
+          "consume": false,
+          "needsUser": false,
+          "effects": [],
+          "statusAdd": [],
+          "statusRemove": [],
+          "attributes": [],
+          "slot": "hand",
+          "allSlots": true,
+          "blocked": [],
+          "equipStatus": [],
+          "elements": [],
+          "equipAttributes": [
+            {
+              "key": "atk",
+              "add": 10,
+              "mul": 0
+            }
+          ],
+          "name": "Spear",
+          "tags": []
+        },
+        "id": 10,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Increases 5ATK and 5SPR.",
+          "icon": {
+            "id": 33,
+            "col": 0,
+            "row": 2
+          },
+          "price": 100,
+          "sellable": true,
+          "skillID": -1,
+          "consume": false,
+          "needsUser": false,
+          "effects": [],
+          "statusAdd": [],
+          "statusRemove": [],
+          "attributes": [],
+          "slot": "hand",
+          "allSlots": true,
+          "blocked": [],
+          "equipStatus": [],
+          "elements": [],
+          "equipAttributes": [
+            {
+              "key": "atk",
+              "add": 5,
+              "mul": 0
+            },
+            {
+              "key": "spr",
+              "add": 5,
+              "mul": 0
+            }
+          ],
+          "name": "Staff",
+          "tags": []
+        },
+        "id": 6,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Increases 5DEFP.",
+          "icon": {
+            "id": 33,
+            "col": 0,
+            "row": 3
+          },
+          "price": 100,
+          "sellable": true,
+          "skillID": -1,
+          "consume": false,
+          "needsUser": false,
+          "effects": [],
+          "statusAdd": [],
+          "statusRemove": [],
+          "attributes": [],
+          "slot": "head",
+          "allSlots": true,
+          "blocked": [],
+          "equipStatus": [],
+          "elements": [],
+          "equipAttributes": [
+            {
+              "key": "def",
+              "add": 5,
+              "mul": 0
+            }
+          ],
+          "name": "Hat",
+          "tags": []
+        },
+        "id": 9,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Protects from all debuffs.",
+          "icon": {
+            "id": 33,
+            "col": 0,
+            "row": 4
+          },
+          "price": 300,
+          "sellable": true,
+          "skillID": -1,
+          "consume": false,
+          "needsUser": false,
+          "effects": [],
+          "statusAdd": [],
+          "statusRemove": [],
+          "attributes": [],
+          "slot": "acc",
+          "allSlots": false,
+          "blocked": [],
+          "equipStatus": [
+            {
+              "id": 7,
+              "battle": false
+            }
+          ],
+          "elements": [],
+          "equipAttributes": [],
+          "name": "Ribbon",
+          "tags": []
+        },
+        "id": 7,
+        "children": []
+      }
+    ]
+  }
+]

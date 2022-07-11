@@ -1,0 +1,98 @@
+[
+  {
+    "key": "atk",
+    "shortName": "ATK",
+    "script": "",
+    "visibility": 1,
+    "name": "Attack",
+    "tags": []
+  },
+  {
+    "key": "def",
+    "shortName": "DEF",
+    "script": "",
+    "visibility": 1,
+    "name": "Defense",
+    "tags": []
+  },
+  {
+    "key": "spr",
+    "shortName": "SPR",
+    "script": "",
+    "visibility": 1,
+    "name": "Spirit",
+    "tags": []
+  },
+  {
+    "key": "agi",
+    "shortName": "AGI",
+    "script": "",
+    "visibility": 1,
+    "name": "Agility",
+    "tags": []
+  },
+  {
+    "key": "dex",
+    "shortName": "DEX",
+    "script": "",
+    "visibility": 1,
+    "name": "Dexterity",
+    "tags": []
+  },
+  {
+    "key": "hp",
+    "shortName": "MHP",
+    "script": "att.def() * 2 + att.spr() * 2",
+    "visibility": 2,
+    "name": "Health",
+    "tags": []
+  },
+  {
+    "key": "sp",
+    "shortName": "MSP",
+    "script": "att.spr() * 2 + att.dex() * 2",
+    "visibility": 2,
+    "name": "Skill",
+    "tags": []
+  },
+  {
+    "key": "pre",
+    "shortName": "PRE",
+    "script": "att.atk() * 2 + att.dex() * 2",
+    "visibility": 2,
+    "name": "Precision",
+    "tags": []
+  },
+  {
+    "key": "evd",
+    "shortName": "EVD",
+    "script": "att.agi() * 2 + att.dex() * 2",
+    "visibility": 2,
+    "name": "Evade",
+    "tags": []
+  },
+  {
+    "key": "mov",
+    "shortName": "MOV",
+    "script": "",
+    "visibility": 2,
+    "name": "Movement",
+    "tags": []
+  },
+  {
+    "key": "jmp",
+    "shortName": "JMP",
+    "script": "",
+    "visibility": 2,
+    "name": "Jump",
+    "tags": []
+  },
+  {
+    "key": "crit",
+    "shortName": "CRIT",
+    "script": "att.pre() / 50 + 5",
+    "visibility": 0,
+    "name": "Critical",
+    "tags": []
+  }
+]

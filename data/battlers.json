@@ -1,0 +1,317 @@
+[
+  {
+    "data": {
+      "persistent": false,
+      "ai": [],
+      "jobID": 0,
+      "attackID": 0,
+      "level": 2,
+      "money": 0,
+      "exp": 0,
+      "attributes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "skills": [],
+      "status": [],
+      "elements": [],
+      "items": [],
+      "equip": [],
+      "name": "Heroes",
+      "tags": []
+    },
+    "id": 0,
+    "children": [
+      {
+        "data": {
+          "persistent": true,
+          "ai": [],
+          "jobID": 1,
+          "attackID": 5,
+          "level": 3,
+          "money": 0,
+          "exp": 0,
+          "attributes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "skills": [
+            28
+          ],
+          "status": [],
+          "elements": [],
+          "items": [],
+          "equip": [],
+          "name": "Arthur",
+          "tags": []
+        },
+        "id": 1,
+        "children": []
+      },
+      {
+        "data": {
+          "persistent": true,
+          "ai": [],
+          "jobID": 1,
+          "attackID": 6,
+          "level": 5,
+          "money": 0,
+          "exp": 0,
+          "attributes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "skills": [
+            17,
+            27
+          ],
+          "status": [],
+          "elements": [],
+          "items": [],
+          "equip": [],
+          "name": "Merlin",
+          "tags": []
+        },
+        "id": 2,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "persistent": false,
+      "ai": [],
+      "jobID": 0,
+      "attackID": 0,
+      "level": 0,
+      "money": 0,
+      "exp": 0,
+      "attributes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "skills": [],
+      "status": [],
+      "elements": [],
+      "items": [],
+      "equip": [],
+      "name": "Enemies",
+      "tags": []
+    },
+    "id": 3,
+    "children": [
+      {
+        "data": {
+          "persistent": false,
+          "ai": [
+            {
+              "condition": "",
+              "name": "rule/RushRule.lua",
+              "tags": []
+            }
+          ],
+          "jobID": 0,
+          "attackID": 15,
+          "level": 2,
+          "money": 3,
+          "exp": 5,
+          "attributes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "skills": [],
+          "status": [],
+          "elements": [
+            {
+              "id": 5,
+              "value": 200
+            }
+          ],
+          "items": [],
+          "equip": [],
+          "name": "Jelly",
+          "tags": []
+        },
+        "id": 6,
+        "children": []
+      },
+      {
+        "data": {
+          "persistent": false,
+          "ai": [
+            {
+              "condition": "",
+              "name": "rule/RushRule.lua",
+              "tags": []
+            }
+          ],
+          "jobID": 0,
+          "attackID": 18,
+          "level": 3,
+          "money": 5,
+          "exp": 8,
+          "attributes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "skills": [],
+          "status": [],
+          "elements": [],
+          "items": [],
+          "equip": [],
+          "name": "Poison Jelly",
+          "tags": []
+        },
+        "id": 7,
+        "children": []
+      },
+      {
+        "data": {
+          "persistent": false,
+          "ai": [
+            {
+              "condition": "self:chance(30)",
+              "name": "rule/EscapeRule.lua",
+              "tags": []
+            },
+            {
+              "condition": "",
+              "name": "rule/RushRule.lua",
+              "tags": []
+            }
+          ],
+          "jobID": 0,
+          "attackID": 15,
+          "level": 4,
+          "money": 8,
+          "exp": 10,
+          "attributes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "skills": [],
+          "status": [],
+          "elements": [],
+          "items": [],
+          "equip": [],
+          "name": "Chicken Jelly",
+          "tags": []
+        },
+        "id": 9,
+        "children": []
+      }
+    ]
+  }
+]

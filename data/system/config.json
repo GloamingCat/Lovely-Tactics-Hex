@@ -1,0 +1,402 @@
+{
+  "name": "Example Project",
+  "player": {
+    "walkSpeed": 104,
+    "dashSpeed": 208,
+    "startPos": {
+      "fieldID": 6,
+      "x": 7,
+      "y": 2,
+      "h": 1,
+      "direction": 315
+    }
+  },
+  "battle": {
+    "maxLevel": 10,
+    "attHP": "hp",
+    "attSP": "sp",
+    "attStep": "mov",
+    "attJump": "jmp",
+    "itemSkillID": 1,
+    "battleEndRevive": true
+  },
+  "troop": {
+    "initialTroopID": 0,
+    "maxMembers": 3,
+    "width": 5,
+    "height": 3
+  },
+  "grid": {
+    "tileW": 36,
+    "tileH": 22,
+    "tileB": 16,
+    "tileS": 0,
+    "pixelsPerHeight": 8,
+    "depthPerHeight": 18,
+    "depthPerY": 22,
+    "allNeighbors": false,
+    "overpassAllies": false,
+    "overpassDeads": true
+  },
+  "screen": {
+    "nativeWidth": 400,
+    "nativeHeight": 225,
+    "widthScale": 200,
+    "heightScale": 200,
+    "scaleType": 1,
+    "fpsLimit": 120,
+    "coverID": -1
+  },
+  "animations": [
+    {
+      "name": "windowSkin",
+      "id": 18
+    },
+    {
+      "name": "frame",
+      "id": 19
+    },
+    {
+      "name": "cursor",
+      "id": 20
+    },
+    {
+      "name": "highlight",
+      "id": 21
+    },
+    {
+      "name": "battleCursor",
+      "id": 22
+    },
+    {
+      "name": "tileCursor",
+      "id": 24
+    },
+    {
+      "name": "tile",
+      "id": 23
+    },
+    {
+      "name": "gaugeFrame",
+      "id": 26
+    },
+    {
+      "name": "gaugeBar",
+      "id": 27
+    },
+    {
+      "name": "arrow",
+      "id": 28
+    },
+    {
+      "name": "balloon",
+      "id": 25
+    },
+    {
+      "name": "emotions",
+      "id": 191
+    }
+  ],
+  "icons": [
+    {
+      "name": "money",
+      "id": 36,
+      "col": 2,
+      "row": 1
+    },
+    {
+      "name": "location",
+      "id": 36,
+      "col": 3,
+      "row": 1
+    },
+    {
+      "name": "time",
+      "id": 36,
+      "col": 4,
+      "row": 1
+    }
+  ],
+  "sounds": [
+    {
+      "key": "fieldsTheme",
+      "name": "bgm/Field.ogg",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "dungeonTheme",
+      "name": "bgm/Mysterious.ogg",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "titleTheme",
+      "name": "bgm/Town.ogg",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "battleTheme",
+      "name": "bgm/Conflict.ogg",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "bossTheme",
+      "name": "bgm/Conflict.ogg",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "victoryTheme",
+      "name": "bgm/Victory.ogg",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "gameoverTheme",
+      "name": "bgm/Death.ogg",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "buttonConfirm",
+      "name": "sfx/Confirm.wav",
+      "volume": 90,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "buttonCancel",
+      "name": "sfx/Cancel.wav",
+      "volume": 90,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "buttonError",
+      "name": "sfx/Buzz.wav",
+      "volume": 60,
+      "pitch": 120,
+      "time": 0
+    },
+    {
+      "key": "buttonSelect",
+      "name": "sfx/Select.wav",
+      "volume": 50,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "save",
+      "name": "sfx/Magic.wav",
+      "volume": 90,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "menu",
+      "name": "sfx/Confirm.wav",
+      "volume": 90,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "levelup",
+      "name": "sfx/Level.wav",
+      "volume": 100,
+      "pitch": 120,
+      "time": 0
+    },
+    {
+      "key": "text",
+      "name": "sfx/Select.wav",
+      "volume": 60,
+      "pitch": 55,
+      "time": 0
+    },
+    {
+      "key": "exp",
+      "name": "sfx/Select.wav",
+      "volume": 60,
+      "pitch": 55,
+      "time": 0
+    },
+    {
+      "key": "equip",
+      "name": "sfx/Confirm.wav",
+      "volume": 90,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "unequip",
+      "name": "sfx/Confirm.wav",
+      "volume": 90,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "buy",
+      "name": "sfx/Coin.wav",
+      "volume": 90,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "sell",
+      "name": "sfx/Coin.wav",
+      "volume": 90,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "bump",
+      "name": "sfx/Bump.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "?",
+      "name": "sfx/Emoticon.wav",
+      "volume": 90,
+      "pitch": 80,
+      "time": 0
+    },
+    {
+      "key": "!",
+      "name": "sfx/Confirm.wav",
+      "volume": 100,
+      "pitch": 120,
+      "time": 0
+    },
+    {
+      "key": "battleIntro",
+      "name": "sfx/Encounter.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "allyKO",
+      "name": "sfx/KO.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "enemyKO",
+      "name": "sfx/KO.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "escape",
+      "name": "sfx/Escape.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "monster",
+      "name": "sfx/Slime.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "heal",
+      "name": "sfx/Magic3.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "load",
+      "name": "sfx/Load.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "explosion",
+      "name": "sfx/Explosion.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "slash",
+      "name": "sfx/Slash.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "crystal",
+      "name": "sfx/Coin.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "shock",
+      "name": "sfx/Shock.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "buff",
+      "name": "sfx/Buff.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "debuff",
+      "name": "sfx/Magic2.wav",
+      "volume": 100,
+      "pitch": 70,
+      "time": 0
+    },
+    {
+      "key": "hardStep",
+      "name": "sfx/Step.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "softStep",
+      "name": "sfx/Step2.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "splashStep",
+      "name": "sfx/Splash.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    },
+    {
+      "key": "critical",
+      "name": "sfx/Damage.wav",
+      "volume": 100,
+      "pitch": 100,
+      "time": 0
+    }
+  ]
+}

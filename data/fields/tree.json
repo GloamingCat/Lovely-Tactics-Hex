@@ -1,0 +1,91 @@
+{
+  "lastField": 0,
+  "id": -1,
+  "children": [
+    {
+      "id": 12,
+      "data": {
+        "name": "Test Battle",
+        "lastLayers": [
+          0,
+          1,
+          -1
+        ]
+      },
+      "children": []
+    },
+    {
+      "id": 6,
+      "data": {
+        "name": "Happy Fields 1",
+        "lastLayers": [
+          3,
+          0,
+          -1
+        ]
+      },
+      "children": [
+        {
+          "id": 5,
+          "data": {
+            "name": "Happy Fields 2",
+            "lastLayers": [
+              2,
+              0,
+              -1
+            ]
+          },
+          "children": []
+        },
+        {
+          "id": 4,
+          "data": {
+            "name": "Happy Fields 3",
+            "lastLayers": [
+              3,
+              0,
+              -1
+            ]
+          },
+          "children": []
+        },
+        {
+          "id": 3,
+          "data": {
+            "name": "Happy Fields 4",
+            "lastLayers": [
+              4,
+              0,
+              -1
+            ]
+          },
+          "children": []
+        },
+        {
+          "id": 1,
+          "data": {
+            "name": "Happy Fields 5",
+            "lastLayers": [
+              3,
+              0,
+              -1
+            ]
+          },
+          "children": []
+        },
+        {
+          "id": 0,
+          "data": {
+            "name": "Forest Battle Field",
+            "lastLayers": [
+              3,
+              1,
+              0
+            ]
+          },
+          "children": []
+        }
+      ]
+    }
+  ]
+}

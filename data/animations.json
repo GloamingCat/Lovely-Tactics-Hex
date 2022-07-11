@@ -1,0 +1,4342 @@
+[
+  {
+    "data": {
+      "script": "",
+      "quad": {
+        "path": "",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "rows": 0,
+      "cols": 0,
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 0,
+        "scaleX": 100,
+        "scaleY": 100,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "introPattern": "",
+      "introDuration": "",
+      "loopPattern": "",
+      "loopDuration": "",
+      "audio": [],
+      "name": "Other",
+      "tags": []
+    },
+    "id": 0,
+    "children": [
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Character/shadow.png",
+            "x": 0,
+            "y": 0,
+            "width": 20,
+            "height": 12
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 10,
+            "offsetY": 6,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Shadow",
+          "tags": []
+        },
+        "id": 1,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Character/shadow.png",
+            "x": 0,
+            "y": 0,
+            "width": 20,
+            "height": 12
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 10,
+            "offsetY": 6,
+            "offsetDepth": 0,
+            "scaleX": 120,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Jelly Shadow",
+          "tags": []
+        },
+        "id": 200,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Character/shadow.png",
+            "x": 0,
+            "y": 0,
+            "width": 20,
+            "height": 12
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 10,
+            "offsetY": 10,
+            "offsetDepth": 0,
+            "scaleX": 360,
+            "scaleY": 300,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Giant Jelly Shadow",
+          "tags": []
+        },
+        "id": 106,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "animation/Balloon",
+          "quad": {
+            "path": "Character/balloon.png",
+            "x": 0,
+            "y": 0,
+            "width": 96,
+            "height": 32
+          },
+          "rows": 1,
+          "cols": 3,
+          "transform": {
+            "offsetX": 16,
+            "offsetY": 32,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "12",
+          "audio": [],
+          "name": "Balloon",
+          "tags": []
+        },
+        "id": 25,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Character/emotions.png",
+            "x": 0,
+            "y": 0,
+            "width": 80,
+            "height": 120
+          },
+          "rows": 6,
+          "cols": 4,
+          "transform": {
+            "offsetX": 10,
+            "offsetY": 10,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "0 1 2 3 3 3",
+          "introDuration": "40",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Emotions",
+          "tags": []
+        },
+        "id": 191,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "script": "",
+      "quad": {
+        "path": "",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "rows": 0,
+      "cols": 0,
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 0,
+        "scaleX": 100,
+        "scaleY": 100,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "introPattern": "",
+      "introDuration": "",
+      "loopPattern": "",
+      "loopDuration": "",
+      "audio": [],
+      "name": "Skill",
+      "tags": []
+    },
+    "id": 2,
+    "children": [
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Status",
+          "tags": []
+        },
+        "id": 172,
+        "children": [
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Battle/hearts.png",
+                "x": 0,
+                "y": 0,
+                "width": 288,
+                "height": 32
+              },
+              "rows": 1,
+              "cols": 9,
+              "transform": {
+                "offsetX": 16,
+                "offsetY": 32,
+                "offsetDepth": -2,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "",
+              "loopDuration": "72",
+              "audio": [],
+              "name": "Heart Bubbles",
+              "tags": []
+            },
+            "id": 169,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Battle/bubbling hearts.png",
+                "x": 0,
+                "y": 0,
+                "width": 96,
+                "height": 32
+              },
+              "rows": 1,
+              "cols": 3,
+              "transform": {
+                "offsetX": 16,
+                "offsetY": 32,
+                "offsetDepth": -2,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "0 1 2",
+              "loopDuration": "24",
+              "audio": [],
+              "name": "Heart Bubbles2",
+              "tags": []
+            },
+            "id": 176,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "animation/BattleEffect",
+              "quad": {
+                "path": "Battle/polen.png",
+                "x": 0,
+                "y": 288,
+                "width": 480,
+                "height": 72
+              },
+              "rows": 1,
+              "cols": 5,
+              "transform": {
+                "offsetX": 48,
+                "offsetY": 72,
+                "offsetDepth": -11,
+                "scaleX": 50,
+                "scaleY": 50,
+                "rotation": 0,
+                "red": 200,
+                "green": 50,
+                "blue": 150,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 50,
+                "brightness": 100
+              },
+              "introPattern": "0 1 2 3 4 3 2 1",
+              "introDuration": "120",
+              "loopPattern": "0 1 2 3 4 3 2 1",
+              "loopDuration": "120",
+              "audio": [],
+              "name": "Doom",
+              "tags": []
+            },
+            "id": 170,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "animation/BattleEffect",
+              "quad": {
+                "path": "Battle/heal.png",
+                "x": 0,
+                "y": 512,
+                "width": 640,
+                "height": 128
+              },
+              "rows": 1,
+              "cols": 5,
+              "transform": {
+                "offsetX": 64,
+                "offsetY": 96,
+                "offsetDepth": 1,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 80,
+                "brightness": 120
+              },
+              "introPattern": "0 1 2 3 4 3 2 1",
+              "introDuration": "120",
+              "loopPattern": "0 1 2 3 4 3 2 1",
+              "loopDuration": "120",
+              "audio": [],
+              "name": "Bless",
+              "tags": []
+            },
+            "id": 171,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "animation/BattleEffect",
+              "quad": {
+                "path": "Battle/poison.png",
+                "x": 0,
+                "y": 0,
+                "width": 480,
+                "height": 576
+              },
+              "rows": 6,
+              "cols": 5,
+              "transform": {
+                "offsetX": 48,
+                "offsetY": 72,
+                "offsetDepth": -11,
+                "scaleX": 50,
+                "scaleY": 50,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "30",
+              "loopPattern": "",
+              "loopDuration": "30",
+              "audio": [
+                {
+                  "name": "debuff",
+                  "volume": 100,
+                  "pitch": 100,
+                  "time": 0
+                }
+              ],
+              "name": "Poison",
+              "tags": []
+            },
+            "id": 14,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "animation/BattleEffect",
+              "quad": {
+                "path": "Battle/polen.png",
+                "x": 0,
+                "y": 0,
+                "width": 480,
+                "height": 384
+              },
+              "rows": 4,
+              "cols": 5,
+              "transform": {
+                "offsetX": 48,
+                "offsetY": 72,
+                "offsetDepth": -11,
+                "scaleX": 50,
+                "scaleY": 50,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "60",
+              "loopPattern": "",
+              "loopDuration": "60",
+              "audio": [
+                {
+                  "name": "debuff",
+                  "volume": 100,
+                  "pitch": 80,
+                  "time": 0
+                }
+              ],
+              "name": "Polen",
+              "tags": []
+            },
+            "id": 15,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "animation/BattleEffect",
+              "quad": {
+                "path": "Battle/polen.png",
+                "x": 0,
+                "y": 0,
+                "width": 480,
+                "height": 384
+              },
+              "rows": 4,
+              "cols": 5,
+              "transform": {
+                "offsetX": 48,
+                "offsetY": 72,
+                "offsetDepth": -11,
+                "scaleX": 50,
+                "scaleY": 50,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 100,
+                "saturation": 100,
+                "brightness": 150
+              },
+              "introPattern": "",
+              "introDuration": "60",
+              "loopPattern": "",
+              "loopDuration": "60",
+              "audio": [
+                {
+                  "name": "heal",
+                  "volume": 100,
+                  "pitch": 100,
+                  "time": 0
+                }
+              ],
+              "name": "Love",
+              "tags": []
+            },
+            "id": 175,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "animation/BattleEffect",
+              "quad": {
+                "path": "Battle/shield.png",
+                "x": 0,
+                "y": 0,
+                "width": 480,
+                "height": 672
+              },
+              "rows": 7,
+              "cols": 5,
+              "transform": {
+                "offsetX": 48,
+                "offsetY": 72,
+                "offsetDepth": -11,
+                "scaleX": 50,
+                "scaleY": 50,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "70",
+              "loopPattern": "",
+              "loopDuration": "70",
+              "audio": [
+                {
+                  "name": "buff",
+                  "volume": 70,
+                  "pitch": 110,
+                  "time": 0
+                }
+              ],
+              "name": "Shield",
+              "tags": []
+            },
+            "id": 17,
+            "children": []
+          }
+        ]
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Projectile",
+          "tags": []
+        },
+        "id": 174,
+        "children": [
+          {
+            "data": {
+              "script": "animation/Projectile.lua",
+              "quad": {
+                "path": "Battle/pulsating heart.png",
+                "x": 0,
+                "y": 0,
+                "width": 48,
+                "height": 12
+              },
+              "rows": 1,
+              "cols": 3,
+              "transform": {
+                "offsetX": 8,
+                "offsetY": 6,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "0 1 2 1",
+              "loopDuration": "16",
+              "audio": [],
+              "name": "Pulsating Heart",
+              "tags": []
+            },
+            "id": 173,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "animation/Projectile.lua",
+              "quad": {
+                "path": "Battle/magic ball.png",
+                "x": 0,
+                "y": 0,
+                "width": 48,
+                "height": 16
+              },
+              "rows": 1,
+              "cols": 3,
+              "transform": {
+                "offsetX": 8,
+                "offsetY": 8,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "0 1 2 1",
+              "loopDuration": "16",
+              "audio": [],
+              "name": "Magic Projectile",
+              "tags": []
+            },
+            "id": 49,
+            "children": []
+          }
+        ]
+      },
+      {
+        "data": {
+          "script": "animation/BattleEffect",
+          "quad": {
+            "path": "Battle/explosion.png",
+            "x": 0,
+            "y": 0,
+            "width": 144,
+            "height": 48
+          },
+          "rows": 1,
+          "cols": 3,
+          "transform": {
+            "offsetX": 24,
+            "offsetY": 36,
+            "offsetDepth": -12,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 0,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 200
+          },
+          "introPattern": "",
+          "introDuration": "15",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [
+            {
+              "name": "explosion",
+              "volume": 100,
+              "pitch": 100,
+              "time": 0
+            }
+          ],
+          "name": "Magic",
+          "tags": []
+        },
+        "id": 10,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "animation/BattleEffect",
+          "quad": {
+            "path": "Battle/explosion.png",
+            "x": 0,
+            "y": 0,
+            "width": 144,
+            "height": 48
+          },
+          "rows": 1,
+          "cols": 3,
+          "transform": {
+            "offsetX": 24,
+            "offsetY": 36,
+            "offsetDepth": -24,
+            "scaleX": 200,
+            "scaleY": 200,
+            "rotation": 0,
+            "red": 255,
+            "green": 0,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 200
+          },
+          "introPattern": "",
+          "introDuration": "15",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [
+            {
+              "name": "explosion",
+              "volume": 100,
+              "pitch": 100,
+              "time": 0
+            }
+          ],
+          "name": "Big Magic",
+          "tags": []
+        },
+        "id": 11,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "animation/BattleEffect",
+          "quad": {
+            "path": "Battle/explosion.png",
+            "x": 0,
+            "y": 0,
+            "width": 144,
+            "height": 48
+          },
+          "rows": 1,
+          "cols": 3,
+          "transform": {
+            "offsetX": 24,
+            "offsetY": 36,
+            "offsetDepth": -48,
+            "scaleX": 400,
+            "scaleY": 400,
+            "rotation": 0,
+            "red": 255,
+            "green": 0,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 200
+          },
+          "introPattern": "",
+          "introDuration": "15",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [
+            {
+              "name": "explosion",
+              "volume": 100,
+              "pitch": 100,
+              "time": 0
+            }
+          ],
+          "name": "Giant Magic",
+          "tags": []
+        },
+        "id": 12,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "animation/BattleEffect",
+          "quad": {
+            "path": "Battle/explosion.png",
+            "x": 0,
+            "y": 0,
+            "width": 144,
+            "height": 48
+          },
+          "rows": 1,
+          "cols": 3,
+          "transform": {
+            "offsetX": 24,
+            "offsetY": 36,
+            "offsetDepth": -12,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 128,
+            "blue": 0,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "15",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [
+            {
+              "name": "explosion",
+              "volume": 100,
+              "pitch": 100,
+              "time": 0
+            }
+          ],
+          "name": "Blaze",
+          "tags": []
+        },
+        "id": 113,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "animation/BattleEffect",
+          "quad": {
+            "path": "Battle/explosion.png",
+            "x": 0,
+            "y": 0,
+            "width": 144,
+            "height": 48
+          },
+          "rows": 1,
+          "cols": 3,
+          "transform": {
+            "offsetX": 24,
+            "offsetY": 36,
+            "offsetDepth": -12,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 0,
+            "green": 128,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "15",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [
+            {
+              "name": "crystal",
+              "volume": 100,
+              "pitch": 100,
+              "time": 0
+            }
+          ],
+          "name": "Frost",
+          "tags": []
+        },
+        "id": 111,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "animation/BattleEffect",
+          "quad": {
+            "path": "Battle/explosion.png",
+            "x": 0,
+            "y": 0,
+            "width": 144,
+            "height": 48
+          },
+          "rows": 1,
+          "cols": 3,
+          "transform": {
+            "offsetX": 24,
+            "offsetY": 36,
+            "offsetDepth": -12,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 128,
+            "green": 255,
+            "blue": 0,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "15",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [
+            {
+              "name": "shock",
+              "volume": 100,
+              "pitch": 120,
+              "time": 0
+            }
+          ],
+          "name": "Bolt",
+          "tags": []
+        },
+        "id": 112,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "animation/BattleEffect",
+          "quad": {
+            "path": "Battle/explosion.png",
+            "x": 0,
+            "y": 0,
+            "width": 144,
+            "height": 48
+          },
+          "rows": 1,
+          "cols": 3,
+          "transform": {
+            "offsetX": 24,
+            "offsetY": 24,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 400
+          },
+          "introPattern": "",
+          "introDuration": "30",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [
+            {
+              "name": "load",
+              "volume": 80,
+              "pitch": 100,
+              "time": 0
+            }
+          ],
+          "name": "Load",
+          "tags": []
+        },
+        "id": 13,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "animation/BattleEffect",
+          "quad": {
+            "path": "Battle/pulsating heart.png",
+            "x": 0,
+            "y": 0,
+            "width": 48,
+            "height": 12
+          },
+          "rows": 1,
+          "cols": 3,
+          "transform": {
+            "offsetX": 8,
+            "offsetY": 24,
+            "offsetDepth": -11,
+            "scaleX": 200,
+            "scaleY": 200,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "30",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [
+            {
+              "name": "heal",
+              "volume": 70,
+              "pitch": 110,
+              "time": 0
+            }
+          ],
+          "name": "Heal",
+          "tags": []
+        },
+        "id": 16,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "animation/BattleEffect",
+          "quad": {
+            "path": "Battle/explosion.png",
+            "x": 0,
+            "y": 0,
+            "width": 144,
+            "height": 48
+          },
+          "rows": 1,
+          "cols": 3,
+          "transform": {
+            "offsetX": 24,
+            "offsetY": 36,
+            "offsetDepth": -11,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "15",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [
+            {
+              "name": "monster",
+              "volume": 100,
+              "pitch": 100,
+              "time": 0
+            }
+          ],
+          "name": "Impact",
+          "tags": []
+        },
+        "id": 80,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "animation/Flash.lua",
+          "quad": {
+            "path": "",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Flash",
+          "tags": []
+        },
+        "id": 232,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "script": "",
+      "quad": {
+        "path": "",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "rows": 0,
+      "cols": 0,
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 0,
+        "scaleX": 100,
+        "scaleY": 100,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "introPattern": "",
+      "introDuration": "",
+      "loopPattern": "",
+      "loopDuration": "",
+      "audio": [],
+      "name": "GUI",
+      "tags": []
+    },
+    "id": 3,
+    "children": [
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "GUI/windowSkin.png",
+            "x": 0,
+            "y": 0,
+            "width": 27,
+            "height": 27
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Window Skin",
+          "tags": []
+        },
+        "id": 18,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "GUI/frame.png",
+            "x": 0,
+            "y": 0,
+            "width": 24,
+            "height": 24
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 50,
+            "scaleY": 50,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Icon Frame",
+          "tags": []
+        },
+        "id": 19,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "animation/Pointer",
+          "quad": {
+            "path": "GUI/cursor.png",
+            "x": 0,
+            "y": 0,
+            "width": 14,
+            "height": 14
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 6,
+            "offsetY": 7,
+            "offsetDepth": -2,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "15",
+          "audio": [],
+          "name": "Cursor",
+          "tags": [
+            {
+              "key": "dx",
+              "value": "1"
+            }
+          ]
+        },
+        "id": 20,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "animation/Pointer",
+          "quad": {
+            "path": "GUI/Battle/battle cursor.png",
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 13
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 6,
+            "offsetY": 18,
+            "offsetDepth": -2,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "15",
+          "audio": [],
+          "name": "Battle Cursor",
+          "tags": [
+            {
+              "key": "dy",
+              "value": "1"
+            }
+          ]
+        },
+        "id": 22,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "GUI/highlight.png",
+            "x": 0,
+            "y": 0,
+            "width": 15,
+            "height": 15
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": -2,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Highlight",
+          "tags": []
+        },
+        "id": 21,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "GUI/Battle/hex.png",
+            "x": 0,
+            "y": 0,
+            "width": 36,
+            "height": 22
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 11,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Tile (Hex)",
+          "tags": []
+        },
+        "id": 23,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "GUI/Battle/iso.png",
+            "x": 0,
+            "y": 0,
+            "width": 36,
+            "height": 18
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 9,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Tile (Iso)",
+          "tags": []
+        },
+        "id": 31,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "GUI/Battle/ort.png",
+            "x": 0,
+            "y": 0,
+            "width": 32,
+            "height": 24
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 16,
+            "offsetY": 12,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Tile (Ort)",
+          "tags": []
+        },
+        "id": 9,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "GUI/Battle/hex.png",
+            "x": 36,
+            "y": 0,
+            "width": 36,
+            "height": 22
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 11,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Tile Cursor (Hex)",
+          "tags": []
+        },
+        "id": 24,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "GUI/Battle/iso.png",
+            "x": 36,
+            "y": 0,
+            "width": 36,
+            "height": 18
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 9,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Tile Cursor (Iso)",
+          "tags": []
+        },
+        "id": 30,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "GUI/Battle/ort.png",
+            "x": 32,
+            "y": 0,
+            "width": 32,
+            "height": 24
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 16,
+            "offsetY": 12,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Tile Cursor (Ort)",
+          "tags": []
+        },
+        "id": 29,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "GUI/gauge bg.png",
+            "x": 0,
+            "y": 0,
+            "width": 9,
+            "height": 9
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Gauge BG",
+          "tags": []
+        },
+        "id": 26,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "GUI/gauge.png",
+            "x": 0,
+            "y": 0,
+            "width": 24,
+            "height": 24
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Gauge",
+          "tags": []
+        },
+        "id": 27,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "GUI/arrows.png",
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 12
+          },
+          "rows": 2,
+          "cols": 2,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Arrow",
+          "tags": []
+        },
+        "id": 28,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "script": "",
+      "quad": {
+        "path": "",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "rows": 0,
+      "cols": 0,
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 0,
+        "scaleX": 100,
+        "scaleY": 100,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "introPattern": "",
+      "introDuration": "",
+      "loopPattern": "",
+      "loopDuration": "",
+      "audio": [],
+      "name": "Portrait",
+      "tags": []
+    },
+    "id": 4,
+    "children": [
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Portrait/template.png",
+            "x": 30,
+            "y": 33,
+            "width": 140,
+            "height": 140
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 25,
+            "scaleY": 25,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Small Icon",
+          "tags": []
+        },
+        "id": 64,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Portrait/template.png",
+            "x": 0,
+            "y": 0,
+            "width": 200,
+            "height": 250
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 50,
+            "scaleY": 50,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Big Icon",
+          "tags": []
+        },
+        "id": 65,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "script": "",
+      "quad": {
+        "path": "",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "rows": 0,
+      "cols": 0,
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 0,
+        "scaleX": 100,
+        "scaleY": 100,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "introPattern": "",
+      "introDuration": "",
+      "loopPattern": "",
+      "loopDuration": "",
+      "audio": [],
+      "name": "Icon",
+      "tags": []
+    },
+    "id": 5,
+    "children": [
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Icon/Usable.png",
+            "x": 0,
+            "y": 0,
+            "width": 40,
+            "height": 80
+          },
+          "rows": 4,
+          "cols": 2,
+          "transform": {
+            "offsetX": 10,
+            "offsetY": 10,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Usable",
+          "tags": []
+        },
+        "id": 32,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Icon/Equips.png",
+            "x": 0,
+            "y": 0,
+            "width": 20,
+            "height": 100
+          },
+          "rows": 5,
+          "cols": 1,
+          "transform": {
+            "offsetX": 10,
+            "offsetY": 10,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Equip",
+          "tags": []
+        },
+        "id": 33,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Icon/Skills.png",
+            "x": 0,
+            "y": 0,
+            "width": 80,
+            "height": 80
+          },
+          "rows": 4,
+          "cols": 4,
+          "transform": {
+            "offsetX": 10,
+            "offsetY": 10,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Skill",
+          "tags": []
+        },
+        "id": 34,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Icon/GUI.png",
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 40
+          },
+          "rows": 2,
+          "cols": 5,
+          "transform": {
+            "offsetX": 10,
+            "offsetY": 10,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "GUI",
+          "tags": []
+        },
+        "id": 36,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "script": "",
+      "quad": {
+        "path": "",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "rows": 0,
+      "cols": 0,
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 0,
+        "scaleX": 100,
+        "scaleY": 100,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "introPattern": "",
+      "introDuration": "",
+      "loopPattern": "",
+      "loopDuration": "",
+      "audio": [],
+      "name": "Obstacle",
+      "tags": []
+    },
+    "id": 7,
+    "children": [
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Obstacle/Tree.png",
+            "x": 4,
+            "y": 7,
+            "width": 75,
+            "height": 89
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 38,
+            "offsetY": 79,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Tree 1",
+          "tags": []
+        },
+        "id": 41,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Obstacle/Tree.png",
+            "x": 84,
+            "y": 2,
+            "width": 76,
+            "height": 94
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 40,
+            "offsetY": 86,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Tree 2",
+          "tags": []
+        },
+        "id": 42,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Obstacle/Rock0.png",
+            "x": 47,
+            "y": 0,
+            "width": 36,
+            "height": 34
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 23,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Rock 1",
+          "tags": []
+        },
+        "id": 43,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Obstacle/Rock0.png",
+            "x": 47,
+            "y": 33,
+            "width": 26,
+            "height": 15
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 13,
+            "offsetY": 10,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Rock 2",
+          "tags": []
+        },
+        "id": 44,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Obstacle/Grass0.png",
+            "x": 0,
+            "y": 0,
+            "width": 18,
+            "height": 18
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 9,
+            "offsetY": 9,
+            "offsetDepth": 5,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Grass 1",
+          "tags": []
+        },
+        "id": 45,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Obstacle/Grass1.png",
+            "x": 0,
+            "y": 0,
+            "width": 26,
+            "height": 18
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 13,
+            "offsetY": 9,
+            "offsetDepth": 5,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Grass 2",
+          "tags": []
+        },
+        "id": 46,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Obstacle/Bush.png",
+            "x": 0,
+            "y": 0,
+            "width": 80,
+            "height": 96
+          },
+          "rows": 3,
+          "cols": 2,
+          "transform": {
+            "offsetX": 20,
+            "offsetY": 24,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Jungle",
+          "tags": []
+        },
+        "id": 211,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Obstacle/Firepit.png",
+            "x": 0,
+            "y": 0,
+            "width": 96,
+            "height": 32
+          },
+          "rows": 1,
+          "cols": 3,
+          "transform": {
+            "offsetX": 16,
+            "offsetY": 18,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "30",
+          "audio": [],
+          "name": "Firepit",
+          "tags": []
+        },
+        "id": 66,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Obstacle/block-hex.png",
+            "x": 0,
+            "y": 0,
+            "width": 36,
+            "height": 30
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 19,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Block (Hex)",
+          "tags": []
+        },
+        "id": 51,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Obstacle/block-iso.png",
+            "x": 0,
+            "y": 0,
+            "width": 36,
+            "height": 26
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 17,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Block (Iso)",
+          "tags": []
+        },
+        "id": 47,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Obstacle/block-ort.png",
+            "x": 0,
+            "y": 0,
+            "width": 32,
+            "height": 32
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 16,
+            "offsetY": 20,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Block (Ort)",
+          "tags": []
+        },
+        "id": 48,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "script": "",
+      "quad": {
+        "path": "",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "rows": 0,
+      "cols": 0,
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 0,
+        "scaleX": 100,
+        "scaleY": 100,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "introPattern": "",
+      "introDuration": "",
+      "loopPattern": "",
+      "loopDuration": "",
+      "audio": [],
+      "name": "Character",
+      "tags": []
+    },
+    "id": 8,
+    "children": [
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Character/Template/Default.png",
+            "x": 24,
+            "y": 192,
+            "width": 24,
+            "height": 32
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Template",
+          "tags": []
+        },
+        "id": 52,
+        "children": [
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Template/Default.png",
+                "x": 24,
+                "y": 0,
+                "width": 24,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 1,
+              "transform": {
+                "offsetX": 12,
+                "offsetY": 30,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "",
+              "loopDuration": "",
+              "audio": [],
+              "name": "Idle",
+              "tags": []
+            },
+            "id": 53,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Template/Default.png",
+                "x": 0,
+                "y": 0,
+                "width": 72,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 3,
+              "transform": {
+                "offsetX": 12,
+                "offsetY": 30,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "0 1 2 1",
+              "loopDuration": "20 7 20 7",
+              "audio": [],
+              "name": "Idle (Battle)",
+              "tags": []
+            },
+            "id": 57,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Template/Default.png",
+                "x": 0,
+                "y": 0,
+                "width": 72,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 3,
+              "transform": {
+                "offsetX": 12,
+                "offsetY": 30,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "0 1 2 1",
+              "loopDuration": "28",
+              "audio": [],
+              "name": "Walk",
+              "tags": []
+            },
+            "id": 54,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Template/Default.png",
+                "x": 0,
+                "y": 0,
+                "width": 72,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 3,
+              "transform": {
+                "offsetX": 12,
+                "offsetY": 30,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "0 1 2 1",
+              "loopDuration": "21",
+              "audio": [],
+              "name": "Dash",
+              "tags": []
+            },
+            "id": 55,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Template/Sword.png",
+                "x": 0,
+                "y": 0,
+                "width": 48,
+                "height": 384
+              },
+              "rows": 8,
+              "cols": 1,
+              "transform": {
+                "offsetX": 24,
+                "offsetY": 38,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "",
+              "loopDuration": "10",
+              "audio": [],
+              "name": "Sword Load",
+              "tags": []
+            },
+            "id": 56,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Template/Sword.png",
+                "x": 0,
+                "y": 0,
+                "width": 240,
+                "height": 384
+              },
+              "rows": 8,
+              "cols": 5,
+              "transform": {
+                "offsetX": 24,
+                "offsetY": 38,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "15 4 4 4 10",
+              "loopPattern": "",
+              "loopDuration": "",
+              "audio": [
+                {
+                  "name": "slash",
+                  "volume": 100,
+                  "pitch": 100,
+                  "time": 1
+                }
+              ],
+              "name": "Sword Skill",
+              "tags": []
+            },
+            "id": 60,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Template/Load.png",
+                "x": 0,
+                "y": 0,
+                "width": 24,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 1,
+              "transform": {
+                "offsetX": 12,
+                "offsetY": 30,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "",
+              "loopDuration": "10",
+              "audio": [],
+              "name": "Magic Load",
+              "tags": []
+            },
+            "id": 58,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Template/Cast.png",
+                "x": 0,
+                "y": 0,
+                "width": 24,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 1,
+              "transform": {
+                "offsetX": 12,
+                "offsetY": 30,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "8",
+              "loopPattern": "",
+              "loopDuration": "",
+              "audio": [],
+              "name": "Magic Skill",
+              "tags": []
+            },
+            "id": 59,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "animation/Knockback",
+              "quad": {
+                "path": "Character/Template/Damage.png",
+                "x": 0,
+                "y": 0,
+                "width": 24,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 1,
+              "transform": {
+                "offsetX": 12,
+                "offsetY": 30,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "12",
+              "loopPattern": "",
+              "loopDuration": "",
+              "audio": [],
+              "name": "Damage",
+              "tags": []
+            },
+            "id": 61,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Template/KO.png",
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 1,
+              "transform": {
+                "offsetX": 16,
+                "offsetY": 22,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 75,
+                "brightness": 75
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "",
+              "loopDuration": "",
+              "audio": [],
+              "name": "KO",
+              "tags": []
+            },
+            "id": 62,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Template/KO.png",
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 1,
+              "transform": {
+                "offsetX": 16,
+                "offsetY": 22,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "",
+              "loopDuration": "",
+              "audio": [],
+              "name": "Sleep",
+              "tags": []
+            },
+            "id": 63,
+            "children": []
+          }
+        ]
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Character/Jelly/Default.png",
+            "x": 32,
+            "y": 192,
+            "width": 32,
+            "height": 32
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Jelly",
+          "tags": []
+        },
+        "id": 50,
+        "children": [
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Jelly/Default.png",
+                "x": 0,
+                "y": 0,
+                "width": 96,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 3,
+              "transform": {
+                "offsetX": 16,
+                "offsetY": 25,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "1 2 1 0",
+              "loopDuration": "20",
+              "audio": [],
+              "name": "Idle",
+              "tags": []
+            },
+            "id": 77,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Jelly/Jump.png",
+                "x": 0,
+                "y": 0,
+                "width": 128,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 4,
+              "transform": {
+                "offsetX": 16,
+                "offsetY": 25,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "0 1 2 3 2 1",
+              "loopDuration": "24",
+              "audio": [],
+              "name": "Walk",
+              "tags": []
+            },
+            "id": 78,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Jelly/Jump.png",
+                "x": 0,
+                "y": 0,
+                "width": 128,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 4,
+              "transform": {
+                "offsetX": 16,
+                "offsetY": 25,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "0 1 2 3 2 1",
+              "loopDuration": "18",
+              "audio": [],
+              "name": "Dash",
+              "tags": []
+            },
+            "id": 79,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "animation/Knockback.lua",
+              "quad": {
+                "path": "Character/Jelly/Damage.png",
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 1,
+              "transform": {
+                "offsetX": 16,
+                "offsetY": 25,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "12",
+              "loopPattern": "",
+              "loopDuration": "",
+              "audio": [],
+              "name": "Damage",
+              "tags": []
+            },
+            "id": 81,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Jelly/KO.png",
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 1,
+              "transform": {
+                "offsetX": 16,
+                "offsetY": 25,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 75,
+                "brightness": 75
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "",
+              "loopDuration": "",
+              "audio": [],
+              "name": "KO",
+              "tags": []
+            },
+            "id": 82,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Jelly/KO.png",
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 1,
+              "transform": {
+                "offsetX": 16,
+                "offsetY": 25,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "",
+              "loopDuration": "",
+              "audio": [],
+              "name": "Sleep",
+              "tags": []
+            },
+            "id": 161,
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "data": {
+      "script": "",
+      "quad": {
+        "path": "",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "rows": 0,
+      "cols": 0,
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 0,
+        "scaleX": 100,
+        "scaleY": 100,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "introPattern": "",
+      "introDuration": "",
+      "loopPattern": "",
+      "loopDuration": "",
+      "audio": [],
+      "name": "Terrain (Hex)",
+      "tags": []
+    },
+    "id": 6,
+    "children": [
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/HexV.png",
+            "x": 0,
+            "y": 0,
+            "width": 36,
+            "height": 198
+          },
+          "rows": 9,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 11,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Plain",
+          "tags": []
+        },
+        "id": 37,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/HexV.png",
+            "x": 36,
+            "y": 0,
+            "width": 36,
+            "height": 198
+          },
+          "rows": 9,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 11,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Bush",
+          "tags": []
+        },
+        "id": 38,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/HexV.png",
+            "x": 72,
+            "y": 0,
+            "width": 36,
+            "height": 198
+          },
+          "rows": 9,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 11,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Sand",
+          "tags": []
+        },
+        "id": 39,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/HexV.png",
+            "x": 108,
+            "y": 0,
+            "width": 108,
+            "height": 198
+          },
+          "rows": 9,
+          "cols": 3,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 11,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "60",
+          "audio": [],
+          "name": "Water",
+          "tags": []
+        },
+        "id": 40,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/HexV.png",
+            "x": 216,
+            "y": 0,
+            "width": 36,
+            "height": 198
+          },
+          "rows": 9,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 11,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Rock",
+          "tags": []
+        },
+        "id": 76,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/HexV.png",
+            "x": 252,
+            "y": 0,
+            "width": 36,
+            "height": 198
+          },
+          "rows": 9,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 11,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Road",
+          "tags": []
+        },
+        "id": 35,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/HexV.png",
+            "x": 288,
+            "y": 0,
+            "width": 108,
+            "height": 198
+          },
+          "rows": 9,
+          "cols": 3,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 11,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "60",
+          "audio": [],
+          "name": "Puddle",
+          "tags": []
+        },
+        "id": 83,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/HexV.png",
+            "x": 396,
+            "y": 0,
+            "width": 36,
+            "height": 198
+          },
+          "rows": 9,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 11,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Poison Bush",
+          "tags": []
+        },
+        "id": 84,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "script": "",
+      "quad": {
+        "path": "",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "rows": 0,
+      "cols": 0,
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 0,
+        "scaleX": 100,
+        "scaleY": 100,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "introPattern": "",
+      "introDuration": "",
+      "loopPattern": "",
+      "loopDuration": "",
+      "audio": [],
+      "name": "Terrain (Ort)",
+      "tags": []
+    },
+    "id": 69,
+    "children": [
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/ort.png",
+            "x": 0,
+            "y": 0,
+            "width": 32,
+            "height": 144
+          },
+          "rows": 6,
+          "cols": 1,
+          "transform": {
+            "offsetX": 16,
+            "offsetY": 12,
+            "offsetDepth": 24,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Plain",
+          "tags": []
+        },
+        "id": 70,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/ort.png",
+            "x": 32,
+            "y": 0,
+            "width": 32,
+            "height": 144
+          },
+          "rows": 6,
+          "cols": 1,
+          "transform": {
+            "offsetX": 16,
+            "offsetY": 12,
+            "offsetDepth": 24,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Bush",
+          "tags": []
+        },
+        "id": 71,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/ort.png",
+            "x": 64,
+            "y": 0,
+            "width": 32,
+            "height": 144
+          },
+          "rows": 6,
+          "cols": 1,
+          "transform": {
+            "offsetX": 16,
+            "offsetY": 12,
+            "offsetDepth": 24,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Sand",
+          "tags": []
+        },
+        "id": 72,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/ort.png",
+            "x": 96,
+            "y": 0,
+            "width": 96,
+            "height": 144
+          },
+          "rows": 6,
+          "cols": 3,
+          "transform": {
+            "offsetX": 16,
+            "offsetY": 12,
+            "offsetDepth": 24,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "60",
+          "audio": [],
+          "name": "Water",
+          "tags": []
+        },
+        "id": 73,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/ort.png",
+            "x": 192,
+            "y": 0,
+            "width": 32,
+            "height": 144
+          },
+          "rows": 6,
+          "cols": 1,
+          "transform": {
+            "offsetX": 16,
+            "offsetY": 12,
+            "offsetDepth": 24,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Rock",
+          "tags": []
+        },
+        "id": 74,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/ort.png",
+            "x": 224,
+            "y": 0,
+            "width": 32,
+            "height": 144
+          },
+          "rows": 6,
+          "cols": 1,
+          "transform": {
+            "offsetX": 16,
+            "offsetY": 12,
+            "offsetDepth": 24,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Road",
+          "tags": []
+        },
+        "id": 75,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/ort.png",
+            "x": 256,
+            "y": 0,
+            "width": 96,
+            "height": 144
+          },
+          "rows": 6,
+          "cols": 3,
+          "transform": {
+            "offsetX": 16,
+            "offsetY": 12,
+            "offsetDepth": 24,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "60",
+          "audio": [],
+          "name": "Puddle",
+          "tags": []
+        },
+        "id": 85,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/ort.png",
+            "x": 352,
+            "y": 0,
+            "width": 32,
+            "height": 144
+          },
+          "rows": 6,
+          "cols": 1,
+          "transform": {
+            "offsetX": 16,
+            "offsetY": 12,
+            "offsetDepth": 24,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Poison Bush",
+          "tags": []
+        },
+        "id": 86,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "script": "",
+      "quad": {
+        "path": "",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "rows": 0,
+      "cols": 0,
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 0,
+        "scaleX": 100,
+        "scaleY": 100,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "introPattern": "",
+      "introDuration": "",
+      "loopPattern": "",
+      "loopDuration": "",
+      "audio": [],
+      "name": "Terrain (Iso)",
+      "tags": []
+    },
+    "id": 87,
+    "children": [
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/iso.png",
+            "x": 0,
+            "y": 0,
+            "width": 36,
+            "height": 108
+          },
+          "rows": 6,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 9,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Plain",
+          "tags": []
+        },
+        "id": 88,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/iso.png",
+            "x": 36,
+            "y": 0,
+            "width": 36,
+            "height": 108
+          },
+          "rows": 6,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 9,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Bush",
+          "tags": []
+        },
+        "id": 89,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/iso.png",
+            "x": 72,
+            "y": 0,
+            "width": 36,
+            "height": 108
+          },
+          "rows": 6,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 9,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Sand",
+          "tags": []
+        },
+        "id": 90,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/iso.png",
+            "x": 108,
+            "y": 0,
+            "width": 108,
+            "height": 108
+          },
+          "rows": 6,
+          "cols": 3,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 9,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "60",
+          "audio": [],
+          "name": "Water",
+          "tags": []
+        },
+        "id": 91,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/iso.png",
+            "x": 216,
+            "y": 0,
+            "width": 36,
+            "height": 108
+          },
+          "rows": 6,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 9,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Rock",
+          "tags": []
+        },
+        "id": 92,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/iso.png",
+            "x": 252,
+            "y": 0,
+            "width": 36,
+            "height": 108
+          },
+          "rows": 6,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 9,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Road",
+          "tags": []
+        },
+        "id": 93,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/iso.png",
+            "x": 288,
+            "y": 0,
+            "width": 108,
+            "height": 108
+          },
+          "rows": 6,
+          "cols": 3,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 9,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "60",
+          "audio": [],
+          "name": "Puddle",
+          "tags": []
+        },
+        "id": 94,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "Terrain/iso.png",
+            "x": 396,
+            "y": 0,
+            "width": 36,
+            "height": 108
+          },
+          "rows": 6,
+          "cols": 1,
+          "transform": {
+            "offsetX": 18,
+            "offsetY": 9,
+            "offsetDepth": 18,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Poison Bush",
+          "tags": []
+        },
+        "id": 95,
+        "children": []
+      }
+    ]
+  }
+]

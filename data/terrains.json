@@ -1,0 +1,163 @@
+[
+  {
+    "data": {
+      "animID": 37,
+      "sounds": [
+        {
+          "name": "softStep",
+          "volume": 100,
+          "pitch": 100,
+          "time": 0
+        }
+      ],
+      "passable": true,
+      "moveCost": 100,
+      "statusID": -1,
+      "removeOnExit": false,
+      "name": "Grass",
+      "tags": []
+    },
+    "id": 0,
+    "children": []
+  },
+  {
+    "data": {
+      "animID": 38,
+      "sounds": [
+        {
+          "name": "softStep",
+          "volume": 100,
+          "pitch": 100,
+          "time": 0
+        }
+      ],
+      "passable": true,
+      "moveCost": 125,
+      "statusID": -1,
+      "removeOnExit": false,
+      "name": "Bush",
+      "tags": []
+    },
+    "id": 1,
+    "children": []
+  },
+  {
+    "data": {
+      "animID": 39,
+      "sounds": [
+        {
+          "name": "softStep",
+          "volume": 100,
+          "pitch": 100,
+          "time": 0
+        }
+      ],
+      "passable": true,
+      "moveCost": 100,
+      "statusID": -1,
+      "removeOnExit": false,
+      "name": "Sand",
+      "tags": []
+    },
+    "id": 2,
+    "children": []
+  },
+  {
+    "data": {
+      "animID": 40,
+      "sounds": [],
+      "passable": false,
+      "moveCost": 100,
+      "statusID": -1,
+      "removeOnExit": false,
+      "name": "Water",
+      "tags": []
+    },
+    "id": 3,
+    "children": []
+  },
+  {
+    "data": {
+      "animID": 83,
+      "sounds": [
+        {
+          "name": "splashStep",
+          "volume": 90,
+          "pitch": 100,
+          "time": 0
+        }
+      ],
+      "passable": true,
+      "moveCost": 150,
+      "statusID": 13,
+      "removeOnExit": true,
+      "name": "Puddle",
+      "tags": []
+    },
+    "id": 6,
+    "children": []
+  },
+  {
+    "data": {
+      "animID": 76,
+      "sounds": [
+        {
+          "name": "hardStep",
+          "volume": 90,
+          "pitch": 100,
+          "time": 0
+        }
+      ],
+      "passable": true,
+      "moveCost": 100,
+      "statusID": -1,
+      "removeOnExit": false,
+      "name": "Rock",
+      "tags": []
+    },
+    "id": 4,
+    "children": []
+  },
+  {
+    "data": {
+      "animID": 84,
+      "sounds": [
+        {
+          "name": "softStep",
+          "volume": 100,
+          "pitch": 100,
+          "time": 0
+        }
+      ],
+      "passable": true,
+      "moveCost": 125,
+      "statusID": 0,
+      "removeOnExit": false,
+      "name": "Poison Bush",
+      "tags": []
+    },
+    "id": 5,
+    "children": []
+  },
+  {
+    "data": {
+      "animID": 35,
+      "sounds": [
+        {
+          "name": "hardStep",
+          "volume": 90,
+          "pitch": 100,
+          "time": 0
+        }
+      ],
+      "passable": true,
+      "moveCost": 100,
+      "statusID": -1,
+      "removeOnExit": false,
+      "name": "Road",
+      "tags": []
+    },
+    "id": 7,
+    "children": []
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "key": "hand",
+    "count": 1,
+    "state": 0,
+    "name": "Hand",
+    "tags": []
+  },
+  {
+    "key": "body",
+    "count": 1,
+    "state": 0,
+    "name": "Body",
+    "tags": []
+  },
+  {
+    "key": "head",
+    "count": 1,
+    "state": 0,
+    "name": "Head",
+    "tags": []
+  },
+  {
+    "key": "foot",
+    "count": 1,
+    "state": 0,
+    "name": "Foot",
+    "tags": []
+  },
+  {
+    "key": "acc",
+    "count": 2,
+    "state": 0,
+    "name": "Accessory",
+    "tags": []
+  }
+]

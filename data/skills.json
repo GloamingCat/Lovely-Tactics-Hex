@@ -1,0 +1,2745 @@
+[
+  {
+    "data": {
+      "description": "",
+      "icon": {
+        "id": 36,
+        "col": 0,
+        "row": 0
+      },
+      "script": "",
+      "type": 1,
+      "targetType": 0,
+      "restriction": 0,
+      "costs": [],
+      "elements": [],
+      "userElements": true,
+      "userLoadAnim": "",
+      "userCastAnim": "",
+      "stepOnCast": true,
+      "loadAnimID": -1,
+      "castAnimID": -1,
+      "individualAnimID": -1,
+      "mirror": true,
+      "introTime": "",
+      "castTime": "",
+      "centerTime": "",
+      "targetTime": "",
+      "finishTime": "",
+      "damageAnim": true,
+      "effects": [],
+      "statusAdd": [],
+      "statusRemove": [],
+      "effectMask": {
+        "centerX": 1,
+        "centerY": 1,
+        "centerH": 1,
+        "grid": [
+          [
+            [
+              true
+            ]
+          ]
+        ]
+      },
+      "castMask": {
+        "centerX": 1,
+        "centerY": 1,
+        "centerH": 1,
+        "grid": [
+          [
+            [
+              true
+            ]
+          ]
+        ]
+      },
+      "autoPath": true,
+      "wholeField": false,
+      "name": "Item",
+      "tags": []
+    },
+    "id": 0,
+    "children": [
+      {
+        "data": {
+          "description": "Skill called by healing items.",
+          "icon": {
+            "id": 36,
+            "col": 0,
+            "row": 0
+          },
+          "script": "",
+          "type": 2,
+          "targetType": 2,
+          "restriction": 0,
+          "costs": [],
+          "elements": [],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "Item",
+          "stepOnCast": false,
+          "loadAnimID": -1,
+          "castAnimID": 16,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": false,
+          "effects": [],
+          "statusAdd": [],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Healing Item",
+          "tags": [
+            {
+              "key": "cast_maxh",
+              "value": "2"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-2"
+            }
+          ]
+        },
+        "id": 1,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Skill called by reviving items.",
+          "icon": {
+            "id": 36,
+            "col": 0,
+            "row": 0
+          },
+          "script": "",
+          "type": 2,
+          "targetType": 3,
+          "restriction": 0,
+          "costs": [],
+          "elements": [],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "Item",
+          "stepOnCast": false,
+          "loadAnimID": -1,
+          "castAnimID": 16,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": false,
+          "effects": [],
+          "statusAdd": [],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Reviving Item",
+          "tags": [
+            {
+              "key": "cast_maxh",
+              "value": "2"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-2"
+            }
+          ]
+        },
+        "id": 2,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Skill called by offensive items.",
+          "icon": {
+            "id": 36,
+            "col": 0,
+            "row": 0
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [],
+          "elements": [],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "Item",
+          "stepOnCast": false,
+          "loadAnimID": -1,
+          "castAnimID": 14,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": false,
+          "effects": [],
+          "statusAdd": [],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Offensive Item",
+          "tags": [
+            {
+              "key": "cast_maxh",
+              "value": "2"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-2"
+            }
+          ]
+        },
+        "id": 3,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "description": "",
+      "icon": {
+        "id": 34,
+        "col": 1,
+        "row": 0
+      },
+      "script": "",
+      "type": 1,
+      "targetType": 0,
+      "restriction": 0,
+      "costs": [],
+      "elements": [],
+      "userElements": true,
+      "userLoadAnim": "",
+      "userCastAnim": "",
+      "stepOnCast": true,
+      "loadAnimID": -1,
+      "castAnimID": -1,
+      "individualAnimID": -1,
+      "mirror": true,
+      "introTime": "",
+      "castTime": "",
+      "centerTime": "",
+      "targetTime": "",
+      "finishTime": "",
+      "damageAnim": true,
+      "effects": [],
+      "statusAdd": [],
+      "statusRemove": [],
+      "effectMask": {
+        "centerX": 1,
+        "centerY": 1,
+        "centerH": 1,
+        "grid": [
+          [
+            [
+              true
+            ]
+          ]
+        ]
+      },
+      "castMask": {
+        "centerX": 1,
+        "centerY": 1,
+        "centerH": 1,
+        "grid": [
+          [
+            [
+              true
+            ]
+          ]
+        ]
+      },
+      "autoPath": true,
+      "wholeField": false,
+      "name": "Attack",
+      "tags": []
+    },
+    "id": 4,
+    "children": [
+      {
+        "data": {
+          "description": "Simple melee physical attack.",
+          "icon": {
+            "id": 34,
+            "col": 1,
+            "row": 0
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [],
+          "elements": [
+            {
+              "id": 0,
+              "value": 100
+            }
+          ],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "Skill1",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": -1,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "35",
+          "centerTime": "20",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "action:defaultPhysicalDamage(user, target, a, b)",
+              "successRate": "action:defaultSuccessRate(user, target, a, b)",
+              "heal": false,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 2,
+            "centerY": 2,
+            "centerH": 2,
+            "grid": [
+              [
+                [
+                  false,
+                  true,
+                  false
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  false,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  false
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  false,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  false
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  false,
+                  true,
+                  false
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Blade Attack",
+          "tags": [
+            {
+              "key": "critical",
+              "value": ""
+            }
+          ]
+        },
+        "id": 5,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Simple ranged magical attack.",
+          "icon": {
+            "id": 34,
+            "col": 0,
+            "row": 0
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [],
+          "elements": [
+            {
+              "id": 1,
+              "value": 100
+            }
+          ],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "Skill1",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 10,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "45",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "action:defaultMagicalDamage(user, target, a, b)",
+              "successRate": "action:defaultSuccessRate(user, target, a, b)",
+              "heal": false,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Magical Attack",
+          "tags": [
+            {
+              "key": "critical",
+              "value": ""
+            },
+            {
+              "key": "cast_far",
+              "value": "3"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "3"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-3"
+            },
+            {
+              "key": "projectileID",
+              "value": "49"
+            }
+          ]
+        },
+        "id": 6,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Attacks an area of 2 tiles of radius.",
+          "icon": {
+            "id": 34,
+            "col": 0,
+            "row": 0
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 0,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "15"
+            }
+          ],
+          "elements": [
+            {
+              "id": 1,
+              "value": 100
+            }
+          ],
+          "userElements": false,
+          "userLoadAnim": "Load1",
+          "userCastAnim": "Skill1",
+          "stepOnCast": true,
+          "loadAnimID": 13,
+          "castAnimID": 11,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "45",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "action:defaultMagicalDamage(user, target, a, b)",
+              "successRate": "action:defaultSuccessRate(user, target, a, b)",
+              "heal": false,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 2,
+            "centerY": 2,
+            "centerH": 2,
+            "grid": [
+              [
+                [
+                  false,
+                  true,
+                  false
+                ],
+                [
+                  true,
+                  true,
+                  true
+                ],
+                [
+                  false,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  false
+                ],
+                [
+                  true,
+                  true,
+                  true
+                ],
+                [
+                  false,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  false
+                ],
+                [
+                  true,
+                  true,
+                  true
+                ],
+                [
+                  false,
+                  true,
+                  false
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Magical Explosion",
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "4"
+            },
+            {
+              "key": "cast_near",
+              "value": "2"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "4"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-4"
+            }
+          ]
+        },
+        "id": 7,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Attacks an area of 3 tiles of radius.",
+          "icon": {
+            "id": 34,
+            "col": 0,
+            "row": 0
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 0,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "20"
+            }
+          ],
+          "elements": [
+            {
+              "id": 1,
+              "value": 100
+            }
+          ],
+          "userElements": false,
+          "userLoadAnim": "Load1",
+          "userCastAnim": "Skill1",
+          "stepOnCast": true,
+          "loadAnimID": 13,
+          "castAnimID": 12,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "45",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "action:defaultMagicalDamage(user, target, a, b)",
+              "successRate": "action:defaultSuccessRate(user, target, a, b)",
+              "heal": false,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Big Magical Explosion",
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "4"
+            },
+            {
+              "key": "cast_near",
+              "value": "3"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "4"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-4"
+            },
+            {
+              "key": "effect_far",
+              "value": "2"
+            },
+            {
+              "key": "effect_maxh",
+              "value": "2"
+            },
+            {
+              "key": "effect_minh",
+              "value": "-2"
+            }
+          ]
+        },
+        "id": 8,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Fire-elemental ranged magical attack.",
+          "icon": {
+            "id": 34,
+            "col": 0,
+            "row": 1
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [
+            {
+              "id": 1,
+              "value": 100
+            },
+            {
+              "id": 5,
+              "value": 100
+            }
+          ],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "Skill1",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 113,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "45",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "action:defaultMagicalDamage(user, target, a, b)",
+              "successRate": "action:defaultSuccessRate(user, target, a, b)",
+              "heal": false,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Blaze",
+          "tags": [
+            {
+              "key": "critical",
+              "value": ""
+            },
+            {
+              "key": "cast_far",
+              "value": "3"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "3"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-3"
+            }
+          ]
+        },
+        "id": 17,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Ice-elemental ranged magical attack.",
+          "icon": {
+            "id": 34,
+            "col": 1,
+            "row": 1
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [
+            {
+              "id": 1,
+              "value": 100
+            },
+            {
+              "id": 6,
+              "value": 100
+            }
+          ],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "Skill1",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 111,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "45",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "action:defaultMagicalDamage(user, target, a, b)",
+              "successRate": "action:defaultSuccessRate(user, target, a, b)",
+              "heal": false,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Frost",
+          "tags": [
+            {
+              "key": "critical",
+              "value": ""
+            },
+            {
+              "key": "cast_far",
+              "value": "3"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "3"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-3"
+            }
+          ]
+        },
+        "id": 19,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Thunder-elemental ranged magical attack.",
+          "icon": {
+            "id": 34,
+            "col": 1,
+            "row": 2
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [
+            {
+              "id": 1,
+              "value": 100
+            },
+            {
+              "id": 7,
+              "value": 100
+            }
+          ],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "Skill1",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 112,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "45",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "action:defaultMagicalDamage(user, target, a, b)",
+              "successRate": "action:defaultSuccessRate(user, target, a, b)",
+              "heal": false,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Bolt",
+          "tags": [
+            {
+              "key": "critical",
+              "value": ""
+            },
+            {
+              "key": "cast_far",
+              "value": "3"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "3"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-3"
+            }
+          ]
+        },
+        "id": 20,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "description": "",
+      "icon": {
+        "id": 34,
+        "col": 2,
+        "row": 2
+      },
+      "script": "",
+      "type": 1,
+      "targetType": 0,
+      "restriction": 0,
+      "costs": [],
+      "elements": [],
+      "userElements": true,
+      "userLoadAnim": "",
+      "userCastAnim": "",
+      "stepOnCast": true,
+      "loadAnimID": -1,
+      "castAnimID": -1,
+      "individualAnimID": -1,
+      "mirror": true,
+      "introTime": "",
+      "castTime": "",
+      "centerTime": "",
+      "targetTime": "",
+      "finishTime": "",
+      "damageAnim": true,
+      "effects": [],
+      "statusAdd": [],
+      "statusRemove": [],
+      "effectMask": {
+        "centerX": 1,
+        "centerY": 1,
+        "centerH": 1,
+        "grid": [
+          [
+            [
+              true
+            ]
+          ]
+        ]
+      },
+      "castMask": {
+        "centerX": 1,
+        "centerY": 1,
+        "centerH": 1,
+        "grid": [
+          [
+            [
+              true
+            ]
+          ]
+        ]
+      },
+      "autoPath": true,
+      "wholeField": false,
+      "name": "Support",
+      "tags": []
+    },
+    "id": 9,
+    "children": [
+      {
+        "data": {
+          "description": "Cures a single ally character.",
+          "icon": {
+            "id": 34,
+            "col": 0,
+            "row": 0
+          },
+          "script": "",
+          "type": 2,
+          "targetType": 2,
+          "restriction": 0,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [
+            {
+              "id": 1,
+              "value": 100
+            }
+          ],
+          "userElements": false,
+          "userLoadAnim": "Load1",
+          "userCastAnim": "Skill1",
+          "stepOnCast": false,
+          "loadAnimID": -1,
+          "castAnimID": 16,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": false,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "a.dex() * 10",
+              "successRate": "100",
+              "heal": true,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Heal",
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "3"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "3"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-3"
+            }
+          ]
+        },
+        "id": 10,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Casts Reflect on a single ally.",
+          "icon": {
+            "id": 34,
+            "col": 0,
+            "row": 0
+          },
+          "script": "",
+          "type": 2,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [],
+          "userElements": false,
+          "userLoadAnim": "Load1",
+          "userCastAnim": "Skill1",
+          "stepOnCast": false,
+          "loadAnimID": -1,
+          "castAnimID": 17,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": false,
+          "effects": [],
+          "statusAdd": [
+            {
+              "id": 2,
+              "rate": "100"
+            }
+          ],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Reflect",
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "3"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "3"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-3"
+            }
+          ]
+        },
+        "id": 14,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Removes all negative effects of all party members\r\nand wakes up knock-out allies.",
+          "icon": {
+            "id": 34,
+            "col": 3,
+            "row": 1
+          },
+          "script": "",
+          "type": 2,
+          "targetType": 1,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "",
+          "stepOnCast": true,
+          "loadAnimID": 13,
+          "castAnimID": 232,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "1",
+              "successRate": "target:isAlive() and 100 or 0",
+              "heal": true,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [
+            {
+              "id": 0,
+              "rate": "100"
+            },
+            {
+              "id": 1,
+              "rate": "100"
+            },
+            {
+              "id": 17,
+              "rate": "100"
+            },
+            {
+              "id": 18,
+              "rate": "100"
+            },
+            {
+              "id": 15,
+              "rate": "100"
+            },
+            {
+              "id": 16,
+              "rate": "100"
+            }
+          ],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": false,
+          "wholeField": true,
+          "name": "Power of Love",
+          "tags": []
+        },
+        "id": 27,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Increases ATK and DEX of all party members and\r\nheals their SP fully.",
+          "icon": {
+            "id": 34,
+            "col": 2,
+            "row": 3
+          },
+          "script": "",
+          "type": 2,
+          "targetType": 0,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "",
+          "stepOnCast": true,
+          "loadAnimID": 13,
+          "castAnimID": 232,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "sp",
+              "basicResult": "10000",
+              "successRate": "100",
+              "heal": true,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [
+            {
+              "id": 5,
+              "rate": "100"
+            }
+          ],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": false,
+          "wholeField": true,
+          "name": "Power of Joy",
+          "tags": []
+        },
+        "id": 28,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Increases DEF and SPR of all party members and\r\nheals their HP fully.",
+          "icon": {
+            "id": 33,
+            "col": 4,
+            "row": 0
+          },
+          "script": "",
+          "type": 2,
+          "targetType": 0,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "",
+          "stepOnCast": true,
+          "loadAnimID": 13,
+          "castAnimID": 232,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "10000",
+              "successRate": "100",
+              "heal": true,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [
+            {
+              "id": 6,
+              "rate": "100"
+            }
+          ],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": false,
+          "wholeField": true,
+          "name": "Power of Sweetness",
+          "tags": []
+        },
+        "id": 29,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "description": "",
+      "icon": {
+        "id": 34,
+        "col": 3,
+        "row": 2
+      },
+      "script": "",
+      "type": 1,
+      "targetType": 0,
+      "restriction": 0,
+      "costs": [],
+      "elements": [],
+      "userElements": true,
+      "userLoadAnim": "",
+      "userCastAnim": "",
+      "stepOnCast": true,
+      "loadAnimID": -1,
+      "castAnimID": -1,
+      "individualAnimID": -1,
+      "mirror": true,
+      "introTime": "",
+      "castTime": "",
+      "centerTime": "",
+      "targetTime": "",
+      "finishTime": "",
+      "damageAnim": true,
+      "effects": [],
+      "statusAdd": [],
+      "statusRemove": [],
+      "effectMask": {
+        "centerX": 1,
+        "centerY": 1,
+        "centerH": 1,
+        "grid": [
+          [
+            [
+              true
+            ]
+          ]
+        ]
+      },
+      "castMask": {
+        "centerX": 1,
+        "centerY": 1,
+        "centerH": 1,
+        "grid": [
+          [
+            [
+              true
+            ]
+          ]
+        ]
+      },
+      "autoPath": true,
+      "wholeField": false,
+      "name": "Debuff",
+      "tags": []
+    },
+    "id": 11,
+    "children": [
+      {
+        "data": {
+          "description": "Poisons an enemy.",
+          "icon": {
+            "id": 34,
+            "col": 2,
+            "row": 0
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [],
+          "userElements": false,
+          "userLoadAnim": "",
+          "userCastAnim": "Skill1",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 14,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [],
+          "statusAdd": [
+            {
+              "id": 0,
+              "rate": "100"
+            }
+          ],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Poison",
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "3"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "3"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-3"
+            }
+          ]
+        },
+        "id": 12,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Makes enemies around user fall asleep.",
+          "icon": {
+            "id": 34,
+            "col": 3,
+            "row": 0
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [],
+          "userElements": false,
+          "userLoadAnim": "",
+          "userCastAnim": "Skill1",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 15,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": false,
+          "effects": [],
+          "statusAdd": [
+            {
+              "id": 1,
+              "rate": "100"
+            }
+          ],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 2,
+            "centerY": 2,
+            "centerH": 2,
+            "grid": [
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Sleeping Polen",
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "3"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "3"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-3"
+            }
+          ]
+        },
+        "id": 13,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Blinds all enemies with chance of 50%.",
+          "icon": {
+            "id": 34,
+            "col": 2,
+            "row": 3
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 0,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [],
+          "userElements": false,
+          "userLoadAnim": "",
+          "userCastAnim": "Skill1",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 15,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": false,
+          "effects": [],
+          "statusAdd": [
+            {
+              "id": 17,
+              "rate": "50"
+            }
+          ],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Blinding Light",
+          "tags": []
+        },
+        "id": 21,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Turns an enemy to your side.",
+          "icon": {
+            "id": 34,
+            "col": 3,
+            "row": 1
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [],
+          "userElements": false,
+          "userLoadAnim": "",
+          "userCastAnim": "Skill1",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 175,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": false,
+          "effects": [],
+          "statusAdd": [
+            {
+              "id": 18,
+              "rate": "100"
+            }
+          ],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Charm",
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "4"
+            },
+            {
+              "key": "cast_near",
+              "value": "3"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "4"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-4"
+            },
+            {
+              "key": "effect_far",
+              "value": "2"
+            },
+            {
+              "key": "effect_maxh",
+              "value": "2"
+            },
+            {
+              "key": "effect_minh",
+              "value": "-2"
+            },
+            {
+              "key": "projectileID",
+              "value": "173"
+            }
+          ]
+        },
+        "id": 22,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "description": "",
+      "icon": {
+        "id": 77,
+        "col": 1,
+        "row": 6
+      },
+      "script": "",
+      "type": 1,
+      "targetType": 0,
+      "restriction": 0,
+      "costs": [],
+      "elements": [],
+      "userElements": true,
+      "userLoadAnim": "",
+      "userCastAnim": "",
+      "stepOnCast": true,
+      "loadAnimID": -1,
+      "castAnimID": -1,
+      "individualAnimID": -1,
+      "mirror": true,
+      "introTime": "",
+      "castTime": "",
+      "centerTime": "",
+      "targetTime": "",
+      "finishTime": "",
+      "damageAnim": true,
+      "effects": [],
+      "statusAdd": [],
+      "statusRemove": [],
+      "effectMask": {
+        "centerX": 1,
+        "centerY": 1,
+        "centerH": 1,
+        "grid": [
+          [
+            [
+              true
+            ]
+          ]
+        ]
+      },
+      "castMask": {
+        "centerX": 1,
+        "centerY": 1,
+        "centerH": 1,
+        "grid": [
+          [
+            [
+              true
+            ]
+          ]
+        ]
+      },
+      "autoPath": true,
+      "wholeField": false,
+      "name": "Monster",
+      "tags": []
+    },
+    "id": 16,
+    "children": [
+      {
+        "data": {
+          "description": "",
+          "icon": {
+            "id": 34,
+            "col": 1,
+            "row": 0
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [],
+          "elements": [
+            {
+              "id": 0,
+              "value": 100
+            }
+          ],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 80,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "action:defaultPhysicalDamage(user, target, a, b)",
+              "successRate": "action:defaultSuccessRate(user, target, a, b)",
+              "heal": false,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 2,
+            "centerY": 2,
+            "centerH": 2,
+            "grid": [
+              [
+                [
+                  false,
+                  true,
+                  false
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  false,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  false
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  false,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  false
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  false,
+                  true,
+                  false
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Monster Attack",
+          "tags": [
+            {
+              "key": "critical",
+              "value": ""
+            }
+          ]
+        },
+        "id": 15,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "",
+          "icon": {
+            "id": 34,
+            "col": 2,
+            "row": 0
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [],
+          "elements": [
+            {
+              "id": 0,
+              "value": 100
+            }
+          ],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 80,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "action:defaultPhysicalDamage(user, target, a, b)",
+              "successRate": "action:defaultSuccessRate(user, target, a, b)",
+              "heal": false,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [
+            {
+              "id": 0,
+              "rate": "100"
+            }
+          ],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 2,
+            "centerY": 2,
+            "centerH": 2,
+            "grid": [
+              [
+                [
+                  false,
+                  true,
+                  false
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  false,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  false
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  false,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  false
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  false,
+                  true,
+                  false
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Poison Attack",
+          "tags": [
+            {
+              "key": "critical",
+              "value": ""
+            }
+          ]
+        },
+        "id": 18,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Decreases ATK.",
+          "icon": {
+            "id": 34,
+            "col": 3,
+            "row": 2
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [],
+          "elements": [],
+          "userElements": false,
+          "userLoadAnim": "",
+          "userCastAnim": "",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 14,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [],
+          "statusAdd": [
+            {
+              "id": 15,
+              "rate": "100"
+            }
+          ],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Attack Down",
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "10"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "3"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-3"
+            }
+          ]
+        },
+        "id": 24,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Increases ATK.",
+          "icon": {
+            "id": 34,
+            "col": 3,
+            "row": 2
+          },
+          "script": "",
+          "type": 2,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [],
+          "elements": [],
+          "userElements": false,
+          "userLoadAnim": "",
+          "userCastAnim": "",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 14,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [],
+          "statusAdd": [
+            {
+              "id": 5,
+              "rate": "100"
+            }
+          ],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Attack Up",
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "10"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "3"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-3"
+            }
+          ]
+        },
+        "id": 25,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Decreases DEF.",
+          "icon": {
+            "id": 34,
+            "col": 3,
+            "row": 2
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [],
+          "elements": [],
+          "userElements": false,
+          "userLoadAnim": "",
+          "userCastAnim": "",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 14,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [],
+          "statusAdd": [
+            {
+              "id": 16,
+              "rate": "100"
+            }
+          ],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Defense Down",
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "10"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "3"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-3"
+            }
+          ]
+        },
+        "id": 23,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Increases DEF.",
+          "icon": {
+            "id": 34,
+            "col": 3,
+            "row": 2
+          },
+          "script": "",
+          "type": 2,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [],
+          "elements": [],
+          "userElements": false,
+          "userLoadAnim": "",
+          "userCastAnim": "",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": 14,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [],
+          "statusAdd": [
+            {
+              "id": 6,
+              "rate": "100"
+            }
+          ],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Defense Up",
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "10"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "3"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-3"
+            }
+          ]
+        },
+        "id": 26,
+        "children": []
+      }
+    ]
+  }
+]

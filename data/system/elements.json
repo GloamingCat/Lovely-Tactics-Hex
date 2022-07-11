@@ -1,0 +1,74 @@
+[
+  {
+    "icon": {
+      "id": 34,
+      "col": 1,
+      "row": 0
+    },
+    "name": "Physical",
+    "tags": []
+  },
+  {
+    "icon": {
+      "id": 34,
+      "col": 0,
+      "row": 0
+    },
+    "name": "Magical",
+    "tags": []
+  },
+  {
+    "icon": {
+      "id": -1,
+      "col": 0,
+      "row": 0
+    },
+    "name": "Human",
+    "tags": []
+  },
+  {
+    "icon": {
+      "id": -1,
+      "col": 0,
+      "row": 0
+    },
+    "name": "Beast",
+    "tags": []
+  },
+  {
+    "icon": {
+      "id": -1,
+      "col": 0,
+      "row": 0
+    },
+    "name": "Demon",
+    "tags": []
+  },
+  {
+    "icon": {
+      "id": 34,
+      "col": 0,
+      "row": 1
+    },
+    "name": "Fire",
+    "tags": []
+  },
+  {
+    "icon": {
+      "id": 34,
+      "col": 1,
+      "row": 1
+    },
+    "name": "Ice",
+    "tags": []
+  },
+  {
+    "icon": {
+      "id": 34,
+      "col": 1,
+      "row": 2
+    },
+    "name": "Thunder",
+    "tags": []
+  }
+]

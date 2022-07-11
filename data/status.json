@@ -1,0 +1,794 @@
+[
+  {
+    "data": {
+      "script": "",
+      "icon": {
+        "id": 34,
+        "col": 3,
+        "row": 2
+      },
+      "priority": 100,
+      "visible": true,
+      "cumulative": false,
+      "charAnim": "",
+      "transformations": [],
+      "duration": -1,
+      "removeOnKO": true,
+      "removeOnDamage": true,
+      "battleOnly": true,
+      "deactivate": false,
+      "ko": false,
+      "behavior": [],
+      "drainAtt": "",
+      "drainValue": 0,
+      "percentage": true,
+      "attributes": [],
+      "elements": [],
+      "statusDef": [],
+      "cancel": [],
+      "name": "Debuff",
+      "tags": []
+    },
+    "id": 3,
+    "children": [
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 2,
+            "row": 0
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [
+            {
+              "type": 7,
+              "value": 128,
+              "override": false
+            }
+          ],
+          "duration": -1,
+          "removeOnKO": true,
+          "removeOnDamage": false,
+          "battleOnly": false,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "hp",
+          "drainValue": 10,
+          "percentage": true,
+          "attributes": [],
+          "elements": [],
+          "statusDef": [],
+          "cancel": [],
+          "name": "Poison",
+          "tags": []
+        },
+        "id": 0,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 3,
+            "row": 0
+          },
+          "priority": 99,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "Sleep",
+          "transformations": [],
+          "duration": 3,
+          "removeOnKO": true,
+          "removeOnDamage": true,
+          "battleOnly": true,
+          "deactivate": true,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [],
+          "statusDef": [],
+          "cancel": [],
+          "name": "Sleep",
+          "tags": []
+        },
+        "id": 1,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 2,
+            "row": 1
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": true,
+          "removeOnDamage": false,
+          "battleOnly": false,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [
+            {
+              "key": "pre",
+              "add": 0,
+              "mul": -90
+            }
+          ],
+          "elements": [],
+          "statusDef": [],
+          "cancel": [],
+          "name": "Blindness",
+          "tags": []
+        },
+        "id": 17,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 3,
+            "row": 1
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": 5,
+          "removeOnKO": true,
+          "removeOnDamage": false,
+          "battleOnly": true,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [
+            {
+              "condition": "",
+              "name": "rule/BetrayRule.lua",
+              "tags": []
+            }
+          ],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [],
+          "statusDef": [],
+          "cancel": [],
+          "name": "Charm",
+          "tags": [
+            {
+              "key": "animID",
+              "value": "169"
+            },
+            {
+              "key": "animHeight",
+              "value": "1"
+            },
+            {
+              "key": "charm",
+              "value": "true"
+            }
+          ]
+        },
+        "id": 18,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 3,
+            "row": 2
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": true,
+          "removeOnDamage": true,
+          "battleOnly": true,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [
+            {
+              "key": "atk",
+              "add": 0,
+              "mul": -50
+            }
+          ],
+          "elements": [],
+          "statusDef": [],
+          "cancel": [],
+          "name": "ATK-",
+          "tags": [
+            {
+              "key": "animID",
+              "value": "170"
+            }
+          ]
+        },
+        "id": 15,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 3,
+            "row": 2
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": true,
+          "removeOnDamage": true,
+          "battleOnly": true,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [
+            {
+              "key": "def",
+              "add": 0,
+              "mul": -50
+            }
+          ],
+          "elements": [],
+          "statusDef": [],
+          "cancel": [],
+          "name": "DEF-",
+          "tags": [
+            {
+              "key": "animID",
+              "value": "170"
+            }
+          ]
+        },
+        "id": 16,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "script": "",
+      "icon": {
+        "id": 34,
+        "col": 2,
+        "row": 2
+      },
+      "priority": 100,
+      "visible": true,
+      "cumulative": false,
+      "charAnim": "",
+      "transformations": [],
+      "duration": -1,
+      "removeOnKO": true,
+      "removeOnDamage": true,
+      "battleOnly": true,
+      "deactivate": false,
+      "ko": false,
+      "behavior": [],
+      "drainAtt": "",
+      "drainValue": 0,
+      "percentage": true,
+      "attributes": [],
+      "elements": [],
+      "statusDef": [],
+      "cancel": [],
+      "name": "Buff",
+      "tags": []
+    },
+    "id": 4,
+    "children": [
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 0,
+            "row": 0
+          },
+          "priority": 101,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": true,
+          "removeOnDamage": false,
+          "battleOnly": false,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [],
+          "statusDef": [],
+          "cancel": [],
+          "name": "Reflect",
+          "tags": [
+            {
+              "key": "reflect",
+              "value": "true"
+            }
+          ]
+        },
+        "id": 2,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 0,
+            "row": 0
+          },
+          "priority": 101,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": 8,
+          "removeOnKO": true,
+          "removeOnDamage": false,
+          "battleOnly": true,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [],
+          "statusDef": [
+            0,
+            1
+          ],
+          "cancel": [],
+          "name": "Protect",
+          "tags": []
+        },
+        "id": 7,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 2,
+            "row": 2
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": true,
+          "removeOnDamage": true,
+          "battleOnly": true,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [
+            {
+              "key": "atk",
+              "add": 0,
+              "mul": 50
+            }
+          ],
+          "elements": [],
+          "statusDef": [],
+          "cancel": [],
+          "name": "ATK+",
+          "tags": [
+            {
+              "key": "animID",
+              "value": "171"
+            }
+          ]
+        },
+        "id": 5,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 2,
+            "row": 2
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": true,
+          "removeOnDamage": true,
+          "battleOnly": true,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [
+            {
+              "key": "def",
+              "add": 0,
+              "mul": 50
+            }
+          ],
+          "elements": [],
+          "statusDef": [],
+          "cancel": [],
+          "name": "DEF+",
+          "tags": [
+            {
+              "key": "animID",
+              "value": "171"
+            }
+          ]
+        },
+        "id": 6,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "script": "",
+      "icon": {
+        "id": 34,
+        "col": 0,
+        "row": 1
+      },
+      "priority": 100,
+      "visible": true,
+      "cumulative": false,
+      "charAnim": "",
+      "transformations": [],
+      "duration": -1,
+      "removeOnKO": true,
+      "removeOnDamage": true,
+      "battleOnly": true,
+      "deactivate": false,
+      "ko": false,
+      "behavior": [],
+      "drainAtt": "",
+      "drainValue": 0,
+      "percentage": true,
+      "attributes": [],
+      "elements": [],
+      "statusDef": [],
+      "cancel": [],
+      "name": "Elements",
+      "tags": []
+    },
+    "id": 8,
+    "children": [
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 0,
+            "row": 1
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [
+            {
+              "type": 7,
+              "value": 128,
+              "override": false
+            },
+            {
+              "type": 8,
+              "value": 128,
+              "override": false
+            },
+            {
+              "type": 12,
+              "value": 200,
+              "override": false
+            }
+          ],
+          "duration": -1,
+          "removeOnKO": true,
+          "removeOnDamage": true,
+          "battleOnly": true,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [
+            {
+              "type": 0,
+              "id": 5,
+              "value": 0
+            },
+            {
+              "type": 1,
+              "id": 5,
+              "value": 100
+            }
+          ],
+          "statusDef": [],
+          "cancel": [],
+          "name": "Fire Elemental",
+          "tags": []
+        },
+        "id": 9,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 1,
+            "row": 1
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [
+            {
+              "type": 6,
+              "value": 128,
+              "override": false
+            }
+          ],
+          "duration": -1,
+          "removeOnKO": true,
+          "removeOnDamage": true,
+          "battleOnly": true,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [
+            {
+              "type": 0,
+              "id": 6,
+              "value": 0
+            },
+            {
+              "type": 1,
+              "id": 6,
+              "value": 100
+            }
+          ],
+          "statusDef": [],
+          "cancel": [],
+          "name": "Ice Elemental",
+          "tags": []
+        },
+        "id": 10,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 1,
+            "row": 2
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [
+            {
+              "type": 8,
+              "value": 128,
+              "override": false
+            }
+          ],
+          "duration": -1,
+          "removeOnKO": true,
+          "removeOnDamage": true,
+          "battleOnly": true,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [
+            {
+              "type": 0,
+              "id": 7,
+              "value": 0
+            },
+            {
+              "type": 1,
+              "id": 7,
+              "value": 100
+            }
+          ],
+          "statusDef": [],
+          "cancel": [],
+          "name": "Thunder Elemental",
+          "tags": []
+        },
+        "id": 11,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 0,
+            "row": 1
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": true,
+          "removeOnDamage": true,
+          "battleOnly": true,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [
+            {
+              "type": 2,
+              "id": 5,
+              "value": 200
+            }
+          ],
+          "statusDef": [],
+          "cancel": [],
+          "name": "Fire Amplifier",
+          "tags": []
+        },
+        "id": 12,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 1,
+            "row": 1
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": true,
+          "removeOnDamage": true,
+          "battleOnly": true,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [
+            {
+              "type": 2,
+              "id": 6,
+              "value": 200
+            }
+          ],
+          "statusDef": [],
+          "cancel": [],
+          "name": "Ice Amplifier",
+          "tags": []
+        },
+        "id": 13,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 1,
+            "row": 2
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": true,
+          "removeOnDamage": true,
+          "battleOnly": true,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [
+            {
+              "type": 2,
+              "id": 7,
+              "value": 200
+            }
+          ],
+          "statusDef": [],
+          "cancel": [],
+          "name": "Thunder Amplifier",
+          "tags": []
+        },
+        "id": 14,
+        "children": []
+      }
+    ]
+  }
+]

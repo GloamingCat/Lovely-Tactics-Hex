@@ -1,0 +1,627 @@
+[
+  {
+    "data": {
+      "battlerID": -1,
+      "shadowID": -1,
+      "tiles": [],
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 0,
+        "scaleX": 100,
+        "scaleY": 100,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "portraits": [],
+      "animations": [],
+      "name": "Humans",
+      "tags": []
+    },
+    "id": 6,
+    "children": [
+      {
+        "data": {
+          "battlerID": 1,
+          "shadowID": 1,
+          "tiles": [
+            {
+              "dx": 0,
+              "dy": 0,
+              "height": 3
+            }
+          ],
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "portraits": [
+            {
+              "name": "SmallIcon",
+              "id": 64,
+              "col": 0,
+              "row": 0
+            },
+            {
+              "name": "BigIcon",
+              "id": 65,
+              "col": 0,
+              "row": 0
+            }
+          ],
+          "animations": [
+            {
+              "name": "Idle",
+              "id": 53
+            },
+            {
+              "name": "Walk",
+              "id": 54
+            },
+            {
+              "name": "Dash",
+              "id": 55
+            },
+            {
+              "name": "Battle:Idle",
+              "id": 57
+            },
+            {
+              "name": "Battle:Dash",
+              "id": 55
+            },
+            {
+              "name": "Battle:Load1",
+              "id": 56
+            },
+            {
+              "name": "Battle:Skill1",
+              "id": 60
+            },
+            {
+              "name": "Battle:Damage",
+              "id": 61
+            },
+            {
+              "name": "Battle:KO",
+              "id": 62
+            },
+            {
+              "name": "Battle:Item",
+              "id": 59
+            },
+            {
+              "name": "Sleep:Idle",
+              "id": 63
+            },
+            {
+              "name": "World:Idle",
+              "id": 57
+            }
+          ],
+          "name": "Arthur",
+          "tags": []
+        },
+        "id": 1,
+        "children": []
+      },
+      {
+        "data": {
+          "battlerID": 2,
+          "shadowID": 1,
+          "tiles": [
+            {
+              "dx": 0,
+              "dy": 0,
+              "height": 3
+            }
+          ],
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 180,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "portraits": [
+            {
+              "name": "SmallIcon",
+              "id": 64,
+              "col": 0,
+              "row": 0
+            },
+            {
+              "name": "BigIcon",
+              "id": 65,
+              "col": 0,
+              "row": 0
+            }
+          ],
+          "animations": [
+            {
+              "name": "Idle",
+              "id": 53
+            },
+            {
+              "name": "Walk",
+              "id": 54
+            },
+            {
+              "name": "Dash",
+              "id": 55
+            },
+            {
+              "name": "Battle:Idle",
+              "id": 57
+            },
+            {
+              "name": "Battle:Dash",
+              "id": 55
+            },
+            {
+              "name": "Battle:Load1",
+              "id": 58
+            },
+            {
+              "name": "Battle:Skill1",
+              "id": 59
+            },
+            {
+              "name": "Battle:Damage",
+              "id": 61
+            },
+            {
+              "name": "Battle:KO",
+              "id": 62
+            },
+            {
+              "name": "Battle:Item",
+              "id": 59
+            },
+            {
+              "name": "Sleep:Idle",
+              "id": 63
+            }
+          ],
+          "name": "Merlin",
+          "tags": []
+        },
+        "id": 2,
+        "children": []
+      },
+      {
+        "data": {
+          "battlerID": -1,
+          "shadowID": 1,
+          "tiles": [
+            {
+              "dx": 0,
+              "dy": 0,
+              "height": 3
+            }
+          ],
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 270,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "portraits": [
+            {
+              "name": "SmallIcon",
+              "id": 64,
+              "col": 0,
+              "row": 0
+            },
+            {
+              "name": "BigIcon",
+              "id": 65,
+              "col": 0,
+              "row": 0
+            }
+          ],
+          "animations": [
+            {
+              "name": "Idle",
+              "id": 53
+            },
+            {
+              "name": "Walk",
+              "id": 54
+            }
+          ],
+          "name": "Seller",
+          "tags": []
+        },
+        "id": 5,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "battlerID": -1,
+      "shadowID": -1,
+      "tiles": [],
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 0,
+        "scaleX": 100,
+        "scaleY": 100,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "portraits": [],
+      "animations": [],
+      "name": "Jelly",
+      "tags": []
+    },
+    "id": 7,
+    "children": [
+      {
+        "data": {
+          "battlerID": 6,
+          "shadowID": 200,
+          "tiles": [
+            {
+              "dx": 0,
+              "dy": 0,
+              "height": 1
+            }
+          ],
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 190,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "portraits": [],
+          "animations": [
+            {
+              "name": "Idle",
+              "id": 77
+            },
+            {
+              "name": "Walk",
+              "id": 78
+            },
+            {
+              "name": "Dash",
+              "id": 79
+            },
+            {
+              "name": "Battle:Idle",
+              "id": 77
+            },
+            {
+              "name": "Battle:Dash",
+              "id": 79
+            },
+            {
+              "name": "Battle:Damage",
+              "id": 81
+            },
+            {
+              "name": "Battle:KO",
+              "id": 82
+            },
+            {
+              "name": "Sleep:Idle",
+              "id": 161
+            }
+          ],
+          "name": "Green Jelly",
+          "tags": []
+        },
+        "id": 0,
+        "children": []
+      },
+      {
+        "data": {
+          "battlerID": 7,
+          "shadowID": 200,
+          "tiles": [
+            {
+              "dx": 0,
+              "dy": 0,
+              "height": 1
+            }
+          ],
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 330,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "portraits": [],
+          "animations": [
+            {
+              "name": "Idle",
+              "id": 77
+            },
+            {
+              "name": "Walk",
+              "id": 78
+            },
+            {
+              "name": "Dash",
+              "id": 79
+            },
+            {
+              "name": "Battle:Idle",
+              "id": 77
+            },
+            {
+              "name": "Battle:Dash",
+              "id": 79
+            },
+            {
+              "name": "Battle:Damage",
+              "id": 81
+            },
+            {
+              "name": "Battle:KO",
+              "id": 82
+            },
+            {
+              "name": "Sleep:Idle",
+              "id": 161
+            }
+          ],
+          "name": "Purple Jelly",
+          "tags": []
+        },
+        "id": 3,
+        "children": []
+      },
+      {
+        "data": {
+          "battlerID": 9,
+          "shadowID": 200,
+          "tiles": [
+            {
+              "dx": 0,
+              "dy": 0,
+              "height": 1
+            }
+          ],
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 110,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "portraits": [],
+          "animations": [
+            {
+              "name": "Idle",
+              "id": 77
+            },
+            {
+              "name": "Walk",
+              "id": 78
+            },
+            {
+              "name": "Dash",
+              "id": 79
+            },
+            {
+              "name": "Battle:Idle",
+              "id": 77
+            },
+            {
+              "name": "Battle:Dash",
+              "id": 79
+            },
+            {
+              "name": "Battle:Damage",
+              "id": 81
+            },
+            {
+              "name": "Battle:KO",
+              "id": 82
+            },
+            {
+              "name": "Sleep:Idle",
+              "id": 161
+            }
+          ],
+          "name": "Yellow Jelly",
+          "tags": []
+        },
+        "id": 4,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "battlerID": -1,
+      "shadowID": -1,
+      "tiles": [
+        {
+          "dx": 0,
+          "dy": 0,
+          "height": 0
+        }
+      ],
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 0,
+        "scaleX": 100,
+        "scaleY": 100,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "portraits": [],
+      "animations": [
+        {
+          "name": "New",
+          "id": 0
+        }
+      ],
+      "name": "Objects",
+      "tags": []
+    },
+    "id": 9,
+    "children": [
+      {
+        "data": {
+          "battlerID": -1,
+          "shadowID": -1,
+          "tiles": [
+            {
+              "dx": 0,
+              "dy": 0,
+              "height": 0
+            }
+          ],
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "portraits": [],
+          "animations": [
+            {
+              "name": "Idle",
+              "id": 66
+            }
+          ],
+          "name": "Firepit",
+          "tags": []
+        },
+        "id": 10,
+        "children": []
+      },
+      {
+        "data": {
+          "battlerID": -1,
+          "shadowID": 1,
+          "tiles": [
+            {
+              "dx": 0,
+              "dy": 0,
+              "height": 0
+            }
+          ],
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 2,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "portraits": [],
+          "animations": [
+            {
+              "name": "Equip",
+              "id": 33
+            },
+            {
+              "name": "Potion",
+              "id": 32
+            }
+          ],
+          "name": "Loot",
+          "tags": []
+        },
+        "id": 8,
+        "children": []
+      }
+    ]
+  }
+]

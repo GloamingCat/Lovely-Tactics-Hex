@@ -1,0 +1,537 @@
+{
+  "id": 16,
+  "sizeX": 8,
+  "sizeY": 7,
+  "prefs": {
+    "persistent": false,
+    "defaultRegion": -1,
+    "maxHeight": 1,
+    "bgm": { "name": "jungleTheme" },
+    "loadScript": {
+      "global": false,
+      "block": true,
+      "wait": true,
+      "onLoad": true,
+      "onInteract": false,
+      "onCollide": false,
+      "name": "",
+      "tags": []
+    },
+    "images": [],
+    "transitions": [
+      {
+        "destination": {
+          "fieldID": 15,
+          "x": 5,
+          "y": 2,
+          "h": 1,
+          "direction": 315
+        },
+        "origin": [
+          {
+            "dx": 5,
+            "dy": 7,
+            "height": 1
+          },
+          {
+            "dx": 6,
+            "dy": 7,
+            "height": 1
+          }
+        ],
+        "fade": 30
+      },
+      {
+        "destination": {
+          "fieldID": 17,
+          "x": 4,
+          "y": 2,
+          "h": 1,
+          "direction": 225
+        },
+        "origin": [
+          {
+            "dx": 1,
+            "dy": 5,
+            "height": 1
+          },
+          {
+            "dx": 1,
+            "dy": 6,
+            "height": 1
+          }
+        ],
+        "fade": 30
+      }
+    ],
+    "name": "Deep Jungle 2",
+    "tags": []
+  },
+  "layers": {
+    "terrain": [
+      {
+        "info": {
+          "name": "Grass",
+          "height": 1,
+          "noAuto": false,
+          "tags": []
+        },
+        "visible": true,
+        "grid": [
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      {
+        "info": {
+          "name": "Bush",
+          "height": 1,
+          "noAuto": false,
+          "tags": []
+        },
+        "visible": true,
+        "grid": [
+          [
+            1,
+            1,
+            1,
+            1,
+            -1,
+            -1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            -1,
+            -1,
+            -1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            -1,
+            -1,
+            -1,
+            1
+          ],
+          [
+            1,
+            1,
+            -1,
+            -1,
+            -1,
+            -1,
+            1
+          ],
+          [
+            1,
+            1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "info": {
+          "name": "Poison Bush",
+          "height": 1,
+          "noAuto": false,
+          "tags": []
+        },
+        "visible": true,
+        "grid": [
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            5,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            5,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            5,
+            5,
+            5,
+            5,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            5,
+            5,
+            5,
+            5,
+            -1,
+            -1
+          ]
+        ]
+      }
+    ],
+    "obstacle": [
+      {
+        "info": {
+          "name": "New Layer",
+          "height": 1,
+          "noAuto": false,
+          "tags": []
+        },
+        "visible": true,
+        "grid": [
+          [
+            2,
+            50,
+            -1,
+            1,
+            -1,
+            -1,
+            2
+          ],
+          [
+            1,
+            -1,
+            2,
+            -1,
+            -1,
+            -1,
+            50
+          ],
+          [
+            2,
+            1,
+            -1,
+            -1,
+            -1,
+            -1,
+            2
+          ],
+          [
+            1,
+            50,
+            -1,
+            -1,
+            -1,
+            -1,
+            1
+          ],
+          [
+            -1,
+            2,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            2,
+            50,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            1,
+            50,
+            54,
+            54,
+            2,
+            1
+          ],
+          [
+            2,
+            54,
+            2,
+            1,
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      {
+        "info": {
+          "name": "New Layer",
+          "height": 1,
+          "noAuto": false,
+          "tags": []
+        },
+        "visible": true,
+        "grid": [
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            5,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            5,
+            -1,
+            -1,
+            -1,
+            5
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      }
+    ],
+    "region": []
+  },
+  "characters": [
+    {
+      "key": "Enemy",
+      "persistent": true,
+      "passable": false,
+      "visible": true,
+      "x": 5,
+      "y": 3,
+      "h": 1,
+      "party": -1,
+      "charID": 6,
+      "battlerID": -1,
+      "animation": "Idle",
+      "direction": 270,
+      "scripts": [
+        {
+          "global": false,
+          "block": false,
+          "wait": false,
+          "onLoad": true,
+          "onInteract": false,
+          "onCollide": false,
+          "name": "npc/Stalker.lua",
+          "tags": []
+        },
+        {
+          "global": true,
+          "block": true,
+          "wait": true,
+          "onLoad": false,
+          "onInteract": false,
+          "onCollide": true,
+          "name": "test/Battle.lua",
+          "tags": [
+            {
+              "key": "fieldID",
+              "value": "24"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "parties": [],
+  "playerParty": -1
+}
