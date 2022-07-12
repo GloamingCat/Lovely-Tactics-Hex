@@ -61,5 +61,23 @@ function util.join(tables)
   end
   return new
 end
+-- Iterates a numeric table in order.
+-- @param(t : table) A table with numeric keys.
+-- @ret(func) Iterator of <key, value, position of key>.
+function util.sortedIterator(t)
+  local keys = {}
+  for k, v in pairs(t) do
+    keys[#keys + 1] = k
+  end
+  table.sort(keys)
+  local i = 0
+  return function()
+    if i >= #keys then
+      return nil
+    end
+    i = i + 1
+    return keys[i], t[keys[i]], i
+  end
+end
 
 return util

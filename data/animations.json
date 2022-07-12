@@ -380,54 +380,67 @@
           },
           {
             "data": {
-              "script": "animation/BattleEffect",
+              "script": "animation/KeyPoint.lua",
               "quad": {
-                "path": "Battle/polen.png",
-                "x": 0,
-                "y": 288,
-                "width": 480,
-                "height": 72
+                "path": "Icon/Skills.png",
+                "x": 40,
+                "y": 20,
+                "width": 20,
+                "height": 20
               },
               "rows": 1,
-              "cols": 5,
+              "cols": 1,
               "transform": {
-                "offsetX": 48,
-                "offsetY": 72,
+                "offsetX": 10,
+                "offsetY": 30,
                 "offsetDepth": -11,
-                "scaleX": 50,
-                "scaleY": 50,
+                "scaleX": 150,
+                "scaleY": 150,
                 "rotation": 0,
-                "red": 200,
-                "green": 50,
-                "blue": 150,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
                 "alpha": 255,
                 "hue": 0,
                 "saturation": 50,
                 "brightness": 100
               },
-              "introPattern": "0 1 2 3 4 3 2 1",
-              "introDuration": "120",
-              "loopPattern": "0 1 2 3 4 3 2 1",
-              "loopDuration": "120",
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "",
+              "loopDuration": "30",
               "audio": [],
               "name": "Doom",
-              "tags": []
+              "tags": [
+                {
+                  "key": "kp",
+                  "value": "0 RGBA 1 1 1 1"
+                },
+                {
+                  "key": "kp",
+                  "value": "15 RGBA 1 1 1 0"
+                },
+                {
+                  "key": "kp",
+                  "value": "30 RGBA 1 1 1 1"
+                }
+              ]
             },
             "id": 170,
             "children": []
           },
           {
             "data": {
-              "script": "animation/BattleEffect",
+              "script": "",
               "quad": {
-                "path": "Battle/heal.png",
+                "path": "Battle/sparks.png",
                 "x": 0,
-                "y": 512,
-                "width": 640,
-                "height": 128
+                "y": 0,
+                "width": 288,
+                "height": 32
               },
               "rows": 1,
-              "cols": 5,
+              "cols": 9,
               "transform": {
                 "offsetX": 64,
                 "offsetY": 96,
@@ -443,12 +456,12 @@
                 "saturation": 80,
                 "brightness": 120
               },
-              "introPattern": "0 1 2 3 4 3 2 1",
-              "introDuration": "120",
-              "loopPattern": "0 1 2 3 4 3 2 1",
-              "loopDuration": "120",
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "",
+              "loopDuration": "72",
               "audio": [],
-              "name": "Bless",
+              "name": "Sparks",
               "tags": []
             },
             "id": 171,
@@ -456,26 +469,26 @@
           },
           {
             "data": {
-              "script": "animation/BattleEffect",
+              "script": "animation/KeyPoint.lua",
               "quad": {
-                "path": "Battle/poison.png",
-                "x": 0,
-                "y": 0,
-                "width": 480,
-                "height": 576
+                "path": "Icon/Skills.png",
+                "x": 40,
+                "y": 40,
+                "width": 20,
+                "height": 20
               },
-              "rows": 6,
-              "cols": 5,
+              "rows": 1,
+              "cols": 1,
               "transform": {
-                "offsetX": 48,
-                "offsetY": 72,
-                "offsetDepth": -11,
-                "scaleX": 50,
-                "scaleY": 50,
+                "offsetX": 10,
+                "offsetY": 15,
+                "offsetDepth": -12,
+                "scaleX": 100,
+                "scaleY": 100,
                 "rotation": 0,
                 "red": 255,
-                "green": 255,
-                "blue": 255,
+                "green": 128,
+                "blue": 0,
                 "alpha": 255,
                 "hue": 0,
                 "saturation": 100,
@@ -487,151 +500,111 @@
               "loopDuration": "30",
               "audio": [
                 {
-                  "name": "debuff",
+                  "name": "explosion",
                   "volume": 100,
                   "pitch": 100,
                   "time": 0
                 }
               ],
-              "name": "Poison",
-              "tags": []
+              "name": "Up",
+              "tags": [
+                {
+                  "key": "kp",
+                  "value": "0 Offset 10 15 -12"
+                },
+                {
+                  "key": "kp",
+                  "value": "30 Offset 10 30 -12"
+                },
+                {
+                  "key": "kp",
+                  "value": "20 Scale 2 2"
+                },
+                {
+                  "key": "kp",
+                  "value": "30 Scale 1 1"
+                },
+                {
+                  "key": "kp",
+                  "value": "15 RGBA 1 1 1 1"
+                },
+                {
+                  "key": "kp",
+                  "value": "30 RGBA 1 1 0 0"
+                }
+              ]
             },
             "id": 14,
             "children": []
           },
           {
             "data": {
-              "script": "animation/BattleEffect",
+              "script": "animation/KeyPoint.lua",
               "quad": {
-                "path": "Battle/polen.png",
-                "x": 0,
-                "y": 0,
-                "width": 480,
-                "height": 384
+                "path": "Icon/Skills.png",
+                "x": 60,
+                "y": 40,
+                "width": 20,
+                "height": 20
               },
-              "rows": 4,
-              "cols": 5,
+              "rows": 1,
+              "cols": 1,
               "transform": {
-                "offsetX": 48,
-                "offsetY": 72,
-                "offsetDepth": -11,
-                "scaleX": 50,
-                "scaleY": 50,
+                "offsetX": 10,
+                "offsetY": 15,
+                "offsetDepth": -12,
+                "scaleX": 100,
+                "scaleY": 100,
                 "rotation": 0,
                 "red": 255,
-                "green": 255,
-                "blue": 255,
+                "green": 128,
+                "blue": 0,
                 "alpha": 255,
                 "hue": 0,
                 "saturation": 100,
                 "brightness": 100
               },
               "introPattern": "",
-              "introDuration": "60",
+              "introDuration": "30",
               "loopPattern": "",
-              "loopDuration": "60",
+              "loopDuration": "30",
               "audio": [
                 {
-                  "name": "debuff",
-                  "volume": 100,
-                  "pitch": 80,
-                  "time": 0
-                }
-              ],
-              "name": "Polen",
-              "tags": []
-            },
-            "id": 15,
-            "children": []
-          },
-          {
-            "data": {
-              "script": "animation/BattleEffect",
-              "quad": {
-                "path": "Battle/polen.png",
-                "x": 0,
-                "y": 0,
-                "width": 480,
-                "height": 384
-              },
-              "rows": 4,
-              "cols": 5,
-              "transform": {
-                "offsetX": 48,
-                "offsetY": 72,
-                "offsetDepth": -11,
-                "scaleX": 50,
-                "scaleY": 50,
-                "rotation": 0,
-                "red": 255,
-                "green": 255,
-                "blue": 255,
-                "alpha": 255,
-                "hue": 100,
-                "saturation": 100,
-                "brightness": 150
-              },
-              "introPattern": "",
-              "introDuration": "60",
-              "loopPattern": "",
-              "loopDuration": "60",
-              "audio": [
-                {
-                  "name": "heal",
+                  "name": "explosion",
                   "volume": 100,
                   "pitch": 100,
                   "time": 0
                 }
               ],
-              "name": "Love",
-              "tags": []
-            },
-            "id": 175,
-            "children": []
-          },
-          {
-            "data": {
-              "script": "animation/BattleEffect",
-              "quad": {
-                "path": "Battle/shield.png",
-                "x": 0,
-                "y": 0,
-                "width": 480,
-                "height": 672
-              },
-              "rows": 7,
-              "cols": 5,
-              "transform": {
-                "offsetX": 48,
-                "offsetY": 72,
-                "offsetDepth": -11,
-                "scaleX": 50,
-                "scaleY": 50,
-                "rotation": 0,
-                "red": 255,
-                "green": 255,
-                "blue": 255,
-                "alpha": 255,
-                "hue": 0,
-                "saturation": 100,
-                "brightness": 100
-              },
-              "introPattern": "",
-              "introDuration": "70",
-              "loopPattern": "",
-              "loopDuration": "70",
-              "audio": [
+              "name": "Down",
+              "tags": [
                 {
-                  "name": "buff",
-                  "volume": 70,
-                  "pitch": 110,
-                  "time": 0
+                  "key": "kp",
+                  "value": "0 Offset 10 30 -12"
+                },
+                {
+                  "key": "kp",
+                  "value": "30 Offset 10 15 -12"
+                },
+                {
+                  "key": "kp",
+                  "value": "20 Scale 2 2"
+                },
+                {
+                  "key": "kp",
+                  "value": "30 Scale 1 1"
+                },
+                {
+                  "key": "kp",
+                  "value": "15 RGBA 1 1 1 1"
+                },
+                {
+                  "key": "kp",
+                  "value": "30 RGBA 1 1 0 0"
                 }
-              ],
-              "name": "Shield",
-              "tags": []
+              ]
             },
-            "id": 17,
+            "id": 15,
             "children": []
           }
         ]
@@ -888,19 +861,19 @@
       },
       {
         "data": {
-          "script": "animation/BattleEffect",
+          "script": "animation/KeyPoint.lua",
           "quad": {
-            "path": "Battle/explosion.png",
+            "path": "Icon/Skills.png",
             "x": 0,
-            "y": 0,
-            "width": 144,
-            "height": 48
+            "y": 20,
+            "width": 20,
+            "height": 20
           },
           "rows": 1,
-          "cols": 3,
+          "cols": 1,
           "transform": {
-            "offsetX": 24,
-            "offsetY": 36,
+            "offsetX": 10,
+            "offsetY": 15,
             "offsetDepth": -12,
             "scaleX": 100,
             "scaleY": 100,
@@ -914,7 +887,7 @@
             "brightness": 100
           },
           "introPattern": "",
-          "introDuration": "15",
+          "introDuration": "30",
           "loopPattern": "",
           "loopDuration": "",
           "audio": [
@@ -926,32 +899,57 @@
             }
           ],
           "name": "Blaze",
-          "tags": []
+          "tags": [
+            {
+              "key": "kp",
+              "value": "0 Offset 10 15 -12"
+            },
+            {
+              "key": "kp",
+              "value": "30 Offset 10 30 -12"
+            },
+            {
+              "key": "kp",
+              "value": "20 Scale 2 2"
+            },
+            {
+              "key": "kp",
+              "value": "30 Scale 1 1"
+            },
+            {
+              "key": "kp",
+              "value": "15 RGBA 1 1 1 1"
+            },
+            {
+              "key": "kp",
+              "value": "30 RGBA 1 1 0 0"
+            }
+          ]
         },
         "id": 113,
         "children": []
       },
       {
         "data": {
-          "script": "animation/BattleEffect",
+          "script": "animation/KeyPoint.lua",
           "quad": {
-            "path": "Battle/explosion.png",
-            "x": 0,
-            "y": 0,
-            "width": 144,
-            "height": 48
+            "path": "Icon/Skills.png",
+            "x": 20,
+            "y": 20,
+            "width": 20,
+            "height": 20
           },
           "rows": 1,
-          "cols": 3,
+          "cols": 1,
           "transform": {
-            "offsetX": 24,
-            "offsetY": 36,
+            "offsetX": 11,
+            "offsetY": 15,
             "offsetDepth": -12,
             "scaleX": 100,
             "scaleY": 100,
             "rotation": 0,
-            "red": 0,
-            "green": 128,
+            "red": 255,
+            "green": 255,
             "blue": 255,
             "alpha": 255,
             "hue": 0,
@@ -959,7 +957,7 @@
             "brightness": 100
           },
           "introPattern": "",
-          "introDuration": "15",
+          "introDuration": "30",
           "loopPattern": "",
           "loopDuration": "",
           "audio": [
@@ -971,40 +969,53 @@
             }
           ],
           "name": "Frost",
-          "tags": []
+          "tags": [
+            {
+              "key": "kp",
+              "value": "15 Scale 2 2"
+            },
+            {
+              "key": "kp",
+              "value": "15 RGBA 1 1 1 1"
+            },
+            {
+              "key": "kp",
+              "value": "30 RGBA 1 1 1 0"
+            }
+          ]
         },
         "id": 111,
         "children": []
       },
       {
         "data": {
-          "script": "animation/BattleEffect",
+          "script": "animation/KeyPoint.lua",
           "quad": {
-            "path": "Battle/explosion.png",
-            "x": 0,
-            "y": 0,
-            "width": 144,
-            "height": 48
+            "path": "Icon/Skills.png",
+            "x": 20,
+            "y": 40,
+            "width": 20,
+            "height": 20
           },
           "rows": 1,
-          "cols": 3,
+          "cols": 1,
           "transform": {
-            "offsetX": 24,
-            "offsetY": 36,
+            "offsetX": 10,
+            "offsetY": 15,
             "offsetDepth": -12,
-            "scaleX": 100,
-            "scaleY": 100,
+            "scaleX": 150,
+            "scaleY": 150,
             "rotation": 0,
-            "red": 128,
+            "red": 255,
             "green": 255,
-            "blue": 0,
+            "blue": 255,
             "alpha": 255,
             "hue": 0,
             "saturation": 100,
             "brightness": 100
           },
           "introPattern": "",
-          "introDuration": "15",
+          "introDuration": "30",
           "loopPattern": "",
           "loopDuration": "",
           "audio": [
@@ -1016,35 +1027,68 @@
             }
           ],
           "name": "Bolt",
-          "tags": []
+          "tags": [
+            {
+              "key": "kp",
+              "value": "20 RGBA 1 1 1 1"
+            },
+            {
+              "key": "kp",
+              "value": "30 RGBA 1 1 1 0"
+            },
+            {
+              "key": "kp",
+              "value": "5 Rotation -0.5"
+            },
+            {
+              "key": "kp",
+              "value": "10 Rotation 0.5"
+            },
+            {
+              "key": "kp",
+              "value": "15 Rotation -0.25"
+            },
+            {
+              "key": "kp",
+              "value": "20 Rotation 0"
+            },
+            {
+              "key": "kp",
+              "value": "25 Rotation 0.25"
+            },
+            {
+              "key": "kp",
+              "value": "30 Rotation -0.5"
+            }
+          ]
         },
         "id": 112,
         "children": []
       },
       {
         "data": {
-          "script": "animation/BattleEffect",
+          "script": "animation/KeyPoint.lua",
           "quad": {
-            "path": "Battle/explosion.png",
-            "x": 0,
-            "y": 0,
-            "width": 144,
-            "height": 48
+            "path": "Icon/Skills.png",
+            "x": 40,
+            "y": 60,
+            "width": 20,
+            "height": 20
           },
           "rows": 1,
-          "cols": 3,
+          "cols": 1,
           "transform": {
-            "offsetX": 24,
-            "offsetY": 24,
-            "offsetDepth": 0,
+            "offsetX": 10,
+            "offsetY": 10,
+            "offsetDepth": 1,
             "scaleX": 100,
-            "scaleY": 100,
+            "scaleY": 75,
             "rotation": 0,
             "red": 255,
             "green": 255,
             "blue": 255,
             "alpha": 255,
-            "hue": 0,
+            "hue": 180,
             "saturation": 100,
             "brightness": 400
           },
@@ -1061,29 +1105,50 @@
             }
           ],
           "name": "Load",
-          "tags": []
+          "tags": [
+            {
+              "key": "kp",
+              "value": "0 Scale 1 0.75"
+            },
+            {
+              "key": "kp",
+              "value": "15 Scale 2 1.5"
+            },
+            {
+              "key": "kp",
+              "value": "30 Scale 1 0.75"
+            },
+            {
+              "key": "kp",
+              "value": "15 RGBA 1 1 1 1"
+            },
+            {
+              "key": "kp",
+              "value": "30 RGBA 1 1 1 0"
+            }
+          ]
         },
         "id": 13,
         "children": []
       },
       {
         "data": {
-          "script": "animation/BattleEffect",
+          "script": "animation/KeyPoint.lua",
           "quad": {
-            "path": "Battle/pulsating heart.png",
-            "x": 0,
-            "y": 0,
-            "width": 48,
-            "height": 12
+            "path": "Icon/Skills.png",
+            "x": 60,
+            "y": 20,
+            "width": 20,
+            "height": 20
           },
           "rows": 1,
-          "cols": 3,
+          "cols": 1,
           "transform": {
-            "offsetX": 8,
-            "offsetY": 24,
-            "offsetDepth": -11,
-            "scaleX": 200,
-            "scaleY": 200,
+            "offsetX": 10,
+            "offsetY": 15,
+            "offsetDepth": -12,
+            "scaleX": 100,
+            "scaleY": 100,
             "rotation": 0,
             "red": 255,
             "green": 255,
@@ -1105,8 +1170,21 @@
               "time": 0
             }
           ],
-          "name": "Heal",
-          "tags": []
+          "name": "Heart",
+          "tags": [
+            {
+              "key": "kp",
+              "value": "15 Scale 2 2"
+            },
+            {
+              "key": "kp",
+              "value": "15 RGBA 1 1 1 1"
+            },
+            {
+              "key": "kp",
+              "value": "30 RGBA 1 1 1 0"
+            }
+          ]
         },
         "id": 16,
         "children": []

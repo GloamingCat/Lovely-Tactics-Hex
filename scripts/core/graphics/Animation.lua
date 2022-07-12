@@ -31,9 +31,10 @@ function Animation:init(sprite, data)
   self.col = 0
   self.row = 0
   self.index = 1
-  self.time = 0
   self.speed = 1
   self.loop = false
+  -- Time in frames (1/60s) relative to current quad/frame/column.
+  self.time = 0
   if data then
     -- The size of each quad
     self.quadWidth = data.quad.width / data.cols
@@ -218,6 +219,14 @@ end
 -- General
 ---------------------------------------------------------------------------------------------------
 
+-- @ret(number) Total time relatie to current loop/pattern (instead of current frame).
+function Animation:getLoopTime()
+  local t = self.time
+  for i = 1, self.index - 1 do
+    t = t + self.timing[i]
+  end
+  return t
+end
 -- Sets animation to its starting point.
 function Animation:reset()
   self.time = 0
