@@ -83,7 +83,7 @@ function TargetFinder.getTotalEffectResult(input, target)
   for i = 1, #tiles do
     local tile = tiles[i]
     for targetChar in tile.characterList:iterator() do
-      if input.action:receivesEffect(targetChar) then
+      if input.action:receivesEffect(input, targetChar) then
         local results = input.action:calculateEffectResults(input, targetChar, expectation)
         for j = 1, #results do
           sum = sum + results[j][2]

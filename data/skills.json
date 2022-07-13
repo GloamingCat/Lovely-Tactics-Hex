@@ -830,6 +830,10 @@
             {
               "key": "cast_minh",
               "value": "-4"
+            },
+            {
+              "key": "target",
+              "value": "living switch"
             }
           ]
         },
@@ -940,6 +944,10 @@
             {
               "key": "effect_minh",
               "value": "-2"
+            },
+            {
+              "key": "target",
+              "value": "switch"
             }
           ]
         },
@@ -1516,19 +1524,19 @@
           ],
           "elements": [],
           "userElements": false,
-          "userLoadAnim": "",
+          "userLoadAnim": "Load1",
           "userCastAnim": "",
-          "stepOnCast": true,
+          "stepOnCast": false,
           "loadAnimID": -1,
-          "castAnimID": 14,
-          "individualAnimID": -1,
+          "castAnimID": -1,
+          "individualAnimID": 14,
           "mirror": true,
           "introTime": "",
           "castTime": "",
           "centerTime": "",
           "targetTime": "",
           "finishTime": "",
-          "damageAnim": true,
+          "damageAnim": false,
           "effects": [],
           "statusAdd": [
             {
@@ -1580,6 +1588,10 @@
             {
               "key": "cast_minh",
               "value": "-3"
+            },
+            {
+              "key": "target",
+              "value": "living"
             }
           ]
         },
@@ -1738,7 +1750,7 @@
       },
       {
         "data": {
-          "description": "Makes enemies fall asleep.",
+          "description": "Makes characters around user fall asleep.",
           "icon": {
             "id": 34,
             "col": 3,
@@ -1746,7 +1758,7 @@
           },
           "script": "",
           "type": 1,
-          "targetType": 0,
+          "targetType": 1,
           "restriction": 1,
           "costs": [
             {
@@ -1758,7 +1770,7 @@
           "userElements": false,
           "userLoadAnim": "Load1",
           "userCastAnim": "Skill1",
-          "stepOnCast": true,
+          "stepOnCast": false,
           "loadAnimID": 13,
           "castAnimID": 67,
           "individualAnimID": -1,
@@ -1852,20 +1864,8 @@
           "name": "Sleeping Polen",
           "tags": [
             {
-              "key": "cast_far",
-              "value": "4"
-            },
-            {
-              "key": "cast_near",
-              "value": "2"
-            },
-            {
-              "key": "cast_maxh",
-              "value": "4"
-            },
-            {
-              "key": "cast_minh",
-              "value": "-4"
+              "key": "target",
+              "value": "living switch"
             }
           ]
         },
@@ -1938,16 +1938,21 @@
             ]
           },
           "autoPath": true,
-          "wholeField": false,
+          "wholeField": true,
           "name": "Blinding Light",
-          "tags": []
+          "tags": [
+            {
+              "key": "target",
+              "value": "living"
+            }
+          ]
         },
         "id": 21,
         "children": []
       },
       {
         "data": {
-          "description": "Turns an enemy to your side.",
+          "description": "Turns an enemy to your side with a chance of 50%.",
           "icon": {
             "id": 34,
             "col": 3,

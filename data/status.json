@@ -178,10 +178,6 @@
           "name": "Charm",
           "tags": [
             {
-              "key": "animID",
-              "value": "169"
-            },
-            {
               "key": "animHeight",
               "value": "1"
             },
@@ -228,12 +224,7 @@
           "statusDef": [],
           "cancel": [],
           "name": "ATK-",
-          "tags": [
-            {
-              "key": "animID",
-              "value": "170"
-            }
-          ]
+          "tags": []
         },
         "id": 15,
         "children": []
@@ -272,12 +263,7 @@
           "statusDef": [],
           "cancel": [],
           "name": "DEF-",
-          "tags": [
-            {
-              "key": "animID",
-              "value": "170"
-            }
-          ]
+          "tags": []
         },
         "id": 16,
         "children": []
@@ -424,12 +410,7 @@
           "statusDef": [],
           "cancel": [],
           "name": "ATK+",
-          "tags": [
-            {
-              "key": "animID",
-              "value": "171"
-            }
-          ]
+          "tags": []
         },
         "id": 5,
         "children": []
@@ -468,12 +449,7 @@
           "statusDef": [],
           "cancel": [],
           "name": "DEF+",
-          "tags": [
-            {
-              "key": "animID",
-              "value": "171"
-            }
-          ]
+          "tags": []
         },
         "id": 6,
         "children": []

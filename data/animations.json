@@ -442,8 +442,8 @@
               "rows": 1,
               "cols": 9,
               "transform": {
-                "offsetX": 64,
-                "offsetY": 96,
+                "offsetX": 16,
+                "offsetY": 32,
                 "offsetDepth": 1,
                 "scaleX": 100,
                 "scaleY": 100,

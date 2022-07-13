@@ -281,8 +281,8 @@ end
 
 -- Tells if a character may receive the skill's effects.
 -- @param(char : Character)
-function SkillAction:receivesEffect(char)
-  return char.battler and char.battler:isAlive()
+function SkillAction:receivesEffect(input, char)
+  return char.battler ~= nil
 end
 -- Calculates the final damage / heal for the target.
 -- It considers all element bonuses provided by the skill data.
@@ -371,7 +371,7 @@ function SkillAction:allTargetsEffect(input, originTile)
   local allTargets = self:getAllAffectedTiles(input)
   for i = #allTargets, 1, -1 do
     for targetChar in allTargets[i].characterList:iterator() do
-      if self:receivesEffect(targetChar) then
+      if self:receivesEffect(input, targetChar) then
         local results = self:calculateEffectResults(input.user.battler, targetChar.battler)
         self:singleTargetEffect(results, input, targetChar, originTile)
       end
@@ -384,14 +384,16 @@ end
 -- @param(originTile : ObjectTile) the user's original tile
 function SkillAction:singleTargetEffect(results, input, targetChar, originTile)
   targetChar.battler:onSkillEffect(input, results, targetChar)
+  local wasAlive = targetChar.battler.state.hp > 0
   if #results.points == 0 and #results.status == 0 then
     -- Miss
-    local pos = targetChar.position
-    local popupText = PopupText(pos.x, pos.y - 10, pos.z - 60)
-    popupText:addLine(Vocab.miss, 'popup_miss', 'popup_miss')
-    popupText:popup()
-  else
-    local wasAlive = targetChar.battler.state.hp > 0
+    if wasAlive then
+      local pos = targetChar.position
+      local popupText = PopupText(pos.x, pos.y - 10, pos.z - 60)
+      popupText:addLine(Vocab.miss, 'popup_miss', 'popup_miss')
+      popupText:popup()
+    end
+  elseif wasAlive or not results.damage then
     targetChar.battler:popupResults(targetChar.position, results, targetChar)
     if self.data.individualAnimID >= 0 then
       local dir = targetChar:tileToAngle(originTile.x, originTile.y)

@@ -95,6 +95,12 @@
           "level": 9,
           "requirements": [],
           "tags": []
+        },
+        {
+          "id": 21,
+          "level": 10,
+          "requirements": [],
+          "tags": []
         }
       ],
       "name": "Mage",

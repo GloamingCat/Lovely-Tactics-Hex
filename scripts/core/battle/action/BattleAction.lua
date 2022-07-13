@@ -196,6 +196,9 @@ function BattleAction:isCharacterSelectable(input, char)
   if not char.battler then
     return false
   end
+  if not self:isRanged() or self.wholeField then
+    return char == input.user
+  end
   local alive = char.battler:isAlive()
   local ally = input.user.party == char.party
   return (alive == self.living or (not alive) == self.dead) and 

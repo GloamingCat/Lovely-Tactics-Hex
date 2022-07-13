@@ -103,12 +103,12 @@
   },
   {
     "on": true,
-    "name": "plugins/status/StatusBalloon.lua",
+    "name": "plugins/skill/AreaTarget.lua",
     "tags": []
   },
   {
     "on": true,
-    "name": "plugins/status/StatusAnimation.lua",
+    "name": "plugins/status/StatusBalloon.lua",
     "tags": []
   },
   {
