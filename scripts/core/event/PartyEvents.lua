@@ -66,14 +66,14 @@ end
 -- @param(args.onlyCurrent : boolean) True to ignore backup members (false by default).
 function EventSheet:healAll(args)
   local troop = Troop()
-  for battler in troop:currentBattlers():iterator() do
+  local list = args.onlyCurrent and troop:currentBattlers() or troop:visibleBattlers()
+  for battler in list:iterator() do
     battler.state.hp = battler.mhp()
     battler.state.sp = battler.msp()
-  end
-  if not args.onlyCurrent then
-    for battler in troop:backupBattlers():iterator() do
-      battler.state.hp = battler.mhp()
-      battler.state.sp = battler.msp()
+    if args.status then
+      for _, id in ipairs(args.status) do
+        battler.statusList:removeStatus(id)
+      end
     end
   end
   TroopManager:saveTroop(troop)
