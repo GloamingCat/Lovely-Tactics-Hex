@@ -61,6 +61,7 @@ function GameManager:setSave(save, play)
   TroopManager.troopData = copyTable(save.troops)
   TroopManager.playerTroopID = save.playerTroopID
   FieldManager.fieldData = copyTable(save.fields)
+  FieldManager:loadTransition(save.playerTransition, true)
 end
 -- Sets the system config.
 -- @param(config : table) A config table loaded by SaveManager.

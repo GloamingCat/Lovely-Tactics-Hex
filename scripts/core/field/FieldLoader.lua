@@ -25,9 +25,9 @@ local FieldLoader = {}
 -- @param(id : number) Field's ID.
 -- @ret(Field) New empty field.
 -- @ret(table) Field file data.
-function FieldLoader.loadField(id)
+function FieldLoader.loadField(id, save)
   local data = Serializer.load(Project.dataPath .. 'fields/' .. id .. '.json')
-  local prefs = data.prefs.persistent and FieldManager:getFieldData(id).prefs or data.prefs
+  local prefs = save and save.prefs or data.prefs.persistent and FieldManager:getFieldSave(id).prefs or data.prefs
   local maxH = data.prefs.maxHeight
   local field = Field(data.id, data.prefs.name, data.sizeX, data.sizeY, maxH)
   field.persistent = data.prefs.persistent
@@ -83,8 +83,8 @@ end
 -- Creates field's characters.
 -- @param(field : Field) Current field.
 -- @param(characters : table) Array of character instances.
-function FieldLoader.loadCharacters(field, characters)
-  local persistentData = FieldManager:getFieldData(field.id)
+function FieldLoader.loadCharacters(field, characters, save)
+  local persistentData = save or FieldManager:getFieldSave(field.id)
   for i, char in ipairs(characters) do
     local save = persistentData.chars[char.key]
     if not (save and save.deleted) then

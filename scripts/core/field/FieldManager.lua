@@ -53,10 +53,10 @@ end
 
 -- Creates field from ID.
 -- @param(fieldID : number) The field's ID.
-function FieldManager:loadField(fieldID)
+function FieldManager:loadField(fieldID, save)
   self.updateList = List()
   self.characterList = List()
-  local field, fieldData = FieldLoader.loadField(fieldID)
+  local field, fieldData = FieldLoader.loadField(fieldID, save)
   self.currentField = field
   local cameraWidth = ScreenManager:totalWidth()
   local cameraHeight = ScreenManager:totalHeight()
@@ -64,7 +64,7 @@ function FieldManager:loadField(fieldID)
   self.renderer:initializeImages(field.images)
   ScreenManager.renderers[1] = self.renderer
   FieldLoader.mergeLayers(field, fieldData.layers)
-  FieldLoader.loadCharacters(field, fieldData.characters)
+  FieldLoader.loadCharacters(field, fieldData.characters, save)
   if field.bgm and field.bgm.name ~= '' then
     if AudioManager.BGM == nil or AudioManager.BGM.name ~= field.bgm.name then
       AudioManager:playBGM(field.bgm, field.bgm.time or 0)
@@ -87,8 +87,8 @@ function FieldManager:createCamera(data, width, height)
   camera:setXYZ(mathf.pixelCenter(data.sizeX, data.sizeY))
   if self.renderer then
     camera:setColor(self.renderer.color)
-  elseif SaveManager.current.screenColor then
-    camera:setColor(SaveManager.current.screenColor)
+  elseif SaveManager.current.renderer then
+    camera:setState(SaveManager.current.renderer)
   else
     camera:setRGBA(1, 1, 1, 1)
   end
@@ -108,7 +108,7 @@ end
 -- Gets the persistent data of a field.
 -- @param(id : number) Field's ID.
 -- @ret(table) The data table.
-function FieldManager:getFieldData(id)
+function FieldManager:getFieldSave(id)
   id = id .. ''
   local persistentData = self.fieldData[id]
   if persistentData == nil then
@@ -122,7 +122,7 @@ end
 function FieldManager:storeFieldData(field)
   field = field or self.currentField
   if field.persistent then
-    local persistentData = self:getFieldData(field.id)
+    local persistentData = self:getFieldSave(field.id)
     for char in self.characterList:iterator() do
       if char.persistent then
         persistentData.chars[char.key] = char:getPersistentData()
@@ -136,7 +136,7 @@ end
 -- @param(fieldID : number) The ID of the character's field.
 -- @param(char : Character) Character to store.
 function FieldManager:storeCharData(fieldID, char)
-  local persistentData = self:getFieldData(fieldID)
+  local persistentData = self:getFieldSave(fieldID)
   persistentData.chars[char.key] = char:getPersistentData()
 end
 -- Creates a new Transition table based on player's current position.
@@ -170,6 +170,17 @@ function FieldManager:setState(state)
   self.characterList = state.updateList
   ScreenManager.renderers[1] = self.renderer
 end
+-- Gets the persistent data of current field, regardless if it's labelled as persistent or not.
+-- @ret(table) Save data.
+function FieldManager:getCurrentFieldState()
+  local persistentData = self:getFieldSave(self.currentField.id)
+  for char in self.characterList:iterator() do
+    persistentData.chars[char.key] = char:getPersistentData()
+  end
+  persistentData.vars = self.currentField.vars
+  persistentData.prefs = self.currentField:getPersistentData()
+  return persistentData
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Field transition
@@ -186,7 +197,7 @@ function FieldManager:loadTransition(transition, fromSave)
   if self.currentField then
     self:storeFieldData()
   end
-  local fieldData = self:loadField(transition.fieldID)
+  local fieldData = self:loadField(transition.fieldID, fromSave and SaveManager.current.field)
   self.player = self:createPlayer(transition)
   self.renderer.focusObject = self.player
   self.renderer:setPosition(self.player.position)

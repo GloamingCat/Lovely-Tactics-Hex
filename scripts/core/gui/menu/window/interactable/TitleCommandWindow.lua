@@ -43,7 +43,6 @@ function TitleCommandWindow:newGameConfirm()
   self.result = 1
   SaveManager:loadSave()
   GameManager:setSave(SaveManager.current)
-  FieldManager:loadTransition(SaveManager.current.playerTransition)
 end
 -- Load Game button.
 function TitleCommandWindow:loadGameConfirm()
@@ -56,7 +55,6 @@ function TitleCommandWindow:loadGameConfirm()
     self.result = 1
     SaveManager:loadSave(result)
     GameManager:setSave(SaveManager.current)
-    FieldManager:loadTransition(SaveManager.current.playerTransition)
   else
     self.GUI.topText:setVisible(true)
     self:show()

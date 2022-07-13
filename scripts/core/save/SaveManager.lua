@@ -59,9 +59,9 @@ function SaveManager:newSave()
     h = startPos.h or 0,
     direction = startPos.direction or 270,
     fieldID = startPos.fieldID or 0 }
-  save.screenColor = { 
+  save.renderer = { 
     red = 1, 
-    green =1, 
+    green = 1, 
     blue = 1, 
     alpha = 0 }
   return save
@@ -168,6 +168,8 @@ function SaveManager:storeSave(file, data)
   self.current = data or self:currentSaveData()
   self.current.playTime = GameManager:currentPlayTime()
   self.current.playerTransition = FieldManager:getPlayerTransition()
+  self.current.renderer = FieldManager.renderer:getState()
+  self.current.field = FieldManager:getCurrentFieldState()
   self.saves[file] = self:getHeader(self.current)
   Serializer.store('saves/' .. file .. '.save', self.current)
   Serializer.store('saves.json', self.saves)

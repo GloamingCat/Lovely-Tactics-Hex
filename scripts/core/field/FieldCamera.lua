@@ -160,4 +160,17 @@ function FieldCamera:fadein(time, wait)
   self:colorizeTo(1, 1, 1, 1, speed, wait)
 end
 
+---------------------------------------------------------------------------------------------------
+-- Camera State
+---------------------------------------------------------------------------------------------------
+
+-- @ret(table) Current camera state.
+function FieldCamera:getState()
+  return self.color
+end
+-- @param(state : table) Saved camera state.
+function FieldCamera:setState(state)
+  self:setColor(state)
+end
+
 return FieldCamera

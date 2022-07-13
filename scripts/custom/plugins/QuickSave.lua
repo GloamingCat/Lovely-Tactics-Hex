@@ -43,7 +43,6 @@ function Player:checkFieldInput()
   elseif InputManager.keys['load']:isTriggered() then
     SaveManager:loadSave('quick')
     GameManager:setSave(SaveManager.current)
-    FieldManager:loadTransition(SaveManager.current.playerTransition)
     popup(Vocab.loaded)
   else
     Player_checkFieldInput(self)
