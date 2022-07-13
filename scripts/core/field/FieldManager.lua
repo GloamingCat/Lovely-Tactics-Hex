@@ -213,14 +213,6 @@ function FieldManager:loadTransition(transition, fromSave)
   self.player.fiberList:fork(self.player.fieldInputLoop, self.player)
   FieldLoader.createTransitions(self.currentField, fieldData.prefs.transitions)
 end
--- Loads a battle field and waits for the battle to finish.
--- It MUST be called from a fiber in FieldManager's fiber list, or else the fiber will be 
--- lost in the field transition. At the end of the battle, it reloads the previous field.
--- @param(fieldID : number) The field's id (optinal, current field by default).
-function FieldManager:loadBattleField(fieldID)
-  self:loadField(fieldID or self.currentField.id)
-  FieldLoader.setPartyTiles(self.currentField)
-end
 
 ---------------------------------------------------------------------------------------------------
 -- Auxiliary Functions

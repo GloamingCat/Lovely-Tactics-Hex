@@ -206,6 +206,38 @@ end
 -- Parties
 ---------------------------------------------------------------------------------------------------
 
+-- Setup party tiles.
+-- @param(field : Field)
+function TroopManager:setPartyTiles()
+  local field = FieldManager.currentField
+  for i, partyInfo in ipairs(field.parties) do
+    local minx, miny, maxx, maxy
+    if partyInfo.rotation == 0 then
+      minx, maxx = math.floor(field.sizeX / 3) - 1, math.ceil(field.sizeX * 2 / 3) + 1
+      miny, maxy = 0, math.floor(field.sizeY / 3)
+    elseif partyInfo.rotation == 1 then
+      minx, maxx = 0, math.floor(field.sizeX / 3)
+      miny, maxy = math.floor(field.sizeY / 3) - 1, math.ceil(field.sizeY * 2 / 3) + 1
+    elseif partyInfo.rotation == 2 then
+      minx, maxx = math.floor(field.sizeX / 3) - 1, math.ceil(field.sizeX * 2 / 3) + 1
+      miny, maxy = math.floor(field.sizeY * 2 / 3), field.sizeY
+    else
+      minx, maxx = math.floor(field.sizeX * 2 / 3), field.sizeX
+      miny, maxy = math.floor(field.sizeY / 3) - 1, math.ceil(field.sizeY * 2 / 3) + 1
+    end
+    local id = i - 1
+    for x = minx + 1, maxx do
+      for y = miny + 1, maxy do
+        for h = -1, 1 do
+          local tile = field:getObjectTile(x, y, partyInfo.h + h)
+          if tile then
+            tile.party = id
+          end
+        end
+      end
+    end
+  end
+end
 -- Gets the troop controlled by the player.
 -- @ret(Troop)
 function TroopManager:getPlayerTroop()

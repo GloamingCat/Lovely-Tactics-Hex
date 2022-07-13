@@ -37,29 +37,41 @@ function BattleManager:init()
   self.onBattle = false
   self.params = defaultParams
 end
--- Creates battle elements.
--- @param(params : table) battle params to be used by custom scripts
-function BattleManager:setUp(params)
-  self.params = params or defaultParams
-  self:setUpTiles()
-  self:setUpCharacters()
-end
--- Creates battle characters.
-function BattleManager:setUpCharacters()
-  TroopManager:createTroops()
-end
--- Creates tiles' GUI components.
-function BattleManager:setUpTiles()
+-- Creates battle elements (GUI, characters, party tiles).
+function BattleManager:setUp()
+  TroopManager:setPartyTiles(self.currentField)
   for tile in FieldManager.currentField:gridIterator() do
     tile.gui = TileGUI(tile, true, true)
     tile.gui:updateDepth()
   end
+  TroopManager:createTroops()
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Battle Loop
 ---------------------------------------------------------------------------------------------------
 
+-- Loads a battle field and waits for the battle to finish.
+-- It MUST be called from a fiber in FieldManager's fiber list, or else the fiber will be 
+-- lost in the field transition. At the end of the battle, it reloads the previous field.
+function BattleManager:loadBattle()
+  FieldManager:loadField(self.params.fieldID or self.currentField.id)
+  -- Run battle
+  while true do
+    self:setUp()
+    local result = self:runBattle()
+    self:clear()
+    if result == 1 then -- Continue
+      break
+    elseif result == 2 then -- Retry
+      FieldManager:loadField(self.params.fieldID or self.currentField.id)
+    elseif result == 3 then -- Title Screen
+      GameManager:restart()
+      return
+    end
+  end
+  FieldManager:loadTransition(SaveManager.current.playerTransition, true)
+end
 -- Runs until battle finishes.
 -- @ret(number) The result of the end GUI.
 function BattleManager:runBattle()

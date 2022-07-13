@@ -23,17 +23,17 @@ end
 local merge = not args.override
 
 -- Imports
-local FieldLoader = require('core/field/FieldLoader')
+local TroopManager = require('core/battle/TroopManager')
 
 ---------------------------------------------------------------------------------------------------
--- FieldLoader
+-- TroopManager
 ---------------------------------------------------------------------------------------------------
 
 -- Override. Checks for tile regions.
-local FieldLoader_setPartyTiles = FieldLoader.setPartyTiles
-function FieldLoader.setPartyTiles(field)
+local TroopManager_setPartyTiles = TroopManager.setPartyTiles
+function TroopManager.setPartyTiles(field)
   if merge then
-    FieldLoader_setPartyTiles(field)
+    TroopManager_setPartyTiles(field)
   end
   for i, partyInfo in ipairs(field.parties) do
     local id = i - 1

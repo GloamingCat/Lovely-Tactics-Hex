@@ -95,6 +95,8 @@ function SaveManager:currentSaveData()
   save.troops = copyTable(TroopManager.troopData)
   save.playerTroopID = TroopManager.playerTroopID
   save.playerTransition = FieldManager:getPlayerTransition()
+  save.renderer = FieldManager.renderer:getState()
+  save.field = FieldManager:getCurrentFieldState()
   return save
 end
 -- Creates a save table for the current settings.
@@ -166,10 +168,6 @@ end
 -- @param(name : string) File name.
 function SaveManager:storeSave(file, data)
   self.current = data or self:currentSaveData()
-  self.current.playTime = GameManager:currentPlayTime()
-  self.current.playerTransition = FieldManager:getPlayerTransition()
-  self.current.renderer = FieldManager.renderer:getState()
-  self.current.field = FieldManager:getCurrentFieldState()
   self.saves[file] = self:getHeader(self.current)
   Serializer.store('saves/' .. file .. '.save', self.current)
   Serializer.store('saves.json', self.saves)

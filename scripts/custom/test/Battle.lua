@@ -9,6 +9,10 @@ Starts a battle when this collides with player.
 
 return function(script)
 
+  if script.char.vars.onBattle then
+    goto afterBattle
+  end
+
   coroutine.yield()
   
   if script.char.deleted then
@@ -27,7 +31,7 @@ return function(script)
   end
   
   script.player:playIdleAnimation()
-  local previousBgm = AudioManager:pauseBGM()
+  
   script:startBattle { 
     fieldID = tonumber(script.args.fieldID) or 0, 
     fade = 60, 
@@ -35,9 +39,10 @@ return function(script)
     gameOverCondition = script.args.loseEnabled == 'true' and 0 or 1, 
     escapeEnabled = true 
   }
-  if previousBgm then
-    AudioManager:playBGM(previousBgm)
-  end
+
+  ::afterBattle::
+  
+  script:finishBattle { fade = 60 }
   
   script.char.cooldown = 180
   if BattleManager:playerWon() then

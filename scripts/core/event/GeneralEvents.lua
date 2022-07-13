@@ -55,8 +55,11 @@ end
 -- @param(args.gameOverCondition : number) GameOver condition:
 --  0 => no gameover, 1 => only when lost, 2 => lost or draw.
 function EventSheet:startBattle(args)
-  FieldManager:storeFieldData()
-  local previousField = (args.fieldID or args.resetOnEnd) and FieldManager:getState()
+  if self.char then
+    self.char.vars.onBattle = true
+  end
+  BattleManager.params = args
+  SaveManager.current = SaveManager:currentSaveData()
   -- Openning
   if Config.sounds.battleIntro then
     AudioManager:playSFX(Config.sounds.battleIntro)
@@ -64,34 +67,17 @@ function EventSheet:startBattle(args)
   if args.fade then
     FieldManager.renderer:fadeout(args.fade, true)
   end
-  local fiber = FieldManager.fiberList:fork(function()
-    FieldManager:loadBattleField(args.fieldID)
-    -- Run battle
-    local save = SaveManager:currentSaveData()
-    while true do
-      BattleManager:setUp(args)
-      local result = BattleManager:runBattle()
-      BattleManager:clear()
-      if result == 1 then -- Continue
-        break
-      elseif result == 2 then -- Retry
-        SaveManager:loadSave(save)
-        FieldManager:loadBattleField(args.fieldID)
-      elseif result == 3 then -- Title Screen
-        GameManager:restart()
-        return
-      end
-    end
-    if previousField then
-      FieldManager:setState(previousField)
-      previousField = nil
-      collectgarbage('collect')
-    end
-    if args.fade then
-      FieldManager.renderer:fadein(args.fade, true)
-    end
-  end)
+  local fiber = FieldManager.fiberList:fork(BattleManager.loadBattle, BattleManager)
   fiber:waitForEnd()
+end
+
+function EventSheet:finishBattle(args)
+  if args.fade then
+    FieldManager.renderer:fadein(args.fade, true)
+  end
+  if self.char then
+    self.char.vars.onBattle = false
+  end
 end
 
 return EventSheet
