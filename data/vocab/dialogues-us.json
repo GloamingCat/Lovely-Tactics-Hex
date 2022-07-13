@@ -4,8 +4,12 @@
   "actor": {
     "Hi": "Hi.",
     "CanIJoin": "Can I join your party?",
-    "ThatsGood": "That's {i}great!{r}.",
-    "ThatsBad": "Meh."
+    "ThatsGood": "That's {i}great!{r}\nI'm yours now. :)",
+    "ThatsBad": "Meh.",
+    "WhatDoYou": "What do you want to do?",
+    "Shop": "Shop",
+    "Battle": "Battle",
+    "Nothing": "Nothing"
   }
   
 }

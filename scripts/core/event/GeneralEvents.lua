@@ -82,17 +82,16 @@ function EventSheet:startBattle(args)
         return
       end
     end
+    if previousField then
+      FieldManager:setState(previousField)
+      previousField = nil
+      collectgarbage('collect')
+    end
+    if args.fade then
+      FieldManager.renderer:fadein(args.fade, true)
+    end
   end)
   fiber:waitForEnd()
-  -- Ending
-  if previousField then
-    FieldManager:setState(previousField)
-    previousField = nil
-    collectgarbage('collect')
-  end
-  if args.fade then
-    FieldManager.renderer:fadein(args.fade, true)
-  end
 end
 
 return EventSheet

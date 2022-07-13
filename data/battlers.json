@@ -68,7 +68,7 @@
             0
           ],
           "skills": [
-            28
+            22
           ],
           "status": [],
           "elements": [],
@@ -84,7 +84,7 @@
         "data": {
           "persistent": true,
           "ai": [],
-          "jobID": 1,
+          "jobID": 2,
           "attackID": 6,
           "level": 5,
           "money": 0,
@@ -111,7 +111,7 @@
           ],
           "skills": [
             17,
-            27
+            7
           ],
           "status": [],
           "elements": [],
@@ -177,8 +177,8 @@
           "jobID": 0,
           "attackID": 15,
           "level": 2,
-          "money": 3,
-          "exp": 5,
+          "money": 20,
+          "exp": 10,
           "attributes": [
             0,
             0,
@@ -228,8 +228,8 @@
           "jobID": 0,
           "attackID": 18,
           "level": 3,
-          "money": 5,
-          "exp": 8,
+          "money": 50,
+          "exp": 16,
           "attributes": [
             0,
             0,
@@ -252,7 +252,12 @@
           ],
           "skills": [],
           "status": [],
-          "elements": [],
+          "elements": [
+            {
+              "id": 6,
+              "value": 200
+            }
+          ],
           "items": [],
           "equip": [],
           "name": "Poison Jelly",
@@ -279,8 +284,8 @@
           "jobID": 0,
           "attackID": 15,
           "level": 4,
-          "money": 8,
-          "exp": 10,
+          "money": 80,
+          "exp": 20,
           "attributes": [
             0,
             0,
@@ -303,7 +308,12 @@
           ],
           "skills": [],
           "status": [],
-          "elements": [],
+          "elements": [
+            {
+              "id": 7,
+              "value": 200
+            }
+          ],
           "items": [],
           "equip": [],
           "name": "Chicken Jelly",

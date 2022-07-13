@@ -22,8 +22,8 @@ local alt = {
   cancel = 'backspace',
   pause = 'pause',
   dash = 'rshift',
-  prev = 'n',
-  next = 'm'
+  prev = 'q',
+  next = 'e'
 }
 
 return { main = main, alt = alt }

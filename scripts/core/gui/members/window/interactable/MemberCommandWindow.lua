@@ -22,9 +22,9 @@ local MemberCommandWindow = class(GridWindow)
 
 -- Constructor.
 function MemberCommandWindow:createWidgets()
-  Button:fromKey(self, 'items')
-  Button:fromKey(self, 'skills')
   Button:fromKey(self, 'equips')
+  Button:fromKey(self, 'skills')
+  Button:fromKey(self, 'items')
 end
 
 ---------------------------------------------------------------------------------------------------

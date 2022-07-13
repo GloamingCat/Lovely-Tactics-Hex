@@ -75,7 +75,8 @@ function Highlight:updatePosition(wpos)
 end
 -- Shows sprite grid.
 function Highlight:setVisible(value)
-  Component.setVisible(self, value and (not self.window or #self.window.matrix > 0))
+  local active = not self.hideOnDeactive or self.window.active
+  Component.setVisible(self, value and active and (not self.window or #self.window.matrix > 0))
 end
 
 return Highlight

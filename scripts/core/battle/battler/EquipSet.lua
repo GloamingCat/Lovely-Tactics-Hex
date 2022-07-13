@@ -36,15 +36,14 @@ function EquipSet:init(battler, save)
         local key = slot.key .. k
         local slotData = equips and findByKey(equips, key) 
         self.slots[key] = slotData and deepCopyTable(slotData) or { id = -1 }
-        local id = self.slots[key].id
-        if battler and id >= 0 then
-          self:addStatus(Database.items[id])
-        end
       end
       self.types[slot.key] = { state = slot.state, count = slot.count }
     end
   end
-  for k in pairs(self.slots) do
+  for k, slot in pairs(self.slots) do
+    if battler and slot.id >= 0 then
+      self:addStatus(Database.items[slot.id])
+    end
     self:updateSlotBonus(k)
   end
 end

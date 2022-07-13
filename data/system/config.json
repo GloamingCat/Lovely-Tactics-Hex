@@ -169,9 +169,9 @@
     },
     {
       "key": "buttonConfirm",
-      "name": "sfx/Confirm.wav",
-      "volume": 90,
-      "pitch": 100,
+      "name": "sfx/Select.wav",
+      "volume": 60,
+      "pitch": 120,
       "time": 0
     },
     {
@@ -219,8 +219,8 @@
     {
       "key": "text",
       "name": "sfx/Select.wav",
-      "volume": 60,
-      "pitch": 55,
+      "volume": 50,
+      "pitch": 90,
       "time": 0
     },
     {
@@ -282,7 +282,7 @@
     {
       "key": "battleIntro",
       "name": "sfx/Encounter.wav",
-      "volume": 100,
+      "volume": 30,
       "pitch": 100,
       "time": 0
     },
@@ -331,14 +331,14 @@
     {
       "key": "explosion",
       "name": "sfx/Explosion.wav",
-      "volume": 100,
+      "volume": 60,
       "pitch": 100,
       "time": 0
     },
     {
       "key": "slash",
       "name": "sfx/Slash.wav",
-      "volume": 100,
+      "volume": 90,
       "pitch": 100,
       "time": 0
     },
@@ -373,21 +373,21 @@
     {
       "key": "hardStep",
       "name": "sfx/Step.wav",
-      "volume": 100,
+      "volume": 60,
       "pitch": 100,
       "time": 0
     },
     {
       "key": "softStep",
       "name": "sfx/Step2.wav",
-      "volume": 100,
+      "volume": 50,
       "pitch": 100,
       "time": 0
     },
     {
       "key": "splashStep",
       "name": "sfx/Splash.wav",
-      "volume": 100,
+      "volume": 70,
       "pitch": 100,
       "time": 0
     },

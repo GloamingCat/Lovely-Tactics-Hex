@@ -181,9 +181,10 @@ function GameManager:setPaused(paused, audio, input)
   if input then
     InputManager:setPaused(paused)
   end
-  SaveManager.loadTime = now()
   if paused then
     self.playTime = self:currentPlayTime()
+  else
+    SaveManager.loadTime = now()
   end
 end
 

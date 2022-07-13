@@ -16,13 +16,13 @@ local WaitAction = class(BattleAction)
 -- Callback
 ---------------------------------------------------------------------------------------------------
 
--- Overrides BattoeAction:onActionGUI.
+-- Overrides BattleAction:onActionGUI.
 function WaitAction:onActionGUI(input)
   return self:onConfirm(input)
 end
-
+-- Overrides BattleAction:onConfirm.
 function WaitAction:onConfirm(input)
-  return { endTurn = true, endCharacterTurn = true }
+  return { endCharacterTurn = true, endTurn = #TurnManager.turnCharacters == 1 }
 end
 
 return WaitAction

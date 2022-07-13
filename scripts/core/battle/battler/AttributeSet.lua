@@ -41,7 +41,7 @@ function AttributeSet:init(battler, save)
       return base
     end
   end
-  self.bonus = false
+  self.bonus = true
 end
 -- Converts array of attributes to a map.
 -- @param(att : table) Array of attributes, in the order defined by system configurations.

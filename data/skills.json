@@ -362,7 +362,7 @@
           ],
           "userElements": true,
           "userLoadAnim": "",
-          "userCastAnim": "Skill1",
+          "userCastAnim": "Skill2",
           "stepOnCast": true,
           "loadAnimID": -1,
           "castAnimID": -1,
@@ -406,7 +406,7 @@
                 [
                   false,
                   true,
-                  false
+                  true
                 ],
                 [
                   true,
@@ -414,7 +414,7 @@
                   true
                 ],
                 [
-                  false,
+                  true,
                   true,
                   false
                 ]
@@ -423,7 +423,7 @@
                 [
                   false,
                   true,
-                  false
+                  true
                 ],
                 [
                   true,
@@ -431,7 +431,7 @@
                   true
                 ],
                 [
-                  false,
+                  true,
                   true,
                   false
                 ]
@@ -440,7 +440,7 @@
                 [
                   false,
                   true,
-                  false
+                  true
                 ],
                 [
                   true,
@@ -448,7 +448,7 @@
                   true
                 ],
                 [
-                  false,
+                  true,
                   true,
                   false
                 ]
@@ -457,7 +457,7 @@
           },
           "autoPath": true,
           "wholeField": false,
-          "name": "Blade Attack",
+          "name": "Physical Attack",
           "tags": [
             {
               "key": "critical",
@@ -466,6 +466,133 @@
           ]
         },
         "id": 5,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Simple melee physical attack,\r\nwith 150% damage and\r\n100% of success rate.",
+          "icon": {
+            "id": 34,
+            "col": 1,
+            "row": 0
+          },
+          "script": "",
+          "type": 1,
+          "targetType": 2,
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [
+            {
+              "id": 0,
+              "value": 100
+            }
+          ],
+          "userElements": true,
+          "userLoadAnim": "Load2",
+          "userCastAnim": "Skill2",
+          "stepOnCast": true,
+          "loadAnimID": 13,
+          "castAnimID": -1,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "35",
+          "centerTime": "20",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "1.5 * action:defaultPhysicalDamage(user, target, a, b)",
+              "successRate": "100",
+              "heal": false,
+              "absorb": false
+            }
+          ],
+          "statusAdd": [],
+          "statusRemove": [],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 2,
+            "centerY": 2,
+            "centerH": 2,
+            "grid": [
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ]
+            ]
+          },
+          "autoPath": true,
+          "wholeField": false,
+          "name": "Strong Attack",
+          "tags": []
+        },
+        "id": 28,
         "children": []
       },
       {
@@ -623,7 +750,7 @@
                 [
                   false,
                   true,
-                  false
+                  true
                 ],
                 [
                   true,
@@ -631,7 +758,7 @@
                   true
                 ],
                 [
-                  false,
+                  true,
                   true,
                   false
                 ]
@@ -640,7 +767,7 @@
                 [
                   false,
                   true,
-                  false
+                  true
                 ],
                 [
                   true,
@@ -648,7 +775,7 @@
                   true
                 ],
                 [
-                  false,
+                  true,
                   true,
                   false
                 ]
@@ -657,7 +784,7 @@
                 [
                   false,
                   true,
-                  false
+                  true
                 ],
                 [
                   true,
@@ -665,7 +792,7 @@
                   true
                 ],
                 [
-                  false,
+                  true,
                   true,
                   false
                 ]
@@ -1218,7 +1345,7 @@
           "userCastAnim": "Skill1",
           "stepOnCast": false,
           "loadAnimID": -1,
-          "castAnimID": 16,
+          "castAnimID": 17,
           "individualAnimID": -1,
           "mirror": true,
           "introTime": "",
@@ -1371,130 +1498,29 @@
       },
       {
         "data": {
-          "description": "Removes all negative effects of all party members\r\nand wakes up knock-out allies.",
-          "icon": {
-            "id": 34,
-            "col": 3,
-            "row": 1
-          },
-          "script": "",
-          "type": 2,
-          "targetType": 1,
-          "restriction": 1,
-          "costs": [
-            {
-              "key": "sp",
-              "value": "10"
-            }
-          ],
-          "elements": [],
-          "userElements": true,
-          "userLoadAnim": "",
-          "userCastAnim": "",
-          "stepOnCast": true,
-          "loadAnimID": 13,
-          "castAnimID": 232,
-          "individualAnimID": -1,
-          "mirror": true,
-          "introTime": "",
-          "castTime": "",
-          "centerTime": "",
-          "targetTime": "",
-          "finishTime": "",
-          "damageAnim": true,
-          "effects": [
-            {
-              "key": "hp",
-              "basicResult": "1",
-              "successRate": "target:isAlive() and 100 or 0",
-              "heal": true,
-              "absorb": false
-            }
-          ],
-          "statusAdd": [],
-          "statusRemove": [
-            {
-              "id": 0,
-              "rate": "100"
-            },
-            {
-              "id": 1,
-              "rate": "100"
-            },
-            {
-              "id": 17,
-              "rate": "100"
-            },
-            {
-              "id": 18,
-              "rate": "100"
-            },
-            {
-              "id": 15,
-              "rate": "100"
-            },
-            {
-              "id": 16,
-              "rate": "100"
-            }
-          ],
-          "effectMask": {
-            "centerX": 1,
-            "centerY": 1,
-            "centerH": 1,
-            "grid": [
-              [
-                [
-                  true
-                ]
-              ]
-            ]
-          },
-          "castMask": {
-            "centerX": 1,
-            "centerY": 1,
-            "centerH": 1,
-            "grid": [
-              [
-                [
-                  true
-                ]
-              ]
-            ]
-          },
-          "autoPath": false,
-          "wholeField": true,
-          "name": "Power of Love",
-          "tags": []
-        },
-        "id": 27,
-        "children": []
-      },
-      {
-        "data": {
-          "description": "Increases ATK and DEX of all party members and\r\nheals their SP fully.",
+          "description": "Increases ATK and DEF of all allies.",
           "icon": {
             "id": 34,
             "col": 2,
-            "row": 3
+            "row": 2
           },
           "script": "",
           "type": 2,
-          "targetType": 0,
+          "targetType": 2,
           "restriction": 1,
           "costs": [
             {
               "key": "sp",
-              "value": "10"
+              "value": "20"
             }
           ],
           "elements": [],
-          "userElements": true,
+          "userElements": false,
           "userLoadAnim": "",
           "userCastAnim": "",
           "stepOnCast": true,
-          "loadAnimID": 13,
-          "castAnimID": 232,
+          "loadAnimID": -1,
+          "castAnimID": 14,
           "individualAnimID": -1,
           "mirror": true,
           "introTime": "",
@@ -1503,97 +1529,12 @@
           "targetTime": "",
           "finishTime": "",
           "damageAnim": true,
-          "effects": [
-            {
-              "key": "sp",
-              "basicResult": "10000",
-              "successRate": "100",
-              "heal": true,
-              "absorb": false
-            }
-          ],
+          "effects": [],
           "statusAdd": [
             {
               "id": 5,
               "rate": "100"
-            }
-          ],
-          "statusRemove": [],
-          "effectMask": {
-            "centerX": 1,
-            "centerY": 1,
-            "centerH": 1,
-            "grid": [
-              [
-                [
-                  true
-                ]
-              ]
-            ]
-          },
-          "castMask": {
-            "centerX": 1,
-            "centerY": 1,
-            "centerH": 1,
-            "grid": [
-              [
-                [
-                  true
-                ]
-              ]
-            ]
-          },
-          "autoPath": false,
-          "wholeField": true,
-          "name": "Power of Joy",
-          "tags": []
-        },
-        "id": 28,
-        "children": []
-      },
-      {
-        "data": {
-          "description": "Increases DEF and SPR of all party members and\r\nheals their HP fully.",
-          "icon": {
-            "id": 33,
-            "col": 4,
-            "row": 0
-          },
-          "script": "",
-          "type": 2,
-          "targetType": 0,
-          "restriction": 1,
-          "costs": [
-            {
-              "key": "sp",
-              "value": "10"
-            }
-          ],
-          "elements": [],
-          "userElements": true,
-          "userLoadAnim": "",
-          "userCastAnim": "",
-          "stepOnCast": true,
-          "loadAnimID": 13,
-          "castAnimID": 232,
-          "individualAnimID": -1,
-          "mirror": true,
-          "introTime": "",
-          "castTime": "",
-          "centerTime": "",
-          "targetTime": "",
-          "finishTime": "",
-          "damageAnim": true,
-          "effects": [
-            {
-              "key": "hp",
-              "basicResult": "10000",
-              "successRate": "100",
-              "heal": true,
-              "absorb": false
-            }
-          ],
-          "statusAdd": [
+            },
             {
               "id": 6,
               "rate": "100"
@@ -1624,12 +1565,25 @@
               ]
             ]
           },
-          "autoPath": false,
+          "autoPath": true,
           "wholeField": true,
-          "name": "Power of Sweetness",
-          "tags": []
+          "name": "Cheer",
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "10"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "3"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-3"
+            }
+          ]
         },
-        "id": 29,
+        "id": 27,
         "children": []
       }
     ]
@@ -1716,11 +1670,11 @@
           ],
           "elements": [],
           "userElements": false,
-          "userLoadAnim": "",
+          "userLoadAnim": "Load1",
           "userCastAnim": "Skill1",
           "stepOnCast": true,
-          "loadAnimID": -1,
-          "castAnimID": 14,
+          "loadAnimID": 13,
+          "castAnimID": 67,
           "individualAnimID": -1,
           "mirror": true,
           "introTime": "",
@@ -1784,7 +1738,7 @@
       },
       {
         "data": {
-          "description": "Makes enemies around user fall asleep.",
+          "description": "Makes enemies fall asleep.",
           "icon": {
             "id": 34,
             "col": 3,
@@ -1792,7 +1746,7 @@
           },
           "script": "",
           "type": 1,
-          "targetType": 2,
+          "targetType": 0,
           "restriction": 1,
           "costs": [
             {
@@ -1802,11 +1756,11 @@
           ],
           "elements": [],
           "userElements": false,
-          "userLoadAnim": "",
+          "userLoadAnim": "Load1",
           "userCastAnim": "Skill1",
           "stepOnCast": true,
-          "loadAnimID": -1,
-          "castAnimID": 15,
+          "loadAnimID": 13,
+          "castAnimID": 67,
           "individualAnimID": -1,
           "mirror": true,
           "introTime": "",
@@ -1899,15 +1853,19 @@
           "tags": [
             {
               "key": "cast_far",
-              "value": "3"
+              "value": "4"
+            },
+            {
+              "key": "cast_near",
+              "value": "2"
             },
             {
               "key": "cast_maxh",
-              "value": "3"
+              "value": "4"
             },
             {
               "key": "cast_minh",
-              "value": "-3"
+              "value": "-4"
             }
           ]
         },
@@ -1934,11 +1892,11 @@
           ],
           "elements": [],
           "userElements": false,
-          "userLoadAnim": "",
+          "userLoadAnim": "Load1",
           "userCastAnim": "Skill1",
           "stepOnCast": true,
-          "loadAnimID": -1,
-          "castAnimID": 15,
+          "loadAnimID": 13,
+          "castAnimID": 17,
           "individualAnimID": -1,
           "mirror": true,
           "introTime": "",
@@ -2011,7 +1969,7 @@
           "userCastAnim": "Skill1",
           "stepOnCast": true,
           "loadAnimID": -1,
-          "castAnimID": 175,
+          "castAnimID": 16,
           "individualAnimID": -1,
           "mirror": true,
           "introTime": "",
@@ -2024,7 +1982,7 @@
           "statusAdd": [
             {
               "id": 18,
-              "rate": "100"
+              "rate": "50"
             }
           ],
           "statusRemove": [],
@@ -2071,18 +2029,6 @@
             {
               "key": "cast_minh",
               "value": "-4"
-            },
-            {
-              "key": "effect_far",
-              "value": "2"
-            },
-            {
-              "key": "effect_maxh",
-              "value": "2"
-            },
-            {
-              "key": "effect_minh",
-              "value": "-2"
             },
             {
               "key": "projectileID",
@@ -2222,7 +2168,7 @@
                 [
                   false,
                   true,
-                  false
+                  true
                 ],
                 [
                   true,
@@ -2230,7 +2176,7 @@
                   true
                 ],
                 [
-                  false,
+                  true,
                   true,
                   false
                 ]
@@ -2239,7 +2185,7 @@
                 [
                   false,
                   true,
-                  false
+                  true
                 ],
                 [
                   true,
@@ -2247,7 +2193,7 @@
                   true
                 ],
                 [
-                  false,
+                  true,
                   true,
                   false
                 ]
@@ -2256,7 +2202,7 @@
                 [
                   false,
                   true,
-                  false
+                  true
                 ],
                 [
                   true,
@@ -2264,7 +2210,7 @@
                   true
                 ],
                 [
-                  false,
+                  true,
                   true,
                   false
                 ]
@@ -2354,7 +2300,7 @@
                 [
                   false,
                   true,
-                  false
+                  true
                 ],
                 [
                   true,
@@ -2362,7 +2308,7 @@
                   true
                 ],
                 [
-                  false,
+                  true,
                   true,
                   false
                 ]
@@ -2371,7 +2317,7 @@
                 [
                   false,
                   true,
-                  false
+                  true
                 ],
                 [
                   true,
@@ -2379,7 +2325,7 @@
                   true
                 ],
                 [
-                  false,
+                  true,
                   true,
                   false
                 ]
@@ -2388,7 +2334,7 @@
                 [
                   false,
                   true,
-                  false
+                  true
                 ],
                 [
                   true,
@@ -2396,7 +2342,7 @@
                   true
                 ],
                 [
-                  false,
+                  true,
                   true,
                   false
                 ]
@@ -2435,7 +2381,7 @@
           "userCastAnim": "",
           "stepOnCast": true,
           "loadAnimID": -1,
-          "castAnimID": 14,
+          "castAnimID": 15,
           "individualAnimID": -1,
           "mirror": true,
           "introTime": "",
@@ -2502,7 +2448,7 @@
           "description": "Increases ATK.",
           "icon": {
             "id": 34,
-            "col": 3,
+            "col": 2,
             "row": 2
           },
           "script": "",
@@ -2597,7 +2543,7 @@
           "userCastAnim": "",
           "stepOnCast": true,
           "loadAnimID": -1,
-          "castAnimID": 14,
+          "castAnimID": 15,
           "individualAnimID": -1,
           "mirror": true,
           "introTime": "",
@@ -2664,7 +2610,7 @@
           "description": "Increases DEF.",
           "icon": {
             "id": 34,
-            "col": 3,
+            "col": 2,
             "row": 2
           },
           "script": "",

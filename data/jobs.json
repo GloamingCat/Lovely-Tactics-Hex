@@ -22,8 +22,27 @@
         "0"
       ],
       "expCurve": "lvl * (lvl + 1) * 2",
-      "skills": [],
-      "name": "Fighter",
+      "skills": [
+        {
+          "id": 10,
+          "level": 4,
+          "requirements": [],
+          "tags": []
+        },
+        {
+          "id": 28,
+          "level": 5,
+          "requirements": [],
+          "tags": []
+        },
+        {
+          "id": 27,
+          "level": 7,
+          "requirements": [],
+          "tags": []
+        }
+      ],
+      "name": "Knight",
       "tags": []
     },
     "id": 1,
@@ -54,8 +73,26 @@
       "expCurve": "lvl * (lvl + 1) * 2",
       "skills": [
         {
+          "id": 19,
+          "level": 6,
+          "requirements": [],
+          "tags": []
+        },
+        {
           "id": 8,
-          "level": 2,
+          "level": 7,
+          "requirements": [],
+          "tags": []
+        },
+        {
+          "id": 20,
+          "level": 8,
+          "requirements": [],
+          "tags": []
+        },
+        {
+          "id": 13,
+          "level": 9,
           "requirements": [],
           "tags": []
         }

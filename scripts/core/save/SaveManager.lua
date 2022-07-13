@@ -171,7 +171,6 @@ function SaveManager:storeSave(file, data)
   self.saves[file] = self:getHeader(self.current)
   Serializer.store('saves/' .. file .. '.save', self.current)
   Serializer.store('saves.json', self.saves)
-  self.loadTime = now()
 end
 -- Stores config file.
 function SaveManager:storeConfig(config)

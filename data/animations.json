@@ -472,6 +472,180 @@
               "script": "animation/KeyPoint.lua",
               "quad": {
                 "path": "Icon/Skills.png",
+                "x": 60,
+                "y": 20,
+                "width": 20,
+                "height": 20
+              },
+              "rows": 1,
+              "cols": 1,
+              "transform": {
+                "offsetX": 10,
+                "offsetY": 10,
+                "offsetDepth": -12,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "30",
+              "loopPattern": "",
+              "loopDuration": "",
+              "audio": [
+                {
+                  "name": "heal",
+                  "volume": 70,
+                  "pitch": 110,
+                  "time": 0
+                }
+              ],
+              "name": "Heart",
+              "tags": [
+                {
+                  "key": "kp",
+                  "value": "15 Scale 2 2"
+                },
+                {
+                  "key": "kp",
+                  "value": "15 RGBA 1 1 1 1"
+                },
+                {
+                  "key": "kp",
+                  "value": "30 RGBA 1 1 1 0"
+                }
+              ]
+            },
+            "id": 16,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "animation/KeyPoint.lua",
+              "quad": {
+                "path": "Icon/Skills.png",
+                "x": 40,
+                "y": 60,
+                "width": 20,
+                "height": 20
+              },
+              "rows": 1,
+              "cols": 1,
+              "transform": {
+                "offsetX": 10,
+                "offsetY": 10,
+                "offsetDepth": -12,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "30",
+              "loopPattern": "",
+              "loopDuration": "",
+              "audio": [
+                {
+                  "name": "crystal",
+                  "volume": 70,
+                  "pitch": 110,
+                  "time": 0
+                }
+              ],
+              "name": "Light",
+              "tags": [
+                {
+                  "key": "kp",
+                  "value": "15 Scale 2 2"
+                },
+                {
+                  "key": "kp",
+                  "value": "15 RGBA 1 1 1 1"
+                },
+                {
+                  "key": "kp",
+                  "value": "30 RGBA 1 1 1 0"
+                }
+              ]
+            },
+            "id": 17,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "animation/KeyPoint.lua",
+              "quad": {
+                "path": "Icon/Skills.png",
+                "x": 40,
+                "y": 20,
+                "width": 20,
+                "height": 20
+              },
+              "rows": 1,
+              "cols": 1,
+              "transform": {
+                "offsetX": 10,
+                "offsetY": 10,
+                "offsetDepth": -12,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "30",
+              "loopPattern": "",
+              "loopDuration": "",
+              "audio": [
+                {
+                  "name": "debuff",
+                  "volume": 70,
+                  "pitch": 110,
+                  "time": 0
+                }
+              ],
+              "name": "Darkness",
+              "tags": [
+                {
+                  "key": "kp",
+                  "value": "15 Scale 2 2"
+                },
+                {
+                  "key": "kp",
+                  "value": "15 RGBA 1 1 1 1"
+                },
+                {
+                  "key": "kp",
+                  "value": "30 RGBA 1 1 1 0"
+                }
+              ]
+            },
+            "id": 67,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "animation/KeyPoint.lua",
+              "quad": {
+                "path": "Icon/Skills.png",
                 "x": 40,
                 "y": 40,
                 "width": 20,
@@ -497,7 +671,7 @@
               "introPattern": "",
               "introDuration": "30",
               "loopPattern": "",
-              "loopDuration": "30",
+              "loopDuration": "",
               "audio": [
                 {
                   "name": "explosion",
@@ -567,7 +741,7 @@
               "introPattern": "",
               "introDuration": "30",
               "loopPattern": "",
-              "loopDuration": "30",
+              "loopDuration": "",
               "audio": [
                 {
                   "name": "explosion",
@@ -723,6 +897,72 @@
             "children": []
           }
         ]
+      },
+      {
+        "data": {
+          "script": "animation/KeyPoint.lua",
+          "quad": {
+            "path": "Icon/Skills.png",
+            "x": 40,
+            "y": 60,
+            "width": 20,
+            "height": 20
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 10,
+            "offsetY": 10,
+            "offsetDepth": 12,
+            "scaleX": 100,
+            "scaleY": 75,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 180,
+            "saturation": 100,
+            "brightness": 400
+          },
+          "introPattern": "",
+          "introDuration": "30",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [
+            {
+              "name": "load",
+              "volume": 80,
+              "pitch": 100,
+              "time": 0
+            }
+          ],
+          "name": "Load",
+          "tags": [
+            {
+              "key": "kp",
+              "value": "0 Scale 1 0.75"
+            },
+            {
+              "key": "kp",
+              "value": "15 Scale 2 1.5"
+            },
+            {
+              "key": "kp",
+              "value": "30 Scale 1 0.75"
+            },
+            {
+              "key": "kp",
+              "value": "15 RGBA 1 1 1 1"
+            },
+            {
+              "key": "kp",
+              "value": "30 RGBA 1 1 1 0"
+            }
+          ]
+        },
+        "id": 13,
+        "children": []
       },
       {
         "data": {
@@ -1063,130 +1303,6 @@
           ]
         },
         "id": 112,
-        "children": []
-      },
-      {
-        "data": {
-          "script": "animation/KeyPoint.lua",
-          "quad": {
-            "path": "Icon/Skills.png",
-            "x": 40,
-            "y": 60,
-            "width": 20,
-            "height": 20
-          },
-          "rows": 1,
-          "cols": 1,
-          "transform": {
-            "offsetX": 10,
-            "offsetY": 10,
-            "offsetDepth": 1,
-            "scaleX": 100,
-            "scaleY": 75,
-            "rotation": 0,
-            "red": 255,
-            "green": 255,
-            "blue": 255,
-            "alpha": 255,
-            "hue": 180,
-            "saturation": 100,
-            "brightness": 400
-          },
-          "introPattern": "",
-          "introDuration": "30",
-          "loopPattern": "",
-          "loopDuration": "",
-          "audio": [
-            {
-              "name": "load",
-              "volume": 80,
-              "pitch": 100,
-              "time": 0
-            }
-          ],
-          "name": "Load",
-          "tags": [
-            {
-              "key": "kp",
-              "value": "0 Scale 1 0.75"
-            },
-            {
-              "key": "kp",
-              "value": "15 Scale 2 1.5"
-            },
-            {
-              "key": "kp",
-              "value": "30 Scale 1 0.75"
-            },
-            {
-              "key": "kp",
-              "value": "15 RGBA 1 1 1 1"
-            },
-            {
-              "key": "kp",
-              "value": "30 RGBA 1 1 1 0"
-            }
-          ]
-        },
-        "id": 13,
-        "children": []
-      },
-      {
-        "data": {
-          "script": "animation/KeyPoint.lua",
-          "quad": {
-            "path": "Icon/Skills.png",
-            "x": 60,
-            "y": 20,
-            "width": 20,
-            "height": 20
-          },
-          "rows": 1,
-          "cols": 1,
-          "transform": {
-            "offsetX": 10,
-            "offsetY": 15,
-            "offsetDepth": -12,
-            "scaleX": 100,
-            "scaleY": 100,
-            "rotation": 0,
-            "red": 255,
-            "green": 255,
-            "blue": 255,
-            "alpha": 255,
-            "hue": 0,
-            "saturation": 100,
-            "brightness": 100
-          },
-          "introPattern": "",
-          "introDuration": "30",
-          "loopPattern": "",
-          "loopDuration": "",
-          "audio": [
-            {
-              "name": "heal",
-              "volume": 70,
-              "pitch": 110,
-              "time": 0
-            }
-          ],
-          "name": "Heart",
-          "tags": [
-            {
-              "key": "kp",
-              "value": "15 Scale 2 2"
-            },
-            {
-              "key": "kp",
-              "value": "15 RGBA 1 1 1 1"
-            },
-            {
-              "key": "kp",
-              "value": "30 RGBA 1 1 1 0"
-            }
-          ]
-        },
-        "id": 16,
         "children": []
       },
       {

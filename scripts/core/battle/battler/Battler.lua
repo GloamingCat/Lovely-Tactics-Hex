@@ -74,7 +74,7 @@ function Battler:initState(data, save)
   if not self.elementBase then
     local e = newArray(#Config.elements, 0)
     for i = 1, #data.elements do
-      e[data.elements[i].id] = data.elements[i].value / 100 - 1
+      e[data.elements[i].id + 1] = data.elements[i].value / 100 - 1
     end
     self.elementBase = e
   end

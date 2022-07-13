@@ -89,10 +89,18 @@
             },
             {
               "name": "Battle:Load1",
+              "id": 58
+            },
+            {
+              "name": "Battle:Load2",
               "id": 56
             },
             {
               "name": "Battle:Skill1",
+              "id": 59
+            },
+            {
+              "name": "Battle:Skill2",
               "id": 60
             },
             {

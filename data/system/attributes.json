@@ -57,7 +57,7 @@
   },
   {
     "key": "pre",
-    "shortName": "PRE",
+    "shortName": "HIT",
     "script": "att.atk() * 2 + att.dex() * 2",
     "visibility": 2,
     "name": "Precision",

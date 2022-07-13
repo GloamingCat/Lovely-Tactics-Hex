@@ -43,6 +43,7 @@ end
 -- Chooses a member to manage.
 function FieldCommandWindow:membersConfirm()
   self.GUI.partyWindow:activate()
+  coroutine.yield()
   local result = self.GUI:waitForResult()
   while result > 0 do
     self.GUI:hide()

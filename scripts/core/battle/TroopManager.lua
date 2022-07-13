@@ -56,7 +56,7 @@ function TroopManager:createTroops()
   for i, partyInfo in ipairs(parties) do
     local id = i - 1
     if id == playerID then
-      self:createTroop(TroopManager.playerTroopID, partyInfo, id)
+      self:createTroop(self.playerTroopID, partyInfo, id)
     elseif #partyInfo.troops > 0 then
       local r = rand(#partyInfo.troops)
       self:createTroop(partyInfo.troops[r], partyInfo, id)

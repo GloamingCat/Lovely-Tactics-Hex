@@ -30,7 +30,7 @@ return function(script)
       script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
         Vocab.dialogues.actor.ThatsGood
       }
-      script:addMember { key = 'Merlin', x = 0, y = 0 }
+      script:addMember { key = 'Merlin' }
     else
       script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
         Vocab.dialogues.actor.ThatsBad

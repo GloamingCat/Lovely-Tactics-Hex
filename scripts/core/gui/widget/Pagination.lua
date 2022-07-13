@@ -22,7 +22,7 @@ local Pagination = class(SimpleText)
 -- @param(halign : string) Horizontal alignment.
 -- @param(valign : string) Vertical alignment.
 function Pagination:init(window, halign, valign)
-  local pos = Vector(0, 0, -1)
+  local pos = Vector(0, 0, -10)
   pos.x = -window.width / 2 + window:paddingX()
   if valign == 'top' then
     pos.y = -window.height / 2 + window:paddingY()

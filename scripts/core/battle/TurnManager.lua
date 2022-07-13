@@ -125,6 +125,10 @@ function TurnManager:runPlayerTurn()
       if result.endTurn then
         return result
       end
+      local winner = TroopManager:winnerParty()
+      if winner then
+        return result
+      end
     end
   end
 end

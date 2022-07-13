@@ -113,7 +113,7 @@ function BattleManager:battleEnd()
   local result = 1
   if self:playerWon() then
     GUIManager:showGUIForResult(RewardGUI(nil))
-  elseif self:isGameOver() then
+  else
     result = GUIManager:showGUIForResult(GameOverGUI(nil))
   end
   TroopManager:onBattleEnd()

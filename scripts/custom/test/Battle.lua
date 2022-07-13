@@ -16,11 +16,6 @@ return function(script)
     return
   end
 
-  if script.char.cooldown and script.char.cooldown > 0 then
-    -- After-battle cooldown (escape or lose)
-    script.char.cooldown = script.char.cooldown - GameManager:frameTime() * 60
-  end
-
   if script.collider ~= script.player and script.collided ~= script.player then
     -- Collided with something else
     return
@@ -44,7 +39,7 @@ return function(script)
     AudioManager:playBGM(previousBgm)
   end
   
-  script.char.cooldown = 120
+  script.char.cooldown = 180
   if BattleManager:playerWon() then
     print 'You won!'
     FieldManager.fiberList:fork(script.deleteChar, script, { key = "self", fade = 60, permanent = true })

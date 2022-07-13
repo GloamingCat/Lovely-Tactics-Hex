@@ -223,8 +223,10 @@ end
 -- Opens game's main GUI.
 function Player:openGUI()
   self:playIdleAnimation()
+  self.blocks = self.blocks + 1
   AudioManager:playSFX(Config.sounds.menu)
   GUIManager:showGUIForResult(FieldGUI(nil))
+  self.blocks = self.blocks - 1
 end
 
 ---------------------------------------------------------------------------------------------------
