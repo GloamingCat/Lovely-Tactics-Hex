@@ -181,8 +181,8 @@ function CharacterBase:collideTile(tile)
   end
   for char in tile.characterList:iterator() do
     if char ~= self then
-      self:onCollide(tile, char, self)
-      char:onCollide(tile, char, self)
+      self:onCollide(char.key, self.key)
+      char:onCollide(char.key, self.key)
       if not char.passable then
         return true
       end

@@ -70,7 +70,7 @@ function BattleManager:loadBattle()
       return
     end
   end
-  FieldManager:loadTransition(SaveManager.current.playerTransition, true)
+  FieldManager:loadTransition(FieldManager.playerState.transition, FieldManager.playerState.field)
 end
 -- Runs until battle finishes.
 -- @ret(number) The result of the end GUI.

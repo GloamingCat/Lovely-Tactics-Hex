@@ -9,11 +9,11 @@ A shop open when player interacts with an NPC.
 
 return function(script)
 
-  if script.char.vars.onBattle then
+  if script.vars.onBattle then
     goto afterBattle
   end
 
-  script.player:playIdleAnimation()
+  FieldManager.player:playIdleAnimation()
   
   script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
     Vocab.dialogues.actor.WhatDoYou
@@ -36,6 +36,7 @@ return function(script)
       { id = 6 },
       { id = 7 }
     }}
+    return
   elseif script.gui.choice == 3 then
     return
   end
@@ -52,7 +53,7 @@ return function(script)
   
   script:finishBattle { fade = 60 }
   
-  local message
+  local message = "???"
   if BattleManager:playerWon() then
     message = 'You won!'
   elseif BattleManager:enemyWon() then

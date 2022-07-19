@@ -52,13 +52,7 @@ function SaveManager:newSave()
   save.troops = {} -- Initial party
   --save.troops[Config.troop.initialTroopID .. ''] = Troop():getState()
   save.playerTroopID = Config.troop.initialTroopID
-  local startPos = Config.player.startPos
-  save.playerTransition = {
-    x = startPos.x or 1,
-    y = startPos.y or 1,
-    h = startPos.h or 0,
-    direction = startPos.direction or 270,
-    fieldID = startPos.fieldID or 0 }
+  save.playerState = { transition = Config.player.startPos }
   save.renderer = { 
     red = 1, 
     green = 1, 
@@ -94,9 +88,8 @@ function SaveManager:currentSaveData()
   save.fields = copyTable(FieldManager.fieldData)
   save.troops = copyTable(TroopManager.troopData)
   save.playerTroopID = TroopManager.playerTroopID
-  save.playerTransition = FieldManager:getPlayerTransition()
+  save.playerState = copyTable(FieldManager.playerState)
   save.renderer = FieldManager.renderer:getState()
-  save.field = FieldManager:getCurrentFieldState()
   return save
 end
 -- Creates a save table for the current settings.

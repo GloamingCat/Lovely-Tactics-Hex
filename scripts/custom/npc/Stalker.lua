@@ -20,9 +20,9 @@ return function(script)
     script.char:playIdleAnimation()
     if script.char.cooldown and script.char.cooldown > 0 then
       script.char.cooldown = script.char.cooldown - GameManager:frameTime() * 60
-    elseif not script.player:isBusy() and script.player.blocks == 0 then
+    elseif not FieldManager.player:isBusy() and FieldManager.player.blocks == 0 then
       script:wait(pause + rand(-pauseVar, pauseVar))
-      script.char:turnToPoint(script.player.position.x, script.player.position.z)
+      script.char:turnToPoint(FieldManager.player.position.x, FieldManager.player.position.z)
       script.char:tryAngleMovement(script.char:getRoundedDirection())
     end
     coroutine.yield()

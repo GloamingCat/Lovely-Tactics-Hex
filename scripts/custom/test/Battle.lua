@@ -8,29 +8,29 @@ Starts a battle when this collides with player.
 =================================================================================================]]
 
 return function(script)
-
-  if script.char.vars.onBattle then
-    goto afterBattle
-  end
-
-  coroutine.yield()
   
+  coroutine.yield()
+
   if script.char.deleted then
     -- Already dead
     return
   end
 
-  if script.collider ~= script.player and script.collided ~= script.player then
+  if script.char.collider ~= 'player' and script.char.collided ~= 'player' then
     -- Collided with something else
     return
   end
   
-  if script.player:isBusy() or script.player.blocks > 1 then
+  if FieldManager.player:isBusy() or FieldManager.player.blocks > 1 then
     -- Player is moving, on battle, or waiting for GUI input
     return
   end
   
-  script.player:playIdleAnimation()
+  if script.vars.onBattle then
+    goto afterBattle
+  end
+  
+  FieldManager.player:playIdleAnimation()
   
   script:startBattle { 
     fieldID = tonumber(script.args.fieldID) or 0, 
@@ -42,9 +42,10 @@ return function(script)
 
   ::afterBattle::
   
-  script:finishBattle { fade = 60 }
-  
   script.char.cooldown = 180
+
+  script:finishBattle { fade = 60 }
+
   if BattleManager:playerWon() then
     print 'You won!'
     FieldManager.fiberList:fork(script.deleteChar, script, { key = "self", fade = 60, permanent = true })

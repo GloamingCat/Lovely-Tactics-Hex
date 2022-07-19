@@ -28,10 +28,10 @@ function EventSheet:init(root, script, char)
     assert(func, "Could not load event sheet file: " .. tostring(script.name))
     self.commands = func
   end
+  self.data = script
+  self.vars = script and script.vars
   self.block = script.block
   self.args = Database.loadTags(script.tags)
-  self.player = FieldManager.player
-  self.field = FieldManager.currentField
   self.char = char
   Fiber.init(self, root, nil)
 end
@@ -54,6 +54,14 @@ function EventSheet:execute()
   if player and self.block then
     player.blocks = player.blocks - 1
   end
+end
+-- Gets persistant data.
+-- Any vars set to control flow during script execution are saved.
+-- @ret(table) Save data.
+function EventSheet:getPersistentData()
+  local data = util.table.deepCopy(self.data)
+  data.vars = util.table.deepCopy(self.vars)
+  return data
 end
 
 ---------------------------------------------------------------------------------------------------

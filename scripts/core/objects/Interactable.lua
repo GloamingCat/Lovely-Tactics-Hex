@@ -41,16 +41,21 @@ end
 -- @param(instData : table) Instance data from field file.
 function Interactable:initScripts(instData, save)
   self.fiberList = FiberList(self)
+  self.collider = save and save.collider
+  self.collided = save and save.collided
+  self.interacting = save and save.interacting
   if save then
-    self.loadScripts = save.loadScripts
-    self.collideScripts = save.collideScripts
-    self.interactScripts = save.interactScripts
-    self.vars = copyTable(save.vars)
+    self.loadScripts = save.loadScripts or {}
+    self.collideScripts = save.collideScripts or {}
+    self.interactScripts = save.interactScripts or {}
+    self.vars = copyTable(save.vars or {})
   else
     self.loadScripts = {}
     self.collideScripts = {}
     self.interactScripts = {}
     for _, script in ipairs(instData.scripts) do
+      script = copyTable(script)
+      script.vars = script.vars or {}
       if script.onLoad then
         self.loadScripts[#self.loadScripts + 1] = script
       end
@@ -93,13 +98,16 @@ end
 -- Data with fiber list's state and local variables.
 -- @ret(table) Interactable's state to be saved.
 function Interactable:getPersistentData()
-  local data = {}
-  data.vars = copyTable(self.vars)
-  data.deleted = self.deleted
-  data.loadScripts = self.loadScripts
-  data.collideScripts = self.collideScripts
-  data.interactScripts = self.interactScripts
-  return data
+  return {
+    vars = copyTable(self.vars),
+    deleted = self.deleted,
+    loadScripts = self.loadScripts,
+    collideScripts = self.collideScripts,
+    interactScripts = self.interactScripts,
+    collider = self.collider,
+    collided = self.collided,
+    interacting = self.interacting
+  }
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -108,19 +116,14 @@ end
 
 -- Called when a character interacts with this object.
 -- @param(event : table) Table with tile and origin (usually player) and dest (this) objects.
-function Interactable:onInteract(tile)
+function Interactable:onInteract()
   if #self.interactScripts == 0 then
     return false
   end
-  self.interacting = true
   FieldManager.player.interacting = true
+  self.interacting = true
   for _, script in ipairs(self.interactScripts) do
-    local fiberList = script.global and FieldManager.fiberList or self.fiberList
-    local fiber = fiberList:forkFromScript(script, self)
-    fiber.tile = self.tile
-    if script.wait then
-      fiber:waitForEnd()
-    end
+    self:runScript(script)
   end
   self.interacting = false
   FieldManager.player.interacting = false
@@ -128,22 +131,17 @@ function Interactable:onInteract(tile)
 end
 -- Called when a character collides with this object.
 -- @param(event : table) Table with tile and origin and dest (this) objects.
-function Interactable:onCollide(tile, collided, collider)
+function Interactable:onCollide(collided, collider)
   if #self.collideScripts == 0 then
     return false
   end
-  self.colliding = true
+  self.collided = collided
+  self.collider = collider
   for _, script in ipairs(self.collideScripts) do
-    local fiberList = script.global and FieldManager.fiberList or self.fiberList
-    local fiber = fiberList:forkFromScript(script, self)
-    fiber.tile = tile
-    fiber.collided = collided
-    fiber.collider = collider
-    if script.wait then
-      fiber:waitForEnd()
-    end
+    self:runScript(script)
   end
-  self.colliding = false
+  self.collided = nil
+  self.collider = nil
   return true
 end
 -- Called when this interactable is created.
@@ -152,17 +150,19 @@ function Interactable:onLoad()
   if #self.loadScripts == 0 then
     return false
   end
-  self.loading = true
   for _, script in ipairs(self.loadScripts) do
-    local fiberList = script.global and FieldManager.fiberList or self.fiberList
-    local fiber = fiberList:forkFromScript(script, self)
-    fiber.tile = self.tile
-    if script.wait then
-      fiber:waitForEnd()
-    end
+    self:runScript(script)
   end
-  self.loading = false
   return true
+end
+-- Creates a new event sheet from the given script data.
+-- @param(script : table) Script initialization info.
+function Interactable:runScript(script)
+  local fiberList = script.global and FieldManager.fiberList or self.fiberList
+  local fiber = fiberList:forkFromScript(script, self)
+  if script.wait then
+    fiber:waitForEnd()
+  end
 end
 
 return Interactable

@@ -88,7 +88,6 @@ function SaveWindow:onButtonConfirm(button)
     end
   end
   self:refreshSave(button)
-  FieldManager:storeFieldData()
   SaveManager:storeSave(button.file)
   self.result = button.file
 end

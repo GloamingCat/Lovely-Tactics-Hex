@@ -55,11 +55,9 @@ end
 -- @param(args.gameOverCondition : number) GameOver condition:
 --  0 => no gameover, 1 => only when lost, 2 => lost or draw.
 function EventSheet:startBattle(args)
-  if self.char then
-    self.char.vars.onBattle = true
-  end
+  self.vars.onBattle = true
   BattleManager.params = args
-  SaveManager.current = SaveManager:currentSaveData()
+  FieldManager:storePlayerState()
   -- Openning
   if Config.sounds.battleIntro then
     AudioManager:playSFX(Config.sounds.battleIntro)
@@ -75,9 +73,7 @@ function EventSheet:finishBattle(args)
   if args.fade then
     FieldManager.renderer:fadein(args.fade, true)
   end
-  if self.char then
-    self.char.vars.onBattle = false
-  end
+  self.vars.onBattle = nil
 end
 
 return EventSheet

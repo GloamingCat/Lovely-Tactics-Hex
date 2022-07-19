@@ -33,6 +33,7 @@ function FieldManager:init()
   self.blocks = 0
   self.fiberList = FiberList()
   self.fieldData = {}
+  self.playerState = {}
 end
 -- Calls all the update functions.
 function FieldManager:update()
@@ -94,12 +95,6 @@ function FieldManager:createCamera(data, width, height)
   end
   return camera
 end
--- Creates a character representing player.
--- @ret(Player) The newly created player.
-function FieldManager:createPlayer(t)
-  local tile = self.currentField:getObjectTile(t.x or 1, t.y or 1, t.h or 1)
-  return Player(tile, t.direction)
-end
 
 ---------------------------------------------------------------------------------------------------
 -- State
@@ -139,47 +134,19 @@ function FieldManager:storeCharData(fieldID, char)
   local persistentData = self:getFieldSave(fieldID)
   persistentData.chars[char.key] = char:getPersistentData()
 end
--- Creates a new Transition table based on player's current position.
--- @ret(table) The transition data.
-function FieldManager:getPlayerTransition()
+-- Stores the state of player, if there is a player character in the current field.
+function FieldManager:storePlayerState()
   if self.player == nil then
-    return { fieldID = self.currentField.id }
+    return
   end
-  local x, y, h = self.player:tileCoordinates()
-  return { x = x, y = y, h = h,
-    direction = self.player.direction,
-    fieldID = self.currentField.id }
-end
--- Gets manager's state (returns to a previous field).
--- @ret(table) The table with the state's contents.
-function FieldManager:getState()
-  return {
-    field = self.currentField,
-    player = self.player,
-    renderer = self.renderer,
-    updateList = self.updateList,
-    characterList = self.characterList }
-end
--- Sets manager's state (returns to a previous field).
--- @param(state : table) The table with the state's contents.
-function FieldManager:setState(state)
-  self.currentField = state.field
-  self.player = state.player
-  self.renderer = state.renderer
-  self.updateList = state.updateList
-  self.characterList = state.updateList
-  ScreenManager.renderers[1] = self.renderer
-end
--- Gets the persistent data of current field, regardless if it's labelled as persistent or not.
--- @ret(table) Save data.
-function FieldManager:getCurrentFieldState()
-  local persistentData = self:getFieldSave(self.currentField.id)
+  self.playerState.transition = { fieldID = self.currentField.id }
+  local fieldData = { chars = {} }
   for char in self.characterList:iterator() do
-    persistentData.chars[char.key] = char:getPersistentData()
+    fieldData.chars[char.key] = char:getPersistentData()
   end
-  persistentData.vars = self.currentField.vars
-  persistentData.prefs = self.currentField:getPersistentData()
-  return persistentData
+  fieldData.vars = self.currentField.vars
+  fieldData.prefs = self.currentField:getPersistentData()
+  self.playerState.field = fieldData
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -193,12 +160,12 @@ end
 -- @param(transition : table) The transition data.
 -- @param(fromSave : boolean) True if the transition is load from save, as the last player's 
 --  position.
-function FieldManager:loadTransition(transition, fromSave)
+function FieldManager:loadTransition(transition, fieldSave)
   if self.currentField then
     self:storeFieldData()
   end
-  local fieldData = self:loadField(transition.fieldID, fromSave and SaveManager.current.field)
-  self.player = self:createPlayer(transition)
+  local fieldData = self:loadField(transition.fieldID, fieldSave)
+  self.player = Player(transition, fieldSave and fieldSave.chars.player)
   self.renderer.focusObject = self.player
   self.renderer:setPosition(self.player.position)
   -- Create/call start listeners
@@ -208,6 +175,12 @@ function FieldManager:loadTransition(transition, fromSave)
   end
   for char in self.characterList:iterator() do
     char:onLoad()
+    if char.collider then
+      char:onCollide(char.collided, char.collider)
+    end
+    if char.interacting then
+      char:onInteract()
+    end
   end
   self.player:collideTile(self.player:getTile())
   self.player.fiberList:fork(self.player.fieldInputLoop, self.player)

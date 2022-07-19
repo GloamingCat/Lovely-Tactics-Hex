@@ -20,7 +20,7 @@ return function(script)
   while true do
     script.char:playIdleAnimation()
     script:wait(pause + rand(-pauseVar, pauseVar))
-    if script.char.colliding or script.char.interacting then
+    if script.char.collider or script.char.interacting then
       coroutine.yield()
     else
       local dir = rand(8) * 45

@@ -117,33 +117,21 @@ function FieldLoader.createTransitions(field, transitions)
     field.transitions[i] = args
     if not t.noSource then
       local func = function(script)
-        if script.collider == script.player then
+        if script.char.collider == 'player' then
           script:moveToField(args)
         end
       end
       local scripts = { { func = func, 
         block = true, 
         global = true,
+        wait = true,
         onCollide = true,
         transition = args } }
-      if t.tl and t.br then
-        for x = t.tl.x, t.br.x do
-          for y = t.tl.y, t.br.y do
-            for h = t.tl.h, t.br.h do
-              local instData = { key = 'Transition',
-                scripts = scripts,
-                x = x, y = y, h = h }
-              Interactable(instData)
-            end
-          end
-        end
-      else
-        for _, tile in ipairs(t.origin) do
-          local instData = { key = 'Transition',
-            scripts = scripts,
-            x = tile.dx, y = tile.dy, h = tile.height }
-          Interactable(instData)
-        end
+      for _, tile in ipairs(t.origin) do
+        local instData = { key = 'Transition',
+          scripts = scripts,
+          x = tile.dx, y = tile.dy, h = tile.height }
+        Interactable(instData)
       end
     end
   end

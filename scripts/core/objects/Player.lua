@@ -28,34 +28,38 @@ local Player = class(Character)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides CharacterBase:init.
-function Player:init(initTile, dir)
-  self.blocks = 0
-  self.inputDelay = 6 / 60
-  self.stepCount = 0
-  self.freq = 16
-  self.varFreq = 0.1
-  self.varPitch = 0.1
-  self.varVolume = 0.2
+function Player:init(transition, save)
   local troopData = Database.troops[TroopManager.playerTroopID]
   local leader = troopData.members[1]
   local data = {
     id = -1,
     key = 'player',
+    persistent = false,
     battlerID = leader.battlerID,
     charID = leader.charID,
+    x = transition.x,
+    y = transition.y,
+    h = transition.h,
+    direction = transition.direction,
     animation = 'Idle',
-    direction = dir or 270,
     scripts = {} }
-  data.x, data.y, data.h = initTile:coordinates()
-  Character.init(self, data)
+  Character.init(self, data, save)
 end
 -- Overrides CharacterBase:initProperties.
 function Player:initProperties(name, collisionTiles, colliderHeight)
   Character.initProperties(self, name, collisionTiles, colliderHeight)
+  self.blocks = 0
   self.inputOn = true
+  self.inputDelay = 6 / 60
   self.dashSpeed = Config.player.dashSpeed
   self.walkSpeed = Config.player.walkSpeed
   self.speed = Config.player.walkSpeed
+  -- Step sound
+  self.stepCount = 0
+  self.freq = 16
+  self.varFreq = 0.1
+  self.varPitch = 0.1
+  self.varVolume = 0.2
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -252,7 +256,7 @@ function Player:interactTile(tile)
   end
   for i = #tile.characterList, 1, -1 do
     local char = tile.characterList[i]
-    if char ~= self and char:onInteract(tile) then
+    if char ~= self and char:onInteract() then
       return true
     end
   end

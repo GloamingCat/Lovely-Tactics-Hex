@@ -29,6 +29,7 @@ local EventSheet = {}
 function EventSheet:createGUI()
   if not self.gui then
     self.gui = GUI()
+    self.gui.name = "Event GUI"
     self.gui.dialogues = {}
     GUIManager:showGUI(self.gui)
   end
@@ -172,6 +173,7 @@ function EventSheet:openChoiceWindow(args)
   window:hide()
   window:removeSelf()
   window:destroy()
+  self.gui.activeWindow = nil
   self.gui.choice = result
 end
 -- Opens a password window and waits for player choice before closing and deleting.

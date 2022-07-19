@@ -64,6 +64,7 @@ end
 -- Opens the save screen.
 function FieldCommandWindow:saveConfirm()
   self.GUI:hide()
+  FieldManager:storePlayerState()
   GUIManager:showGUIForResult(SaveGUI(self.GUI))
   self.GUI:show()
 end
