@@ -61,7 +61,14 @@ function GameManager:setSave(save, play)
   TroopManager.troopData = copyTable(save.troops)
   TroopManager.playerTroopID = save.playerTroopID
   FieldManager.fieldData = copyTable(save.fields)
-  FieldManager:loadTransition(save.playerState.transition, save.playerState.field)
+  FieldManager.playerState = copyTable(save.playerState)
+  if save.battleState then
+    -- Load mid-battle.
+    BattleManager.params = save.battleState.params
+    local fiber = FieldManager.fiberList:fork(BattleManager.loadBattle, BattleManager, save.battleState)
+  else
+    FieldManager:loadTransition(save.playerState.transition, save.playerState.field)
+  end
 end
 -- Sets the system config.
 -- @param(config : table) A config table loaded by SaveManager.

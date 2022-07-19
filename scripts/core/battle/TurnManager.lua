@@ -33,9 +33,29 @@ local TurnManager = class()
 -- Constructor.
 function TurnManager:init()
   self.turnCharacters = nil
+  self.initialTurnCharacters = nil
+  self.characterIndex = 1
   self.pathMatrixes = nil
   self.party = nil
   self.finishTime = 20
+end
+-- Sets starting party.
+-- @param(state : table) Data about turn state for when the game is loaded mid-battle (optional).
+function TurnManager:setUp(state)
+  if state then
+    self.party = state.party
+    self.turnCharacters = {}
+    for i = 1, #state.characters do
+      self.turnCharacters[i] = FieldManager.characterList[state.characters[i]]
+    end
+    self.initialTurnCharacters = {}
+    for i = 1, #state.initialCharacters do
+      self.initialTurnCharacters[i] = FieldManager.characterList[state.initialCharacters[i]]
+    end
+  else
+    self.party = TroopManager.playerParty - 1
+    self.turnCharacters = {}
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -59,6 +79,23 @@ function TurnManager:updatePathMatrix()
   local moveAction = BattleMoveAction()
   local path = PathFinder.dijkstra(moveAction, self:currentCharacter())
   self.pathMatrixes[self.characterIndex] = path
+end
+-- Gets the current battle state to save the game mid-battle.
+-- @ret(table) Turn state data.
+function TurnManager:getState()
+  local initialCharacters = {}
+  for i = 1, #self.initialTurnCharacters do
+    initialCharacters[i] = self.initialTurnCharacters[i].key
+  end
+  local characters = {}
+  for i = 1, #self.turnCharacters do
+    characters[i] = self.turnCharacters[i].key
+  end
+  return {
+    party = self.party,
+    characters = characters,
+    initialCharacters = initialCharacters
+  }
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -117,7 +154,7 @@ function TurnManager:runPlayerTurn()
       return { escaped = false }
     end
     self:characterTurnStart()
-    local result = GUIManager:showGUIForResult(BattleGUI(self.GUI))
+    local result = GUIManager:showGUIForResult(BattleGUI(nil))
     if result.characterIndex then
       self.characterIndex = result.characterIndex
     else
@@ -139,9 +176,9 @@ end
 
 -- Prepares for turn.
 function TurnManager:startTurn()
-  repeat
+  while #self.turnCharacters == 0 do
     self:nextParty()
-  until #self.turnCharacters > 0
+  end 
   self.pathMatrixes = {}
   self.initialTurnCharacters = {}
   for i = 1, #self.turnCharacters do

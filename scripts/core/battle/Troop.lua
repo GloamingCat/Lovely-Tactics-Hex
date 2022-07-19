@@ -188,25 +188,29 @@ function Troop:__tostring()
   return 'Troop ' .. self.data.id .. ': ' .. self.data.name .. party
 end
 -- Creates the table to represent troop's persistent data.
--- @param(saveFormation : boolean) True to save modified grid formation (optional).
+-- @param(characters : List) List of field characters to store position (optional).
 -- @ret(table) Table with persistent data.
-function Troop:getState(saveFormation)
-  if not self.data.persistent then
-    return nil
-  end
+function Troop:getState(characters)
   local data = {}
   data.money = self.money
   data.items = self.inventory:getState()
   data.members = {}
-  data.rotation = saveFormation and self.rotation or self.save.rotation
-  local members = saveFormation and self.members or self.save.members
-  for i = 1, #members do
-    local member = members[i]
+  for i, member in ipairs(self.save.members) do
     if self.battlers[member.key] then
       -- For when in battle
       data.members[i] = self.battlers[member.key]:getState(member.list, member.x, member.y)
     else
-      data.members[i] = member
+      data.members[i] = copyTable(member)
+    end
+    if characters and member.list ~= 2 then
+      member = data.members[i]
+      if characters[member.key] then -- On Battle
+        member.x, member.y, member.h = characters[member.key]:getTile():coordinates()
+        member.dir = characters[member.key].direction
+        member.list = 0
+      else
+        member.list = 1
+      end
     end
   end
   return data

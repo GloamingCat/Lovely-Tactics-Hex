@@ -17,9 +17,14 @@ local FormationAction = class(CallAction)
 -- Input callback
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides BattleAction:onSelect.
+function FormationAction:onSelect(input)
+  self.party = input.party or TurnManager.party
+  self.troop = TroopManager.troops[self.party]
+  CallAction.onSelect(self, input)
+end
 -- Overrides BattleAction:onConfirm.
 function FormationAction:onConfirm(input)
-  self.troop = TroopManager.troops[(input.party or TurnManager.party)]
   local result = GUIManager:showGUIForResult(CallGUI(input.GUI, self.troop, input.user == nil))
   if result ~= 0 then
     local char = input.target:getFirstBattleCharacter()
@@ -55,7 +60,7 @@ end
 
 -- Overrides BattleAction:isSelectable.
 function FormationAction:isSelectable(input, tile)
-  return tile.party == TurnManager.party and tile.obstacleList:isEmpty() and
+  return tile.party == self.party and tile.obstacleList:isEmpty() and
     not FieldManager.currentField:collidesTerrain(tile:coordinates())
 end
 
@@ -65,7 +70,7 @@ end
 
 -- Overrides BattleAction:firstTarget.
 function FormationAction:firstTarget(input)
-  local leader = TurnManager:currentTroop():currentMembers()[1]
+  local leader = self.troop:currentMembers()[1]
   local char = FieldManager:search(leader.key)
   return char:getTile()
 end

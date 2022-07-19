@@ -13,6 +13,7 @@ local ActionInput = require('core/battle/action/ActionInput')
 local ActionWindow = require('core/gui/battle/window/interactable/ActionWindow')
 local BattleCursor = require('core/battle/BattleCursor')
 local Button = require('core/gui/widget/control/Button')
+local SaveGUI = require('core/gui/menu/SaveGUI')
 local CallAction = require('core/battle/action/CallAction')
 local EscapeAction = require('core/battle/action/EscapeAction')
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
@@ -56,6 +57,7 @@ function TurnWindow:createWidgets()
   Button:fromKey(self, 'escape')
   Button:fromKey(self, 'callAlly')
   Button:fromKey(self, 'wait')
+  Button:fromKey(self, 'save')
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -89,6 +91,12 @@ end
 -- "Wait" button callback. End turn.
 function TurnWindow:waitConfirm(button)
   self:selectAction(self.waitAction)
+end
+-- "Save" button callback. Opens save window.
+function TurnWindow:saveConfirm(button)
+  self.GUI:hide()
+  GUIManager:showGUIForResult(SaveGUI(self.GUI))
+  self.GUI:show()
 end
 -- Overrides GridWindow:onCancel.
 function TurnWindow:onCancel()
@@ -162,11 +170,11 @@ end
 
 -- Overrides GridWindow:colCount.
 function TurnWindow:colCount()
-  return 1
+  return 2
 end
 -- Overrides GridWindow:rowCount.
 function TurnWindow:rowCount()
-  return 7
+  return 4
 end
 -- @ret(string) String representation (for debugging).
 function TurnWindow:__tostring()

@@ -90,6 +90,9 @@ function SaveManager:currentSaveData()
   save.playerTroopID = TroopManager.playerTroopID
   save.playerState = copyTable(FieldManager.playerState)
   save.renderer = FieldManager.renderer:getState()
+  if BattleManager.onBattle then
+    save.battleState = BattleManager:getState()
+  end
   return save
 end
 -- Creates a save table for the current settings.

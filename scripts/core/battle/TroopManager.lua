@@ -41,10 +41,10 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Creates all battle characters based on field's tile data.
-function TroopManager:createTroops()
+function TroopManager:createTroops(save)
   local parties = FieldManager.currentField.parties
   -- Player's party ID
-  local playerID = FieldManager.currentField.playerParty
+  local playerID = save and save.playerParty or FieldManager.currentField.playerParty
   if playerID == -1 then
     playerID = rand(0, #parties - 1)
   else
@@ -55,7 +55,11 @@ function TroopManager:createTroops()
   self.partyCount = #parties
   for i, partyInfo in ipairs(parties) do
     local id = i - 1
-    if id == playerID then
+    local partySave = save and save[tostring(id)]
+    if partySave then
+      print(partySave.id)
+      self:createTroop(partySave.id, partyInfo, id, partySave)
+    elseif id == playerID then
       self:createTroop(self.playerTroopID, partyInfo, id)
     elseif #partyInfo.troops > 0 then
       local r = rand(#partyInfo.troops)
@@ -63,7 +67,9 @@ function TroopManager:createTroops()
     end
   end
   for char in FieldManager.characterList:iterator() do
-    self:createBattler(char)
+    if char.party >= 0 then
+      self:createBattler(char)
+    end
   end
   self.centers = self:getPartyCenters()
 end
@@ -71,23 +77,39 @@ end
 -- @param(troopID : number) Troop's ID.
 -- @param(partyInfo : table) Table with party's members.
 -- @param(party : number) Party's ID.
-function TroopManager:createTroop(troopID, partyInfo, party)
-  local troop = Troop(Database.troops[troopID], party)
+function TroopManager:createTroop(troopID, partyInfo, party, save)
+  local troop = Troop(Database.troops[troopID], party, save)
   local field = FieldManager.currentField
   troop:setRotation(partyInfo.rotation)
   troop.x = partyInfo.x
   troop.y = partyInfo.y
+  troop.h = partyInfo.h
   self.troops[party] = troop
   if partyInfo.memberGen == 0 then
     return
   end
-  local dir = troop:getCharacterDirection()
+  print('create troop', troopID, party)
+  local initialDirection = troop:getCharacterDirection()
+  local memberSave = {}
+  if save then
+    for i = 1, #save.members do
+      memberSave[save.members[i].key] = save.members[i]
+    end
+  end
   for member in troop.members:iterator() do
+    print(member.key, memberSave[member.key])
+    local list = save and memberSave[member.key].list or member.list
     if member.list == 0 then
-      local i, j = member.x, member.y
-      local tile = field:getObjectTile(i - 1 + partyInfo.x, j - 1 + partyInfo.y, partyInfo.h)
-      if tile and not tile:collides(0, 0) then
-        self:createCharacter(tile, dir, member, party)
+      if save then
+        member = memberSave[member.key]
+        local tile = field:getObjectTile(member.x, member.y, member.h)
+        self:createCharacter(tile, member.dir, member, party)
+      else
+        local i, j = member.x, member.y
+        local tile = field:getObjectTile(i - 1 + partyInfo.x, j - 1 + partyInfo.y, partyInfo.h)
+        if tile and not tile:collides(0, 0) then
+          self:createCharacter(tile, initialDirection, member, party)
+        end
       end
     end
   end
@@ -101,14 +123,12 @@ end
 -- @param(character : Character) Battler's character.
 -- @param(partyID : number) Battler's party.
 function TroopManager:createBattler(character)
-  if character.party < 0 then
-    return
-  end
   local troop = self.troops[character.party]
   assert(troop, 'Party not set: ' .. tostring(character.party))
   character.battler = troop.battlers[character.key]
   assert(character.battler, 'Member ' .. tostring(character.key) .. ' not in ' .. tostring(troop))
   self.characterList:add(character)
+  self.characterList[character.key] = character
   character.battler.statusList:updateGraphics(character)
   if not character.battler:isAlive() then
     character:playAnimation(character.koAnim)
@@ -138,6 +158,7 @@ end
 -- Removes the given character.
 function TroopManager:deleteCharacter(char)
   self.characterList:removeElement(char)
+  self.characterList[char.key] = nil
   char:destroy()
 end
 
@@ -281,6 +302,17 @@ function TroopManager:getPartyCenters()
     centers[p] = c.vector
   end
   return centers
+end
+-- Gets the current in-battle state of all parties.
+-- @ret(table) Table containing the player's party and the troop data by party ID.
+function TroopManager:getAllPartyData()
+  local data = { playerParty = self.playerParty }
+  for i = 0, self.partyCount - 1 do
+    local save = self.troops[i]:getState(self.characterList)
+    save.id = self.troops[i].data.id
+    data[tostring(i)] = save
+  end
+  return data
 end
 
 ---------------------------------------------------------------------------------------------------

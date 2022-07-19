@@ -37,10 +37,10 @@ function FieldManager:init()
 end
 -- Calls all the update functions.
 function FieldManager:update()
+  self.fiberList:update()
   if self.blocks > 0 or not self.currentField then
     return
   end
-  self.fiberList:update()
   self.currentField:update()
   for object in self.updateList:iterator() do
     object:update()

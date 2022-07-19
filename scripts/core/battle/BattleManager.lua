@@ -38,13 +38,24 @@ function BattleManager:init()
   self.params = defaultParams
 end
 -- Creates battle elements (GUI, characters, party tiles).
-function BattleManager:setUp()
+-- @param(state : table) Data about battle state for when the game is loaded mid-battle (optional).
+function BattleManager:setUp(state)
   TroopManager:setPartyTiles(self.currentField)
   for tile in FieldManager.currentField:gridIterator() do
     tile.gui = TileGUI(tile, true, true)
     tile.gui:updateDepth()
   end
-  TroopManager:createTroops()
+  TroopManager:createTroops(state and state.troops)
+  TurnManager:setUp(state and state.turn)
+end
+-- Gets the current battle state to save the game mid-battle.
+-- @ret(table) Battle state data.
+function BattleManager:getState()
+  return {
+    params = self.params,
+    troops = TroopManager:getAllPartyData(),
+    turn = TurnManager:getState()
+  }
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -54,17 +65,19 @@ end
 -- Loads a battle field and waits for the battle to finish.
 -- It MUST be called from a fiber in FieldManager's fiber list, or else the fiber will be 
 -- lost in the field transition. At the end of the battle, it reloads the previous field.
-function BattleManager:loadBattle()
+-- @param(state : table) Data about battle state for when the game is loaded mid-battle (optional).
+function BattleManager:loadBattle(state)
   FieldManager:loadField(self.params.fieldID or self.currentField.id)
   -- Run battle
   while true do
-    self:setUp()
-    local result = self:runBattle()
+    self:setUp(state)
+    local result = self:runBattle(state ~= nil)
     self:clear()
     if result == 1 then -- Continue
       break
     elseif result == 2 then -- Retry
       FieldManager:loadField(self.params.fieldID or self.currentField.id)
+      state = nil
     elseif result == 3 then -- Title Screen
       GameManager:restart()
       return
@@ -74,24 +87,28 @@ function BattleManager:loadBattle()
 end
 -- Runs until battle finishes.
 -- @ret(number) The result of the end GUI.
-function BattleManager:runBattle()
+function BattleManager:runBattle(skipIntro)
   self.result = nil
   self.winner = nil
-  self:battleStart()
-  GUIManager:showGUIForResult(IntroGUI(nil))
-  TroopManager:onBattleStart()
-  TurnManager.party = TurnManager.party - 1
+  self:battleStart(skipIntro)
+  if not skipIntro then
+    GUIManager:showGUIForResult(IntroGUI(nil))
+    TroopManager:onBattleStart()
+  end
   repeat
     self.result, self.winner = TurnManager:runTurn()
   until self.result
   return self:battleEnd()
 end
 -- Runs before battle loop.
-function BattleManager:battleStart()
+function BattleManager:battleStart(skipIntro)
   self.onBattle = true
   if self.params.fade then
     FieldManager.renderer:fadeout(0)
     FieldManager.renderer:fadein(self.params.fade, true)
+  end
+  if skipIntro then
+    return
   end
   if self.params.intro then
     self:battleIntro()
@@ -116,7 +133,6 @@ function BattleManager:battleIntro()
   end
   local p = TroopManager.centers[TroopManager.playerParty]
   FieldManager.renderer:moveToPoint(p.x, p.y, speed, true)
-  TurnManager.party = TroopManager.playerParty
   _G.Fiber:wait(15)
 end
 -- Runs after winner was determined and battle loop ends.
