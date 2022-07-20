@@ -46,6 +46,7 @@ function CharacterBase:init(instData, save)
   if self.battlerID == -1 then
     self.battlerID = data.battlerID or -1
   end  
+  self.instData = instData
   FieldManager.characterList:add(self)
   FieldManager.updateList:add(self)
   FieldManager.characterList[self.key] = self

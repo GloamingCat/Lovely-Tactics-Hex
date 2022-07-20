@@ -17,13 +17,16 @@ return function(script)
   local pause = tonumber(script.args.pause) or 60
   local pauseVar = tonumber(script.args.pauseVar) or 0
   while true do
-    script.char:playIdleAnimation()
-    if script.char.cooldown and script.char.cooldown > 0 then
-      script.char.cooldown = script.char.cooldown - GameManager:frameTime() * 60
-    elseif not FieldManager.player:isBusy() and FieldManager.player.blocks == 0 then
-      script:wait(pause + rand(-pauseVar, pauseVar))
-      script.char:turnToPoint(FieldManager.player.position.x, FieldManager.player.position.z)
-      script.char:tryAngleMovement(script.char:getRoundedDirection())
+    if not FieldManager.player:isBusy() then
+      if script.char.cooldown and script.char.cooldown > 0 then
+        script.char.cooldown = script.char.cooldown - GameManager:frameTime() * 60
+      else
+        script.char:turnToPoint(FieldManager.player.position.x, FieldManager.player.position.z)
+        if script.char:tryAngleMovement(script.char:getRoundedDirection()) then
+          script.char:playIdleAnimation()
+          script:wait(pause + rand(-pauseVar, pauseVar))
+        end
+      end
     end
     coroutine.yield()
   end

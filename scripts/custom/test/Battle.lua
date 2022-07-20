@@ -21,11 +21,6 @@ return function(script)
     return
   end
   
-  if FieldManager.player:isBusy() or FieldManager.player.blocks > 1 then
-    -- Player is moving, on battle, or waiting for GUI input
-    return
-  end
-  
   if script.vars.onBattle then
     goto afterBattle
   end
@@ -44,8 +39,6 @@ return function(script)
   
   script.char.cooldown = 180
 
-  script:finishBattle { fade = 60 }
-
   if BattleManager:playerWon() then
     print 'You won!'
     FieldManager.fiberList:fork(script.deleteChar, script, { key = "self", fade = 60, permanent = true })
@@ -59,5 +52,7 @@ return function(script)
     print 'The enemy escaped...'
     FieldManager.fiberList:fork(script.deleteChar, script, { key = "self", fade = 60, permanent = true })
   end
+  
+  script:finishBattle { fade = 60 }
 
 end

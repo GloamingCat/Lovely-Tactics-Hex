@@ -30,7 +30,7 @@ function FieldManager:init()
   self.renderer = nil
   self.currentField = nil
   self.paused = false
-  self.blocks = 0
+  self.playerInput = true
   self.fiberList = FiberList()
   self.fieldData = {}
   self.playerState = {}
@@ -38,18 +38,17 @@ end
 -- Calls all the update functions.
 function FieldManager:update()
   self.fiberList:update()
-  if self.blocks > 0 or not self.currentField then
-    return
+  if self.currentField then
+    self.currentField:update()
+    for object in self.updateList:iterator() do
+      object:update()
+    end
+    self.renderer:update()
   end
-  self.currentField:update()
-  for object in self.updateList:iterator() do
-    object:update()
-  end
-  self.renderer:update()
 end
 
 ---------------------------------------------------------------------------------------------------
--- Field Creation (internal use only)
+-- Field transition
 ---------------------------------------------------------------------------------------------------
 
 -- Creates field from ID.
@@ -61,25 +60,73 @@ function FieldManager:loadField(fieldID, save)
   self.currentField = field
   local cameraWidth = ScreenManager:totalWidth()
   local cameraHeight = ScreenManager:totalHeight()
-  self.renderer = self:createCamera(fieldData, cameraWidth, cameraHeight)
-  self.renderer:initializeImages(field.images)
-  ScreenManager.renderers[1] = self.renderer
+  self:initializeCamera(fieldData, cameraWidth, cameraHeight, field.images)
   FieldLoader.mergeLayers(field, fieldData.layers)
   FieldLoader.loadCharacters(field, fieldData.characters, save)
-  if field.bgm and field.bgm.name ~= '' then
-    if AudioManager.BGM == nil or AudioManager.BGM.name ~= field.bgm.name then
-      AudioManager:playBGM(field.bgm, field.bgm.time or 0)
-    end
-  end
   collectgarbage('collect')
   return fieldData
+end
+-- Loads a field from file data and replaces current. 
+-- The information about the field must be stored in the transition data.
+-- The loaded field will the treated as an exploration field.
+-- Don't use this function if you just want to move the player to another tile in the same field.
+-- @param(transition : table) The transition data.
+-- @param(fromSave : boolean) True if the transition is load from save, as the last player's 
+--  position.
+function FieldManager:loadTransition(transition, fieldSave)
+  if self.currentField then
+    self:storeFieldData()
+  end
+  local fieldData = self:loadField(transition.fieldID, fieldSave)
+  FieldLoader.createTransitions(self.currentField, fieldData.prefs.transitions)
+  self:playFieldBGM()
+  self:initializePlayer(transition, fieldSave)
+  self:runLoadScripts()
+end
+-- Plays current field's BGM, if not already playing.
+function FieldManager:playFieldBGM()
+  local bgm = self.currentField.bgm
+  if bgm and bgm.name ~= '' then
+    if AudioManager.BGM == nil or AudioManager.BGM.name ~= bgm.name then
+      AudioManager:playBGM(bgm, bgm.time or 0)
+    end
+  end
+end
+-- Execute current field's load script and characters' load scripts.
+function FieldManager:runLoadScripts()
+  local script = self.currentField.loadScript
+  if script and script.name ~= '' and script.onLoad then
+    local fiber = self.fiberList:forkFromScript(script)
+    if script.wait then
+      fiber:waitForEnd()
+    end
+  end
+  for char in self.characterList:iterator() do
+    char:onLoad()
+  end
+  for char in self.characterList:iterator() do
+    char.fiberList:fork(char.resumeScripts, char)
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Field Creation (internal use only)
+---------------------------------------------------------------------------------------------------
+
+-- @param(transition : table) The transition data.
+-- @param(save : table) Current field state (optional).
+function FieldManager:initializePlayer(transition, save)
+  local player = Player(transition, save and save.chars.player)
+  self.renderer.focusObject = player
+  self.renderer:setPosition(player.position)
+  self.player = player
 end
 -- Create new field camera.
 -- @param(data : table) Field data.
 -- @param(width : number) Screen width in pixels.
 -- @param(height : number) Screen height in pixels.
--- @ret(FieldCamera) Newly created camera.
-function FieldManager:createCamera(data, width, height)
+-- @param(images : table) Table of background/foreground images.
+function FieldManager:initializeCamera(data, width, height, images)
   local h = data.prefs.maxHeight
   local l = 4 * #data.layers.terrain + #data.layers.obstacle + #data.characters
   local mind = mathf.minDepth(data.sizeX, data.sizeY, h)
@@ -93,7 +140,9 @@ function FieldManager:createCamera(data, width, height)
   else
     camera:setRGBA(1, 1, 1, 1)
   end
-  return camera
+  camera:initializeImages(images)
+  ScreenManager.renderers[1] = camera
+  self.renderer = camera
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -147,44 +196,6 @@ function FieldManager:storePlayerState()
   fieldData.vars = self.currentField.vars
   fieldData.prefs = self.currentField:getPersistentData()
   self.playerState.field = fieldData
-end
-
----------------------------------------------------------------------------------------------------
--- Field transition
----------------------------------------------------------------------------------------------------
-
--- Loads a field from file data and replaces current. 
--- The information about the field must be stored in the transition data.
--- The loaded field will the treated as an exploration field.
--- Don't use this function if you just want to move the player to another tile in the same field.
--- @param(transition : table) The transition data.
--- @param(fromSave : boolean) True if the transition is load from save, as the last player's 
---  position.
-function FieldManager:loadTransition(transition, fieldSave)
-  if self.currentField then
-    self:storeFieldData()
-  end
-  local fieldData = self:loadField(transition.fieldID, fieldSave)
-  self.player = Player(transition, fieldSave and fieldSave.chars.player)
-  self.renderer.focusObject = self.player
-  self.renderer:setPosition(self.player.position)
-  -- Create/call start listeners
-  local script = self.currentField.loadScript
-  if script and script.name ~= '' and script.onLoad then
-    self.fiberList:forkFromScript(script)
-  end
-  for char in self.characterList:iterator() do
-    char:onLoad()
-    if char.collider then
-      char:onCollide(char.collided, char.collider)
-    end
-    if char.interacting then
-      char:onInteract()
-    end
-  end
-  self.player:collideTile(self.player:getTile())
-  self.player.fiberList:fork(self.player.fieldInputLoop, self.player)
-  FieldLoader.createTransitions(self.currentField, fieldData.prefs.transitions)
 end
 
 ---------------------------------------------------------------------------------------------------

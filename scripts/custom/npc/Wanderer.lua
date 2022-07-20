@@ -16,16 +16,14 @@ local rand = love.math.random
 return function(script)
   local pause = tonumber(script.args.pause) or 60
   local pauseVar = tonumber(script.args.pauseVar) or 0
-  
   while true do
-    script.char:playIdleAnimation()
-    script:wait(pause + rand(-pauseVar, pauseVar))
-    if script.char.collider or script.char.interacting then
-      coroutine.yield()
-    else
+    coroutine.yield()
+    if not (FieldManager.player:isBusy() or script.char.interacting) then
       local dir = rand(8) * 45
-      script.char:tryAngleMovement(dir)
+      if script.char:tryAngleMovement(dir) then
+        script.char:playIdleAnimation()
+        script:wait(pause + rand(-pauseVar, pauseVar))
+      end
     end
   end
-  
 end

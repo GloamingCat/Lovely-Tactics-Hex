@@ -30,9 +30,10 @@ function EventSheet:init(root, script, char)
   end
   self.data = script
   self.vars = script and script.vars
-  self.block = script.block
+  self.block = script and script.block
   self.args = Database.loadTags(script.tags)
   self.char = char
+  self.player = FieldManager.player
   Fiber.init(self, root, nil)
 end
 
@@ -42,26 +43,36 @@ end
 
 -- Runs the script commands.
 function EventSheet:execute()
-  local player = FieldManager.player
-  if player and self.block then
-    player.blocks = player.blocks + 1
-  end
+  self:setUp()
   self:commands()
+  self:clear()
+end
+-- Sets any variable needed to indicate that this script is running.
+function EventSheet:setUp()
+  if self.data then
+    self.data.running = true
+  end
+  if self.block then
+    self.player.waitList:add(self)
+  end
+end
+-- Resets any variable that indicates that this script is running.
+function EventSheet:clear()
   if self.gui then
     GUIManager:returnGUI()
     self.gui = nil
   end
-  if player and self.block then
-    player.blocks = player.blocks - 1
+  if self.block then
+    self.player.waitList:removeElement(self)
+  end
+  if self.data then
+    self.data.running = false
   end
 end
--- Gets persistant data.
--- Any vars set to control flow during script execution are saved.
--- @ret(table) Save data.
-function EventSheet:getPersistentData()
-  local data = util.table.deepCopy(self.data)
-  data.vars = util.table.deepCopy(self.vars)
-  return data
+-- Overrides Fiber:finish.
+function EventSheet:finish()
+  Fiber.finish(self)
+  self:clear()
 end
 
 ---------------------------------------------------------------------------------------------------

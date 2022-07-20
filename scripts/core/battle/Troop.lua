@@ -25,13 +25,13 @@ local Troop = class()
 -- Constructor. 
 -- @param(data : table) Troop's data from database.
 -- @param(party : number) The number of the field party spot this troops was spawned in.
-function Troop:init(data, party)
+function Troop:init(data, party, save)
   data = data or Database.troops[TroopManager.playerTroopID]
   self.data = data
   self.party = party
   self.tags = Database.loadTags(data.tags)
-  local save = TroopManager.troopData[data.id .. ''] or data
-  self.save = save
+  self.save = TroopManager.troopData[data.id .. ''] or data
+  save = save or self.save
   self.inventory = Inventory(save.items)
   self.money = save.money
   self.sizeX = Config.troop.width
@@ -190,27 +190,17 @@ end
 -- Creates the table to represent troop's persistent data.
 -- @param(characters : List) List of field characters to store position (optional).
 -- @ret(table) Table with persistent data.
-function Troop:getState(characters)
+function Troop:getState(saveFormation)
   local data = {}
   data.money = self.money
   data.items = self.inventory:getState()
   data.members = {}
-  for i, member in ipairs(self.save.members) do
+  for i, member in ipairs(saveFormation and self.members or self.save.members) do
     if self.battlers[member.key] then
       -- For when in battle
       data.members[i] = self.battlers[member.key]:getState(member.list, member.x, member.y)
     else
       data.members[i] = copyTable(member)
-    end
-    if characters and member.list ~= 2 then
-      member = data.members[i]
-      if characters[member.key] then -- On Battle
-        member.x, member.y, member.h = characters[member.key]:getTile():coordinates()
-        member.dir = characters[member.key].direction
-        member.list = 0
-      else
-        member.list = 1
-      end
     end
   end
   return data

@@ -12,6 +12,7 @@ It only exists in exploration fields, not in battle fields.
 local Character = require('core/objects/Character')
 local Fiber = require('core/fiber/Fiber')
 local FieldGUI = require('core/gui/menu/FieldGUI')
+local List = require('core/datastruct/List')
 local Vector = require('core/math/Vector')
 
 -- Alias
@@ -44,12 +45,11 @@ function Player:init(transition, save)
     animation = 'Idle',
     scripts = {} }
   Character.init(self, data, save)
+  self.waitList = List()
 end
 -- Overrides CharacterBase:initProperties.
 function Player:initProperties(name, collisionTiles, colliderHeight)
   Character.initProperties(self, name, collisionTiles, colliderHeight)
-  self.blocks = 0
-  self.inputOn = true
   self.inputDelay = 6 / 60
   self.dashSpeed = Config.player.dashSpeed
   self.walkSpeed = Config.player.walkSpeed
@@ -67,9 +67,14 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Coroutine that runs in non-battle fields.
-function Player:fieldInputLoop()
+function Player:resumeScripts()
+  Character.resumeScripts(self)
+  self:collideTile(self:getTile())
   while true do
-    if self:fieldInputEnabled() then
+    for script in self.waitList:iterator() do
+      script:waitForEnd()
+    end
+    if FieldManager.playerInput and not self:isBusy() then
       self:checkFieldInput()
     end
     yield()
@@ -97,16 +102,13 @@ function Player:checkFieldInput()
     self:moveByKeyboard(dx, dy, move)
   end
 end
--- Checks if field input is enabled.
--- @ret(boolean) True if enabled, false otherwise.
-function Player:fieldInputEnabled()
-  return self.inputOn and self.blocks == 0 and not self:isBusy()
-end
 -- Checks if player is waiting for an action to finish, like a movement animation, 
---  GUI input or battle.
+--  GUI input, battle, or a blocking event.
 -- @ret(boolean) True if some action is running.
 function Player:isBusy()
-  return self.moveTime < 1 or GUIManager:isWaitingInput() or BattleManager.onBattle
+  return self.moveTime < 1 or self.collided or self.interacting
+    or BattleManager.onBattle or GUIManager:isWaitingInput()
+    or not self.waitList:isEmpty()
 end
 -- Gets the keyboard move/turn input. 
 -- @ret(number) The x-axis input.
@@ -227,10 +229,8 @@ end
 -- Opens game's main GUI.
 function Player:openGUI()
   self:playIdleAnimation()
-  self.blocks = self.blocks + 1
   AudioManager:playSFX(Config.sounds.menu)
   GUIManager:showGUIForResult(FieldGUI(nil))
-  self.blocks = self.blocks - 1
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -242,7 +242,6 @@ end
 function Player:interact()
   self:playIdleAnimation()
   local angle = self:getRoundedDirection()
-  
   local interacted = self:interactTile(self:getTile()) or self:interactAngle(angle)
     or self:interactAngle(angle - 45) or self:interactAngle(angle + 45)
   return interacted
@@ -254,13 +253,14 @@ function Player:interactTile(tile)
   if not tile then
     return false
   end
+  local interacted = false
   for i = #tile.characterList, 1, -1 do
     local char = tile.characterList[i]
     if char ~= self and char:onInteract() then
-      return true
+      interacted = true
     end
   end
-  return false
+  return interacted
 end
 -- Tries to interact with any character in the tile looked by the given direction.
 -- @ret(boolean) True if the character interacted with someone, false otherwise.

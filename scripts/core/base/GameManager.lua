@@ -55,7 +55,7 @@ function GameManager:start()
 end
 -- Sets current save.
 -- @param(save : table) A save table loaded by SaveManager.
-function GameManager:setSave(save, play)
+function GameManager:setSave(save)
   self.playTime = save.playTime
   self.vars = copyTable(save.vars)
   TroopManager.troopData = copyTable(save.troops)
@@ -65,7 +65,7 @@ function GameManager:setSave(save, play)
   if save.battleState then
     -- Load mid-battle.
     BattleManager.params = save.battleState.params
-    local fiber = FieldManager.fiberList:fork(BattleManager.loadBattle, BattleManager, save.battleState)
+    FieldManager.fiberList:fork(BattleManager.loadBattle, BattleManager, save.battleState)
   else
     FieldManager:loadTransition(save.playerState.transition, save.playerState.field)
   end

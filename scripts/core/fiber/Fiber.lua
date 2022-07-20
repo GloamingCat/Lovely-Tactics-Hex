@@ -60,7 +60,7 @@ function Fiber:update()
     return
   end
   if status(self.coroutine) == 'dead' then
-    self.coroutine = nil
+    self:finish()
   else
     local previous = _G.Fiber
     _G.Fiber = self
@@ -68,7 +68,7 @@ function Fiber:update()
     if not state then
       -- Output error message
       error( tostring(result), 2 )
-      self.coroutine = nil
+      self:finish()
     end
     _G.Fiber = previous
   end
@@ -87,12 +87,16 @@ end
 -- Forcefully ends this Fiber, if possible.
 function Fiber:interrupt()
   if self.interruptable then
-    self.coroutine = nil
+    self:finish()
   end
 end
 -- @ret(string) String identification.
 function Fiber:__tostring()
   return 'Fiber: ' .. tostring(self.origin.name)
+end
+-- Called when the coroutine finished executing.
+function Fiber:finish()
+  self.coroutine = nil
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -57,7 +57,6 @@ function TroopManager:createTroops(save)
     local id = i - 1
     local partySave = save and save[tostring(id)]
     if partySave then
-      print(partySave.id)
       self:createTroop(partySave.id, partyInfo, id, partySave)
     elseif id == playerID then
       self:createTroop(self.playerTroopID, partyInfo, id)
@@ -88,7 +87,6 @@ function TroopManager:createTroop(troopID, partyInfo, party, save)
   if partyInfo.memberGen == 0 then
     return
   end
-  print('create troop', troopID, party)
   local initialDirection = troop:getCharacterDirection()
   local memberSave = {}
   if save then
@@ -97,7 +95,6 @@ function TroopManager:createTroop(troopID, partyInfo, party, save)
     end
   end
   for member in troop.members:iterator() do
-    print(member.key, memberSave[member.key])
     local list = save and memberSave[member.key].list or member.list
     if member.list == 0 then
       if save then
@@ -308,9 +305,21 @@ end
 function TroopManager:getAllPartyData()
   local data = { playerParty = self.playerParty }
   for i = 0, self.partyCount - 1 do
-    local save = self.troops[i]:getState(self.characterList)
+    local save = util.table.deepCopy(self.troops[i]:getState())
     save.id = self.troops[i].data.id
     data[tostring(i)] = save
+    for _, member in pairs(save.members) do
+      if member.list ~= 2 then
+        local char = self.characterList[member.key]
+        if char then -- On Battle
+          member.x, member.y, member.h = char:getTile():coordinates()
+          member.dir = char.direction
+          member.list = 0
+        else
+          member.list = 1
+        end
+      end
+    end
   end
   return data
 end

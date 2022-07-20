@@ -1,2 +1,4 @@
 lib/*
 *.bat
+ignore/
+desktop.ini

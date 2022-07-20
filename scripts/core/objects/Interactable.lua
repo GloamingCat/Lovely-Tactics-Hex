@@ -98,12 +98,20 @@ end
 -- Data with fiber list's state and local variables.
 -- @ret(table) Interactable's state to be saved.
 function Interactable:getPersistentData()
+  local function copyScripts(scripts)
+    local copy = {}
+    for i = 1, #scripts do
+      copy[i] = copyTable(scripts[i])
+      copy[i].running = nil
+    end
+    return copy
+  end
   return {
     vars = copyTable(self.vars),
     deleted = self.deleted,
-    loadScripts = self.loadScripts,
-    collideScripts = self.collideScripts,
-    interactScripts = self.interactScripts,
+    loadScripts = copyScripts(self.loadScripts),
+    collideScripts = copyScripts(self.collideScripts),
+    interactScripts = copyScripts(self.interactScripts),
     collider = self.collider,
     collided = self.collided,
     interacting = self.interacting
@@ -120,13 +128,11 @@ function Interactable:onInteract()
   if #self.interactScripts == 0 then
     return false
   end
-  FieldManager.player.interacting = true
   self.interacting = true
   for _, script in ipairs(self.interactScripts) do
     self:runScript(script)
   end
   self.interacting = false
-  FieldManager.player.interacting = false
   return true
 end
 -- Called when a character collides with this object.
@@ -158,10 +164,22 @@ end
 -- Creates a new event sheet from the given script data.
 -- @param(script : table) Script initialization info.
 function Interactable:runScript(script)
+  if script.running then
+    return
+  end
   local fiberList = script.global and FieldManager.fiberList or self.fiberList
   local fiber = fiberList:forkFromScript(script, self)
   if script.wait then
     fiber:waitForEnd()
+  end
+end
+-- Runs scripts according to object's state (colliding or interacting).
+function Interactable:resumeScripts()
+  if self.collider then
+    self:onCollide(self.collided, self.collider)
+  end
+  if self.interacting then
+    self:onInteract()
   end
 end
 

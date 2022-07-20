@@ -12,6 +12,8 @@ return function(script)
   if script.vars.onBattle then
     goto afterBattle
   end
+  
+  script:turnCharTile { key = 'self', other = 'player' }
 
   FieldManager.player:playIdleAnimation()
   
@@ -46,7 +48,7 @@ return function(script)
     fade = 60, 
     intro = true, 
     gameOverCondition = 0, 
-    escapeEnabled = true 
+    escapeEnabled = false 
   }
   
   ::afterBattle::

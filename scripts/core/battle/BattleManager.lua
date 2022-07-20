@@ -70,6 +70,7 @@ function BattleManager:loadBattle(state)
   FieldManager:loadField(self.params.fieldID or self.currentField.id)
   -- Run battle
   while true do
+    FieldManager:playFieldBGM()
     self:setUp(state)
     local result = self:runBattle(state ~= nil)
     self:clear()
@@ -113,13 +114,7 @@ function BattleManager:battleStart(skipIntro)
   if self.params.intro then
     self:battleIntro()
   end
-  local script = FieldManager.currentField.loadScript
-  if script and script.name ~= '' and script.onLoad then
-    local fiber = FieldManager.fiberList:forkFromScript(script)
-    if script.wait then
-      fiber:waitForEnd()
-    end
-  end
+  FieldManager:runLoadScripts()
 end
 -- Player intro animation, to show each party.
 function BattleManager:battleIntro()
@@ -141,7 +136,7 @@ function BattleManager:battleEnd()
   local result = 1
   if self:playerWon() then
     GUIManager:showGUIForResult(RewardGUI(nil))
-  else
+  elseif self:enemyWon() or self:drawed() then
     result = GUIManager:showGUIForResult(GameOverGUI(nil))
   end
   TroopManager:onBattleEnd()

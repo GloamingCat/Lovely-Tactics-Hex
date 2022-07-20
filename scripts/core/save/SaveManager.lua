@@ -50,14 +50,8 @@ function SaveManager:newSave()
   save.vars = {} -- Global vars
   save.fields = {} -- Field data
   save.troops = {} -- Initial party
-  --save.troops[Config.troop.initialTroopID .. ''] = Troop():getState()
   save.playerTroopID = Config.troop.initialTroopID
   save.playerState = { transition = Config.player.startPos }
-  save.renderer = { 
-    red = 1, 
-    green = 1, 
-    blue = 1, 
-    alpha = 0 }
   return save
 end
 -- Creates default config file.
