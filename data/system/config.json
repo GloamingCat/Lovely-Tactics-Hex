@@ -32,7 +32,7 @@
     "tileB": 16,
     "tileS": 0,
     "pixelsPerHeight": 8,
-    "depthPerHeight": 18,
+    "depthPerHeight": 12,
     "depthPerY": 22,
     "allNeighbors": false,
     "overpassAllies": false,

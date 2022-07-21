@@ -157,7 +157,7 @@
           "transformations": [],
           "duration": 5,
           "removeOnKO": true,
-          "removeOnDamage": false,
+          "removeOnDamage": true,
           "battleOnly": true,
           "deactivate": false,
           "ko": false,

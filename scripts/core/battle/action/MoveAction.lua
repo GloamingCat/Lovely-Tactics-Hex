@@ -49,6 +49,9 @@ function MoveAction:execute(input)
     local tiles = input.user:getAllTiles()
     input.user:removeFromTiles(tiles)
     local stack = path:toStack()
+    if input.user.autoAnim then
+      input.user:playMoveAnimation()
+    end
     while not stack:isEmpty() do
       local nextTile = stack:pop()
       local x, y, h = nextTile:coordinates()
@@ -60,6 +63,9 @@ function MoveAction:execute(input)
     end
     input.user:moveToTile(path.lastStep)
     input.user:addToTiles()
+    if input.user.autoAnim then
+      input.user:playIdleAnimation()
+    end
   end
   return { executed = fullPath, path = path }
 end

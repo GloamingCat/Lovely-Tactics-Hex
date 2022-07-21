@@ -26,7 +26,9 @@ local Character_castSkill = Character.castSkill
 function Character:castSkill(skill, dir, target)
   -- Forward step
   if skill.stepOnCast then
+    self:playMoveAnimation()
     self:walkInAngle(self.castStep or 6, dir)
+    self:playIdleAnimation()
   end
   -- Cast animation (user)
   local minTime = 0

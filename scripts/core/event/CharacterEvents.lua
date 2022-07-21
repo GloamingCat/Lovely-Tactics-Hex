@@ -60,9 +60,15 @@ function EventSheet:moveCharTile(args)
     local charTile = char:getTile()
     char:turnToTile(charTile.x + (args.x or 0), charTile.y + (args.y or 0))
   end
+  if char.autoAnim then
+    char:playMoveAnimation()
+  end
   char:removeFromTiles()
   char:walkTiles(args.x or 0, args.y or 0, args.h or 0)
   char:addToTiles()
+  if char.autoAnim then
+    char:playIdleAnimation()
+  end
 end
 -- Moves in the given direction.
 -- @param(args.angle : number) The direction in degrees.
@@ -78,9 +84,15 @@ function EventSheet:moveCharDir(args)
     if char.autoTurn then
       char:turnToTile(ox + dx, oy + dy)
     end
+    if char.autoAnim then
+      char:playMoveAnimation()
+    end
     char:removeFromTiles()
     char:walkToTile(ox + dx, oy + dy, oh + dh)
     char:addToTiles()
+    if char.autoAnim then
+      char:playIdleAnimation()
+    end
   end
 end
 -- Moves a path to the given tile.

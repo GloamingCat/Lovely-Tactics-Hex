@@ -27,14 +27,25 @@ return function(script)
   
   FieldManager.player:playIdleAnimation()
   
-  script:startBattle { 
-    fieldID = tonumber(script.args.fieldID) or 0, 
-    fade = 60, 
-    intro = true, 
-    gameOverCondition = script.args.loseEnabled == 'true' and 0 or 1, 
-    escapeEnabled = true 
-  }
-
+  do
+    local gameOverCondition = 1
+    local conditionName = (script.args.gameOverCondition or ''):trim():lower()
+    if conditionName == 'survive' then
+      gameOverCondition = 2 -- Must win.
+    elseif conditionName == 'kill' then
+      gameOverCondition = 1 -- Must win or draw.
+    elseif conditionName == 'none' then
+      gameOverCondition = 0 -- Never gets a game over.
+    end
+    script:startBattle { 
+      fieldID = tonumber(script.args.fieldID) or 0, 
+      fade = 60, 
+      intro = true, 
+      gameOverCondition = gameOverCondition,
+      escapeEnabled = true 
+    }
+  end
+  
   ::afterBattle::
   
   script.char.cooldown = 180
@@ -43,9 +54,11 @@ return function(script)
     print 'You won!'
     FieldManager.fiberList:fork(script.deleteChar, script, { key = "self", fade = 60, permanent = true })
   elseif BattleManager:enemyWon() then
+    assert(script.args.loseEnabled, "Player shouldn't have the option to continue.")
     print 'You lost...'
   elseif BattleManager:drawed() then
     print 'Draw.'
+    FieldManager.fiberList:fork(script.deleteChar, script, { key = "self", fade = 60, permanent = true })
   elseif BattleManager:playerEscaped() then
     print 'You escaped!'
   elseif BattleManager:enemyEscaped() then

@@ -109,10 +109,13 @@ function TurnManager:runTurn()
   local winner = TroopManager:winnerParty()
   if winner then
     if winner == TroopManager.playerParty then
+      -- Player wins.
       return 1, winner
-    elseif winner == 0 then
-      return 0, 0
+    elseif winner == -1 then
+      -- Draw.
+      return 0, -1
     else
+      -- Enemy wins.
       return -1, winner
     end
   end

@@ -35,13 +35,17 @@ end
 -- Override. Check lose and win keys.
 local TurnManager_runTurn = TurnManager.runTurn
 function TurnManager:runTurn()
-  if InputManager.keys['win']:isPressing() then
+  local enemyParty = #TroopManager.troops - TroopManager.playerParty
+  if InputManager.keys['win']:isPressing() and InputManager.keys['lose']:isPressing() then
+    killAll(TroopManager.playerParty)
+    killAll(enemyParty)
+    return 0, -1
+  elseif InputManager.keys['win']:isPressing() then
     killAll(TroopManager.playerParty)
     return 1, TroopManager.playerParty
   elseif InputManager.keys['lose']:isPressing() then
-    local party = #TroopManager.troops - TroopManager.playerParty
-    killAll(party)
-    return -1, party
+    killAll(enemyParty)
+    return -1, enemyParty
   else
    return TurnManager_runTurn(self)
   end

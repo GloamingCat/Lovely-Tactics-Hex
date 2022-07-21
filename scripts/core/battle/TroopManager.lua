@@ -132,11 +132,11 @@ function TroopManager:createBattler(character)
   end
 end
 -- Creates a new battle character.
--- @param(tile : ObjectTile) the initial tile of the character
--- @param(dir : number) the initial direction of the character
--- @param(member : table) the troop member which this character represents
--- @param(party : number) the number of the field's party spot this character belongs to
--- @ret(BattleCharacter) the newly created character
+-- @param(tile : ObjectTile) The initial tile of the character.
+-- @param(dir : number) The initial direction of the character.
+-- @param(member : table) The troop member that this character represents.
+-- @param(party : number) The number of the field's party spot this character belongs to.
+-- @ret(BattleCharacter) The newly created character.
 function TroopManager:createCharacter(tile, dir, member, party)
   local charData = {
     key = member.key,
@@ -256,30 +256,32 @@ function TroopManager:setPartyTiles()
     end
   end
 end
--- Gets the troop controlled by the player.
--- @ret(Troop)
+-- Gets player party's troop in the current battle if on battle, 
+--  or player's troop from current save's data otherwise.
+-- @ret(Troop) The troop controlled by the player.
 function TroopManager:getPlayerTroop()
   return self.troops[self.playerParty] or Troop()
 end
 -- Searchs for a winner party (when all alive characters belong to the same party).
--- @ret(number) the number of the party (returns nil if no one won yet, -1 if there's a draw)
+-- @ret(number) The number of the party (returns nil if no one won yet, -1 if there's a draw).
 function TroopManager:winnerParty()
   local currentParty = -1
   for bc in self.characterList:iterator() do
     if bc.battler:isAlive() then
+      -- Battler's party is still active
       if currentParty == -1 then
+        -- The only active party for now
         currentParty = bc.party
-      else
-        if currentParty ~= bc.party then
-          return nil
-        end
+      elseif currentParty ~= bc.party then
+        -- More than two active parties
+        return nil
       end
     end
   end
   return currentParty
 end
 -- Gets the pixel center of each party.
--- @ret(table) array of vectors
+-- @ret(table) Array of vectors, indexed by party ID.
 function TroopManager:getPartyCenters()
   local centers = {}
   for bc in self.characterList:iterator() do

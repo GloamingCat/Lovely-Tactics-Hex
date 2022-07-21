@@ -71,10 +71,8 @@ end
 function WalkingObject:walkToPoint(x, y, z)
   z = z or self.position.z
   x, y, z = round(x), round(y), round(z)
-  self:playMoveAnimation()
   local distance = len(self.position.x - x, self.position.y - y, self.position.z - z)
   self:moveTo(x, y, z, self.speed / distance, true)
-  self:playIdleAnimation()
   return self.position:almostEquals(x, y, z, 0.2)
 end
 -- [COROUTINE] Walks a given distance in each axis.
@@ -119,21 +117,6 @@ function WalkingObject:walkTiles(dx, dy, dh)
   local pos = self.position
   local x, y, h = pixel2Tile(pos.x, pos.y, pos.z)
   return self:walkToTile(x + dx, y + dy, h + (dh or 0))
-end
--- [COROUTINE] Walks along the given path.
--- @param(path : Path) A path of tiles.
--- @ret(boolean) True if the movement was completed, false otherwise.
-function WalkingObject:walkPath(path, autoTurn)
-  local stack = path:toStack()
-  while not stack:isEmpty() do
-    local nextTile = stack:pop()
-    local x, y, h = nextTile:coordinates()
-    if autoTurn then
-      self:turnToTile(x, y)
-    end
-    self:walkToTile(x, y, h)
-  end
-  self:moveToTile(path.lastStep)
 end
 
 return WalkingObject

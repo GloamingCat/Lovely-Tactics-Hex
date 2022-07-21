@@ -1965,7 +1965,7 @@
           "costs": [
             {
               "key": "sp",
-              "value": "10"
+              "value": "5"
             }
           ],
           "elements": [],
@@ -2017,7 +2017,7 @@
           },
           "autoPath": true,
           "wholeField": false,
-          "name": "Charm",
+          "name": "Flirt",
           "tags": [
             {
               "key": "cast_far",

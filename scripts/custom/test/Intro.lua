@@ -9,7 +9,7 @@ First scene after title screen.
 
 -- For debug. 
 -- mode = 0 is default intro scene.
-local mode = 1
+local mode = 0
 
 return function(script)
   if mode == 0 then

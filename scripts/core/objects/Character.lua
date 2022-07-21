@@ -77,20 +77,22 @@ function Character:tryTileMovement(tile)
     local input = ActionInput(MoveAction(mathf.centerMask, 2), self, tile)
     local path, fullPath = input.action:calculatePath(input)
     if path and fullPath then
-      self:playMoveAnimation()
-      self.autoAnim = false
+      if self.autoAnim then
+        self:playMoveAnimation()
+      end
       local previousTiles = self:getAllTiles()
       self:onTerrainExit(previousTiles)
       self:removeFromTiles(previousTiles)
       self:addToTiles(self:getAllTiles(dx, dy, dh))
       self:walkToTile(dx, dy, dh)
       self:onTerrainEnter(self:getAllTiles())
-      self.autoAnim = true
       self:collideTile(tile)
       return 0
     end
   end
-  self:playIdleAnimation()
+  if self.autoAnim then
+    self:playIdleAnimation()
+  end
   if collision == 3 then 
     -- Character collision
     self:collideTile(tile)
@@ -164,7 +166,9 @@ end
 function Character:castSkill(skill, dir, target)
   -- Forward step
   if skill.stepOnCast then
+    self:playMoveAnimation()
     self:walkInAngle(self.castStep or 6, dir)
+    self:playIdleAnimation()
   end
   -- Cast animation (user)
   local minTime = 0
@@ -192,12 +196,15 @@ function Character:finishSkill(origin, skill)
     if self.position:almostEquals(x, y, z) then
       return
     end
-    local autoTurn = self.autoTurn
+    if self.autoAnim then
+      self:playMoveAnimation()
+    end
     self:walkToPoint(x, y, z)
     self:setXYZ(x, y, z)
-    self.autoTurn = autoTurn
   end
-  self:playAnimation(self.idleAnim)
+  if self.autoAnim then
+    self:playIdleAnimation()
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
