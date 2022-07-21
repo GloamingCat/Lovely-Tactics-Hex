@@ -26,8 +26,10 @@ function FiberList:init(char)
 end
 -- Updates all Fibers.
 function FiberList:update()
-  for i = 1, self.size do
+  local i = 1
+  while i <= self.size do
     self[i]:update()
+    i = i + 1
   end
   self:conditionalRemove(self.isFinished)
 end

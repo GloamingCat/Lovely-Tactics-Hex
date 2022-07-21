@@ -35,6 +35,10 @@ function FieldLoader.loadField(id, save)
   field.images = prefs.images or data.prefs.images
   field.tags = TagMap(data.prefs.tags)
   field.loadScript = prefs.loadScript or data.prefs.loadScript
+  if field.loadScript then
+    field.loadScript = util.table.deepCopy(field.loadScript)
+    field.loadScript.vars = field.loadScript.vars or {}
+  end
   field.bgm = prefs.bgm
   -- Battle info
   field.playerParty = prefs.playerParty or data.playerParty

@@ -11,14 +11,14 @@ return function(script)
   script:turnCharTile { key = 'self', other = 'player' }
 
   script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
-    Vocab.dialogues.actor.Hi
+    Vocab.dialogues.npc.Hi
   }
   
   local troop = TroopManager:getPlayerTroop()
   if not troop:hasMember('Merlin') then
     
     script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
-      Vocab.dialogues.actor.CanIJoin
+      Vocab.dialogues.npc.CanIJoin
     }
 
     script:openChoiceWindow { width = 50, choices = {
@@ -28,12 +28,12 @@ return function(script)
 
     if script.gui.choice == 1 then
       script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
-        Vocab.dialogues.actor.ThatsGood
+        Vocab.dialogues.npc.ThatsGood
       }
       script:addMember { key = 'Merlin' }
     else
       script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
-        Vocab.dialogues.actor.ThatsBad
+        Vocab.dialogues.npc.ThatsBad
       }
     end
     

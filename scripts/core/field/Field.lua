@@ -12,6 +12,7 @@ local FiberList = require('core/fiber/FiberList')
 local ObjectLayer = require('core/field/ObjectLayer')
 
 -- Alias
+local copyTable = util.table.deepCopy
 local isCollinear = math.field.isCollinear
 local max = math.max
 local pixelCenter = math.field.pixelCenter
@@ -72,9 +73,14 @@ end
 -- Gets field prefs data that are saved.
 -- @ret(table)
 function Field:getPersistentData()
+  local script = self.loadScript
+  if script then
+    script = copyTable(script)
+    script.running = nil
+  end
   return {
     images = FieldManager.renderer:getImageData(),
-    loadScript = self.loadScript,
+    loadScript = script,
     bgm = self.bgm,
     vars = self.vars }
 end

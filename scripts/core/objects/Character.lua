@@ -78,7 +78,6 @@ function Character:tryTileMovement(tile)
     local path, fullPath = input.action:calculatePath(input)
     if path and fullPath then
       self:playMoveAnimation()
-      local autoAnim = self.autoAnim
       self.autoAnim = false
       local previousTiles = self:getAllTiles()
       self:onTerrainExit(previousTiles)
@@ -86,7 +85,7 @@ function Character:tryTileMovement(tile)
       self:addToTiles(self:getAllTiles(dx, dy, dh))
       self:walkToTile(dx, dy, dh)
       self:onTerrainEnter(self:getAllTiles())
-      self.autoAnim = autoAnim
+      self.autoAnim = true
       self:collideTile(tile)
       return 0
     end

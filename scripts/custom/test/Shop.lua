@@ -18,13 +18,13 @@ return function(script)
   FieldManager.player:playIdleAnimation()
   
   script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
-    Vocab.dialogues.actor.WhatDoYou
+    Vocab.dialogues.npc.WhatDoYou
   }
   
   script:openChoiceWindow { width = 60, choices = {
-    Vocab.dialogues.actor.Shop,
-    Vocab.dialogues.actor.Battle,
-    Vocab.dialogues.actor.Nothing
+    Vocab.dialogues.npc.Shop,
+    Vocab.dialogues.npc.Battle,
+    Vocab.dialogues.npc.Nothing
   }}
 
   script:closeDialogueWindow { id = 1 }

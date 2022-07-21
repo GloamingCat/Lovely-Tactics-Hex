@@ -94,11 +94,11 @@ function GameManager:update(dt)
   local t = os.clock()  
   -- Update game logic.
   if not self.paused then
-    if not FieldManager.paused then 
-      FieldManager:update() 
-    end
     if not GUIManager.paused then 
       GUIManager:update()
+    end
+    if not FieldManager.paused then 
+      FieldManager:update() 
     end
     self.frame = self.frame + 1
   end

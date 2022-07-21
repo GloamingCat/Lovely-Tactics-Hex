@@ -3,7 +3,7 @@
   "sizeX": 13,
   "sizeY": 8,
   "prefs": {
-    "persistent": false,
+    "persistent": true,
     "defaultRegion": -1,
     "maxHeight": 1,
     "bgm": {
@@ -19,7 +19,7 @@
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
-      "name": "",
+      "name": "test/Intro.lua",
       "tags": []
     },
     "images": [],

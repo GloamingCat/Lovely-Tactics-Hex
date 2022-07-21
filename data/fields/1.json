@@ -780,7 +780,12 @@
           "onInteract": true,
           "onCollide": false,
           "name": "test/Shop.lua",
-          "tags": []
+          "tags": [
+            {
+              "key": "fieldID",
+              "value": "2"
+            }
+          ]
         }
       ]
     },

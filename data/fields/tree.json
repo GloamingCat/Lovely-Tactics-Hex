@@ -3,18 +3,6 @@
   "id": -1,
   "children": [
     {
-      "id": 12,
-      "data": {
-        "name": "Test Battle",
-        "lastLayers": [
-          0,
-          1,
-          -1
-        ]
-      },
-      "children": []
-    },
-    {
       "id": 6,
       "data": {
         "name": "Happy Fields 1",
@@ -86,6 +74,18 @@
           "children": []
         }
       ]
+    },
+    {
+      "id": 2,
+      "data": {
+        "name": "Test Battle",
+        "lastLayers": [
+          0,
+          1,
+          -1
+        ]
+      },
+      "children": []
     }
   ]
 }

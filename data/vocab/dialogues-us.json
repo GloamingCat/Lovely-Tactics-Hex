@@ -1,7 +1,7 @@
 
 {
   
-  "actor": {
+  "npc": {
     "Hi": "Hi.",
     "CanIJoin": "Can I join your party?",
     "ThatsGood": "That's {i}great!{r}\nI'm yours now. :)",
@@ -10,6 +10,10 @@
     "Shop": "Shop",
     "Battle": "Battle",
     "Nothing": "Nothing"
+  },
+  
+  "scene": {
+    "ThisIsA": "This is a test cutscene."
   }
   
 }

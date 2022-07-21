@@ -114,8 +114,7 @@ function Interactable:getPersistentData()
     interactScripts = copyScripts(self.interactScripts),
     collider = self.collider,
     collided = self.collided,
-    interacting = self.interacting
-  }
+    interacting = self.interacting }
 end
 
 ---------------------------------------------------------------------------------------------------
