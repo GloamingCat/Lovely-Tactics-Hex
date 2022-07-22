@@ -39,7 +39,9 @@ function BattleAction:init(colorName, range, area)
   self.colorName = colorName
   self.showTargetWindow = true
   self.showStepWindow = false
+  self.freeNavigation = true
   self.autoPath = true
+  self.reachableOnly = false
 end
 -- Sets color according to action's type (general, attack or support).
 -- @param(t : number) Type code, from 0 to 2.
@@ -55,13 +57,6 @@ function BattleAction:setType(t)
     self.support = true
   end
 end
--- Sets target type (any tile, any character, living characters or dead characters).
--- @param(t : number) Type code, from 0 to 3.
-function BattleAction:setTargetType(t)
-  self.allTiles = t == 0
-  self.living = t == 1 or t == 2
-  self.dead = t == 1 or t == 3
-end
 
 ---------------------------------------------------------------------------------------------------
 -- Event handlers
@@ -70,10 +65,10 @@ end
 -- Called when this action has been chosen.
 function BattleAction:onSelect(input)
   FieldAction.onSelect(self, input)
-  if input.GUI and not self.allTiles then
+  if input.GUI and not self.freeNavigation then
     self.index = 1
     local queue = TargetFinder.closestCharacters(input)
-    self.characterTiles = queue:toList()
+    self.selectionTiles = queue:toList()
   end
   input.moveAction = self.moveAction
 end
@@ -89,6 +84,11 @@ function BattleAction:onActionGUI(input)
     input.GUI:createStepWindow():show()
   end
 end
+
+---------------------------------------------------------------------------------------------------
+-- Tiles Properties
+---------------------------------------------------------------------------------------------------
+
 -- Sets tile colors according to its properties (movable, reachable and selectable).
 function BattleAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
@@ -101,20 +101,6 @@ function BattleAction:resetTileColors(input)
     end
   end
 end
-
----------------------------------------------------------------------------------------------------
--- Execution
----------------------------------------------------------------------------------------------------
-
--- Overrides FieldAction:execute. By default, just ends turn.
--- @ret(table) The turn result.
-function BattleAction:execute(input)
-  return { executed = true, endCharacterTurn = true }
-end
-
----------------------------------------------------------------------------------------------------
--- Tiles Properties
----------------------------------------------------------------------------------------------------
 
 -- Overrides FieldAction:resetTileProperties.
 function BattleAction:resetTileProperties(input)
@@ -133,8 +119,10 @@ function BattleAction:resetMovableTiles(input)
     for tile in self.field:gridIterator() do
       tile.gui.movable = false
     end
-    local charTile = TurnManager:currentCharacter():getTile()
-    charTile.gui.movable = true
+    if input.user then
+      local charTile = input.user:getTile()
+      charTile.gui.movable = true
+    end
   end
 end
 -- Paints and resets properties for the target tiles.
@@ -142,13 +130,13 @@ end
 --  skill's range) tiles with the skill's type color.
 function BattleAction:resetReachableTiles(input)
   local matrix = TurnManager:pathMatrix()
-  local charTile = TurnManager:currentCharacter():getTile()
   local borderTiles = List()
   -- Find all border tiles
   for tile in self.field:gridIterator() do
-     -- If this tile is reachable
-    tile.gui.reachable = matrix:get(tile:coordinates()) ~= nil
-    if tile.gui.reachable then
+    tile.gui.reachable = false
+  end
+  for tile in self.field:gridIterator() do
+    if tile.gui.movable then
       for n = 1, #tile.neighborList do
         local neighbor = tile.neighborList[n]
         -- If this tile has any non-reachable neighbors, it's a border tile
@@ -159,8 +147,8 @@ function BattleAction:resetReachableTiles(input)
       end
     end
   end
-  if borderTiles:isEmpty() then
-    borderTiles:add(charTile)
+  if borderTiles:isEmpty() and input.user then
+    borderTiles:add(input.user:getTile())
   end
   -- Paint border tiles
   for tile in borderTiles:iterator() do
@@ -174,35 +162,44 @@ function BattleAction:resetReachableTiles(input)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Grid navigation
+-- Affected Tiles
 ---------------------------------------------------------------------------------------------------
 
--- Overrides FieldAction:isSelectable.
-function BattleAction:isSelectable(input, tile)
-  if self.allTiles then
-    return tile.gui.reachable
-  end
+-- Overrides FieldAction:isTileAffected.
+function BattleAction:isTileAffected(input, tile)
   for char in tile.characterList:iterator() do
-    if self:isCharacterSelectable(input, char) then
+    if self:isCharacterAffected(input, char) then
       return true
     end
   end
   return false
 end
--- Tells if the given character is selectable.
--- @param(char : Character) The character to check.
--- @ret(boolean) True if selectable, false otherwise.
-function BattleAction:isCharacterSelectable(input, char)
+-- Verifies if the given character receives any effect by the action.
+-- @ret(boolean) True if character is affected, false otherwise.
+function BattleAction:isCharacterAffected(input, char)
   if not char.battler then
     return false
   end
-  if not self:isRanged() or self.wholeField then
-    return char == input.user
+  if self.allParties then
+    return true
   end
-  local alive = char.battler:isAlive()
   local ally = input.user.party == char.party
-  return (alive == self.living or (not alive) == self.dead) and 
-    (ally == self.support or (not ally) == self.offensive)
+  return ally == self.support or (not ally) == self.offensive
+end
+
+---------------------------------------------------------------------------------------------------
+-- Grid navigation
+---------------------------------------------------------------------------------------------------
+
+-- Overrides FieldAction:isSelectable.
+function BattleAction:isSelectable(input, tile)
+  if not FieldAction.isSelectable(self, input, tile) then
+    return false
+  end
+  if input.user and not self:isRanged() then
+    return input.user:getTile() == tile
+  end
+  return tile.gui.reachable or self.autoPath and not self.reachableOnly
 end
 -- Checks if the range mask contains any tiles besides the center tile.
 -- @ret(boolean) True if it's a ranged action, false otherwise.
@@ -218,30 +215,40 @@ function BattleAction:isLongRanged()
 end
 -- Overrides FieldAction:firstTarget.
 function BattleAction:firstTarget(input)
-  if self.characterTiles then
-    return self.characterTiles[1]
+  if self.selectionTiles then
+    return self.selectionTiles[1]
   else
     return input.user:getTile()
   end
 end
 -- Overrides FieldAction:nextTarget.
 function BattleAction:nextTarget(input, axisX, axisY)
-  if self.characterTiles then
+  if self.selectionTiles then
     if axisX > 0 or axisY > 0 then
-      self.index = mod1(self.index + 1, self.characterTiles.size)
+      self.index = mod1(self.index + 1, self.selectionTiles.size)
     else
-      self.index = mod1(self.index - 1, self.characterTiles.size)
+      self.index = mod1(self.index - 1, self.selectionTiles.size)
     end
-    return self.characterTiles[self.index]
+    return self.selectionTiles[self.index]
   end
   return FieldAction.nextTarget(self, input, axisX, axisY)
 end
 -- Overrides FieldAction:nextLayer.
 function BattleAction:nextLayer(input, axis)
-  if self.characterTiles then
+  if self.selectionTiles then
     return self:nextTarget(input, axis, axis)
   end
   return FieldAction.nextLayer(self, input, axis)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Execution
+---------------------------------------------------------------------------------------------------
+
+-- Overrides FieldAction:execute. By default, just ends turn.
+-- @ret(table) The turn result.
+function BattleAction:execute(input)
+  return { executed = true, endCharacterTurn = true }
 end
 
 ---------------------------------------------------------------------------------------------------

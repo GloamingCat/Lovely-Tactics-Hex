@@ -103,11 +103,6 @@
   },
   {
     "on": true,
-    "name": "plugins/skill/AreaTarget.lua",
-    "tags": []
-  },
-  {
-    "on": true,
     "name": "plugins/status/StatusBalloon.lua",
     "tags": []
   },

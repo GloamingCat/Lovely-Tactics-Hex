@@ -24,26 +24,23 @@ local AttackRule = class(SkillRule)
 function AttackRule:onSelect(user)
   SkillRule.onSelect(self, user)
   -- Find target with higher chance of dying
-  local oldRand = self.skill.rand
-  self.skill.rand = expectation
   local bestTile = nil
-  local bestChance = -math.huge
+  local bestChance = math.huge
+  local eff = self.skill.effects[1]
   for char in TroopManager.characterList:iterator() do
     local tile = char:getTile()
-    if tile.gui.selectable and tile.gui.reachable then
-      local dmg = self.skill:calculateEffectResult(self.skills.effects[1], self.input, char)
-      if dmg then
-        local chance = (char.battler.state.hp - dmg) / char.battler.mhp()
-        if chance > bestChance then
-          bestChance = chance
-          bestTile = tile
-        end
+    if tile.gui.affected and tile.gui.reachable then
+      local rate = eff.successRate(self.skill, user.battler, char.battler, user.battler.att, char.battler.att)
+      local points = self.skill:calculateEffectPoints(eff, user.battler, char.battler, expectation)
+      local killChance = 1 - (char.battler.state[eff.key] - points * rate / 100) / char.battler['m' .. eff.key]()
+      if killChance > bestChance then
+        bestChance = killChance
+        bestTile = tile
       end
     end
   end
-  self.skill.rand = oldRand
   if bestTile then
-    self.input.taget = bestTile
+    self.input.target = bestTile
   else
     local queue = TargetFinder.closestCharacters(self.input)
     if queue:isEmpty() then

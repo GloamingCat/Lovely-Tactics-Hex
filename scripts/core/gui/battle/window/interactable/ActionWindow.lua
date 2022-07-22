@@ -46,19 +46,26 @@ function ActionWindow:selectAction(action, input)
 end
 -- Checks if a given skill action is enabled to use.
 function ActionWindow:skillActionEnabled(skill)
-  if skill.allTiles or skill.wholeField then
+  if skill.freeNavigation then
     return true
   end
   local user = TurnManager:currentCharacter()
   local input = ActionInput(skill, user)
+  skill:resetTileProperties(input)
   if skill.autoPath and self:moveEnabled() then
+    -- There's a selectable tile, and the character can move closer to it.
     for tile in FieldManager.currentField:gridIterator() do
-      if skill:isSelectable(input, tile) then
+      if tile.gui.selectable then
         return true
       end
     end
   else
-    return #skill:getAllAccessedTiles(input, user:getTile()) > 0
+    -- The character can't move, but there is a reachable selectable tile.
+    for tile in FieldManager.currentField:gridIterator() do
+      if tile.gui.selectable and tile.gui.reachable then
+        return true
+      end
+    end
   end
   return false
 end

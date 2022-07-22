@@ -26,9 +26,6 @@ function ItemAction:init(skillID, item)
   for i = 1, #item.effects do
     self:addEffect(item.effects[i])
   end
-  -- Status
-  self:addStatus(item.statusAdd, true)
-  self:addStatus(item.statusRemove, false)
 end
 
 ---------------------------------------------------------------------------------------------------

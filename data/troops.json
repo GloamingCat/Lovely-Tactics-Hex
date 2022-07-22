@@ -115,5 +115,37 @@
     },
     "id": 1,
     "children": []
+  },
+  {
+    "data": {
+      "ai": "troop/DefaultAI.lua",
+      "persistent": false,
+      "money": 0,
+      "items": [],
+      "members": [
+        {
+          "key": "e1",
+          "charID": 0,
+          "battlerID": -1,
+          "x": 2,
+          "y": 2,
+          "equip": [],
+          "list": 0
+        },
+        {
+          "key": "e2",
+          "charID": 11,
+          "battlerID": -1,
+          "x": 4,
+          "y": 2,
+          "equip": [],
+          "list": 0
+        }
+      ],
+      "name": "Jelly Party 3",
+      "tags": []
+    },
+    "id": 3,
+    "children": []
   }
 ]

@@ -20,7 +20,11 @@ local VisualizeAction = class(BattleAction)
 -- Constructor.
 function VisualizeAction:init()
   BattleAction.init(self, '')
-  self.allTiles = true
+  self.freeNavigation = true
+  self.autoPath = false
+  self.reachableOnly = false
+  self.affectedOnly = true
+  self.allParties = true
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -40,10 +44,6 @@ end
 -- Tile Properties
 ---------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:resetTileProperties.
-function VisualizeAction:resetTileProperties(input)
-  self:resetSelectableTiles(input)
-end
 -- Overrides BattleAction:resetTileColors.
 function VisualizeAction:resetTileColors(input)
   for tile in self.field:gridIterator() do

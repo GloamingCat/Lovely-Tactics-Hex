@@ -25,6 +25,9 @@ local MoveAction = class(BattleAction)
 function MoveAction:init(range, limit)
   self.pathLimit = limit or math.huge
   BattleAction.init(self, '', range)
+  self.freeNavigation = true
+  self.autoPath = true
+  self.reachableOnly = true
 end
 
 ---------------------------------------------------------------------------------------------------

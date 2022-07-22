@@ -86,7 +86,7 @@
           "ai": [],
           "jobID": 2,
           "attackID": 6,
-          "level": 5,
+          "level": 3,
           "money": 0,
           "exp": 0,
           "attributes": [
@@ -111,7 +111,8 @@
           ],
           "skills": [
             17,
-            7
+            7,
+            27
           ],
           "status": [],
           "elements": [],
@@ -320,6 +321,57 @@
           "tags": []
         },
         "id": 9,
+        "children": []
+      },
+      {
+        "data": {
+          "persistent": false,
+          "ai": [
+            {
+              "condition": "",
+              "name": "rule/AttackRule.lua",
+              "tags": []
+            }
+          ],
+          "jobID": 0,
+          "attackID": 15,
+          "level": 3,
+          "money": 20,
+          "exp": 10,
+          "attributes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "skills": [],
+          "status": [],
+          "elements": [
+            {
+              "id": 5,
+              "value": 200
+            }
+          ],
+          "items": [],
+          "equip": [],
+          "name": "Smart Jelly",
+          "tags": []
+        },
+        "id": 4,
         "children": []
       }
     ]

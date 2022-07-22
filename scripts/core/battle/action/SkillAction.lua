@@ -40,10 +40,14 @@ function SkillAction:init(skillID)
   self.data = data
   BattleAction.init(self, nil, data.castMask, data.effectMask)
   self.moveAction = BattleMoveAction(self.range)
+  self.allParties = data.allParties
+  self.affectedOnly = data.selection % 2 == 1
+  self.reachableOnly = data.selection >= 2
+  self.freeNavigation = data.freeNavigation
   self.autoPath = data.autoPath
-  self.wholeField = data.wholeField
+  self.effectCondition = data.effectCondition ~= '' and 
+    loadformula(data.effectCondition, 'action, user, target')
   self:setType(data.type)
-  self:setTargetType(data.targetType)
   -- Time before initial animation starts.
   self.introTime = tonumber(data.introTime) or 20
   -- Time after cast animation starts and before user steps back to tile.
@@ -63,13 +67,10 @@ function SkillAction:init(skillID)
   end
   -- Effect formulas
   self.effects = {}
+  self.status = {}
   for i = 1, #data.effects do
     self:addEffect(data.effects[i])
   end
-  -- Status to add
-  self.status = {}
-  self:addStatus(data.statusAdd, true)
-  self:addStatus(data.statusRemove, false)
   -- Store elements
   local e = newArray(elementCount, 0)
   for i = 1, #data.elements do
@@ -107,16 +108,8 @@ function SkillAction:addEffect(effect)
     basicResult = loadformula(effect.basicResult, 'action, user, target, a, b, rand'),
     successRate = loadformula(effect.successRate, 'action, user, target, a, b, rand'),
     heal = effect.heal,
-    absorb = effect.absorb }
-end
--- Inserts a new status in this skill.
--- @param(status : table) Array with each status (id, rate, add).
-function SkillAction:addStatus(status, add)
-  local last = #self.status
-  for i = 1, #status do
-    self.status[last + i] = { id = status[i].id, add = add,
-      rate = loadformula(status[i].rate, 'action, a, b, rand') }
-  end
+    absorb = effect.absorb,
+    statusID = effect.statusID }
 end
 -- Default basic result formula for physical attack skills.
 -- @param(user : Battler) User battler.
@@ -124,8 +117,8 @@ end
 -- @param(a : table) Attributes of user battler.
 -- @param(b : table) Attributes of target battler.
 -- @ret(string) Damage formula.
-function SkillAction:defaultPhysicalDamage(user, target, a, b)
-  local rand = self.rand or random
+function SkillAction:defaultPhysicalDamage(user, target, a, b, rand)
+  rand = rand or self.rand or random
   return (a.atk() * 2 - b.def()) * rand(80, 120) / 100
 end
 -- Default basic result formula for magical attack skills.
@@ -134,8 +127,8 @@ end
 -- @param(a : table) Attributes of user battler.
 -- @param(b : table) Attributes of target battler.
 -- @ret(string) Damage formula.
-function SkillAction:defaultMagicalDamage(user, target, a, b)
-  local rand = self.rand or random
+function SkillAction:defaultMagicalDamage(user, target, a, b, rand)
+  rand = rand or self.rand or random
   return (a.atk() * 2 - b.spr()) * rand(80, 120) / 100
 end
 -- Default success rate formula for attack skills.
@@ -276,36 +269,57 @@ function SkillAction:menuUse(input)
 end
 
 ---------------------------------------------------------------------------------------------------
+-- Affected Tiles
+---------------------------------------------------------------------------------------------------
+
+-- Overrides BattleAction:isCharacterAffected.
+function SkillAction:isCharacterAffected(input, char)
+  if not BattleAction.isCharacterAffected(self, input, char) then
+    return false
+  end
+  if self.effectCondition then
+    return self:effectCondition(input.user, char)
+  else
+    return true
+  end
+end
+
+---------------------------------------------------------------------------------------------------
 -- Effect result
 ---------------------------------------------------------------------------------------------------
 
--- Tells if a character may receive the skill's effects.
--- @param(char : Character)
-function SkillAction:receivesEffect(input, char)
-  return char.battler ~= nil
-end
 -- Calculates the final damage / heal for the target.
 -- It considers all element bonuses provided by the skill data.
 -- @param(user : Battler)
 -- @param(target : Battler)
-function SkillAction:calculateEffectResults(user, target)
+function SkillAction:calculateEffectResults(user, target, rand)
   local points = {}
+  local status = {}
   local dmg = false
-  for i = 1, #self.effects do
-    local r = self:calculateEffectResult(self.effects[i], user, target)
-    if r then
-      points[#points + 1] = { value = r,
-        key = self.effects[i].key,
-        heal = self.effects[i].heal,
-        absorb = self.effects[i].absorb }
-      dmg = dmg or not self.effects[i].heal
+  for _, effect in ipairs(self.effects) do  
+    rand = rand or self.rand or random
+    local rate = effect.successRate(self, user, target, user.att, target.att, rand)
+    if rand() * 100 <= rate then
+      if effect.statusID >= 0 then
+        status[#status + 1] = {
+          id = effect.statusID,
+          add = not effect.heal,
+          caster = user.key }
+        dmg = dmg or not effect.heal
+      end
+      local p = effect.key ~= '' and self:calculateEffectPoints(effect, user, target, rand)
+      if p then
+        points[#points + 1] = { value = p,
+          key = effect.key,
+          heal = effect.heal,
+          absorb = effect.absorb }
+        dmg = dmg or not effect.heal
+      end
     end
   end
-  local status, sdmg = self:calculateStatusResult(user, target)
-  local results = { damage = dmg or sdmg,
+  return { damage = dmg,
     points = points,
     status = status }
-  return results
 end
 -- Calculates the final damage / heal for the target from an specific effect.
 -- It considers all element bonuses provided by the skill data.
@@ -313,12 +327,7 @@ end
 -- @param(user : Battler) User of the skill.
 -- @param(target : Battler) Receiver of the effect. 
 -- @ret(number) Total value of the damage. Nil if miss.
-function SkillAction:calculateEffectResult(effect, user, target)
-  local rand = self.rand or random
-  local rate = effect.successRate(self, user, target, user.att, target.att, rand)
-  if rand() * 100 > rate then
-    return nil
-  end
+function SkillAction:calculateEffectPoints(effect, user, target, rand)
   local result = max(effect.basicResult(self, user, target, user.att, target.att, rand), 0)
   local immunity = 1
   local bonus = 1
@@ -338,28 +347,6 @@ function SkillAction:calculateEffectResult(effect, user, target)
   end
   return round(result * immunity * bonus)
 end
--- @param(status : table) Array with skill's status info.
--- @param(user : Battler) User of the skill.
--- @param(target : Battler) Receiver of the status effects.
--- @ret(table) Array with status results.
--- @ret(boolean) True if the effect was damage, false otherwise.
-function SkillAction:calculateStatusResult(user, target)
-  local rand = self.rand or random
-  local result = {}
-  local dmg = false
-  for i = 1, #self.status do
-    local s = self.status[i]
-    local r = s.rate(self, user.att, target.att, rand)
-    if rand() * 100 <= r then
-      result[#result + 1] = {
-        id = s.id,
-        add = s.add,
-        caster = user.key }
-      dmg = dmg or s.add
-    end
-  end
-  return result, dmg
-end
 
 ---------------------------------------------------------------------------------------------------
 -- Target Animations
@@ -371,10 +358,8 @@ function SkillAction:allTargetsEffect(input, originTile)
   local allTargets = self:getAllAffectedTiles(input)
   for i = #allTargets, 1, -1 do
     for targetChar in allTargets[i].characterList:iterator() do
-      if self:receivesEffect(input, targetChar) then
-        local results = self:calculateEffectResults(input.user.battler, targetChar.battler)
-        self:singleTargetEffect(results, input, targetChar, originTile)
-      end
+      local results = self:calculateEffectResults(input.user.battler, targetChar.battler)
+      self:singleTargetEffect(results, input, targetChar, originTile)
     end
   end
   return allTargets

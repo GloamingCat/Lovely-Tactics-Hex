@@ -45,6 +45,11 @@ function SkillAction:init(...)
   if t.effect_maxh or t.effect_minh or t.effect_far or t.effect_near then
     self.area = self:createRingMask(t.effect_far, t.effect_near, t.effect_minh, t.effect_maxh)
   end
+  if t.wholeField then
+    self.area = nil
+    self.range = self:createRingMask() -- Only the center tile.
+    self.moveAction.range = self.range
+  end
 end
 -- Creates a mask for the ring format.
 -- @param(far : number) The radius of the largest circle (maximum distance).
@@ -67,4 +72,44 @@ function SkillAction:createRingMask(far, near, minh, maxh)
     centerH = -minh + 1,
     centerX = far + 1,
     centerY = far + 1 }
+end
+-- @ret(boolean) True if skill's area represents whole field.
+function SkillAction:wholeField()
+  return self.area == nil
+end
+-- Returns all field tiles if area is nil.
+local SkillAction_getAreaTiles = SkillAction.getAreaTiles
+function SkillAction:getAreaTiles(input, centerTile)
+  if self:wholeField() then
+    local tiles = {}
+    for tile in self.field:gridIterator() do
+      if tile and self.field:isGrounded(tile:coordinates()) then
+        tiles[#tiles + 1] = tile
+      end
+    end
+    return tiles
+  else
+    return SkillAction_getAreaTiles(self, input, centerTile)
+  end
+end
+-- Only one tile (user's tile) is selectable if the skill affects the whole field.
+local SkillAction_isSelectable = SkillAction.isSelectable
+function SkillAction:isSelectable(input, tile)
+  if self:wholeField() then
+    -- User only
+    return input.user:getTile() == tile
+  else
+    return SkillAction_isSelectable(self, input, tile)
+  end
+end
+local SkillAction_resetAffectedTiles = SkillAction.resetAffectedTiles
+function SkillAction:resetAffectedTiles(input)
+  if self:wholeField() then
+    local affectedTiles = self:getAllAffectedTiles(input)
+    for i = 1, #affectedTiles do
+      affectedTiles[i].gui.affected = true
+    end
+  else
+    return SkillAction_resetAffectedTiles(self, input)
+  end
 end

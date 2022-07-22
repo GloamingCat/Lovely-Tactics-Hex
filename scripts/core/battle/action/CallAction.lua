@@ -21,7 +21,7 @@ local CallAction = class(BattleAction)
 function CallAction:init()
   BattleAction.init(self, 'general')
   self.showTargetWindow = false
-  self.allTiles = true
+  self.freeNavigation = true
   self.animSpeed = 2
 end
 

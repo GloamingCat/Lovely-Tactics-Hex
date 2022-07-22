@@ -24,8 +24,8 @@ local FieldAction = class()
 --  are affected by this action.
 function FieldAction:init(area)
   self.area = area or mathf.centerMask
+  self.affectedOnly = false -- Can only select tiles that cause some effect.
   self.field = FieldManager.currentField
-  self.wholeField = false
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -61,25 +61,27 @@ function FieldAction:onCancel(input)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Execution
----------------------------------------------------------------------------------------------------
-
--- Checks if the action can be executed.
-function FieldAction:canExecute(input)
-  return true -- Abstract.
-end
--- Executes the action animations and applies effects.
-function FieldAction:execute(input)
-  return { executed = true }
-end
-
----------------------------------------------------------------------------------------------------
 -- Tiles Properties
 ---------------------------------------------------------------------------------------------------
 
 -- Resets all general tile properties (movable, reachable, selectable).
 function FieldAction:resetTileProperties(input)
+  self:resetAffectedTiles(input)
   self:resetSelectableTiles(input)
+end
+-- Sets all tiles as selectable or not and resets color to default.
+-- @param(selectable : boolean) The value to set all tiles.
+function FieldAction:resetAffectedTiles(input)
+  for tile in self.field:gridIterator() do
+    tile.gui.affected = false
+  end
+  -- Tiles that are included in some target's effect area.
+  for tile in self.field:gridIterator() do
+    local affectedTiles = self:getAllAffectedTiles(input, tile)
+    for i = 1, #affectedTiles do
+      affectedTiles[i].gui.affected = true
+    end
+  end
 end
 -- Sets all tiles as selectable or not and resets color to default.
 -- @param(selectable : boolean) The value to set all tiles.
@@ -87,6 +89,30 @@ function FieldAction:resetSelectableTiles(input)
   for tile in self.field:gridIterator() do
     tile.gui.selectable = self:isSelectable(input, tile)
   end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Affected Tiles
+---------------------------------------------------------------------------------------------------
+
+-- Verifies if the given tile receives any effect by the action.
+-- @ret(boolean) True if tile is affected, false otherwise.
+function FieldAction:isTileAffected(input, tile)
+  return true -- Abstract.
+end
+-- Gets all tiles that will be affected by action's effect.
+-- It included any tile within action's area that are flagged by isTileAffected method.
+-- @param(input : ActionInput) Action input.
+-- @param(tile : ObjectTile) Center tile (input's target by default).
+-- @ret(table) Array of affected tile within tile's area.
+function FieldAction:getAllAffectedTiles(input, tile)
+  local tiles = self:getAreaTiles(input, tile)
+  for i = #tiles, 1, -1 do
+    if not self:isTileAffected(input, tiles[i]) then
+      table.remove(tiles, i)
+    end
+  end
+  return tiles
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -98,13 +124,13 @@ end
 -- @param(tile : ObjectTile) The tile to check.
 -- @ret(boolean) True if can be chosen, false otherwise.
 function FieldAction:isSelectable(input, tile)
-  return true -- Abstract.
+  return not self.affectedOnly or tile.gui.affected
 end
 -- Called when players selects (highlights) a tile.
 function FieldAction:onSelectTarget(input)
   if input.GUI then
     if input.target.gui.selectable then
-      local targets = self:getAllAffectedTiles(input)
+      local targets = self:getAreaTiles(input)
       for i = #targets, 1, -1 do
         targets[i].gui:setSelected(true)
       end
@@ -116,38 +142,33 @@ end
 -- Called when players deselects (highlights another tile) a tile.
 function FieldAction:onDeselectTarget(input)
   if input.GUI and input.target then
-    local oldTargets = self:getAllAffectedTiles(input)
+    local oldTargets = self:getAreaTiles(input)
     for i = #oldTargets, 1, -1 do
       oldTargets[i].gui:setSelected(false)
     end
   end
 end
--- Gets all tiles that will be affected by skill's effect.
--- @ret(table) An array of tiles.
-function FieldAction:getAllAffectedTiles(input, tile)
-  tile = tile or input.target
-  local tiles = {}
-  if self.wholeField then
-    for tile in self.field:gridIterator() do
-      if tile and self.field:isGrounded(tile:coordinates()) then
-        tiles[#tiles + 1] = tile
-      end
-    end
-  else
-    for x, y, h in mathf.maskIterator(self.area, tile:coordinates()) do
-      local n = self.field:getObjectTile(x, y, h)
-      if n and self.field:isGrounded(x, y, h) then
-        tiles[#tiles + 1] = n
-      end
-    end
-  end
-  return tiles
-end
 -- Checks if the effect area mask contains any tiles besides the center tile.
 -- @ret(boolean) True if it's an area action, false otherwise.
 function FieldAction:isArea()
+  if not self.area then
+    return true
+  end
   local grid = self.area.grid
-  return self.wholeField or #grid > 1 or #grid > 0 and #grid[1] > 1 or #grid[1][1] > 1
+  return #grid > 1 or #grid > 0 and #grid[1] > 1 or #grid[1][1] > 1
+end
+-- Gets the list of object tiles within effect area.
+-- @ret(table) Array of ObjectTile.
+function FieldAction:getAreaTiles(input, centerTile)
+  local tiles = {}
+  centerTile = centerTile or input.target
+  for x, y, h in mathf.maskIterator(self.area, centerTile:coordinates()) do
+    local n = self.field:getObjectTile(x, y, h)
+    if n and self.field:isGrounded(x, y, h) then
+      tiles[#tiles + 1] = n
+    end
+  end
+  return tiles
 end
 -- Gets the first selected target tile.
 -- @ret(ObjectTile) The first tile.
@@ -185,6 +206,19 @@ function FieldAction:nextLayer(input, axis)
     tile = FieldManager.currentField:getObjectTile(tile.x, tile.y, tile.layer.height + axis)
   until not tile or FieldManager.currentField:isGrounded(tile:coordinates())
   return tile or input.target
+end
+
+---------------------------------------------------------------------------------------------------
+-- Execution
+---------------------------------------------------------------------------------------------------
+
+-- Checks if the action can be executed.
+function FieldAction:canExecute(input)
+  return true -- Abstract.
+end
+-- Executes the action animations and applies effects.
+function FieldAction:execute(input)
+  return { executed = true }
 end
 
 return FieldAction

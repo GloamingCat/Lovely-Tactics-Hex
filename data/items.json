@@ -13,8 +13,6 @@
       "consume": true,
       "needsUser": false,
       "effects": [],
-      "statusAdd": [],
-      "statusRemove": [],
       "attributes": [],
       "slot": "",
       "allSlots": false,
@@ -46,11 +44,10 @@
               "basicResult": "200",
               "successRate": "100",
               "heal": true,
-              "absorb": false
+              "absorb": false,
+              "statusID": -1
             }
           ],
-          "statusAdd": [],
-          "statusRemove": [],
           "attributes": [],
           "slot": "",
           "allSlots": false,
@@ -83,11 +80,10 @@
               "basicResult": "100",
               "successRate": "100",
               "heal": true,
-              "absorb": false
+              "absorb": false,
+              "statusID": -1
             }
           ],
-          "statusAdd": [],
-          "statusRemove": [],
           "attributes": [],
           "slot": "",
           "allSlots": false,
@@ -114,12 +110,14 @@
           "skillID": 1,
           "consume": true,
           "needsUser": false,
-          "effects": [],
-          "statusAdd": [],
-          "statusRemove": [
+          "effects": [
             {
-              "id": 0,
-              "rate": "100"
+              "key": "",
+              "basicResult": "action:defaultPhysicalDamage(user, target, a, b)",
+              "successRate": "100",
+              "heal": true,
+              "absorb": false,
+              "statusID": 0
             }
           ],
           "attributes": [],
@@ -154,11 +152,10 @@
               "basicResult": "b.hp() / 10",
               "successRate": "100",
               "heal": true,
-              "absorb": false
+              "absorb": false,
+              "statusID": -1
             }
           ],
-          "statusAdd": [],
-          "statusRemove": [],
           "attributes": [],
           "slot": "",
           "allSlots": false,
@@ -188,8 +185,6 @@
       "consume": true,
       "needsUser": false,
       "effects": [],
-      "statusAdd": [],
-      "statusRemove": [],
       "attributes": [],
       "slot": "",
       "allSlots": false,
@@ -216,8 +211,6 @@
           "consume": false,
           "needsUser": false,
           "effects": [],
-          "statusAdd": [],
-          "statusRemove": [],
           "attributes": [],
           "slot": "hand",
           "allSlots": false,
@@ -251,8 +244,6 @@
           "consume": false,
           "needsUser": false,
           "effects": [],
-          "statusAdd": [],
-          "statusRemove": [],
           "attributes": [],
           "slot": "hand",
           "allSlots": true,
@@ -286,8 +277,6 @@
           "consume": false,
           "needsUser": false,
           "effects": [],
-          "statusAdd": [],
-          "statusRemove": [],
           "attributes": [],
           "slot": "hand",
           "allSlots": true,
@@ -326,8 +315,6 @@
           "consume": false,
           "needsUser": false,
           "effects": [],
-          "statusAdd": [],
-          "statusRemove": [],
           "attributes": [],
           "slot": "head",
           "allSlots": true,
@@ -361,8 +348,6 @@
           "consume": false,
           "needsUser": false,
           "effects": [],
-          "statusAdd": [],
-          "statusRemove": [],
           "attributes": [],
           "slot": "acc",
           "allSlots": false,

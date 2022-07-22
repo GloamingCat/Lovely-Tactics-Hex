@@ -24,7 +24,7 @@ local BattleMoveAction = class(MoveAction)
 -- Overrides BattleAction:init.
 function BattleMoveAction:init(...)
   MoveAction.init(self, ...)
-  self.allTiles = true
+  self.freeNavigation = true
   self.showTargetWindow = false
   self.showStepWindow = true
 end
