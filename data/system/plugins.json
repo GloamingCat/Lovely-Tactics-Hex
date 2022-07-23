@@ -1,5 +1,15 @@
 [
   {
+    "on": true,
+    "name": "plugins/Tutorial.lua",
+    "tags": [
+      {
+        "key": "text",
+        "value": "Arrows Z X Page Skip Save Debug Kill Lose"
+      }
+    ]
+  },
+  {
     "on": false,
     "name": "plugins/BatchMesh",
     "tags": []

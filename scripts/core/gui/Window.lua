@@ -268,11 +268,17 @@ end
 -- By default, only sets the result to 1.
 function Window:onConfirm()
   self.result = 1
+  if self.confirmSound then
+    AudioManager:playSFX(self.confirmSound)
+  end
 end
 -- Called when player presses "cancel" key.
 -- By default, only dets the result to 0.
 function Window:onCancel()
   self.result = 0
+  if self.cancelSound then
+    AudioManager:playSFX(self.cancelSound)
+  end
 end
 function Window:onTextInput(c)
 end

@@ -16,7 +16,7 @@ end
 -- @param(sep : string) Separator (optional, black spaces by default).
 -- @ret(table) Array of substrings.
 function string.split(inputstr, sep)
-  sep = sep or "\\s+"
+  sep = sep or "%s+"
   local t, i = {}, 1
   for str in inputstr:gmatch('([^' .. sep .. ']+)') do
     t[i] = str
