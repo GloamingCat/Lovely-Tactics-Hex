@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-GUI Utilities
+GUI Events
 ---------------------------------------------------------------------------------------------------
 Functions that are loaded from the EventSheet.
 
@@ -10,9 +10,7 @@ Functions that are loaded from the EventSheet.
 -- Imports
 local ChoiceWindow = require('core/gui/common/window/interactable/ChoiceWindow')
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
-local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')
 local FieldGUI = require('core/gui/menu/FieldGUI')
-local GUI = require('core/gui/GUI')
 local NumberWindow = require('core/gui/common/window/interactable/NumberWindow')
 local SaveGUI = require('core/gui/menu/SaveGUI')
 local ShopGUI = require('core/gui/menu/ShopGUI')
@@ -20,38 +18,6 @@ local TextInputWindow = require('core/gui/common/window/interactable/TextInputWi
 local Vector = require('core/math/Vector')
 
 local EventSheet = {}
-
----------------------------------------------------------------------------------------------------
--- Auxiliary
----------------------------------------------------------------------------------------------------
-
--- Creates an empty GUI for the sheet if not already created.
-function EventSheet:createGUI()
-  if not self.gui then
-    self.gui = GUI()
-    self.gui.name = "Event GUI"
-    self.gui.dialogues = {}
-    GUIManager:showGUI(self.gui)
-  end
-end
--- Creates a dialogue window with default size and position for given ID.
--- @param(id : number) Window ID.
---  1: Speech in the bottom of the screen, full width;
---  2: Speech in the top of the screen, full width;
---  3+: Speech in the middle of the screen, 3/4 width.
--- @ret(DialogueWindow)
-function EventSheet:createDefaultDialogueWindow(id)
-  local x, y = 0, 0
-  local w, h = ScreenManager.width, ScreenManager.height / 3
-  if id == 1 then -- Bottom speech.
-    y = ScreenManager.height / 3
-  elseif id == 2 then -- Top speech.
-    y = -ScreenManager.height / 3
-  else -- Center message.
-    w = ScreenManager.width * 3 / 4
-  end
-  return DialogueWindow(self.gui, w, h, x, y)
-end
 
 ---------------------------------------------------------------------------------------------------
 -- Menu
@@ -114,24 +80,6 @@ end
 -- General parameters:
 -- @param(args.id : number) ID of the dialogue window.
 
--- Opens a new dialogue window and stores in the given ID.
--- @param(args.width : number) Width of the window (optional).
--- @param(args.height : number) Height of the window (optional).
--- @param(args.x : number) Pixel x of the window (optional).
--- @param(args.y : number) Pixel y of the window (optional).
-function EventSheet:openDialogueWindow(args)
-  self:createGUI()
-  local dialogues = self.gui.dialogues
-  local window = dialogues[args.id]
-  if not window then
-    window = self:createDefaultDialogueWindow(args.id)
-    dialogues[args.id] = window
-  end
-  window:resize(args.width, args.height)
-  window:setXYZ(args.x, args.y)
-  window:show()
-  self.gui:setActiveWindow(window)
-end
 -- Shows a dialogue in the given window.
 -- @param(args.message : string) Dialogue text.
 -- @param(args.name : string) Speaker name (optional).
@@ -174,7 +122,7 @@ function EventSheet:openChoiceWindow(args)
   window:removeSelf()
   window:destroy()
   self.gui.activeWindow = nil
-  self.gui.choice = result
+  self.vars.choiceInput = result
 end
 -- Opens a password window and waits for player choice before closing and deleting.
 -- @param(args.length : number) Number of digits.
@@ -190,7 +138,7 @@ function EventSheet:openNumberWindow(args)
   window:hide()
   window:removeSelf()
   window:destroy()
-  self.gui.number = result
+  self.vars.numberInput = result
 end
 -- Opens a text window and waits for player choice before closing and deleting.
 function EventSheet:openStringWindow(args)
@@ -202,7 +150,7 @@ function EventSheet:openStringWindow(args)
   window:hide()
   window:removeSelf()
   window:destroy()
-  self.gui.textInput = result ~= 0 and result
+  self.vars.textInput = result ~= 0 and result
 end
 
 return EventSheet

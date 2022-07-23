@@ -20,5 +20,6 @@ return function(script)
   Config.variables["lootq"].value = count
   script:showDialogue { id = 1, message = Vocab.loot }
   script:increaseItem { id = id, value = count }
+  script:closeDialogueWindow { id = 1 }
   script:deleteChar { key = "self", permanent = true }
 end

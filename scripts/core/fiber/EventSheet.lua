@@ -20,20 +20,21 @@ local EventSheet = class(Fiber)
 -- @param(root : FiberList) The FiberList that originated this fiber.
 -- @param(script : table) Table with name (or func) and tags. 
 -- @param(char : Character) Character associated with this fiber (optional).
-function EventSheet:init(root, script, char)
-  if script.func then
-    self.commands = script.func
+function EventSheet:init(root, data, char)
+  if data.func then
+    self.commands = data.func
   else
-    local func = require('custom/' .. script.name)
-    assert(func, "Could not load event sheet file: " .. tostring(script.name))
+    local func = require('custom/' .. data.name)
+    assert(func, "Could not load event sheet file: " .. tostring(data.name))
     self.commands = func
   end
-  self.data = script
-  self.vars = script and script.vars
-  self.block = script and script.block
-  self.args = Database.loadTags(script.tags)
+  self.data = data
+  self.vars = data and data.vars
+  self.args = Database.loadTags(data.tags)
   self.char = char
-  self.player = FieldManager.player
+  if self.data then
+    self.data.runningIndex = 0
+  end
   Fiber.init(self, root, nil)
 end
 
@@ -45,15 +46,13 @@ end
 function EventSheet:execute()
   self:setUp()
   self:commands()
-  self:clear()
 end
 -- Sets any variable needed to indicate that this script is running.
 function EventSheet:setUp()
   if self.data then
-    self.data.running = true
-  end
-  if self.block then
-    self.player.waitList:add(self)
+    if self.data.block then
+      FieldManager.player.waitList:add(self)
+    end
   end
 end
 -- Resets any variable that indicates that this script is running.
@@ -62,11 +61,11 @@ function EventSheet:clear()
     GUIManager:returnGUI()
     self.gui = nil
   end
-  if self.block then
-    self.player.waitList:removeElement(self)
-  end
   if self.data then
-    self.data.running = false
+    if self.data.block then
+      FieldManager.player.waitList:removeElement(self)
+    end
+    self.data.runningIndex = nil
   end
 end
 -- Overrides Fiber:finish.
@@ -85,24 +84,20 @@ end
 function EventSheet:forkFromScript(script, ...)
   return self.root:forkFromScript(script, self.char, ...)
 end
--- Searches for the character with the given key.
--- @param(key : string) Character's key.
--- @param(optional : boolean) If true, does not throw error if not found.
--- @ret(Character) Character with given key, nil if optional and not found.
-function EventSheet:findCharacter(key, optional)
-  if key == 'self' then
-    return self.char
-  end
-  local char = FieldManager:search(key)
-  assert(char or optional, 'Character not found: ' .. tostring(key))
-  return char
-end
 -- Load other commands.
-local files = {'General', 'GUI', 'Character', 'Screen', 'Sound', 'Party'}
-for i = 1, #files do
-  local commands = require('core/event/' .. files[i] .. 'Events')
+for k, v in pairs(require('core/event/EventUtil')) do
+  EventSheet[k] = v
+end
+for _, file in ipairs({'General', 'GUI', 'Character', 'Screen', 'Sound', 'Party'}) do
+  local commands = require('core/event/' .. file .. 'Events')
   for k, v in pairs(commands) do
-    EventSheet[k] = v
+    if type(v) == 'function' then
+      EventSheet[k] = function(script, ...)
+        commands[k](script, ...)
+      end
+    else
+      EventSheet[k] = v
+    end
   end
 end
 

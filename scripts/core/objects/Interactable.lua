@@ -101,8 +101,13 @@ function Interactable:getPersistentData()
   local function copyScripts(scripts)
     local copy = {}
     for i = 1, #scripts do
-      copy[i] = copyTable(scripts[i])
-      copy[i].running = nil
+      copy[i] = {
+        name = scripts[i].name,
+        global = scripts[i].global,
+        block = scripts[i].block,
+        wait = scripts[i].wait,
+        tags = scripts[i].tags,
+        vars = scripts[i].vars }
     end
     return copy
   end
@@ -163,7 +168,7 @@ end
 -- Creates a new event sheet from the given script data.
 -- @param(script : table) Script initialization info.
 function Interactable:runScript(script)
-  if script.running then
+  if script.runningIndex then
     return
   end
   local fiberList = script.global and FieldManager.fiberList or self.fiberList

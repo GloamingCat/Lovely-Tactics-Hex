@@ -26,7 +26,7 @@ return function(script)
       Vocab.no
     }}
 
-    if script.gui.choice == 1 then
+    if script.vars.choiceInput == 1 then
       script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
         Vocab.dialogues.npc.ThatsGood
       }

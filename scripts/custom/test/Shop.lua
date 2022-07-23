@@ -29,7 +29,7 @@ return function(script)
 
   script:closeDialogueWindow { id = 1 }
 
-  if script.gui.choice == 1 then
+  if script.vars.choiceInput == 1 then
     script:openShopMenu { sell = true, items = {
       { id = 2 },
       { id = 3 },
@@ -39,7 +39,7 @@ return function(script)
       { id = 7 }
     }}
     return
-  elseif script.gui.choice == 3 then
+  elseif script.vars.choiceInput == 3 then
     return
   end
 

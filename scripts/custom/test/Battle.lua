@@ -44,6 +44,7 @@ return function(script)
       gameOverCondition = gameOverCondition,
       escapeEnabled = true 
     }
+    return
   end
   
   ::afterBattle::
@@ -52,20 +53,23 @@ return function(script)
 
   if BattleManager:playerWon() then
     print 'You won!'
-    FieldManager.fiberList:fork(script.deleteChar, script, { key = "self", fade = 60, permanent = true })
+    script:deleteChar { key = "self", permanent = true }
   elseif BattleManager:enemyWon() then
-    assert(script.args.loseEnabled, "Player shouldn't have the option to continue.")
+    assert(BattleManager.params.gameOverCondition < 2, "Player shouldn't have the option to continue.")
     print 'You lost...'
   elseif BattleManager:drawed() then
     print 'Draw.'
-    FieldManager.fiberList:fork(script.deleteChar, script, { key = "self", fade = 60, permanent = true })
+    script:deleteChar { key = "self", permanent = true }
   elseif BattleManager:playerEscaped() then
     print 'You escaped!'
   elseif BattleManager:enemyEscaped() then
     print 'The enemy escaped...'
-    FieldManager.fiberList:fork(script.deleteChar, script, { key = "self", fade = 60, permanent = true })
+    script:deleteChar { key = "self", permanent = true }
   end
   
+  --FieldManager.fiberList:forkEvent(script.finishBattle, script, { fade = 60 })
   script:finishBattle { fade = 60 }
+  
+  coroutine.yield()
 
 end

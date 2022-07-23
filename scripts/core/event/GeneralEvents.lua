@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-EventSheet Utilities
+General Events
 ---------------------------------------------------------------------------------------------------
 Functions that are loaded from the EventSheet.
 
@@ -12,6 +12,15 @@ local AIRule = require('core/battle/ai/AIRule')
 local TagMap = require('core/datastruct/TagMap')
 
 local EventSheet = {}
+
+---------------------------------------------------------------------------------------------------
+-- Execution
+---------------------------------------------------------------------------------------------------
+
+-- Event to run an arbitraty funcion and count it as an event command.
+function EventSheet:runFunction(func, ...)
+  func(...)
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Field
@@ -30,11 +39,12 @@ function EventSheet:moveToField(args)
   FieldManager.playerInput = false
   if args.fade then
     if self.char.tile and self.char.tile ~= FieldManager.player:getTile() then
-      self.root:fork(function()
+      FieldManager.player.fiberList:fork(function()
         -- Character
         if FieldManager.player.autoTurn then
           FieldManager.player:turnToTile(self.char.tile.x, self.char.tile.y)
         end
+        FieldManager.player:playMoveAnimation()
         FieldManager.player:walkToTile(self.char.tile:coordinates())
       end)
     end

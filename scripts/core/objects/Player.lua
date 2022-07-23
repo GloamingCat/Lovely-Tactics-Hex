@@ -71,13 +71,13 @@ function Player:resumeScripts()
   Character.resumeScripts(self)
   self:collideTile(self:getTile())
   while true do
+    yield()
     for script in self.waitList:iterator() do
       script:waitForEnd()
     end
     if FieldManager.playerInput and not self:isBusy() then
       self:checkFieldInput()
     end
-    yield()
   end
 end
 -- Checks movement and interaction inputs.

@@ -51,12 +51,24 @@ end
 function FiberList:fork(func, ...)
   return Fiber(self, func, ...)
 end
--- Creates new Fiber from a script table.
+-- Creates new EventSheet from a script table.
 -- @param(script : table) Table with script's name and param.
 -- @ret(EventSheet) The newly created Fiber.
 function FiberList:forkFromScript(script, ...)
   local sheet = EventSheet(self, script, ...)
   return sheet
+end
+-- Creates new Fiber from a script table.
+-- @param(func : function) The function of the Fiber.
+-- @param(script : table) Table with script's name and param.
+-- @ret(EventSheet) The newly created Fiber.
+function FiberList:forkEvent(func, script, ...)
+  local args = {...}
+  local data = {
+    func = function () func(script, unpack(args)) end, 
+    vars = script.vars,
+    block = script.block }
+  return self:forkFromScript(data, script.char, ...)
 end
 
 return FiberList

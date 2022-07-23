@@ -75,8 +75,13 @@ end
 function Field:getPersistentData()
   local script = self.loadScript
   if script then
-    script = copyTable(script)
-    script.running = nil
+      script = {
+        name = script.name,
+        global = script.global,
+        block = script.block,
+        wait = script.wait,
+        tags = script.tags,
+        vars = script.vars }
   end
   return {
     images = FieldManager.renderer:getImageData(),

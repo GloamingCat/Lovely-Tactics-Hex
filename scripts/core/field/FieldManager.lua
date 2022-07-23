@@ -95,7 +95,7 @@ end
 -- Execute current field's load script and characters' load scripts.
 function FieldManager:runLoadScripts()
   local script = self.currentField.loadScript
-  if script and script.name ~= '' and script.onLoad then
+  if script and script.name ~= '' then
     local fiber = self.fiberList:forkFromScript(script)
     if script.wait then
       fiber:waitForEnd()
@@ -120,6 +120,11 @@ function FieldManager:initializePlayer(transition, save)
   self.renderer.focusObject = player
   self.renderer:setPosition(player.position)
   self.player = player
+  for fiber in self.fiberList:iterator() do
+    if fiber.data and fiber.data.block then
+      player.waitList:add(fiber)
+    end
+  end
 end
 -- Create new field camera.
 -- @param(data : table) Field data.

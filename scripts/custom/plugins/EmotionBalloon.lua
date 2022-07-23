@@ -10,7 +10,7 @@ set in the project's config.
 
 -- Imports
 local CharacterBase = require('core/objects/CharacterBase')
-local EventSheet = require('core/fiber/EventSheet')
+local EventSheet = require('core/event/CharacterEvents')
 
 -- Custom
 local keyToRow = {}

@@ -15,7 +15,7 @@ local indent = tonumber(args.indent)
 
 -- Imports
 local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')
-local EventSheet = require('core/fiber/EventSheet')
+local EventSheet = require('core/event/GUIEvents')
 local SimpleImage = require('core/gui/widget/SimpleImage')
 
 ---------------------------------------------------------------------------------------------------
