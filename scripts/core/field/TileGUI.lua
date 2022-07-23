@@ -8,15 +8,11 @@ ObjectTile graphics for battle interface.
 =================================================================================================]]
 
 -- Imports
-local Animation = require('core/graphics/Animation')
+local TileGraphic = require('core/field/TileGraphic')
 
 -- Alias
 local tile2Pixel = math.field.tile2Pixel
 local min = math.min
-
--- Constants
-local tileW = Config.grid.tileW
-local tileH = Config.grid.tileH
 
 local TileGUI = class()
 
@@ -27,17 +23,12 @@ local TileGUI = class()
 -- Constructor.
 -- @param(tile : ObjectTile) The tile this object belongs to.
 function TileGUI:init(tile, baseAnim, highlightAnim)
-  local renderer = FieldManager.renderer
   local x, y, z = tile2Pixel(tile:coordinates())
   if baseAnim and Config.animations.tile >= 0 then
-    local baseAnim = Database.animations[Config.animations.tile]
-    self.baseAnim = ResourceManager:loadAnimation(baseAnim, renderer)
-    self.baseAnim.sprite:setXYZ(x, y, z)
+    self.baseAnim = TileGraphic(Config.animations.tile, x, y, z)
   end
   if highlightAnim and Config.animations.tileCursor >= 0 then
-    local hlAnim = Database.animations[Config.animations.tileCursor]
-    self.highlightAnim = ResourceManager:loadAnimation(hlAnim, renderer)
-    self.highlightAnim.sprite:setXYZ(x, y, z)
+    self.highlightAnim = TileGraphic(Config.animations.tileCursor, x, y, z)
   end
   self.x, self.y, self.h = tile:coordinates()
   self.grounded = FieldManager.currentField:isGrounded(tile:coordinates())
@@ -82,17 +73,17 @@ function TileGUI:updateDepth()
     minDepth = min(minDepth, layers[i].grid[self.x][self.y].depth)
   end
   if self.baseAnim then
-    self.baseAnim.sprite:setOffset(nil, nil, minDepth)
+    self.baseAnim:setDepth(minDepth)
   end
   if self.highlightAnim then
-    self.highlightAnim.sprite:setOffset(nil, nil, minDepth - 1)
+    self.highlightAnim:setDepth(minDepth - 1)
   end
 end
 -- Selects / deselects this tile.
 -- @param(value : boolean) True to select, false to deselect.
 function TileGUI:setSelected(value)
   if self.highlightAnim then
-    self.highlightAnim.sprite:setVisible(value)
+    self.highlightAnim:setVisible(value)
   end
 end
 -- Sets color to the color with the given label.
@@ -107,7 +98,7 @@ function TileGUI:setColor(name)
     name = name .. '_off'
   end
   local c = Color[name]
-  self.baseAnim.sprite:setColor(c)
+  self.baseAnim:setColor(c)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -117,16 +108,15 @@ end
 -- Shows tile edges.
 function TileGUI:show()
   if self.baseAnim then
-    self.baseAnim.sprite:setVisible(self.grounded)
+    self.baseAnim:setVisible(self.grounded)
   end
 end
 -- Hides tile edges.
 function TileGUI:hide()
   if self.baseAnim then
-    self.baseAnim.sprite:setVisible(false)
+    self.baseAnim:setVisible(false)
   end
   self:setSelected(false)
 end
 
 return TileGUI
-

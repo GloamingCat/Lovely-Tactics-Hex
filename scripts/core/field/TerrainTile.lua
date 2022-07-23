@@ -18,8 +18,6 @@ local mathf = math.field
 local newQuad = love.graphics.newQuad
 
 -- Constants
-local tileW = Config.grid.tileW
-local tileH = Config.grid.tileH
 local origins = {}
 origins[1] = {0, 0}
 origins[2] = {0.5, 0}
@@ -136,10 +134,11 @@ function TerrainTile:createQuarters(data, rows)
     local x, y = origins[i][1] * w, origins[i][2] * h
     local quad = newQuad(x + data.quad.x, y + data.quad.y + rows[i] * h, 
       w / 2, h / 2, texture:getWidth(), texture:getHeight())
+    local d = (0.5 - origins[i][2]) * Config.grid.depthPerHeight
     quarters[i] = Sprite(FieldManager.renderer, texture, quad)
     quarters[i]:setPosition(self.center)
     quarters[i]:setTransformation(data.transform)
-    quarters[i]:setOffset(data.transform.offsetX - x, data.transform.offsetY - y, self.depth + 1 - origins[i][2] * 2)
+    quarters[i]:setOffset(data.transform.offsetX - x, data.transform.offsetY - y, self.depth + d)
   end
   return quarters
 end
