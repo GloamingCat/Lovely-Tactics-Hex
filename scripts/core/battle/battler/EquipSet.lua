@@ -32,12 +32,16 @@ function EquipSet:init(battler, save)
   else
     local equips = battler.data.equip
     for i, slot in ipairs(Config.equipTypes) do
+      self.types[slot.key] = { state = slot.state, count = slot.count }
       for k = 1, slot.count do
         local key = slot.key .. k
         local slotData = equips and findByKey(equips, key) 
-        self.slots[key] = slotData and deepCopyTable(slotData) or { id = -1 }
+        if slotData then
+          self.slots[key] = deepCopyTable(slotData)
+        else 
+          self.slots[key] = { id = -1 }
+        end
       end
-      self.types[slot.key] = { state = slot.state, count = slot.count }
     end
   end
   for k, slot in pairs(self.slots) do
@@ -52,6 +56,17 @@ end
 -- Equip / Unequip
 ---------------------------------------------------------------------------------------------------
 
+-- Gets the state of the current slot.
+-- @param(slotType : table) Slot type data.
+-- @param(key : string) Specific slot key.
+-- @ret(number)
+function EquipSet:slotState(slotType, key)
+  if self.slots[key] and self.slots[key].state ~= nil and self.slots[key].state > 0 then
+    return self.slots[key].state
+  else
+    return slotType.state
+  end
+end
 -- Gets the ID of the current equip in the given slot.
 -- @param(key : string) Slot's key.
 -- @ret(number) The ID of the equip item (-1 if none).
@@ -176,7 +191,8 @@ end
 function EquipSet:canEquip(key, item)
   local slotType = self.types[item.slot]
   assert(slotType, 'Slot does not exist: ' .. tostring(item.slot))
-  if slotType.state >= 3 then
+  local state = self:slotState(slotType, key)
+  if state >= 3 then
     return false
   end
   local currentItem = self:getEquip(key)
@@ -189,7 +205,7 @@ function EquipSet:canEquip(key, item)
     end
   end
   if item.allSlots then
-    if slotType.count > 1 and slotType.state == 2 then
+    if slotType.count > 1 and state == 2 then
       return false
     end
   end
@@ -226,9 +242,10 @@ function EquipSet:canUnequip(key)
   local currentItem = self:getEquip(key)
   if currentItem then
     local slot = self.types[currentItem.slot]
-    if slot.state >= 2 then
+    local state = self:slotState(slot, key)
+    if state then
       return false
-    elseif slot.state == 1 then
+    elseif state == 1 then
       for i = 1, slot.count do
         local key2 = currentItem.slot .. i
         if key2 ~= key and self:getEquip(key2) then
