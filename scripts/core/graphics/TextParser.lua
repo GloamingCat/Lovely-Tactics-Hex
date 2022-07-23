@@ -229,17 +229,23 @@ function TextParser.wrapText(lines, currentLine, fragment, font, width)
     breakPoint = nextBreakPoint
     nextBreakPoint = fragment:find(' ', nextBreakPoint + 1, true) or #fragment + 1
   end
-  if breakPoint and breakPoint ~= nextBreakPoint then
-    -- Insert first part.
-    local part1 = fragment:sub(1, breakPoint - 1)
-    local length1 = TextParser.insertFragment(lines, currentLine, part1, font)
-    -- Create new line.
-    currentLine = { width = 0, height = 0, length = 0 }
-    insert(lines, currentLine)
-    -- Insert second part.
-    local part2 = fragment:sub(breakPoint + 1)
-    local line, length2 = TextParser.wrapText(lines, currentLine, part2, font, width)
-    return line, length1 + length2
+  if breakPoint ~= nextBreakPoint then
+    if breakPoint then
+      -- Insert first part.
+      local part1 = fragment:sub(1, breakPoint - 1)
+      local length1 = TextParser.insertFragment(lines, currentLine, part1, font)
+      -- Create new line.
+      currentLine = { width = 0, height = 0, length = 0 }
+      insert(lines, currentLine)
+      -- Insert second part.
+      local part2 = fragment:sub(breakPoint + 1)
+      local line, length2 = TextParser.wrapText(lines, currentLine, part2, font, width)
+      return line, length1 + length2
+    else
+      currentLine = { width = 0, height = 0, length = 0 }
+      insert(lines, currentLine)
+      return TextParser.wrapText(lines, currentLine, fragment, font, width)
+    end
   else
     return currentLine, TextParser.insertFragment(lines, currentLine, fragment, font)
   end

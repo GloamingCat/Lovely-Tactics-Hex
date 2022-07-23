@@ -203,7 +203,10 @@ function Text:draw(renderer)
   local rsx = ScreenManager.scaleX * renderer.scaleX
   local rsy = ScreenManager.scaleY * renderer.scaleY
   local x, y = 0, self:alignOffsetY() - 0.5
-  local r, g, b, a
+  local r, g, b, a = lgraphics.getColor()
+  local shader = lgraphics.getShader()
+  lgraphics.setColor(self.color.red, self.color.green, self.color.blue, self.color.alpha)
+  lgraphics.setShader()
   for i = 1, #self.lines do
     local line = self.lines[i]
     local w = line.buffer:getWidth() * sx
@@ -214,17 +217,13 @@ function Text:draw(renderer)
       lsx = sx
       x = self:alignOffsetX(w)
     end
-    local shader = lgraphics.getShader()
-    lgraphics.setShader()
-    r, g, b, a = lgraphics.getColor()
-    lgraphics.setColor(self.color.red, self.color.green, self.color.blue, self.color.alpha)
     lgraphics.draw(line.buffer, line.quad, 
       round((self.position.x + x) * rsx), round((self.position.y + y) * rsy), 
       self.rotation, lsx * rsx, sy * rsy, self.offsetX, self.offsetY)
-    lgraphics.setColor(r, g, b, a)
     y = y + line.height * sy
-    lgraphics.setShader(shader)
   end
+  lgraphics.setShader(shader)
+  lgraphics.setColor(r, g, b, a)
 end
 -- Called when the scale of screen changes.
 -- @param(renderer : Renderer) The renderer that is drawing this text.

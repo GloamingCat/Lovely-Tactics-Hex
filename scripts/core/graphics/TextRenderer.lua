@@ -55,6 +55,9 @@ end
 -- @param(texture : Canvas) Unshaded rendered text.
 -- @ret(Canvas) Pre-shaded texture.
 function TextRenderer.shadeBuffer(texture)
+  local r, g, b, a = lgraphics.getColor()
+  lgraphics.setColor(1, 1, 1, 1)
+  local shader = lgraphics.getShader()
   local w, h = texture:getWidth(), texture:getHeight()
   local newTexture = lgraphics.newCanvas(w, h)
   newTexture:setFilter('linear', 'linear')
@@ -66,6 +69,7 @@ function TextRenderer.shadeBuffer(texture)
   --lgraphics.setBlendMode('alpha', 'premultiplied')
   lgraphics.draw(texture)
   --lgraphics.setBlendMode('alpha')
+  lgraphics.setColor(r, g, b, a)
   return newTexture
 end
 
