@@ -25,21 +25,15 @@
       "skills": [
         {
           "id": 10,
-          "level": 4,
-          "requirements": [],
-          "tags": []
+          "level": 4
         },
         {
           "id": 28,
-          "level": 5,
-          "requirements": [],
-          "tags": []
+          "level": 5
         },
         {
           "id": 27,
-          "level": 7,
-          "requirements": [],
-          "tags": []
+          "level": 7
         }
       ],
       "name": "Knight",
@@ -74,33 +68,23 @@
       "skills": [
         {
           "id": 19,
-          "level": 6,
-          "requirements": [],
-          "tags": []
+          "level": 6
         },
         {
           "id": 8,
-          "level": 7,
-          "requirements": [],
-          "tags": []
+          "level": 7
         },
         {
           "id": 20,
-          "level": 8,
-          "requirements": [],
-          "tags": []
+          "level": 8
         },
         {
           "id": 13,
-          "level": 9,
-          "requirements": [],
-          "tags": []
+          "level": 9
         },
         {
           "id": 21,
-          "level": 10,
-          "requirements": [],
-          "tags": []
+          "level": 10
         }
       ],
       "name": "Mage",

@@ -222,6 +222,57 @@
           "ai": [
             {
               "condition": "",
+              "name": "rule/AttackRule.lua",
+              "tags": []
+            }
+          ],
+          "jobID": 0,
+          "attackID": 15,
+          "level": 3,
+          "money": 30,
+          "exp": 12,
+          "attributes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "skills": [],
+          "status": [],
+          "elements": [
+            {
+              "id": 5,
+              "value": 200
+            }
+          ],
+          "items": [],
+          "equip": [],
+          "name": "Smart Jelly",
+          "tags": []
+        },
+        "id": 4,
+        "children": []
+      },
+      {
+        "data": {
+          "persistent": false,
+          "ai": [
+            {
+              "condition": "",
               "name": "rule/RushRule.lua",
               "tags": []
             }
@@ -321,57 +372,6 @@
           "tags": []
         },
         "id": 9,
-        "children": []
-      },
-      {
-        "data": {
-          "persistent": false,
-          "ai": [
-            {
-              "condition": "",
-              "name": "rule/AttackRule.lua",
-              "tags": []
-            }
-          ],
-          "jobID": 0,
-          "attackID": 15,
-          "level": 3,
-          "money": 20,
-          "exp": 10,
-          "attributes": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "skills": [],
-          "status": [],
-          "elements": [
-            {
-              "id": 5,
-              "value": 200
-            }
-          ],
-          "items": [],
-          "equip": [],
-          "name": "Smart Jelly",
-          "tags": []
-        },
-        "id": 4,
         "children": []
       }
     ]
