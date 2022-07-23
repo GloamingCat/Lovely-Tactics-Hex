@@ -63,11 +63,11 @@ end
 -- @param(data : table) the battler's data from database
 -- @param(save : table) the data from save
 function Battler:initState(data, save)
+  self.skillList = SkillList(self, save)
   self.job = Job(self, save)
   self.inventory = Inventory(save and save.items or data.items or {})
   self.statusList = StatusList(self, save)
   self.equipSet = EquipSet(self, save)
-  self.skillList = SkillList(self, save)
   self.attackSkill = SkillAction:fromData(save.attackID or data.attackID)
   -- Elements
   self.elementBase = save and save.elements and copyArray(save.elements)

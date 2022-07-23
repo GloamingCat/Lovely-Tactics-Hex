@@ -86,18 +86,13 @@ end
 -- General parameters:
 -- @param(args.key : string) The key of the member to be modified.
 
--- Makes a member learn a new skill if the requirements are met.
+-- Makes a member learn a new skill.
 -- @param(args.id : number) Skill's ID.
--- @oaram(args.req : table) Array of requirements (optional).
 function EventSheet:learnSkill(args)
   local troop = Troop()
   local battler = troop.battlers[args.key]
   assert(battler, "No battler with key: " .. tostring(args.key))
-  if args.req then
-    battler.skillList:learn { id = args.id, requirements = args.req }
-  else
-    battler.skillList:learn(args.id)
-  end
+  battler.skillList:learn(args.id)
   TroopManager:saveTroop(troop)
 end
 -- Sets a member's level. 

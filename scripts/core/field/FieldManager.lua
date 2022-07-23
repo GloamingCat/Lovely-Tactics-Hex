@@ -194,7 +194,8 @@ function FieldManager:storePlayerState()
     return
   end
   self.playerState.transition = { fieldID = self.currentField.id }
-  local fieldData = { chars = {} }
+  local fieldData = self:getFieldSave(self.currentField.id)
+  fieldData.chars = util.table.deepCopy(fieldData.chars)
   for char in self.characterList:iterator() do
     fieldData.chars[char.key] = char:getPersistentData()
   end

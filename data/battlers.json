@@ -67,13 +67,17 @@
             0,
             0
           ],
-          "skills": [
-            22
-          ],
+          "skills": [],
           "status": [],
           "elements": [],
           "items": [],
-          "equip": [],
+          "equip": [
+            {
+              "key": "hand1",
+              "id": 5,
+              "state": 0
+            }
+          ],
           "name": "Arthur",
           "tags": []
         },

@@ -24,6 +24,10 @@
       "expCurve": "lvl * (lvl + 1) * 2",
       "skills": [
         {
+          "id": 22,
+          "level": 2
+        },
+        {
           "id": 10,
           "level": 4
         },

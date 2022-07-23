@@ -48,22 +48,11 @@ function SkillList:containsSkill(id)
   end
   return false
 end
--- @param(skill : table | number) Entry in the list of skill to learn or skill's ID.
-function SkillList:learn(skill)
-  if type(skill) == 'table' then
-    if self:containsSkill(skill.id) then
-      return
-    end
-    for i = 1, #skill.requirements do
-      if not self:containsSkill(skill.requirements[i]) then
-        return
-      end
-    end
-    skill = skill.id
+-- @param(id : number) The skill's ID.
+function SkillList:learn(id)
+  if not self:containsSkill(id) then
+    self:add(SkillAction:fromData(id))
   end
-  skill = SkillAction:fromData(skill)
-  self:add(skill)
-  return skill
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -39,6 +39,7 @@ function Job:init(battler, save)
   self.skills = List(jobData.skills)
   self.skills:sort(function(a, b) return a.level < b.level end)
   self.exp = self.exp or self.expCurve(self.level)
+  self:learnSkills()
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -54,15 +55,19 @@ function Job:addExperience(exp)
   self.exp = self.exp + exp
   while self.exp >= self.expCurve(self.level + 1) do
     self.level = self.level + 1
-    for i = 1, #self.skills do
-      local skill = self.skills[i]
-      if self.level >= skill.level then
-        self.battler.skillList:learn(skill)
-      end
-    end
+    self:learnSkills(self.level)
     if self.level == Config.battle.maxLevel then
       self.exp = self.expCurve(self.level)
       return
+    end
+  end
+end
+-- Learn all skills up to current level.
+function Job:learnSkills()
+  for i = 1, #self.skills do
+    local skill = self.skills[i]
+    if self.level >= skill.level then
+      self.battler.skillList:learn(skill.id)
     end
   end
 end
