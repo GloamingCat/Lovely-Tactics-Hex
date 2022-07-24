@@ -13,9 +13,9 @@ etc.
 =================================================================================================]]
 
 -- Imports
-local TargetFinder = require('core/battle/ai/TargetFinder')
 local FieldAction = require('core/battle/action/FieldAction')
 local List = require('core/datastruct/List')
+local PriorityQueue = require('core/datastruct/PriorityQueue')
 
 -- Alias
 local mod1 = math.mod1
@@ -67,7 +67,7 @@ function BattleAction:onSelect(input)
   FieldAction.onSelect(self, input)
   if input.GUI and not self.freeNavigation then
     self.index = 1
-    local queue = TargetFinder.closestCharacters(input)
+    local queue = self:closestSelectableTiles(input)
     self.selectionTiles = queue:toList()
   end
   input.moveAction = self.moveAction
@@ -254,6 +254,19 @@ end
 -- AI
 ---------------------------------------------------------------------------------------------------
 
+-- Creates a queue of the closest selectable tiles.
+-- @ret(PriorityQueue)
+function BattleAction:closestSelectableTiles(input)
+  local pathMatrix = TurnManager:pathMatrix()
+  local tempQueue = PriorityQueue()
+  for tile in self.field:gridIterator() do
+    if tile.gui.selectable then
+      local path = pathMatrix:get(tile.x, tile.y)
+      tempQueue:enqueue(tile, path and path.totalCost or 1000)
+    end
+  end
+  return tempQueue
+end
 -- Used for AI. Gets all tiles that may be a target from the target tile in the input.
 -- @ret(table) An array of tiles.
 function BattleAction:getAllAccessedTiles(input, tile)
@@ -268,6 +281,28 @@ function BattleAction:getAllAccessedTiles(input, tile)
     end
   end
   return tiles
+end
+-- Checks if a certain tile is with given input target's range.
+-- @param(ObjectTile : tile)
+-- @ret(boolean)
+function BattleAction:isWithinRange(input, tile)
+  for x, y, h in mathf.maskIterator(self.range, input.target:coordinates()) do
+    if tile.x == x and tile.y == y and tile.h == h then
+      return true
+    end
+  end
+  return false
+end
+-- Checks if a certain tile is with given input target's effect area.
+-- @param(ObjectTile : tile)
+-- @ret(boolean)
+function BattleAction:isWithinArea(input, tile)
+  for x, y, h in mathf.maskIterator(self.area, input.target:coordinates()) do
+    if tile.x == x and tile.y == y and tile.h == h then
+      return true
+    end
+  end
+  return false
 end
 
 return BattleAction

@@ -8,8 +8,7 @@ Rule to attack the closest character.
 =================================================================================================]]
 
 -- Imports
-local SkillRule = require('custom/rule/SkillRule')
-local TargetFinder = require('core/battle/ai/TargetFinder')
+local SkillRule = require('core/battle/ai/SkillRule')
 
 local RushRule = class(SkillRule)
 
@@ -18,9 +17,12 @@ local RushRule = class(SkillRule)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides SkillRule:onSelect.
-function RushRule:onSelect(user)
-  SkillRule.onSelect(self, user)
-  self:selectClosestTarget(user)
+function RushRule:onSelect(...)
+  SkillRule.onSelect(self, ...)
+  self:selectClosestTarget()
+  if self.input.target == nil then
+    self.input = nil
+  end
 end
 -- @ret(string) String identifier.
 function RushRule:__tostring()

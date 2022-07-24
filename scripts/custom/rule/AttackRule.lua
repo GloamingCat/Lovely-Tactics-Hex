@@ -8,10 +8,7 @@ The rule for an AI that attacks the character with the highest chance of KO.
 =================================================================================================]]
 
 -- Imports
-local SkillRule = require('custom/rule/SkillRule')
-
--- Alias
-local expectation = math.randomExpectation
+local SkillRule = require('core/battle/ai/SkillRule')
 
 local AttackRule = class(SkillRule)
 
@@ -20,28 +17,12 @@ local AttackRule = class(SkillRule)
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides SkillRule:onSelect.
-function AttackRule:onSelect(user)
-  SkillRule.onSelect(self, user)
+function AttackRule:onSelect(...)
+  SkillRule.onSelect(self, ...)
   -- Find target with higher chance of dying
-  local bestTile = nil
-  local bestChance = math.huge
-  local eff = self.skill.effects[1]
-  for char in TroopManager.characterList:iterator() do
-    local tile = char:getTile()
-    if tile.gui.affected and tile.gui.reachable and self:isValidTarget(user, char, eff) then
-      local rate = eff.successRate(self.skill, user.battler, char.battler, user.battler.att, char.battler.att)
-      local points = self.skill:calculateEffectPoints(eff, user.battler, char.battler, expectation)
-      local killChance = 1 - (char.battler.state[eff.key] - points * rate / 100) / char.battler['m' .. eff.key]()
-      if killChance > bestChance then
-        bestChance = killChance
-        bestTile = tile
-      end
-    end
-  end
-  if bestTile then
-    self.input.target = bestTile
-  else
-    self:selectClosestTarget(user)
+  self:selectMostEffectiveTarget()
+  if self.input.target == nil then
+    self.input = nil
   end
 end
 -- @ret(string) String identifier.

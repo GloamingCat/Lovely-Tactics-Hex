@@ -11,7 +11,6 @@ battler. If there's no such field, it will use battler's attack skill.
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
 local AIRule = require('core/battle/ai/AIRule')
-local TargetFinder = require('core/battle/ai/TargetFinder')
 
 local SkillRule = class(AIRule)
 
@@ -33,35 +32,55 @@ function SkillRule:onSelect(user)
   self.input = ActionInput(self.skill, user or TurnManager:currentCharacter())
   self.skill:onSelect(self.input)
 end
+
+---------------------------------------------------------------------------------------------------
+-- Target Selection
+---------------------------------------------------------------------------------------------------
+
 -- Character if user is a valid target.
 -- @param(user : Character) Current user.
 -- @param(char : Character) Target candidate.
 -- @param(eff : table) Effect to check validity (optional, first effect by default).
 -- @ret(boolean)
-function SkillRule:isValidTarget(user, char, eff)
+function SkillRule:isValidTarget(char, eff)
   eff = eff or self.skill.effects[1]
-  if eff and (char.party == user.party) ~= eff.heal then
+  if eff and (char.party == self.input.user.party) ~= eff.heal then
     return false
   elseif self.skill.effectCondition then
-    return self.skill:effectCondition(user, char)
+    return self.skill:effectCondition(self.input.user, char)
   else
     return true
   end
 end
--- Selected the closest valid character target.
--- @param(user : Character) Current user.
-function SkillRule:selectClosestTarget(user)
-  local queue = TargetFinder.closestCharacters(self.input)
+-- Selects the closest valid character target.
+-- @param(eff : table) Effect to check validity (optional, first effect by default).
+function SkillRule:selectClosestTarget(eff)
+  local queue = self.skill:closestSelectableTiles(self.input)
   while not queue:isEmpty() do
     local tile = queue:dequeue()
     local char = tile.characterList[1]
-    if char and self:isValidTarget(user, char) then
+    if char and self:isValidTarget(char, eff) then
       self.input.target = tile
       break
     end
   end
-  if self.input.target == nil then
-    self.input = nil
+end
+-- Selects the reachable tile with better effect.
+-- @param(eff : table) Effect to check validity (optional, first effect by default).
+function SkillRule:selectMostEffectiveTarget(eff)
+  local map = {}
+  for char in TroopManager.characterList:iterator() do
+    local tile = char:getTile()
+    if tile.gui.reachable and tile.gui.selectable and not map[tile] then
+      map[tile] = self.skill:estimateAreaEffect(self.input, tile, eff)
+    end
+  end
+  local bestDmg = -math.huge
+  for tile, dmg in pairs(map) do
+    if dmg > bestDmg then
+      self.input.target = tile
+      bestDmg = dmg
+    end
   end
 end
 

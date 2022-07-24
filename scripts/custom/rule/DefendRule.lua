@@ -10,8 +10,7 @@ The rule for an AI that moves to the safest tile that still has a reachable targ
 -- Imports
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
 local BattleTactics = require('core/battle/ai/BattleTactics')
-local SkillRule = require('custom/rule/SkillRule')
-local TargetFinder = require('core/battle/ai/TargetFinder')
+local SkillRule = require('core/battle/ai/SkillRule')
 
 local DefendRule = class(SkillRule)
 
@@ -22,11 +21,6 @@ local DefendRule = class(SkillRule)
 -- Overrides SkillRule:onSelect.
 function DefendRule:onSelect(user)
   SkillRule.onSelect(self, user)
-  -- Find tile to attack
-  self:selectClosestTarget(user)
-  if not self.input then
-    return
-  end
   -- Find tile to move
   local queue = BattleTactics.runFromEnemiesToAllies(user, self.input)
   if queue:isEmpty() then

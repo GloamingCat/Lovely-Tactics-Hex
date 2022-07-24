@@ -8,11 +8,10 @@ A module with some search algorithms to solve optimization problems in the battl
 =================================================================================================]]
 
 -- Imports
-local PriorityQueue = require('core/datastruct/PriorityQueue')
 local PathFinder = require('core/battle/ai/PathFinder')
+local PriorityQueue = require('core/datastruct/PriorityQueue')
 
 -- Alias
-local tileDistance = math.field.tileDistance
 local min = math.min
 
 local BattleTactics = {}
@@ -25,8 +24,8 @@ local BattleTactics = {}
 -- @param(input : ActionInput)
 -- @param(isValid : function) Checks if a tile is valid (can be put in the queue).
 -- @param(evaluate : function) Gets the evaluation of a tile.
--- @param(order : function) Comparison function to the priority queue.
---  (optional, ascending by default)
+-- @param(order : function) Comparison function to the priority queue
+--  (optional, ascending/lowest value first by default).
 -- @ret(PriorityQueue) Queue of tiles sorted by priority.
 function BattleTactics.optimalTiles(user, input, isValid, evaluate, order)
   order = order or PriorityQueue.ascending
@@ -71,9 +70,8 @@ end
 -- @param(order : function) The comparison function for distances (optional, descending by default).
 -- @ret(PriorityQueue)
 function BattleTactics.bestDistance(user, input, getDistance, order)
-  local party = user.party
   local evaluate = function(tile)
-    return getDistance(party, tile)
+    return getDistance(user, tile)
   end
   return BattleTactics.optimalTiles(user, input,
     BattleTactics.isPotentialMoveTarget,
@@ -90,8 +88,7 @@ function BattleTactics.isPotentialMoveTarget(tile, user, input)
   end
   if input then
     if input.target then
-      local t = input.target
-      return tileDistance(t.x, t.y, tile.x, tile.y) <= input.action.range
+      return input.action:isWithinRange(input, tile)
     else
       return #input.action:getAllAccessedTiles(input, tile) > 0
     end
@@ -134,11 +131,11 @@ end
 -- @param(party : number) Character's party.
 -- @param(tile : ObjectTile) The tile to check.
 -- @ret(number) The minimum of the distances to all enemies.
-function BattleTactics.minEnemyDistance(party, tile)
+function BattleTactics.minEnemyDistance(user, tile)
   local getDistance = math.field.tileDistance
   local d = math.huge
   for char in TroopManager.characterList:iterator() do
-    if char.battler and char.party ~= party then
+    if char.battler and char.party ~= user.party then
       local x, y = char:tileCoordinates()
       d = min(d, getDistance(tile.x, tile.y, x, y))
     end
@@ -149,11 +146,11 @@ end
 -- @param(party : number) Character's party.
 -- @param(tile : ObjectTile) The tile to check.
 -- @ret(number) The sum of the distances to all allies
-function BattleTactics.allyDistance(party, tile)
+function BattleTactics.allyDistance(user, tile)
   local getDistance = math.field.tileDistance
   local d = 0
   for char in TroopManager.characterList:iterator() do
-    if char.battler and char.party == party then
+    if char.battler and char.party == user.party and char ~= user then
       local x, y = char:tileCoordinates()
       d = d + getDistance(tile.x, tile.y, x, y)
     end
@@ -164,11 +161,11 @@ end
 -- @param(party : number) Character's party.
 -- @param(tile : ObjectTile) The tile to check.
 -- @ret(number) The sum of the distances to all enemies.
-function BattleTactics.enemyDistance(party, tile)
+function BattleTactics.enemyDistance(user, tile)
   local getDistance = math.field.tileDistance
   local d = 0
   for char in TroopManager.characterList:iterator() do
-    if char.battler and char.party ~= party then
+    if char.battler and char.party ~= user.party then
       local x, y = char:tileCoordinates()
       d = d + getDistance(tile.x, tile.y, x, y)
     end
@@ -179,8 +176,8 @@ end
 -- @param(party : number) Character's party.
 -- @param(tile : ObjectTile) The tile to check.
 -- @ret(number) The sum of the distances to all enemies.
-function BattleTactics.partyDistance(party, tile)
-  return BattleTactics.enemyDistance(party, tile) - BattleTactics.allyDistance(party, tile)
+function BattleTactics.partyDistance(user, tile)
+  return BattleTactics.enemyDistance(user, tile) - BattleTactics.allyDistance(user, tile)
 end
 
 return BattleTactics

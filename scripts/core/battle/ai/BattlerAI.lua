@@ -50,7 +50,10 @@ function BattlerAI:applyRules(char)
     local condition = rule.condition ~= '' and rule.condition
     if not condition or self:decodeCondition(rule, condition, char) then
       if rule:canExecute() then
-        return rule:execute()
+        local result = rule:execute()
+        if result.endCharacterTurn then
+          return result
+        end
       end
     end
   end

@@ -267,7 +267,7 @@
           ],
           "items": [],
           "equip": [],
-          "name": "Smart Jelly",
+          "name": "Killer Jelly",
           "tags": []
         },
         "id": 4,
@@ -402,7 +402,7 @@
           "persistent": false,
           "ai": [
             {
-              "condition": "self:chance(50)",
+              "condition": "self:chance(100)",
               "name": "rule/AttackRule.lua",
               "tags": [
                 {
@@ -410,6 +410,11 @@
                   "value": "1"
                 }
               ]
+            },
+            {
+              "condition": "",
+              "name": "rule/DefendRule.lua",
+              "tags": []
             },
             {
               "condition": "",

@@ -16,6 +16,7 @@ local PathFinder = require('core/battle/ai/PathFinder')
 local PopupText = require('core/battle/PopupText')
 
 -- Alias
+local expectation = math.randomExpectation
 local max = math.max
 local isnan = math.isnan
 local mathf = math.field
@@ -400,6 +401,43 @@ function SkillAction:singleTargetEffect(results, input, targetChar, originTile)
   end
   _G.Fiber:wait(self.targetTime)
   return results
+end
+
+---------------------------------------------------------------------------------------------------
+-- AI
+---------------------------------------------------------------------------------------------------
+
+-- Uses random expectation to estimate average effect result.
+-- @param(char : Character) Target character.
+-- @param(eff : table) Effect to check validity (optional, first effect by default).
+-- @ret(number) How close the character is to being killed (0 to 1).
+function SkillAction:estimateEffect(input, char, eff)
+  eff = eff or self.effects[1]
+  local rate = eff.successRate(self, input.user.battler, char.battler, input.user.battler.att, char.battler.att)
+  local points = self:calculateEffectPoints(eff, input.user.battler, char.battler, expectation)
+  return 1 - (char.battler.state[eff.key] - points * rate / 100) / char.battler['m' .. eff.key]()
+end
+-- Calculates the total damage of a skill in the given tile.
+-- @param(input : ActionInput) Input containing the user and the skill.
+-- @param(target : ObjectTile) Possible target for the skill.
+-- @ret(number) The total damage caused to the character in this tile.
+function SkillAction:estimateAreaEffect(input, target, eff)
+  eff = eff or self.effects[1]
+  local tiles = self:getAllAffectedTiles(input, target)
+  local sum = 0
+  for i = 1, #tiles do
+    local tile = tiles[i]
+    for targetChar in tile.characterList:iterator() do
+      if input.action:isCharacterAffected(input, targetChar) then
+        local result = input.action:estimateEffect(input, targetChar, eff)
+        if (targetChar.party == input.user.party) ~= eff.heal then
+          result = -result
+        end
+        sum = sum + result
+      end
+    end
+  end
+  return sum
 end
 
 return SkillAction

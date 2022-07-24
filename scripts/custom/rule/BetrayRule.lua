@@ -9,8 +9,7 @@ If no caster is found, then this rule is the same as RushRule.
 =================================================================================================]]
 
 -- Imports
-local SkillRule = require('custom/rule/SkillRule')
-local TargetFinder = require('core/battle/ai/TargetFinder')
+local SkillRule = require('core/battle/ai/SkillRule')
 
 local BetrayRule = class(SkillRule)
 

@@ -45,12 +45,10 @@ function TurnManager:setUp(state)
   if state then
     self.party = state.party
     self.turnCharacters = {}
+    self.initialTurnCharacters = {}
     for i = 1, #state.characters do
       self.turnCharacters[i] = FieldManager.characterList[state.characters[i]]
-    end
-    self.initialTurnCharacters = {}
-    for i = 1, #state.initialCharacters do
-      self.initialTurnCharacters[i] = FieldManager.characterList[state.initialCharacters[i]]
+      self.initialTurnCharacters[state.characters[i]] = true
     end
   else
     self.party = TroopManager.playerParty - 1
@@ -83,10 +81,7 @@ end
 -- Gets the current battle state to save the game mid-battle.
 -- @ret(table) Turn state data.
 function TurnManager:getState()
-  local initialCharacters = {}
-  for i = 1, #self.initialTurnCharacters do
-    initialCharacters[i] = self.initialTurnCharacters[i].key
-  end
+  local initialCharacters = util.table.deepCopy(self.initialTurnCharacters)
   local characters = {}
   for i = 1, #self.turnCharacters do
     characters[i] = self.turnCharacters[i].key
@@ -94,8 +89,7 @@ function TurnManager:getState()
   return {
     party = self.party,
     characters = characters,
-    initialCharacters = initialCharacters
-  }
+    initialCharacters = initialCharacters }
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -156,6 +150,12 @@ function TurnManager:runPlayerTurn()
     if #self.turnCharacters == 0 then
       return { escaped = false }
     end
+    if not self:currentCharacter().battler:isActive() then
+      self.characterIndex = self:nextCharacterIndex()
+      if not self.characterIndex then
+        return { endTurn = true }
+      end
+    end
     self:characterTurnStart()
     local result = GUIManager:showGUIForResult(BattleGUI(nil))
     if result.characterIndex then
@@ -171,6 +171,24 @@ function TurnManager:runPlayerTurn()
       end
     end
   end
+end
+-- Gets the next active character in the current party.
+-- @param(i : number) 1 or -1 to indicate direction.
+-- @ret(number) Next character index, or nil if there's no active character.
+function TurnManager:nextCharacterIndex(i)
+  i = i or 1
+  local count = #self.turnCharacters
+  if count == 0 then
+    return nil
+  end
+  local index = math.mod1(self.characterIndex + i, count)
+  while not self.turnCharacters[index].battler:isActive() do
+    if index == self.characterIndex then
+      return nil
+    end
+    index = math.mod1(index + i, count)
+  end
+  return index
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -197,9 +215,9 @@ function TurnManager:startTurn()
 end
 -- Closes turn.
 -- @param(char : Character) the character of the turn
-function TurnManager:endTurn(char)
+function TurnManager:endTurn(result)
   for char in TroopManager.characterList:iterator() do
-    char:onTurnEnd(self.initialTurnCharacters[char] ~= nil)
+    char:onTurnEnd(self.initialTurnCharacters[char])
   end
 end
 -- Gets the next party.

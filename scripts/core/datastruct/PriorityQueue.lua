@@ -31,11 +31,11 @@ end
 -- Comparison
 ---------------------------------------------------------------------------------------------------
 
--- Default compare function for ascending orders.
+-- Default compare function for ascending orders (lower value first).
 function PriorityQueue.ascending(a, b)
   return a[2] < b[2]
 end
--- Default compare function for descending orders.
+-- Default compare function for descending orders (higher value first).
 function PriorityQueue.descending(a, b)
   return a[2] > b[2]
 end
