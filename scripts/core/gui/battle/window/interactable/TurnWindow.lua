@@ -106,14 +106,14 @@ function TurnWindow:onCancel()
 end
 -- Overrides Window:onNext.
 function TurnWindow:onNext()
-  local index = TurnManager:nextCharacterIndex(1)
+  local index = TurnManager:nextCharacterIndex(1, true)
   if index and index ~= TurnManager.characterIndex then
     self.result = { characterIndex = index }
   end
 end
 -- Overrides Window:onPrev.
 function TurnWindow:onPrev()
-  local index = TurnManager:nextCharacterIndex(-1)
+  local index = TurnManager:nextCharacterIndex(-1, true)
   if index and index ~= TurnManager.characterIndex then
     self.result = { characterIndex = index }
   end

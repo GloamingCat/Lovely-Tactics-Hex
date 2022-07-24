@@ -236,8 +236,9 @@ end
 
 -- Callback for when a new turn begins.
 function Character:onTurnStart(partyTurn)
-  if self.AI and self.AI.onTurnStart then
-    self.AI:onTurnStart(partyTurn)
+  local AI = self.battler:getAI()
+  if AI and AI.onTurnStart then
+    AI:onTurnStart(partyTurn)
   end
   self.battler.statusList:onTurnStart(self, partyTurn)
   if partyTurn then
@@ -248,8 +249,9 @@ function Character:onTurnStart(partyTurn)
 end
 -- Callback for when a turn ends.
 function Character:onTurnEnd(partyTurn)
-  if self.AI and self.AI.onTurnEnd then
-    self.AI:onTurnEnd(partyTurn)
+  local AI = self.battler:getAI()
+  if AI and AI.onTurnEnd then
+    AI:onTurnEnd(partyTurn)
   end
   self.battler.statusList:callback('TurnEnd', self, partyTurn)
 end

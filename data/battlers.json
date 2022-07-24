@@ -90,7 +90,7 @@
           "ai": [],
           "jobID": 2,
           "attackID": 6,
-          "level": 3,
+          "level": 4,
           "money": 0,
           "exp": 0,
           "attributes": [
@@ -114,7 +114,9 @@
             0
           ],
           "skills": [],
-          "status": [],
+          "status": [
+            19
+          ],
           "elements": [],
           "items": [],
           "equip": [],

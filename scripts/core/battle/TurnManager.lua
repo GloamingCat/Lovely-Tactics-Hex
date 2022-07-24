@@ -157,7 +157,8 @@ function TurnManager:runPlayerTurn()
       end
     end
     self:characterTurnStart()
-    local result = GUIManager:showGUIForResult(BattleGUI(nil))
+    local AI = self:currentCharacter().battler:getAI()
+    local result = AI and AI:runTurn() or GUIManager:showGUIForResult(BattleGUI(nil))
     if result.characterIndex then
       self.characterIndex = result.characterIndex
     else
@@ -175,14 +176,15 @@ end
 -- Gets the next active character in the current party.
 -- @param(i : number) 1 or -1 to indicate direction.
 -- @ret(number) Next character index, or nil if there's no active character.
-function TurnManager:nextCharacterIndex(i)
+function TurnManager:nextCharacterIndex(i, controllable)
   i = i or 1
   local count = #self.turnCharacters
   if count == 0 then
     return nil
   end
   local index = math.mod1(self.characterIndex + i, count)
-  while not self.turnCharacters[index].battler:isActive() do
+  while not self.turnCharacters[index].battler:isActive() or
+      (controllable and self.turnCharacters[index].battler:getAI())  do
     if index == self.characterIndex then
       return nil
     end

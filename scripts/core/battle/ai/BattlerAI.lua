@@ -36,9 +36,7 @@ end
 function BattlerAI:runTurn()
   local char = TurnManager:currentCharacter()
   self:showCursor(char)
-  TurnManager:characterTurnStart()
   local result = self:applyRules(char)
-  TurnManager:characterTurnEnd(result)
   return result
 end
 -- Executes the rules in order until one of them produces a result.

@@ -191,6 +191,45 @@
           "script": "",
           "icon": {
             "id": 34,
+            "col": 0,
+            "row": 2
+          },
+          "priority": 100,
+          "visible": true,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": 5,
+          "removeOnKO": false,
+          "removeOnDamage": false,
+          "battleOnly": true,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [
+            {
+              "condition": "",
+              "name": "rule/HideRule.lua",
+              "tags": []
+            }
+          ],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [],
+          "statusDef": [],
+          "cancel": [],
+          "name": "Panic",
+          "tags": []
+        },
+        "id": 19,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
             "col": 3,
             "row": 2
           },
