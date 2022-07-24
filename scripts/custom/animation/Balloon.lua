@@ -124,7 +124,7 @@ function Balloon:updatePosition(char)
   local h = char:getPixelHeight() + (char.jumpHeight or 0)
   self.sprite:setXYZ(p.x, p.y - h, p.z)
   if self.iconAnim then
-    self.iconAnim.sprite:setXYZ(p.x, p.y - h - self.height / 2, p.z)
+    self.iconAnim.sprite:setXYZ(p.x, p.y - h - self.height / 2, p.z - 1)
   end
 end
 -- Overrides Animation:onEnd.
@@ -139,6 +139,7 @@ function Balloon:onEnd()
     end
   elseif self.state == 2 then
     self:hide()
+    self.time = 0
     self.state = 3
   end
   self.time = 0

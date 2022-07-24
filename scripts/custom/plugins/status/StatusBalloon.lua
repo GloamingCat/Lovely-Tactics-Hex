@@ -77,15 +77,13 @@ end
 function Balloon:setIcons(icons)
   self.status = icons
   self:reset()
+  self.iconAnim:reset()
   if #icons > 0 then
-    if self.state == 4 then
-      self:nextIcon()
-      self:show()
-      self.state = 0
-    end
+    self:nextIcon()
+    self:show()
+    self.state = 0
   else
     self.state = 4
-    self.iconAnim:reset()
     self.iconAnim:hide()
     self:hide()
   end
