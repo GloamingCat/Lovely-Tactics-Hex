@@ -13,7 +13,7 @@ return function (troop)
   while #TurnManager.turnCharacters > 0 do
     local char = TurnManager:currentCharacter()
     local AI = char.battler:getAI()
-    if AI then
+    if AI and char.battler:isActive() then
       local result = AI:runTurn()
       if result.endTurn then
         return result

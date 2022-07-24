@@ -31,13 +31,8 @@ function BetrayRule:onSelect(user)
     end
   end
   SkillRule.onSelect(self, user)
-  local queue = TargetFinder.closestCharacters(self.input)
+  self:selectClosestTarget(user)
   user.party = originalParty
-  if queue:isEmpty() then
-    self.input = nil
-    return
-  end
-  self.input.target = queue:front()
 end
 -- @ret(string) String identifier.
 function BetrayRule:__tostring()

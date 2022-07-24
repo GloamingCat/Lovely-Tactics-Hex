@@ -23,18 +23,18 @@ local DefendRule = class(SkillRule)
 function DefendRule:onSelect(user)
   SkillRule.onSelect(self, user)
   -- Find tile to attack
-  local queue = TargetFinder.closestCharacters(self.input)
+  self:selectClosestTarget(user)
+  if not self.input then
+    return
+  end
+  -- Find tile to move
+  local queue = BattleTactics.runFromEnemiesToAllies(user, self.input)
   if queue:isEmpty() then
     self.input = nil
     return
   end
+  self.input.action = BattleMoveAction()
   self.input.target = queue:front()
-  -- Find tile to move
-  queue = BattleTactics.runFromEnemiesToAllies(user, self.input)
-  if not queue:isEmpty() then
-    self.input.action = BattleMoveAction()
-    self.input.target = queue:front()
-  end
 end
 -- @ret(string) String identifier.
 function DefendRule:__tostring()

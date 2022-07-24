@@ -3428,6 +3428,82 @@
             "data": {
               "script": "",
               "quad": {
+                "path": "Character/Jelly/Damage.png",
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 1,
+              "transform": {
+                "offsetX": 16,
+                "offsetY": 25,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "12",
+              "loopPattern": "",
+              "loopDuration": "",
+              "audio": [],
+              "name": "Load",
+              "tags": []
+            },
+            "id": 96,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
+                "path": "Character/Jelly/Default.png",
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 256
+              },
+              "rows": 8,
+              "cols": 1,
+              "transform": {
+                "offsetX": 16,
+                "offsetY": 25,
+                "offsetDepth": 0,
+                "scaleX": 100,
+                "scaleY": 100,
+                "rotation": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255,
+                "hue": 0,
+                "saturation": 100,
+                "brightness": 100
+              },
+              "introPattern": "",
+              "introDuration": "",
+              "loopPattern": "1 2 1 0",
+              "loopDuration": "20",
+              "audio": [],
+              "name": "Cast",
+              "tags": []
+            },
+            "id": 68,
+            "children": []
+          },
+          {
+            "data": {
+              "script": "",
+              "quad": {
                 "path": "Character/Jelly/KO.png",
                 "x": 0,
                 "y": 0,

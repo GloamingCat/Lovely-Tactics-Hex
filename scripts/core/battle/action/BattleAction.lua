@@ -101,7 +101,6 @@ function BattleAction:resetTileColors(input)
     end
   end
 end
-
 -- Overrides FieldAction:resetTileProperties.
 function BattleAction:resetTileProperties(input)
   self:resetMovableTiles(input)

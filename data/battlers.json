@@ -208,7 +208,13 @@
               "value": 200
             }
           ],
-          "items": [],
+          "items": [
+            {
+              "count": 1,
+              "id": 2,
+              "value": 50
+            }
+          ],
           "equip": [],
           "name": "Jelly",
           "tags": []
@@ -255,7 +261,7 @@
           "status": [],
           "elements": [
             {
-              "id": 5,
+              "id": 6,
               "value": 200
             }
           ],
@@ -310,7 +316,13 @@
               "value": 200
             }
           ],
-          "items": [],
+          "items": [
+            {
+              "count": 1,
+              "id": 8,
+              "value": 50
+            }
+          ],
           "equip": [],
           "name": "Poison Jelly",
           "tags": []
@@ -366,12 +378,97 @@
               "value": 200
             }
           ],
-          "items": [],
+          "items": [
+            {
+              "count": 1,
+              "id": 2,
+              "value": 100
+            },
+            {
+              "count": 1,
+              "id": 3,
+              "value": 100
+            }
+          ],
           "equip": [],
           "name": "Chicken Jelly",
           "tags": []
         },
         "id": 9,
+        "children": []
+      },
+      {
+        "data": {
+          "persistent": false,
+          "ai": [
+            {
+              "condition": "self:chance(50)",
+              "name": "rule/AttackRule.lua",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "condition": "",
+              "name": "rule/RushRule.lua",
+              "tags": []
+            }
+          ],
+          "jobID": 0,
+          "attackID": 6,
+          "level": 4,
+          "money": 80,
+          "exp": 20,
+          "attributes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "skills": [
+            7
+          ],
+          "status": [],
+          "elements": [
+            {
+              "id": 5,
+              "value": 200
+            }
+          ],
+          "items": [
+            {
+              "count": 1,
+              "id": 3,
+              "value": 100
+            },
+            {
+              "count": 1,
+              "id": 4,
+              "value": 100
+            }
+          ],
+          "equip": [],
+          "name": "Magic Jelly",
+          "tags": []
+        },
+        "id": 5,
         "children": []
       }
     ]
