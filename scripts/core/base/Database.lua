@@ -210,7 +210,7 @@ end
 -- @param(size : number) Number of frames (animation length).
 -- @ret(table) Array of numbers.
 function Database.loadDuration(durationstr, size)
-  if durationstr == '' then
+  if not durationstr or durationstr == '' then
     return nil
   end
   local key = durationstr .. '.' .. size

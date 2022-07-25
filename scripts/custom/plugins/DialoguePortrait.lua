@@ -15,7 +15,7 @@ local indent = tonumber(args.indent)
 
 -- Imports
 local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')
-local EventSheet = require('core/event/GUIEvents')
+local GUIEvents = require('core/event/GUIEvents')
 local SimpleImage = require('core/gui/widget/SimpleImage')
 
 ---------------------------------------------------------------------------------------------------
@@ -101,8 +101,8 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Override. Sets portrait.
-local EventSheet_showDialogue = EventSheet.showDialogue
-function EventSheet:showDialogue(args)
+local GUIEvents_showDialogue = GUIEvents.showDialogue
+function GUIEvents:showDialogue(args)
   self:openDialogueWindow(args)
   local window = self.gui.dialogues[args.id]
   if args.character then -- Change portrait
@@ -124,5 +124,5 @@ function EventSheet:showDialogue(args)
     end
     window:setPortrait(portrait)
   end
-  EventSheet_showDialogue(self, args)
+  GUIEvents_showDialogue(self, args)
 end

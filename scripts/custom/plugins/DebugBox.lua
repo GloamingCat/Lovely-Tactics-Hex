@@ -9,7 +9,6 @@ shown at the console.
 =================================================================================================]]
 
 -- Imports
-local EventSheet = require('core/fiber/EventSheet')
 local Player = require('core/objects/Player')
 local TextInputGUI = require('core/gui/common/TextInputGUI')
 
@@ -29,7 +28,7 @@ local function debugEvent(funcName, ...)
   local function func(script) 
       script[funcName](script, args)
   end
-  return EventSheet(FieldManager.fiberList, { func = func })
+  return FieldManager.fiberList:forkFromScript { func = func, vars = {} }
 end
 
 ---------------------------------------------------------------------------------------------------

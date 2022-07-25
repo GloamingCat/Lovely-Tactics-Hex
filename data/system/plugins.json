@@ -64,6 +64,11 @@
   },
   {
     "on": true,
+    "name": "plugins/ChildAnimations.lua",
+    "tags": []
+  },
+  {
+    "on": true,
     "name": "plugins/EmotionBalloon.lua",
     "tags": []
   },

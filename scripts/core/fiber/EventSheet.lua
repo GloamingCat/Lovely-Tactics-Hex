@@ -8,9 +8,10 @@ A fiber that processes a list of sequential commands.
 =================================================================================================]]
 
 -- Imports
+local EventUtil = require('core/event/EventUtil')
 local Fiber = require('core/fiber/Fiber')
 
-local EventSheet = class(Fiber)
+local EventSheet = class(Fiber, EventUtil)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -73,30 +74,40 @@ function EventSheet:finish()
   Fiber.finish(self)
   self:clear()
 end
-
----------------------------------------------------------------------------------------------------
--- Commands
----------------------------------------------------------------------------------------------------
-
 -- Creates a new fiber in from the same root that executes given script.
 -- @param(script : table) Table with name (or func) and tags. 
 -- @ret(Fiber) Newly created Fiber.
 function EventSheet:forkFromScript(script, ...)
   return self.root:forkFromScript(script, self.char, ...)
 end
--- Load other commands.
-for k, v in pairs(require('core/event/EventUtil')) do
-  EventSheet[k] = v
+
+---------------------------------------------------------------------------------------------------
+-- Commands
+---------------------------------------------------------------------------------------------------
+
+-- Lists of event commands files
+local eventCommands = {}
+for i, file in ipairs({'General', 'GUI', 'Character', 'Screen', 'Sound', 'Party'}) do
+  eventCommands[i] = require('core/event/' .. file .. 'Events')
 end
-for _, file in ipairs({'General', 'GUI', 'Character', 'Screen', 'Sound', 'Party'}) do
-  local commands = require('core/event/' .. file .. 'Events')
-  for k, v in pairs(commands) do
-    if type(v) == 'function' then
-      EventSheet[k] = function(script, ...)
-        commands[k](script, ...)
+local meta = getmetatable(EventSheet) 
+local meta_index = meta.__index
+local funcMap = {}
+function meta:__index(k)
+  local v = meta_index(self, k)
+  if v then
+    return v
+  end
+  -- Look for event commands
+  for i = 1, #eventCommands do
+    if eventCommands[i][k] then
+      if not funcMap[k] then
+        funcMap[k] = function(script, ...)
+          -- TODO: stuff to count event commands
+          eventCommands[i][k](script, ...)
+        end
       end
-    else
-      EventSheet[k] = v
+      return funcMap[k]
     end
   end
 end

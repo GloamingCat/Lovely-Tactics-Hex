@@ -5,13 +5,16 @@ Event Utilities
 ---------------------------------------------------------------------------------------------------
 Functions that are loaded from the EventSheet.
 
+Do not call require on this script directly. When overriding a utility function, override it on
+EventSheet class instead.
+
 =================================================================================================]]
 
 -- Imports
 local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')
 local GUI = require('core/gui/GUI')
 
-local EventSheet = {}
+local EventSheet = class()
 
 ---------------------------------------------------------------------------------------------------
 -- General
