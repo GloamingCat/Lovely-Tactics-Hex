@@ -115,6 +115,12 @@
       "id": 36,
       "col": 4,
       "row": 1
+    },
+    {
+      "name": "sleepy",
+      "id": 34,
+      "col": 3,
+      "row": 0
     }
   ],
   "sounds": [

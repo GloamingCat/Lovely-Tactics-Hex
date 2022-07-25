@@ -70,7 +70,12 @@
   {
     "on": true,
     "name": "plugins/EmotionBalloon.lua",
-    "tags": []
+    "tags": [
+      {
+        "key": "balloonY",
+        "value": "16"
+      }
+    ]
   },
   {
     "on": true,

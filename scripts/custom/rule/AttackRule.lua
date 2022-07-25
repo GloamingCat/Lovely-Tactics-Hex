@@ -22,6 +22,9 @@ function AttackRule:onSelect(...)
   -- Find target with higher chance of dying
   self:selectMostEffectiveTarget()
   if self.input.target == nil then
+    self:selectClosestTarget()
+  end
+  if self.input.target == nil then
     self.input = nil
   end
 end

@@ -96,6 +96,7 @@ function Animation:initPattern(data)
   self.loopDuration = Database.loadDuration(data.loopDuration, loopCount)
   if self.introDuration then
     self:setFrames(self.introDuration, self.introPattern)
+    self.loop = false
   elseif self.loopDuration then
     self:setFrames(self.loopDuration, self.loopPattern)
     self.loop = true

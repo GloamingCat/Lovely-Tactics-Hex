@@ -17,8 +17,9 @@ return function(script)
     FieldManager.renderer:fadein(60)
   else
     if not script.vars.onBattle then
-      script:showEmotionBalloon { key = 'player', emotion = '!' }
-      script:wait(60)
+      --script:showEmotionBalloon { key = 'player', emotion = '!' }
+      --script:showIconBalloon { key = 'player', icon = 'sleepy' }
+      --script:wait(60)
       script:addMember { key = 'Merlin', x = 3, y = 3 }
       script:startBattle { fieldID = 2, 
         fade = 60, 
