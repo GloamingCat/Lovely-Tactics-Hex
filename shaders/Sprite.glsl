@@ -8,7 +8,7 @@ Draws the sprite with HSV (hue, saturation, value/brightness) modifications.
 =================================================================================================*/
 
 // HSV modifier.
-uniform vec3 phsv = vec3(0.0, 1.0, 1.0);
+uniform vec3 phsv;
 
 // Converts a (r, g, b) to a (h, s, v).
 vec3 rgb2hsv(vec3 c) {
