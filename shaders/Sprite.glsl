@@ -8,7 +8,7 @@ Draws the sprite with HSV (hue, saturation, value/brightness) modifications.
 =================================================================================================*/
 
 // HSV modifier.
-uniform vec3 phsv = vec3(0, 1, 1);
+uniform vec3 phsv = vec3(0.0, 1.0, 1.0);
 
 // Converts a (r, g, b) to a (h, s, v).
 vec3 rgb2hsv(vec3 c) {
@@ -41,7 +41,7 @@ vec4 effect(vec4 color, sampler2D texture, vec2 texture_coords, vec2 screen_coor
   vec3 rgb = hsv2rgb(hsv) * color.rgb;
   // Change brightness / saturation
   hsv = rgb2hsv(rgb);
-  hsv.yz = clamp(phsv.yz * hsv.yz, 0, 1);
+  hsv.yz = clamp(phsv.yz * hsv.yz, 0.0, 1.0);
   return vec4(hsv2rgb(hsv), initialColor.a * color.a);
 }
 #endif
