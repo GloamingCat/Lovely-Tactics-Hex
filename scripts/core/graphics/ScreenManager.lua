@@ -86,6 +86,7 @@ end
 -- Scales the screen (deforms both field and GUI).
 -- @param(x : number) The scale factor in axis x.
 -- @param(y : number) The scale factor in axis y.
+-- @ret(boolean) True if the canvas size changed.
 function ScreenManager:setScale(x, y)
   if self.scalingType == 0 then
     return
@@ -95,9 +96,6 @@ function ScreenManager:setScale(x, y)
   elseif self.scalingType == 2 then
     local m = min(x, y)
     x, y = m, m
-  end
-  if x == self.scaleX and y == self.scaleY then
-    return
   end
   if self.pixelPerfect then
     self.scaleX = floor(x)
@@ -113,12 +111,13 @@ function ScreenManager:setScale(x, y)
   self.canvasFilter = x == self.scaleX and y == self.scaleY and "nearest" or "linear"
   local newW = self.width * self.scaleX
   local newH = self.height * self.scaleY
-  self.canvas = lgraphics.newCanvas(newW, newH)
-  self.canvas:setFilter(self.canvasFilter)
-  for i = 1, #self.renderers do
-    if self.renderers[i] then
-      self.renderers[i]:resizeCanvas(newW, newH)
-    end
+  if newW == self.canvas:getWidth() and newH == self.canvas:getHeight() then
+    self.canvas:setFilter(self.canvasFilter)
+    return false
+  else
+    self.canvas = lgraphics.newCanvas(newW, newH)
+    self.canvas:setFilter(self.canvasFilter)
+    return true
   end
 end
 -- @ret(number) Width in world size.
@@ -192,33 +191,34 @@ end
 -- Sets window mode (windowed or fullscreen).
 -- @param(mode : number) 1, 2, 3 are window modes, 4 is fullscreen.
 function ScreenManager:setMode(mode)
-  if mode == 4 then
-    self:setFullScreen()
-  else
-    self:setWindowed(mode, mode)
-  end
   self.mode = mode
-end
--- Changes screen to window mode.
-function ScreenManager:setWindowed(sx, sy)
-  sx = sx or Config.screen.widthScale / 100
-  sy = sy or Config.screen.heightScale / 100
-  self:setScale(sx, sy)
-  love.window.setMode(self:totalWidth(), self:totalHeight(), {fullscreen = false})
-end
--- Changes screen to full screen mode.
-function ScreenManager:setFullScreen()
-  if isFullScreen() then
-    return
+  local sx = mode or Config.screen.widthScale / 100
+  local sy = mode or Config.screen.heightScale / 100
+  if mode == 4 then
+    local modes = love.window.getFullscreenModes(1)
+    local mode = modes[1]
+    sx = mode.width / self.width
+    sy = mode.height / self.height
   end
-  local modes = love.window.getFullscreenModes(1)
-  local mode = modes[1]
-  local scaleX = mode.width / self.width
-  local scaleY = mode.height / self.height
+  self:setScale(sx, sy)
+  love.window.setMode(self:totalWidth(), self:totalHeight(), {fullscreen = mode == 4})
+  local w, h = love.window.getMode()
+  self:onResize(w, h)
+end
+-- Called window is resizes.
+-- @param(w : number) New window width in pixels.
+-- @param(h : number) New window height in pixels.
+function ScreenManager:onResize(w, h)
+  local scaleX = w / self.width
+  local scaleY = h / self.height
   self:setScale(scaleX, scaleY)
-  love.window.setMode(mode.width, mode.height, {fullscreen = true})
-  self.offsetX = round((mode.width - self:totalWidth()) / 2)
-  self.offsetY = round((mode.height - self:totalHeight()) / 2)
+  self.offsetX = (w - self:totalWidth()) / 2
+  self.offsetY = (h - self:totalHeight()) / 2
+  for i = 1, #self.renderers do
+    if self.renderers[i] then
+      self.renderers[i]:resizeCanvas(self.canvas:getWidth(), self.canvas:getHeight())
+    end
+  end
 end
 -- Called when window receives/loses focus.
 -- @param(f : boolean) True if screen received focus, false if lost.
@@ -232,16 +232,6 @@ function ScreenManager:onFocus(f)
       end
     end
   end
-end
--- Called window is resizes.
--- @param(w : number) New window width in pixels.
--- @param(h : number) New window height in pixels.
-function ScreenManager:onResize(w, h)
-  local scaleX = w / self.width
-  local scaleY = h / self.height
-  self:setScale(scaleX, scaleY)
-  self.offsetX = (w - self:totalWidth()) / 2
-  self.offsetY = (h - self:totalHeight()) / 2
 end
 -- Closes game window, but keeps it running.
 function ScreenManager:closeWindow()
