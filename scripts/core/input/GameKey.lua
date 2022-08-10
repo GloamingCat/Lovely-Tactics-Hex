@@ -5,10 +5,10 @@ GameKey
 ---------------------------------------------------------------------------------------------------
 Entity that represents an input key.
 Key states:
-0 => not pressing
-1 => pressing
-2 => pressing (with delay)
-3 => just pressed
+-1 => just released;
+0 => not pressing;
+1 => pressing;
+2 => just pressed.
 
 =================================================================================================]]
 
@@ -34,6 +34,8 @@ end
 function GameKey:update()
   if self.pressState == 2 then
     self.pressState = 1
+  elseif self.pressState == -1 then
+    self.pressState = 0
   end
 end
 
@@ -42,21 +44,29 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Checks if button was triggered (just pressed).
--- @ret(boolean) true if triggered, false otherwise
+-- @ret(boolean) True if was triggered in the current frame, false otherwise.
 function GameKey:isTriggered()
   return self.pressState == 2
 end
 -- Checks if player is pressing the key.
--- @ret(boolean) true if pressing, false otherwise
+-- @ret(boolean) True if pressing, false otherwise.
 function GameKey:isPressing()
   return self.pressState >= 1
 end
+-- Checks if player just released a key.
+-- @ret(boolean) True if was released in the current frame, false otherwise.
+function GameKey:isReleased(maxTime)
+  if maxTime and now() - self.pressTime > maxTime then
+    return false
+  end
+  return self.pressState == -1
+end
 -- Checks if player is pressing the key, considering a delay.
--- @param(startGap : number) the time in seconds between first true value and the second 
--- @param(repeatGap : number) the time in seconds between two true values starting from the third
--- @ret(boolean) true if pressing, false otherwise
+-- @param(startGap : number) The time in seconds between first true value and the second. 
+-- @param(repeatGap : number) The time in seconds between two true values starting from the second one.
+-- @ret(boolean) True if triggering, false otherwise.
 function GameKey:isPressingGap(startGap, repeatGap)
-  if self.pressState == 0 then
+  if self.pressState <= 0 then
     return false
   elseif self.pressState == 2 then
     return true
@@ -85,8 +95,8 @@ function GameKey:onPress()
 end
 -- Called when this kay is released.
 function GameKey:onRelease()
-  self.pressState = 0
   self.releaseTime = now()
+  self.pressState = -1
 end
 
 return GameKey
