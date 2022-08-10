@@ -67,7 +67,10 @@ function Fiber:update()
     local state, result = resume(self.coroutine)
     if not state then
       -- Output error message
-      error( tostring(result), 2 )
+      error(tostring(result), 2)
+      if GameManager.platform == 1 then
+        love.window.showMessageBox("Error", tostring(result))
+      end
       self:finish()
     end
     _G.Fiber = previous

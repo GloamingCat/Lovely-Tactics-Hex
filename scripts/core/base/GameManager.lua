@@ -23,6 +23,12 @@ local GameManager = class()
 
 -- Constructor.
 function GameManager:init()
+  local osStr = love.system.getOS():lower()
+  if osStr == "android" or osStr == "ios" then
+    self.platform = 1
+  else
+    self.platform = 0
+  end
   self.paused = false
   self.cleanTime = 300
   self.cleanCount = 0
@@ -31,6 +37,7 @@ function GameManager:init()
   self.playTime = 0
   self.garbage = setmetatable({}, {__mode = 'v'})
   self.speed = 1
+  self.debugMessages = {}
   --PROFI = require('core/base/ProFi')
   --require('core/base/Stats').printStats()
 end
@@ -171,6 +178,17 @@ end
 function GameManager:printStats()
   love.graphics.print(love.timer.getFPS())
   love.graphics.print(ScreenManager.drawCalls, 32, 0)
+  for i = 1, #self.debugMessages do
+    love.graphics.print(self.debugMessages[i], 0, 24 * i)
+  end
+end
+-- Logs a string on screen. No more than 10 strings are shown at once.
+-- @param(str : string) Log.
+function GameManager:print(str)
+  table.insert(self.debugMessages, 1, str)
+  if #self.debugMessages > 10 then
+    self.debugMessages[11] = nil
+  end
 end
 
 ---------------------------------------------------------------------------------------------------

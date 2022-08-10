@@ -44,6 +44,8 @@
     "widthScale": 200,
     "heightScale": 200,
     "scaleType": 1,
+    "mobileScaleType": 2,
+    "pixelPerfect": true,
     "fpsLimit": 120,
     "coverID": -1
   },

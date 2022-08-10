@@ -21,7 +21,9 @@ local GUIManager = class()
 
 -- Constructor.
 function GUIManager:init()
-  self.renderer = Renderer(ScreenManager:totalWidth(), ScreenManager:totalHeight(), -100, 100, 200)
+  local width = ScreenManager.canvas:getWidth()
+  local height = ScreenManager.canvas:getHeight()
+  self.renderer = Renderer(width, height, -100, 100, 200)
   self.stack = Stack()
   self.paused = false
   self.windowScroll = 0
