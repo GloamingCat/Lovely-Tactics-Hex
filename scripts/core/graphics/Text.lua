@@ -53,8 +53,8 @@ end
 -- @param(text : string) The rich text.
 function Text:setText(text)
   assert(text, 'Nil text')
+  self.text = text
   if text == '' then
-    self.text = text
     self.lines = nil
     self.events = nil
     return
@@ -72,7 +72,9 @@ function Text:redrawBuffers()
   if self.cutPoint then
     lines = TextParser.cutText(lines, self.cutPoint)
   end
-  self.lines = TextRenderer.createLineBuffers(lines)
+  local sx = ScreenManager.scaleX * self.renderer.scaleX
+  local sy = ScreenManager.scaleY * self.renderer.scaleY
+  self.lines = TextRenderer.createLineBuffers(lines, sx, sy)
   local width, height = 0, 0
   for i = 1, #self.lines do
     width = max(self.lines[i].buffer:getWidth(), width)

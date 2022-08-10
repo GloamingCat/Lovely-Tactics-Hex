@@ -23,7 +23,7 @@ local TextRenderer = {}
 
 -- Creates the image buffers of each line.
 -- @param(lines : table) Array of parsed lines.
-function TextRenderer.createLineBuffers(lines)
+function TextRenderer.createLineBuffers(lines, sx, sy)
   -- Previous graphics state
   local r, g, b, a = lgraphics.getColor()
   local shader = lgraphics.getShader()
@@ -37,7 +37,7 @@ function TextRenderer.createLineBuffers(lines)
     lgraphics.setShader()
     local buffer = TextRenderer.createLineBuffer(lines[i])
     lgraphics.setShader(textShader)
-    local shadedBuffer = TextRenderer.shadeBuffer(buffer)
+    local shadedBuffer = TextRenderer.shadeBuffer(buffer, sx, sy)
     local w, h = shadedBuffer:getWidth(), shadedBuffer:getHeight()
     renderedLines[i] = {
       buffer = shadedBuffer,
@@ -54,7 +54,7 @@ end
 -- Renders texture with the shader in a buffer with the correct size.
 -- @param(texture : Canvas) Unshaded rendered text.
 -- @ret(Canvas) Pre-shaded texture.
-function TextRenderer.shadeBuffer(texture)
+function TextRenderer.shadeBuffer(texture, sx, sy)
   local r, g, b, a = lgraphics.getColor()
   lgraphics.setColor(1, 1, 1, 1)
   local shader = lgraphics.getShader()
@@ -62,8 +62,8 @@ function TextRenderer.shadeBuffer(texture)
   local newTexture = lgraphics.newCanvas(w, h)
   newTexture:setFilter('linear', 'linear')
   lgraphics.setCanvas(newTexture)
-  local stepX = 1 / math.pow(2, ScreenManager.scaleX - 1)
-  local stepY = 1 / math.pow(2, ScreenManager.scaleY)
+  local stepX = 1 / math.pow(2, sx - 1)
+  local stepY = 1 / math.pow(2, sy)
   textShader:send('stepSize', { stepX, stepY })
   textShader:send('pixelSize', { Fonts.outlineSize / w, Fonts.outlineSize / h })
   --lgraphics.setBlendMode('alpha', 'premultiplied')
