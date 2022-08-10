@@ -86,7 +86,7 @@ function Player:checkFieldInput()
     self:interact()
   elseif InputManager.keys['cancel']:isTriggered() then
     self:openGUI()
-  elseif InputManager.keys['mouse1']:isPressing() then
+  elseif InputManager.keys['mouse1']:isPressing() or InputManager.keys['touch']:isPressing() then
     self:moveByMouse()
   elseif InputManager.keys['mouse2']:isTriggered() then
     self:openGUI()

@@ -251,12 +251,20 @@ function Window:checkInput()
     self:onNext()
   elseif InputManager.keys['prev']:isTriggered() then
     self:onPrev()
-  elseif InputManager.mouse.moved then
-    self:onMouseMove(x, y)
   elseif InputManager.keys['mouse1']:isTriggered() then
     self:onClick(1, x, y)
   elseif InputManager.keys['mouse2']:isTriggered() then
     self:onClick(2, x, y)
+  elseif InputManager.keys['mouse3']:isTriggered() then
+    self:onClick(3, x, y)
+  elseif InputManager.keys['touch']:isTriggered() then
+    self.waitingTouch = true
+    self:onClick(4, x, y)
+  elseif InputManager.keys['touch']:isReleased() and self.waitingTouch then
+    self.waitingTouch = false
+    self:onClick(5, x, y)
+  elseif InputManager.mouse.moved then
+    self:onMouseMove(x, y)
   else
     local dx, dy = InputManager:ortAxis(0.5, 0.0625)
     if dx ~= 0 or dy ~= 0 then
@@ -266,7 +274,7 @@ function Window:checkInput()
 end
 -- Called when player presses "confirm" key.
 -- By default, only sets the result to 1.
-function Window:onConfirm()
+function Window:onConfirm(x, y)
   self.result = 1
   if self.confirmSound then
     AudioManager:playSFX(self.confirmSound)
@@ -274,7 +282,7 @@ function Window:onConfirm()
 end
 -- Called when player presses "cancel" key.
 -- By default, only dets the result to 0.
-function Window:onCancel()
+function Window:onCancel(x, y)
   self.result = 0
   if self.cancelSound then
     AudioManager:playSFX(self.cancelSound)
@@ -291,14 +299,24 @@ end
 -- Called when player presses "prev" key.
 function Window:onPrev()
 end
--- Called when player presses a mouse button.
+-- Called when player presses a mouse button or touches screen.
 function Window:onClick(button, x, y)
   if button == 1 then
     if self:isInside(x, y) then
       self:onConfirm()
     end
-  else
+  elseif button == 2 then
     self:onCancel()
+  elseif button == 4 then
+    if not self:isInside(x, y) then
+      self:onCancel()
+    end
+  elseif button == 5 then
+    if self:isInside(x, y) then
+      self:onConfirm()
+    end
+  else
+    self:onConfirm()
   end
 end
 -- Called when player moves mouse.

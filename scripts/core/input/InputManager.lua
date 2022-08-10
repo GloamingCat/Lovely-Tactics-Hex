@@ -50,6 +50,7 @@ function InputManager:init()
   for i = 1, 3 do
     self.keys['mouse' .. i] = GameKey()
   end
+  self.keys.touch = GameKey()
 end
 -- Sets axis keys.
 -- @param(useWASD : boolean)
@@ -234,34 +235,45 @@ function InputManager:endTextInput()
 end
 
 ---------------------------------------------------------------------------------------------------
--- Mouse
+-- Mouse and Touch
 ---------------------------------------------------------------------------------------------------
 
 -- Called when a mouse button is pressed.
--- @param(x : number) cursor's x coordinate
--- @param(y : number) cursor's y coordinate
--- @param(button : number) button type (1 to 3)
+-- @param(x : number) Cursor's x coordinate.
+-- @param(y : number) Cursor's y coordinate.
+-- @param(button : number) Button type (1 to 3 for mouse, 4+ for touch IDs).
 function InputManager:onMousePress(x, y, button)
-  if self.mouseEnabled then
-    self.keys['mouse' .. button]:onPress()
-    self.mouse:onPress(button)
+  if button <= 3 then
+    if self.mouseEnabled then
+      self.mouse.position:set(x, y)
+      self.keys['mouse' .. button]:onPress()
+      self.mouse:onPress(button)
+    end
+  else
+    self.keys.touch:onPress()
   end
 end
 -- Called when a mouse button is released.
--- @param(x : number) cursor's x coordinate
--- @param(y : number) cursor's y coordinate
--- @param(button : number) button type (1 to 3)
+-- @param(x : number) Cursor's x coordinate.
+-- @param(y : number) Cursor's y coordinate.
+-- @param(button : number) Button type (1 to 3 for mouse, and 4+ for touch IDs).
 function InputManager:onMouseRelease(x, y, button)
-  if self.mouseEnabled then
-    self.keys['mouse' .. button]:onRelease()
-    self.mouse:onRelease(button)
+  if button <= 3 then
+    if self.mouseEnabled then
+      self.mouse.position:set(x, y)
+      self.keys['mouse' .. button]:onRelease()
+      self.mouse:onRelease(button)
+    end
+  else
+    self.keys.touch:onRelease()
   end
 end
 -- Called when the cursor moves.
--- @param(x : number) cursor's x coordinate
--- @param(y : number) cursor's y coordinate
-function InputManager:onMouseMove(x, y)
-  if self.mouseEnabled then
+-- @param(x : number) Cursor's x coordinate.
+-- @param(y : number) Cursor's y coordinate.
+-- @param(touch : number) Touch ID (optional).
+function InputManager:onMouseMove(x, y, touch)
+  if touch or self.mouseEnabled then
     self.mouse:onMove(x, y)
   end
 end

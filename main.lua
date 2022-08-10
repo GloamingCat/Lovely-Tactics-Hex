@@ -96,3 +96,26 @@ end
 function love.mousemoved(x, y)
   InputManager:onMouseMove(x, y)
 end
+
+---------------------------------------------------------------------------------------------------
+-- Touch input
+---------------------------------------------------------------------------------------------------
+
+-- Called when the player starts touching the screen.
+-- @param(x : number) Cursor's x coordinate.
+-- @param(y : number) Cursor's y coordinate.
+function love.touchpressed(id, x, y)
+  InputManager:onMousePress(x, y, 4)
+end
+-- Called when the player stops touching the screen.
+-- @param(x : number) Cursor's x coordinate.
+-- @param(y : number) Cursor's y coordinate.
+function love.touchreleased(id, x, y)
+  InputManager:onMouseRelease(x, y, 4)
+end
+-- Called when the player starts touching the screen.
+-- @param(x : number) Cursor's x coordinate.
+-- @param(y : number) Cursor's y coordinate.
+function love.touchmoved(id, x, y)
+  InputManager:onMouseMove(x, y, true)
+end

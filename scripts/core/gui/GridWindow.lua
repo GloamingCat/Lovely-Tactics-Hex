@@ -307,22 +307,38 @@ end
 function GridWindow:onClick(button, x, y)
   if button == 1 then
     if self:isInside(x, y) then
-      local widget = self:currentWidget()
-      if widget.enabled then
-        if widget.clickSound then
-          AudioManager:playSFX(widget.clickSound)
-        end
-        if widget.onClick then
-          widget.onClick(self, widget, x, y)
-        end
-      else
-        if widget.errorSound then
-          AudioManager:playSFX(widget.errorSound)
-        end
-      end
+      self:onClickConfirm(x, y)
+    else
+      self:onCancel()
+    end
+  elseif button == 2 then
+    self:onCancel()
+  elseif button == 4 then
+    if not self:isInside(x, y) then
+      self:onCancel()
+    end
+  elseif button == 5 then
+    if self:isInside(x, y) then
+      self:onClickConfirm(x, y)
     end
   else
-    self:onCancel()
+    self:onConfirm()
+  end
+end
+-- Called when player confirms a button by mouse or touch.
+function GridWindow:onClickConfirm(x, y)
+  local widget = self:currentWidget()
+  if widget.enabled then
+    if widget.clickSound then
+      AudioManager:playSFX(widget.clickSound)
+    end
+    if widget.onClick then
+      widget.onClick(self, widget, x, y)
+    end
+  else
+    if widget.errorSound then
+      AudioManager:playSFX(widget.errorSound)
+    end
   end
 end
 -- Called when player moves the mouse.
