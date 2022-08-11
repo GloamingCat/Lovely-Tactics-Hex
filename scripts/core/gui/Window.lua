@@ -257,12 +257,12 @@ function Window:checkInput()
     self:onClick(2, x, y)
   elseif InputManager.keys['mouse3']:isTriggered() then
     self:onClick(3, x, y)
-  elseif InputManager.keys['touch']:isTriggered() then
-    self.waitingTouch = true
-    self:onClick(4, x, y)
   elseif InputManager.keys['touch']:isReleased() and self.waitingTouch then
     self.waitingTouch = false
     self:onClick(5, x, y)
+  elseif InputManager.keys['touch']:isTriggered() then
+    self.waitingTouch = true
+    self:onClick(4, x, y)
   elseif InputManager.mouse.moved then
     self:onMouseMove(x, y)
   else
@@ -303,7 +303,9 @@ end
 function Window:onClick(button, x, y)
   if button == 1 then
     if self:isInside(x, y) then
-      self:onConfirm()
+      self:onMouseConfirm(x, y)
+    else
+      self:onCancel()
     end
   elseif button == 2 then
     self:onCancel()
@@ -313,11 +315,15 @@ function Window:onClick(button, x, y)
     end
   elseif button == 5 then
     if self:isInside(x, y) then
-      self:onConfirm()
+      self:onMouseConfirm(x, y)
     end
   else
     self:onConfirm()
   end
+end
+-- Confirmation by mouse or touch.
+function Window:onMouseConfirm(x, y)
+  self:onConfirm()
 end
 -- Called when player moves mouse.
 function Window:onMouseMove(x, y)

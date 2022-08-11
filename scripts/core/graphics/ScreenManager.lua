@@ -146,8 +146,8 @@ function ScreenManager:screen2World(renderer, x, y)
   local sx = self.scaleX * renderer.scaleX
   local sy = self.scaleY * renderer.scaleY
   -- Screen black border offset
-  x = x / self.canvasScaleX - self.offsetX
-  y = y / self.canvasScaleY - self.offsetY
+  x = (x - self.offsetX) / self.canvasScaleX
+  y = (y - self.offsetY) / self.canvasScaleY
   -- Set to origin
   x = x + (renderer.position.x - ox) * sx
   y = y + (renderer.position.y - oy) * sy

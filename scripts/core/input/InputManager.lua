@@ -250,6 +250,7 @@ function InputManager:onMousePress(x, y, button)
       self.mouse:onPress(button)
     end
   else
+    self.mouse.position:set(x, y)
     self.keys.touch:onPress()
   end
 end
@@ -265,6 +266,7 @@ function InputManager:onMouseRelease(x, y, button)
       self.mouse:onRelease(button)
     end
   else
+    self.mouse.position:set(x, y)
     self.keys.touch:onRelease()
   end
 end

@@ -302,31 +302,10 @@ end
 -- Input - Mouse
 ---------------------------------------------------------------------------------------------------
 
--- Called when player presses a mouse button.
--- Overrides Window:onClick.
-function GridWindow:onClick(button, x, y)
-  if button == 1 then
-    if self:isInside(x, y) then
-      self:onClickConfirm(x, y)
-    else
-      self:onCancel()
-    end
-  elseif button == 2 then
-    self:onCancel()
-  elseif button == 4 then
-    if not self:isInside(x, y) then
-      self:onCancel()
-    end
-  elseif button == 5 then
-    if self:isInside(x, y) then
-      self:onClickConfirm(x, y)
-    end
-  else
-    self:onConfirm()
-  end
-end
 -- Called when player confirms a button by mouse or touch.
-function GridWindow:onClickConfirm(x, y)
+-- Overrides Window:onMouseConfirm.
+function GridWindow:onMouseConfirm(x, y)
+  self:onMouseMove(x, y)
   local widget = self:currentWidget()
   if widget.enabled then
     if widget.clickSound then
@@ -342,17 +321,19 @@ function GridWindow:onClickConfirm(x, y)
   end
 end
 -- Called when player moves the mouse.
--- @param(x : number) Mouse delta x.
--- @param(y : number) Mouse delta y.
+-- @param(x : number) Mouse x.
+-- @param(y : number) Mouse y.
 function GridWindow:onMouseMove(x, y)
   if self:isInside(x, y) then
     if self.scroll then
       self.scroll:onMouseMove(x, y)
     end
     x = x + self.width / 2 - self:paddingX() - self:gridX() + self:colMargin() / 2
-    y = y + self.height / 2 - self:paddingY() - self:gridY() + self:rowMargin() / 2
-    x = math.floor( x / (self:cellWidth() + self:colMargin() ) ) + 1
-    y = math.floor( y / (self:cellHeight() + self:rowMargin() ) ) + 1
+    x = x / (self:cellWidth() + self:colMargin())
+    y = y + self.height / 2  - self:paddingY() - self:gridY() + self:rowMargin() / 2
+    y = y / (self:cellHeight() + self:rowMargin()) 
+    x = math.floor(x) + 1
+    y = math.floor(y) + 1
     local widget = self:getCell(x, y)
     if widget then
       self.currentCol = x + self.offsetCol
