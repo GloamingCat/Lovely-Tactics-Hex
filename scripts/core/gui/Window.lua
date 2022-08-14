@@ -42,6 +42,7 @@ function Window:init(gui, width, height, position)
   self.width = width
   self.height = height
   self.active = false
+  self.offBoundsCancel = true
   self:insertSelf()
   Component.init(self, position, width, height)
   self:setPosition(position or Vector(0, 0, 0))
@@ -272,9 +273,14 @@ function Window:checkInput()
     end
   end
 end
+
+---------------------------------------------------------------------------------------------------
+-- Input Callbacks
+---------------------------------------------------------------------------------------------------
+
 -- Called when player presses "confirm" key.
 -- By default, only sets the result to 1.
-function Window:onConfirm(x, y)
+function Window:onConfirm()
   self.result = 1
   if self.confirmSound then
     AudioManager:playSFX(self.confirmSound)
@@ -282,7 +288,7 @@ function Window:onConfirm(x, y)
 end
 -- Called when player presses "cancel" key.
 -- By default, only dets the result to 0.
-function Window:onCancel(x, y)
+function Window:onCancel()
   self.result = 0
   if self.cancelSound then
     AudioManager:playSFX(self.cancelSound)
@@ -304,19 +310,17 @@ function Window:onClick(button, x, y)
   if button == 1 then
     if self:isInside(x, y) then
       self:onMouseConfirm(x, y)
-    else
-      self:onCancel()
+    elseif self.offBoundsCancel then
+      self:onMouseCancel()
     end
   elseif button == 2 then
     self:onCancel()
   elseif button == 4 then
-    if not self:isInside(x, y) then
-      self:onCancel()
+    if self.offBoundsCancel and not self:isInside(x, y) then
+      self:onMouseCancel()
     end
   elseif button == 5 then
-    if self:isInside(x, y) then
-      self:onMouseConfirm(x, y)
-    end
+    self:onMouseConfirm(x, y)
   else
     self:onConfirm()
   end
@@ -324,6 +328,10 @@ end
 -- Confirmation by mouse or touch.
 function Window:onMouseConfirm(x, y)
   self:onConfirm()
+end
+-- Cancel my mouse or touch.
+function Window:onMouseCancel(x, y)
+  self:onCancel()
 end
 -- Called when player moves mouse.
 function Window:onMouseMove(x, y)

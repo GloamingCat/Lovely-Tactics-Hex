@@ -101,21 +101,39 @@ end
 -- Touch input
 ---------------------------------------------------------------------------------------------------
 
+local lastTouch = nil
 -- Called when the player starts touching the screen.
 -- @param(x : number) Cursor's x coordinate.
 -- @param(y : number) Cursor's y coordinate.
 function love.touchpressed(id, x, y)
-  InputManager:onMousePress(x, y, 4)
+  if lastTouch ~= nil then
+    return
+  end
+  lastTouch = id
+  if id == love.touch.getTouches()[1] then
+    InputManager:onMousePress(x, y, 4)
+  end
 end
 -- Called when the player stops touching the screen.
 -- @param(x : number) Cursor's x coordinate.
 -- @param(y : number) Cursor's y coordinate.
 function love.touchreleased(id, x, y)
-  InputManager:onMouseRelease(x, y, 4)
+  if lastTouch ~= id then
+    return
+  end
+  lastTouch = nil
+  if id == love.touch.getTouches()[1] then
+    InputManager:onMouseRelease(x, y, 4)
+  end
 end
 -- Called when the player starts touching the screen.
 -- @param(x : number) Cursor's x coordinate.
 -- @param(y : number) Cursor's y coordinate.
 function love.touchmoved(id, x, y)
-  InputManager:onMouseMove(x, y, true)
+  if lastTouch ~= id then
+    return
+  end
+  if id == love.touch.getTouches()[1] then
+    InputManager:onMouseMove(x, y, true)
+  end
 end

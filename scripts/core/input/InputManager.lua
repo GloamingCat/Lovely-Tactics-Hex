@@ -90,7 +90,7 @@ end
 function InputManager:update()
   self.usingKeyboard = false
   for code, key in pairs(self.keys) do
-    if key.pressState > 0 and not code:match('mouse') then
+    if key.pressState > 0 and not code:match('mouse') and not code:match('touch') then
       self.usingKeyboard = true
     end
     key:update()
@@ -243,7 +243,7 @@ end
 -- @param(y : number) Cursor's y coordinate.
 -- @param(button : number) Button type (1 to 3 for mouse, 4+ for touch IDs).
 function InputManager:onMousePress(x, y, button)
-  if button <= 3 then
+  if button <= 3 and GameManager.platform ~= 1 then
     if self.mouseEnabled then
       self.mouse.position:set(x, y)
       self.keys['mouse' .. button]:onPress()
@@ -259,7 +259,7 @@ end
 -- @param(y : number) Cursor's y coordinate.
 -- @param(button : number) Button type (1 to 3 for mouse, and 4+ for touch IDs).
 function InputManager:onMouseRelease(x, y, button)
-  if button <= 3 then
+  if button <= 3 and GameManager.platform ~= 1 then
     if self.mouseEnabled then
       self.mouse.position:set(x, y)
       self.keys['mouse' .. button]:onRelease()
@@ -275,7 +275,7 @@ end
 -- @param(y : number) Cursor's y coordinate.
 -- @param(touch : number) Touch ID (optional).
 function InputManager:onMouseMove(x, y, touch)
-  if touch or self.mouseEnabled then
+  if touch or self.mouseEnabled and GameManager.platform ~= 1 or self.keys['touch']:isPressing() then
     self.mouse:onMove(x, y)
   end
 end

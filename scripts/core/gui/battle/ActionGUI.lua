@@ -11,10 +11,11 @@ Its result is the action time that the character spent.
 =================================================================================================]]
 
 -- Imports
+local BattleCursor = require('core/battle/BattleCursor')
 local GUI = require('core/gui/GUI')
+local ConfirmWindow = require('core/gui/common/window/interactable/ConfirmWindow')
 local StepWindow = require('core/gui/battle/window/StepWindow')
 local TargetWindow = require('core/gui/battle/window/TargetWindow')
-local BattleCursor = require('core/battle/BattleCursor')
 
 -- Alias
 local yield = coroutine.yield
@@ -27,22 +28,35 @@ local ActionGUI = class(GUI)
 
 -- Overrides GUI:init.
 function ActionGUI:init(parent, input)
-  GUI.init(self, parent)
   self.name = 'Action GUI'
-  self.input = input
-  input.GUI = self
-  self.slideMargin = 20
+  self.slideMargin = 16
   self.slideSpeed = 3
+  GUI.init(self, parent)
   self.confirmSound = Config.sounds.buttonConfirm
   self.cancelSound = Config.sounds.buttonCancel
   self.selectSound = Config.sounds.buttonSelect
   self.errorSound = Config.sounds.buttonError
+  self.input = input
+  input.GUI = self
 end
 
 ---------------------------------------------------------------------------------------------------
 -- Auxiliary Windows
 ---------------------------------------------------------------------------------------------------
 
+-- Creates the GUI's windows and sets the first active window.
+function ActionGUI:createConfirmWindow()
+  if not self.confirmWindow then
+    local window = ConfirmWindow(self)
+    self.confirmWindow = window
+    local x = -ScreenManager.width / 2 + window.width / 2 + self.slideMargin
+    local y = -ScreenManager.height / 2 + window.height / 2 + self.slideMargin
+    window:setXYZ(x, y)
+    window.offBoundsCancel = false
+    window:setVisible(false)
+  end
+  return self.confirmWindow
+end
 -- Creates step window if not created yet.
 -- @ret(StepWindow) This GUI's step window.
 function ActionGUI:createStepWindow()
@@ -91,6 +105,18 @@ function ActionGUI:waitForResult()
 end
 -- Verifies player's input. Stores result of action in self.result.
 function ActionGUI:checkInput()
+  if self.confirmWindow then
+    self.confirmWindow:checkInput()
+    if self.confirmWindow.result == 1 then
+      self.confirmWindow.result = nil
+      self.result = self.input:execute()
+      return
+    elseif self.confirmWindow.result == 0 then
+      self.confirmWindow.result = nil
+      self.result = self.input.action:onCancel(self.input)
+      return
+    end
+  end
   return self:mouseInput() or self:keyboardInput()
 end
 -- Sets given tile as current target.
@@ -110,6 +136,9 @@ function ActionGUI:selectTarget(target)
     else
       GUIManager.fiberList:fork(self.targetWindow.hide, self.targetWindow)
     end
+  end
+  if self.confirmWindow then
+    self.confirmWindow.matrix[1]:setEnabled(self.input.target.gui.selectable)
   end
 end
 
@@ -171,6 +200,12 @@ function ActionGUI:mouseInput()
     if target and target ~= self.input.target then
       self:selectTarget(target)
     end
+  elseif InputManager.keys['touch']:isReleased() then
+    local target = self:mouseTarget()
+    if target and target ~= self.input.target then
+      self:selectTarget(target)
+      FieldManager.renderer:moveToTile(target)
+    end
   elseif InputManager.keys['mouse1']:isTriggered() then
     local target = self:mouseTarget()
     if target then
@@ -211,16 +246,20 @@ end
 
 -- Checks if the mouse pointer in the slide area.
 function ActionGUI:checkSlide()
-  if InputManager.mouse.active and not InputManager.usingKeyboard then
-    local w = ScreenManager.width / 2 - self.slideMargin
-    local h = ScreenManager.height / 2 - self.slideMargin
-    local x, y = InputManager.mouse:guiCoord()
-    if x > w or x < -w then
-      self:slideX(math.sign(x))
-    end
-    if y > h or y < -h then
-      self:slideY(math.sign(y))
-    end
+  if not InputManager.mouse.active or InputManager.usingKeyboard then
+    return
+  end
+  if GameManager.platform == 1 and not InputManager.keys.touch:isPressing() then
+    return
+  end
+  local w = ScreenManager.width / 2 - self.slideMargin
+  local h = ScreenManager.height / 2 - self.slideMargin
+  local x, y = InputManager.mouse:guiCoord()
+  if x > w or x < -w then
+    self:slideX(math.sign(x))
+  end
+  if y > h or y < -h then
+    self:slideY(math.sign(y))
   end
 end
 -- Slides the screen horizontally.
@@ -257,6 +296,10 @@ function ActionGUI:startGridSelecting(target)
   if self.stepWindow then
     GUIManager.fiberList:fork(self.stepWindow.show, self.stepWindow)
   end
+  if self.confirmWindow then
+    self.confirmWindow.result = nil
+    GUIManager.fiberList:fork(self.confirmWindow.show, self.confirmWindow)
+  end
   FieldManager:showGrid()
   FieldManager.renderer:moveToTile(target)
   self.cursor = self.cursor or BattleCursor()
@@ -265,6 +308,9 @@ function ActionGUI:startGridSelecting(target)
 end
 -- Hides grid and cursor.
 function ActionGUI:endGridSelecting()
+  if self.confirmWindow then
+    GUIManager.fiberList:fork(self.confirmWindow.hide, self.confirmWindow)
+  end
   if self.stepWindow then
     GUIManager.fiberList:fork(self.stepWindow.hide, self.stepWindow)
   end
@@ -272,6 +318,7 @@ function ActionGUI:endGridSelecting()
     GUIManager.fiberList:fork(self.targetWindow.hide, self.targetWindow)
   end
   while (self.targetWindow and not self.targetWindow.closed 
+      or self.confirmWindow and not self.confirmWindow.closed
       or self.stepWindow and not self.stepWindow.closed) do
     yield()
   end

@@ -29,14 +29,16 @@ function GridWindow:createContent(width, height)
   self.currentRow = 1
   self.offsetCol = 0
   self.offsetRow = 0
-  if not self.noCursor then
-    self.cursor = WindowCursor(self)
+  if GameManager.platform ~= 1 then
+    if not self.noCursor then
+      self.cursor = WindowCursor(self)
+    end
+    if not self.noHighlight then
+      self.highlight = Highlight(self)
+    end
+    self.loopVertical = true
+    self.loopHorizontal = true
   end
-  if not self.noHighlight then
-    self.highlight = Highlight(self)
-  end
-  self.loopVertical = true
-  self.loopHorizontal = true
   Window.createContent(self, width or self:calculateWidth(), height or self:calculateHeight())
   self:packWidgets()
 end
@@ -258,6 +260,7 @@ end
 
 -- Called when player confirms.
 function GridWindow:onConfirm(widget)
+  assert(GameManager.platform ~= 1, "This shouldn't be called on mobile.")
   widget = widget or self:currentWidget()
   if widget.enabled then
     if widget.confirmSound then
@@ -305,7 +308,9 @@ end
 -- Called when player confirms a button by mouse or touch.
 -- Overrides Window:onMouseConfirm.
 function GridWindow:onMouseConfirm(x, y)
-  self:onMouseMove(x, y)
+  if not self:onMouseMove(x, y) then
+    return
+  end
   local widget = self:currentWidget()
   if widget.enabled then
     if widget.clickSound then
@@ -323,6 +328,7 @@ end
 -- Called when player moves the mouse.
 -- @param(x : number) Mouse x.
 -- @param(y : number) Mouse y.
+-- @ret(boolean) True if the pointer is over a selectablt widget, false otherwise.
 function GridWindow:onMouseMove(x, y)
   if self:isInside(x, y) then
     if self.scroll then
@@ -339,8 +345,10 @@ function GridWindow:onMouseMove(x, y)
       self.currentCol = x + self.offsetCol
       self.currentRow = y + self.offsetRow
       self:setSelectedWidget(widget)
+      return true
     end
   end
+  return false
 end
 
 ---------------------------------------------------------------------------------------------------

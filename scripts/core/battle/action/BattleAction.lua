@@ -83,6 +83,9 @@ function BattleAction:onActionGUI(input)
   if self.showStepWindow then
     input.GUI:createStepWindow():show()
   end
+  if GameManager.platform == 1 then
+    input.GUI:createConfirmWindow():show()
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
