@@ -51,10 +51,6 @@ function EventSheet:moveToField(args)
     FieldManager.renderer:fadeout(args.fade, true)
   end
   FieldManager:loadTransition(args)
-  if args.fade then
-    FieldManager.renderer:fadeout(0)
-    FieldManager.renderer:fadein(args.fade)
-  end
   FieldManager.playerInput = true
 end
 -- Loads battle field.
@@ -66,6 +62,9 @@ end
 -- @param(args.gameOverCondition : number) GameOver condition:
 --  0 => no gameover, 1 => only when lost, 2 => lost or draw.
 function EventSheet:startBattle(args)
+  if not args.keepHud then
+    FieldManager.hud:hide()
+  end
   self.vars.onBattle = true
   BattleManager.params = args
   FieldManager:storePlayerState()
@@ -84,6 +83,9 @@ end
 function EventSheet:finishBattle(args)
   if args.fade then
     FieldManager.renderer:fadein(args.fade, true)
+  end
+  if not args.keepHud then
+    FieldManager.hud:show()
   end
   self.vars.onBattle = nil
 end

@@ -55,12 +55,18 @@ function EventSheet:addMember(args)
     troop:moveMember(args.key, 0, args.x, args.y)
   end
   TroopManager:saveTroop(troop, true)
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
 end
 -- @param(args.key : string) Member's key.
 function EventSheet:hideMember(args)
   local troop = Troop()
   troop:moveMember(args.key, 2)
   TroopManager:saveTroop(troop, true)
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
 end
 -- Heal all members' HP and SP.
 -- @param(args.onlyCurrent : boolean) True to ignore backup members (false by default).

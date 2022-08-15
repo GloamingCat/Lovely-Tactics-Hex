@@ -229,8 +229,12 @@ end
 -- Opens game's main GUI.
 function Player:openGUI()
   self:playIdleAnimation()
+  FieldManager.playerInput = false
+  FieldManager.hud:hide()
   AudioManager:playSFX(Config.sounds.menu)
   GUIManager:showGUIForResult(FieldGUI(nil))
+  FieldManager.hud:show()
+  FieldManager.playerInput = true
 end
 
 ---------------------------------------------------------------------------------------------------

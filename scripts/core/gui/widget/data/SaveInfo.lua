@@ -23,61 +23,79 @@ local SaveInfo = class(Component)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
--- @param(file : string) Save file name.
--- @param(width : number) Width of the container.
--- @param(height : number) Height of the container.
--- @param(topLeft : Vector) The position of the top left corner of the container.
-function SaveInfo:init(file, width, height, topLeft)
-  Component.init(self, topLeft, width, height, SaveManager.saves[file])
-  self.file = file
-end
 -- Overrides Component:createContent.
-function SaveInfo:createContent(w, h, save)
+function SaveInfo:createContent(w, h)
   local margin = 4
   local x, y, z = 2, 0, -2
   local small = Fonts.gui_small
   local tiny = Fonts.gui_tiny
   local medium = Fonts.medium
-  if save then
-    -- PlayTime
-    local topRight = Vector(x, y + 3, z)
-    local txtTime = SimpleText(string.time(save.playTime), topRight, w, 'right', small)
-    self.content:add(txtTime)
-    -- Gold
-    local middleLeft = Vector(x, y + 13, z)
-    local txtGold = SimpleText(save.money .. ' ' .. Vocab.g, middleLeft, w , 'right', small)
-    self.content:add(txtGold)
-    -- Location
-    local bottomLeft = Vector(middleLeft.x, middleLeft.y + 10, middleLeft.z)
-    local txtLocal = SimpleText(save.location, bottomLeft, w, 'left', small)
-    self.content:add(txtLocal)
-    -- Chars
-    local icons = {}
-    for i = 1, Config.troop.maxMembers do
-      if save.members[i] then
-        local charData = Database.characters[save.members[i]]
-        local icon = { col = 0, row = 7,
-          id = findByName(charData.animations, "Idle").id }
-        local sprite = ResourceManager:loadIcon(icon, GUIManager.renderer)
-        sprite:applyTransformation(charData.transform)
-        sprite:setCenterOffset()
-        icons[i] = sprite
-      else
-        icons[i] = false
-      end
+  -- No save
+  local txtName = SimpleText('', Vector(x, y, z), w, 'left', medium)
+  txtName.sprite.alignX = 'center'
+  txtName.sprite.alignY = 'center'
+  txtName.sprite.maxHeight = h
+  self.content:add(txtName)
+  -- PlayTime
+  local topRight = Vector(x, y + 3, z)
+  local txtTime = SimpleText('', topRight, w, 'right', small)
+  self.content:add(txtTime)
+  -- Gold
+  local middleLeft = Vector(x, y + 13, z)
+  local txtGold = SimpleText('', middleLeft, w , 'right', small)
+  self.content:add(txtGold)
+  -- Location
+  local bottomLeft = Vector(middleLeft.x, middleLeft.y + 10, middleLeft.z)
+  local txtLocal = SimpleText('', bottomLeft, w, 'left', small)
+  self.content:add(txtLocal)
+  -- Chars
+  local iconList = IconList(Vector(x + 10, y + 12), w, 20, 20, 20)
+  iconList.iconWidth = 18
+  iconList.iconHeight = 18
+  self.content:add(iconList)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Refresh
+---------------------------------------------------------------------------------------------------
+
+-- Sets text and icons according to given save header.
+-- @param(save : table) Save header. Nil if no save.
+function SaveInfo:refreshInfo(save)
+  assert(self.content.size == 5, 'Save info content not initialized.')
+  if not save then
+    for i = 2, 4 do
+      self.content[i]:setText('')
+      self.content[i]:redraw()
     end
-    local iconList = IconList(Vector(x + 10, y + 12), w, 20, 20, 20)
-    iconList.iconWidth = 18
-    iconList.iconHeight = 18
-    iconList:setSprites(icons)
-    self.content:add(iconList)
-  else
-    local txtName = SimpleText(Vocab.noSave, Vector(x, y, z), w, 'left', medium)
-    txtName.sprite.alignX = 'center'
-    txtName.sprite.alignY = 'center'
-    txtName.sprite.maxHeight = h
-    self.content:add(txtName)
+    self.content[5]:setSprites({})
+    self.content[1]:setText(Vocab.noSave)
+    self.content[1]:redraw()
+    return
   end
+  local txt = { '',
+    string.time(save.playTime),
+    save.money .. ' ' .. Vocab.g,
+    save.location }
+  for i = 1, 4 do
+    self.content[i]:setText(txt[i])
+    self.content[i]:redraw()
+  end
+  local icons = {}
+  for i = 1, Config.troop.maxMembers do
+    if save.members[i] then
+      local charData = Database.characters[save.members[i]]
+      local icon = { col = 0, row = 7,
+        id = findByName(charData.animations, "Idle").id }
+      local sprite = ResourceManager:loadIcon(icon, GUIManager.renderer)
+      sprite:applyTransformation(charData.transform)
+      sprite:setCenterOffset()
+      icons[i] = sprite
+    else
+      icons[i] = false
+    end
+  end
+  self.content[5]:setSprites(icons)
 end
 
 return SaveInfo

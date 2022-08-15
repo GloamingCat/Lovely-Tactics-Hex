@@ -53,7 +53,6 @@ end
 -- Starts the game.
 function GameManager:start()
   self.fpsFont = ResourceManager:loadFont(Fonts.fps)
-  self:setConfig(SaveManager.config)
   if self.editor then
     EditorManager:start()
   else

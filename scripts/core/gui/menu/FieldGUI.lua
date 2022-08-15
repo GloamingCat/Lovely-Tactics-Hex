@@ -52,7 +52,7 @@ function FieldGUI:createGoldWindow()
   self.goldWindow = GoldWindow(self, w, h, Vector(x, y))
   self.goldWindow:setGold(self.troop.money)
 end
--- Creates the window that shows the troop's money.
+-- Creates the window that shows the current location.
 function FieldGUI:createLocalWindow()
   local w, h = ScreenManager.width - self.mainWindow.width - self:windowMargin() * 4 - self.goldWindow.width, 32
   local x = self.goldWindow.position.x - w / 2 - self.goldWindow.width / 2 - self:windowMargin()
@@ -60,7 +60,7 @@ function FieldGUI:createLocalWindow()
   self.localWindow = LocalWindow(self, w, h, Vector(x, y))
   self.localWindow:setLocal(FieldManager.currentField.name)
 end
--- Creates the window that shows the troop's money.
+-- Creates the window that shows the total playtime.
 function FieldGUI:createTimeWindow()
   local w, h = self.goldWindow.width, self.goldWindow.height
   local x = self.mainWindow.position.x

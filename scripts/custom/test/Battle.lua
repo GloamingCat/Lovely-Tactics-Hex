@@ -27,6 +27,11 @@ return function(script)
   
   FieldManager.player:playIdleAnimation()
   
+  if not FieldManager.playerInput then
+    -- Player is busy with something else.
+    return
+  end
+  
   do
     local gameOverCondition = 1
     local conditionName = (script.args.gameOverCondition or ''):trim():lower()

@@ -17,6 +17,7 @@ require('core/base/globals')
 -- @param(arg : table) A sequence strings which are command line arguments given to the game.
 function love.load(arg)
   GameManager:readArguments(arg)
+  GameManager:setConfig(SaveManager.config)
   GameManager:start()
 end
 -- Callback function used to update the state of the game every frame.

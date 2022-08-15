@@ -73,7 +73,7 @@ function IconList:setSprites(icons)
     end
     self.content:add(self.icons[i])
     if frameSkin then
-      self.frames[i] = SpriteGrid(frameSkin, Vector(x, y, -1))
+      self.frames[i] = SpriteGrid(frameSkin, Vector(x, y, -2))
       self.frames[i]:createGrid(GUIManager.renderer, self.frameWidth, self.frameHeight)
       self.content:add(self.frames[i])
     end

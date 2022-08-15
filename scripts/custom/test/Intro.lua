@@ -8,13 +8,13 @@ First scene after title screen.
 =================================================================================================]]
 
 -- For debug. 
--- mode = 0 is default intro scene.
-local mode = 1
+-- mode = 1 to test battle.
+local mode = 0
 
 return function(script)
   if mode == 0 then
     FieldManager.renderer:fadeout(0)
-    FieldManager.renderer:fadein(60)
+    FieldManager.renderer:fadein(60, true)
   else
     if not script.vars.onBattle then
       --script:showEmotionBalloon { key = 'player', emotion = '!' }
@@ -30,5 +30,6 @@ return function(script)
       script:finishBattle { fade = 60 }
     end
   end
-  FieldManager.currentField.loadScript.name = ''
+  FieldManager.currentField.loadScript.name = 'Load.lua'
+  FieldManager.hud:show()
 end

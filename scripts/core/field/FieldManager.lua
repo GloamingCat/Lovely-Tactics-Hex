@@ -10,6 +10,7 @@ game's data.
 
 -- Imports
 local FieldCamera = require('core/field/FieldCamera')
+local FieldHUD = require('core/gui/menu/FieldHUD')
 local FiberList = require('core/fiber/FiberList')
 local FieldLoader = require('core/field/FieldLoader')
 local List = require('core/datastruct/List')
@@ -45,6 +46,9 @@ function FieldManager:update()
     end
     self.renderer:update()
   end
+  if self.hud then
+    self.hud:update()
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -79,6 +83,7 @@ function FieldManager:loadTransition(transition, fieldSave)
   end
   local fieldData = self:loadField(transition.fieldID, fieldSave)
   FieldLoader.createTransitions(self.currentField, fieldData.prefs.transitions)
+  self.hud = self.hud or FieldHUD()
   self:playFieldBGM()
   self:initializePlayer(transition, fieldSave)
   self:runLoadScripts()

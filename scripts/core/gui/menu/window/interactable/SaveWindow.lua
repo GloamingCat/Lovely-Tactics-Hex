@@ -40,8 +40,11 @@ end
 -- @ret(Button) Newly created button.
 function SaveWindow:createSaveButton(file, name)
   local button = Button(self)
+  local w, h = self:cellWidth(), self:cellHeight()
+  button.saveInfo = SaveInfo(nil, w - self:paddingX(), h)
+  button.content:add(button.saveInfo)
   button.file = file
-  if not SaveManager.saves[button.file] then
+  if not SaveManager.saves[file] then
     button.confirmSound = Config.sounds.save or button.confirmSound
     button.clickSound = button.clickSound
   end
@@ -53,14 +56,8 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Refresh each member info.
-function SaveWindow:refreshSave(button)  
-  if button.saveInfo then
-    button.saveInfo:destroy()
-    button.content:removeElement(button.saveInfo)
-  end
-  local w, h = self:cellWidth(), self:cellHeight()
-  button.saveInfo = SaveInfo(button.file, w - self:paddingX(), h)
-  button.content:add(button.saveInfo)
+function SaveWindow:refreshSave(button)
+  button.saveInfo:refreshInfo(SaveManager.saves[button.file])
   button:updatePosition(self.position)
   button:refreshEnabled()
 end

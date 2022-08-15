@@ -19,7 +19,7 @@
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
-      "name": "",
+      "name": "Load.lua",
       "tags": []
     },
     "images": [],
