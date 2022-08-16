@@ -82,14 +82,12 @@ function Player:resumeScripts()
 end
 -- Checks movement and interaction inputs.
 function Player:checkFieldInput()
-  if InputManager.keys['confirm']:isTriggered() then
-    self:interact()
-  elseif InputManager.keys['cancel']:isTriggered() then
+  if InputManager.keys['cancel']:isTriggered() or InputManager.keys['mouse2']:isTriggered() or FieldManager.hud:checkInput() then
     self:openGUI()
+  elseif InputManager.keys['confirm']:isReleased() then
+    self:interact()
   elseif InputManager.keys['mouse1']:isPressing() or InputManager.keys['touch']:isPressing() then
     self:moveByMouse()
-  elseif InputManager.keys['mouse2']:isTriggered() then
-    self:openGUI()
   else
     local dx, dy, move = self:inputAxis()
     local dash = InputManager.keys['dash']:isPressing()
@@ -230,8 +228,8 @@ end
 function Player:openGUI()
   self:playIdleAnimation()
   FieldManager.playerInput = false
-  FieldManager.hud:hide()
   AudioManager:playSFX(Config.sounds.menu)
+  FieldManager.hud:hide()
   GUIManager:showGUIForResult(FieldGUI(nil))
   FieldManager.hud:show()
   FieldManager.playerInput = true

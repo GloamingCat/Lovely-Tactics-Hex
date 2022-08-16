@@ -10,6 +10,7 @@
   "noSave": "Empty",
   
   // Main Window
+  "menu": "Menu",
   "inventory": "Inventory",
   "members": "Characters",
   "config": "Settings",

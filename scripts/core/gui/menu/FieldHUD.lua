@@ -8,6 +8,7 @@ The GUI that is shown when the player chooses a troop member to manage.
 =================================================================================================]]
 
 -- Imports
+local ButtonWindow = require('core/gui/common/window/interactable/ButtonWindow')
 local GUI = require('core/gui/GUI')
 local SaveInfo = require('core/gui/widget/data/SaveInfo')
 local Vector = require('core/math/Vector')
@@ -46,7 +47,27 @@ function FieldHUD:createSaveInfoWindow()
 end
 -- Creates the window with the menu button, for mobile.
 function FieldHUD:createButtonWindow()
-  -- TODO
+  local window = ButtonWindow(self, Vocab.menu)
+  window:setXYZ((ScreenManager.width - window.width) / 2, (window.height - ScreenManager.height) / 2)
+  window.offBoundsCancel = false
+  self.buttonWindow = window
+end
+
+---------------------------------------------------------------------------------------------------
+-- Input
+---------------------------------------------------------------------------------------------------
+
+-- Checks if button was clicked on.
+-- @ret(boolean) Whether the button was pressed or not.
+function FieldHUD:checkInput()
+  if self.buttonWindow then
+    self.buttonWindow:checkInput()
+    if self.buttonWindow.result then
+      self.buttonWindow.result = nil
+      return true
+    end
+  end
+  return false
 end
 
 ---------------------------------------------------------------------------------------------------

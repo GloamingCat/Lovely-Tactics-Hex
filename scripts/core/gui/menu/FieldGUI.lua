@@ -73,7 +73,9 @@ function FieldGUI:createMembersWindow()
   local window = PartyWindow(self, self.troop)
   local x = ScreenManager.width / 2 - window.width / 2 - self:windowMargin()
   local y = -ScreenManager.height / 2 + window.height / 2 + self:windowMargin()
-  window.highlight.hideOnDeactive = true
+  if window.highlight then
+    window.highlight.hideOnDeactive = true
+  end
   window:setXYZ(x, y)
   window:setSelectedWidget(nil)
   self.partyWindow = window
