@@ -14,6 +14,9 @@ extern number outlineSize;
 // The scale of the step
 extern vec2 stepSize;
 
+#define N_STEPS 32.0
+#define MINSTEP 32.0
+
 vec4 effect(vec4 color, sampler2D texture, vec2 texture_coords, vec2 screen_coords) {
   vec4 initialColor = texture2D(texture, texture_coords);
   number initialAlpha = initialColor[3];
@@ -23,10 +26,12 @@ vec4 effect(vec4 color, sampler2D texture, vec2 texture_coords, vec2 screen_coor
   
   // Calculate alpha in neighborhood.
   number outlineAlpha = 0.0;
-  for (number i = -outlineSize; i <= outlineSize; i += stepSize.x) {
-      for (number j = -outlineSize; j <= outlineSize; j += stepSize.y) {
-          vec4 neighborColor = texture2D(texture, texture_coords + vec2(i, j) * pixelSize);
-          outlineAlpha += neighborColor[3];
+  for (number i = 0.0; i <= N_STEPS; i += 1.0) {
+      for (number j = 0.0; j <= N_STEPS; j += 1.0) {
+          if (i * stepSize.x <= outlineSize * 2.0 && j * stepSize.y <= outlineSize * 2.0) {
+              vec4 neighborColor = texture2D(texture, texture_coords + vec2(i * stepSize.x - outlineSize, j * stepSize.y - outlineSize) * pixelSize);
+              outlineAlpha += neighborColor[3];
+          }
       }
   }
   

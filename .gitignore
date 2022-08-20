@@ -1,4 +1,6 @@
 lib/*
+web/*
+*.love
 *.bat
 ignore/
 desktop.ini

@@ -57,18 +57,23 @@ function Text:setText(text)
   if text == '' then
     self.lines = nil
     self.events = nil
+    self.parsedLines = nil
     return
   end
   local maxWidth = self.wrap and (self.maxWidth / self.scaleX)
   local fragments = TextParser.parse(text, self.plainText)
   local lines, events = TextParser.createLines(fragments, self.defaultFont, maxWidth)
   self.parsedLines = lines
+  assert(lines, "Couldn't parse lines: " .. tostring(text))
   self.events = events
   self:redrawBuffers()
 end
 -- Redraws each line buffer.
 function Text:redrawBuffers()
   local lines = self.parsedLines
+  if not self.parsedLines then
+    return
+  end
   if self.cutPoint then
     lines = TextParser.cutText(lines, self.cutPoint)
   end
