@@ -95,13 +95,14 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- [COROUTINE] Show the text lines in a pop-up.
--- @param(wait : boolean) true if the coroutine shoul wait until the animation finishes (optional)
+-- @param(wait : boolean) True if the execution should wait until the animation finishes 
+--  (optional, false by default).
 function PopupText:popup(wait)
   if not self.text then
     return
   end
   if not wait then
-    _G.Fiber:fork(self.popup, self, true)
+    Fiber:fork(self.popup, self, true)
   else
     local p = {self.width, self.align}
     local sprite = Text(self.text, p, self.renderer)
@@ -111,14 +112,14 @@ function PopupText:popup(wait)
     while d < distance do
       d = d + distance * speed * GameManager:frameTime()
       sprite:setXYZ(nil, y - d)
-      coroutine.yield()
+      Fiber:wait()
     end
-    _G.Fiber:wait(pause)
+    Fiber:wait(pause)
     local f = speed * 100 / sprite.color.alpha
     while sprite.color.alpha > 0 do
       local a = max(sprite.color.alpha - f * GameManager:frameTime(), 0)
       sprite:setRGBA(nil, nil, nil, a)
-      coroutine.yield()
+      Fiber:wait()
     end
     sprite:destroy()
   end

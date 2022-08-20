@@ -10,9 +10,6 @@ Manages a set of GUI elements (generally, a set of windows).
 -- Imports
 local List = require('core/datastruct/List')
 
--- Alias
-local yield = coroutine.yield
-
 local GUI = class()
 
 ---------------------------------------------------------------------------------------------------
@@ -80,7 +77,7 @@ function GUI:waitForResult()
     self.activeWindow:checkInput()
   end
   while not self.activeWindow or self.activeWindow.result == nil do
-    yield()
+    Fiber:wait()
     if self.activeWindow then
       self.activeWindow:checkInput()
     end
@@ -132,7 +129,7 @@ function GUI:show()
         done = false
       end
     end
-    yield()
+    Fiber:wait()
   until done
   self.open = true
 end
@@ -151,7 +148,7 @@ function GUI:hide()
           done = false
         end
       end
-      yield()
+      Fiber:wait()
     until done
     self.closed = true
   end

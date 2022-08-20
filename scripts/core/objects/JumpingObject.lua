@@ -18,7 +18,6 @@ local len = math.len2D
 local round = math.round
 local pixel2Tile = math.field.pixel2Tile
 local tile2Pixel = math.field.tile2Pixel
-local yield = coroutine.yield
 
 -- Constants
 local defaultGravity = 30
@@ -73,7 +72,7 @@ function JumpingObject:waitForJump()
   end
   self.jumpFiber = fiber
   while self.gravity > 0 do
-    yield()
+    Fiber:wait()
   end
   if fiber:running() then
     self.jumpFiber = nil

@@ -13,9 +13,6 @@ local Dialogue = require('core/gui/widget/Dialogue')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
--- Alias
-local yield = coroutine.yield
-
 local DialogueWindow = class(Window)
 
 ---------------------------------------------------------------------------------------------------
@@ -95,7 +92,7 @@ function DialogueWindow:showDialogue(text, align, speaker)
   self.dialogue:rollText(text)
   self.GUI:waitForResult()
   self.result = nil
-  yield()
+  Fiber:wait()
 end
 
 ---------------------------------------------------------------------------------------------------

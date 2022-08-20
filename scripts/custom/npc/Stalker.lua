@@ -28,6 +28,6 @@ return function(script)
         end
       end
     end
-    coroutine.yield()
+    Fiber:wait()
   end
 end

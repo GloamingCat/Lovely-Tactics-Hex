@@ -7,9 +7,6 @@ An object with color properties.
 
 =================================================================================================]]
 
--- Alias
-local yield = coroutine.yield
-
 local Colorable = class()
 
 ---------------------------------------------------------------------------------------------------
@@ -147,7 +144,7 @@ function Colorable:waitForColor()
   end
   self.colorFiber = fiber
   while self.colorTime < 1 do
-    yield()
+    Fiber:wait()
   end
   if fiber:running() then
     self.colorFiber = nil

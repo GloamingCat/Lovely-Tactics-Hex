@@ -122,7 +122,7 @@ function RewardGUI:showTopText()
   while a < 1 do
     a = a + GameManager:frameTime() * self.topTextSpeed
     self.topText:setRGBA(nil, nil, nil, a)
-    coroutine.yield()
+    Fiber:wait()
   end
   self.topText:setRGBA(nil, nil, nil, 1)
 end
@@ -145,7 +145,7 @@ function RewardGUI:hideTopText()
   while a > 0 do
     a = a - GameManager:frameTime() * self.topTextSpeed
     self.topText:setRGBA(nil, nil, nil, a)
-    coroutine.yield()
+    Fiber:wait()
   end
   self.topText:setVisible(false)
 end

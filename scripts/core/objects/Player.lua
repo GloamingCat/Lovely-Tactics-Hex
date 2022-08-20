@@ -20,7 +20,6 @@ local coord2Angle = math.coord2Angle
 local indexOf = util.array.indexOf
 local rand = love.math.random
 local now = love.timer.getTime
-local yield = coroutine.yield
 
 local Player = class(Character)
 
@@ -71,7 +70,7 @@ function Player:resumeScripts()
   Character.resumeScripts(self)
   self:collideTile(self:getTile())
   while true do
-    yield()
+    Fiber:wait()
     for script in self.waitList:iterator() do
       script:waitForEnd()
     end

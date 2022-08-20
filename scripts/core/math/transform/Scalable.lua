@@ -7,9 +7,6 @@ An object with scale properties.
 
 =================================================================================================]]
 
--- Alias
-local yield = coroutine.yield
-
 local Scalable = class()
 
 ---------------------------------------------------------------------------------------------------
@@ -101,7 +98,7 @@ function Scalable:waitForScaling()
   end
   self.scaleFiber = fiber
   while self.scaleTime < 1 do
-    yield()
+    Fiber:wait()
   end
   if fiber:running() then
     self.scaleFiber = nil

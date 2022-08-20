@@ -79,7 +79,7 @@ function KeyMapWindow:onButtonConfirm(button)
   self.cursor.paused = true
   button:createInfoText('')
   repeat
-    coroutine.yield()
+    Fiber:wait()
   until InputManager.lastKey
   local code = InputManager.lastKey
   local map = self.map[button.map]

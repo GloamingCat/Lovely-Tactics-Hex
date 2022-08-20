@@ -91,7 +91,7 @@ function TitleGUI:showCover()
     if self.cover then
       self.cover:setRGBA(nil, nil, nil, time)
     end
-    coroutine.yield()
+    Fiber:wait()
   end
 end
 -- Faces out cover and title.
@@ -106,7 +106,7 @@ function TitleGUI:hideCover()
     if self.cover then
       self.cover:setRGBA(nil, nil, nil, time)
     end
-    coroutine.yield()
+    Fiber:wait()
   end
 end
 

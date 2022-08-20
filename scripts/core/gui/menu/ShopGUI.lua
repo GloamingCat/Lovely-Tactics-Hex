@@ -97,7 +97,7 @@ end
 function ShopGUI:showShopGUI()
   GUIManager.fiberList:fork(self.countWindow.show, self.countWindow)
   GUIManager.fiberList:fork(self.descriptionWindow.show, self.descriptionWindow)
-  coroutine.yield()
+  Fiber:wait()
   self.itemWindow:show()
   self.itemWindow:activate()
 end
@@ -105,7 +105,7 @@ end
 function ShopGUI:hideShopGUI()
   GUIManager.fiberList:fork(self.countWindow.hide, self.countWindow)
   GUIManager.fiberList:fork(self.descriptionWindow.hide, self.descriptionWindow)
-  coroutine.yield()
+  Fiber:wait()
   self.itemWindow:hide()
   self.commandWindow:activate()
 end

@@ -13,9 +13,6 @@ local SimpleText = require('core/gui/widget/SimpleText')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
--- Alias
-local yield = coroutine.yield
-
 local RewardEXPWindow = class(Window)
 
 ---------------------------------------------------------------------------------------------------
@@ -107,7 +104,7 @@ function RewardEXPWindow:addEXP()
     if levelup and self.levelupSound then
       AudioManager:playSFX(self.levelupSound)
     end
-    yield()
+    Fiber:wait()
   until done
 end
 -- Overrides Window:onConfirm.

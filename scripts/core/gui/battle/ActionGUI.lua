@@ -17,9 +17,6 @@ local ConfirmWindow = require('core/gui/common/window/interactable/ConfirmWindow
 local StepWindow = require('core/gui/battle/window/StepWindow')
 local TargetWindow = require('core/gui/battle/window/TargetWindow')
 
--- Alias
-local yield = coroutine.yield
-
 local ActionGUI = class(GUI)
 
 ---------------------------------------------------------------------------------------------------
@@ -95,7 +92,7 @@ function ActionGUI:waitForResult()
     if self.cursor then
       self.cursor:update()
     end
-    yield()
+    Fiber:wait()
     self:checkInput()
   end
   if self.cursor then
@@ -320,7 +317,7 @@ function ActionGUI:endGridSelecting()
   while (self.targetWindow and not self.targetWindow.closed 
       or self.confirmWindow and not self.confirmWindow.closed
       or self.stepWindow and not self.stepWindow.closed) do
-    yield()
+    Fiber:wait()
   end
   FieldManager:hideGrid()
   if self.cursor then

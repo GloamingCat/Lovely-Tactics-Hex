@@ -13,7 +13,6 @@ local Music = require('core/audio/Music')
 local Sound = require('core/audio/Sound')
 
 -- Alias
-local yield = coroutine.yield
 local max = math.max
 local min = math.min
 local fileInfo = love.filesystem.getInfo
@@ -243,6 +242,7 @@ end
 -- Fading
 ---------------------------------------------------------------------------------------------------
 
+-- [COROUTINE] Decreases the BGM volume slowly.
 -- @param(time : number) The duration of the fading.
 -- @param(wait : boolean) True to only return when the fading finishes.
 function AudioManager:fadeout(time, wait)
@@ -260,6 +260,7 @@ function AudioManager:fadeout(time, wait)
     end
   end
 end
+-- [COROUTINE] Increases the BGM volume slowly.
 -- @param(time : number) The duration of the fading.
 -- @param(wait : boolean) True to only return when the fading finishes.
 function AudioManager:fadein(time, wait)
@@ -285,7 +286,7 @@ function AudioManager:waitForBGMFading()
   end
   self.fadingFiber = fiber
   while self.fading < 1 and self.fading > 0 do
-    yield()
+    Fiber:wait()
   end
   if fiber:running() then
     self.fadingFiber = nil

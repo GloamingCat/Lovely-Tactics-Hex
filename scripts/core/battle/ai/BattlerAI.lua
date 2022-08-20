@@ -79,7 +79,7 @@ function BattlerAI:showCursor(char)
   while t > 0 do
     t = t - GameManager:frameTime()
     cursor:update()
-    coroutine.yield()
+    Fiber:wait()
   end
   cursor:destroy()
 end

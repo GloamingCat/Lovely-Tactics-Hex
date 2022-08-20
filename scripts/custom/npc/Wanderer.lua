@@ -17,7 +17,7 @@ return function(script)
   local pause = tonumber(script.args.pause) or 60
   local pauseVar = tonumber(script.args.pauseVar) or 0
   while true do
-    coroutine.yield()
+    Fiber:wait()
     if not (FieldManager.player:isBusy() or script.char.interacting) then
       local dir = rand(8) * 45
       if script.char:tryAngleMovement(dir) then

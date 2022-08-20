@@ -21,7 +21,7 @@ function EventSheet:shaderin(args)
   local time = GameManager:frameTime()
   while time < 1 do
     ScreenManager.shader:send('time', time)
-    coroutine.yield()
+    Fiber:wait()
     time = time + GameManager:frameTime() * (args.speed or 1)
   end
   ScreenManager.shader:send('time', 1)
@@ -33,7 +33,7 @@ function EventSheet:shaderout(args)
   local time = GameManager:frameTime()
   while time > 0 do
     ScreenManager.shader:send('time', time)
-    coroutine.yield()
+    Fiber:wait()
     time = time - GameManager:frameTime() * (args.speed or 1)
   end
   ScreenManager.shader:send('time', 0)

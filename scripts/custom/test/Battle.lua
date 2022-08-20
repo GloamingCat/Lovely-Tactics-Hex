@@ -9,7 +9,7 @@ Starts a battle when this collides with player.
 
 return function(script)
   
-  coroutine.yield()
+  Fiber:wait()
 
   if script.char.deleted then
     -- Already dead
@@ -75,6 +75,6 @@ return function(script)
   --FieldManager.fiberList:forkEvent(script.finishBattle, script, { fade = 60 })
   script:finishBattle { fade = 60 }
   
-  coroutine.yield()
+  Fiber:wait()
 
 end

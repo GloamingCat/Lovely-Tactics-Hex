@@ -10,9 +10,6 @@ An object with position and movement properties.
 -- Imports
 local Vector = require('core/math/Vector')
 
--- Alias
-local yield = coroutine.yield
-
 local Movable = class()
 
 ---------------------------------------------------------------------------------------------------
@@ -120,7 +117,7 @@ function Movable:waitForMovement()
   end
   self.moveFiber = fiber
   while self.moveTime < 1 do
-    yield()
+    Fiber:wait()
   end
   if fiber:running() then
     self.moveFiber = nil

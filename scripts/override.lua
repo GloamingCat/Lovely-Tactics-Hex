@@ -56,26 +56,6 @@ require = function(path)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Coroutine Error
----------------------------------------------------------------------------------------------------
-
--- Prints coroutine error.
--- @param(msg : string) error message
-local function err(msg) 
-  print(debug.traceback(msg, 2))  
-end
--- Overrides Lua's native coroutine.create function to show errors inside the coroutine.
--- @param(func : function) the coroutine's function
--- @ret(coroutine) the newly created coroutine
-local old_coroutine_create = coroutine.create
-function coroutine.create(func)
-  local pfunc = function() 
-    xpcall(func, err)
-  end
-  return old_coroutine_create(pfunc)
-end
-
----------------------------------------------------------------------------------------------------
 -- Function Cache
 ---------------------------------------------------------------------------------------------------
 

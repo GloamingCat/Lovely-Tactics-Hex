@@ -8,13 +8,6 @@ It must be updated by its root every frame, unless it's paused.
 
 =================================================================================================]]
 
--- Alias
-local insert = table.insert
-local create = coroutine.create
-local status = coroutine.status
-local resume = coroutine.resume
-local yield = coroutine.yield
-
 local Fiber = class()
 
 ---------------------------------------------------------------------------------------------------
@@ -32,14 +25,15 @@ function Fiber:init(root, func, ...)
   self.interruptable = true
   local arg = {...}
   if not func then
-    insert(arg, 1, self)
+    table.insert(arg, 1, self)
     func = self.execute
   end
-  self.execute = func
-  self.origin = debug.getinfo(3, "n")
-  self.coroutine = create(function()
+  self.execute = function()
     func(unpack(arg))
-  end)
+  end
+  self.origin = debug.getinfo(3, "n")
+  self.traceback = debug.traceback(nil, 1) 
+  self.coroutine = coroutine.create(self.execute)
 end
 -- Creates new Fiber from a script table.
 -- @param(root : FiberList) The list this Fiber belongs to.
@@ -59,14 +53,15 @@ function Fiber:update()
   if not self.coroutine then
     return
   end
-  if status(self.coroutine) == 'dead' then
+  if coroutine.status(self.coroutine) == 'dead' then
     self:finish()
   else
     local previous = _G.Fiber
     _G.Fiber = self
-    local state, result = resume(self.coroutine)
+    local state, result = coroutine.resume(self.coroutine)
     if not state then
       -- Output error message
+      print(self.traceback)
       error(tostring(result), 2)
       if GameManager.platform == 1 then
         love.window.showMessageBox("Error", tostring(result))
@@ -106,13 +101,6 @@ end
 -- Auxiliary functions
 ---------------------------------------------------------------------------------------------------
 
--- Wait until this fiber's function finishes.
--- Specially useful when other fiber must wait until this one finishes.
-function Fiber:waitForEnd()
-  while self.coroutine do
-    yield()
-  end
-end
 -- Executes this fiber until it finishes.
 -- Used specially when this fiber does not have a root, 
 --  so it's not updated every frame.
@@ -120,26 +108,36 @@ function Fiber:execAll()
   while self:update() do
   end
 end
--- Wait for frames.
+-- [COROUTINE] Wait until this fiber's function finishes.
+-- Specially useful when other fiber must wait until this one finishes.
+function Fiber:waitForEnd()
+  assert(coroutine.running(), 'Called by main thread.')
+  while self.coroutine do
+    coroutine.yield()
+  end
+end
+-- [COROUTINE] Wait for frames.
 -- @param(t : number) The number of frames to wait.
 --  Consider a rate of 60 frames per second.
 function Fiber:wait(t)
+  assert(coroutine.running(), 'Called by main thread.')
   if not t then
-    yield()
+    coroutine.yield()
   else
     while t > 0 do
       t = t - GameManager:frameTime() * 60
-      yield()
+      coroutine.yield()
     end
   end
 end
--- Waits until a given condition returns true.
+-- [COROUTINE] Waits until a given condition returns true.
 -- @param(func : function) A function that returns a boolean.
 -- @param(...) Function's parameters.
 function Fiber:waitUntil(func, ...)
+  assert(coroutine.running(), 'Called by main thread.')
   local args = {...}
   while not func(unpack(args)) do
-    yield()
+    coroutine.yield()
   end
 end
 -- Calls a given function after a certain time.

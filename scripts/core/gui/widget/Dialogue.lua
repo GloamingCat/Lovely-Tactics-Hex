@@ -15,9 +15,6 @@ Event codes:
 -- Imports
 local SimpleText = require('core/gui/widget/SimpleText')
 
--- Alias
-local yield = coroutine.yield
-
 local Dialogue = class(SimpleText)
 
 ---------------------------------------------------------------------------------------------------
@@ -57,7 +54,7 @@ function Dialogue:rollText(text)
     end
     -- Check if player skipped dialogue.
     if self:buttonPressed() then
-      yield()
+      Fiber:wait()
       if #skipPoints > 0 then
         time = skipPoints[#skipPoints] - 1
         skipPoints[#skipPoints] = nil
@@ -82,7 +79,7 @@ function Dialogue:rollText(text)
 	    end
       self:triggerEvents(previousTime, time)
     end
-    yield()
+    Fiber:wait()
   end
   self.sprite.cutPoint = nil
   self.sprite:redrawBuffers()

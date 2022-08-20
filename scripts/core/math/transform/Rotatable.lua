@@ -7,9 +7,6 @@ An object with rotation properties.
 
 =================================================================================================]]
 
--- Alias
-local yield = coroutine.yield
-
 local Rotatable = class()
 
 ---------------------------------------------------------------------------------------------------
@@ -91,7 +88,7 @@ function Rotatable:waitForRotation()
   end
   self.rotationFiber = fiber
   while self.rotationTime < 1 do
-    yield()
+    Fiber:wait()
   end
   if fiber:running() then
     self.rotationFiber = nil
