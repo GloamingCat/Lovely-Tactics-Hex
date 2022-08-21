@@ -29,6 +29,7 @@ function GameManager:init()
   else
     self.platform = 0
   end
+  print('Platform: ', self.platform)
   self.paused = false
   self.cleanTime = 300
   self.cleanCount = 0
@@ -245,8 +246,7 @@ end
 
 -- Restarts the game from the TitleGUI.
 function GameManager:restart()
-  ScreenManager.shader = nil
-  ScreenManager.renderers = {}
+  ScreenManager:clear()
   FieldManager = require('core/field/FieldManager')()
   GUIManager = require('core/gui/GUIManager')()
   self:start()

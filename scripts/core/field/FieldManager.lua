@@ -151,7 +151,7 @@ function FieldManager:initializeCamera(data, width, height, images)
     camera:setRGBA(1, 1, 1, 1)
   end
   camera:initializeImages(images)
-  ScreenManager.renderers[1] = camera
+  ScreenManager:setRenderer(camera, 1)
   self.renderer = camera
 end
 

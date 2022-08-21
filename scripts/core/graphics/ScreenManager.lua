@@ -46,12 +46,12 @@ function ScreenManager:init()
   self.offsetY = 0
   self.canvas = lgraphics.newCanvas(self.width * self.scaleX, self.height * self.scaleY)
   self.canvas:setFilter(self.canvasFilter)
-  self.renderers = {}
   self.drawCalls = 0
   self.canvasScaleX = 1
   self.canvasScaleY = 1
   self.mode = 1
   self.closed = false
+  self:clear()
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ function ScreenManager:draw()
   self.drawCalls = 0
   lgraphics.setCanvas(self.canvas)
   lgraphics.clear()
-  for i = 1, #self.renderers do
+  for i = 1, self.rendererCount do
     if self.renderers[i] then
       self.renderers[i]:draw()
     end
@@ -77,6 +77,19 @@ function ScreenManager:draw()
   lgraphics.setCanvas()
   lgraphics.setShader(self.shader)
   lgraphics.draw(self.canvas, self.offsetX, self.offsetY, 0, self.canvasScaleX, self.canvasScaleY)
+end
+-- Set a renderer in the given order.
+-- @param(renderer : Renderer)
+-- @param(i : number)
+function ScreenManager:setRenderer(renderer, i)
+  self.renderers[i] = renderer
+  self.rendererCount = math.max(self.rendererCount, i)
+end
+-- Clears renderer list and resets shader.
+function ScreenManager:clear()
+  self.shader = nil
+  self.renderers = {}
+  self.rendererCount = 0
 end
 
 ---------------------------------------------------------------------------------------------------

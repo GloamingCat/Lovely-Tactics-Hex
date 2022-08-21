@@ -30,7 +30,7 @@ function GUIManager:init()
   self.fieldScroll = 0
   self.fiberList = FiberList()
   self.updateList = List()
-  ScreenManager.renderers[2] = self.renderer
+  ScreenManager:setRenderer(self.renderer, 2)
 end
 -- Calls all the update functions.
 function GUIManager:update()
