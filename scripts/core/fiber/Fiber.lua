@@ -32,7 +32,7 @@ function Fiber:init(root, func, ...)
     func(unpack(arg))
   end
   self.origin = debug.getinfo(3, "n")
-  self.traceback = debug.traceback(nil, 1) 
+  self.traceback = debug.traceback() 
   self.coroutine = coroutine.create(self.execute)
 end
 -- Creates new Fiber from a script table.
@@ -61,8 +61,9 @@ function Fiber:update()
     local state, result = coroutine.resume(self.coroutine)
     if not state then
       -- Output error message
-      print(self.traceback)
-      error(tostring(result), 2)
+      print('Origin ' .. tostring(self.traceback))
+      print('Coroutine ' .. tostring(debug.traceback(self.coroutine)))
+      error(tostring(result), 1)
       if GameManager.platform == 1 then
         love.window.showMessageBox("Error", tostring(result))
       end

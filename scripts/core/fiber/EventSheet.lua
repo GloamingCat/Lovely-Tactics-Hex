@@ -47,6 +47,10 @@ end
 function EventSheet:execute()
   self:setUp()
   self:commands()
+  if self.gui then
+    GUIManager:returnGUI()
+    self.gui = nil
+  end
 end
 -- Sets any variable needed to indicate that this script is running.
 function EventSheet:setUp()
@@ -58,10 +62,6 @@ function EventSheet:setUp()
 end
 -- Resets any variable that indicates that this script is running.
 function EventSheet:clear()
-  if self.gui then
-    GUIManager:returnGUI()
-    self.gui = nil
-  end
   if self.data then
     if self.data.block then
       FieldManager.player.waitList:removeElement(self)

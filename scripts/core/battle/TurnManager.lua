@@ -45,10 +45,9 @@ function TurnManager:setUp(state)
   if state then
     self.party = state.party
     self.turnCharacters = {}
-    self.initialTurnCharacters = {}
+    self.initialTurnCharacters = util.table.deepCopy(state.initialCharacters)
     for i = 1, #state.characters do
       self.turnCharacters[i] = FieldManager.characterList[state.characters[i]]
-      self.initialTurnCharacters[state.characters[i]] = true
     end
   else
     self.party = TroopManager.playerParty - 1
@@ -206,11 +205,11 @@ function TurnManager:startTurn()
   self.initialTurnCharacters = {}
   for i = 1, #self.turnCharacters do
     local char = self.turnCharacters[i]
-    self.initialTurnCharacters[char] = true
+    self.initialTurnCharacters[char.key] = true
     char:onTurnStart(true)
   end
   for char in TroopManager.characterList:iterator() do
-    if not self.initialTurnCharacters[char] then
+    if not self.initialTurnCharacters[char.key] then
       char:onTurnStart(false)
     end
   end
@@ -219,7 +218,7 @@ end
 -- @param(char : Character) the character of the turn
 function TurnManager:endTurn(result)
   for char in TroopManager.characterList:iterator() do
-    char:onTurnEnd(self.initialTurnCharacters[char])
+    char:onTurnEnd(self.initialTurnCharacters[char.key])
   end
 end
 -- Gets the next party.
