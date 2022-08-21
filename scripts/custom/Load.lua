@@ -14,7 +14,7 @@ local mode = 0
 
 return function(script)
   -- When loaded after battle, the script that called the battle should handle the transition effects.
-  if not script.vars.onBattle then
+  if not FieldManager.waitingForBattle then
     FieldManager.renderer:fadeout(0)
     FieldManager.renderer:fadein(60, true)
     FieldManager.hud:show()

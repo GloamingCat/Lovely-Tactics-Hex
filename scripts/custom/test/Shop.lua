@@ -9,49 +9,47 @@ A shop open when player interacts with an NPC.
 
 return function(script)
 
-  if script.vars.onBattle then
-    goto afterBattle
-  end
-  
-  script:turnCharTile { key = 'self', other = 'player' }
+  if not script.vars.onBattle then
 
-  FieldManager.player:playIdleAnimation()
-  
-  script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
-    Vocab.dialogues.npc.WhatDoYou
-  }
-  
-  script:openChoiceWindow { width = 60, choices = {
-    Vocab.dialogues.npc.Shop,
-    Vocab.dialogues.npc.Battle,
-    Vocab.dialogues.npc.Nothing
-  }}
+    script:turnCharTile { key = 'self', other = 'player' }
 
-  script:closeDialogueWindow { id = 1 }
-
-  if script.vars.choiceInput == 1 then
-    script:openShopMenu { sell = true, items = {
-      { id = 2 },
-      { id = 3 },
-      { id = 4 },
-      { id = 5 },
-      { id = 6 },
-      { id = 7 }
+    FieldManager.player:playIdleAnimation()
+    
+    script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
+      Vocab.dialogues.npc.WhatDoYou
+    }
+    
+    script:openChoiceWindow { width = 60, choices = {
+      Vocab.dialogues.npc.Shop,
+      Vocab.dialogues.npc.Battle,
+      Vocab.dialogues.npc.Nothing
     }}
-    return
-  elseif script.vars.choiceInput == 3 then
-    return
-  end
 
-  script:startBattle { 
-    fieldID = tonumber(script.args.fieldID) or 0, 
-    fade = 60, 
-    intro = true, 
-    gameOverCondition = 0, 
-    escapeEnabled = false 
-  }
+    script:closeDialogueWindow { id = 1 }
+
+    if script.vars.choiceInput == 1 then
+      script:openShopMenu { sell = true, items = {
+        { id = 2 },
+        { id = 3 },
+        { id = 4 },
+        { id = 5 },
+        { id = 6 },
+        { id = 7 }
+      }}
+      return
+    elseif script.vars.choiceInput == 3 then
+      return
+    end
+
+    script:startBattle { 
+      fieldID = tonumber(script.args.fieldID) or 0, 
+      fade = 60, 
+      intro = true, 
+      gameOverCondition = 0, 
+      escapeEnabled = false 
+    }
   
-  ::afterBattle::
+  end
   
   script:finishBattle { fade = 60 }
   

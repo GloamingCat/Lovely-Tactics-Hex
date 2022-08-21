@@ -21,38 +21,36 @@ return function(script)
     return
   end
   
-  if script.vars.onBattle then
-    goto afterBattle
-  end
-  
-  FieldManager.player:playIdleAnimation()
-  
-  if not FieldManager.playerInput then
-    -- Player is busy with something else.
-    return
-  end
-  
-  do
-    local gameOverCondition = 1
-    local conditionName = (script.args.gameOverCondition or ''):trim():lower()
-    if conditionName == 'survive' then
-      gameOverCondition = 2 -- Must win.
-    elseif conditionName == 'kill' then
-      gameOverCondition = 1 -- Must win or draw.
-    elseif conditionName == 'none' then
-      gameOverCondition = 0 -- Never gets a game over.
+  if not script.vars.onBattle then
+    
+    FieldManager.player:playIdleAnimation()
+    
+    if not FieldManager.playerInput then
+      -- Player is busy with something else.
+      return
     end
-    script:startBattle { 
-      fieldID = tonumber(script.args.fieldID) or 0, 
-      fade = 60, 
-      intro = true, 
-      gameOverCondition = gameOverCondition,
-      escapeEnabled = true 
-    }
-    return
-  end
+    
+    do
+      local gameOverCondition = 1
+      local conditionName = (script.args.gameOverCondition or ''):trim():lower()
+      if conditionName == 'survive' then
+        gameOverCondition = 2 -- Must win.
+      elseif conditionName == 'kill' then
+        gameOverCondition = 1 -- Must win or draw.
+      elseif conditionName == 'none' then
+        gameOverCondition = 0 -- Never gets a game over.
+      end
+      script:startBattle { 
+        fieldID = tonumber(script.args.fieldID) or 0, 
+        fade = 60, 
+        intro = true, 
+        gameOverCondition = gameOverCondition,
+        escapeEnabled = true 
+      }
+      return
+    end
   
-  ::afterBattle::
+  end
   
   script.char.cooldown = 180
 

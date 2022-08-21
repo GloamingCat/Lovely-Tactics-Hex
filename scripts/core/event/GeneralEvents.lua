@@ -65,6 +65,7 @@ function EventSheet:startBattle(args)
   if not args.keepHud then
     FieldManager.hud:hide()
   end
+  FieldManager.waitingForBattle = true
   self.vars.onBattle = true
   BattleManager.params = args
   FieldManager:storePlayerState()
@@ -88,6 +89,7 @@ function EventSheet:finishBattle(args)
     FieldManager.hud:show()
   end
   self.vars.onBattle = nil
+  FieldManager.waitingForBattle = false
 end
 
 return EventSheet
