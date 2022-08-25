@@ -2,7 +2,7 @@
   "name": "Example Project",
   "fpsLimit": 120,
   "coverID": -1,
-  "platform": 2,
+  "platform": 0,
   "player": {
     "walkSpeed": 104,
     "dashSpeed": 208,

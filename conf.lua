@@ -34,13 +34,11 @@ function love.conf(t)
   t.window.vsync = false
   t.modules.joystick = false
   t.modules.physics = false
-  if Config.platform == 0 then -- Desktop
+  if Config.platform ~= 1 then -- Desktop or Web
     t.window.width = Config.screen.nativeWidth * Config.screen.widthScale / 100
     t.window.height = Config.screen.nativeHeight * Config.screen.heightScale / 100
     t.window.fullscreen = false
-  elseif Config.platform == 1 then -- Mobile
-    t.window.fullscreen = true
-  elseif Config.platform == 2 then -- Web browser
+  else -- Mobile
     t.window.fullscreen = true
   end
 end
