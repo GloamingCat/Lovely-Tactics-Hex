@@ -1,5 +1,8 @@
 {
   "name": "Example Project",
+  "fpsLimit": 120,
+  "coverID": -1,
+  "platform": 2,
   "player": {
     "walkSpeed": 104,
     "dashSpeed": 208,
@@ -45,9 +48,7 @@
     "heightScale": 200,
     "scaleType": 1,
     "mobileScaleType": 2,
-    "pixelPerfect": true,
-    "fpsLimit": 120,
-    "coverID": -1
+    "pixelPerfect": true
   },
   "animations": [
     {

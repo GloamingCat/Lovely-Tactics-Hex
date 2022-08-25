@@ -15,7 +15,6 @@ Scaling types:
 =================================================================================================]]
 
 -- Alias
-local isFullScreen = love.window.getFullscreen
 local lgraphics = love.graphics
 local floor = math.floor
 local round = math.round
@@ -33,25 +32,25 @@ function ScreenManager:init()
   love.graphics.setDefaultFilter("nearest", "nearest")
   self.width = Config.screen.nativeWidth
   self.height = Config.screen.nativeHeight
-  if GameManager.platform == 0 then
+  if Config.platform == 0 then
     self.scalingType = Config.screen.scaleType or 1
   else
     self.scalingType = Config.screen.mobileScaleType or 2
   end
   self.pixelPerfect = Config.screen.pixelPerfect
   self.canvasFilter = "nearest"
-  self.scaleX = Config.screen.widthScale / 100
-  self.scaleY = Config.screen.heightScale / 100
+  self.scaleX = 0
+  self.scaleY = 0
   self.offsetX = 0
   self.offsetY = 0
-  self.canvas = lgraphics.newCanvas(self.width * self.scaleX, self.height * self.scaleY)
-  self.canvas:setFilter(self.canvasFilter)
-  self.drawCalls = 0
   self.canvasScaleX = 1
   self.canvasScaleY = 1
-  self.mode = 1
   self.closed = false
   self:clear()
+  local w = lgraphics.getWidth()
+  local h = lgraphics.getHeight()
+  self:onResize(w, h)
+  self.drawCalls = 0
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -124,7 +123,7 @@ function ScreenManager:setScale(x, y)
   self.canvasFilter = x == self.scaleX and y == self.scaleY and "nearest" or "linear"
   local newW = self.width * self.scaleX
   local newH = self.height * self.scaleY
-  if newW == self.canvas:getWidth() and newH == self.canvas:getHeight() then
+  if self.canvas and newW == self.canvas:getWidth() and newH == self.canvas:getHeight() then
     self.canvas:setFilter(self.canvasFilter)
     return false
   else

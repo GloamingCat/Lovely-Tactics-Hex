@@ -23,13 +23,6 @@ local GameManager = class()
 
 -- Constructor.
 function GameManager:init()
-  local osStr = love.system.getOS():lower()
-  if osStr == "android" or osStr == "ios" then
-    self.platform = 1
-  else
-    self.platform = 0
-  end
-  print('Platform: ', self.platform)
   self.paused = false
   self.cleanTime = 300
   self.cleanCount = 0

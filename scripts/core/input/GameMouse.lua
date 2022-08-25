@@ -86,7 +86,7 @@ function GameMouse:show()
 end
 -- Hides and deactivates cursor.
 function GameMouse:hide()
-  if GameManager.platform ~= 1 then
+  if Config.platform ~= 1 then
     self.active = false
     love.mouse.setVisible(false)
   end
