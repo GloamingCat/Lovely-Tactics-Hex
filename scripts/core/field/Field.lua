@@ -44,6 +44,7 @@ function Field:init(id, name, sizeX, sizeY, maxH)
   self.minh, self.maxh = 1, maxH
   self.centerX, self.centerY = pixelCenter(sizeX, sizeY)
   self.minx, self.miny, self.maxx, self.maxy = pixelBounds(self)
+  self.fiberList = FiberList()
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -52,6 +53,7 @@ end
 
 -- Updates all ObjectTiles and TerrainTiles in field's layers.
 function Field:update()
+  self.fiberList:update()
   for l = self.minh, self.maxh do
     local layer = self.objectLayers[l]
     for i = 1, self.sizeX do

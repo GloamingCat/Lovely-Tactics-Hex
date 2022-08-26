@@ -101,7 +101,7 @@ end
 function FieldManager:runLoadScripts()
   local script = self.currentField.loadScript
   if script and script.name ~= '' then
-    local fiber = self.fiberList:forkFromScript(script)
+    local fiber = self.currentField.fiberList:forkFromScript(script)
     if script.wait then
       fiber:waitForEnd()
     end
@@ -110,7 +110,7 @@ function FieldManager:runLoadScripts()
     char:onLoad()
   end
   for char in self.characterList:iterator() do
-    self.fiberList:fork(char.resumeScripts, char)
+    self.currentField.fiberList:fork(char.resumeScripts, char)
   end
 end
 
