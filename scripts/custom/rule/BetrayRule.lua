@@ -19,7 +19,7 @@ local BetrayRule = class(SkillRule)
 
 -- Overrides SkillRule:onSelect.
 function BetrayRule:onSelect(user)
-  local originalParty = user.party
+  self.originalParty = user.party
   for s in user.battler.statusList:iterator() do
     if s.tags.charm then
       local caster = FieldManager:search(s.caster)
@@ -30,8 +30,19 @@ function BetrayRule:onSelect(user)
     end
   end
   SkillRule.onSelect(self, user)
-  self:selectClosestTarget(user)
-  user.party = originalParty
+  self:selectClosestTarget()
+  if self.input.target == nil then
+    self.input = nil
+  end
+  if not self:canExecute() then
+    user.party = self.originalParty
+  end
+end
+-- Override SkillRule:execute.
+function BetrayRule:execute()
+  local result = SkillRule.execute(self)
+  self.input.user.party = self.originalParty
+  return result
 end
 -- @ret(string) String identifier.
 function BetrayRule:__tostring()
