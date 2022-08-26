@@ -7,9 +7,6 @@ A class representing a sound.
 
 =================================================================================================]]
 
--- Alias
-local newSource = love.audio.newSource
-
 local Sound = class()
 
 ---------------------------------------------------------------------------------------------------
@@ -21,9 +18,7 @@ local Sound = class()
 -- @param(volume : number) Initial volume (from 0 to 100).
 -- @param(pitch : number) Initial pitch (from 0 to 100).
 function Sound:init(name, volume, pitch)
-  local source = newSource(Project.audioPath .. name, 'static')
-  assert(source, 'Could not load Sound ' .. name)
-  self:initSource(source, volume, pitch)
+  self:initSource(ResourceManager:loadSFX(name), volume, pitch)
 end
 -- Initializes source.
 -- @param(source : Source) The audio source.

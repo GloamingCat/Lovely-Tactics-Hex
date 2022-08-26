@@ -17,11 +17,15 @@ local newImage = love.graphics.newImage
 local newImageData = love.image.newImageData
 local newFont = love.graphics.newFont
 local newQuad = love.graphics.newQuad
+local newSource = love.audio.newSource
+local newSoundData = love.sound.newSoundData
+local fileInfo = love.filesystem.getInfo
 
 -- Cache
 local ImageCache = {}
 local FontCache = {}
 local ShaderCache = {}
+local AudioCache = {}
 
 local ResourceManager = class()
 
@@ -206,6 +210,51 @@ end
 function ResourceManager:clearShaderCache()
   for k in pairs(ShaderCache) do
     ShaderCache[k] = nil
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Audio
+---------------------------------------------------------------------------------------------------
+
+-- Loads intro and loop audio sources for BGM.
+-- @param(name : string) Name of the file from the audio folder.
+-- @param(intro : Source) Intro source (optional).
+-- @param(loop : Source) Loop source (optional).
+-- @ret(Source) Intro audio source (if any).
+-- @ret(Source) Looping audio source.
+function ResourceManager:loadBGM(name, intro, loop)
+  name = Project.audioPath .. name
+  if not loop then
+    if not intro then
+      local introName = name:gsub('%.', '_intro.', 1)
+      if fileInfo(introName) then
+        intro = newSource(introName, 'static')
+        intro:setLooping(false)
+      end
+    end
+    loop = newSource(name, 'static')
+    assert(loop, 'Could not load music file ' .. name)
+    loop:setLooping(true)
+  end
+  return intro, loop
+end
+-- Loads source for the given sound's name.
+-- @param(name : string) Name of the file from the audio folder.
+-- @ret(Source)
+function ResourceManager:loadSFX(name)
+  if AudioCache[name] then
+    return newSource(AudioCache[name])
+  end
+  AudioCache[name] = newSoundData(Project.audioPath .. name)
+  assert(AudioCache[name], 'Could not load Sound ' .. name)
+  return newSource(AudioCache[name])
+end
+-- Clears Font cache table.
+-- Only use this if there is no other reference to the fonts.
+function ResourceManager:clearAudioCache()
+  for k in pairs(AudioCache) do
+    AudioCache[k] = nil
   end
 end
 
