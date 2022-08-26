@@ -808,7 +808,7 @@
           "tags": [
             {
               "key": "condition",
-              "value": "FieldManager.playerInput and not FieldManager.waitingForBattle and (script.char.collider == 'player' or script.char.collided == 'player')"
+              "value": "FieldManager.playerInput and not script.char.vars.onBattle and (script.char.collider == 'player' or script.char.collided == 'player')"
             },
             {
               "key": "intro",
@@ -832,7 +832,7 @@
             },
             {
               "key": "command",
-              "value": "script:startBattle(script.args)"
+              "value": "script:startBattle(script.args:toTable())"
             }
           ]
         },
@@ -848,7 +848,7 @@
           "tags": [
             {
               "key": "condition",
-              "value": "FieldManager.waitingForBattle and not BattleManager:enemyWon() and not BattleManager:playerEscaped()"
+              "value": "script.char.vars.onBattle and not BattleManager:enemyWon() and not BattleManager:playerEscaped()"
             },
             {
               "key": "command",
@@ -868,7 +868,7 @@
           "tags": [
             {
               "key": "condition",
-              "value": "FieldManager.waitingForBattle"
+              "value": "script.char.vars.onBattle"
             },
             {
               "key": "cooldown",

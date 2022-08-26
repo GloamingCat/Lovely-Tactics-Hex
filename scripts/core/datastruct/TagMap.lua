@@ -77,9 +77,17 @@ function TagMap:addAll(tags)
 end
 
 ---------------------------------------------------------------------------------------------------
--- General
+-- Conversion
 ---------------------------------------------------------------------------------------------------
 
+-- @ret(table) A table with unique keys. It will include only the first value of each key.
+function TagMap:toTable()
+  local t = {}
+  for k, v in pairs(self.tags) do
+    t[k] = v[1]
+  end
+  return t
+end
 -- @ret(table) Array of {key, value} entries.
 function TagMap:toList()
   local list = {}

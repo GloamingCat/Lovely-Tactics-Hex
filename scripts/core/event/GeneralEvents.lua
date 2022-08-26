@@ -81,6 +81,9 @@ function EventSheet:startBattle(args)
     FieldManager.hud:hide()
   end
   FieldManager.waitingForBattle = true
+  if self.char then
+    self.char.vars.onBattle = true
+  end
   self.vars.onBattle = true
   BattleManager.params = args
   FieldManager:storePlayerState()
@@ -120,6 +123,9 @@ function EventSheet:finishBattle(args)
     FieldManager.hud:show()
   end
   self.vars.onBattle = nil
+  if self.char then
+    self.char.vars.onBattle = nil
+  end
   FieldManager.waitingForBattle = false
 end
 
