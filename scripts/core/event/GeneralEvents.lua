@@ -62,6 +62,21 @@ end
 -- @param(args.gameOverCondition : number) GameOver condition:
 --  0 => no gameover, 1 => only when lost, 2 => lost or draw.
 function EventSheet:startBattle(args)
+  args.gameOverCondition = args.gameOverCondition or 1
+  if type(args.gameOverCondition) == 'string' then
+    local conditionName = args.gameOverCondition:trim():lower()
+    if conditionName == 'survive' then
+      args.gameOverCondition = 2 -- Must win.
+    elseif conditionName == 'kill' then
+      args.gameOverCondition = 1 -- Must win or draw.
+    elseif conditionName == 'none' then
+      args.gameOverCondition = 0 -- Never gets a game over.
+    else
+      args.gameOverCondition = 1 -- Default.
+    end
+  end
+  args.fieldID = tonumber(args.fieldID)
+  args.fade = tonumber(args.fade)
   if not args.keepHud then
     FieldManager.hud:hide()
   end
@@ -82,8 +97,24 @@ end
 -- Loads battle field.
 -- @param(args.fade : boolean) Fade out/in effect when exiting/returning to previous field.
 function EventSheet:finishBattle(args)
+  args.fade = tonumber(args.fade)
+  if args.cooldown then
+    self.char.cooldown = tonumber(args.cooldown)
+  end
+  if BattleManager:playerWon() then
+    self.battleLog = 'You won!'
+  elseif BattleManager:enemyWon() then
+    assert(BattleManager.params.gameOverCondition < 2, "Player shouldn't have the option to continue.")
+    self.battleLog = 'You lost...'
+  elseif BattleManager:drawed() then
+    self.battleLog = 'Draw.'
+  elseif BattleManager:playerEscaped() then
+    self.battleLog = 'You escaped!'
+  elseif BattleManager:enemyEscaped() then
+    self.battleLog = 'The enemy escaped...'
+  end
   if args.fade then
-    FieldManager.renderer:fadein(args.fade, true)
+    FieldManager.renderer:fadein(args.fade, args.wait)
   end
   if not args.keepHud then
     FieldManager.hud:show()

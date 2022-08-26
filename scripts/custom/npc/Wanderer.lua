@@ -18,7 +18,7 @@ return function(script)
   local pauseVar = tonumber(script.args.pauseVar) or 0
   while true do
     Fiber:wait()
-    if not (FieldManager.player:isBusy() or script.char.interacting) then
+    if not (FieldManager.player:isBusy() or script.char.interactScriptIndex) then
       local dir = rand(8) * 45
       if script.char:tryAngleMovement(dir) then
         script.char:playIdleAnimation()

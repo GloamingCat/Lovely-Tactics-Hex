@@ -19,6 +19,7 @@
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
+      "description": "",
       "name": "Load.lua",
       "tags": []
     },
@@ -771,8 +772,29 @@
           "onLoad": true,
           "onInteract": false,
           "onCollide": false,
+          "description": "Move Routine",
           "name": "npc/Stalker.lua",
           "tags": []
+        },
+        {
+          "global": false,
+          "block": true,
+          "wait": true,
+          "onLoad": false,
+          "onInteract": false,
+          "onCollide": true,
+          "description": "Idle Collided",
+          "name": "npc/Event.lua",
+          "tags": [
+            {
+              "key": "condition",
+              "value": "script:findCharacter(script.char.collided, true) ~= nil"
+            },
+            {
+              "key": "command",
+              "value": "script:findCharacter(script.char.collided):playIdleAnimation()"
+            }
+          ]
         },
         {
           "global": true,
@@ -781,8 +803,94 @@
           "onLoad": false,
           "onInteract": false,
           "onCollide": true,
-          "name": "test/Battle.lua",
-          "tags": []
+          "description": "Start Battle",
+          "name": "npc/Event.lua",
+          "tags": [
+            {
+              "key": "condition",
+              "value": "FieldManager.playerInput and not FieldManager.waitingForBattle and (script.char.collider == 'player' or script.char.collided == 'player')"
+            },
+            {
+              "key": "intro",
+              "value": "true"
+            },
+            {
+              "key": "escapeEnabled",
+              "value": "true"
+            },
+            {
+              "key": "gameOverCondition",
+              "value": "survive"
+            },
+            {
+              "key": "fieldID",
+              "value": "0"
+            },
+            {
+              "key": "fade",
+              "value": "60"
+            },
+            {
+              "key": "command",
+              "value": "script:startBattle(script.args)"
+            }
+          ]
+        },
+        {
+          "global": true,
+          "block": true,
+          "wait": true,
+          "onLoad": false,
+          "onInteract": false,
+          "onCollide": true,
+          "description": "Delete if won",
+          "name": "npc/Event.lua",
+          "tags": [
+            {
+              "key": "condition",
+              "value": "FieldManager.waitingForBattle and not BattleManager:enemyWon() and not BattleManager:playerEscaped()"
+            },
+            {
+              "key": "command",
+              "value": "script:deleteChar { key = \"self\", permanent = true }"
+            }
+          ]
+        },
+        {
+          "global": true,
+          "block": true,
+          "wait": true,
+          "onLoad": false,
+          "onInteract": false,
+          "onCollide": true,
+          "description": "Finish battle",
+          "name": "npc/Event.lua",
+          "tags": [
+            {
+              "key": "condition",
+              "value": "FieldManager.waitingForBattle"
+            },
+            {
+              "key": "cooldown",
+              "value": "180"
+            },
+            {
+              "key": "fade",
+              "value": "60"
+            },
+            {
+              "key": "wait",
+              "value": "true"
+            },
+            {
+              "key": "command",
+              "value": "script:finishBattle(script.args)"
+            },
+            {
+              "key": "command",
+              "value": "print(script.battleLog)"
+            }
+          ]
         }
       ]
     },
@@ -807,6 +915,7 @@
           "onLoad": false,
           "onInteract": false,
           "onCollide": true,
+          "description": "",
           "name": "npc/Loot.lua",
           "tags": [
             {

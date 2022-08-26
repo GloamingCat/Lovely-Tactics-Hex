@@ -79,5 +79,12 @@ function util.sortedIterator(t)
     return keys[i], t[keys[i]], i
   end
 end
+-- Prints each (key, value) entry on the table.
+-- @param(t : table)
+function util.printEntries(t)
+  for k, v in pairs(t) do
+    print(k, v)
+  end
+end
 
 return util

@@ -19,6 +19,7 @@
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
+      "description": "",
       "name": "test/Intro.lua",
       "tags": []
     },
@@ -816,6 +817,7 @@
           "onLoad": true,
           "onInteract": false,
           "onCollide": false,
+          "description": "Move Routine",
           "name": "npc/Wanderer.lua",
           "tags": []
         },
@@ -826,6 +828,7 @@
           "onLoad": false,
           "onInteract": true,
           "onCollide": false,
+          "description": "",
           "name": "test/Dialogue.lua",
           "tags": []
         }

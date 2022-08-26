@@ -81,35 +81,4 @@ function EventSheet:forkFromScript(script, ...)
   return self.root:forkFromScript(script, self.char, ...)
 end
 
----------------------------------------------------------------------------------------------------
--- Commands
----------------------------------------------------------------------------------------------------
-
--- Lists of event commands files
-local eventCommands = {}
-for i, file in ipairs({'General', 'GUI', 'Character', 'Screen', 'Sound', 'Party'}) do
-  eventCommands[i] = require('core/event/' .. file .. 'Events')
-end
-local meta = getmetatable(EventSheet) 
-local meta_index = meta.__index
-local funcMap = {}
-function meta:__index(k)
-  local v = meta_index(self, k)
-  if v then
-    return v
-  end
-  -- Look for event commands
-  for i = 1, #eventCommands do
-    if eventCommands[i][k] then
-      if not funcMap[k] then
-        funcMap[k] = function(script, ...)
-          -- TODO: stuff to count event commands
-          eventCommands[i][k](script, ...)
-        end
-      end
-      return funcMap[k]
-    end
-  end
-end
-
 return EventSheet

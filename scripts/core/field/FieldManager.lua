@@ -110,7 +110,7 @@ function FieldManager:runLoadScripts()
     char:onLoad()
   end
   for char in self.characterList:iterator() do
-    char.fiberList:fork(char.resumeScripts, char)
+    self.fiberList:fork(char.resumeScripts, char)
   end
 end
 

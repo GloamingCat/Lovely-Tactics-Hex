@@ -19,6 +19,7 @@
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
+      "description": "",
       "name": "",
       "tags": []
     },

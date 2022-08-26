@@ -19,6 +19,7 @@
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
+      "description": "",
       "name": "Load.lua",
       "tags": []
     },
@@ -1224,6 +1225,7 @@
           "onLoad": true,
           "onInteract": false,
           "onCollide": false,
+          "description": "Move Routine",
           "name": "npc/Stalker.lua",
           "tags": []
         },
@@ -1234,6 +1236,7 @@
           "onLoad": false,
           "onInteract": false,
           "onCollide": true,
+          "description": "",
           "name": "test/Battle.lua",
           "tags": []
         }

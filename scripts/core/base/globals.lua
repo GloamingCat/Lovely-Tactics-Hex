@@ -68,6 +68,30 @@ end
 args = nil
 
 ---------------------------------------------------------------------------------------------------
+-- Event Commands
+---------------------------------------------------------------------------------------------------
+
+-- Lists of event commands files
+local eventCommands = {}
+for i, file in ipairs({'General', 'GUI', 'Character', 'Screen', 'Sound', 'Party'}) do
+  eventCommands[i] = require('core/event/' .. file .. 'Events')
+end
+local eventMeta = getmetatable(require('core/fiber/EventSheet')) 
+local meta_index = eventMeta.__index
+function eventMeta:__index(k)
+  local v = meta_index(self, k)
+  if v then
+    return v
+  end
+  -- Look for event commands
+  for i = 1, #eventCommands do
+    if eventCommands[i][k] then
+      return eventCommands[i][k]
+    end
+  end
+end
+
+---------------------------------------------------------------------------------------------------
 -- Managers
 ---------------------------------------------------------------------------------------------------
 

@@ -103,7 +103,7 @@ end
 --  GUI input, battle, or a blocking event.
 -- @ret(boolean) True if some action is running.
 function Player:isBusy()
-  return self.moveTime < 1 or self.collided or self.interacting
+  return self.moveTime < 1 or self.collided or self.interactScriptIndex
     or BattleManager.onBattle or GUIManager:isWaitingInput()
     or not self.waitList:isEmpty()
 end
