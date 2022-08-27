@@ -134,7 +134,7 @@ function TerrainTile:createQuarters(data, rows)
     local x, y = origins[i][1] * w, origins[i][2] * h
     local quad = newQuad(x + data.quad.x, y + data.quad.y + rows[i] * h, 
       w / 2, h / 2, texture:getWidth(), texture:getHeight())
-    local d = (0.5 - origins[i][2]) * Config.grid.depthPerHeight
+    local d = (0.5 - origins[i][2]) * Config.grid.depthPerY
     quarters[i] = Sprite(FieldManager.renderer, texture, quad)
     quarters[i]:setPosition(self.center)
     quarters[i]:setTransformation(data.transform)

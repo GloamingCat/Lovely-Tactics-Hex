@@ -29,7 +29,7 @@ local TileGraphic = class()
 -- @param(z : number) Tile's center pixel depth.
 function TileGraphic:init(animID, x, y, z)
   self.data = Database.animations[animID]
-  self.halfDepth = Config.grid.depthPerHeight / 2
+  self.halfDepth = Config.grid.depthPerY / 2
   -- Top half
   local topSprite = self:createSprite(0)
   self.topAnim = Animation(topSprite, self.data)
