@@ -28,7 +28,9 @@ function TitleCommandWindow:createWidgets()
   Button:fromKey(self, 'loadGame')
   Button:fromKey(self, 'config')
   Button:fromKey(self, 'tutorial')
-  Button:fromKey(self, 'quit')
+  if Config.platform == 0 then
+    Button:fromKey(self, 'quit')
+  end
 end
 -- Settings button.
 function TitleCommandWindow:tutorialConfirm()
@@ -56,5 +58,5 @@ function TitleCommandWindow:tutorialConfirm()
 end
 -- Overrides TitleCommandWindow:rowCount.
 function TitleCommandWindow:rowCount()
-  return 5
+  return Config.platform == 0 and 5 or 4
 end

@@ -11,12 +11,12 @@
   },
   {
     "on": false,
-    "name": "plugins/BatchMesh",
+    "name": "plugins/BatchMesh.lua",
     "tags": []
   },
   {
     "on": true,
-    "name": "plugins/FocusPause",
+    "name": "plugins/FocusPause.lua",
     "tags": [
       {
         "key": "pauseAudio",
@@ -26,21 +26,21 @@
   },
   {
     "on": true,
-    "name": "plugins/QuickSave",
+    "name": "plugins/QuickSave.lua",
     "tags": [
       {
         "key": "save",
-        "value": "f1"
+        "value": "f2"
       },
       {
         "key": "load",
-        "value": "f5"
+        "value": "f6"
       }
     ]
   },
   {
     "on": true,
-    "name": "plugins/DebugBox",
+    "name": "plugins/DebugBox.lua",
     "tags": [
       {
         "key": "key",

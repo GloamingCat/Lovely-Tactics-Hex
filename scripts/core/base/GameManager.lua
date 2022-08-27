@@ -81,7 +81,9 @@ function GameManager:setConfig(config)
   InputManager.mouseEnabled = config.useMouse
   InputManager:setArrowMap(config.wasd)
   InputManager:setKeyMap(config.keyMap)
-  ScreenManager:setMode(config.resolution)
+  if Config.platform == 0 then
+    ScreenManager:setMode(config.resolution)
+  end
 end
 
 ---------------------------------------------------------------------------------------------------

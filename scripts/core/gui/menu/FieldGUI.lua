@@ -34,7 +34,9 @@ function FieldGUI:createWindows()
   self:createLocalWindow()
   self:createTimeWindow()
   self:createMembersWindow()
-  self:createQuitWindow()
+  if Config.platform == 0 then
+    self:createQuitWindow()
+  end
 end
 -- Creates the list with the main commands.
 function FieldGUI:createMainWindow()

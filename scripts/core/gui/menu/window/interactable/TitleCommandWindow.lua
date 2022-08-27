@@ -96,7 +96,7 @@ function TitleCommandWindow:colCount()
 end
 -- Overrides GridWindow:rowCount.
 function TitleCommandWindow:rowCount()
-  return 4
+  return Config.platform == 0 and 4 or 3
 end
 -- Overrides GridWindow:cellWidth.
 function TitleCommandWindow:cellWidth()

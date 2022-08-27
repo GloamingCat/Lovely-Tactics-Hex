@@ -27,7 +27,9 @@ function FieldCommandWindow:createWidgets()
   Button:fromKey(self, 'members')
   Button:fromKey(self, 'config')
   Button:fromKey(self, 'save')
-  Button:fromKey(self, 'quit')
+  if Config.platform == 0 then
+    Button:fromKey(self, 'quit')
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
