@@ -68,7 +68,6 @@ end
 -- Coroutine that runs in non-battle fields.
 function Player:resumeScripts()
   Character.resumeScripts(self)
-  self:collideTile(self:getTile())
   while true do
     Fiber:wait()
     for script in self.waitList:iterator() do

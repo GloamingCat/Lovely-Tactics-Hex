@@ -180,16 +180,17 @@ function CharacterBase:collideTile(tile)
   if not tile then
     return false
   end
+  local blocking = false
   for char in tile.characterList:iterator() do
-    if char ~= self then
-      self:onCollide(char.key, self.key)
-      char:onCollide(char.key, self.key)
+    if char ~= self  then
+      self:onCollide(char.key, self.key, self.collideScriptIndex ~= nil)
+      char:onCollide(char.key, self.key, char.collideScriptIndex ~= nil)
       if not char.passable then
-        return true
+        blocking = true
       end
     end
   end
-  return false
+  return blocking
 end
 
 ---------------------------------------------------------------------------------------------------

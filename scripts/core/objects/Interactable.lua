@@ -131,7 +131,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Called when a character interacts with this object.
--- @param(event : table) Table with tile and origin (usually player) and dest (this) objects.
+-- @ret(boolean) Whether the interact script were executed or not.
 function Interactable:onInteract()
   if self.deleted or #self.interactScripts == 0 then
     return false
@@ -150,13 +150,15 @@ function Interactable:onInteract()
   return true
 end
 -- Called when a character collides with this object.
--- @param(event : table) Table with tile and origin and dest (this) objects.
-function Interactable:onCollide(collided, collider)
-  if self.deleted or #self.collideScripts == 0 then
+-- @param(collided : string) Key of the character who was collided with.
+-- @param(collider : string) Key of the character who started the collision.
+-- @param(repeating : boolean) Whether the script collision scripts of this character are already running.
+-- @ret(boolean) Whether the collision script were executed or not.
+function Interactable:onCollide(collided, collider, repeating)
+  if self.deleted or #self.collideScripts == 0 or repeating and not self.repeatCollisions then
     return false
   end
   local skip = self.collideScriptIndex or 0
-  print('Skip ' .. tostring(skip) .. ' collision scripts')
   self.collided = collided
   self.collider = collider
   self.collideScriptIndex = 0
@@ -174,7 +176,7 @@ function Interactable:onCollide(collided, collider)
   return true
 end
 -- Called when this interactable is created.
--- @param(event : table) Table with origin (this).
+-- @ret(boolean) Whether the load scripts were executed or not.
 function Interactable:onLoad()
   if self.deleted or #self.loadScripts == 0 then
     return false
@@ -212,6 +214,7 @@ function Interactable:resumeScripts()
   if self.interactScriptIndex then
     self:onInteract()
   end
+  self:collideTile(self:getTile())
 end
 
 return Interactable

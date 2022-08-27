@@ -74,19 +74,7 @@ function Character:tryTileMovement(tile)
     ox, oy, oh, dx, dy, dh)
   if collision == nil then
     -- Free path
-    local input = ActionInput(MoveAction(mathf.centerMask, 2), self, tile)
-    local path, fullPath = input.action:calculatePath(input)
-    if path and fullPath then
-      if self.autoAnim then
-        self:playMoveAnimation()
-      end
-      local previousTiles = self:getAllTiles()
-      self:onTerrainExit(previousTiles)
-      self:removeFromTiles(previousTiles)
-      self:addToTiles(self:getAllTiles(dx, dy, dh))
-      self:walkToTile(dx, dy, dh)
-      self:onTerrainEnter(self:getAllTiles())
-      self:collideTile(tile)
+    if self:applyTileMovement(tile) then
       return 0
     end
   end
@@ -95,7 +83,11 @@ function Character:tryTileMovement(tile)
   end
   if collision == 3 then 
     -- Character collision
-    self:collideTile(tile)
+    if not self:collideTile(tile) then
+      if self:applyTileMovement(tile) then
+        return 0
+      end
+    end
     return 1
   end
   return false
@@ -112,6 +104,28 @@ function Character:tryPathMovement(tile, pathLength)
   end
   self.path = path:addStep(tile, 1):toStack()
   return self:consumePath()
+end
+-- [COROUTINE] Moves to the given tile.
+-- @param(tile : ObjectTile) The destination tile.
+-- @ret(number) Returns false if path was blocked, true otherwise.
+function Character:applyTileMovement(tile)
+  local input = ActionInput(MoveAction(mathf.centerMask, 2), self, tile)
+  local path, fullPath = input.action:calculatePath(input)
+  if path and fullPath then
+    if self.autoAnim then
+      self:playMoveAnimation()
+    end
+    local dx, dy, dh = tile:coordinates()
+    local previousTiles = self:getAllTiles()
+    self:onTerrainExit(previousTiles)
+    self:removeFromTiles(previousTiles)
+    self:addToTiles(self:getAllTiles(dx, dy, dh))
+    self:walkToTile(dx, dy, dh)
+    self:onTerrainEnter(self:getAllTiles())
+    self:collideTile(tile)
+    return true
+  end
+  return false
 end
 -- [COROUTINE] Walks the next tile of the path.
 -- @ret(boolean) True if character walked to the next tile, false if collided.

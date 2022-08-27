@@ -788,11 +788,11 @@
           "tags": [
             {
               "key": "condition",
-              "value": "script:findCharacter(script.char.collided, true) ~= nil"
+              "value": "FieldManager:search(script.char.collided) ~= nil"
             },
             {
               "key": "command",
-              "value": "script:findCharacter(script.char.collided):playIdleAnimation()"
+              "value": "FieldManager:search(script.char.collided):playIdleAnimation()"
             }
           ]
         },
@@ -808,7 +808,11 @@
           "tags": [
             {
               "key": "condition",
-              "value": "FieldManager.playerInput and not script.char.vars.onBattle and (script.char.collider == 'player' or script.char.collided == 'player')"
+              "value": "FieldManager.playerInput and not script.char.vars.onBattle and script:collidedWith('player')"
+            },
+            {
+              "key": "command",
+              "value": "script:startBattle(script.args:toTable())"
             },
             {
               "key": "intro",
@@ -829,10 +833,6 @@
             {
               "key": "fade",
               "value": "60"
-            },
-            {
-              "key": "command",
-              "value": "script:startBattle(script.args:toTable())"
             }
           ]
         },
@@ -852,7 +852,15 @@
             },
             {
               "key": "command",
-              "value": "script:deleteChar { key = \"self\", permanent = true }"
+              "value": "script:deleteChar(script.args)"
+            },
+            {
+              "key": "permanent",
+              "value": "true"
+            },
+            {
+              "key": "key",
+              "value": "self"
             }
           ]
         },
@@ -871,6 +879,14 @@
               "value": "script.char.vars.onBattle"
             },
             {
+              "key": "command",
+              "value": "script:finishBattle(script.args)"
+            },
+            {
+              "key": "command",
+              "value": "print(script.battleLog)"
+            },
+            {
               "key": "cooldown",
               "value": "180"
             },
@@ -881,14 +897,6 @@
             {
               "key": "wait",
               "value": "true"
-            },
-            {
-              "key": "command",
-              "value": "script:finishBattle(script.args)"
-            },
-            {
-              "key": "command",
-              "value": "print(script.battleLog)"
             }
           ]
         }
@@ -896,8 +904,8 @@
     },
     {
       "key": "Ribbon",
-      "persistent": false,
-      "passable": false,
+      "persistent": true,
+      "passable": true,
       "visible": true,
       "x": 6,
       "y": 2,

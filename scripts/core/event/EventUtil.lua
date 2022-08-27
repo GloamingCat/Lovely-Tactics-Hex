@@ -32,6 +32,26 @@ function EventSheet:findCharacter(key, optional)
   assert(char or optional, 'Character not found: ' .. tostring(key))
   return char
 end
+-- Checks if the script's character (if any) collided with given character.
+-- @param(key : string) Character's key.
+-- @ret(boolean)
+function EventSheet:collidedWith(key)
+  return self.char and (self.char.collided == key or self.char.collider == key)
+end
+-- Checks the position of given character.
+-- @param(key : string) Character's key.
+-- @param(i : number | string) Other character's key or tile x position.
+-- @param(j : number) Tile y position (optional if i is a string).
+-- @param(h : number) Tile height (optional if i is a string).
+-- @ret(boolean)
+function EventSheet:checkTile(key, i, j, h)
+  local char = FieldManager:search(key)
+  if type(i) == 'string' then
+    i, j, h = FieldManager:search(i):getTile():coordinates()
+  end
+  local i2, j2, h2 = char:getTile():coordinates()
+  return i == i2 and j == j2 and h == h2
+end
 
 ---------------------------------------------------------------------------------------------------
 -- GUI
