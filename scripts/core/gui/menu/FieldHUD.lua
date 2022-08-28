@@ -30,7 +30,7 @@ end
 -- Implements GUI:createWindows.
 function FieldHUD:createWindows()
   self:createSaveInfoWindow()
-  if Config.platform == 1 then
+  if GameManager:isMobile() then
     self:createButtonWindow()
   end
 end

@@ -26,12 +26,12 @@ function SettingsWindow:createWidgets()
   HSpinnerButton:fromKey(self, 'windowScroll', 10, 100, GUIManager.windowScroll).bigIncrement = 10
   HSpinnerButton:fromKey(self, 'fieldScroll', 10, 100, GUIManager.fieldScroll).bigIncrement = 10
   SwitchButton:fromKey(self, 'autoDash', InputManager.autoDash)
-  if Config.platform ~= 1 then
+  if not GameManager:isMobile() then
     SwitchButton:fromKey(self, 'useMouse', InputManager.mouseEnabled)
     SwitchButton:fromKey(self, 'wasd', InputManager.wasd)
     Button:fromKey(self, 'keys').text:setAlign('center')
   end
-  if Config.platform == 0 then
+  if GameManager:isDesktop() then
     Button:fromKey(self, 'resolution').text:setAlign('center')
   end
 end
@@ -129,7 +129,7 @@ function SettingsWindow:colCount()
 end
 -- Overrides GridWindow:rowCount.
 function SettingsWindow:rowCount()
-  return Config.platform == 0 and 9 or Config.platform == 1 and 5 or 8
+  return GameManager:isDesktop() and 9 or GameManager:isMobile() and 5 or 8
 end
 -- Overrides GridWindow:cellWidth.
 function SettingsWindow:cellWidth()

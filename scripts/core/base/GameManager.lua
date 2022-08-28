@@ -23,6 +23,12 @@ local GameManager = class()
 
 -- Constructor.
 function GameManager:init()
+  local maxWidth = 0
+  local modes = love.window.getFullscreenModes(1)
+  for i = 1, #modes do
+    maxWidth = math.max(maxWidth, modes[i].width)
+  end
+  self.mobileWidth = maxWidth <= 900
   self.paused = false
   self.cleanTime = 300
   self.cleanCount = 0
@@ -81,9 +87,29 @@ function GameManager:setConfig(config)
   InputManager.mouseEnabled = config.useMouse
   InputManager:setArrowMap(config.wasd)
   InputManager:setKeyMap(config.keyMap)
-  if Config.platform == 0 then
+  if self:isDesktop() then
     ScreenManager:setMode(config.resolution)
   end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Platform
+---------------------------------------------------------------------------------------------------
+
+-- Checks if game is running on a standalone desktop version.
+-- @ret(boolean)
+function GameManager:isDesktop()
+  return Config.platform == 0
+end
+-- Checks if game is running on a mobile device (browser or not).
+-- @ret(boolean)
+function GameManager:isMobile()
+  return Config.platform % 2 == 1 or self.mobileWidth
+end
+-- Checks if game is running on a web browser (mobile or not).
+-- @ret(boolean)
+function GameManager:isWeb()
+  return Config.platform >= 2
 end
 
 ---------------------------------------------------------------------------------------------------

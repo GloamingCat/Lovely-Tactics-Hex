@@ -34,7 +34,7 @@ function FieldGUI:createWindows()
   self:createLocalWindow()
   self:createTimeWindow()
   self:createMembersWindow()
-  if Config.platform == 0 then
+  if GameManager:isDesktop() then
     self:createQuitWindow()
   end
 end

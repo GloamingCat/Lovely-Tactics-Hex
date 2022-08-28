@@ -246,7 +246,7 @@ function ActionGUI:checkSlide()
   if not InputManager.mouse.active or InputManager.usingKeyboard then
     return
   end
-  if Config.platform == 1 and not InputManager.keys.touch:isPressing() then
+  if GameManager:isMobile() and not InputManager.keys.touch:isPressing() then
     return
   end
   local w = ScreenManager.width / 2 - self.slideMargin

@@ -49,6 +49,10 @@ end
 function love.resize(w, h)
   ScreenManager:onResize(w, h)
 end
+-- Callback function triggered when the device is rotated (for mobile).
+function love.displayrotated(index, orientation)
+  ScreenManager:onResize(love.graphics.getDimensions())
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Keyboard input

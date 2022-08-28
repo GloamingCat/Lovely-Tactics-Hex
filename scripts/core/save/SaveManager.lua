@@ -65,7 +65,7 @@ function SaveManager:newConfig()
   conf.wasd = false
   conf.keyMap = copyTable(KeyMap)
   conf.useMouse = true
-  conf.resolution = Config.platform == 0 and 2 or 4
+  conf.resolution = 2
   return conf
 end
 

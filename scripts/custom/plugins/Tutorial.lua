@@ -28,7 +28,7 @@ function TitleCommandWindow:createWidgets()
   Button:fromKey(self, 'loadGame')
   Button:fromKey(self, 'config')
   Button:fromKey(self, 'tutorial')
-  if Config.platform == 0 then
+  if GameManager:isDesktop() then
     Button:fromKey(self, 'quit')
   end
 end
@@ -58,5 +58,5 @@ function TitleCommandWindow:tutorialConfirm()
 end
 -- Overrides TitleCommandWindow:rowCount.
 function TitleCommandWindow:rowCount()
-  return Config.platform == 0 and 5 or 4
+  return GameManager:isDesktop() and 5 or 4
 end

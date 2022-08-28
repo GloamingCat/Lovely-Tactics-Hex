@@ -64,7 +64,7 @@ function Fiber:update()
       print('Origin ' .. tostring(self.traceback))
       print('Coroutine ' .. tostring(debug.traceback(self.coroutine)))
       error(tostring(result), 1)
-      if Config.platform == 1 then
+      if GameManager:isMobile() and not GameManager:isWeb() then
         love.window.showMessageBox("Error", tostring(result))
       end
       self:finish()

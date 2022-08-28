@@ -32,7 +32,7 @@ function ScreenManager:init()
   love.graphics.setDefaultFilter("nearest", "nearest")
   self.width = Config.screen.nativeWidth
   self.height = Config.screen.nativeHeight
-  if Config.platform == 0 then
+  if not GameManager:isMobile() then
     self.scalingType = Config.screen.scaleType or 1
   else
     self.scalingType = Config.screen.mobileScaleType or 2

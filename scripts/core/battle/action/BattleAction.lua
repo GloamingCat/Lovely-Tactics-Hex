@@ -83,7 +83,7 @@ function BattleAction:onActionGUI(input)
   if self.showStepWindow then
     input.GUI:createStepWindow():show()
   end
-  if Config.platform == 1 then
+  if GameManager:isMobile() then
     input.GUI:createConfirmWindow():show()
   end
 end

@@ -100,7 +100,7 @@ end
 -- @param(dx : number) Input axis X.
 -- @param(dy : number) Input axis Y.
 function VSpinner:changeValue(dx, dy)
-  if self.bigIncrement and (Config.platform == 1 or InputManager.keys['dash']:isPressing()) then
+  if self.bigIncrement and (GameManager:isMobile() or InputManager.keys['dash']:isPressing()) then
     dy = dy * self.bigIncrement
   end
   local value = math.min(self.maxValue, math.max(self.minValue, self.value + dy))
