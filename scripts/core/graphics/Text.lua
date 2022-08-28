@@ -54,40 +54,39 @@ end
 function Text:setText(text)
   assert(text, 'Nil text')
   self.text = text
+  self.lines = nil
   if text == '' then
-    self.lines = nil
     self.events = nil
     self.parsedLines = nil
-    return
+  else
+    local maxWidth = self.wrap and (self.maxWidth / self.scaleX)
+    local fragments = TextParser.parse(text, self.plainText)
+    local lines, events = TextParser.createLines(fragments, self.defaultFont, maxWidth)
+    self.parsedLines = lines
+    assert(lines, "Couldn't parse lines: " .. tostring(text))
+    self.events = events
   end
-  local maxWidth = self.wrap and (self.maxWidth / self.scaleX)
-  local fragments = TextParser.parse(text, self.plainText)
-  local lines, events = TextParser.createLines(fragments, self.defaultFont, maxWidth)
-  self.parsedLines = lines
-  assert(lines, "Couldn't parse lines: " .. tostring(text))
-  self.events = events
-  self:redrawBuffers()
+  self:requestRedraw()
 end
 -- Redraws each line buffer.
-function Text:redrawBuffers()
-  local lines = self.parsedLines
+function Text:requestRedraw()
+  self.renderer.needsRedraw = true
+  self.needsRedraw = true
+  self.bufferLines = nil
   if not self.parsedLines then
     return
   end
   if self.cutPoint then
-    lines = TextParser.cutText(lines, self.cutPoint)
+    self.bufferLines = TextParser.cutText(self.parsedLines, self.cutPoint)
+  else
+    self.bufferLines = self.parsedLines
   end
-  local sx = ScreenManager.scaleX * self.renderer.scaleX
-  local sy = ScreenManager.scaleY * self.renderer.scaleY
-  self.lines = TextRenderer.createLineBuffers(lines, sx, sy)
-  local width, height = 0, 0
-  for i = 1, #self.lines do
-    width = max(self.lines[i].buffer:getWidth(), width)
-    height = height + self.lines[i].height
-  end
-  self.quad = Quad(0, 0, width, height, width, height)
   self:recalculateBox()
-  self.renderer.needsRedraw = true
+end
+-- Called when the scale of screen changes.
+-- @param(renderer : Renderer) The renderer that is drawing this text.
+function Text:rescale(renderer)
+  self:requestRedraw()
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -97,7 +96,7 @@ end
 -- Checks if sprite is visible on screen.
 -- @ret(boolean)
 function Text:isVisible()
-  return self.lines and self.visible
+  return (self.lines or self.bufferLines) and self.visible
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -107,18 +106,22 @@ end
 -- @ret(number) The total width in world coordinates.
 function Text:getWidth()
   local w = 0
-  for i = 1, #self.lines do
-    local line = self.lines[i]
-    w = max(w, line.buffer:getWidth() / Fonts.scale)
+  if self.parsedLines then
+    for i = 1, #self.parsedLines do
+      local line = self.parsedLines[i]
+      w = max(w, (line.width + Fonts.outlineSize * 2) / Fonts.scale)
+    end
   end
   return w
 end
 -- @ret(number) The total height in world coordinates.
 function Text:getHeight()
   local h = 0
-  for i = 1, #self.lines do
-    local line = self.lines[i]
-    h = h + line.buffer:getHeight() / 1.5 / Fonts.scale
+  if self.parsedLines then
+    for i = 1, #self.parsedLines do
+      local line = self.parsedLines[i]
+      h = h + line.height / Fonts.scale
+    end
   end
   return h
 end
@@ -205,6 +208,9 @@ end
 -- Called when renderer is iterating through its rendering list.
 -- @param(renderer : Renderer)
 function Text:draw(renderer)
+  if self.needsRedraw then
+    self:redrawBuffers(renderer)
+  end
   renderer:clearBatch()
   local sx, sy, lsx = self.scaleX / Fonts.scale, self.scaleY / Fonts.scale
   local rsx = ScreenManager.scaleX * renderer.scaleX
@@ -232,10 +238,20 @@ function Text:draw(renderer)
   lgraphics.setShader(shader)
   lgraphics.setColor(r, g, b, a)
 end
--- Called when the scale of screen changes.
--- @param(renderer : Renderer) The renderer that is drawing this text.
-function Text:rescale(renderer)
-  self:redrawBuffers()
+-- Redraws each line buffer.
+function Text:redrawBuffers(renderer)
+  lgraphics.push()
+  lgraphics.origin()
+  local sx = ScreenManager.scaleX * renderer.scaleX
+  local sy = ScreenManager.scaleY * renderer.scaleY
+  self.lines = TextRenderer.createLineBuffers(self.bufferLines, sx, sy)
+  local width, height = 0, 0
+  for i = 1, #self.lines do
+    width = max(self.lines[i].buffer:getWidth(), width)
+    height = height + self.lines[i].height
+  end
+  self.needsRedraw = false
+  lgraphics.pop()
 end
 
 return Text

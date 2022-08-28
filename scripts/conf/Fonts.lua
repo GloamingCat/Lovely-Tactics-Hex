@@ -36,6 +36,7 @@ return  {
 	popup_levelup = default_font,
 
 	fps = fps_font,
+  pause = medium_font,
 
 	-- Settings
 	scale = 4,

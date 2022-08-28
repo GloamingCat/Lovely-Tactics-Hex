@@ -82,10 +82,10 @@ function FieldHUD:refreshSave(all)
     self.saveInfoWindow.info:refreshInfo(save)
     self.saveInfoWindow.info:updatePosition(self.saveInfoWindow.position)
   end
-  local time = GameManager:currentPlayTime()
+  local time = string.time(GameManager:currentPlayTime())
   if self.time ~= time then
     self.time = time
-    self.saveInfoWindow.info.content[2]:setText(string.time(time))
+    self.saveInfoWindow.info.content[2]:setText(time)
     self.saveInfoWindow.info.content[2]:redraw()
   end
   if not self.saveInfoWindow.open then

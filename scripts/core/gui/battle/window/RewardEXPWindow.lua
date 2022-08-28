@@ -67,18 +67,19 @@ end
 
 -- [COROUTINE] Show EXP gain.
 function RewardEXPWindow:addEXP()
-  local done, levelup
+  local done, levelup, changed
   local soundTime = self.soundPeriod
   repeat
-    done, levelup = true, false
+    done, levelup, changed = true, false, false
     for i = 4, #self.content, 4 do
-      local exp1 = self.content[i]
-      local exp2 = self.content[i + 1]
+      local exp1 = self.content[i] -- Current exp
+      local exp2 = self.content[i + 1] -- Exp to gain
+      local job = exp1.battler.job
       if exp2.value > 0 then
         done = false
-        local gain = math.min(math.floor(self.expSpeed * GameManager:frameTime()), exp2.value)
-        local nextLevel = exp1.battler.job:levelsup(gain)
-        exp1.battler.job:addExperience(gain)
+        local gain = math.min(self.expSpeed * GameManager:frameTime(), exp2.value)
+        local nextLevel = job:levelsup(gain)
+        job:addExperience(gain)
         -- Level-up
         if nextLevel then
           local x = self:paddingX() - self.width / 2
@@ -88,16 +89,20 @@ function RewardEXPWindow:addEXP()
           popupText:popup()
           levelup = true
         end
-        exp1.value = exp1.battler.job.exp
-        exp1:setText('' .. exp1.value)
-        exp1:redraw()
-        exp2.value = exp2.value - gain
-        exp2:setText('' .. exp2.value)
-        exp2:redraw()
+        gain = math.floor(job.exp) - math.floor(exp1.value)
+        if gain > 0 then
+          changed = true
+          exp1.value = exp1.value + gain
+          exp1:setText('' .. exp1.value)
+          exp1:redraw()
+          exp2.value = exp2.value - gain
+          exp2:setText('' .. exp2.value)
+          exp2:redraw()
+        end
       end
     end
     soundTime = soundTime + GameManager:frameTime() * 60
-    if self.expSound and soundTime >= self.soundPeriod then
+    if self.expSound and soundTime >= self.soundPeriod and changed then
       soundTime = soundTime - self.soundPeriod
       AudioManager:playSFX(self.expSound)
     end

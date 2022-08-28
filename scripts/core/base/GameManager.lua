@@ -53,6 +53,7 @@ end
 -- Starts the game.
 function GameManager:start()
   self.fpsFont = ResourceManager:loadFont(Fonts.fps)
+  self.pauseFont = ResourceManager:loadFont(Fonts.pause)
   if self.editor then
     EditorManager:start()
   else
@@ -153,7 +154,7 @@ function GameManager:update(dt)
     collectgarbage('collect')
   end
   -- Sleep.
-  local framerate = Config.screen.fpsLimit
+  local framerate = Config.fpsLimit
   if framerate then
     local sleep = 1 / framerate - (os.clock() - t)
     if sleep > 0 then
@@ -187,6 +188,7 @@ function GameManager:draw()
   self:printStats()
   --self:printCoordinates()
   if self.paused then
+    love.graphics.setFont(self.pauseFont)
     love.graphics.printf('PAUSED', 0, 0, ScreenManager:totalWidth(), 'right')
   end
 end
@@ -200,8 +202,9 @@ function GameManager:printCoordinates()
 end
 -- Prints FPS and draw call counts on the screen.
 function GameManager:printStats()
+  local gstats = love.graphics.getStats()
   love.graphics.print(love.timer.getFPS())
-  love.graphics.print(ScreenManager.drawCalls, 32, 0)
+  love.graphics.print(gstats.drawcalls, 32, 0)
   for i = 1, #self.debugMessages do
     love.graphics.print(self.debugMessages[i], 0, 24 * i)
   end

@@ -186,20 +186,19 @@ end
 
 -- Updates bound diagonal.
 function Sprite:recalculateBox()
-  if self.quad then
-    local w, h = self:quadBounds()
-    local dx = (abs(w / 2 - self.offsetX) + w / 2) * self.scaleX
-    local dy = (abs(h / 2 - self.offsetY) + h / 2) * self.scaleY
-    self.diag = dx + dy
-  else
-    self.diag = 0
-  end
+  local w, h = self:quadBounds()
+  local dx = (abs(w / 2 - self.offsetX) + w / 2) * self.scaleX
+  local dy = (abs(h / 2 - self.offsetY) + h / 2) * self.scaleY
+  self.diag = dx + dy
   self.needsRecalcBox = false
 end
 -- Gets the bounds of the texture quad.
 -- @ret(number) Quad's width.
 -- @ret(number) Quad's height.
 function Sprite:quadBounds()
+  if not self.quad then
+    return 0, 0
+  end
   local _, _, w, h = self.quad:getViewport()
   return w, h
 end
