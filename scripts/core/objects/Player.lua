@@ -10,7 +10,6 @@ It only exists in exploration fields, not in battle fields.
 
 -- Imports
 local Character = require('core/objects/Character')
-local Fiber = require('core/fiber/Fiber')
 local FieldGUI = require('core/gui/menu/FieldGUI')
 local List = require('core/datastruct/List')
 local Vector = require('core/math/Vector')

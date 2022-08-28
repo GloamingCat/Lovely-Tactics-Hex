@@ -34,9 +34,7 @@ function FieldGUI:createWindows()
   self:createLocalWindow()
   self:createTimeWindow()
   self:createMembersWindow()
-  if GameManager:isDesktop() then
-    self:createQuitWindow()
-  end
+  self:createQuitWindow()
 end
 -- Creates the list with the main commands.
 function FieldGUI:createMainWindow()

@@ -121,6 +121,9 @@ end
 function GameManager:update(dt)
   local t = os.clock()  
   -- Update game logic.
+  if self.restartRequested then
+    self:restart()
+  end
   if not self.paused then
     if not GUIManager.paused then 
       GUIManager:update()
@@ -267,6 +270,7 @@ end
 
 -- Restarts the game from the TitleGUI.
 function GameManager:restart()
+  self.restartRequested = false
   ScreenManager:clear()
   FieldManager = require('core/field/FieldManager')()
   GUIManager = require('core/gui/GUIManager')()

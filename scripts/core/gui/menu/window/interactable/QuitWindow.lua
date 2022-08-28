@@ -21,7 +21,9 @@ local FieldCommandWindow = class(GridWindow)
 function FieldCommandWindow:createWidgets()
   Button:fromKey(self, 'cancel')
   Button:fromKey(self, 'title')
-  Button:fromKey(self, 'close')
+  if GameManager:isDesktop() then
+    Button:fromKey(self, 'close')
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -36,7 +38,7 @@ end
 function FieldCommandWindow:titleConfirm()
   self:hide()
   FieldManager.renderer:fadeout(nil, true)
-  GameManager:restart()
+  GameManager.restartRequested = true
 end
 -- When player chooses to shut the game down.
 function FieldCommandWindow:closeConfirm()
@@ -53,7 +55,7 @@ function FieldCommandWindow:colCount()
 end
 -- Overrides GridWindow:rowCount.
 function FieldCommandWindow:rowCount()
-  return 3
+  return GameManager:isDesktop() and 3 or 2
 end
 -- @ret(string) String representation (for debugging).
 function FieldCommandWindow:__tostring()

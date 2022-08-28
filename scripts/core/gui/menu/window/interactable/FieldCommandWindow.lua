@@ -27,9 +27,7 @@ function FieldCommandWindow:createWidgets()
   Button:fromKey(self, 'members')
   Button:fromKey(self, 'config')
   Button:fromKey(self, 'save')
-  if GameManager:isDesktop() then
-    Button:fromKey(self, 'quit')
-  end
+  Button:fromKey(self, 'quit')
 end
 
 ---------------------------------------------------------------------------------------------------
