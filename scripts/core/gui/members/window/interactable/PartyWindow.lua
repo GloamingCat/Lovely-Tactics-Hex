@@ -82,7 +82,7 @@ function PartyWindow:cellWidth()
 end
 -- Overrides GridWindow:cellHeight.
 function PartyWindow:cellHeight()
-  return (ListWindow.cellHeight(self) * 3 + self:rowMargin() * 2)
+  return (ListWindow.cellHeight(self) * 2 + self:rowMargin() * 2)
 end
 -- @ret(string) String representation (for debugging).
 function PartyWindow:__tostring()

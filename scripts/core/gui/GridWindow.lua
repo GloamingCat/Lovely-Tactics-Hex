@@ -511,11 +511,11 @@ function GridWindow:calculateHeight()
 end
 -- @ret(number) The width of a cell in pixels.
 function GridWindow:cellWidth()
-  return 70
+  return 100
 end
 -- @ret(number) The height of a cell in pixels.
 function GridWindow:cellHeight()
-  return 12
+  return 18
 end
 -- @ret(number) The space between columns in pixels.
 function GridWindow:colMargin()

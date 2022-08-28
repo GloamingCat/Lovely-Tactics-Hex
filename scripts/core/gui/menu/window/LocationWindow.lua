@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-LocalWindow
+LocationWindow
 ---------------------------------------------------------------------------------------------------
 Small window that shows the location of the player.
 
@@ -13,14 +13,14 @@ local SimpleText = require('core/gui/widget/SimpleText')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
-local LocalWindow = class(Window)
+local LocationWindow = class(Window)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides Window:createContent.
-function LocalWindow:createContent(width, height)
+function LocationWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local icon = Config.icons.location
   local sprite = icon and icon.id >= 0 and ResourceManager:loadIcon(icon, GUIManager.renderer)
@@ -38,9 +38,9 @@ function LocalWindow:createContent(width, height)
 end
 -- Sets the name shown.
 -- @param(text : string) The name of the location.
-function LocalWindow:setLocal(text)
+function LocationWindow:setLocal(text)
   self.name:setText(text)
   self.name:redraw()
 end
 
-return LocalWindow
+return LocationWindow

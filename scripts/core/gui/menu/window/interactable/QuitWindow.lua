@@ -1,9 +1,9 @@
 
 --[[===============================================================================================
 
-FieldCommandWindow
+QuitWindow
 ---------------------------------------------------------------------------------------------------
-Main GUI's selectable window.
+Window with options to close / restart game.
 
 =================================================================================================]]
 
@@ -11,18 +11,18 @@ Main GUI's selectable window.
 local Button = require('core/gui/widget/control/Button')
 local GridWindow = require('core/gui/GridWindow')
 
-local FieldCommandWindow = class(GridWindow)
+local QuitWindow = class(GridWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
 -- Implements GridWindow:createWidgets.
-function FieldCommandWindow:createWidgets()
-  Button:fromKey(self, 'cancel')
-  Button:fromKey(self, 'title')
+function QuitWindow:createWidgets()
+  Button:fromKey(self, 'cancel').text.sprite:setAlignX('center')
+  Button:fromKey(self, 'title').text.sprite:setAlignX('center')
   if GameManager:isDesktop() then
-    Button:fromKey(self, 'close')
+    Button:fromKey(self, 'close').text.sprite:setAlignX('center')
   end
 end
 
@@ -31,17 +31,17 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- When player cancels the quit action.
-function FieldCommandWindow:cancelConfirm()
+function QuitWindow:cancelConfirm()
   self.result = 0
 end
 -- When players chooses to return to TitleGUI.
-function FieldCommandWindow:titleConfirm()
+function QuitWindow:titleConfirm()
   self:hide()
   FieldManager.renderer:fadeout(nil, true)
   GameManager.restartRequested = true
 end
 -- When player chooses to shut the game down.
-function FieldCommandWindow:closeConfirm()
+function QuitWindow:closeConfirm()
   GameManager:quit()
 end
 
@@ -50,16 +50,16 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides GridWindow:colCount.
-function FieldCommandWindow:colCount()
+function QuitWindow:colCount()
   return 1
 end
 -- Overrides GridWindow:rowCount.
-function FieldCommandWindow:rowCount()
+function QuitWindow:rowCount()
   return GameManager:isDesktop() and 3 or 2
 end
 -- @ret(string) String representation (for debugging).
-function FieldCommandWindow:__tostring()
+function QuitWindow:__tostring()
   return 'Field Command Window'
 end
 
-return FieldCommandWindow
+return QuitWindow

@@ -1938,14 +1938,14 @@
             "path": "GUI/arrows.png",
             "x": 0,
             "y": 0,
-            "width": 12,
-            "height": 12
+            "width": 24,
+            "height": 24
           },
           "rows": 2,
           "cols": 2,
           "transform": {
-            "offsetX": 0,
-            "offsetY": 0,
+            "offsetX": 6,
+            "offsetY": 6,
             "offsetDepth": 0,
             "scaleX": 100,
             "scaleY": 100,

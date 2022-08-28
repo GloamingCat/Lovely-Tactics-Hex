@@ -11,7 +11,7 @@ The GUI that is openned when player presses the menu button in the field.
 local GUI = require('core/gui/GUI')
 local FieldCommandWindow = require('core/gui/menu/window/interactable/FieldCommandWindow')
 local GoldWindow = require('core/gui/menu/window/GoldWindow')
-local LocalWindow = require('core/gui/menu/window/LocalWindow')
+local LocationWindow = require('core/gui/menu/window/LocationWindow')
 local MemberGUI = require('core/gui/members/MemberGUI')
 local PartyWindow = require('core/gui/members/window/interactable/PartyWindow')
 local QuitWindow = require('core/gui/menu/window/interactable/QuitWindow')
@@ -27,58 +27,51 @@ local FieldGUI = class(GUI)
 
 -- Overrides GUI:createWindows.
 function FieldGUI:createWindows()
+  self.goldWindowWidth = ScreenManager.width / 4
+  self.goldWindowHeight = 32
   self.name = 'Field GUI'
   self.troop = Troop()
   self:createMainWindow()
-  self:createGoldWindow()
-  self:createLocalWindow()
-  self:createTimeWindow()
   self:createMembersWindow()
+  self:createGoldWindow()
+  self:createLocationWindow()
+  self:createTimeWindow()
   self:createQuitWindow()
 end
 -- Creates the list with the main commands.
 function FieldGUI:createMainWindow()
-  local w = FieldCommandWindow(self)
-  local m = self:windowMargin()
-  w:setXYZ((w.width - ScreenManager.width) / 2 + m, (w.height - ScreenManager.height) / 2 + m)
-  self.mainWindow = w
+  self.mainWindow = FieldCommandWindow(self)
   self:setActiveWindow(self.mainWindow)
 end
 -- Creates the window that shows the troop's money.
 function FieldGUI:createGoldWindow()
-  local w, h = self.mainWindow.width, 32
-  local x = ScreenManager.width / 2 - self:windowMargin() - w / 2
-  local y = ScreenManager.height / 2 - self:windowMargin() - h / 2
+  local w, h = self.goldWindowWidth, self.goldWindowHeight
+  local x = (ScreenManager.width - w) / 2 - self:windowMargin()
+  local y = -(ScreenManager.height - h) / 2 + self:windowMargin()
   self.goldWindow = GoldWindow(self, w, h, Vector(x, y))
   self.goldWindow:setGold(self.troop.money)
 end
 -- Creates the window that shows the current location.
-function FieldGUI:createLocalWindow()
-  local w, h = ScreenManager.width - self.mainWindow.width - self:windowMargin() * 4 - self.goldWindow.width, 32
-  local x = self.goldWindow.position.x - w / 2 - self.goldWindow.width / 2 - self:windowMargin()
-  local y = self.goldWindow.position.y
-  self.localWindow = LocalWindow(self, w, h, Vector(x, y))
-  self.localWindow:setLocal(FieldManager.currentField.name)
+function FieldGUI:createLocationWindow()
+  local w = ScreenManager.width - self:windowMargin() * 4 - self.goldWindowWidth * 2
+  local h = self.goldWindowHeight
+  local x = 0
+  local y = -(ScreenManager.height - h) / 2 + self:windowMargin()
+  self.locationWindow = LocationWindow(self, w, h, Vector(x, y))
+  self.locationWindow:setLocal(FieldManager.currentField.name)
 end
 -- Creates the window that shows the total playtime.
 function FieldGUI:createTimeWindow()
-  local w, h = self.goldWindow.width, self.goldWindow.height
-  local x = self.mainWindow.position.x
-  local y = self.goldWindow.position.y
+  local w, h = self.goldWindowWidth, self.goldWindowHeight
+  local x = -(ScreenManager.width - w) / 2 + self:windowMargin()
+  local y = -(ScreenManager.height - h) / 2 + self:windowMargin()
   self.timeWindow = TimeWindow(self, w, h, Vector(x, y))
   self.timeWindow:setTime(GameManager:currentPlayTime())
 end
 -- Creates the member list window the shows when player selects "Characters" button.
 function FieldGUI:createMembersWindow()
-  local window = PartyWindow(self, self.troop)
-  local x = ScreenManager.width / 2 - window.width / 2 - self:windowMargin()
-  local y = -ScreenManager.height / 2 + window.height / 2 + self:windowMargin()
-  if window.highlight then
-    window.highlight.hideOnDeactive = true
-  end
-  window:setXYZ(x, y)
-  window:setSelectedWidget(nil)
-  self.partyWindow = window
+  self.partyWindow = PartyWindow(self, self.troop)
+  self.partyWindow:setVisible(false)
 end
 -- Creates the window the shows when player selects "Quit" button.
 function FieldGUI:createQuitWindow()

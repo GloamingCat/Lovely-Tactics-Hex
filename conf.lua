@@ -37,11 +37,7 @@ function love.conf(t)
   t.modules.physics = false
   t.window.minwidth = Config.screen.nativeWidth
   t.window.minheight = Config.screen.nativeHeight
-  t.window.fullscreen = false
-  if Config.platform == 1 then -- Mobile app
-    t.window.fullscreen = true
-  elseif Config.platform == 0 then -- Desktop standalone
-    t.window.width = Config.screen.nativeWidth * Config.screen.widthScale / 100
-    t.window.height = Config.screen.nativeHeight * Config.screen.heightScale / 100
-  end
+  t.window.width = Config.screen.nativeWidth * Config.screen.widthScale / 100
+  t.window.height = Config.screen.nativeHeight * Config.screen.heightScale / 100
+  t.window.fullscreen = Config.platform == 1
 end

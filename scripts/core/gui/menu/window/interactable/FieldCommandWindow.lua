@@ -28,6 +28,9 @@ function FieldCommandWindow:createWidgets()
   Button:fromKey(self, 'config')
   Button:fromKey(self, 'save')
   Button:fromKey(self, 'quit')
+  for i = 1, #self.matrix do
+    self.matrix[i].text.sprite:setAlignX('center')
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -42,18 +45,9 @@ function FieldCommandWindow:inventoryConfirm()
 end
 -- Chooses a member to manage.
 function FieldCommandWindow:membersConfirm()
-  self.GUI.partyWindow:activate()
-  Fiber:wait()
-  local result = self.GUI:waitForResult()
-  while result > 0 do
-    self.GUI:hide()
-    local gui = MemberGUI(self.GUI, self.GUI.troop, self.GUI.partyWindow.list, result)
-    GUIManager:showGUIForResult(gui)
-    self.GUI:show()
-    result = self.GUI:waitForResult()
-  end
-  self.GUI.partyWindow.highlight:hide()
-  self:activate()
+  self.GUI:hide()
+  self:openPartyWindow()
+  self.GUI:show()
 end
 -- Opens the settings screen.
 function FieldCommandWindow:configConfirm()
@@ -73,6 +67,31 @@ function FieldCommandWindow:quitConfirm()
   self.GUI:hide()
   self.GUI:showWindowForResult(self.GUI.quitWindow)
   self.GUI:show()
+end
+
+---------------------------------------------------------------------------------------------------
+-- Members
+---------------------------------------------------------------------------------------------------
+
+-- Open the GUI's party window.
+function FieldCommandWindow:openPartyWindow()
+  self.GUI.partyWindow:show()
+  self.GUI.partyWindow:activate()
+  local result = self.GUI:waitForResult()
+  while result > 0 do
+    self.GUI.partyWindow:hide()
+    self:openMemberGUI(result)
+    self.GUI.partyWindow:show()
+    result = self.GUI:waitForResult()
+  end
+  self.GUI.partyWindow:hide()
+  self:activate()
+end
+-- Open the member GUI for the selected character.
+-- @param(memberID : number) Character's position in the party.
+function FieldCommandWindow:openMemberGUI(memberID)
+  local gui = MemberGUI(self.GUI, self.GUI.troop, self.GUI.partyWindow.list, memberID)
+  GUIManager:showGUIForResult(gui)
 end
 
 ---------------------------------------------------------------------------------------------------

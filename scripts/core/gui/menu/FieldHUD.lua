@@ -36,7 +36,7 @@ function FieldHUD:createWindows()
 end
 -- Creates the window with the information of the chosen member.
 function FieldHUD:createSaveInfoWindow()
-  local width = Config.troop.maxMembers * 20 + 50
+  local width = Config.troop.maxMembers * 20 + 60
   local height = 44
   local wpos = Vector((width - ScreenManager.width) / 2, (height - ScreenManager.height) / 2)
   local window = Window(self, width, height, wpos)

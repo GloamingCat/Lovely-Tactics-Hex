@@ -21,7 +21,6 @@ local TitleCommandWindow = class(GridWindow)
 -- Constructor.
 function TitleCommandWindow:init(...)
   self.speed = math.huge
-  self.buttonFont = 'gui_big'
   GridWindow.init(self, ...)
 end
 -- Implements GridWindow:createWidgets.
@@ -97,14 +96,6 @@ end
 -- Overrides GridWindow:rowCount.
 function TitleCommandWindow:rowCount()
   return GameManager:isDesktop() and 4 or 3
-end
--- Overrides GridWindow:cellWidth.
-function TitleCommandWindow:cellWidth()
-  return GridWindow.cellWidth(self) * 1.5
-end
--- Overrides GridWindow:cellHeight.
-function TitleCommandWindow:cellHeight()
-  return GridWindow.cellHeight(self) * 1.5
 end
 -- @ret(string) String representation (for debugging).
 function TitleCommandWindow:__tostring()

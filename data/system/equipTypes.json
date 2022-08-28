@@ -21,15 +21,8 @@
     "tags": []
   },
   {
-    "key": "foot",
-    "count": 1,
-    "state": 0,
-    "name": "Foot",
-    "tags": []
-  },
-  {
     "key": "acc",
-    "count": 2,
+    "count": 1,
     "state": 0,
     "name": "Accessory",
     "tags": []

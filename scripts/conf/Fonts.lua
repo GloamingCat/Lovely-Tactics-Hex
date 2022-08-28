@@ -1,19 +1,19 @@
 
-local huge_font = { 'Roboto', 'ttf', 20 }
-local big_font = { 'Roboto', 'ttf', 15 }
-local critical_font = { 'Roboto', 'ttf', 13 }
-local default_font = { 'Roboto', 'ttf', 11 }
-local medium_font = { 'Roboto', 'ttf', 9.5 }
-local small_font = { 'Roboto', 'ttf', 8 }
-local tiny_font = { 'Roboto', 'ttf', 6.5 }
-local fps_font = { 'Roboto', 'ttf', 3 }
+local huge_font = { 'Roboto', 'ttf', 25 }
+local big_font = { 'Roboto', 'ttf', 20 }
+local critical_font = { 'Roboto', 'ttf', 17 }
+local default_font = { 'Roboto', 'ttf', 15 }
+local medium_font = { 'Roboto', 'ttf', 12 }
+local small_font = { 'Roboto', 'ttf', 9 }
+local tiny_font = { 'Roboto', 'ttf', 7.5 }
+local fps_font = { 'Roboto', 'ttf', 5 }
 
 return  {
 
 	-- Fonts
 	gui_title = huge_font,
 	gui_default = default_font,
-	gui_button = medium_font,
+	gui_button = default_font,
 	gui_dialogue = medium_font,
 	gui_tiny = tiny_font,
 	gui_small = small_font,
