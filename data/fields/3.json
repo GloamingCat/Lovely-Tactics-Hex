@@ -1230,17 +1230,131 @@
           "tags": []
         },
         {
+          "global": false,
+          "block": true,
+          "wait": true,
+          "onLoad": false,
+          "onInteract": false,
+          "onCollide": true,
+          "description": "Idle Collided",
+          "name": "npc/Event.lua",
+          "tags": [
+            {
+              "key": "condition",
+              "value": "FieldManager:search(script.char.collided) ~= nil"
+            },
+            {
+              "key": "command",
+              "value": "FieldManager:search(script.char.collided):playIdleAnimation()"
+            }
+          ]
+        },
+        {
+          "global": false,
+          "block": true,
+          "wait": true,
+          "onLoad": false,
+          "onInteract": false,
+          "onCollide": true,
+          "description": "Start Battle",
+          "name": "npc/Event.lua",
+          "tags": [
+            {
+              "key": "condition",
+              "value": "FieldManager.playerInput and not script.char.vars.onBattle and script:collidedWith('player')"
+            },
+            {
+              "key": "command",
+              "value": "script:startBattle(script.args:toTable())"
+            },
+            {
+              "key": "intro",
+              "value": "true"
+            },
+            {
+              "key": "escapeEnabled",
+              "value": "true"
+            },
+            {
+              "key": "gameOverCondition",
+              "value": "survive"
+            },
+            {
+              "key": "fieldID",
+              "value": "0"
+            },
+            {
+              "key": "fade",
+              "value": "60"
+            }
+          ]
+        },
+        {
           "global": true,
           "block": true,
           "wait": true,
           "onLoad": false,
           "onInteract": false,
           "onCollide": true,
-          "description": "",
-          "name": "test/Battle.lua",
-          "tags": []
+          "description": "Delete if won",
+          "name": "npc/Event.lua",
+          "tags": [
+            {
+              "key": "condition",
+              "value": "script.char.vars.onBattle and not BattleManager:enemyWon() and not BattleManager:playerEscaped()"
+            },
+            {
+              "key": "command",
+              "value": "script:deleteChar(script.args)"
+            },
+            {
+              "key": "permanent",
+              "value": "true"
+            },
+            {
+              "key": "key",
+              "value": "self"
+            }
+          ]
+        },
+        {
+          "global": true,
+          "block": true,
+          "wait": true,
+          "onLoad": false,
+          "onInteract": false,
+          "onCollide": true,
+          "description": "Finish battle",
+          "name": "npc/Event.lua",
+          "tags": [
+            {
+              "key": "condition",
+              "value": "script.char.vars.onBattle"
+            },
+            {
+              "key": "command",
+              "value": "script:finishBattle(script.args)"
+            },
+            {
+              "key": "command",
+              "value": "print(script.battleLog)"
+            },
+            {
+              "key": "cooldown",
+              "value": "180"
+            },
+            {
+              "key": "fade",
+              "value": "60"
+            },
+            {
+              "key": "wait",
+              "value": "true"
+            }
+          ]
         }
-      ]
+      ],
+      "repeatCollisions": false
     }
   ],
   "parties": [],

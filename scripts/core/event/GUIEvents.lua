@@ -129,6 +129,9 @@ function EventSheet:openChoiceWindow(args)
   window:destroy()
   self.gui.activeWindow = nil
   self.vars.choiceInput = result
+  if self.char then
+    self.char.vars.choiceInput = result
+  end
 end
 -- Opens a password window and waits for player choice before closing and deleting.
 -- @param(args.length : number) Number of digits.
@@ -145,6 +148,9 @@ function EventSheet:openNumberWindow(args)
   window:removeSelf()
   window:destroy()
   self.vars.numberInput = result
+  if self.char then
+    self.char.vars.numberInput = result
+  end
 end
 -- Opens a text window and waits for player choice before closing and deleting.
 function EventSheet:openStringWindow(args)
@@ -157,6 +163,9 @@ function EventSheet:openStringWindow(args)
   window:removeSelf()
   window:destroy()
   self.vars.textInput = result ~= 0 and result
+  if self.char then
+    self.char.vars.textInput = result
+  end
 end
 
 return EventSheet

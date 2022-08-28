@@ -781,16 +781,129 @@
           "onLoad": false,
           "onInteract": true,
           "onCollide": false,
-          "description": "",
-          "name": "test/Shop.lua",
+          "description": "Dialogue",
+          "name": "npc/Event.lua",
           "tags": [
+            {
+              "key": "condition",
+              "value": "not script.char.vars.onBattle"
+            },
+            {
+              "key": "command",
+              "value": "script:turnCharTile { key = 'self', other = 'player' }"
+            },
+            {
+              "key": "command",
+              "value": "FieldManager.player:playIdleAnimation()"
+            },
+            {
+              "key": "command",
+              "value": "script:showDialogue { id = 1, character = \"self\", portrait = \"BigIcon\", message =  Vocab.dialogues.npc.WhatDoYou }"
+            },
+            {
+              "key": "command",
+              "value": "script:openChoiceWindow { width = 70, choices = {\r\n Vocab.dialogues.npc.Shop,\r\n Vocab.dialogues.npc.Battle,\r\n Vocab.dialogues.npc.Nothing\r\n}}"
+            }
+          ]
+        },
+        {
+          "global": false,
+          "block": true,
+          "wait": true,
+          "onLoad": false,
+          "onInteract": true,
+          "onCollide": false,
+          "description": "Open Shop",
+          "name": "npc/Event.lua",
+          "tags": [
+            {
+              "key": "condition",
+              "value": "script.char.vars.choiceInput == 1"
+            },
+            {
+              "key": "command",
+              "value": "script:openShopMenu { sell = true, items = {\r\n { id = 2 },\r\n { id = 3 },\r\n { id = 4 },\r\n { id = 5 },\r\n { id = 6 },\r\n { id = 7 }\r\n}}"
+            }
+          ]
+        },
+        {
+          "global": false,
+          "block": true,
+          "wait": true,
+          "onLoad": false,
+          "onInteract": true,
+          "onCollide": false,
+          "description": "Start Battle",
+          "name": "npc/Event.lua",
+          "tags": [
+            {
+              "key": "condition",
+              "value": "script.char.vars.choiceInput == 2"
+            },
+            {
+              "key": "command",
+              "value": "script:startBattle(script.args:toTable())"
+            },
+            {
+              "key": "intro",
+              "value": "true"
+            },
+            {
+              "key": "escapeEnabled",
+              "value": "true"
+            },
+            {
+              "key": "gameOverCondition",
+              "value": "none"
+            },
             {
               "key": "fieldID",
               "value": "2"
+            },
+            {
+              "key": "fade",
+              "value": "60"
+            }
+          ]
+        },
+        {
+          "global": false,
+          "block": true,
+          "wait": true,
+          "onLoad": false,
+          "onInteract": true,
+          "onCollide": false,
+          "description": "Finish battle",
+          "name": "npc/Event.lua",
+          "tags": [
+            {
+              "key": "condition",
+              "value": "script.char.vars.onBattle"
+            },
+            {
+              "key": "command",
+              "value": "script:finishBattle(script.args)"
+            },
+            {
+              "key": "command",
+              "value": "script:showDialogue { id = 1, character = \"self\", portrait = \"BigIcon\", message = script.battleLog }"
+            },
+            {
+              "key": "cooldown",
+              "value": "180"
+            },
+            {
+              "key": "fade",
+              "value": "60"
+            },
+            {
+              "key": "wait",
+              "value": "true"
             }
           ]
         }
-      ]
+      ],
+      "repeatCollisions": false
     },
     {
       "key": "Firepit",
@@ -817,7 +930,8 @@
           "name": "test/Inn.lua",
           "tags": []
         }
-      ]
+      ],
+      "repeatCollisions": false
     }
   ],
   "parties": [],

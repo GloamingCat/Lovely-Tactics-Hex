@@ -20,7 +20,7 @@
       "onInteract": false,
       "onCollide": false,
       "description": "",
-      "name": "test/Intro.lua",
+      "name": "Load.lua",
       "tags": []
     },
     "images": [],
@@ -832,7 +832,8 @@
           "name": "test/Dialogue.lua",
           "tags": []
         }
-      ]
+      ],
+      "repeatCollisions": false
     }
   ],
   "parties": [],
