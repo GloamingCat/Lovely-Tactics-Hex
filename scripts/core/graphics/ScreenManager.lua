@@ -226,7 +226,7 @@ function ScreenManager:onResize(w, h)
   self:setScale(scaleX, scaleY)
   self.offsetX = (w - self:totalWidth()) / 2
   self.offsetY = (h - self:totalHeight()) / 2
-  for i = 1, #self.renderers do
+  for i = 1, self.rendererCount do
     if self.renderers[i] then
       self.renderers[i]:resizeCanvas(self.canvas:getWidth(), self.canvas:getHeight())
     end
@@ -237,10 +237,9 @@ end
 function ScreenManager:onFocus(f)
   if f then
     ResourceManager:refreshImages()
-    local renderers = _G.ScreenManager.renderers
-    for i = 1, #renderers do
-      if renderers[i] then
-        renderers[i].needRedraw = true
+    for i = 1, self.rendererCount do
+      if self.renderers[i] then
+        self.renderers[i].needRedraw = true
       end
     end
   end
