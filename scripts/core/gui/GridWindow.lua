@@ -39,7 +39,7 @@ function GridWindow:createContent(width, height)
     self.loopVertical = true
     self.loopHorizontal = true
   end
-  Window.createContent(self, width or self:calculateWidth(), height or self:calculateHeight())
+  Window.createContent(self, width or self:computeWidth(), height or self:computeHeight())
   self:packWidgets()
 end
 -- Refreshes widgets' color, position, and enabled condition.
@@ -498,16 +498,24 @@ function GridWindow:gridY()
   return 0
 end
 -- @ret(number) The window's width in pixels.
-function GridWindow:calculateWidth()
+function GridWindow:computeWidth()
   local cols = self:colCount()
   local buttons = cols * self:cellWidth() + (cols - 1) * self:colMargin()
   return self:paddingX() * 2 + buttons + self:gridX()
 end
 -- @ret(number) The window's height in pixels.
-function GridWindow:calculateHeight()
+function GridWindow:computeHeight()
   local rows = self:rowCount()
   local cells = rows * self:cellHeight() + (rows - 1) * self:rowMargin()
   return self:paddingY() * 2 + cells + self:gridY()
+end
+-- @ret(number) THe adjusted cell width for the given total window width.
+function GridWindow:computeCellWidth(w)
+  return (w - self:paddingX() * 2 - self:colMargin() * (self:colCount() - 1)) / self:colCount()
+end
+-- @ret(number) THe adjusted cell height for the given total window height.
+function GridWindow:computeCellHeight(h)
+  return (h - self:paddingY() * 2 - self:rowMargin() * (self:rowCount() - 1)) / self:rowCount()
 end
 -- @ret(number) The width of a cell in pixels.
 function GridWindow:cellWidth()

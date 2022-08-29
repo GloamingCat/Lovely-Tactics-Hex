@@ -24,7 +24,7 @@ local TargetWindow = class(Window)
 -- Overrides Window:init.
 function TargetWindow:init(GUI)
   local w = 120
-  local h = self:calculateHeight()
+  local h = self:computeHeight()
   local margin = GUI:windowMargin()
   Window.init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - margin, 
       -ScreenManager.height / 2 + h / 2 + margin))
@@ -79,7 +79,7 @@ end
 -- @param(battler : Battler)
 function TargetWindow:setBattler(battler)
   local icons = battler.statusList:getIcons()
-  local height = self:calculateHeight(#icons > 0)
+  local height = self:computeHeight(#icons > 0)
   local pos = self.spriteGrid.position
   pos.y = pos.y + (height - self.height) / 2
   self:resize(nil, height)
@@ -110,7 +110,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Calculates the height given the shown variables.
-function TargetWindow:calculateHeight(showStatus)
+function TargetWindow:computeHeight(showStatus)
   -- Margin + name + job/level + HP + SP
   local h = self:paddingY() * 2 + 15 + 10 + 10 + 10
   return showStatus and h + 16 or h

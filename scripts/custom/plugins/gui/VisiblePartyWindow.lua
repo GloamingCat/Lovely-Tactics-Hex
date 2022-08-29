@@ -4,12 +4,14 @@
 VisiblePartyWindow
 ---------------------------------------------------------------------------------------------------
 Makes the PartyWindow in the FieldGUI visible alongside the FieldCommandWindow.
-Only use this for larger screens, otherwise the two windows won't fit together.
+
+Use this together with the MemberCommandWindow script for better fit, 
 
 =================================================================================================]]
 
 local FieldGUI = require('core/gui/menu/FieldGUI')
 local FieldCommandWindow = require('core/gui/menu/window/interactable/FieldCommandWindow')
+local PartyWindow = require('core/gui/members/window/interactable/PartyWindow')
 
 ---------------------------------------------------------------------------------------------------
 -- FieldGUI
@@ -59,17 +61,39 @@ function FieldCommandWindow:createWidgets(...)
     self.matrix[i].text.sprite:setAlignX('left')
   end
 end
--- Chooses a member to manage.
-function FieldCommandWindow:membersConfirm()
+-- Do not open/close GUI when changing focus to/from the PartyWindow.
+function FieldCommandWindow:openPartyWindow(GUI)
   self.GUI.partyWindow:activate()
   Fiber:wait()
   local result = self.GUI:waitForResult()
   while result > 0 do
     self.GUI:hide()
-    self:openMemberGUI(result)
+    self:openMemberGUI(result, GUI)
     self.GUI:show()
     result = self.GUI:waitForResult()
   end
   self.GUI.partyWindow.highlight:hide()
   self:activate()
+end
+-- To make the window thinner to fit the party window.
+function FieldCommandWindow:colCount()
+  return 1
+end
+-- To make the window longer to fit the other buttons.
+function FieldCommandWindow:rowCount()
+  return 8
+end
+
+---------------------------------------------------------------------------------------------------
+-- PartyWindow
+---------------------------------------------------------------------------------------------------
+
+-- Overrides ListWindow:cellWidth.
+local PartyWindow_cellWidth = PartyWindow.cellWidth
+function PartyWindow:cellWidth()
+  if self.GUI and self.GUI.mainWindow then
+    local w = ScreenManager.width - self.GUI.mainWindow.width - self.GUI:windowMargin() * 3
+    return self:computeCellWidth(w)
+  end
+  return PartyWindow_cellWidth(self)
 end

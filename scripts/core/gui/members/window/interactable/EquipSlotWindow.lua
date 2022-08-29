@@ -118,6 +118,11 @@ end
 function EquipSlotWindow:rowCount()
   return self.visibleRowCount
 end
+-- Overrides ListWindow:computeWidth.
+function EquipSlotWindow:cellWidth(width)
+  local w = (ScreenManager.width - self.GUI:windowMargin() * 3) / 2
+  return self:computeCellWidth(w)
+end
 -- @ret(string) String representation (for debugging).
 function EquipSlotWindow:__tostring()
   return 'Equip Slot Window'

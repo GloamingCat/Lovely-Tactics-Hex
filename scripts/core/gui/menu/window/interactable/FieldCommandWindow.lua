@@ -47,21 +47,15 @@ function FieldCommandWindow:inventoryConfirm()
 end
 -- Chooses a member to manage.
 function FieldCommandWindow:membersConfirm()
-  self.GUI:hide()
   self:openPartyWindow(MemberGUI)
-  self.GUI:show()
 end
 -- Chooses a member to manage.
 function FieldCommandWindow:equipsConfirm()
-  self.GUI:hide()
   self:openPartyWindow(EquipGUI)
-  self.GUI:show()
 end
 -- Chooses a member to manage.
 function FieldCommandWindow:skillsConfirm()
-  self.GUI:hide()
   self:openPartyWindow(SkillGUI)
-  self.GUI:show()
 end
 -- Opens the settings screen.
 function FieldCommandWindow:configConfirm()
@@ -92,7 +86,9 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Open the GUI's party window.
+-- @param(GUI : class) The sub GUI class to open after the character selection.
 function FieldCommandWindow:openPartyWindow(GUI)
+  self.GUI:hide()
   self.GUI.partyWindow:show()
   self.GUI.partyWindow:activate()
   local result = self.GUI:waitForResult()
@@ -103,6 +99,7 @@ function FieldCommandWindow:openPartyWindow(GUI)
     result = self.GUI:waitForResult()
   end
   self.GUI.partyWindow:hide()
+  self.GUI:show()
   self:activate()
 end
 -- Open the member GUI for the selected character.

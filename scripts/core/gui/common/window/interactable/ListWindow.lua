@@ -51,7 +51,7 @@ end
 -- Larger buttons.
 function ListWindow:cellWidth()
   local w = ScreenManager.width - self.GUI:windowMargin() * 2
-  return (w - self:paddingX() * 2 - self:colMargin()) / 2
+  return self:computeCellWidth(w)
 end
 -- @ret(string) String representation (for debugging).
 function ListWindow:__tostring()

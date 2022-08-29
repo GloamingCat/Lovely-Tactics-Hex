@@ -1,6 +1,11 @@
 [
   {
     "on": true,
+    "name": "plugins/gui/VisiblePartyWindow.lua",
+    "tags": []
+  },
+  {
+    "on": true,
     "name": "plugins/Tutorial.lua",
     "tags": [
       {
