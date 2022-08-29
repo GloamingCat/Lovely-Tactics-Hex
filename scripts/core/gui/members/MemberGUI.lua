@@ -9,10 +9,9 @@ The GUI that is shown when the player chooses a troop member to manage.
 
 -- Imports
 local BattlerWindow = require('core/gui/common/window/BattlerWindow')
-local GUI = require('core/gui/GUI')
-local MemberCommandWindow = require('core/gui/members/window/interactable/MemberCommandWindow')
 local MemberInfoWindow = require('core/gui/members/window/MemberInfoWindow')
 local Vector = require('core/math/Vector')
+local GUI = require('core/gui/GUI')
 
 local MemberGUI = class(GUI)
 
@@ -24,39 +23,32 @@ local MemberGUI = class(GUI)
 -- @param(memberList : table) Arra of troop unit tables from current troop.
 -- @param(memberID : number) Current selected member on the list (first one by default).
 function MemberGUI:init(parent, troop, memberList, memberID)
-  self.name = 'Member GUI'
+  self.name = self.name or 'Member GUI'
   self.troop = troop
   self.members = memberList
   self.memberID = memberID or 1
+  self.infoWindowWidth = ScreenManager.width * 3 / 4
+  self.infoWindowHeight = 56
+  self.initY = 0
   GUI.init(self, parent)
 end
 -- Implements GUI:createWindows.
 function MemberGUI:createWindows()
-  self:createCommandWindow()
   self:createInfoWindow()
   self:createBattlerWindow()
-  self:setActiveWindow(self.commandWindow)
-end
--- Creates the window with the commands for the chosen member.
-function MemberGUI:createCommandWindow()
-  local window = MemberCommandWindow(self)
-  window:setXYZ((window.width - ScreenManager.width) / 2 + self:windowMargin(), 
-      (window.height - ScreenManager.height) / 2 + self:windowMargin())
-  self.commandWindow = window
+  self:setActiveWindow(self.mainWindow)
 end
 -- Creates the window with the information of the chosen member.
 function MemberGUI:createInfoWindow()
-  local w = ScreenManager.width - self.commandWindow.width - self:windowMargin() * 3
-  local h = self.commandWindow.height
-  local x = self.commandWindow.width + self:windowMargin() * 2 + w / 2 - ScreenManager.width / 2
-  local y = (h - ScreenManager.height) / 2 + self:windowMargin()
-  local member = self:currentMember()
-  self.infoWindow = MemberInfoWindow(member, self, w, h, Vector(x, y))
+  local y = (self.infoWindowHeight - ScreenManager.height) / 2 + self:windowMargin()
+  self.infoWindow = MemberInfoWindow(self:currentMember(), self,
+    self.infoWindowWidth, self.infoWindowHeight, Vector(0, y))
+  self.initY = self.infoWindowHeight + self:windowMargin() * 2
 end
 -- Creates the window that is shown when no sub GUI is open.
 function MemberGUI:createBattlerWindow()
-  self.battlerWindow = BattlerWindow(self)
-  self.battlerWindow:setXYZ(0, self:getHeight() / 2)
+  self.mainWindow = BattlerWindow(self)
+  self.mainWindow:setXYZ(0, self.initY / 2)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -71,7 +63,7 @@ function MemberGUI:nextMember()
     else
       self.memberID = self.memberID + 1
     end
-  until not self.subGUI or self.subGUI:memberEnabled(self:currentMember())
+  until self:memberEnabled(self:currentMember())
   self:refreshMember()
 end
 -- Selected previous troop members.
@@ -82,20 +74,15 @@ function MemberGUI:prevMember()
     else
       self.memberID = self.memberID - 1
     end
-  until not self.subGUI or self.subGUI:memberEnabled(self:currentMember())
+  until self:memberEnabled(self:currentMember())
   self:refreshMember()
 end
 -- Refreshs current open windows to match the new selected member.
-function MemberGUI:refreshMember()
-  local member = self:currentMember()
-  self.commandWindow:setMember(member)
+function MemberGUI:refreshMember(member)
+  member = member or self:currentMember()
   self.infoWindow:setMember(member)
   self.infoWindow.page:set(self.memberID, #self.members)
-  if self.subGUI then
-    self.subGUI:setMember(member)
-  else
-    self.battlerWindow:setMember(member)
-  end
+  self.mainWindow:setMember(member)
 end
 -- Gets the current selected troop member.
 -- @ret(table) The troop unit data.
@@ -112,29 +99,9 @@ function MemberGUI:show(...)
   self:refreshMember()
   GUI.show(self, ...)
 end
-
----------------------------------------------------------------------------------------------------
--- Sub GUI
----------------------------------------------------------------------------------------------------
-
--- Shows a sub GUI under the command window.
--- @param(GUI : class) The class of the GUI to be open.
-function MemberGUI:showSubGUI(GUI)
-  self.battlerWindow:hide()
-  local gui = GUI(self)
-  self.subGUI = gui
-  gui:setMember(self:currentMember(), self.battler)
-  self:setActiveWindow(nil)
-  GUIManager:showGUIForResult(gui)
-  self:setActiveWindow(self.commandWindow)
-  self.subGUI = nil
-  self.battlerWindow:show()
-  self.battlerWindow:setMember(self:currentMember())
-end
--- The total height occupied by the command and info windows.
--- @ret(number) Height of the GUI including window margin.
-function MemberGUI:getHeight()
-  return self.commandWindow.height + self:windowMargin() * 2
+-- @ret(boolean) True if the member is active, false otherwise.
+function MemberGUI:memberEnabled(member)
+  return true
 end
 
 return MemberGUI

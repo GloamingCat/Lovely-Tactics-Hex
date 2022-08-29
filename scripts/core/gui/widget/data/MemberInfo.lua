@@ -51,7 +51,7 @@ function MemberInfo:createContent(w, h, battler)
   local rw = (w - margin) / 2
   local small = Fonts.gui_small
   local tiny = Fonts.gui_tiny
-  local medium = Fonts.medium
+  local medium = Fonts.gui_medium
   -- Name
   local txtName = SimpleText(battler.name, topLeft, rw, 'left', medium)
   self.content:add(txtName)

@@ -14,6 +14,8 @@ local InventoryGUI = require('core/gui/common/InventoryGUI')
 local MemberGUI = require('core/gui/members/MemberGUI')
 local SaveGUI = require('core/gui/menu/SaveGUI')
 local SettingsGUI = require('core/gui/menu/SettingsGUI')
+local EquipGUI = require('core/gui/members/EquipGUI')
+local SkillGUI = require('core/gui/members/SkillGUI')
 
 local FieldCommandWindow = class(GridWindow)
 
@@ -25,12 +27,12 @@ local FieldCommandWindow = class(GridWindow)
 function FieldCommandWindow:createWidgets()
   Button:fromKey(self, 'inventory')
   Button:fromKey(self, 'members')
+  Button:fromKey(self, 'equips')
+  Button:fromKey(self, 'skills')
   Button:fromKey(self, 'config')
   Button:fromKey(self, 'save')
+  Button:fromKey(self, 'return')
   Button:fromKey(self, 'quit')
-  for i = 1, #self.matrix do
-    self.matrix[i].text.sprite:setAlignX('center')
-  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -46,7 +48,19 @@ end
 -- Chooses a member to manage.
 function FieldCommandWindow:membersConfirm()
   self.GUI:hide()
-  self:openPartyWindow()
+  self:openPartyWindow(MemberGUI)
+  self.GUI:show()
+end
+-- Chooses a member to manage.
+function FieldCommandWindow:equipsConfirm()
+  self.GUI:hide()
+  self:openPartyWindow(EquipGUI)
+  self.GUI:show()
+end
+-- Chooses a member to manage.
+function FieldCommandWindow:skillsConfirm()
+  self.GUI:hide()
+  self:openPartyWindow(SkillGUI)
   self.GUI:show()
 end
 -- Opens the settings screen.
@@ -68,19 +82,23 @@ function FieldCommandWindow:quitConfirm()
   self.GUI:showWindowForResult(self.GUI.quitWindow)
   self.GUI:show()
 end
+-- Closes menu.
+function FieldCommandWindow:returnConfirm()
+  self.result = 0
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Members
 ---------------------------------------------------------------------------------------------------
 
 -- Open the GUI's party window.
-function FieldCommandWindow:openPartyWindow()
+function FieldCommandWindow:openPartyWindow(GUI)
   self.GUI.partyWindow:show()
   self.GUI.partyWindow:activate()
   local result = self.GUI:waitForResult()
   while result > 0 do
     self.GUI.partyWindow:hide()
-    self:openMemberGUI(result)
+    self:openMemberGUI(result, GUI)
     self.GUI.partyWindow:show()
     result = self.GUI:waitForResult()
   end
@@ -89,8 +107,8 @@ function FieldCommandWindow:openPartyWindow()
 end
 -- Open the member GUI for the selected character.
 -- @param(memberID : number) Character's position in the party.
-function FieldCommandWindow:openMemberGUI(memberID)
-  local gui = MemberGUI(self.GUI, self.GUI.troop, self.GUI.partyWindow.list, memberID)
+function FieldCommandWindow:openMemberGUI(memberID, GUI)
+  local gui = GUI(self.GUI, self.GUI.troop, self.GUI.partyWindow.list, memberID)
   GUIManager:showGUIForResult(gui)
 end
 
@@ -100,11 +118,11 @@ end
 
 -- Overrides GridWindow:colCount.
 function FieldCommandWindow:colCount()
-  return 1
+  return 2
 end
 -- Overrides GridWindow:rowCount.
 function FieldCommandWindow:rowCount()
-  return 5
+  return 4
 end
 -- @ret(string) String representation (for debugging).
 function FieldCommandWindow:__tostring()

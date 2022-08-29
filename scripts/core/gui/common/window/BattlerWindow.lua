@@ -21,6 +21,7 @@ local findByName = util.array.findByName
 
 -- Constants
 local font = Fonts.gui_small
+local nameFont = Fonts.gui_medium
 
 local BattlerWindow = class(Window)
 
@@ -73,7 +74,7 @@ function BattlerWindow:createContent(width, height)
   local y = round(self:paddingY() - self.height / 2)
   local w = round((self.width - self:paddingX()) / 4 - self:paddingX())
   -- Name
-  self.textName = SimpleText('', Vector(x, y), w * 3)
+  self.textName = SimpleText('', Vector(x, y), w * 3, 'left', nameFont)
   self.content:add(self.textName)
   -- Attributes
   self.attValues = {}
@@ -197,11 +198,24 @@ end
 -- Overrides Window:onConfirm.
 function BattlerWindow:onConfirm()
 end
-
 -- Overrides Window:onCancel.
 function BattlerWindow:onCancel()
   AudioManager:playSFX(Config.sounds.buttonCancel)
   self.result = 0
+end
+-- Called when player presses "next" key.
+function BattlerWindow:onNext()
+  if self.GUI.nextMember then
+    AudioManager:playSFX(Config.sounds.buttonSelect)
+    self.GUI:nextMember()
+  end
+end
+-- Called when player presses "prev" key.
+function BattlerWindow:onPrev()
+  if self.GUI.prevMember then
+    AudioManager:playSFX(Config.sounds.buttonSelect)
+    self.GUI:prevMember()
+  end
 end
 
 ---------------------------------------------------------------------------------------------------

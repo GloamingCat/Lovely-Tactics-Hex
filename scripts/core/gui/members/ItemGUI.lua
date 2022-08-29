@@ -9,11 +9,11 @@ The GUI to manage and use a item from party's inventory.
 
 -- Imports
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
-local GUI = require('core/gui/GUI')
+local MemberGUI = require('core/gui/members/MemberGUI')
 local ItemWindow = require('core/gui/members/window/interactable/ItemWindow')
 local Vector = require('core/math/Vector')
 
-local ItemGUI = class(GUI)
+local ItemGUI = class(MemberGUI)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -21,14 +21,14 @@ local ItemGUI = class(GUI)
 
 -- Overrides GUI:init.
 -- @param(parent : MemberGUI) Parent Member GUI.
-function ItemGUI:init(parent)
+function ItemGUI:init(...)
   self.name = 'Item GUI'
-  self.inventory = parent.troop.inventory
-  self.troop = parent.troop
-  GUI.init(self, parent)
+  MemberGUI.init(self, ...)
+  self.inventory = self.troop.inventory
 end
 -- Overrides GUI:createWindows.
 function ItemGUI:createWindows()
+  self:createInfoWindow()
   self:createItemWindow()
   self:createDescriptionWindow()
   self:setActiveWindow(self.mainWindow)
@@ -52,11 +52,6 @@ end
 -- Member
 ---------------------------------------------------------------------------------------------------
 
--- Called when player selects a member to use the item.
--- @param(member : Battler) New member to use the item.
-function ItemGUI:setMember(member)
-  self.mainWindow:setMember(member)
-end
 -- Verifies if a member can use an item.
 -- @param(member : Battler) Member to check.
 -- @ret(boolean) True if the member is active, false otherwise.

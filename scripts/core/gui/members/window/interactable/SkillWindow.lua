@@ -23,14 +23,14 @@ local SkillWindow = class(ListWindow)
 -- Constructor.
 -- @param(gui : GUI) Parent GUI.
 function SkillWindow:init(gui)
-  self.member = gui.parent:currentMember()
+  self.member = gui:currentMember()
   ListWindow.init(self, gui, self.member.skillList)
 end
 -- Changes current member.
 -- @param(member : Battler)
 function SkillWindow:setMember(member)
   self.member = member
-  self:refreshButtons()
+  self:refreshButtons(member.skillList)
 end
 -- Creates a button from an item.
 -- @param(id : number) The item's ID.
@@ -65,16 +65,13 @@ function SkillWindow:onButtonConfirm(button)
     -- Use in all members
     input.targets = self.member.troop:currentBattlers()
     input.action:menuUse(input)
-    self.GUI.parent:refreshMember()
+    self.GUI:refreshMember()
   else
     -- Choose a target
-    local parent = self.GUI.parent
-    GUIManager.fiberList:fork(parent.hide, parent)
     self.GUI:hide()
     local gui = MenuTargetGUI(self.GUI, self.member.troop)
     gui.input = input
     GUIManager:showGUIForResult(gui)
-    GUIManager.fiberList:fork(parent.show, parent)
     _G.Fiber:wait()
     self.GUI:show()
   end
@@ -90,11 +87,13 @@ function SkillWindow:onButtonSelect(button)
 end
 -- Changes current member to the next member in the party.
 function SkillWindow:onNext()
-  self.GUI.parent:nextMember()
+  AudioManager:playSFX(Config.sounds.buttonSelect)
+  self.GUI:nextMember()
 end
 -- Changes current member to the previous member in the party.
 function SkillWindow:onPrev()
-  self.GUI.parent:prevMember()
+  AudioManager:playSFX(Config.sounds.buttonSelect)
+  self.GUI:prevMember()
 end
 -- Tells the selected skill can be used.
 -- @param(button : Button)
@@ -113,7 +112,7 @@ function SkillWindow:colCount()
 end
 -- Overrides GridWindow:rowCount.
 function SkillWindow:rowCount()
-  return 6
+  return 4
 end
 -- @ret(string) String representation (for debugging).
 function SkillWindow:__tostring()

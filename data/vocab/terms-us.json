@@ -16,6 +16,7 @@
   "config": "Settings",
   "save": "Save",
   "quit": "Quit",
+  "return": "Return",
   
   // Settings
   "volumeBGM": "BGM Volume",

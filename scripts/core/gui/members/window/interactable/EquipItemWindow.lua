@@ -25,7 +25,7 @@ local EquipItemWindow = class(InventoryWindow)
 -- @param(h : number) window's height (optional)
 -- @param(pos : Vector) position of the window's center (optional)
 function EquipItemWindow:init(gui, w, h, pos, rowCount, member)
-  self.member = member or gui.parent:currentMember()
+  self.member = member or gui:currentMember()
   InventoryWindow.init(self, gui, nil, gui.inventory, {}, w, h, pos, rowCount)
 end
 -- Overrides ListWindow:createWidgets.
@@ -75,7 +75,7 @@ end
 function EquipItemWindow:onButtonConfirm(button)
   local char = TroopManager:getBattlerCharacter(self.member)
   self.member.equipSet:setEquip(self.slotKey, button.item, self.GUI.inventory, char)
-  self.GUI.parent:refreshMember()
+  self.GUI:refreshMember()
   self:showSlotWindow()
 end
 -- Called when player cancels and returns to the slot window.
@@ -85,8 +85,8 @@ end
 -- Closes this window and shows the previous one (Equip Slot Window).
 function EquipItemWindow:showSlotWindow()
   self:hide()
-  self.GUI.slotWindow:show()
-  self.GUI.slotWindow:activate()
+  self.GUI.mainWindow:show()
+  self.GUI.mainWindow:activate()
 end
 -- Tells if an item can be used.
 -- @param(button : Button) the button to check

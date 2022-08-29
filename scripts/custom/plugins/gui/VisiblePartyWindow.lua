@@ -51,7 +51,7 @@ end
 -- FieldCommandWindow
 ---------------------------------------------------------------------------------------------------
 
--- Implements GridWindow:createWidgets.
+-- Changes the alignment of the button.
 local FieldCommandWindow_createWidgets = FieldCommandWindow.createWidgets
 function FieldCommandWindow:createWidgets(...)
   FieldCommandWindow_createWidgets(self, ...)

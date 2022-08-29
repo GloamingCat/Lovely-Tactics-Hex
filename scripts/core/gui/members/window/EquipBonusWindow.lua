@@ -27,7 +27,7 @@ local EquipBonusWindow = class(Window)
 -- Overrides Window:init.
 -- @param(member : table) Troop unit data.
 function EquipBonusWindow:init(gui, w, h, pos, member)
-  self.member = member or gui.parent:currentMember()
+  self.member = member or gui:currentMember()
   self.bonus = List()
   Window.init(self, gui, w, h, pos)
 end

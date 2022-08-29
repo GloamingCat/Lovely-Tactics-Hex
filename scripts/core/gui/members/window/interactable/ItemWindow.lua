@@ -60,11 +60,13 @@ end
 
 -- Called when player presses "next" key.
 function ItemWindow:onNext()
-  self.GUI.parent:nextMember()
+  AudioManager:playSFX(Config.sounds.buttonSelect)
+  self.GUI:nextMember()
 end
 -- Called when player presses "prev" key.
 function ItemWindow:onPrev()
-  self.GUI.parent:prevMember()
+  AudioManager:playSFX(Config.sounds.buttonSelect)
+  self.GUI:prevMember()
 end
 -- Tells if an item can be used.
 -- @param(button : Button) the button to check
@@ -79,14 +81,11 @@ end
 
 -- Overrides InventoryWindow:singleTargetItem.
 function ItemWindow:singleTargetItem(input)
-  local parent = self.GUI.parent
-  GUIManager.fiberList:fork(parent.hide, parent)
   self.GUI:hide()
   local gui = MenuTargetGUI(self.GUI, self.member.troop)
   gui.input = input
   GUIManager:showGUIForResult(gui)
   self:refreshItems()
-  GUIManager.fiberList:fork(parent.show, parent)
   _G.Fiber:wait()
   self.GUI:show()
 end

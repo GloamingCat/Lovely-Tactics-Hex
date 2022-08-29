@@ -26,7 +26,7 @@ local EquipSlotWindow = class(ListWindow)
 -- Constructor.
 -- @param(gui : EquipGUI) The parent GUI.
 function EquipSlotWindow:init(gui)
-  self.member = gui.parent:currentMember()
+  self.member = gui:currentMember()
   self.visibleRowCount = 0
   for i = 1, #Config.equipTypes do
     self.visibleRowCount = Config.equipTypes[i].count + self.visibleRowCount
@@ -99,11 +99,11 @@ function EquipSlotWindow:onButtonCancel()
 end
 -- Called when player presses "next" key.
 function EquipSlotWindow:onNext()
-  self.GUI.parent:nextMember()
+  self.GUI:nextMember()
 end
 -- Called when player presses "prev" key.
 function EquipSlotWindow:onPrev()
-  self.GUI.parent:prevMember()
+  self.GUI:prevMember()
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -70,10 +70,12 @@ function MemberCommandWindow:showGUI(GUI)
 end
 -- Called when player presses "next" key.
 function MemberCommandWindow:onNext()
+  AudioManager:playSFX(Config.sounds.buttonSelect)
   self.GUI:nextMember()
 end
 -- Called when player presses "prev" key.
 function MemberCommandWindow:onPrev()
+  AudioManager:playSFX(Config.sounds.buttonSelect)
   self.GUI:prevMember()
 end
 -- Changes current selected member.

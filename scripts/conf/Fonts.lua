@@ -2,8 +2,8 @@
 local huge_font = { 'Roboto', 'ttf', 25 }
 local big_font = { 'Roboto', 'ttf', 20 }
 local critical_font = { 'Roboto', 'ttf', 17 }
-local default_font = { 'Roboto', 'ttf', 15 }
-local medium_font = { 'Roboto', 'ttf', 12 }
+local default_font = { 'Roboto', 'ttf', 14 }
+local medium_font = { 'Roboto', 'ttf', 11 }
 local small_font = { 'Roboto', 'ttf', 9 }
 local tiny_font = { 'Roboto', 'ttf', 7.5 }
 local fps_font = { 'Roboto', 'ttf', 5 }
