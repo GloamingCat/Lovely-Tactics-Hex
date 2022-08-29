@@ -1,6 +1,11 @@
 [
   {
     "on": true,
+    "name": "plugins/gui/MemberCommandWindow.lua",
+    "tags": []
+  },
+  {
+    "on": false,
     "name": "plugins/gui/VisiblePartyWindow.lua",
     "tags": []
   },

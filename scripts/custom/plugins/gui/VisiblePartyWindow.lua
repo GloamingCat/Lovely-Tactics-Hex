@@ -5,7 +5,7 @@ VisiblePartyWindow
 ---------------------------------------------------------------------------------------------------
 Makes the PartyWindow in the FieldGUI visible alongside the FieldCommandWindow.
 
-Use this together with the MemberCommandWindow script for better fit, 
+Use this together with the MemberCommandWindow script for better fit.
 
 =================================================================================================]]
 

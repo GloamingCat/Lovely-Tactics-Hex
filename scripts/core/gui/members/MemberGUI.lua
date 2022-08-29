@@ -4,6 +4,8 @@
 MemberGUI
 ---------------------------------------------------------------------------------------------------
 The GUI that is shown when the player chooses a troop member to manage.
+It is also the base class for other member GUI, such as SkillGUI, ItemGUI and EquipGUI.
+When not used as based class, it just shows the battler window for the current member.
 
 =================================================================================================]]
 
@@ -80,9 +82,13 @@ end
 -- Refreshs current open windows to match the new selected member.
 function MemberGUI:refreshMember(member)
   member = member or self:currentMember()
-  self.infoWindow:setMember(member)
-  self.infoWindow.page:set(self.memberID, #self.members)
-  self.mainWindow:setMember(member)
+  if self.infoWindow then
+    self.infoWindow:setMember(member)
+    self.infoWindow.page:set(self.memberID, #self.members)
+  end
+  if self.mainWindow then
+    self.mainWindow:setMember(member)
+  end
 end
 -- Gets the current selected troop member.
 -- @ret(table) The troop unit data.

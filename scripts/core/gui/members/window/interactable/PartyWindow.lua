@@ -78,7 +78,7 @@ function PartyWindow:rowCount()
 end
 -- Overrides ListWindow:cellWidth.
 function PartyWindow:cellWidth()
-  return ListWindow.cellWidth(self) + 101
+  return 240
 end
 -- Overrides GridWindow:cellHeight.
 function PartyWindow:cellHeight()
