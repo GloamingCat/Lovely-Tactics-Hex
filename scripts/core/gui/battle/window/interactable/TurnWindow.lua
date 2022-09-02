@@ -176,6 +176,10 @@ end
 function TurnWindow:rowCount()
   return 4
 end
+-- Overrides GridWindow:cellWidth.
+function TurnWindow:cellWidth()
+  return ActionWindow.cellWidth(self) * 3 / 4
+end
 -- @ret(string) String representation (for debugging).
 function TurnWindow:__tostring()
   return 'Battle Turn Window'

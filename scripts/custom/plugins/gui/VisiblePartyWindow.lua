@@ -76,12 +76,14 @@ function FieldCommandWindow:openPartyWindow(GUI)
   self:activate()
 end
 -- To make the window thinner to fit the party window.
+local FieldCommandWindow_colCount = FieldCommandWindow.colCount
 function FieldCommandWindow:colCount()
   return 1
 end
+local FieldCommandWindow_rowCount = FieldCommandWindow.rowCount
 -- To make the window longer to fit the other buttons.
 function FieldCommandWindow:rowCount()
-  return 8
+  return FieldCommandWindow_rowCount(self) * FieldCommandWindow_colCount(self)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -96,4 +98,13 @@ function PartyWindow:cellWidth()
     return self:computeCellWidth(w)
   end
   return PartyWindow_cellWidth(self)
+end
+-- Overrides ListWindow:cellWidth.
+local PartyWindow_cellHeight = PartyWindow.cellHeight
+function PartyWindow:cellHeight()
+  if self.GUI and self.GUI.goldWindow then
+    local h = ScreenManager.height - self.GUI.goldWindow.height - self.GUI:windowMargin() * 3
+    return self:computeCellHeight(h)
+  end
+  return PartyWindow_cellHeight(self)
 end

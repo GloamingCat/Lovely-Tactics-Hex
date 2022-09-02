@@ -55,6 +55,7 @@
   // Battle intro Window
   "start": "Start",
   "formation": "Formation",
+  "inspect": "Inspect",
   "none": "None",
   
   // Shop

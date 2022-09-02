@@ -1,6 +1,6 @@
 [
   {
-    "on": true,
+    "on": false,
     "name": "plugins/gui/MemberCommandWindow.lua",
     "tags": []
   },
