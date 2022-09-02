@@ -13,6 +13,7 @@ Its result is the action time that the character spent.
 -- Imports
 local BattleCursor = require('core/battle/BattleCursor')
 local GUI = require('core/gui/GUI')
+local ButtonWindow = require('core/gui/common/window/interactable/ButtonWindow')
 local ConfirmWindow = require('core/gui/common/window/interactable/ConfirmWindow')
 local StepWindow = require('core/gui/battle/window/StepWindow')
 local TargetWindow = require('core/gui/battle/window/TargetWindow')
@@ -44,7 +45,20 @@ end
 -- Creates the GUI's windows and sets the first active window.
 function ActionGUI:createConfirmWindow()
   if not self.confirmWindow then
-    local window = ConfirmWindow(self)
+    local window = ConfirmWindow(self, Vocab.confirmTile, Vocab.cancel)
+    self.confirmWindow = window
+    local x = -ScreenManager.width / 2 + window.width / 2 + self.slideMargin
+    local y = -ScreenManager.height / 2 + window.height / 2 + self.slideMargin
+    window:setXYZ(x, y)
+    window.offBoundsCancel = false
+    window:setVisible(false)
+  end
+  return self.confirmWindow
+end
+-- Creates the GUI's windows and sets the first active window.
+function ActionGUI:createCancelWindow()
+  if not self.confirmWindow then
+    local window = ButtonWindow(self, Vocab.cancel, 'left')
     self.confirmWindow = window
     local x = -ScreenManager.width / 2 + window.width / 2 + self.slideMargin
     local y = -ScreenManager.height / 2 + window.height / 2 + self.slideMargin
@@ -104,13 +118,13 @@ end
 function ActionGUI:checkInput()
   if self.confirmWindow then
     self.confirmWindow:checkInput()
-    if self.confirmWindow.result == 1 then
+    if self.confirmWindow.result then
+      if self.confirmWindow.result + #self.confirmWindow.matrix == 3 then
+        self.result = self.input:execute()
+      else
+        self.result = self.input.action:onCancel(self.input)
+      end
       self.confirmWindow.result = nil
-      self.result = self.input:execute()
-      return
-    elseif self.confirmWindow.result == 0 then
-      self.confirmWindow.result = nil
-      self.result = self.input.action:onCancel(self.input)
       return
     end
   end
@@ -134,8 +148,8 @@ function ActionGUI:selectTarget(target)
       GUIManager.fiberList:fork(self.targetWindow.hide, self.targetWindow)
     end
   end
-  if self.confirmWindow then
-    self.confirmWindow.matrix[1]:setEnabled(self.input.target.gui.selectable)
+  if self.confirmWindow and #self.confirmWindow.matrix >= 2 then
+    self.confirmWindow.matrix[2]:setEnabled(self.input.target.gui.selectable)
   end
 end
 

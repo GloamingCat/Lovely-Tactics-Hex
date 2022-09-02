@@ -187,6 +187,9 @@ function Window:show()
   end
 end
 -- [COROUTINE] Closes this window. Overrides Component:hide.
+-- @param(gui : boolean) If it's called from GUI:hide.
+--  If true, automatically opens the window back if its GUI opens again.
+--  Else, it stays hidden until it is manually openned again.
 function Window:hide(gui)
   if self.scaleY <= 0 then
     return

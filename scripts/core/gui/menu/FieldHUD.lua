@@ -30,9 +30,7 @@ end
 -- Implements GUI:createWindows.
 function FieldHUD:createWindows()
   self:createSaveInfoWindow()
-  if GameManager:isMobile() then
-    self:createButtonWindow()
-  end
+  self:createButtonWindow()
 end
 -- Creates the window with the information of the chosen member.
 function FieldHUD:createSaveInfoWindow()

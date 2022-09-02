@@ -19,7 +19,6 @@ local round = math.round
 local pixel2Tile = math.field.pixel2Tile
 
 -- Constants
-local hideTime = 2
 local pph = Config.grid.pixelsPerHeight
 local dph = Config.grid.depthPerHeight
 local dpy = Config.grid.depthPerY / Config.grid.tileH
@@ -32,6 +31,7 @@ local GameMouse = class()
 
 -- Constructor.
 function GameMouse:init()
+  self.hideTime = not GameManager:isMobile() and 2 or math.huge
   self.position = Vector(0, 0)
   self.lastMove = 0
   self.active = false
@@ -45,7 +45,7 @@ end
 -- Checks if player is using keyboard and updates state.
 function GameMouse:update()
   self.moved = false
-  if InputManager.usingKeyboard or (timer.getTime() - self.lastMove) > hideTime then
+  if InputManager.usingKeyboard or (timer.getTime() - self.lastMove) > self.hideTime then
     self:hide()
   end
 end

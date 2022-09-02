@@ -8,6 +8,7 @@
   // Save
   "saveName": "Save",
   "noSave": "Empty",
+  "overwrite": "Overwrite",
   
   // Main Window
   "menu": "Menu",
@@ -84,6 +85,7 @@
   "skill": "Skill",
   "callAlly": "Call Ally",
   "wait": "Wait",
+  "confirmTile": "Confirm Tile",
   
   // Keys
   "confirm": "Confirm",

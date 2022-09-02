@@ -19,10 +19,22 @@ local ConfirmWindow = class(GridWindow)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
+function ConfirmWindow:init(GUI, confirmTerm, cancelTerm, ...)
+  self.confirmTerm = confirmTerm
+  self.cancelTerm = cancelTerm
+  GridWindow.init(self, GUI, ...)
+end
 -- Constructor.
 function ConfirmWindow:createWidgets()
-  Button:fromKey(self, 'confirm')
-  Button:fromKey(self, 'cancel').confirmSound = Config.sounds.buttonCancel
+  local confirmButton = Button:fromKey(self, 'confirm')
+  if self.confirmTerm then
+    confirmButton.text:setText(self.confirmTerm)
+  end
+  local cancelButton = Button:fromKey(self, 'cancel')
+  if self.cancelTerm then
+    cancelButton.text:setText(self.cancelTerm)
+  end
+  cancelButton.confirmSound = Config.sounds.buttonCancel
 end
 
 ---------------------------------------------------------------------------------------------------

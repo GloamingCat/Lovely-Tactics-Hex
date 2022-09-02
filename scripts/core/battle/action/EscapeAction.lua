@@ -49,7 +49,7 @@ function EscapeAction:onSelect(input)
 end
 -- Overrides BattleAction:onActionGUI.
 function EscapeAction:onActionGUI(input)
-  local confirm = GUIManager:showGUIForResult(ConfirmGUI(input.GUI))
+  local confirm = GUIManager:showGUIForResult(ConfirmGUI(input.GUI, Vocab.escape))
   if confirm == 1 then
     return self:onConfirm(input)
   else

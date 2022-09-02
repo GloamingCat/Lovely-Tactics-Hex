@@ -197,6 +197,7 @@ end
 
 -- Overrides Window:onConfirm.
 function BattlerWindow:onConfirm()
+  self:onCancel()
 end
 -- Overrides Window:onCancel.
 function BattlerWindow:onCancel()
