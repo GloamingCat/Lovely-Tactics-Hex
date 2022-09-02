@@ -41,7 +41,7 @@ function GridScroll:updatePosition(pos)
   local h = self.window.height / 2 - self.window:paddingY() / 2
   self.up:setXYZ(pos.x, pos.y - h, -1)
   self.down:setXYZ(pos.x, pos.y + h, -1)
-  self:setVisible(true)
+  self:setVisible(self.visible)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -85,13 +85,12 @@ end
 
 -- Overrides Component:setVisible.
 function GridScroll:setVisible(value)
-  if true then
+  Component.setVisible(self, value)
+  if value then
     local w = self.window
     local row = w:actualRowCount() - w:rowCount()
     self.up:setVisible(w.offsetRow > 0)
     self.down:setVisible(w.offsetRow < row)
-  else
-    Component.setVisible(false)
   end
 end
 

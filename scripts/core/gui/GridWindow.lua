@@ -62,8 +62,7 @@ end
 function GridWindow:packWidgets()
   self.matrix.height = math.ceil(#self.matrix / self:colCount())
   if self:actualRowCount() > self:rowCount() then
-    self.scroll = self.scroll or GridScroll(self, Vector(self.width / 2 - self:paddingX(), 0), 
-      self.height - self:paddingY() * 2)
+    self.scroll = self.scroll or GridScroll(self)
   elseif self.scroll then
     self.scroll:destroy()
     self.scroll = nil
