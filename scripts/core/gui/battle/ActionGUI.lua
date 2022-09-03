@@ -63,7 +63,6 @@ function ActionGUI:createCancelWindow()
     local x = -ScreenManager.width / 2 + window.width / 2 + self.slideMargin
     local y = -ScreenManager.height / 2 + window.height / 2 + self.slideMargin
     window:setXYZ(x, y)
-    window.offBoundsCancel = false
     window:setVisible(false)
   end
   return self.confirmWindow

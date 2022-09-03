@@ -64,6 +64,10 @@ end
 function ConfirmWindow:rowCount()
   return 2
 end
+-- Overrides GridWindow:cellWidth.
+function ConfirmWindow:cellWidth()
+  return 80
+end
 -- @ret(string) String representation (for debugging).
 function ConfirmWindow:__tostring()
   return 'Confirm Window'

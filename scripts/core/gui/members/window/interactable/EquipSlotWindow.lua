@@ -40,8 +40,8 @@ function EquipSlotWindow:createListButton(slot)
   for i = 1, slot.count do
     local button = Button(self)
     local w = self:cellWidth()
-    button:createText(slot.name, 'gui_medium', 'left', w / 3)
-    button:createInfoText(Vocab.noEquip, 'gui_medium', 'left', w / 3 * 2, Vector(w / 3, 1, 0))
+    button:createText(slot.name, 'gui_button', 'left', w / 3)
+    button:createInfoText(Vocab.noEquip, 'gui_button', 'left', w / 3 * 2, Vector(w / 3, 1, 0))
     button.key = slot.key .. i
     button.slot = slot
   end

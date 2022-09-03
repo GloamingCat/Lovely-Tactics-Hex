@@ -42,7 +42,7 @@ function SkillWindow:createListButton(skill)
     ResourceManager:loadIconAnimation(skill.data.icon, GUIManager.renderer)
   local button = Button(self)
   button:createIcon(icon)
-  button:createText(skill.data.name, 'gui_medium')
+  button:createText(skill.data.name, 'gui_button')
   button.skill = skill
   button.description = skill.data.description
   -- Get SP cost
@@ -52,7 +52,7 @@ function SkillWindow:createListButton(skill)
       cost = cost + skill.costs[i].cost(skill, self.member.att)
     end
   end
-  button:createInfoText(cost .. Vocab.sp, 'gui_medium')
+  button:createInfoText(cost .. Vocab.sp, 'gui_button')
   return button
 end
 

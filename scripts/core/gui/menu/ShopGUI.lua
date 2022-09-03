@@ -62,7 +62,7 @@ function ShopGUI:createGoldWindow()
 end
 -- Creates the window with the list of items to buy.
 function ShopGUI:createItemWindow()
-  local window = ShopItemWindow(self, {})
+  local window = ShopItemWindow(self)
   local x = window.width / 2 - ScreenManager.width / 2 + self:windowMargin()
   local y = window.height / 2 - ScreenManager.height / 2 +
     self.commandWindow.height + self:windowMargin() * 2

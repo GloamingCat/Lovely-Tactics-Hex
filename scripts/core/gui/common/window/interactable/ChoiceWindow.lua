@@ -34,7 +34,7 @@ function ChoiceWindow:createWidgets()
   for i = 1, self.choices.size do
     local choice = self.choices[i]
     local button = Button(self)
-    button:createText(choice, 'gui_medium', self.align)
+    button:createText(choice, 'gui_button', self.align)
     button.choice = i
   end
 end

@@ -17,9 +17,12 @@ local ShopItemWindow = class(ListWindow)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
+function ShopItemWindow:init(gui)
+  self.visibleRowCount = 4
+  ListWindow.init(self, gui, {})
+end
 -- Implements ListWindow:createListButton.
 function ShopItemWindow:createListButton(item)
-  self.visibleRowCount = 7
   local price = item.price
   local id = item.id
   item = Database.items[id]
@@ -30,13 +33,13 @@ function ShopItemWindow:createListButton(item)
   local icon = item.icon.id >= 0 and 
     ResourceManager:loadIconAnimation(item.icon, GUIManager.renderer)
   local button = Button(self)
-  button:createText(item.name, 'gui_medium')
+  button:createText(item.name, 'gui_button')
   button:createIcon(icon)
   if self.buy then
-    button:createInfoText(price, 'gui_medium')
+    button:createInfoText(price, 'gui_button')
   else
     price = -(math.floor(price / 2))
-    button:createInfoText(-price, 'gui_medium')
+    button:createInfoText(-price, 'gui_button')
   end
   button.item = item
   button.description = item.description
@@ -98,6 +101,11 @@ end
 -- Overrides ListWindow:colCount.
 function ShopItemWindow:colCount()
   return 1
+end
+-- Overrides ListWindow:computeWidth.
+function ShopItemWindow:cellWidth(width)
+  local w = (ScreenManager.width - self.GUI:windowMargin() * 3) / 2
+  return self:computeCellWidth(w)
 end
 
 return ShopItemWindow

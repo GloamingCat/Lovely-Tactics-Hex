@@ -47,7 +47,6 @@ end
 function FieldHUD:createButtonWindow()
   local window = ButtonWindow(self, Vocab.menu)
   window:setXYZ((ScreenManager.width - window.width) / 2, (window.height - ScreenManager.height) / 2)
-  window.offBoundsCancel = false
   self.buttonWindow = window
 end
 

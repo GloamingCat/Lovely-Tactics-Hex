@@ -29,6 +29,7 @@ function ButtonWindow:init(gui, names, align, ...)
     self.buttonNames = names
   end
   self.align = align or 'center'
+  self.offBoundsCancel = false
   GridWindow.init(self, gui, ...)
 end
 -- Implements GridWindow:creatwWidgets.
@@ -39,7 +40,7 @@ function ButtonWindow:createWidgets()
     button.confirmSound = nil
     button.selectSound = nil
     button.cancelSound = nil
-    button:createText(name, 'gui_medium', self.align)
+    button:createText(name, 'gui_button', self.align)
   end
 end
 
@@ -100,7 +101,7 @@ function ButtonWindow:rowCount()
 end
 -- Overrides GridWindow:cellWidth.
 function ButtonWindow:cellWidth()
-  return (self.width or 50) - self:paddingX() * 2
+  return (self.width or 60) - self:paddingX() * 2
 end
 -- @ret(string) String representation (for debugging).
 function ButtonWindow:__tostring()

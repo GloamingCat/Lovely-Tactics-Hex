@@ -35,7 +35,7 @@ function ActionSkillWindow:createListButton(skill)
   -- Button
   local button = Button(self)
   button:createIcon(icon)
-  button:createText(skill.data.name, 'gui_medium')
+  button:createText(skill.data.name, 'gui_button')
   button.skill = skill
   button.description = skill.data.description
   -- Get SP cost
@@ -46,7 +46,7 @@ function ActionSkillWindow:createListButton(skill)
       cost = cost + skill.costs[i].cost(skill, char.battler.att)
     end
   end
-  button:createInfoText(cost .. Vocab.sp, 'gui_medium')
+  button:createInfoText(cost .. Vocab.sp, 'gui_button')
   return button
 end
 

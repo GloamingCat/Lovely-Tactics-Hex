@@ -22,8 +22,6 @@ local ShopCountWindow = class(CountWindow)
 
 -- Overrides GridWindow:createContent. Creates the text with the price values.
 function ShopCountWindow:createContent(...)
-  self.noCursor = false
-  self.noHighlight = false
   CountWindow.createContent(self, ...)
   self:createValues()
   self:createIcon()
@@ -170,7 +168,9 @@ function ShopCountWindow:returnWindow()
   local w = self.GUI.itemWindow
   w:refreshButtons()
   w:activate()
-  self.highlight:hide()
+  if self.highlight then
+    self.highlight:hide()
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
