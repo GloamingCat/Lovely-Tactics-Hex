@@ -32,6 +32,7 @@ function TextInputWindow:createWidgets()
   self.confirmButton = Button:fromKey(self, 'confirm')
   self.cancelButton = Button:fromKey(self, 'cancel')
   self.cancelButton.confirmSound = Config.sounds.buttonCancel
+  self.cancelButton.clickSound = Config.sounds.buttonCancel
 end
 -- Overrides GridWindow:createContent.
 -- Creates text box.

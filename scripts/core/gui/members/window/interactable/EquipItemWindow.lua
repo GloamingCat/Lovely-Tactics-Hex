@@ -36,6 +36,7 @@ function EquipItemWindow:createWidgets(...)
     button:createText(Vocab.unequip, 'gui_button')
     button:setEnabled(self.member.equipSet:canUnequip(self.slotKey))
     button.confirmSound = Config.sounds.unequip
+    button.clickSound = Config.sounds.unequip
     InventoryWindow.createWidgets(self, ...)
   end
 end
@@ -44,6 +45,7 @@ function EquipItemWindow:createListButton(itemSlot)
   local button = InventoryWindow.createListButton(self, itemSlot)
   button:setEnabled(self.member.equipSet:canEquip(self.slotKey, button.item))
   button.confirmSound = Config.sounds.equip
+  button.clickSound = Config.sounds.equip
   return button
 end
 

@@ -26,7 +26,7 @@ function SaveWindow:init(...)
   self.confirmWindow:setVisible(false)
   local button = self.confirmWindow.matrix[1]
   button.confirmSound = Config.sounds.save or button.confirmSound
-  button.clickSound = button.clickSound
+  button.clickSound = button.confirmSound
 end
 -- Overrides GridWindow:createWidgets.
 function SaveWindow:createWidgets()
@@ -46,7 +46,7 @@ function SaveWindow:createSaveButton(file, name)
   button.file = file
   if not SaveManager.saves[file] then
     button.confirmSound = Config.sounds.save or button.confirmSound
-    button.clickSound = button.clickSound
+    button.clickSound = button.confirmSound
   end
   return button
 end

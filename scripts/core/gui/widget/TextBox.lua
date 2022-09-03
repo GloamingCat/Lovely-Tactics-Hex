@@ -26,6 +26,7 @@ function TextBox:init(window, initStr, position, width)
   self.cursorPoint = #initStr + 1
   self.cursorVisible = true
   self.confirmSound = Config.sounds.buttonConfirm
+  self.clickSound = Config.sounds.buttonConfirm
   self.cancelSound = Config.sounds.buttonCancel
   self.errorSound = Config.sounds.buttonError
   self.window = window
