@@ -29,8 +29,8 @@ function ButtonWindow:init(gui, names, align, ...)
     self.buttonNames = names
   end
   self.align = align or 'center'
-  self.offBoundsCancel = false
   GridWindow.init(self, gui, ...)
+  self.offBoundsCancel = false
 end
 -- Implements GridWindow:creatwWidgets.
 -- Creates a button for each choice.
@@ -40,6 +40,7 @@ function ButtonWindow:createWidgets()
     button.confirmSound = nil
     button.selectSound = nil
     button.cancelSound = nil
+    button.clickSound = nil
     button:createText(name, 'gui_button', self.align)
   end
 end

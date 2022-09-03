@@ -63,6 +63,7 @@ function ActionGUI:createCancelWindow()
     local x = -ScreenManager.width / 2 + window.width / 2 + self.slideMargin
     local y = -ScreenManager.height / 2 + window.height / 2 + self.slideMargin
     window:setXYZ(x, y)
+    window.matrix[1].clickSound = Config.sounds.buttonCancel
     window:setVisible(false)
   end
   return self.confirmWindow
@@ -148,7 +149,7 @@ function ActionGUI:selectTarget(target)
     end
   end
   if self.confirmWindow and #self.confirmWindow.matrix >= 2 then
-    self.confirmWindow.matrix[2]:setEnabled(self.input.target.gui.selectable)
+    self.confirmWindow.matrix[1]:setEnabled(self.input.target.gui.selectable)
   end
 end
 

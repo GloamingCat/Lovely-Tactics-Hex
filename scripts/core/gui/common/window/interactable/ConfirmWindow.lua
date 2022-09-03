@@ -35,6 +35,7 @@ function ConfirmWindow:createWidgets()
     cancelButton.text:setText(self.cancelTerm)
   end
   cancelButton.confirmSound = Config.sounds.buttonCancel
+  cancelButton.clickSound = Config.sounds.buttonCancel
 end
 
 ---------------------------------------------------------------------------------------------------

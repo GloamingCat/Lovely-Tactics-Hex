@@ -299,9 +299,14 @@ function GridWindow:onMove(dx, dy, widget)
   end
   self:nextWidget(dx, dy, true)
 end
--- Overrides Window:onClick.
--- Only confirms if the trigger point and the release point are on the same cell.
-function GridWindow:onClick(button, x, y, triggerPoint)
+
+---------------------------------------------------------------------------------------------------
+-- Input - Mouse
+---------------------------------------------------------------------------------------------------
+
+-- Called when player confirms a button by mouse or touch.
+-- Overrides Window:onMouseConfirm.
+function GridWindow:onMouseConfirm(x, y, triggerPoint)
   if triggerPoint ~= nil then
     -- Touch
     local widget1 = self:getCell(self:getCellCoordinates(triggerPoint.x, triggerPoint.y))
@@ -310,16 +315,6 @@ function GridWindow:onClick(button, x, y, triggerPoint)
       return
     end
   end
-  Window.onClick(self, button, x, y, triggerPoint)
-end
-
----------------------------------------------------------------------------------------------------
--- Input - Mouse
----------------------------------------------------------------------------------------------------
-
--- Called when player confirms a button by mouse or touch.
--- Overrides Window:onMouseConfirm.
-function GridWindow:onMouseConfirm(x, y)
   if not self:onMouseMove(x, y) then
     return
   end

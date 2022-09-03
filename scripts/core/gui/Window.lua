@@ -313,18 +313,18 @@ end
 function Window:onClick(button, x, y, triggerPoint)
   if button == 1 then
     if self:isInside(x, y) then
-      self:onMouseConfirm(x, y)
+      self:onMouseConfirm(x, y, triggerPoint)
     elseif self.offBoundsCancel then
-      self:onMouseCancel()
+      self:onMouseCancel(triggerPoint)
     end
   elseif button == 2 then
     self:onCancel()
   elseif button == 4 then
     if self.offBoundsCancel and not self:isInside(x, y) then
-      self:onMouseCancel()
+      self:onMouseCancel(triggerPoint)
     end
   elseif button == 5 then
-    self:onMouseConfirm(x, y)
+    self:onMouseConfirm(x, y, triggerPoint)
   else
     self:onConfirm()
   end
