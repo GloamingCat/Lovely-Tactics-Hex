@@ -31,9 +31,9 @@ end
 function BattleGUI:createWindows()
   self.name = 'Battle GUI'
   self:createTurnWindow()
-  self:createSkillWindow()
-  self:createItemWindow()
-  self:createDescriptionWindow()
+  self:createSkillWindow(2 / 3)
+  self:createItemWindow(2 / 3)
+  self:createDescriptionWindow(1 / 3)
   -- Initial state
   self:setActiveWindow(self.turnWindow)
 end
@@ -45,36 +45,40 @@ function BattleGUI:createTurnWindow()
       -ScreenManager.height / 2 + self.turnWindow.height / 2 + m))
 end
 -- Creates window to use skill.
-function BattleGUI:createSkillWindow()
+function BattleGUI:createSkillWindow(heightFraction)
   local character = TurnManager:currentCharacter()
   local skillList = character.battler.skillList
   if not skillList:isEmpty() then
-    self.skillWindow = ActionSkillWindow(self, skillList)
+    local h = heightFraction * (ScreenManager.height - self:windowMargin() * 3)
+    self.skillWindow = ActionSkillWindow(self, skillList, h)
     self.skillWindow.lastOpen = false
   end
 end
 -- Creates window to use item.
-function BattleGUI:createItemWindow()
+function BattleGUI:createItemWindow(heightFraction)
   local inventory = TurnManager:currentTroop().inventory
   local itemList = inventory:getUsableItems(1)
   if #itemList > 0 then
-    self.itemWindow = ActionItemWindow(self, nil, inventory, itemList)
+    local h = heightFraction * (ScreenManager.height - self:windowMargin() * 3)
+    self.itemWindow = ActionItemWindow(self, inventory, itemList, h)
     self.itemWindow.lastOpen = false
   end
 end
 -- Creates window that shows item and skill descriptions.
-function BattleGUI:createDescriptionWindow()
-  local mainWindow = self.skillWindow or self.itemWindow
-  if mainWindow then
-    local w = ScreenManager.width - self:windowMargin() * 2
-    local h = ScreenManager.height - mainWindow.height - self:windowMargin() * 3
-    local pos = Vector(0, ScreenManager.height / 2 - h / 2 - self:windowMargin())
-    self.descriptionWindow = DescriptionWindow(self, w, h, pos)
-    self.descriptionWindow.lastOpen = false
+function BattleGUI:createDescriptionWindow(heightFraction)
+  local mainWindow = self.skillWindow or self.itemWindow 
+  if not mainWindow then
+    return
   end
+  local w = ScreenManager.width - self:windowMargin() * 2
+  local h = ScreenManager.height - mainWindow.height / 2 - (ScreenManager.height / 2 + mainWindow.position.y) - self:windowMargin() * 2
+  h = math.min(h, (ScreenManager.height - self:windowMargin() * 3) * heightFraction)
+  local pos = Vector(0, ScreenManager.height / 2 - h / 2 - self:windowMargin())
+  self.descriptionWindow = DescriptionWindow(self, w, h, pos)
+  self.descriptionWindow.lastOpen = false
 end
 -- Shows the description below the given window.
--- @param(window : Window) the window with the items with descriptions
+-- @param(window : Window) the window with the items with descriptions.
 function BattleGUI:showDescriptionWindow(window)
   if self.descriptionWindow then
     local text = window:currentWidget().description

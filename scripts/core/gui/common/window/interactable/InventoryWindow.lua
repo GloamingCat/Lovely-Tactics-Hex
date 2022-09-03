@@ -27,21 +27,17 @@ local InventoryWindow = class(ListWindow)
 -- @param(inventory : Inventory) Inventory with the list of items.
 -- @param(itemList : table) Array with item slots that are going to be shown
 --  (all inventory's items by default).
--- @param(w : number) Window's width (whole screen width by default).
--- @param(h : number) Window's height (4 / 5 of the screen by default).
+-- @param(w : number) Window's width (fits to col count by default).
+-- @param(h : number) Window's height (fits to row count by default)
 -- @param(pos : Vector) Position of the window's center (screen center by default).
--- @param(rowCount : number) The number of visible button rows (maximum possible rows by default).
+-- @param(rowCount : number) The number of visible button rows
+--  (maximum possible rows by default - needs h to be non-nil).
 function InventoryWindow:init(GUI, user, inventory, itemList, w, h, pos, rowCount)
   self.member = user
   self.leader = GUI.troop:currentBattlers()[1]
   assert(self.leader, 'Empty party!')
   self.inventory = inventory
-  local m = GUI:windowMargin()
-  w = w or ScreenManager.width - GUI:windowMargin() * 2
-  h = h or ScreenManager.height * 4 / 5 - self:paddingY() * 2 - m * 3
-  self.visibleRowCount = rowCount or math.floor(h / self:cellHeight())
-  local fith = self.visibleRowCount * self:cellHeight() + self:paddingY() * 2
-  pos = pos or Vector(0, fith / 2 - ScreenManager.height / 2 + m / 2, 0)
+  self.visibleRowCount = self.visibleRowCount or rowCount or self:computeRowCount(h)
   ListWindow.init(self, GUI, itemList or inventory, w, h, pos)
 end
 -- Creates a button from an item ID.
@@ -111,6 +107,7 @@ function InventoryWindow:singleTargetItem(input)
   gui.input = input
   GUIManager:showGUIForResult(gui)
   self:refreshItems()
+  _G.Fiber:wait()
   self.GUI:show()
 end
 -- Use item in a all members.

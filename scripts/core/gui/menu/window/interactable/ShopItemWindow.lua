@@ -19,6 +19,7 @@ local ShopItemWindow = class(ListWindow)
 
 -- Implements ListWindow:createListButton.
 function ShopItemWindow:createListButton(item)
+  self.visibleRowCount = 7
   local price = item.price
   local id = item.id
   item = Database.items[id]
@@ -97,10 +98,6 @@ end
 -- Overrides ListWindow:colCount.
 function ShopItemWindow:colCount()
   return 1
-end
--- Overrides GridWindow:rowCount.
-function ShopItemWindow:rowCount()
-  return 7
 end
 
 return ShopItemWindow

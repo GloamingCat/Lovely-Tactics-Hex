@@ -19,15 +19,15 @@ local RewardItemWindow = class(InventoryWindow)
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
--- @param(GUI : GUI) Parent GUI.
+-- @param(gui : GUI) Parent GUI.
 -- @param(w : width) The width of the window.
 -- @param(h : height) The height of the window.
 -- @param(pos : Vector) The position of the window's center.
-function RewardItemWindow:init(GUI, w, h, pos)
+function RewardItemWindow:init(gui, w, h, pos)
   self.noCursor = true
   self.noHighlight = true
-  self.money = GUI.rewards.money
-  InventoryWindow.init(self, GUI, nil, GUI.rewards.items, nil, w, h, pos)
+  self.money = gui.rewards.money
+  InventoryWindow.init(self, gui, nil, gui.rewards.items, nil, w, h, pos)
 end
 -- Overrides ListWindow:createWidgets.
 -- Adds the Gold button.

@@ -23,14 +23,17 @@ local SkillWindow = class(ListWindow)
 -- Constructor.
 -- @param(gui : GUI) Parent GUI.
 function SkillWindow:init(gui)
+  self.visibleRowCount = 4
   self.member = gui:currentMember()
   ListWindow.init(self, gui, self.member.skillList)
 end
--- Changes current member.
--- @param(member : Battler)
-function SkillWindow:setMember(member)
-  self.member = member
-  self:refreshButtons(member.skillList)
+-- Overrides ListWindow:createButtons.
+function SkillWindow:createWidgets()
+  if #self.list > 0 then
+    ListWindow.createWidgets(self)
+  else
+    Button(self)
+  end
 end
 -- Creates a button from an item.
 -- @param(id : number) The item's ID.
@@ -51,6 +54,21 @@ function SkillWindow:createListButton(skill)
   end
   button:createInfoText(cost .. Vocab.sp, 'gui_medium')
   return button
+end
+
+---------------------------------------------------------------------------------------------------
+-- General
+---------------------------------------------------------------------------------------------------
+
+-- Changes current member.
+-- @param(member : Battler)
+function SkillWindow:setMember(member)
+  self.member = member
+  self:refreshSkills()
+end
+-- Updates buttons to match new state of the skill list.
+function SkillWindow:refreshSkills()
+  self:refreshButtons(self.member and self.member.skillList or {})
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -83,23 +101,30 @@ end
 -- Updates description when button is selected.
 -- @param(button : Button)
 function SkillWindow:onButtonSelect(button)
-  self.GUI.descriptionWindow:updateText(button.description)
+  if self.GUI.descriptionWindow then
+    self.GUI.descriptionWindow:updateText(button.description)
+  end
 end
 -- Changes current member to the next member in the party.
 function SkillWindow:onNext()
-  AudioManager:playSFX(Config.sounds.buttonSelect)
-  self.GUI:nextMember()
+  if self.GUI.nextMember then
+    AudioManager:playSFX(Config.sounds.buttonSelect)
+    self.GUI:nextMember()
+  end
 end
 -- Changes current member to the previous member in the party.
 function SkillWindow:onPrev()
-  AudioManager:playSFX(Config.sounds.buttonSelect)
-  self.GUI:prevMember()
+  if self.GUI.nextMember then
+    AudioManager:playSFX(Config.sounds.buttonSelect)
+    self.GUI:prevMember()
+  end
 end
 -- Tells the selected skill can be used.
 -- @param(button : Button)
 -- @ret(boolean)
 function SkillWindow:buttonEnabled(button)
-  return self.member:isActive() and button.skill and button.skill:canMenuUse(self.member)
+  return not self.member or self.member:isActive() and button.skill
+    and button.skill:canMenuUse(self.member)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -112,7 +137,7 @@ function SkillWindow:colCount()
 end
 -- Overrides GridWindow:rowCount.
 function SkillWindow:rowCount()
-  return 4
+  return self.visibleRowCount
 end
 -- @ret(string) String representation (for debugging).
 function SkillWindow:__tostring()

@@ -10,7 +10,7 @@ The GUI to manage and use a item from party's inventory.
 -- Imports
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
 local GUI = require('core/gui/GUI')
-local InventoryWindow = require('core/gui/common/window/interactable/InventoryWindow')
+local ItemWindow = require('core/gui/members/window/interactable/ItemWindow')
 local Vector = require('core/math/Vector')
 
 local InventoryGUI = class(GUI)
@@ -23,6 +23,7 @@ local InventoryGUI = class(GUI)
 function InventoryGUI:init(parent, troop)
   self.name = 'Inventory GUI'
   self.troop = troop
+  self.inventory = troop.inventory
   GUI.init(self, parent)
 end
 -- Overrides GUI:createWindows.
@@ -33,13 +34,14 @@ function InventoryGUI:createWindows()
 end
 -- Creates the main item window.
 function InventoryGUI:createItemWindow()
-  local window = InventoryWindow(self, nil, self.troop.inventory)
+  local window = ItemWindow(self, 6, self.troop.inventory)
+  window:setXYZ(nil, -ScreenManager.height / 2 + window.height / 2 + self:windowMargin())
   self.mainWindow = window
 end
 -- Creates the item description window.
 function InventoryGUI:createDescriptionWindow()
   local w = ScreenManager.width - self:windowMargin() * 2
-  local h = ScreenManager.height - self.mainWindow.height - self:windowMargin() * 4
+  local h = ScreenManager.height - self.mainWindow.height - self:windowMargin() * 3
   local pos = Vector(0, ScreenManager.height / 2 - h / 2 - self:windowMargin())
   self.descriptionWindow = DescriptionWindow(self, w, h, pos)
 end

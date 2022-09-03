@@ -46,6 +46,11 @@ function EquipItemWindow:createListButton(itemSlot)
   button.confirmSound = Config.sounds.equip
   return button
 end
+
+----------------------------------------------------------------------------------------------------
+-- General
+----------------------------------------------------------------------------------------------------
+
 -- @param(member : Battler)
 function EquipItemWindow:setMember(member)
   self.member = member

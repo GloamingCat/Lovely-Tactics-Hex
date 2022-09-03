@@ -20,12 +20,11 @@ local ItemWindow = class(InventoryWindow)
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
--- @param(GUI : GUI) Parent GUI.
-function ItemWindow:init(gui)
-  local rowCount = 6
-  local fith = rowCount * self:cellHeight() + self:paddingY() * 2
-  local items = gui.inventory:getUsableItems(2)
-  InventoryWindow.init(self, gui, nil, gui.inventory, items, nil, fith, nil, rowCount)
+-- @param(gui : GUI) Parent GUI. Should have a reference t
+-- @param(rowCount : number) Number of visible rows.
+function ItemWindow:init(gui, rowCount)
+  self.visibleRowCount = rowCount
+  InventoryWindow.init(self, gui, nil, gui.inventory, gui.inventory:getUsableItems(2))
 end
 -- Overrides ListWindow:createButtons.
 function ItemWindow:createWidgets()
@@ -60,34 +59,17 @@ end
 
 -- Called when player presses "next" key.
 function ItemWindow:onNext()
-  AudioManager:playSFX(Config.sounds.buttonSelect)
-  self.GUI:nextMember()
+  if self.GUI.nextMember then
+    AudioManager:playSFX(Config.sounds.buttonSelect)
+    self.GUI:nextMember()
+  end
 end
 -- Called when player presses "prev" key.
 function ItemWindow:onPrev()
-  AudioManager:playSFX(Config.sounds.buttonSelect)
-  self.GUI:prevMember()
-end
--- Tells if an item can be used.
--- @param(button : Button) the button to check
--- @ret(boolean)
-function ItemWindow:buttonEnabled(button)
-  return button.skill and button.skill:canMenuUse(self.member)
-end
-
----------------------------------------------------------------------------------------------------
--- Item Skill
----------------------------------------------------------------------------------------------------
-
--- Overrides InventoryWindow:singleTargetItem.
-function ItemWindow:singleTargetItem(input)
-  self.GUI:hide()
-  local gui = MenuTargetGUI(self.GUI, self.member.troop)
-  gui.input = input
-  GUIManager:showGUIForResult(gui)
-  self:refreshItems()
-  _G.Fiber:wait()
-  self.GUI:show()
+  if self.GUI.nextMember then
+    AudioManager:playSFX(Config.sounds.buttonSelect)
+    self.GUI:prevMember()
+  end
 end
 
 ---------------------------------------------------------------------------------------------------

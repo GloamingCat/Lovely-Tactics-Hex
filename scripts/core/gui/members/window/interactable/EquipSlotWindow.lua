@@ -114,10 +114,6 @@ end
 function EquipSlotWindow:colCount()
   return 1
 end
--- Overrides GridWindow:rowCount.
-function EquipSlotWindow:rowCount()
-  return self.visibleRowCount
-end
 -- Overrides ListWindow:computeWidth.
 function EquipSlotWindow:cellWidth(width)
   local w = (ScreenManager.width - self.GUI:windowMargin() * 3) / 2

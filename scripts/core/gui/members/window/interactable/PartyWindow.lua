@@ -24,6 +24,7 @@ local PartyWindow = class(ListWindow)
 -- Gets the member list from the troop.
 -- @param(troop : Troop)
 function PartyWindow:init(gui, troop)
+  self.visibleRowCount = 4
   local list = troop:visibleBattlers()
   self.troop = troop
   ListWindow.init(self, gui, list)
@@ -71,10 +72,6 @@ end
 -- Overrides GridWindow:colCount.
 function PartyWindow:colCount()
   return 1
-end
--- Overrides GridWindow:rowCount.
-function PartyWindow:rowCount()
-  return 4
 end
 -- Overrides ListWindow:cellWidth.
 function PartyWindow:cellWidth()

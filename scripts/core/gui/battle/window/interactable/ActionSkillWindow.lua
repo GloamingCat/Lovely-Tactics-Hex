@@ -22,14 +22,9 @@ local ActionSkillWindow = class(ActionWindow, ListWindow)
 -- Constructor.
 -- @param(gui : GUI) /parent GUI.
 -- @param(skillList : SkillList) Battler's skill set.
-function ActionSkillWindow:init(gui, skillList)
-  local m = gui:windowMargin()
-  local w = ScreenManager.width - gui:windowMargin() * 2
-  local h = ScreenManager.height * 4 / 5 - self:paddingY() * 2 - m * 3
-  self.visibleRowCount = math.floor(h / self:cellHeight())
-  local fith = self.visibleRowCount * self:cellHeight() + self:paddingY() * 2
-  local pos = Vector(0, fith / 2 - ScreenManager.height / 2 + m / 2, 0)
-  ListWindow.init(self, gui, skillList, w, h, pos)
+function ActionSkillWindow:init(gui, skillList, maxHeight)
+  local y = self:fitOnTop(maxHeight) + gui:windowMargin()
+  ListWindow.init(self, gui, skillList, nil, nil, Vector(0, y, 0))
 end
 -- Creates a button from a skill ID.
 -- @param(skill : SkillAction) The SkillAction from battler's skill list.
@@ -89,11 +84,11 @@ end
 
 -- Overrides GridWindow:colCount.
 function ActionSkillWindow:colCount()
-  return 2
+  return 1
 end
--- Overrides GridWindow:rowCount.
-function ActionSkillWindow:rowCount()
-  return self.visibleRowCount
+-- Overrides ListWindow:cellWidth.
+function ActionSkillWindow:cellWidth()
+  return 200
 end
 -- @ret(string) String representation (for debugging).
 function ActionSkillWindow:__tostring()

@@ -41,6 +41,24 @@ function ListWindow:refreshButtons(list)
 end
 
 ----------------------------------------------------------------------------------------------------
+-- Auxiliary
+----------------------------------------------------------------------------------------------------
+
+-- Computes a maximum number of rows given the maximum height in pixels.
+-- @param(maxHeight : number)
+function ListWindow:computeRowCount(maxHeight)
+  maxHeight = maxHeight - self:paddingY() * 2 - self:rowMargin()
+  return math.floor(maxHeight / (self:cellHeight() + self:rowMargin()))
+end
+-- Computes height and pixel y to fit the window on top of the screen given a height limit.
+function ListWindow:fitOnTop(h)
+  self.visibleRowCount = self:computeRowCount(h)
+  local fith = self:computeHeight()
+  local y = fith / 2 - ScreenManager.height / 2 + (h - fith) / 2
+  return y, fith
+end
+
+----------------------------------------------------------------------------------------------------
 -- Properties
 ----------------------------------------------------------------------------------------------------
 
@@ -48,7 +66,11 @@ end
 function ListWindow:colCount()
   return 2
 end
--- Larger buttons.
+-- Overrides GridWindow:colCount.
+function ListWindow:rowCount()
+  return self.visibleRowCount
+end
+-- Overrides GridWindow:cellWidth. Adapts the cell width to fit the whole screen.
 function ListWindow:cellWidth()
   local w = ScreenManager.width - self.GUI:windowMargin() * 2
   return self:computeCellWidth(w)

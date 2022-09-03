@@ -20,6 +20,13 @@ local ActionItemWindow = class(ActionWindow, InventoryWindow)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
+-- Constructor.
+-- @param(gui : GUI) /parent GUI.
+-- @param(skillList : SkillList) Battler's skill set.
+function ActionItemWindow:init(gui, inventory, itemList, maxHeight)
+  local y = self:fitOnTop(maxHeight) + gui:windowMargin()
+  InventoryWindow.init(self, gui, nil, inventory, itemList, nil, nil, Vector(0, y, 0))
+end
 -- Creates a button from an item ID.
 -- @param(id : number) The item ID.
 function ActionItemWindow:createListButton(itemSlot)
@@ -54,6 +61,14 @@ end
 -- Properties
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides GridWindow:colCount.
+function ActionItemWindow:colCount()
+  return 1
+end
+-- Overrides ListWindow:cellWidth.
+function ActionItemWindow:cellWidth()
+  return 200
+end
 -- @ret(string) String representation (for debugging).
 function ActionItemWindow:__tostring()
   return 'Battle Item Window'
