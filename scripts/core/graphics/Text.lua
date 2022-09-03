@@ -19,9 +19,6 @@ local max = math.max
 local min = math.min
 local round = math.round
 
--- Constants
-local defaultFont = Fonts.gui_default
-
 local Text = class(Sprite)
 
 ---------------------------------------------------------------------------------------------------
@@ -44,7 +41,7 @@ function Text:init(text, properties, renderer)
   self.maxWidth = properties[1]
   self.alignX = properties[2] or 'left'
   self.alignY = 'top'
-  self.defaultFont = properties[3] or defaultFont
+  self.defaultFont = properties[3] or Fonts.gui_default
   self.plainText = properties[4]
   self.wrap = false
   self:setText(text)

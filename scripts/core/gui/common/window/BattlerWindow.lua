@@ -19,10 +19,6 @@ local max = math.max
 local round = math.round
 local findByName = util.array.findByName
 
--- Constants
-local font = Fonts.gui_small
-local nameFont = Fonts.gui_medium
-
 local BattlerWindow = class(Window)
 
 ---------------------------------------------------------------------------------------------------
@@ -32,6 +28,8 @@ local BattlerWindow = class(Window)
 -- Constructor.
 -- @param(character : Character) the character of the battler to be shown
 function BattlerWindow:init(GUI)
+  self.font = Fonts.gui_small
+  self.nameFont = Fonts.gui_medium
   local cw, ch = self:preprocess()
   Window.init(self, GUI, cw +  2 * self:paddingX(), ch + 2 * self:paddingY())
 end
@@ -74,7 +72,7 @@ function BattlerWindow:createContent(width, height)
   local y = round(self:paddingY() - self.height / 2)
   local w = round((self.width - self:paddingX()) / 4 - self:paddingX())
   -- Name
-  self.textName = SimpleText('', Vector(x, y), w * 3, 'left', nameFont)
+  self.textName = SimpleText('', Vector(x, y), w * 3, 'left', self.nameFont)
   self.content:add(self.textName)
   -- Attributes
   self.attValues = {}
@@ -93,10 +91,10 @@ function BattlerWindow:createAtts(list, x, y, w)
   for i, att in ipairs(list) do
     -- Attribute name
     local posName = Vector(x, y + 10 * i)
-    local textName = SimpleText(att.shortName .. ':', posName, w - 30, 'left', font)
+    local textName = SimpleText(att.shortName .. ':', posName, w - 30, 'left', self.font)
     -- Attribute value
     local posValue = Vector(x + 30, y + 10 * i)
-    local textValue = SimpleText('', posValue, w, 'left', font)
+    local textValue = SimpleText('', posValue, w, 'left', self.font)
     -- Store
     self.content:add(textName)
     self.content:add(textValue)
@@ -118,7 +116,7 @@ function BattlerWindow:createElements(list, x, y, w)
     h = h + ih
     -- Attribute value
     local posValue = Vector(x + iw, y + h - ih / 2 - 5)
-    local textValue = SimpleText('', posValue, w - iw, 'left', font)
+    local textValue = SimpleText('', posValue, w - iw, 'left', self.font)
     -- Store
     self.content:add(imgIcon)
     self.content:add(textValue)
