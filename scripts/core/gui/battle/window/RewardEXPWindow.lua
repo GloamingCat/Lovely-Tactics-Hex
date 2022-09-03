@@ -78,24 +78,25 @@ function RewardEXPWindow:addEXP()
       if exp2.value > 0 then
         done = false
         local gain = math.min(self.expSpeed * GameManager:frameTime(), exp2.value)
-        local nextLevel = job:levelsup(gain)
-        job:addExperience(gain)
-        -- Level-up
-        if nextLevel then
-          local x = self:paddingX() - self.width / 2
-          local y = exp1.position.y + 8
-          local popupText = PopupText(x, y + 10, -10, GUIManager.renderer)
-          popupText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
-          popupText:popup()
-          levelup = true
-        end
-        gain = math.floor(job.exp) - math.floor(exp1.value)
+        exp1.value = exp1.value + gain
+        gain = math.floor(exp1.value - job.exp)
         if gain > 0 then
           changed = true
-          exp1.value = exp1.value + gain
+          local nextLevel = job:levelsup(gain)
+          -- Level-up
+          if nextLevel then
+            local x = self:paddingX() - self.width / 2
+            local y = exp1.position.y + 8
+            local popupText = PopupText(x, y + 10, -10, GUIManager.renderer)
+            popupText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
+            popupText:popup()
+            levelup = true
+          end
+          job:addExperience(gain)
+          exp1.value = job.exp
+          exp2.value = exp2.value - gain
           exp1:setText('' .. exp1.value)
           exp1:redraw()
-          exp2.value = exp2.value - gain
           exp2:setText('' .. exp2.value)
           exp2:redraw()
         end
