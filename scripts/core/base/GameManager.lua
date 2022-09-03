@@ -29,6 +29,7 @@ function GameManager:init()
     maxWidth = math.max(maxWidth, modes[i].width)
   end
   self.mobileWidth = maxWidth <= 900
+  self.web = false
   self.paused = false
   self.cleanTime = 300
   self.cleanCount = 0
@@ -47,6 +48,10 @@ function GameManager:readArguments(args)
   for _, arg in ipairs(args) do
     if arg == '-editor' then
       self.editor = true
+    elseif arg == '-mobile' then
+      self.mobileWidth = true
+    elseif arg == '-web' then
+      self.web = true
     end
   end
 end
@@ -100,7 +105,7 @@ end
 -- Checks if game is running on a standalone desktop version.
 -- @ret(boolean)
 function GameManager:isDesktop()
-  return Config.platform == 0
+  return Config.platform == 0 and not self.web and not self.mobileWidth
 end
 -- Checks if game is running on a mobile device (browser or not).
 -- @ret(boolean)
@@ -110,7 +115,7 @@ end
 -- Checks if game is running on a web browser (mobile or not).
 -- @ret(boolean)
 function GameManager:isWeb()
-  return Config.platform >= 2
+  return Config.platform >= 2 or self.web
 end
 
 ---------------------------------------------------------------------------------------------------
