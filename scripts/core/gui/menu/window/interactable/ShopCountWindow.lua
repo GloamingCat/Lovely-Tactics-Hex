@@ -166,11 +166,10 @@ end
 -- Hides this window and returns to the window with the item list.
 function ShopCountWindow:returnWindow()
   local w = self.GUI.itemWindow
+  self:hide()
+  w:show()
   w:refreshButtons()
   w:activate()
-  if self.highlight then
-    self.highlight:hide()
-  end
 end
 
 ---------------------------------------------------------------------------------------------------

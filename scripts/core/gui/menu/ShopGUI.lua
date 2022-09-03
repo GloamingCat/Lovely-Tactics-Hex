@@ -63,20 +63,17 @@ end
 -- Creates the window with the list of items to buy.
 function ShopGUI:createItemWindow()
   local window = ShopItemWindow(self)
-  local x = window.width / 2 - ScreenManager.width / 2 + self:windowMargin()
   local y = window.height / 2 - ScreenManager.height / 2 +
     self.commandWindow.height + self:windowMargin() * 2
-  window:setXYZ(x, y)
+  window:setXYZ(nil, y)
   self.itemWindow = window
   window:setVisible(false)
 end
 -- Creates the window with the number of items to buy.
 function ShopGUI:createCountWindow()
-  local width = ScreenManager.width - self.itemWindow.width - self:windowMargin() * 3
+  local width = ScreenManager.width / 2
   local height = self.itemWindow.height
-  local x = ScreenManager.width / 2 - self:windowMargin() - width / 2
-  local y = self.itemWindow.position.y
-  self.countWindow = ShopCountWindow(self, width, height, Vector(x, y))
+  self.countWindow = ShopCountWindow(self, width, height, self.itemWindow.position)
   self.countWindow:setVisible(false)
 end
 -- Creates the window with the description of the selected item.
@@ -95,7 +92,6 @@ end
 
 -- Shows shop windows.
 function ShopGUI:showShopGUI()
-  GUIManager.fiberList:fork(self.countWindow.show, self.countWindow)
   GUIManager.fiberList:fork(self.descriptionWindow.show, self.descriptionWindow)
   Fiber:wait()
   self.itemWindow:show()
@@ -103,7 +99,6 @@ function ShopGUI:showShopGUI()
 end
 -- Hides shop windows.
 function ShopGUI:hideShopGUI()
-  GUIManager.fiberList:fork(self.countWindow.hide, self.countWindow)
   GUIManager.fiberList:fork(self.descriptionWindow.hide, self.descriptionWindow)
   Fiber:wait()
   self.itemWindow:hide()

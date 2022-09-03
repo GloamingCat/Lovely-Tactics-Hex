@@ -81,7 +81,7 @@ function ShopCommandWindow:rowCount()
 end
 -- Overrides GridWindow:rowCount.
 function ShopCommandWindow:cellWidth()
-  return 50
+  return 60
 end
 
 return ShopCommandWindow

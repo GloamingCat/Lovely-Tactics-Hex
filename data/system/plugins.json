@@ -10,6 +10,11 @@
     "tags": []
   },
   {
+    "on": false,
+    "name": "plugins/gui/VisibleShopCountWindow.lua",
+    "tags": []
+  },
+  {
     "on": true,
     "name": "plugins/Tutorial.lua",
     "tags": [

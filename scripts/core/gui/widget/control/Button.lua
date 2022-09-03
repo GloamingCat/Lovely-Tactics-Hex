@@ -140,10 +140,9 @@ end
 function Button:refreshState()
   self:refreshColor()
   self:updatePosition(self.window.position)
+  self:hide()
   if self.window.open then
     self:show()
-  else
-    self:hide()
   end
 end
 -- Updates text and icon color based on button state.

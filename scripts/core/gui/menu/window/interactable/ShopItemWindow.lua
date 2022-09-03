@@ -81,8 +81,11 @@ end
 
 -- Shows the window to select the quantity.
 function ShopItemWindow:onButtonConfirm(button)
-  self.GUI.countWindow:setItem(button.item, button.price)
-  self.GUI.countWindow:activate()
+  local w = self.GUI.countWindow
+  self:hide()
+  w:show()
+  w:setItem(button.item, button.price)
+  w:activate()
 end
 -- Closes buy GUI.
 function ShopItemWindow:onButtonCancel(button)
@@ -91,21 +94,13 @@ end
 -- Updates item description.
 function ShopItemWindow:onButtonSelect(button)
   self.GUI.descriptionWindow:updateText(button.item.description)
-  self.GUI.countWindow:setItem(button.item, button.price)
 end
 
 ---------------------------------------------------------------------------------------------------
--- Properties
+-- Confirm Callbacks
 ---------------------------------------------------------------------------------------------------
 
--- Overrides ListWindow:colCount.
-function ShopItemWindow:colCount()
-  return 1
+function ShopItemWindow:cellWidth()
+  return ListWindow.cellWidth(self) * 4 / 5
 end
--- Overrides ListWindow:computeWidth.
-function ShopItemWindow:cellWidth(width)
-  local w = (ScreenManager.width - self.GUI:windowMargin() * 3) / 2
-  return self:computeCellWidth(w)
-end
-
 return ShopItemWindow
