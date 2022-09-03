@@ -261,11 +261,12 @@ function Window:checkInput()
     self:onClick(2, x, y)
   elseif InputManager.keys['mouse3']:isTriggered() then
     self:onClick(3, x, y)
-  elseif InputManager.keys['touch']:isReleased() and self.waitingTouch then
-    self.waitingTouch = false
-    self:onClick(5, x, y)
+  elseif InputManager.keys['touch']:isReleased() and self.triggerPoint then
+    local triggerPoint = self.triggerPoint
+    self.triggerPoint = nil
+    self:onClick(5, x, y, triggerPoint)
   elseif InputManager.keys['touch']:isTriggered() then
-    self.waitingTouch = true
+    self.triggerPoint = Vector(x, y)
     self:onClick(4, x, y)
   elseif InputManager.mouse.moved then
     self:onMouseMove(x, y)
@@ -309,7 +310,7 @@ end
 function Window:onPrev()
 end
 -- Called when player presses a mouse button or touches screen.
-function Window:onClick(button, x, y)
+function Window:onClick(button, x, y, triggerPoint)
   if button == 1 then
     if self:isInside(x, y) then
       self:onMouseConfirm(x, y)

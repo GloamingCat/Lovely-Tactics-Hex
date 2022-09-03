@@ -299,6 +299,19 @@ function GridWindow:onMove(dx, dy, widget)
   end
   self:nextWidget(dx, dy, true)
 end
+-- Overrides Window:onClick.
+-- Only confirms if the trigger point and the release point are on the same cell.
+function GridWindow:onClick(button, x, y, triggerPoint)
+  if triggerPoint ~= nil then
+    -- Touch
+    local widget1 = self:getCell(self:getCellCoordinates(triggerPoint.x, triggerPoint.y))
+    local widget2 = self:getCell(self:getCellCoordinates(x, y))
+    if widget1 ~= widget2 then
+      return
+    end
+  end
+  Window.onClick(self, button, x, y, triggerPoint)
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Input - Mouse
@@ -333,12 +346,7 @@ function GridWindow:onMouseMove(x, y)
     if self.scroll then
       self.scroll:onMouseMove(x, y)
     end
-    x = x + self.width / 2 - self:paddingX() - self:gridX() + self:colMargin() / 2
-    x = x / (self:cellWidth() + self:colMargin())
-    y = y + self.height / 2  - self:paddingY() - self:gridY() + self:rowMargin() / 2
-    y = y / (self:cellHeight() + self:rowMargin()) 
-    x = math.floor(x) + 1
-    y = math.floor(y) + 1
+    x, y = self:getCellCoordinates(x, y)
     local widget = self:getCell(x, y)
     if widget then
       self.currentCol = x + self.offsetCol
@@ -367,6 +375,20 @@ end
 -- Coordinate change
 ---------------------------------------------------------------------------------------------------
 
+-- Computes the column and row based on mouse coordinates.
+-- @param(x : number) Pixel x relative to window's center.
+-- @param(y : number) Pixel y relative to window's center.
+-- @ret(number) Hovered column.
+-- @ret(number) Hovered row.
+function GridWindow:getCellCoordinates(x, y)
+  x = x + self.width / 2 - self:paddingX() - self:gridX() + self:colMargin() / 2
+  x = x / (self:cellWidth() + self:colMargin())
+  y = y + self.height / 2  - self:paddingY() - self:gridY() + self:rowMargin() / 2
+  y = y / (self:cellHeight() + self:rowMargin()) 
+  x = math.floor(x) + 1
+  y = math.floor(y) + 1
+  return x, y
+end
 -- Gets the coordinates adjusted depending on loop types.
 -- @param(c : number) the column number
 -- @param(r : number) the row number
