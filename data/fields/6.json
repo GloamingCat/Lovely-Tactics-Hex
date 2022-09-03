@@ -829,7 +829,7 @@
           "onInteract": true,
           "onCollide": false,
           "description": "",
-          "name": "test/Dialogue.lua",
+          "name": "test/NewMember.lua",
           "tags": []
         }
       ],

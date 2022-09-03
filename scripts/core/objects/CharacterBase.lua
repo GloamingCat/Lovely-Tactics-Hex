@@ -183,8 +183,8 @@ function CharacterBase:collideTile(tile)
   local blocking = false
   for char in tile.characterList:iterator() do
     if char ~= self  then
-      self:onCollide(char.key, self.key, self.collideScriptIndex ~= nil)
-      char:onCollide(char.key, self.key, char.collideScriptIndex ~= nil)
+      self:onCollide(char.key, self.key, self.collided ~= nil)
+      char:onCollide(char.key, self.key, char.collided ~= nil)
       if not char.passable then
         blocking = true
       end

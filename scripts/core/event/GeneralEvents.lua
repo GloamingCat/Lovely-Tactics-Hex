@@ -14,15 +14,6 @@ local TagMap = require('core/datastruct/TagMap')
 local EventSheet = {}
 
 ---------------------------------------------------------------------------------------------------
--- Execution
----------------------------------------------------------------------------------------------------
-
--- Event to run an arbitraty funcion and count it as an event command.
-function EventSheet:runFunction(func, ...)
-  func(...)
-end
-
----------------------------------------------------------------------------------------------------
 -- Field
 ---------------------------------------------------------------------------------------------------
 
@@ -101,9 +92,6 @@ end
 -- @param(args.fade : boolean) Fade out/in effect when exiting/returning to previous field.
 function EventSheet:finishBattle(args)
   args.fade = tonumber(args.fade)
-  if args.cooldown then
-    self.char.cooldown = tonumber(args.cooldown)
-  end
   if BattleManager:playerWon() then
     self.battleLog = 'You won!'
   elseif BattleManager:enemyWon() then

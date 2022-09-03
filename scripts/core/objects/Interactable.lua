@@ -43,9 +43,7 @@ function Interactable:initScripts(instData, save)
   self.fiberList = FiberList(self)
   self.collider = save and save.collider
   self.collided = save and save.collided
-  self.loadScriptIndex = save and save.loadScriptIndex
-  self.collideScriptIndex = save and save.collideScriptIndex
-  self.interactScriptIndex = save and save.interactScriptIndex
+  self.interacting = save and save.interacting
   if save then
     self.loadScripts = save.loadScripts or {}
     self.collideScripts = save.collideScripts or {}
@@ -119,9 +117,7 @@ function Interactable:getPersistentData()
     loadScripts = copyScripts(self.loadScripts),
     collideScripts = copyScripts(self.collideScripts),
     interactScripts = copyScripts(self.interactScripts),
-    loadScriptIndex = self.loadScriptIndex,
-    collideScriptIndex = self.collideScriptIndex,
-    interactScriptIndex = self.interactScriptIndex,
+    interacting = self.interacting,
     collider = self.collider,
     collided = self.collided }
 end
@@ -136,17 +132,14 @@ function Interactable:onInteract()
   if self.deleted or #self.interactScripts == 0 then
     return false
   end
-  local skip = self.interactScriptIndex or 0
-  self.interactScriptIndex = 0
+  self.interacting = true
   for _, script in ipairs(self.interactScripts) do
-    self.interactScriptIndex = self.interactScriptIndex + 1
-    if skip > 0 then
-      skip = skip - 1
-    else
-      self:runScript(script)
+    self:runScript(script)
+    if self.deleted then
+      return true
     end
   end
-  self.interactScriptIndex = nil
+  self.interacting = nil
   return true
 end
 -- Called when a character collides with this object.
@@ -158,21 +151,16 @@ function Interactable:onCollide(collided, collider, repeating)
   if self.deleted or #self.collideScripts == 0 or repeating and not self.repeatCollisions then
     return false
   end
-  local skip = self.collideScriptIndex or 0
   self.collided = collided
   self.collider = collider
-  self.collideScriptIndex = 0
   for _, script in ipairs(self.collideScripts) do
-    self.collideScriptIndex = self.collideScriptIndex + 1
-    if skip > 0 then
-      skip = skip - 1
-    else
-      self:runScript(script)
+    self:runScript(script)
+    if self.deleted then
+      return true
     end
   end
   self.collided = nil
   self.collider = nil
-  self.collideScriptIndex = nil
   return true
 end
 -- Called when this interactable is created.
@@ -181,23 +169,18 @@ function Interactable:onLoad()
   if self.deleted or #self.loadScripts == 0 then
     return false
   end
-  local skip = self.loadScriptIndex or 0
-  self.loadScriptIndex = 0
   for _, script in ipairs(self.loadScripts) do
-    self.loadScriptIndex = self.loadScriptIndex + 1
-    if skip > 0 then
-      skip = skip - 1
-    else
-      self:runScript(script)
+    self:runScript(script)
+    if self.deleted then
+      return true
     end
   end
-  self.loadScriptIndex = nil
   return true
 end
 -- Creates a new event sheet from the given script data.
 -- @param(script : table) Script initialization info.
 function Interactable:runScript(script)
-  if script.runningIndex then
+  if script.running then
     return
   end
   local fiberList = script.global and FieldManager.fiberList or self.fiberList
@@ -208,10 +191,10 @@ function Interactable:runScript(script)
 end
 -- Runs scripts according to object's state (colliding or interacting).
 function Interactable:resumeScripts()
-  if self.collideScriptIndex then
+  if self.collided then
     self:onCollide(self.collided, self.collider)
   end
-  if self.interactScriptIndex then
+  if self.interacting then
     self:onInteract()
   end
   self:collideTile(self:getTile())

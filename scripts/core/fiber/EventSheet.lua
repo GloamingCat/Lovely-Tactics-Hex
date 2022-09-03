@@ -34,9 +34,42 @@ function EventSheet:init(root, data, char)
   self.args = Database.loadTags(data.tags)
   self.char = char
   if self.data then
-    self.data.runningIndex = 0
+    self.data.running = true
   end
+  self.events = {}
   Fiber.init(self, root, nil)
+end
+
+
+---------------------------------------------------------------------------------------------------
+-- Events
+---------------------------------------------------------------------------------------------------
+
+-- Adds an event to the execution list.
+-- @param(func : functtion) The function to be executed.
+-- @param(condition : unknown) A condition to execute the command.
+--  Can be either a constant or a function to be computed before the event executes.
+-- @param(...) Any aditional argumentes to the event's function.
+function EventSheet:addEvent(func, condition, ...)
+  if condition and type(condition) ~= 'function' then
+    local value = condition
+    condition = function() return value end
+  end
+  self.events[#self.events + 1] = {
+    execute = func,
+    args = {...},
+    condition = condition
+  }
+end
+-- Changes the running index to skip a number of events.
+-- @param(n : number) Number of events to skip.
+function EventSheet:skipEvents(n)
+  self.vars.runningIndex = self.vars.runningIndex + n
+end
+-- Directly sets the running index.
+-- @param(n : number) Index of the next event.
+function EventSheet:setEvent(i)
+  self.vars.runningIndex = i - 1
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -47,10 +80,28 @@ end
 function EventSheet:execute()
   self:setUp()
   self:commands()
+  if self.vars then
+    self:runEvents()
+  end
   if self.gui then
     GUIManager:returnGUI()
     self.gui = nil
   end
+end
+-- Runs the event created from the command execution.
+function EventSheet:runEvents()
+  self.vars.runningIndex = self.vars.runningIndex or 0
+  while self.vars.runningIndex < #self.events do
+    self.vars.runningIndex = self.vars.runningIndex + 1
+    local event = self.events[self.vars.runningIndex]
+    if not event.condition or event.condition(self) then
+      event.execute(self, unpack(event.args))
+    end
+    if not self:running() or not self.vars.runningIndex then
+      return
+    end
+  end
+  self.vars.runningIndex = nil
 end
 -- Sets any variable needed to indicate that this script is running.
 function EventSheet:setUp()
@@ -66,7 +117,7 @@ function EventSheet:clear()
     if self.data.block then
       FieldManager.player.waitList:removeElement(self)
     end
-    self.data.runningIndex = nil
+    self.data.running = nil
   end
 end
 -- Overrides Fiber:finish.

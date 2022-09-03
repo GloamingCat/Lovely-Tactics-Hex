@@ -1,31 +1,31 @@
 
 --[[===============================================================================================
 
-Dialogue Test
+NewMember
 ---------------------------------------------------------------------------------------------------
+Simple dialogue with choice. It adds a new member if the player wishes so.
 
 =================================================================================================]]
 
 return function(script)
 
-  script:turnCharTile { key = 'self', other = 'player' }
-
-  script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
-    Vocab.dialogues.npc.Hi
-  }
-  
   local troop = TroopManager:getPlayerTroop()
-  if not troop:hasMember('Merlin') then
-    
+  
+  script:addEvent(function()
+    script:turnCharTile { key = 'self', other = 'player' }
+    script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
+      Vocab.dialogues.npc.Hi
+    }
+  end)
+  
+  script:addEvent(function()
     script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
       Vocab.dialogues.npc.CanIJoin
     }
-
     script:openChoiceWindow { width = 50, choices = {
       Vocab.yes,
       Vocab.no
     }}
-
     if script.vars.choiceInput == 1 then
       script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
         Vocab.dialogues.npc.ThatsGood
@@ -36,9 +36,10 @@ return function(script)
         Vocab.dialogues.npc.ThatsBad
       }
     end
-    
-  end
+  end, not troop:hasMember('Merlin'))
 
-  script:closeDialogueWindow { id = 1 }
+  script:addEvent(function()
+    script:closeDialogueWindow { id = 1 }
+  end)
 
 end
