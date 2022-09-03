@@ -159,7 +159,7 @@ function GameManager:update(dt)
     collectgarbage('collect')
   end
   -- Sleep.
-  local framerate = Config.fpsLimit
+  local framerate = Config.fpsMax
   if framerate then
     local sleep = 1 / framerate - (os.clock() - t)
     if sleep > 0 then
@@ -259,11 +259,10 @@ end
 -- @ret(number) Duration in seconds.
 function GameManager:frameTime()
   local dt = deltaTime()
-  if dt > 0.05 then
-    return 0.05 * self.speed
-  else
-    return dt * self.speed
+  if Config.fpsMin then
+    dt = math.min(dt, 1 / Config.fpsMin)
   end
+  return dt * self.speed
 end
 -- Sets game speed. Does not affect input, only sound and graphics.
 -- @parem(speed : number) Speed multiplier.
