@@ -62,7 +62,7 @@ function GUIManager:showGUIForResult(...)
   return result
 end
 -- [COROUTINE] Shows GUI and adds to the stack.
--- @param(path : string | GUI) the GUI path from custom/gui folder or the GUI itself.
+-- @param(path : GUI)
 function GUIManager:showGUI(newGUI)
   if self.current then
     self.stack:push(self.current)
@@ -75,11 +75,17 @@ end
 function GUIManager:returnGUI()
   local lastGUI = self.current
   lastGUI:hide()
-  lastGUI:destroy()
-  if not self.stack:isEmpty() then
-    self.current = self.stack:pop()
+  self:removeGUI(lastGUI)
+end
+-- Remove a specific GUI, not necessarily from the top of the stack.
+-- Hide animations must be called before this.
+-- @param(gui : GUI)
+function GUIManager:removeGUI(gui)
+  gui:destroy()
+  if self.current == gui then
+    self.current = not self.stack:isEmpty() and self.stack:pop() or nil
   else
-    self.current = nil
+    self.stack:removeElement(gui)
   end
 end
 

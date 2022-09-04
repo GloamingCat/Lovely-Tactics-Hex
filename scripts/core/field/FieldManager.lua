@@ -58,6 +58,12 @@ end
 -- Creates field from ID.
 -- @param(fieldID : number) The field's ID.
 function FieldManager:loadField(fieldID, save)
+  if self.currentField then
+    self.currentField:destroy()
+    while not self.characterList:isEmpty() do
+      self.characterList[self.characterList.size]:destroy()
+    end
+  end
   self.updateList = List()
   self.characterList = List()
   local field, fieldData = FieldLoader.loadField(fieldID, save)
@@ -80,7 +86,6 @@ end
 function FieldManager:loadTransition(transition, fieldSave)
   if self.currentField then
     self:storeFieldData()
-    self.currentField:destroy()
   end
   local fieldData = self:loadField(transition.fieldID, fieldSave)
   FieldLoader.createTransitions(self.currentField, fieldData.prefs.transitions)

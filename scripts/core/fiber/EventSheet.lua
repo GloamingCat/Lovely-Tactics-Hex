@@ -39,7 +39,12 @@ function EventSheet:init(root, data, char)
   self.events = {}
   Fiber.init(self, root, nil)
 end
-
+-- @ret(string) String identification.
+function EventSheet:__tostring()
+  local name = self.data and self.data.name
+  name = name and (' ' .. name) or ''
+  return 'EventSheet' .. name ..  ' from ' .. tostring(self.origin.name)
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Events
@@ -83,10 +88,6 @@ function EventSheet:execute()
   if self.vars then
     self:runEvents()
   end
-  if self.gui then
-    GUIManager:returnGUI()
-    self.gui = nil
-  end
 end
 -- Runs the event created from the command execution.
 function EventSheet:runEvents()
@@ -113,6 +114,10 @@ function EventSheet:setUp()
 end
 -- Resets any variable that indicates that this script is running.
 function EventSheet:clear()
+  if self.gui then
+    GUIManager:removeGUI(self.gui)
+    self.gui = nil
+  end
   if self.data then
     if self.data.block then
       FieldManager.player.waitList:removeElement(self)

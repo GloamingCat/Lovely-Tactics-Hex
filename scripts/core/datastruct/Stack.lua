@@ -56,6 +56,19 @@ end
 function Stack:isEmpty()
   return self.size == 0
 end
+-- Removes the especified element from the stack.
+-- @param(e : unknown)
+-- @ret(boolean) Wether the element was present or not.
+function Stack:removeElement(e)
+  for i = 1, self.size do
+    if self[i] == e then
+      table.remove(self, i)
+      self.size = self.size - 1
+      return true
+    end
+  end
+  return false
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Convertion

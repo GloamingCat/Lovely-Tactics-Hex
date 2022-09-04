@@ -61,7 +61,7 @@ end
 function EventSheet:createGUI()
   if not self.gui then
     self.gui = GUI()
-    self.gui.name = "Event GUI"
+    self.gui.name = "Event GUI from " .. tostring(self)
     self.gui.dialogues = {}
     GUIManager:showGUI(self.gui)
   end
