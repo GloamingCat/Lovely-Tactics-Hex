@@ -22,13 +22,17 @@ return function(script)
 
   -- Event 3: aftermath
   script:addEvent(function()
-    if BattleManager:playerEscaped() then
+    local escaped = BattleManager:playerEscaped() or BattleManager:enemyEscaped()
+    if escaped then
       script.char.cooldown = 180
     else
-      script:deleteChar { permanent = true, key = 'self' }
+      script:hideChar { key = 'self', deactivate = true }
     end
     script:finishBattle { fade = 60, wait = true }
     print(script.battleLog)
+    if not escaped then
+      script:deleteChar { permanent = true, key = 'self' }
+    end
   end)
   
 end

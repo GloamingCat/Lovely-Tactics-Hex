@@ -777,7 +777,7 @@
           "tags": []
         },
         {
-          "global": true,
+          "global": false,
           "block": true,
           "wait": true,
           "onLoad": false,
@@ -810,7 +810,7 @@
       "direction": 180,
       "scripts": [
         {
-          "global": true,
+          "global": false,
           "block": true,
           "wait": true,
           "onLoad": false,

@@ -1230,7 +1230,7 @@
           "tags": []
         },
         {
-          "global": true,
+          "global": false,
           "block": true,
           "wait": true,
           "onLoad": false,

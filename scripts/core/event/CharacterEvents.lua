@@ -19,26 +19,41 @@ local EventSheet = {}
 
 -- Removes a character from the field.
 -- @param(args.permanent : boolean) If false, character shows up again when field if reloaded.
--- @param(args.fade : number) Duration of fading animation.
 function EventSheet:deleteChar(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
     return
   end
-  if args.permanent then
-    char.deleted = true
-    if char.persistent then
-      FieldManager:storeCharData(FieldManager.currentField.id, char)
-    end
+  if args.permanent and char.persistent then
+    FieldManager:storeCharData(FieldManager.currentField.id, char)
+  end
+  char:destroy(args.permanent)
+end
+-- Hides a character.
+-- @param(args.fade : number) Duration of fading animation.
+-- @param(args.deactive : boolean) Erase the character's scripts.
+-- @param(args.passable : booean) Make the character passable during the fading animation.
+function EventSheet:hideChar(args)
+  local char = self:findCharacter(args.key, args.optional)
+  if not char then
+    return
+  end
+  if args.deactivate then
+    char.interactScripts = {}
+    char.collideScripts = {}
+    char.loadScripts = {}
+  end
+  if args.passable then
+    char:removeFromTiles()
+    char.collisionTiles = {}
   end
   if args.fade and args.fade > 0 then
     local speed = 60 / args.fade
     char:colorizeTo(nil, nil, nil, 0, speed)
-    self:waitUntil(function()
-      return not char:colorizing()
-    end)
+    char:waitForColor()
+  else
+    char:setRGBA(nil, nil, nil, 0)
   end
-  char:destroy(args.permanent)
 end
 
 ---------------------------------------------------------------------------------------------------
