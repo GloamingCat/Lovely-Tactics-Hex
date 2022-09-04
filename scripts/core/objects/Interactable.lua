@@ -84,9 +84,7 @@ function Interactable:destroy(permanent)
     self.deleted = true
   end
   FieldManager.updateList:removeElement(self)
-  for i = 1, self.fiberList.size do
-    self.fiberList[i]:interrupt()
-  end
+  self.fiberList:destroy()
   if self.persistent then
     FieldManager:storeCharData(FieldManager.currentField.id, self)
   end

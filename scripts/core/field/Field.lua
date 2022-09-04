@@ -98,6 +98,27 @@ end
 function Field:getSize()
   return self.sizeX, self.sizeY, self.maxh
 end
+-- Destrous fiber list and tiles.
+function Field:destroy()
+  self.fiberList:destroy()
+  for l = self.minh, self.maxh do
+    local layer = self.objectLayers[l]
+    for i = 1, self.sizeX do
+      for j = 1, self.sizeY do
+        layer.grid[i][j]:destroy()
+      end
+    end
+    local layerList = self.terrainLayers[l]
+    for k = 1, #layerList do
+      layer = layerList[k]
+      for i = 1, self.sizeX do
+        for j = 1, self.sizeY do
+          layer.grid[i][j]:destroy()
+        end
+      end
+    end
+  end
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Object Tile Access

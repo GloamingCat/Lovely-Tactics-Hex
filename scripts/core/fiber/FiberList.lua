@@ -39,6 +39,12 @@ end
 function FiberList.isFinished(fiber)
   return fiber.coroutine == nil
 end
+-- Interrupts all fibers in the list.
+function FiberList:destroy()
+  for i = 1, self.size do
+    self[i]:interrupt()
+  end
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Fork

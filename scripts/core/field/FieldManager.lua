@@ -80,6 +80,7 @@ end
 function FieldManager:loadTransition(transition, fieldSave)
   if self.currentField then
     self:storeFieldData()
+    self.currentField:destroy()
   end
   local fieldData = self:loadField(transition.fieldID, fieldSave)
   FieldLoader.createTransitions(self.currentField, fieldData.prefs.transitions)
@@ -101,7 +102,8 @@ end
 function FieldManager:runLoadScripts()
   local script = self.currentField.loadScript
   if script and script.name ~= '' then
-    local fiber = self.currentField.fiberList:forkFromScript(script)
+    local fiberList = (script.global and self or self.currentField).fiberList
+    local fiber = fiberList:forkFromScript(script)
     if script.wait then
       fiber:waitForEnd()
     end

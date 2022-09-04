@@ -61,6 +61,14 @@ function TerrainTile:update()
     end
   end
 end
+-- Diposes of all animations.
+function TerrainTile:destroy()
+  if self.animations then
+    for i = 1, 4 do
+      self.animations[i]:destroy()
+    end
+  end
+end
 -- Converts to string.
 -- @ret(string) The string representation.
 function TerrainTile:__tostring()

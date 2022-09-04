@@ -84,6 +84,15 @@ function ObjectTile:update()
     end
   end
 end
+-- Destroy graphics and obstacles.
+function ObjectTile:destroy()
+  if self.gui then
+    self.gui:destroy()
+  end
+  for i = 1, #self.obstacleList do
+    self.obstacleList[i]:destroy()
+  end
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Collision
