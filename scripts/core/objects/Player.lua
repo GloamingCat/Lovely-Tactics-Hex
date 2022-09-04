@@ -64,6 +64,16 @@ end
 -- Input
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides CharacterBase:update.
+function Player:update()
+  if FieldManager.playerInput then
+    self:refreshSpeed()
+  end
+  Character.update(self)
+  if self:moving() then
+    self:updateStepCount()
+  end
+end
 -- Coroutine that runs in non-battle fields.
 function Player:resumeScripts()
   Character.resumeScripts(self)
@@ -83,17 +93,12 @@ function Player:checkFieldInput()
     self:openGUI()
   elseif InputManager.keys['confirm']:isReleased() then
     self:interact()
-  elseif InputManager.keys['mouse1']:isPressing() or InputManager.keys['touch']:isPressing() then
-    self:moveByMouse()
+  elseif InputManager.keys['mouse1']:isPressingGap() then
+    self:moveByMouse('mouse1')
+  elseif InputManager.keys['touch']:isPressingGap() then
+    self:moveByMouse('touch')
   else
     local dx, dy, move = self:inputAxis()
-    local dash = InputManager.keys['dash']:isPressing()
-    local auto = InputManager.autoDash
-    if auto and not dash or not auto and dash then
-      self.speed = self.dashSpeed
-    else
-      self.speed = self.walkSpeed
-    end
     self:moveByKeyboard(dx, dy, move)
   end
 end
@@ -138,13 +143,34 @@ function Player:inputAxis()
     return dx, dy, false
   end
 end
-
+-- Sets the speed according to dash input.
+function Player:refreshSpeed()
+  local dash = InputManager.keys['dash']:isPressing()
+  if self.path and self.pathButton then
+    if InputManager.keys[self.pathButton]:isDoubleTriggered() then
+      self.dashPath = true
+    end
+    dash = dash ~= (self.dashPath or false)
+  end
+  local auto = InputManager.autoDash or false
+  if dash ~= auto then
+    self.speed = self.dashSpeed
+  else
+    self.speed = self.walkSpeed
+  end
+end
+  
 ---------------------------------------------------------------------------------------------------
 -- Mouse Movement
 ---------------------------------------------------------------------------------------------------
 
 -- [COROUTINE] Moves player to the mouse coordinate.
-function Player:moveByMouse()
+-- @param(button : string) Key of the button used to move (mouse1 or touch).
+function Player:moveByMouse(button)
+  if button then
+    self.pathButton = button
+    self.dashPath = false
+  end
   local field = FieldManager.currentField
   local currentTile = self:getTile()
   for l = field.maxh, field.minh, -1 do
@@ -196,24 +222,20 @@ end
 -- Terrain
 ---------------------------------------------------------------------------------------------------
 
--- Overrides CharacterBase:update.
 -- Plays terrain step sound.
-function Player:update()
-  Character.update(self)
-  if self:moving() then
-    self.stepCount = self.stepCount + self.speed / Config.player.walkSpeed * 60 * GameManager:frameTime()
-    if self.stepCount > self.freq then
-      local sounds = FieldManager.currentField:getTerrainSounds(self:tileCoordinates())
-      if sounds and #sounds > 0 then
-        local sound = sounds[rand(#sounds)]
-        local pitch = sound.pitch * (rand() * self.varPitch * 2 - self.varPitch + 1)
-        local volume = sound.volume * (rand() * self.varVolume * 2 - self.varVolume + 1)
-        if sound then
-          AudioManager:playSFX({name = sound.name, pitch = pitch, volume = volume})
-        end
+function Player:updateStepCount()
+  self.stepCount = self.stepCount + self.speed / Config.player.walkSpeed * 60 * GameManager:frameTime()
+  if self.stepCount > self.freq then
+    local sounds = FieldManager.currentField:getTerrainSounds(self:tileCoordinates())
+    if sounds and #sounds > 0 then
+      local sound = sounds[rand(#sounds)]
+      local pitch = sound.pitch * (rand() * self.varPitch * 2 - self.varPitch + 1)
+      local volume = sound.volume * (rand() * self.varVolume * 2 - self.varVolume + 1)
+      if sound then
+        AudioManager:playSFX({name = sound.name, pitch = pitch, volume = volume})
       end
-      self.stepCount = self.stepCount - self.freq * (rand() * self.varFreq * 2 - self.varFreq + 1)
     end
+    self.stepCount = self.stepCount - self.freq * (rand() * self.varFreq * 2 - self.varFreq + 1)
   end
 end
 
