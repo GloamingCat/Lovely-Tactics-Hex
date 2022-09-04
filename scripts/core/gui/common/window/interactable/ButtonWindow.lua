@@ -52,14 +52,14 @@ end
 -- Overrides GridWindow:update.
 -- Opens or closes automatically depending if the player is using the mouse or not.
 function ButtonWindow:update()
-  if self.lastOpen and self.GUI.open then
-    if InputManager.usingKeyboard and not InputManager.mouse.active then
+  if self.GUI.open then
+    if InputManager.usingKeyboard or not InputManager.mouse.active then
       if self.open then
         GUIManager.fiberList:fork(self.hide, self)
       end
     else
       if self.closed then
-        GUIManager.fiberList:fork(self.show, self, true)
+        GUIManager.fiberList:fork(self.show, self)
       end
     end
   end

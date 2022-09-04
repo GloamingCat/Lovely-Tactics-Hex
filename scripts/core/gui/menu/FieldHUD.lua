@@ -89,13 +89,16 @@ function FieldHUD:refreshSave(all)
     self.saveInfoWindow:hideContent()
   end
 end
-
+-- Overrides GUI:show.
 function FieldHUD:show(...)
+  if self.buttonWindow then
+    self.buttonWindow.lastOpen = not InputManager.usingKeyboard and InputManager.mouse.active
+  end
   self.time = GameManager:currentPlayTime()
   GUI.show(self, ...)
   self:refreshSave(true)
 end
-
+-- Overrides GUI:update.
 function FieldHUD:update(...)
   GUI.update(self, ...)
   if self.open then
