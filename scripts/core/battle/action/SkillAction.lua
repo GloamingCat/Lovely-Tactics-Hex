@@ -46,6 +46,8 @@ function SkillAction:init(skillID)
   self.reachableOnly = data.selection >= 2
   self.freeNavigation = data.freeNavigation
   self.autoPath = data.autoPath
+  self.useCondition = data.condition ~= '' and 
+    loadformula(data.condition, 'action, user')
   self.effectCondition = data.effectCondition ~= '' and 
     loadformula(data.effectCondition, 'action, user, target')
   self:setType(data.type)
@@ -163,10 +165,16 @@ function SkillAction:execute(input)
     return { executed = false, endCharacterTurn = true }
   end
 end
--- Checks if the given character can use the skill, considering skill's costs.
+-- Checks if the given character can use the skill, considering skill's costs and condition.
 -- @param(user : Battler)
 -- @ret(boolean) True if this skill may be selected to be used.
 function SkillAction:canUse(user)
+  if self.useCondition then
+    local char = TroopManager:getBattlerCharacter(user)
+    if not self:useCondition(user, char) then
+      return false
+    end
+  end
   local att = user.att
   local state = user.state
   for i = 1, #self.costs do
@@ -187,7 +195,7 @@ end
 -- @param(user : Character)
 -- @ret(boolean) True if this skill may be selected to be used in battle field.
 function SkillAction:canBattleUse(user)
-  return self:canUse(user.battler)
+  return self:canUse(user.battler, user)
 end
 -- The effect applied when the user is prepared to use the skill.
 -- It executes animations and applies damage/heal to the targets.

@@ -14,6 +14,7 @@
       "selection": 1,
       "autoPath": true,
       "freeNavigation": true,
+      "condition": "",
       "restriction": 0,
       "costs": [
         {
@@ -90,6 +91,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 0,
           "costs": [],
           "elements": [],
@@ -162,6 +164,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 0,
           "costs": [],
           "elements": [],
@@ -234,6 +237,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [],
           "elements": [],
@@ -308,6 +312,7 @@
       "selection": 1,
       "autoPath": true,
       "freeNavigation": true,
+      "condition": "",
       "restriction": 0,
       "costs": [
         {
@@ -384,6 +389,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [],
           "elements": [
@@ -512,6 +518,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [
             {
@@ -627,6 +634,135 @@
       },
       {
         "data": {
+          "description": "Melee physical attack that damages 50% of the target's HP,\r\nwith 100% chance. Can only be used with 10% of HP or less.",
+          "icon": {
+            "id": 34,
+            "col": 1,
+            "row": 0
+          },
+          "script": "",
+          "type": 1,
+          "allParties": false,
+          "effectCondition": "target.battler:isAlive()",
+          "selection": 1,
+          "autoPath": true,
+          "freeNavigation": false,
+          "condition": "user.state.hp <= user.mhp() / 10",
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [
+            {
+              "id": 0,
+              "value": 100
+            }
+          ],
+          "userElements": true,
+          "userLoadAnim": "Load2",
+          "userCastAnim": "Skill2",
+          "stepOnCast": true,
+          "loadAnimID": 13,
+          "castAnimID": -1,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "35",
+          "centerTime": "20",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "b.hp() / 2",
+              "successRate": "100",
+              "heal": false,
+              "absorb": false,
+              "statusID": -1
+            }
+          ],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 2,
+            "centerY": 2,
+            "centerH": 2,
+            "grid": [
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ]
+            ]
+          },
+          "name": "Dying Attack",
+          "tags": []
+        },
+        "id": 29,
+        "children": []
+      },
+      {
+        "data": {
           "description": "Simple ranged magical attack.",
           "icon": {
             "id": 34,
@@ -640,6 +776,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [],
           "elements": [
@@ -738,6 +875,7 @@
           "selection": 2,
           "autoPath": true,
           "freeNavigation": true,
+          "condition": "",
           "restriction": 1,
           "costs": [
             {
@@ -883,6 +1021,7 @@
           "selection": 2,
           "autoPath": true,
           "freeNavigation": true,
+          "condition": "",
           "restriction": 1,
           "costs": [
             {
@@ -994,6 +1133,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [
             {
@@ -1097,6 +1237,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [
             {
@@ -1200,6 +1341,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [
             {
@@ -1305,6 +1447,7 @@
       "selection": 1,
       "autoPath": true,
       "freeNavigation": true,
+      "condition": "",
       "restriction": 0,
       "costs": [
         {
@@ -1381,6 +1524,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 0,
           "costs": [
             {
@@ -1476,6 +1620,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [
             {
@@ -1566,6 +1711,7 @@
           "selection": 1,
           "autoPath": false,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [
             {
@@ -1658,6 +1804,7 @@
       "selection": 1,
       "autoPath": true,
       "freeNavigation": true,
+      "condition": "",
       "restriction": 0,
       "costs": [],
       "elements": [],
@@ -1720,6 +1867,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [
             {
@@ -1810,6 +1958,7 @@
           "selection": 2,
           "autoPath": false,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [
             {
@@ -1933,6 +2082,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": true,
+          "condition": "",
           "restriction": 1,
           "costs": [
             {
@@ -2015,6 +2165,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [
             {
@@ -2115,6 +2266,7 @@
       "selection": 1,
       "autoPath": true,
       "freeNavigation": true,
+      "condition": "",
       "restriction": 0,
       "costs": [],
       "elements": [],
@@ -2177,6 +2329,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [],
           "elements": [
@@ -2305,6 +2458,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [],
           "elements": [
@@ -2433,6 +2587,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [],
           "elements": [],
@@ -2518,6 +2673,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [],
           "elements": [],
@@ -2603,6 +2759,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [],
           "elements": [],
@@ -2688,6 +2845,7 @@
           "selection": 1,
           "autoPath": true,
           "freeNavigation": false,
+          "condition": "",
           "restriction": 1,
           "costs": [],
           "elements": [],
