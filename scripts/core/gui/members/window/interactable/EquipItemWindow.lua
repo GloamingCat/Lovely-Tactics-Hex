@@ -110,6 +110,11 @@ end
 function EquipItemWindow:colCount()
   return 1
 end
+-- Overrides ListWindow:computeWidth.
+function EquipItemWindow:cellWidth(width)
+  local w = (ScreenManager.width - self.GUI:windowMargin() * 3) / 2
+  return self:computeCellWidth(w)
+end
 -- @ret(string) String representation (for debugging).
 function EquipItemWindow:__tostring()
   return 'Equip Item Window'

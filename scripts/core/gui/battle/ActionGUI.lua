@@ -44,29 +44,29 @@ end
 
 -- Creates the GUI's windows and sets the first active window.
 function ActionGUI:createConfirmWindow()
-  if not self.confirmWindow then
+  if not self.buttonWindow then
     local window = ConfirmWindow(self, Vocab.confirmTile, Vocab.cancel)
-    self.confirmWindow = window
+    self.buttonWindow = window
     local x = -ScreenManager.width / 2 + window.width / 2 + self.slideMargin
     local y = -ScreenManager.height / 2 + window.height / 2 + self.slideMargin
     window:setXYZ(x, y)
     window.offBoundsCancel = false
     window:setVisible(false)
   end
-  return self.confirmWindow
+  return self.buttonWindow
 end
 -- Creates the GUI's windows and sets the first active window.
 function ActionGUI:createCancelWindow()
-  if not self.confirmWindow then
+  if not self.buttonWindow then
     local window = ButtonWindow(self, Vocab.cancel, 'left')
-    self.confirmWindow = window
+    self.buttonWindow = window
     local x = -ScreenManager.width / 2 + window.width / 2 + self.slideMargin
     local y = -ScreenManager.height / 2 + window.height / 2 + self.slideMargin
     window:setXYZ(x, y)
     window.matrix[1].clickSound = Config.sounds.buttonCancel
     window:setVisible(false)
   end
-  return self.confirmWindow
+  return self.buttonWindow
 end
 -- Creates step window if not created yet.
 -- @ret(StepWindow) This GUI's step window.
@@ -116,15 +116,15 @@ function ActionGUI:waitForResult()
 end
 -- Verifies player's input. Stores result of action in self.result.
 function ActionGUI:checkInput()
-  if self.confirmWindow then
-    self.confirmWindow:checkInput()
-    if self.confirmWindow.result then
-      if self.confirmWindow.result + #self.confirmWindow.matrix == 3 then
+  if self.buttonWindow then
+    self.buttonWindow:checkInput()
+    if self.buttonWindow.result then
+      if self.buttonWindow.result + #self.buttonWindow.matrix == 3 then
         self.result = self.input:execute()
       else
         self.result = self.input.action:onCancel(self.input)
       end
-      self.confirmWindow.result = nil
+      self.buttonWindow.result = nil
       return
     end
   end
@@ -148,8 +148,8 @@ function ActionGUI:selectTarget(target)
       GUIManager.fiberList:fork(self.targetWindow.hide, self.targetWindow)
     end
   end
-  if self.confirmWindow and #self.confirmWindow.matrix >= 2 then
-    self.confirmWindow.matrix[1]:setEnabled(self.input.target.gui.selectable)
+  if self.buttonWindow and #self.buttonWindow.matrix >= 2 then
+    self.buttonWindow.matrix[1]:setEnabled(self.input.target.gui.selectable)
   end
 end
 
@@ -307,9 +307,12 @@ function ActionGUI:startGridSelecting(target)
   if self.stepWindow then
     GUIManager.fiberList:fork(self.stepWindow.show, self.stepWindow)
   end
-  if self.confirmWindow then
-    self.confirmWindow.result = nil
-    GUIManager.fiberList:fork(self.confirmWindow.show, self.confirmWindow)
+  if self.buttonWindow then
+    self.buttonWindow.active = true
+    self.buttonWindow.result = nil
+    --if InputManager.usingKeyboard or not InputManager.mouse.active then
+    --  GUIManager.fiberList:fork(self.buttonWindow.show, self.buttonWindow)
+    --end
   end
   FieldManager:showGrid()
   FieldManager.renderer:moveToTile(target)
@@ -319,8 +322,9 @@ function ActionGUI:startGridSelecting(target)
 end
 -- Hides grid and cursor.
 function ActionGUI:endGridSelecting()
-  if self.confirmWindow then
-    GUIManager.fiberList:fork(self.confirmWindow.hide, self.confirmWindow)
+  if self.buttonWindow then
+    self.buttonWindow.active = false
+    GUIManager.fiberList:fork(self.buttonWindow.hide, self.buttonWindow)
   end
   if self.stepWindow then
     GUIManager.fiberList:fork(self.stepWindow.hide, self.stepWindow)
@@ -329,7 +333,7 @@ function ActionGUI:endGridSelecting()
     GUIManager.fiberList:fork(self.targetWindow.hide, self.targetWindow)
   end
   while (self.targetWindow and not self.targetWindow.closed 
-      or self.confirmWindow and not self.confirmWindow.closed
+      or self.buttonWindow and not self.buttonWindow.closed
       or self.stepWindow and not self.stepWindow.closed) do
     Fiber:wait()
   end

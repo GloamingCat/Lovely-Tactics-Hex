@@ -76,6 +76,7 @@ function IntroWindow:inspectConfirm()
 end
 -- Overrides GridWindow:onCancel.
 function IntroWindow:onCancel()
+  FieldCommandWindow.onCancel(self)
   self:inspectConfirm()
 end
 

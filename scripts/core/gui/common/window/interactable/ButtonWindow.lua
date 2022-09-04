@@ -31,6 +31,7 @@ function ButtonWindow:init(gui, names, align, ...)
   self.align = align or 'center'
   GridWindow.init(self, gui, ...)
   self.offBoundsCancel = false
+  self.active = true
 end
 -- Implements GridWindow:creatwWidgets.
 -- Creates a button for each choice.
@@ -52,8 +53,9 @@ end
 -- Overrides GridWindow:update.
 -- Opens or closes automatically depending if the player is using the mouse or not.
 function ButtonWindow:update()
-  if self.GUI.open then
-    if InputManager.usingKeyboard or not InputManager.mouse.active then
+  if self.GUI.open and self.active then
+    self.lastOpen = InputManager.usingKeyboard or not InputManager.mouse.active
+    if self.lastOpen then
       if self.open then
         GUIManager.fiberList:fork(self.hide, self)
       end

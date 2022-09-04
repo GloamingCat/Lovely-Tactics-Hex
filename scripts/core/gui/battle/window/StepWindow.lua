@@ -21,8 +21,9 @@ local StepWindow = class(Window)
 
 -- Overrides Window:init.
 function StepWindow:init(GUI)
-  Window.init(self, GUI, 80, 24, Vector(ScreenManager.width / 2 - 52, 
-      ScreenManager.height / 2 - 24))
+  local w, h, m = 80, 40, GUI:windowMargin()
+  Window.init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - m, 
+      ScreenManager.height / 2 - h / 2 - m))
 end
 -- Overrides Window:createContent.
 -- Creates step text.
