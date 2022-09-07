@@ -23,6 +23,8 @@ function GUI:init(parent)
   self:createWindows()
   self.open = false
   self.closed = true
+  self.visible = false
+  self.animationFibers = {}
 end
 -- Creates the GUI's windows and sets the first active window.
 function GUI:createWindows()
@@ -115,10 +117,15 @@ function GUI:show()
   if self.open then
     return
   end
+  self.visible = true
   self.closed = false
+  for _, anim in ipairs(self.animationFibers) do
+    anim:interrupt()
+  end
+  self.animationFibers = { Fiber }
   for window in self.windowList:iterator() do
     if window.lastOpen then
-      GUIManager.fiberList:fork(window.show, window)
+      self.animationFibers[#self.animationFibers + 1] = GUIManager.fiberList:fork(window.show, window)
     end
   end
   local done
@@ -131,27 +138,35 @@ function GUI:show()
     end
     Fiber:wait()
   until done
+  self.animationFibers = {}
   self.open = true
 end
 -- [COROUTINE] Hides all windows.
 function GUI:hide()
-  if not self.closed then
-    self.open = false
-    for window in self.windowList:iterator() do
-      GUIManager.fiberList:fork(window.hide, window, true)
-    end
-    local done
-    repeat
-      done = true
-      for window in self.windowList:iterator() do
-        if window.scaleY > 0 then
-          done = false
-        end
-      end
-      Fiber:wait()
-    until done
-    self.closed = true
+  if self.closed then
+    return
   end
+  self.visible = false
+  self.open = false
+  for _, anim in ipairs(self.animationFibers) do
+    anim:interrupt()
+  end
+  self.animationFibers = { Fiber }
+  for window in self.windowList:iterator() do
+    self.animationFibers[#self.animationFibers + 1] =GUIManager.fiberList:fork(window.hide, window, true)
+  end
+  local done
+  repeat
+    done = true
+    for window in self.windowList:iterator() do
+      if window.scaleY > 0 then
+        done = false
+      end
+    end
+    Fiber:wait()
+  until done
+  self.animationFibers = {}
+  self.closed = true
 end
 
 return GUI

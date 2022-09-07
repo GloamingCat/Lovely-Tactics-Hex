@@ -68,14 +68,13 @@ function EventSheet:startBattle(args)
   end
   args.fieldID = tonumber(args.fieldID)
   args.fade = tonumber(args.fade)
-  if not args.keepHud then
-    FieldManager.hud:hide()
-  end
+  self.vars.hudOpen = FieldManager.hud.visible
   FieldManager.currentField.vars.onBattle = true
   if self.char then
     self.char.vars.onBattle = true
   end
   self.vars.onBattle = true
+  FieldManager.hud:hide()
   BattleManager.params = args
   FieldManager:storePlayerState()
   -- Openning
@@ -107,7 +106,7 @@ function EventSheet:finishBattle(args)
   if args.fade then
     FieldManager.renderer:fadein(args.fade, args.wait)
   end
-  if not args.keepHud then
+  if self.vars.hudOpen then
     FieldManager.hud:show()
   end
   self.vars.onBattle = nil

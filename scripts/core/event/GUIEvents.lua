@@ -35,11 +35,10 @@ end
 -- @param(args.items : table) Array of items.
 -- @param(args.sell : boolean) Sell enabling.
 function EventSheet:openShopMenu(args)
-  if not args.keepHud then
-    FieldManager.hud:hide()
-  end
+  self.vars.hudOpen = FieldManager.hud.visible
+  FieldManager.hud:hide()
   GUIManager:showGUIForResult(ShopGUI(nil, args.items, args.sell))
-  if not args.keepHud then
+  if self.vars.hudOpen then
     FieldManager.hud:show()
   end
 end

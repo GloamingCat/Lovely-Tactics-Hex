@@ -21,7 +21,7 @@ local StepWindow = class(Window)
 
 -- Overrides Window:init.
 function StepWindow:init(GUI)
-  local w, h, m = 80, 40, GUI:windowMargin()
+  local w, h, m = 80, 30, GUI:windowMargin()
   Window.init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - m, 
       ScreenManager.height / 2 - h / 2 - m))
 end
@@ -31,9 +31,14 @@ function StepWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local steps = TurnManager:currentCharacter().steps
   local w = self.width - self:paddingX() * 2
-  local pos = Vector(self:paddingX() - self.width / 2, self:paddingY() - self.height / 2 - 3)
+  local h = self.height - self:paddingY() * 2
+  local pos = Vector(self:paddingX() - self.width / 2, self:paddingY() - self.height / 2)
   local text = SimpleText(Vocab.steps .. ':', pos, w)
-  local value = SimpleText('' .. steps, pos, w, 'right')
+  local value = SimpleText('' .. steps, pos, w)
+  text:setAlign('left', 'center')
+  text:setMaxHeight(h)
+  value:setAlign('right', 'center')
+  value:setMaxHeight(h)
   self.content:add(text)
   self.content:add(value)
 end
