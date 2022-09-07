@@ -87,6 +87,10 @@ function CharacterBase:initGraphics(instData, animations, portraits, transform, 
   if instData.visible == false then
     self:setVisible(false)
   end
+  local frame = save and save.animIndex or instData.frame
+  if frame then
+    self.animation:setIndex(frame)
+  end
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -168,6 +168,42 @@
         },
         "id": 8,
         "children": []
+      },
+      {
+        "data": {
+          "description": "Half of the HP.",
+          "icon": {
+            "id": 32,
+            "col": 1,
+            "row": 1
+          },
+          "price": 15,
+          "sellable": true,
+          "skillID": 1,
+          "consume": true,
+          "needsUser": false,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "b.hp() / 2",
+              "successRate": "100",
+              "heal": true,
+              "absorb": false,
+              "statusID": -1
+            }
+          ],
+          "attributes": [],
+          "slot": "",
+          "allSlots": false,
+          "blocked": [],
+          "equipStatus": [],
+          "elements": [],
+          "equipAttributes": [],
+          "name": "Apple",
+          "tags": []
+        },
+        "id": 11,
+        "children": []
       }
     ]
   },

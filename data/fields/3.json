@@ -1216,6 +1216,7 @@
       "charID": 0,
       "battlerID": -1,
       "animation": "Idle",
+      "frame": 1,
       "direction": 225,
       "scripts": [
         {

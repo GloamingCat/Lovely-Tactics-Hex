@@ -761,6 +761,7 @@
       "charID": 5,
       "battlerID": -1,
       "animation": "Idle",
+      "frame": 1,
       "direction": 315,
       "scripts": [
         {
@@ -805,6 +806,7 @@
       "charID": 10,
       "battlerID": -1,
       "animation": "Idle",
+      "frame": 1,
       "direction": 0,
       "scripts": [
         {

@@ -763,6 +763,7 @@
       "charID": 0,
       "battlerID": -1,
       "animation": "Idle",
+      "frame": 1,
       "direction": 225,
       "scripts": [
         {
@@ -796,7 +797,7 @@
       "repeatCollisions": false
     },
     {
-      "key": "Ribbon",
+      "key": "Apple",
       "persistent": true,
       "passable": true,
       "visible": true,
@@ -806,8 +807,9 @@
       "party": -1,
       "charID": 8,
       "battlerID": -1,
-      "animation": "Equip",
-      "direction": 180,
+      "animation": "Potion",
+      "frame": 2,
+      "direction": 45,
       "scripts": [
         {
           "global": false,
@@ -821,7 +823,7 @@
           "tags": [
             {
               "key": "id",
-              "value": "7"
+              "value": "11"
             }
           ]
         }

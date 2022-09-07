@@ -21,7 +21,7 @@ local AnimatedObject = class(Object)
 
 -- Creates sprite and animation list.
 -- @param(animations : table) An array of animation data.
--- @param(animID : number) The start animation's ID.
+-- @param(initAnim : number) The initial animation's name.
 -- @param(sets : boolean) True if animations are separated in sets.
 function AnimatedObject:initGraphics(animations, initAnim, transform, sets)
   self.animName = nil
@@ -88,20 +88,28 @@ end
 
 -- Plays an animation by name, ignoring if the animation is already playing.
 -- @param(name : string) Animation's name.
--- @param(row : number) The row of the animation's sprite sheet to play.
+-- @param(row : number) The row of the animation's sprite sheet to play (0 by default).
+-- @param(index : number) Starting animation index (1 by default).
 -- @ret(Animation) The animation that started to play (or current one if the name is the same).
-function AnimatedObject:playAnimation(name, row)
+function AnimatedObject:playAnimation(name, row, index)
   if self.animName == name then
+    if row then
+      self.animation:setRow(row)
+    end
+    if index then
+      self.animation:setIndex(index)
+    end
     return self.animation
   else
-    return self:replayAnimation(name, row)
+    return self:replayAnimation(name, row, index)
   end
 end
 -- Plays an animation by name.
 -- @param(name : string) animation's name (optional; current animation by default)
--- @param(row : number) The row of the animation's sprite sheet to play.
+-- @param(row : number) The row of the animation's sprite sheet to play (0 by default).
+-- @param(index : number) Starting animation index (1 by default).
 -- @ret(Animation) The animation that started to play.
-function AnimatedObject:replayAnimation(name, row)
+function AnimatedObject:replayAnimation(name, row, index)
   name = name or self.animName
   local data = self.animationData[name]
   assert(data, "Animation does not exist: " .. tostring(name))
@@ -118,6 +126,9 @@ function AnimatedObject:replayAnimation(name, row)
   anim.sprite = self.sprite
   if row then
     anim:setRow(row)
+  end
+  if index then
+    anim:setIndex(index)
   end
   anim.paused = false
   self.sprite.renderer.needsRedraw = true
