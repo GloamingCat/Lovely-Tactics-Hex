@@ -24,9 +24,6 @@ function EventSheet:deleteChar(args)
   if not char then
     return
   end
-  if args.permanent and char.persistent then
-    FieldManager:storeCharData(FieldManager.currentField.id, char)
-  end
   char:destroy(args.permanent)
 end
 -- Hides a character.

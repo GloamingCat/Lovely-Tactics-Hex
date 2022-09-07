@@ -87,12 +87,14 @@ function FieldManager:loadTransition(transition, fieldSave)
   if self.currentField then
     self:storeFieldData()
   end
+  self.playerInput = false
   local fieldData = self:loadField(transition.fieldID, fieldSave)
   FieldLoader.createTransitions(self.currentField, fieldData.prefs.transitions)
   self.hud = self.hud or FieldHUD()
   self:playFieldBGM()
   self:initializePlayer(transition, fieldSave)
   self:runLoadScripts()
+  self.playerInput = true
 end
 -- Plays current field's BGM, if not already playing.
 function FieldManager:playFieldBGM()
@@ -105,6 +107,9 @@ function FieldManager:playFieldBGM()
 end
 -- Execute current field's load script and characters' load scripts.
 function FieldManager:runLoadScripts()
+  for char in self.characterList:iterator() do
+    char:onLoad()
+  end
   local script = self.currentField.loadScript
   if script and script.name ~= '' then
     local fiberList = (script.global and self or self.currentField).fiberList
@@ -112,9 +117,6 @@ function FieldManager:runLoadScripts()
     if script.wait then
       fiber:waitForEnd()
     end
-  end
-  for char in self.characterList:iterator() do
-    char:onLoad()
   end
   for char in self.characterList:iterator() do
     self.currentField.fiberList:fork(char.resumeScripts, char)

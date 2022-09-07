@@ -26,12 +26,12 @@ return function(script)
     if escaped then
       script.char.cooldown = 180
     else
-      script:hideChar { key = 'self', deactivate = true }
+      script:hideChar { deactivate = script.args.deactivate, key = 'self' }
     end
     script:finishBattle { fade = 60, wait = true }
     print(script.battleLog)
     if not escaped then
-      script:deleteChar { permanent = true, key = 'self' }
+      script:deleteChar { permanent = script.args.permanent, key = 'self' }
     end
   end)
   
