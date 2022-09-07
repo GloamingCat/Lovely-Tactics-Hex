@@ -404,7 +404,7 @@
           "persistent": false,
           "ai": [
             {
-              "condition": "self:chance(100)",
+              "condition": "self:chance(50)",
               "name": "rule/AttackRule.lua",
               "tags": [
                 {
@@ -415,12 +415,21 @@
             },
             {
               "condition": "",
-              "name": "rule/DefendRule.lua",
-              "tags": []
+              "name": "rule/RushRule.lua",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "2"
+                },
+                {
+                  "key": "target",
+                  "value": "target.battler.state.hp < target.battler.mhp() / 2"
+                }
+              ]
             },
             {
               "condition": "",
-              "name": "rule/RushRule.lua",
+              "name": "rule/DefendRule.lua",
               "tags": []
             }
           ],
@@ -450,7 +459,8 @@
             0
           ],
           "skills": [
-            7
+            7,
+            10
           ],
           "status": [],
           "elements": [

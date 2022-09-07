@@ -24,6 +24,9 @@ function SkillRule:init(...)
   AIRule.init(self, ...)
   local id = self.tags and tonumber(self.tags.id)
   self.skill = id and self.battler.skillList[id] or self.battler.attackSkill
+  if self.tags and self.tags.target then
+    self.targetCondition = loadformula(self.tags.target, 'action, user, target')
+  end
   assert(self.skill, tostring(self.battler) .. ' does not have a skill!')
 end
 -- Prepares the rule to be executed (or not, if it1s not possible).
@@ -46,11 +49,14 @@ function SkillRule:isValidTarget(char, eff)
   eff = eff or self.skill.effects[1]
   if eff and (char.party == self.input.user.party) ~= eff.heal then
     return false
-  elseif self.skill.effectCondition then
-    return self.skill:effectCondition(self.input.user, char)
-  else
-    return true
   end
+  if self.targetCondition and not self:targetCondition(self.input.user, char) then
+    return false
+  end
+  if self.skill.effectCondition and not self.skill:effectCondition(self.input.user, char) then
+    return false
+  end
+  return true
 end
 -- Selects the closest valid character target.
 -- @param(eff : table) Effect to check validity (optional, first effect by default).
