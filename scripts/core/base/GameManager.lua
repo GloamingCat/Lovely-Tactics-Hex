@@ -28,8 +28,8 @@ function GameManager:init()
   for i = 1, #modes do
     maxWidth = math.max(maxWidth, modes[i].width)
   end
-  self.mobileWidth = maxWidth <= 900
-  self.web = false
+  self.mobileMode = maxWidth <= 900
+  self.webMode = false
   self.paused = false
   self.cleanTime = 300
   self.cleanCount = 0
@@ -49,14 +49,17 @@ function GameManager:readArguments(args)
     if arg == '-editor' then
       self.editor = true
     elseif arg == '-mobile' then
-      self.mobileWidth = true
+      self.mobileMode = true
     elseif arg == '-web' then
-      self.web = true
+      self.webMode = true
     end
   end
+  ScreenManager:initCanvas()
 end
 -- Starts the game.
 function GameManager:start()
+  print('Mobile: ' .. tostring(self:isMobile()))
+  print('Web: ' .. tostring(self:isWeb()))
   self.fpsFont = ResourceManager:loadFont(Fonts.fps)
   self.pauseFont = ResourceManager:loadFont(Fonts.pause)
   if self.editor then
@@ -64,6 +67,7 @@ function GameManager:start()
   else
     GUIManager.fiberList:fork(GUIManager.showGUIForResult, GUIManager, TitleGUI(nil))
   end
+  print('Game started.')
 end
 -- Sets current save.
 -- @param(save : table) A save table loaded by SaveManager.
@@ -105,17 +109,17 @@ end
 -- Checks if game is running on a standalone desktop version.
 -- @ret(boolean)
 function GameManager:isDesktop()
-  return Config.platform == 0 and not self.web and not self.mobileWidth
+  return Config.platform == 0 and not self.webMode and not self.mobileMode
 end
 -- Checks if game is running on a mobile device (browser or not).
 -- @ret(boolean)
 function GameManager:isMobile()
-  return Config.platform % 2 == 1 or self.mobileWidth
+  return Config.platform % 2 == 1 or self.mobileMode
 end
 -- Checks if game is running on a web browser (mobile or not).
 -- @ret(boolean)
 function GameManager:isWeb()
-  return Config.platform >= 2 or self.web
+  return Config.platform >= 2 or self.webMode
 end
 
 ---------------------------------------------------------------------------------------------------

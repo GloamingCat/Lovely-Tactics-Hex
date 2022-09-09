@@ -31,7 +31,7 @@ end
 
 -- Chooses new resolution.
 function ResolutionWindow:onButtonConfirm(button)
-  ScreenManager:setMode( button.index)
+  ScreenManager:setMode(button.index % self:rowCount())
 end
 
 ---------------------------------------------------------------------------------------------------

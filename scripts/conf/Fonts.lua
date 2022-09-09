@@ -41,7 +41,7 @@ return  {
   pause = medium_font,
 
 	-- Settings
-	scale = 4,
-	outlineSize = 4
+	scale = 5,
+	outlineSize = 5
 
 }

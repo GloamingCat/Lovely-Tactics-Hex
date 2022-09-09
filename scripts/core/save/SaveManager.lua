@@ -68,7 +68,6 @@ function SaveManager:newConfig()
   conf.wasd = false
   conf.keyMap = copyTable(KeyMap)
   conf.useMouse = true
-  conf.resolution = 2
   return conf
 end
 

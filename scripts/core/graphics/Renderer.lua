@@ -31,7 +31,7 @@ local Renderer = class(Transformable)
 -- @param(minDepth : number) Minimum depth of a sprite.
 -- @param(maxDepth : number) Maximum depth of a sprite.
 -- @param(batchSize : number) Max number of sprites.
-function Renderer:init(width, height, minDepth, maxDepth, batchSize)
+function Renderer:init(minDepth, maxDepth, batchSize)
   Transformable.init(self)
   self.minDepth = minDepth
   self.maxDepth = maxDepth
@@ -44,13 +44,13 @@ function Renderer:init(width, height, minDepth, maxDepth, batchSize)
   self.maxx = math.huge
   self.miny = -math.huge
   self.maxy = math.huge
-  self:resizeCanvas(width, height)
 end
 -- Resize canvas acording to the zoom.
 -- @param(newW : number) New width of the canvas in pixels.
 -- @param(newH : number) New height of the canvas in pixels.
 function Renderer:resizeCanvas(newW, newH)
   if newW ~= self.canvas:getWidth() or newH ~= self.canvas:getHeight() then
+    assert(newW > 0 and newH > 0, "Renderer canvas dimensions are zero!")
     self.canvas = lgraphics.newCanvas(newW, newH)
     self.needsRedraw = true
   end

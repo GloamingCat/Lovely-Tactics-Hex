@@ -32,11 +32,6 @@ function ScreenManager:init()
   love.graphics.setDefaultFilter("nearest", "nearest")
   self.width = Config.screen.nativeWidth
   self.height = Config.screen.nativeHeight
-  if not GameManager:isMobile() then
-    self.scalingType = Config.screen.scaleType or 1
-  else
-    self.scalingType = Config.screen.mobileScaleType or 2
-  end
   self.pixelPerfect = Config.screen.pixelPerfect
   self.canvasFilter = "nearest"
   self.scaleX = 0
@@ -46,11 +41,20 @@ function ScreenManager:init()
   self.canvasScaleX = 1
   self.canvasScaleY = 1
   self.closed = false
+  self.mode = nil
+  self.drawCalls = 0
   self:clear()
+end
+-- Creates the canvas, after the screen size is set.
+function ScreenManager:initCanvas()
+  if not GameManager:isMobile() then
+    self.scalingType = Config.screen.scaleType or 1
+  else
+    self.scalingType = Config.screen.mobileScaleType or 2
+  end
   local w = lgraphics.getWidth()
   local h = lgraphics.getHeight()
   self:onResize(w, h)
-  self.drawCalls = 0
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -103,30 +107,32 @@ function ScreenManager:setScale(x, y)
   if self.scalingType == 0 then
     return
   elseif self.scalingType == 1 then
-    local m = floor(min(x, y))
+    local m = min(x, y)
+    if m > 1 then
+      m = floor(m)
+    end
     x, y = m, m
   elseif self.scalingType == 2 then
     local m = min(x, y)
     x, y = m, m
   end
   if self.pixelPerfect then
-    self.scaleX = floor(x)
-    self.scaleY = floor(y)
-    self.canvasScaleX = x / self.scaleX
-    self.canvasScaleY = y / self.scaleY
+    self.scaleX = math.ceil(x)
+    self.scaleY = math.ceil(y)
   else
     self.scaleX = x
     self.scaleY = y
-    self.canvasScaleX = 1
-    self.canvasScaleY = 1
   end
+  self.canvasScaleX = x / self.scaleX
+  self.canvasScaleY = y / self.scaleY
   self.canvasFilter = x == self.scaleX and y == self.scaleY and "nearest" or "linear"
   local newW = self.width * self.scaleX
   local newH = self.height * self.scaleY
   if self.canvas and newW == self.canvas:getWidth() and newH == self.canvas:getHeight() then
-    self.canvas:setFilter(self.canvasFilter)
+    self.canvas:setFilter(self.canvasFilter, self.canvasFilter)
     return false
   else
+    assert(newW > 0 and newH > 0, "Screen canvas dimensions are zero!")
     self.canvas = lgraphics.newCanvas(newW, newH)
     self.canvas:setFilter(self.canvasFilter)
     return true
@@ -201,19 +207,20 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Sets window mode (windowed or fullscreen).
--- @param(mode : number) 1, 2, 3 are window modes, 4 is fullscreen.
+-- @param(mode : number) 0 is fullscreen, 1+ are scales for window modes.
 function ScreenManager:setMode(mode)
+  assert(GameManager:isDesktop(), "Mode cannot be set programmatically in this platform.")
   self.mode = mode
   local sx = mode or Config.screen.widthScale / 100
   local sy = mode or Config.screen.heightScale / 100
-  if mode == 4 then
+  if mode == 0 then
     local modes = love.window.getFullscreenModes(1)
     local mode = modes[1]
     sx = mode.width / self.width
     sy = mode.height / self.height
   end
   self:setScale(sx, sy)
-  love.window.setMode(self:totalWidth(), self:totalHeight(), {fullscreen = mode == 4})
+  love.window.setMode(self:totalWidth(), self:totalHeight(), {fullscreen = mode == 0})
   local w, h = love.window.getMode()
   self:onResize(w, h)
 end
@@ -260,7 +267,7 @@ function ScreenManager:openWindow()
   self.closed = false
   local newW = self.width * self.scaleX
   local newH = self.height * self.scaleY
-  love.window.setMode(newW, newH, {fullscreen = self.mode == 4})
+  love.window.setMode(newW, newH, {fullscreen = self.mode == 0})
 end
 
 return ScreenManager

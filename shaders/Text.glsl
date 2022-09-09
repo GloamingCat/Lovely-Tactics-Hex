@@ -14,8 +14,8 @@ extern number outlineSize;
 // The scale of the step
 extern vec2 stepSize;
 
-#define N_STEPS 32.0
-#define MINSTEP 32.0
+#define N_STEPS 48.0
+#define MINSTEP 48.0
 
 vec4 effect(vec4 color, sampler2D texture, vec2 texture_coords, vec2 screen_coords) {
   vec4 initialColor = texture2D(texture, texture_coords);

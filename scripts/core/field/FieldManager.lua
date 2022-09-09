@@ -150,7 +150,8 @@ function FieldManager:initializeCamera(data, width, height, images)
   local l = 4 * #data.layers.terrain + #data.layers.obstacle + #data.characters
   local mind = mathf.minDepth(data.sizeX, data.sizeY, h)
   local maxd = mathf.maxDepth(data.sizeX, data.sizeY, h)
-  local camera = FieldCamera(width, height, mind, maxd, data.sizeX * data.sizeY * l)
+  local camera = FieldCamera(mind, maxd, data.sizeX * data.sizeY * l)
+  camera:resizeCanvas(width, height)
   camera:setXYZ(mathf.pixelCenter(data.sizeX, data.sizeY))
   if self.renderer then
     camera:setColor(self.renderer.color)
