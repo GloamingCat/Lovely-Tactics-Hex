@@ -44,7 +44,7 @@ function SaveWindow:createSaveButton(file, name)
   button.saveInfo = SaveInfo(nil, w - self:paddingX(), h)
   button.content:add(button.saveInfo)
   button.file = file
-  if not SaveManager.saves[file] then
+  if SaveManager:getHeader(file) == nil then
     button.confirmSound = Config.sounds.save or button.confirmSound
     button.clickSound = button.confirmSound
   end
@@ -57,7 +57,7 @@ end
 
 -- Refresh each member info.
 function SaveWindow:refreshSave(button)
-  button.saveInfo:refreshInfo(SaveManager.saves[button.file])
+  button.saveInfo:refreshInfo(SaveManager:getHeader(button.file))
   button:updatePosition(self.position)
   button:refreshEnabled()
 end
@@ -78,7 +78,7 @@ end
 
 -- When player chooses a file to load.
 function SaveWindow:onButtonConfirm(button)
-  if SaveManager.saves[button.file] then
+  if SaveManager:getHeader(button.file) then
     local result = self.GUI:showWindowForResult(self.confirmWindow)
     if result == 0 then
       return

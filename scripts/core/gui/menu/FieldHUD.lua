@@ -74,7 +74,7 @@ end
 -- Refresh each member info.
 -- @param(all : boolean) True to update all info. False to update only playtime.
 function FieldHUD:refreshSave(all)
-  local save = SaveManager:getHeader()
+  local save = SaveManager:createHeader()
   if all then
     self.saveInfoWindow.info:refreshInfo(save)
     self.saveInfoWindow.info:updatePosition(self.saveInfoWindow.position)

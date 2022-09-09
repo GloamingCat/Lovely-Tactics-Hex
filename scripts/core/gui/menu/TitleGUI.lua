@@ -61,7 +61,7 @@ function TitleGUI:createCommandWindow()
 end
 -- Creates the window with the save files to load.
 function TitleGUI:createLoadWindow()
-  if next(SaveManager.saves) ~= nil then
+  if SaveManager:hasSaves() then
     local window = LoadWindow(self)
     window:setVisible(false)
     self.loadWindow = window

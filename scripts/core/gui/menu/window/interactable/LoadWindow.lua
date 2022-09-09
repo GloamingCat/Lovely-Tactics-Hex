@@ -18,7 +18,7 @@ local LoadWindow = class(SaveWindow)
 
 -- Overrides SaveWindow:createSaveButton.
 function LoadWindow:createSaveButton(file, name)
-  if SaveManager.saves[file] then
+  if SaveManager:getHeader(file) then
     return SaveWindow.createSaveButton(self, file, name)
   end
 end
@@ -37,7 +37,7 @@ function LoadWindow:onButtonCancel(button)
 end
 -- Button enabled condition.
 function LoadWindow:buttonEnabled(button)
-  return SaveManager.saves[button.file] ~= nil
+  return SaveManager:getHeader(button.file) ~= nil
 end
 -- @ret(string) String representation (for debugging).
 function LoadWindow:__tostring()
