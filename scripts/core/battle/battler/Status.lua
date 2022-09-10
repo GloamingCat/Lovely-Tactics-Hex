@@ -30,11 +30,12 @@ function Status:init(data, list, caster, state)
   self.statusList = list
   self.lifeTime = state and state.lifeTime or 0
   self.caster = state and state.caster or caster
-  if self.data.duration >= 0 then
-    self.duration = self.data.duration
+  if data.duration >= 0 then
+    self.duration = data.duration
   else
     self.duration = math.huge
   end
+  self.cancel = data.cancel
   self.tags = Database.loadTags(self.data.tags)
   -- Attribute bonus
   self.attAdd = {}

@@ -161,7 +161,7 @@
           "battlerID": -1,
           "x": 2,
           "y": 3,
-          "list": 2
+          "list": 1
         },
         {
           "key": "e2",
@@ -169,7 +169,7 @@
           "battlerID": -1,
           "x": 4,
           "y": 3,
-          "list": 2
+          "list": 1
         }
       ],
       "name": "Boss Party",

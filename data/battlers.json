@@ -493,6 +493,11 @@
           "persistent": false,
           "ai": [
             {
+              "condition": "",
+              "name": "rule/CallRule.lua",
+              "tags": []
+            },
+            {
               "condition": "self:chance(50)",
               "name": "rule/AttackRule.lua",
               "tags": [

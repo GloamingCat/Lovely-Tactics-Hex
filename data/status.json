@@ -257,7 +257,9 @@
           ],
           "elements": [],
           "statusDef": [],
-          "cancel": [],
+          "cancel": [
+            5
+          ],
           "name": "ATK-",
           "tags": []
         },
@@ -296,7 +298,9 @@
           ],
           "elements": [],
           "statusDef": [],
-          "cancel": [],
+          "cancel": [
+            6
+          ],
           "name": "DEF-",
           "tags": []
         },
@@ -443,7 +447,9 @@
           ],
           "elements": [],
           "statusDef": [],
-          "cancel": [],
+          "cancel": [
+            15
+          ],
           "name": "ATK+",
           "tags": []
         },
@@ -482,7 +488,9 @@
           ],
           "elements": [],
           "statusDef": [],
-          "cancel": [],
+          "cancel": [
+            16
+          ],
           "name": "DEF+",
           "tags": []
         },
@@ -576,7 +584,10 @@
             }
           ],
           "statusDef": [],
-          "cancel": [],
+          "cancel": [
+            10,
+            11
+          ],
           "name": "Fire Elemental",
           "tags": []
         },
@@ -626,7 +637,10 @@
             }
           ],
           "statusDef": [],
-          "cancel": [],
+          "cancel": [
+            9,
+            11
+          ],
           "name": "Ice Elemental",
           "tags": []
         },
@@ -676,7 +690,10 @@
             }
           ],
           "statusDef": [],
-          "cancel": [],
+          "cancel": [
+            9,
+            10
+          ],
           "name": "Thunder Elemental",
           "tags": []
         },

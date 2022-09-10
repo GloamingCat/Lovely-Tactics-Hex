@@ -124,6 +124,9 @@ function StatusList:addStatus(id, state, character, caster)
     if status.onAdd then
       status:onAdd(self.battler, character)
     end
+    for _, id in ipairs(status.cancel) do
+      self:removeAllStatus(id, character)
+    end
     if character then
       self:updateGraphics(character)
     end

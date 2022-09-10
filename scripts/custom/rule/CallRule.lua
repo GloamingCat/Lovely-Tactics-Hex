@@ -24,7 +24,7 @@ function CallRule:onSelect(user)
   local backup = troop:backupMembers()
   self.input = ActionInput(CallAction(), user or TurnManager:currentCharacter())
   self.input.action:onSelect(self.input)
-  if backup[1] then
+  if backup.size > 0 then
     local validTiles = 0
     for tile in FieldManager.currentField:gridIterator() do
       if tile.gui.selectable then
