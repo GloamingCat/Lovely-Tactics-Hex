@@ -120,6 +120,7 @@ end
 function EventSheet:openChoiceWindow(args)
   self:createGUI()
   local window = ChoiceWindow(self.gui, args)
+  window:setXYZ(args.x, args.y, -5)
   window:show()
   self.gui:setActiveWindow(window)
   local result = self.gui:waitForResult()

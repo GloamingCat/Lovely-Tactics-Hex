@@ -830,7 +830,7 @@
           "onInteract": true,
           "onCollide": false,
           "description": "",
-          "name": "test/NewMember.lua",
+          "name": "test/Merlin.lua",
           "tags": []
         }
       ],

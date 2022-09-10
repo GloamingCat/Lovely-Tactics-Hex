@@ -51,32 +51,8 @@ function DialogueWindow:setPortrait(icon)
     self.portrait = SimpleImage(portrait, x - w / 2, y - h / 2, 1)
     self.portrait:updatePosition(self.position)
     self.content:add(self.portrait)
-    self.indent = w
+    self.indent = w / self.width * 2 - 0.2
   end
-end
--- Override. Sets default name window position.
-local DialogueWindow_createContent = DialogueWindow.createContent
-function DialogueWindow:createContent(width, height)
-  DialogueWindow_createContent(self, width, height)
-  local nameX = self.position.x - 0.45 * self.width / 2
-  local nameY = self.position.y - 1.25 * self.height / 2
-  self.nameWindow:setXYZ(nameX, nameY)
-end
--- Override. Adjusts name window position.
-local DialogueWindow_setXYZ = DialogueWindow.setXYZ
-function DialogueWindow:setXYZ(...)
-  DialogueWindow_setXYZ(self, ...)
-  local nameX = self.position.x - 0.45 * self.width / 2
-  local nameY = self.position.y - 1.25 * self.height / 2
-  self.nameWindow:setXYZ(nameX, nameY)
-end
--- Override. Adjusts name window position.
-local DialogueWindow_resize = DialogueWindow.resize
-function DialogueWindow:resize(...)
-  DialogueWindow_resize(self, ...)
-  local nameX = self.position.x - 0.45 * self.width / 2
-  local nameY = self.position.y - 1.25 * self.height / 2
-  self.nameWindow:setXYZ(nameX, nameY)
 end
 -- Override. Adjusts text position and width.
 local DialogueWindow_showDialogue = DialogueWindow.showDialogue
@@ -90,9 +66,7 @@ end
 -- Override. Adjusts name window position.
 local DialogueWindow_setName = DialogueWindow.setName
 function DialogueWindow:setName(text, x, ...)
-  if self.indent then
-    x = self.indent - self.width / 2 + self.nameWidth / 2
-  end
+  x = (x or -0.7) + (self.indent or 0)
   DialogueWindow_setName(self, text, x, ...)
 end
 

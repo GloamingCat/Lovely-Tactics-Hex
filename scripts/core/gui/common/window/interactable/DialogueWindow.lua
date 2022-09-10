@@ -83,9 +83,7 @@ end
 -- @param(speaker : table) The speaker's name and position of name box (optional).
 function DialogueWindow:showDialogue(text, align, speaker)
   if speaker then
-    local x = speaker.x and speaker.x * self.width / 2
-    local y = speaker.y and speaker.y * self.height / 2
-    self:setName(speaker.name, x, y)
+    self:setName(speaker.name, speaker.x, speaker.y)
   end
   self.dialogue:setAlign(align)
   self.dialogue:show()
@@ -102,6 +100,8 @@ end
 -- Shows the name of the speaker.
 -- @param(text : string) Nil or empty to hide window, any other string to show.
 function DialogueWindow:setName(text, x, y)
+  x = (x or -0.70) * self.width / 2
+  y = (y or -1.25) * self.height / 2
   if text and text ~= '' then
     self.nameWindow:updateText(text)
     self.nameWindow:packText()

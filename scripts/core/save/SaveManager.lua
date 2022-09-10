@@ -176,7 +176,8 @@ function SaveManager:createHeader(save)
   return { members = members,
     playTime = save.playTime,
     money = troop.money,
-    location = FieldManager.currentField.name }
+    location = FieldManager.currentField.name,
+    version = save.version }
 end
 -- Stores current save.
 -- @param(name : string) File name.

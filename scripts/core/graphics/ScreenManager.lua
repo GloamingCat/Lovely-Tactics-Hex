@@ -81,6 +81,11 @@ function ScreenManager:draw()
   lgraphics.setShader(self.shader)
   lgraphics.draw(self.canvas, self.offsetX, self.offsetY, 0, self.canvasScaleX, self.canvasScaleY)
 end
+
+---------------------------------------------------------------------------------------------------
+-- Renderers
+---------------------------------------------------------------------------------------------------
+
 -- Set a renderer in the given order.
 -- @param(renderer : Renderer)
 -- @param(i : number)
@@ -93,6 +98,14 @@ function ScreenManager:clear()
   self.shader = nil
   self.renderers = {}
   self.rendererCount = 0
+end
+-- Resizes renderers' canvases.
+function ScreenManager:refreshRenderers()
+  for i = 1, self.rendererCount do
+    if self.renderers[i] then
+      self.renderers[i]:resizeCanvas(self.canvas:getWidth(), self.canvas:getHeight())
+    end
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -233,11 +246,7 @@ function ScreenManager:onResize(w, h)
   self:setScale(scaleX, scaleY)
   self.offsetX = (w - self:totalWidth()) / 2
   self.offsetY = (h - self:totalHeight()) / 2
-  for i = 1, self.rendererCount do
-    if self.renderers[i] then
-      self.renderers[i]:resizeCanvas(self.canvas:getWidth(), self.canvas:getHeight())
-    end
-  end
+  self:refreshRenderers()
 end
 -- Called when window receives/loses focus.
 -- @param(f : boolean) True if screen received focus, false if lost.

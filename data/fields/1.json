@@ -782,8 +782,8 @@
           "onLoad": false,
           "onInteract": true,
           "onCollide": false,
-          "description": "Seller",
-          "name": "test/Seller.lua",
+          "description": "Lancelot",
+          "name": "test/Lancelot.lua",
           "tags": [
             {
               "key": "fieldID",

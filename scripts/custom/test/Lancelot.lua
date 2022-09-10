@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Seller
+Lancelot
 ---------------------------------------------------------------------------------------------------
 Test behavior for choices, shop menu and battle.
 
@@ -16,7 +16,7 @@ return function(script)
     script:showDialogue { id = 1, character = 'self', portrait = 'BigIcon',  message = 
       Vocab.dialogues.npc.WhatDoYou
     }
-    script:openChoiceWindow { width = 70, 
+    script:openChoiceWindow { width = 70, y = -20,
       choices = {
         Vocab.dialogues.npc.Shop,
         Vocab.dialogues.npc.Battle,
@@ -55,6 +55,7 @@ return function(script)
   script:addEvent(function()
     script:finishBattle { fade = 60, wait = true }
     script:showDialogue { id = 1, character = 'self', portrait = 'BigIcon', message = script.battleLog }
-  end)
+  end,
+  function() return script.char.vars.choiceInput == 2 end)
 
 end

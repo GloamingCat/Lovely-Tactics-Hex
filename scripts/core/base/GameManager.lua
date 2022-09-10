@@ -285,6 +285,7 @@ function GameManager:restart()
   ScreenManager:clear()
   FieldManager = require('core/field/FieldManager')()
   GUIManager = require('core/gui/GUIManager')()
+  ScreenManager:refreshRenderers()
   self:start()
 end
 -- Closes game.

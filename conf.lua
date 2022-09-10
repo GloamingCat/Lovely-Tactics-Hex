@@ -39,5 +39,5 @@ function love.conf(t)
   t.window.minheight = Config.screen.nativeHeight
   t.window.width = Config.screen.nativeWidth * Config.screen.widthScale / 100
   t.window.height = Config.screen.nativeHeight * Config.screen.heightScale / 100
-  t.window.fullscreen = Config.platform > 0
+  t.window.fullscreen = Config.platform == 1
 end
