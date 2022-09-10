@@ -228,6 +228,16 @@ end
 function Battler:elementBuff(id)
   return self.statusList:elementBuff(id) + self.equipSet:elementBuff(id)
 end
+-- Gets the status immunity. This is a multiplicative factor (1 is neutral).
+-- @param(id : number) The status ID.
+function Battler:statusDef(id)
+  return self.statusList:statusDef(id)
+end
+-- Gets the status cast chance bonus. This is a multiplicative factor (1 is neutral).
+-- @param(id : number) The status ID.
+function Battler:statusBuff(id)
+  return self.statusList:statusBuff(id)
+end
 -- Gets the battler's AI, if any.
 -- @ret(BattlerAI) Battler's AI. Nil if controlled by player.
 function Battler:getAI()

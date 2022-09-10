@@ -487,6 +487,97 @@
         },
         "id": 5,
         "children": []
+      },
+      {
+        "data": {
+          "persistent": false,
+          "ai": [
+            {
+              "condition": "self:chance(50)",
+              "name": "rule/AttackRule.lua",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "condition": "",
+              "name": "rule/RushRule.lua",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "2"
+                },
+                {
+                  "key": "target",
+                  "value": "target.battler.state.hp < target.battler.mhp() / 2"
+                }
+              ]
+            },
+            {
+              "condition": "",
+              "name": "rule/DefendRule.lua",
+              "tags": []
+            }
+          ],
+          "jobID": 0,
+          "attackID": 6,
+          "level": 5,
+          "money": 100,
+          "exp": 50,
+          "attributes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "skills": [
+            7,
+            10
+          ],
+          "status": [
+            20
+          ],
+          "elements": [
+            {
+              "id": 5,
+              "value": 200
+            }
+          ],
+          "items": [
+            {
+              "count": 1,
+              "id": 3,
+              "value": 100
+            },
+            {
+              "count": 1,
+              "id": 4,
+              "value": 100
+            }
+          ],
+          "equip": [],
+          "name": "Boss Jelly",
+          "tags": []
+        },
+        "id": 8,
+        "children": []
       }
     ]
   }

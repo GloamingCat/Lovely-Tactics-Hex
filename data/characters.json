@@ -649,6 +649,96 @@
         },
         "id": 12,
         "children": []
+      },
+      {
+        "data": {
+          "battlerID": 8,
+          "shadowID": 106,
+          "tiles": [
+            {
+              "dx": 0,
+              "dy": 0,
+              "height": 3
+            },
+            {
+              "dx": 1,
+              "dy": 0,
+              "height": 3
+            },
+            {
+              "dx": 0,
+              "dy": -1,
+              "height": 3
+            },
+            {
+              "dx": 1,
+              "dy": -1,
+              "height": 3
+            }
+          ],
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 4,
+            "offsetDepth": 0,
+            "scaleX": 300,
+            "scaleY": 300,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "portraits": [],
+          "animations": [
+            {
+              "name": "Idle",
+              "id": 77
+            },
+            {
+              "name": "Walk",
+              "id": 78
+            },
+            {
+              "name": "Dash",
+              "id": 79
+            },
+            {
+              "name": "Battle:Idle",
+              "id": 77
+            },
+            {
+              "name": "Battle:Dash",
+              "id": 79
+            },
+            {
+              "name": "Battle:Damage",
+              "id": 81
+            },
+            {
+              "name": "Battle:Load1",
+              "id": 96
+            },
+            {
+              "name": "Battle:Skill1",
+              "id": 68
+            },
+            {
+              "name": "Battle:KO",
+              "id": 82
+            },
+            {
+              "name": "Sleep:Idle",
+              "id": 161
+            }
+          ],
+          "name": "Giant Jelly",
+          "tags": []
+        },
+        "id": 13,
+        "children": []
       }
     ]
   },

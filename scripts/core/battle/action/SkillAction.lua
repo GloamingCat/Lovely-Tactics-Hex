@@ -119,7 +119,7 @@ end
 -- @param(target : Battler) Target battler.
 -- @param(a : table) Attributes of user battler.
 -- @param(b : table) Attributes of target battler.
--- @ret(string) Damage formula.
+-- @ret(number) Base damage.
 function SkillAction:defaultPhysicalDamage(user, target, a, b, rand)
   rand = rand or self.rand or random
   return (a.atk() * 2 - b.def()) * rand(80, 120) / 100
@@ -129,7 +129,7 @@ end
 -- @param(target : Battler) Target battler.
 -- @param(a : table) Attributes of user battler.
 -- @param(b : table) Attributes of target battler.
--- @ret(string) Damage formula.
+-- @ret(number) Base damage.
 function SkillAction:defaultMagicalDamage(user, target, a, b, rand)
   rand = rand or self.rand or random
   return (a.atk() * 2 - b.spr()) * rand(80, 120) / 100
@@ -139,9 +139,18 @@ end
 -- @param(target : Battler) Target battler.
 -- @param(a : table) Attributes of user battler.
 -- @param(b : table) Attributes of target battler.
--- @ret(string) Success formula.
+-- @ret(number) Base chance.
 function SkillAction:defaultSuccessRate(user, target, a, b)
-  return ((a.pre() * 2 - b.evd()) / b.evd()) * 50
+  return ((a.pre() * 2 - b.evd()) / b.evd()) * 50 + 50
+end
+-- Default success rate formula for status.
+-- @param(user : Battler) User battler.
+-- @param(target : Battler) Target battler.
+-- @param(a : table) Attributes of user battler.
+-- @param(b : table) Attributes of target battler.
+-- @ret(number) Base chance.
+function SkillAction:defaultStatusChance(user, target, a, b)
+  return ((a.dex() * 2 - b.evd()) / b.evd()) * 50
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -308,6 +317,9 @@ function SkillAction:calculateEffectResults(user, target, rand)
   for _, effect in ipairs(self.effects) do  
     rand = rand or self.rand or random
     local rate = effect.successRate(self, user, target, user.att, target.att, rand)
+    if effect.statusID then
+      rate = rate * user:statusBuff(effect.statusID) * target:statusDef(effect.statusID)
+    end
     if rand() * 100 <= rate then
       if effect.statusID >= 0 then
         status[#status + 1] = {

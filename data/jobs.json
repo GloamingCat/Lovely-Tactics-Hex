@@ -138,5 +138,35 @@
     },
     "id": 0,
     "children": []
+  },
+  {
+    "data": {
+      "build": [
+        "5 * lvl",
+        "4 * lvl",
+        "1 * lvl",
+        "3 * lvl",
+        "2 * lvl",
+        "10 * lvl",
+        "5 * lvl",
+        "5 * lvl",
+        "-10",
+        "0",
+        "0",
+        "0",
+        "5",
+        "10",
+        "10",
+        "5",
+        "5",
+        "0"
+      ],
+      "expCurve": "lvl * (lvl + 1) * 2",
+      "skills": [],
+      "name": "Giant Jelly",
+      "tags": []
+    },
+    "id": 3,
+    "children": []
   }
 ]

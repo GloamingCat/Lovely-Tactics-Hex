@@ -239,6 +239,26 @@ function StatusList:elementBuff(id)
   end
   return e
 end
+-- Gets the total status immunity given by the current status effects.
+-- @param(id : number) The status ID.
+-- @ret(number) Status immunity.
+function StatusList:statusDef(id)
+  local e = 1
+  for i = 1, #self do
+    e = e * (self[i].statusDef[id] or 1)
+  end
+  return e
+end
+-- Gets the total element damage bonus given by the current status effects.
+-- @param(id : number) The element's ID (position in the elements database).
+-- @ret(number) Element bonus.
+function StatusList:statusBuff(id)
+  local e = 1
+  for i = 1, #self do
+    e = e * (self[i].statusBuff[id] or 1)
+  end
+  return e
+end
 -- Checks if there's a deactivating status (like sleep or paralizis).
 -- @ret(boolean)
 function StatusList:isDeactive()

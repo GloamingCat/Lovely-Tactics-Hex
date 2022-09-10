@@ -48,8 +48,7 @@ function Status:init(data, list, caster, state)
   self.elementAtk = {}
   self.elementDef = {}
   self.elementBuff = {}
-  for i = 1, #data.elements do
-    local b = data.elements[i]
+  for _, b in ipairs(data.elements) do
     if b.type == 0 then
       self.elementDef[b.id] = b.value / 100 - 1
     elseif b.type == 1 then
@@ -57,6 +56,12 @@ function Status:init(data, list, caster, state)
     else
       self.elementBuff[b.id] = b.value / 100 - 1
     end
+  end
+  -- Status
+  self.statusDef = {}
+  self.statusBuff = {}
+  for _, id in ipairs(data.statusDef) do
+    self.statusDef[id] = 0
   end
   -- AI
   if data.behavior and #data.behavior > 0 then

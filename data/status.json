@@ -799,6 +799,43 @@
         },
         "id": 14,
         "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 36,
+            "col": 2,
+            "row": 0
+          },
+          "priority": 100,
+          "visible": false,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": false,
+          "removeOnDamage": false,
+          "battleOnly": false,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [],
+          "statusDef": [
+            1,
+            18,
+            19
+          ],
+          "cancel": [],
+          "name": "Debuff Immunity",
+          "tags": []
+        },
+        "id": 20,
+        "children": []
       }
     ]
   }
