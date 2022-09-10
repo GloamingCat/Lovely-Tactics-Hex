@@ -95,12 +95,7 @@
   {
     "on": true,
     "name": "plugins/DialoguePortrait.lua",
-    "tags": [
-      {
-        "key": "indent",
-        "value": "100"
-      }
-    ]
+    "tags": []
   },
   {
     "on": true,

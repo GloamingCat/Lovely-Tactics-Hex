@@ -22,7 +22,7 @@ return function(script)
     script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
       Vocab.dialogues.npc.CanIJoin
     }
-    script:openChoiceWindow { width = 50, choices = {
+    script:openChoiceWindow { width = 50, y = -20, choices = {
       Vocab.yes,
       Vocab.no
     }}

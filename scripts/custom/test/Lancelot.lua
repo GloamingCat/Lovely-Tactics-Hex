@@ -13,7 +13,7 @@ return function(script)
   script:addEvent(function()
     FieldManager.player:playIdleAnimation()
     script:turnCharTile { key = 'self', other = 'player' }
-    script:showDialogue { id = 1, character = 'self', portrait = 'BigIcon',  message = 
+    script:showDialogue { id = 1, character = 'self', portrait = 'BigIcon', nameX = -0.85, message = 
       Vocab.dialogues.npc.WhatDoYou
     }
     script:openChoiceWindow { width = 70, y = -20,
