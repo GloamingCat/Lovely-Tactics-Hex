@@ -53,7 +53,6 @@ This should run the game.
 * Press a cancel button in field to show the Field Menu;
 * Collide with green jellies to start a battle;
 * For debugging:
-  * When the game starts, keep holding a cancel button and then start a new game to skip the intro scene;
   * Press F1 to quick-save and F5 to quick-load (does not work during battle);
   * Hold K to kill all enemies in the next turn;
   * Hold L to kill all allies in the next turn.

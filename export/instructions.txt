@@ -1,0 +1,14 @@
+This folder contains scripts to quickly export the game.
+
+pack_love.bat
+	- Zips the game's files and creates the "game.love" file in the root folder.
+pack_web.bat [needs love.js installed]
+	- Uses the "game.love" file and generates the "web" folder with a web page to play the game on a browser.
+	- Also zips the necessary files and creates a "game.zip" file in the web folder to be uploaded to sites like itch.io.
+pack_windows.bat
+	- Zips the "game.love" file with the necessary files in the "lib" folder to create a shareable zip for Windows users.
+
+Run pack_love.bat when you're done with the game.
+Run pack_web.bat if the platform in the config files is set to "Web Browser" or run pack_window.bat if the platform is set to "Desktop".
+
+Install love.js here: https://github.com/Davidobot/love.js
