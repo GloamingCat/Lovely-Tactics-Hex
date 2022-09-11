@@ -22,7 +22,8 @@
       "portraits": [],
       "animations": [],
       "name": "Humans",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 6,
     "children": [
@@ -125,7 +126,8 @@
             }
           ],
           "name": "Arthur",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 1,
         "children": []
@@ -217,7 +219,8 @@
             }
           ],
           "name": "Merlin",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 2,
         "children": []
@@ -273,7 +276,8 @@
             }
           ],
           "name": "Lancelot",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 5,
         "children": []
@@ -303,7 +307,8 @@
       "portraits": [],
       "animations": [],
       "name": "Jelly",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 7,
     "children": [
@@ -369,7 +374,8 @@
             }
           ],
           "name": "Green Jelly",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 0,
         "children": []
@@ -436,7 +442,8 @@
             }
           ],
           "name": "Purple Jelly",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 3,
         "children": []
@@ -503,7 +510,8 @@
             }
           ],
           "name": "Yellow Jelly",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 4,
         "children": []
@@ -570,7 +578,8 @@
             }
           ],
           "name": "Red Jelly",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 11,
         "children": []
@@ -645,7 +654,8 @@
             }
           ],
           "name": "Cyan Jelly",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 12,
         "children": []
@@ -735,7 +745,8 @@
             }
           ],
           "name": "Giant Jelly",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 13,
         "children": []
@@ -776,7 +787,8 @@
         }
       ],
       "name": "Objects",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 9,
     "children": [
@@ -814,7 +826,8 @@
             }
           ],
           "name": "Firepit",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 10,
         "children": []
@@ -857,7 +870,8 @@
             }
           ],
           "name": "Loot",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 8,
         "children": []

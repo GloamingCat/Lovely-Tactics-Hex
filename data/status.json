@@ -27,7 +27,8 @@
       "statusDef": [],
       "cancel": [],
       "name": "Debuff",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 3,
     "children": [
@@ -65,7 +66,8 @@
           "statusDef": [],
           "cancel": [],
           "name": "Poison",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 0,
         "children": []
@@ -98,7 +100,8 @@
           "statusDef": [],
           "cancel": [],
           "name": "Sleep",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 1,
         "children": []
@@ -137,7 +140,8 @@
           "statusDef": [],
           "cancel": [],
           "name": "Blindness",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 17,
         "children": []
@@ -165,7 +169,8 @@
             {
               "condition": "",
               "name": "rule/BetrayRule.lua",
-              "tags": []
+              "tags": [],
+              "key": ""
             }
           ],
           "drainAtt": "",
@@ -181,7 +186,8 @@
               "key": "charm",
               "value": "true"
             }
-          ]
+          ],
+          "key": ""
         },
         "id": 18,
         "children": []
@@ -209,7 +215,8 @@
             {
               "condition": "",
               "name": "rule/HideRule.lua",
-              "tags": []
+              "tags": [],
+              "key": ""
             }
           ],
           "drainAtt": "",
@@ -220,7 +227,8 @@
           "statusDef": [],
           "cancel": [],
           "name": "Panic",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 19,
         "children": []
@@ -261,7 +269,8 @@
             5
           ],
           "name": "ATK-",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 15,
         "children": []
@@ -302,7 +311,8 @@
             6
           ],
           "name": "DEF-",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 16,
         "children": []
@@ -337,7 +347,8 @@
       "statusDef": [],
       "cancel": [],
       "name": "Buff",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 4,
     "children": [
@@ -374,7 +385,8 @@
               "key": "reflect",
               "value": "true"
             }
-          ]
+          ],
+          "key": ""
         },
         "id": 2,
         "children": []
@@ -410,7 +422,8 @@
           ],
           "cancel": [],
           "name": "Protect",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 7,
         "children": []
@@ -451,7 +464,8 @@
             15
           ],
           "name": "ATK+",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 5,
         "children": []
@@ -492,7 +506,8 @@
             16
           ],
           "name": "DEF+",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 6,
         "children": []
@@ -527,7 +542,8 @@
       "statusDef": [],
       "cancel": [],
       "name": "Elements",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 8,
     "children": [
@@ -589,7 +605,8 @@
             11
           ],
           "name": "Fire Elemental",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 9,
         "children": []
@@ -642,7 +659,8 @@
             11
           ],
           "name": "Ice Elemental",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 10,
         "children": []
@@ -695,7 +713,8 @@
             10
           ],
           "name": "Thunder Elemental",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 11,
         "children": []
@@ -734,7 +753,8 @@
           "statusDef": [],
           "cancel": [],
           "name": "Fire Amplifier",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 12,
         "children": []
@@ -773,7 +793,8 @@
           "statusDef": [],
           "cancel": [],
           "name": "Ice Amplifier",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 13,
         "children": []
@@ -812,7 +833,8 @@
           "statusDef": [],
           "cancel": [],
           "name": "Thunder Amplifier",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 14,
         "children": []
@@ -849,7 +871,8 @@
           ],
           "cancel": [],
           "name": "Debuff Immunity",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 20,
         "children": []

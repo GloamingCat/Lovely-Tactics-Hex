@@ -7,7 +7,8 @@
     },
     "troops": [],
     "name": "Party 0",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "rgb": {
@@ -17,7 +18,8 @@
     },
     "troops": [],
     "name": "Party 1",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "rgb": {
@@ -27,7 +29,8 @@
     },
     "troops": [],
     "name": "Forest",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "rgb": {
@@ -37,7 +40,8 @@
     },
     "troops": [],
     "name": "Cave",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "rgb": {
@@ -47,6 +51,7 @@
     },
     "troops": [],
     "name": "Ice Field",
-    "tags": []
+    "tags": [],
+    "key": ""
   }
 ]

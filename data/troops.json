@@ -45,7 +45,8 @@
         }
       ],
       "name": "Player Party",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 0,
     "children": []
@@ -75,7 +76,8 @@
         }
       ],
       "name": "Jelly Party 1",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 2,
     "children": []
@@ -105,7 +107,8 @@
         }
       ],
       "name": "Jelly Party 2",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 1,
     "children": []
@@ -135,7 +138,8 @@
         }
       ],
       "name": "Jelly Party 3",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 3,
     "children": []
@@ -173,7 +177,8 @@
         }
       ],
       "name": "Boss Party",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 4,
     "children": []

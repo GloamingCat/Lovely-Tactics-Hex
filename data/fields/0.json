@@ -21,12 +21,14 @@
       "onCollide": false,
       "description": "",
       "name": "",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "images": [],
     "transitions": [],
     "name": "Forest Battle Field",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   "layers": {
     "terrain": [

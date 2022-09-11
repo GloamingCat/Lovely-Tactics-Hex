@@ -21,12 +21,14 @@
       "onCollide": false,
       "description": "",
       "name": "test/Scene.lua",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "images": [],
     "transitions": [],
     "name": "Test Battle",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   "layers": {
     "terrain": [

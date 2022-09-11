@@ -1,30 +1,30 @@
 [
   {
-    "key": "hand",
     "count": 1,
     "state": 0,
     "name": "Weapon",
-    "tags": []
+    "tags": [],
+    "key": "hand"
   },
   {
-    "key": "body",
     "count": 1,
     "state": 0,
     "name": "Body",
-    "tags": []
+    "tags": [],
+    "key": "body"
   },
   {
-    "key": "head",
     "count": 1,
     "state": 0,
     "name": "Head",
-    "tags": []
+    "tags": [],
+    "key": "head"
   },
   {
-    "key": "acc",
     "count": 1,
     "state": 0,
     "name": "Accessory",
-    "tags": []
+    "tags": [],
+    "key": "acc"
   }
 ]

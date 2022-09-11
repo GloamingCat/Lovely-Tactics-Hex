@@ -1,98 +1,98 @@
 [
   {
-    "key": "atk",
     "shortName": "ATK",
     "script": "",
     "visibility": 1,
     "name": "Attack",
-    "tags": []
+    "tags": [],
+    "key": "atk"
   },
   {
-    "key": "def",
     "shortName": "DEF",
     "script": "",
     "visibility": 1,
     "name": "Defense",
-    "tags": []
+    "tags": [],
+    "key": "def"
   },
   {
-    "key": "spr",
     "shortName": "SPR",
     "script": "",
     "visibility": 1,
     "name": "Spirit",
-    "tags": []
+    "tags": [],
+    "key": "spr"
   },
   {
-    "key": "agi",
     "shortName": "AGI",
     "script": "",
     "visibility": 1,
     "name": "Agility",
-    "tags": []
+    "tags": [],
+    "key": "agi"
   },
   {
-    "key": "dex",
     "shortName": "DEX",
     "script": "",
     "visibility": 1,
     "name": "Dexterity",
-    "tags": []
+    "tags": [],
+    "key": "dex"
   },
   {
-    "key": "hp",
     "shortName": "MHP",
     "script": "att.def() * 2 + att.spr() * 2",
     "visibility": 2,
     "name": "Health",
-    "tags": []
+    "tags": [],
+    "key": "hp"
   },
   {
-    "key": "sp",
     "shortName": "MSP",
     "script": "att.spr() * 2 + att.dex() * 2",
     "visibility": 2,
     "name": "Skill",
-    "tags": []
+    "tags": [],
+    "key": "sp"
   },
   {
-    "key": "pre",
     "shortName": "HIT",
     "script": "att.atk() * 2 + att.dex() * 2",
     "visibility": 2,
     "name": "Precision",
-    "tags": []
+    "tags": [],
+    "key": "pre"
   },
   {
-    "key": "evd",
     "shortName": "EVD",
     "script": "att.agi() * 2 + att.dex() * 2",
     "visibility": 2,
     "name": "Evade",
-    "tags": []
+    "tags": [],
+    "key": "evd"
   },
   {
-    "key": "mov",
     "shortName": "MOV",
     "script": "",
     "visibility": 2,
     "name": "Movement",
-    "tags": []
+    "tags": [],
+    "key": "mov"
   },
   {
-    "key": "jmp",
     "shortName": "JMP",
     "script": "",
     "visibility": 2,
     "name": "Jump",
-    "tags": []
+    "tags": [],
+    "key": "jmp"
   },
   {
-    "key": "crit",
     "shortName": "CRIT",
     "script": "att.pre() / 50 + 5",
     "visibility": 0,
     "name": "Critical",
-    "tags": []
+    "tags": [],
+    "key": "crit"
   }
 ]

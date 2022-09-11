@@ -21,7 +21,8 @@
       "onCollide": false,
       "description": "",
       "name": "Load.lua",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "images": [],
     "transitions": [
@@ -81,7 +82,8 @@
       }
     ],
     "name": "Happy Fields 1",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   "layers": {
     "terrain": [
@@ -820,7 +822,8 @@
           "onCollide": false,
           "description": "Move Routine",
           "name": "npc/Wanderer.lua",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         {
           "global": false,
@@ -831,7 +834,8 @@
           "onCollide": false,
           "description": "",
           "name": "test/Merlin.lua",
-          "tags": []
+          "tags": [],
+          "key": ""
         }
       ],
       "repeatCollisions": false

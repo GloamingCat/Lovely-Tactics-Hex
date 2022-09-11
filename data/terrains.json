@@ -15,7 +15,8 @@
       "statusID": -1,
       "removeOnExit": false,
       "name": "Grass",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 0,
     "children": []
@@ -36,7 +37,8 @@
       "statusID": -1,
       "removeOnExit": false,
       "name": "Bush",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 1,
     "children": []
@@ -57,7 +59,8 @@
       "statusID": -1,
       "removeOnExit": false,
       "name": "Sand",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 2,
     "children": []
@@ -71,7 +74,8 @@
       "statusID": -1,
       "removeOnExit": false,
       "name": "Water",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 3,
     "children": []
@@ -92,7 +96,8 @@
       "statusID": 13,
       "removeOnExit": true,
       "name": "Puddle",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 6,
     "children": []
@@ -113,7 +118,8 @@
       "statusID": -1,
       "removeOnExit": false,
       "name": "Rock",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 4,
     "children": []
@@ -134,7 +140,8 @@
       "statusID": 0,
       "removeOnExit": false,
       "name": "Poison Bush",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 5,
     "children": []
@@ -155,7 +162,8 @@
       "statusID": -1,
       "removeOnExit": false,
       "name": "Road",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 7,
     "children": []

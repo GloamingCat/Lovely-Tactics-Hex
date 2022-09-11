@@ -6,7 +6,8 @@
       "row": 0
     },
     "name": "Physical",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "icon": {
@@ -15,7 +16,8 @@
       "row": 0
     },
     "name": "Magical",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "icon": {
@@ -24,7 +26,8 @@
       "row": 0
     },
     "name": "Human",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "icon": {
@@ -33,7 +36,8 @@
       "row": 0
     },
     "name": "Beast",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "icon": {
@@ -42,7 +46,8 @@
       "row": 0
     },
     "name": "Demon",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "icon": {
@@ -51,7 +56,8 @@
       "row": 1
     },
     "name": "Fire",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "icon": {
@@ -60,7 +66,8 @@
       "row": 1
     },
     "name": "Ice",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "icon": {
@@ -69,6 +76,7 @@
       "row": 2
     },
     "name": "Thunder",
-    "tags": []
+    "tags": [],
+    "key": ""
   }
 ]

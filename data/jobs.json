@@ -45,7 +45,8 @@
         }
       ],
       "name": "Knight",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 1,
     "children": []
@@ -104,7 +105,8 @@
         }
       ],
       "name": "Mage",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 2,
     "children": []
@@ -134,7 +136,8 @@
       "expCurve": "lvl * (lvl + 1) * 2",
       "skills": [],
       "name": "Jelly",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 0,
     "children": []
@@ -164,7 +167,8 @@
       "expCurve": "lvl * (lvl + 1) * 2",
       "skills": [],
       "name": "Giant Jelly",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 3,
     "children": []

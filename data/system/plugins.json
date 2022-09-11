@@ -2,17 +2,20 @@
   {
     "on": false,
     "name": "plugins/gui/MemberCommandWindow.lua",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "on": false,
     "name": "plugins/gui/VisiblePartyWindow.lua",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "on": false,
     "name": "plugins/gui/VisibleShopCountWindow.lua",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "on": true,
@@ -22,12 +25,14 @@
         "key": "text",
         "value": "Arrows Z X Page Skip Save Debug Kill Lose"
       }
-    ]
+    ],
+    "key": ""
   },
   {
     "on": false,
     "name": "plugins/BatchMesh.lua",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "on": true,
@@ -37,7 +42,8 @@
         "key": "pauseAudio",
         "value": "true"
       }
-    ]
+    ],
+    "key": ""
   },
   {
     "on": true,
@@ -51,7 +57,8 @@
         "key": "load",
         "value": "f6"
       }
-    ]
+    ],
+    "key": ""
   },
   {
     "on": true,
@@ -61,7 +68,8 @@
         "key": "key",
         "value": "escape"
       }
-    ]
+    ],
+    "key": ""
   },
   {
     "on": true,
@@ -75,12 +83,14 @@
         "key": "speed",
         "value": "3"
       }
-    ]
+    ],
+    "key": ""
   },
   {
     "on": true,
     "name": "plugins/ChildAnimations.lua",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "on": true,
@@ -90,12 +100,14 @@
         "key": "balloonY",
         "value": "16"
       }
-    ]
+    ],
+    "key": ""
   },
   {
     "on": true,
     "name": "plugins/DialoguePortrait.lua",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "on": true,
@@ -109,12 +121,14 @@
         "key": "lose",
         "value": "l"
       }
-    ]
+    ],
+    "key": ""
   },
   {
     "on": true,
     "name": "plugins/skill/RingArea.lua",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "on": true,
@@ -124,22 +138,26 @@
         "key": "attName",
         "value": "crit"
       }
-    ]
+    ],
+    "key": ""
   },
   {
     "on": true,
     "name": "plugins/skill/SkillProjectile.lua",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "on": true,
     "name": "plugins/status/StatusBalloon.lua",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "on": true,
     "name": "plugins/status/Counter.lua",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   {
     "on": true,
@@ -149,6 +167,7 @@
         "key": "animID",
         "value": "18"
       }
-    ]
+    ],
+    "key": ""
   }
 ]

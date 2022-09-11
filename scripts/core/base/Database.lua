@@ -67,6 +67,9 @@ function Database.toArray(children, parentID, arr)
       arr[node.id] = node.data
       node.data.id = node.id
       node.data.parentID = parentID
+      if node.data.key then
+        arr[node.data.key] = node.data
+      end
     end
     Database.toArray(node.children, node.id, arr)
   end

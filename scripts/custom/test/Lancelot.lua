@@ -29,12 +29,13 @@ return function(script)
   -- Event 2: shop
   script:addEvent(function()
     script:openShopMenu { sell = true, items = {
-      { id = 2 },
-      { id = 3 },
-      { id = 4 },
-      { id = 5 },
-      { id = 6 },
-      { id = 7 }
+      { id = 'potionHP' },
+      { id = 'potionSP' },
+      { id = 'potionKO' },
+      { id = 'antidote' },
+      { id = 'sword' },
+      { id = 'staff' },
+      { id = 'ribbon' }
     }}
     script:skipEvents(2) -- Skips battle events.
   end, 

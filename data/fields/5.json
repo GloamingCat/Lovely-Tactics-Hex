@@ -21,7 +21,8 @@
       "onCollide": false,
       "description": "",
       "name": "Load.lua",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "images": [],
     "transitions": [
@@ -81,7 +82,8 @@
       }
     ],
     "name": "Happy Fields 2",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   "layers": {
     "terrain": [
@@ -775,7 +777,8 @@
           "onCollide": false,
           "description": "Move Routine",
           "name": "npc/Stalker.lua",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         {
           "global": false,
@@ -791,7 +794,8 @@
               "key": "fieldID",
               "value": "0"
             }
-          ]
+          ],
+          "key": ""
         }
       ],
       "repeatCollisions": false
@@ -823,9 +827,10 @@
           "tags": [
             {
               "key": "id",
-              "value": "11"
+              "value": "apple"
             }
-          ]
+          ],
+          "key": ""
         }
       ],
       "repeatCollisions": false

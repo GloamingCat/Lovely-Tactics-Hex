@@ -21,7 +21,8 @@
       "onCollide": false,
       "description": "",
       "name": "Load.lua",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "images": [],
     "transitions": [
@@ -54,7 +55,8 @@
       }
     ],
     "name": "Happy Fields 5",
-    "tags": []
+    "tags": [],
+    "key": ""
   },
   "layers": {
     "terrain": [
@@ -773,7 +775,8 @@
           "onCollide": false,
           "description": "Move Routine",
           "name": "npc/Wanderer.lua",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         {
           "global": true,
@@ -789,7 +792,8 @@
               "key": "fieldID",
               "value": "2"
             }
-          ]
+          ],
+          "key": ""
         }
       ],
       "repeatCollisions": false
@@ -818,7 +822,8 @@
           "onCollide": false,
           "description": "",
           "name": "test/Inn.lua",
-          "tags": []
+          "tags": [],
+          "key": ""
         }
       ],
       "repeatCollisions": false

@@ -34,7 +34,8 @@
       "items": [],
       "equip": [],
       "name": "Heroes",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 0,
     "children": [
@@ -79,7 +80,8 @@
             }
           ],
           "name": "Arthur",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 1,
         "children": []
@@ -121,7 +123,8 @@
           "items": [],
           "equip": [],
           "name": "Merlin",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 2,
         "children": []
@@ -163,7 +166,8 @@
       "items": [],
       "equip": [],
       "name": "Enemies",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 3,
     "children": [
@@ -174,7 +178,8 @@
             {
               "condition": "",
               "name": "rule/RushRule.lua",
-              "tags": []
+              "tags": [],
+              "key": ""
             }
           ],
           "jobID": 0,
@@ -219,7 +224,8 @@
           ],
           "equip": [],
           "name": "Jelly",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 6,
         "children": []
@@ -231,7 +237,8 @@
             {
               "condition": "",
               "name": "rule/AttackRule.lua",
-              "tags": []
+              "tags": [],
+              "key": ""
             }
           ],
           "jobID": 0,
@@ -270,7 +277,8 @@
           "items": [],
           "equip": [],
           "name": "Killer Jelly",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 4,
         "children": []
@@ -282,7 +290,8 @@
             {
               "condition": "",
               "name": "rule/RushRule.lua",
-              "tags": []
+              "tags": [],
+              "key": ""
             }
           ],
           "jobID": 0,
@@ -327,7 +336,8 @@
           ],
           "equip": [],
           "name": "Poison Jelly",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 7,
         "children": []
@@ -339,12 +349,14 @@
             {
               "condition": "self:chance(30)",
               "name": "rule/EscapeRule.lua",
-              "tags": []
+              "tags": [],
+              "key": ""
             },
             {
               "condition": "",
               "name": "rule/RushRule.lua",
-              "tags": []
+              "tags": [],
+              "key": ""
             }
           ],
           "jobID": 0,
@@ -394,7 +406,8 @@
           ],
           "equip": [],
           "name": "Chicken Jelly",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 9,
         "children": []
@@ -411,7 +424,8 @@
                   "key": "id",
                   "value": "1"
                 }
-              ]
+              ],
+              "key": ""
             },
             {
               "condition": "",
@@ -425,12 +439,14 @@
                   "key": "target",
                   "value": "target.battler.state.hp < target.battler.mhp() / 2"
                 }
-              ]
+              ],
+              "key": ""
             },
             {
               "condition": "",
               "name": "rule/DefendRule.lua",
-              "tags": []
+              "tags": [],
+              "key": ""
             }
           ],
           "jobID": 0,
@@ -483,7 +499,8 @@
           ],
           "equip": [],
           "name": "Magic Jelly",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 5,
         "children": []
@@ -493,22 +510,28 @@
           "persistent": false,
           "ai": [
             {
-              "condition": "",
+              "condition": "self:chance(50)",
               "name": "rule/CallRule.lua",
-              "tags": []
+              "tags": [],
+              "key": ""
             },
             {
-              "condition": "self:chance(50)",
+              "condition": "",
               "name": "rule/AttackRule.lua",
               "tags": [
                 {
                   "key": "id",
                   "value": "1"
+                },
+                {
+                  "key": "target",
+                  "value": "target.battler.state.hp < target.battler.mhp() / 2"
                 }
-              ]
+              ],
+              "key": ""
             },
             {
-              "condition": "",
+              "condition": "self:chance(50)",
               "name": "rule/RushRule.lua",
               "tags": [
                 {
@@ -517,17 +540,24 @@
                 },
                 {
                   "key": "target",
-                  "value": "target.battler.state.hp < target.battler.mhp() / 2"
+                  "value": "target.battler.statusList:findStatus(6) ~= nil"
                 }
-              ]
+              ],
+              "key": ""
             },
             {
               "condition": "",
-              "name": "rule/DefendRule.lua",
-              "tags": []
+              "name": "rule/RushRule.lua",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "3"
+                }
+              ],
+              "key": ""
             }
           ],
-          "jobID": 0,
+          "jobID": 3,
           "attackID": 6,
           "level": 5,
           "money": 100,
@@ -553,8 +583,9 @@
             0
           ],
           "skills": [
-            7,
-            10
+            10,
+            26,
+            23
           ],
           "status": [
             20
@@ -579,7 +610,8 @@
           ],
           "equip": [],
           "name": "Boss Jelly",
-          "tags": []
+          "tags": [],
+          "key": ""
         },
         "id": 8,
         "children": []

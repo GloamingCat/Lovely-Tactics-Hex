@@ -40,7 +40,8 @@
         }
       ],
       "name": "Block",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 7,
     "children": []
@@ -69,7 +70,8 @@
       },
       "tiles": [],
       "name": "Anti-Block",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 47,
     "children": []
@@ -115,7 +117,8 @@
         }
       ],
       "name": "Bush 1",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 49,
     "children": []
@@ -161,7 +164,8 @@
         }
       ],
       "name": "Tree 1",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 1,
     "children": []
@@ -207,7 +211,8 @@
         }
       ],
       "name": "Tree 2",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 2,
     "children": []
@@ -253,7 +258,8 @@
         }
       ],
       "name": "Rock 1",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 3,
     "children": []
@@ -282,7 +288,8 @@
       },
       "tiles": [],
       "name": "Rock 2",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 4,
     "children": []
@@ -311,7 +318,8 @@
       },
       "tiles": [],
       "name": "Grass 1",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 5,
     "children": []
@@ -340,7 +348,8 @@
       },
       "tiles": [],
       "name": "Grass 2",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 6,
     "children": []
@@ -386,7 +395,8 @@
         }
       ],
       "name": "Mushroom 1",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 53,
     "children": []
@@ -432,7 +442,8 @@
         }
       ],
       "name": "Log 1",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 56,
     "children": []
@@ -478,7 +489,8 @@
         }
       ],
       "name": "Log 2",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 58,
     "children": []
@@ -524,7 +536,8 @@
         }
       ],
       "name": "Lily Pad",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 60,
     "children": []
@@ -570,7 +583,8 @@
         }
       ],
       "name": "Stump",
-      "tags": []
+      "tags": [],
+      "key": ""
     },
     "id": 52,
     "children": []

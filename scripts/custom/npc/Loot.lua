@@ -14,7 +14,7 @@ NPC that walks towards the player.
 local rand = love.math.random
 
 return function(script)
-  local id = tonumber(script.args.id)
+  local id = tonumber(script.args.id) or script.args.id
   local count = tonumber(script.args.count) or 1
   Config.variables["loot"].value = Database.items[id].name
   Config.variables["lootq"].value = count
