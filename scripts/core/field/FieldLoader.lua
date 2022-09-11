@@ -61,12 +61,11 @@ end
 -- @param(field : Field) Current field.
 -- @param(layers : table) Terrain, obstacle and region layer sets.
 function FieldLoader.mergeLayers(field, layers)
-  local depthOffset = #layers.terrain
   for i, layerData in ipairs(layers.terrain) do
     local list = field.terrainLayers[layerData.info.height]
     assert(list, "Terrain layers out of height limits: " .. layerData.info.height)
     local order = #list
-    local layer = TerrainLayer(layerData, field.sizeX, field.sizeY, depthOffset - order + 1)
+    local layer = TerrainLayer(layerData, field.sizeX, field.sizeY, -order)
     list[order + 1] = layer
   end
   for i, layerData in ipairs(layers.obstacle) do

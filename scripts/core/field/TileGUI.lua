@@ -67,16 +67,11 @@ function TileGUI:updateDepth()
   if not self.grounded then
     return
   end
-  local layers = FieldManager.currentField.terrainLayers[self.h]
-  local minDepth = layers[1].grid[self.x][self.y].depth
-  for i = #layers, 2, -1 do
-    minDepth = min(minDepth, layers[i].grid[self.x][self.y].depth)
-  end
   if self.baseAnim then
-    self.baseAnim:setDepth(minDepth)
+    self.baseAnim:setDepth(2)
   end
   if self.highlightAnim then
-    self.highlightAnim:setDepth(minDepth - 1)
+    self.highlightAnim:setDepth(1)
   end
 end
 -- Selects / deselects this tile.

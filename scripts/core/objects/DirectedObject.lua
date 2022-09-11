@@ -60,6 +60,9 @@ function DirectedObject:getFrontTiles(angle)
   angle = angle or self:getRoundedDirection()
   local tile = self:getTile()
   local dx, dy = nextCoordDir(angle)
+  if not tile.layer.grid[tile.x + dx] then
+    return {}
+  end
   local neighbor = tile.layer.grid[tile.x + dx][tile.y + dy]
   if not neighbor then
     return {}

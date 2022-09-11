@@ -43,7 +43,6 @@ function TerrainTile:init(layer, x, y, order, initialID)
   self.order = order
   self.data = Database.terrains[initialID]
   self.moveCost = 0
-  self.depth = self.order
   self.center = Vector(math.field.tile2Pixel(self.x, self.y, self.layer.height))
 end
 -- Gets its grid coordinates.
@@ -104,20 +103,18 @@ function TerrainTile:updateGraphics()
   -- Check if id representes a terrain.
   if self.data == nil then
     self.moveCost = 0
-    self.depth = self.order
     self.tags = Database.loadTags(nil)
     self.animations = nil
     return
   end
   -- Create new terrain images.
   self.moveCost = self.data.moveCost / 100
-  self.depth = self.order
   self.tags = self.data and Database.loadTags(self.data.tags)
   if self.data.animID >= 0 then
     local rows = mathf.autoTileRows(self.layer, self.x, self.y, self.layer.sameType)
     local imageData = Database.animations[self.data.animID]
-    self.depth = self.depth + imageData.transform.offsetDepth
-    self.quarters = self:createQuarters(imageData, rows)
+    local depth = self.order + imageData.transform.offsetDepth
+    self.quarters = self:createQuarters(imageData, rows, depth)
     -- Create animation.
     if imageData.cols > 1 then
       self.animations = self.animations or {}
@@ -133,7 +130,7 @@ end
 -- @param(quadData : table) The terrain's quad table.
 -- @param(rows : table) The autotile row of each quarter.
 -- @ret(table) Array with each quarter graphics.
-function TerrainTile:createQuarters(data, rows)
+function TerrainTile:createQuarters(data, rows, depth)
   local texture = ResourceManager:loadTexture(data.quad.path)
   -- Create quarter renderers.
   local quarters = {}
@@ -146,7 +143,7 @@ function TerrainTile:createQuarters(data, rows)
     quarters[i] = Sprite(FieldManager.renderer, texture, quad)
     quarters[i]:setPosition(self.center)
     quarters[i]:setTransformation(data.transform)
-    quarters[i]:setOffset(data.transform.offsetX - x, data.transform.offsetY - y, self.depth + d)
+    quarters[i]:setOffset(data.transform.offsetX - x, data.transform.offsetY - y, depth + d)
   end
   return quarters
 end

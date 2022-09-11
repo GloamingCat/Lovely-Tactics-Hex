@@ -49,7 +49,7 @@ function TileGraphic:createSprite(y)
     w, h, texture:getWidth(), texture:getHeight())
   local sprite = Sprite(FieldManager.renderer, texture, quad)
   local t = self.data.transform
-  sprite:setOffset(t.offsetX, t.offsetY - y * h, t.offsetDepth + (1 - y) * self.halfDepth)
+  sprite:setOffset(t.offsetX, t.offsetY - y * h)
   return sprite
 end
 -- Updates each animation.
