@@ -32,7 +32,7 @@ function TitleGUI:createWindows()
 end
 -- Creates cover sprite.
 function TitleGUI:createCover()
-  local id = Config.screen.coverID
+  local id = Config.coverID
   if id and id >= 0 then
     self.cover = ResourceManager:loadSprite(Database.animations[id], GUIManager.renderer)
     self.cover:setXYZ(0, 0, 10)

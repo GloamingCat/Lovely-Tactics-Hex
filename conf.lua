@@ -16,15 +16,24 @@ require('class')
 local Serializer = require('core/save/Serializer')
 
 function love.conf(t)
-  local projectName = 'project'
+  local projectName = nil
   for k, v in pairs(arg) do
     if v == '-p' then
-      projectName = arg[k + 1]
+      projectName = arg[k + 1] .. '.json'
       break
     end
   end
+  if not projectName then
+    local files = love.filesystem.getDirectoryItems('/')
+    for i = 1, #files do
+      if files[i]:find('%w*' .. '%.json') then
+        projectName = files[i]
+        break
+      end
+    end
+  end
   print("Loading project '" .. projectName .. "'")
-  Project = Serializer.load(projectName .. '.json')
+  Project = Serializer.load(projectName)
   Config = Serializer.load(Project.dataPath .. '/system/config.json')
   t.identity = Config.name 
   t.window.title = Config.name
