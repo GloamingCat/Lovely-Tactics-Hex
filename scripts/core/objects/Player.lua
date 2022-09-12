@@ -91,7 +91,7 @@ end
 function Player:checkFieldInput()
   if InputManager.keys['cancel']:isTriggered() or InputManager.keys['mouse2']:isTriggered() or FieldManager.hud:checkInput() then
     self:openGUI()
-  elseif InputManager.keys['confirm']:isReleased() then
+  elseif InputManager.keys['confirm']:isTriggered() then
     self:interact()
   elseif InputManager.keys['mouse1']:isPressingGap() then
     self:moveByMouse('mouse1')

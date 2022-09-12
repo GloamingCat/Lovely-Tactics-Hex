@@ -155,10 +155,8 @@ function FieldManager:initializeCamera(data, width, height, images)
   camera:setXYZ(mathf.pixelCenter(data.sizeX, data.sizeY))
   if self.renderer then
     camera:setColor(self.renderer.color)
-  elseif SaveManager.current.renderer then
-    camera:setState(SaveManager.current.renderer)
   else
-    camera:setRGBA(1, 1, 1, 1)
+    camera:setRGBA(0, 0, 0, 1)
   end
   camera:initializeImages(images)
   ScreenManager:setRenderer(camera, 1)

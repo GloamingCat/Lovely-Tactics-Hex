@@ -17,7 +17,7 @@ return function(script)
   local pause = tonumber(script.args.pause) or 60
   local pauseVar = tonumber(script.args.pauseVar) or 0
   while true do
-    if not FieldManager.player:isBusy() then
+    if not FieldManager.player:isBusy() and FieldManager.playerInput then
       if script.char.cooldown and script.char.cooldown > 0 then
         script.char.cooldown = script.char.cooldown - GameManager:frameTime() * 60
       else
