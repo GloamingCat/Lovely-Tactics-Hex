@@ -1,26 +1,27 @@
 
 return function(script)
   
-  -- Event 1: play animation on collision
+  -- Event 1: start battle
   script:addEvent(function()
-    local char = FieldManager:search(script.char.collided)
-    if char then
-      char:playIdleAnimation()
+    if FieldManager.playerInput and script:collidedWith('player') then
+      FieldManager.player:playIdleAnimation()
+      script:turnCharTile { key = 'self', other = 'player' }
+      script:turnCharTile { key = 'player', other = 'self' }
+      script:showEmotionBalloon { key = script.char.collided, emotion = '!' }
+      Fiber:wait(30)
+      script:startBattle {
+        intro = true,
+        escapeEnabled = true,
+        gameOverCondition = script.args.gameOverCondition or 'survive',
+        fieldID = tonumber(script.args.fieldID) or 0,
+        fade = 60
+      }
+    else
+      script:skip(1)
     end
   end)
-  
-  -- Event 2: start battle
-  script:addEvent(script.startBattle,
-  FieldManager.playerInput and script:collidedWith('player'),
-  {
-    intro = true,
-    escapeEnabled = true,
-    gameOverCondition = script.args.gameOverCondition or 'survive',
-    fieldID = tonumber(script.args.fieldID) or 0,
-    fade = 60
-  })
 
-  -- Event 3: aftermath
+  -- Event 2: aftermath
   script:addEvent(function()
     local escaped = BattleManager:playerEscaped() or BattleManager:enemyEscaped()
     if escaped then
