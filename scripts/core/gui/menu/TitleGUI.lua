@@ -26,8 +26,8 @@ function TitleGUI:createWindows()
   self.coverSpeed = 2
   self:createCover()
   self:createTopText()
-  self:createCommandWindow()
   self:createLoadWindow()
+  self:createCommandWindow()
   self:setActiveWindow(self.commandWindow)
 end
 -- Creates cover sprite.

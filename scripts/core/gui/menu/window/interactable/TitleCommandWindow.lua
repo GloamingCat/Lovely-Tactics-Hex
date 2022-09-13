@@ -22,6 +22,8 @@ local TitleCommandWindow = class(GridWindow)
 function TitleCommandWindow:init(...)
   self.speed = math.huge
   GridWindow.init(self, ...)
+  self.currentCol = 1
+  self.currentRow = self:loadGameEnabled() and 2 or 1
 end
 -- Implements GridWindow:createWidgets.
 function TitleCommandWindow:createWidgets()
