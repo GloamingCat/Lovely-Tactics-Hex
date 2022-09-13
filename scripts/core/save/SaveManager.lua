@@ -166,7 +166,7 @@ end
 -- @ret(table) Header of the save.
 function SaveManager:createHeader(save)
   save = save or self.current
-  local troop = save.troops[self.current.playerTroopID .. ''] or Troop()
+  local troop = Troop()
   local members = {}
   for i = 1, #troop.members do
     if troop.members[i].list == 0 then

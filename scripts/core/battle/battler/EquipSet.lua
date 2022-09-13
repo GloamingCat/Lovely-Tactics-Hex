@@ -243,7 +243,7 @@ function EquipSet:canUnequip(key)
   if currentItem then
     local slot = self.types[currentItem.slot]
     local state = self:slotState(slot, key)
-    if state then
+    if state == 2 then
       return false
     elseif state == 1 then
       for i = 1, slot.count do

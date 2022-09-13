@@ -18,6 +18,7 @@ local Sound = class()
 -- @param(volume : number) Initial volume (from 0 to 100).
 -- @param(pitch : number) Initial pitch (from 0 to 100).
 function Sound:init(name, volume, pitch)
+  self.name = name
   self:initSource(ResourceManager:loadSFX(name), volume, pitch)
 end
 -- Initializes source.
@@ -55,7 +56,7 @@ end
 -- Plays sound.
 function Sound:play()
   self.paused = false
-  self.source:play()
+  assert(self.source:play(), "Couldn't play sound.")
 end
 -- Stops sound.
 function Sound:stop()

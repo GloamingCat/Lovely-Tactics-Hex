@@ -28,9 +28,9 @@ function ShopCommandWindow:init(GUI, buy, sell)
 end
 -- Implements GridWindow:createWidgets.
 function ShopCommandWindow:createWidgets()
-  Button:fromKey(self, 'buy').text:setAlign('center')
-  Button:fromKey(self, 'sell').text:setAlign('center')
-  Button:fromKey(self, 'cancel').text:setAlign('center')
+  Button:fromKey(self, 'buy').text:setAlign('center', 'center')
+  Button:fromKey(self, 'sell').text:setAlign('center', 'center')
+  Button:fromKey(self, 'cancel').text:setAlign('center', 'center')
 end
 
 ---------------------------------------------------------------------------------------------------

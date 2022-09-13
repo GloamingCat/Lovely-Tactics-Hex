@@ -24,8 +24,8 @@ end
 -- Implements ListWindow:createListButton.
 function ShopItemWindow:createListButton(item)
   local price = item.price
+  item = Database.items[item.id]
   local id = item.id
-  item = Database.items[id]
   assert(item, 'Item does not exist: ' .. tostring(id))
   if not price or price < 0 then
     price = item.price

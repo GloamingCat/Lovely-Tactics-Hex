@@ -27,13 +27,15 @@ function ShopCountWindow:createContent(...)
   self:createIcon()
   self:createStats()
   self.spinner.confirmSound = Config.sounds.buy or self.spinner.confirmSound
-  self.spinner.clickSound = Config.sounds.buy or self.spinner.clickSound
   self.spinner.bigIncrement = 5
 end
 -- Overrides CountWindow:createWidgets. Adds "buy" button.
 function ShopCountWindow:createWidgets(...)
   CountWindow.createWidgets(self, ...)
-  Button:fromKey(self, "buy")
+  local button = Button:fromKey(self, "buy")
+  button.confirmSound = Config.sounds.buy or button.confirmSound
+  button.clickSound = Config.sounds.buy or button.clickSound
+  button.text:setAlign('center', 'center')
 end
 -- Creates the texts of each money value.
 function ShopCountWindow:createValues()
@@ -134,10 +136,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 function ShopCountWindow:onButtonConfirm(button)
-  if self.spinner.confirmSound then
-    AudioManager:playSFX(self.spinner.confirmSound)
-  end
-  self:onSpinnerConfirm(self.spinner)
+  self:apply()
 end
 -- Cancels the buy action.
 function ShopCountWindow:onButtonCancel(button)
@@ -146,15 +145,7 @@ function ShopCountWindow:onButtonCancel(button)
 end
 -- Confirms the buy action.
 function ShopCountWindow:onSpinnerConfirm(spinner)
-  local troop = self.GUI.troop
-  troop.money = troop.money - spinner.value * self.price
-  if self.buy then
-    troop.inventory:addItem(self.item.id, spinner.value)
-  else
-    troop.inventory:removeItem(self.item.id, spinner.value)
-  end
-  self.GUI.goldWindow:setGold(troop.money)
-  self:returnWindow()
+  self:apply()
 end
 -- Cancels the buy action.
 function ShopCountWindow:onSpinnerCancel(spinner)
@@ -163,6 +154,23 @@ end
 -- Increments / decrements the quantity of items to buy.
 function ShopCountWindow:onSpinnerChange(spinner)
   self:setPrice(self.GUI.troop.money, spinner.value * self.price)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Finish
+---------------------------------------------------------------------------------------------------
+
+-- Buys / sells the selected quantity.
+function ShopCountWindow:apply()
+  local troop = self.GUI.troop
+  troop.money = troop.money - self.spinner.value * self.price
+  if self.buy then
+    troop.inventory:addItem(self.item.id, self.spinner.value)
+  else
+    troop.inventory:removeItem(self.item.id, self.spinner.value)
+  end
+  self.GUI.goldWindow:setGold(troop.money)
+  self:returnWindow()
 end
 -- Hides this window and returns to the window with the item list.
 function ShopCountWindow:returnWindow()
