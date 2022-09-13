@@ -143,5 +143,14 @@ function DirectedObject:tileToAngle(x, y)
   local dx, dy, dz = tile2Pixel(x, y, 0)
   return self:vectorToAngle(dx - ox, oz - dz)
 end
+-- Gets the angle given a difference in tiles.
+-- @param(x : number) The grid x difference.
+-- @param(y : number) The grid y difference.
+-- @ret(number) The angle to the given tile.
+function DirectedObject:shiftToAngle(dx, dy)
+  local tx, ty = self:tileCoordinates()
+  local angle = self:tileToAngle(tx + dx, ty + dy)
+  return angle2Row(angle) * 45
+end
 
 return DirectedObject

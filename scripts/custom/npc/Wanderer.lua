@@ -19,8 +19,9 @@ return function(script)
   while true do
     Fiber:wait()
     if not (FieldManager.player:isBusy() or script.char.interacting) then
-      local dir = rand(8) * 45
-      if script.char:tryAngleMovement(dir) then
+      local shift = math.field.neighborShift[rand(#math.field.neighborShift)]
+      local angle = script.char:shiftToAngle(shift.x, shift.y)
+      if script.char:tryAngleMovement(angle) then
         script.char:playIdleAnimation()
         script:wait(pause + rand(-pauseVar, pauseVar))
       end
