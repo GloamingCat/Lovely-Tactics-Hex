@@ -1,5 +1,5 @@
 {
-  "lastField": 1,
+  "lastField": 6,
   "id": -1,
   "children": [
     {
@@ -82,6 +82,18 @@
         "lastLayers": [
           0,
           1,
+          -1
+        ]
+      },
+      "children": []
+    },
+    {
+      "id": 7,
+      "data": {
+        "name": "Test Battle 2",
+        "lastLayers": [
+          3,
+          0,
           -1
         ]
       },

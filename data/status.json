@@ -838,7 +838,42 @@
         },
         "id": 14,
         "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "script": "",
+      "icon": {
+        "id": -1,
+        "col": 0,
+        "row": 0
       },
+      "priority": 100,
+      "visible": true,
+      "cumulative": false,
+      "charAnim": "",
+      "transformations": [],
+      "duration": -1,
+      "removeOnKO": true,
+      "removeOnDamage": true,
+      "battleOnly": true,
+      "deactivate": false,
+      "ko": false,
+      "behavior": [],
+      "drainAtt": "",
+      "drainValue": 0,
+      "percentage": true,
+      "attributes": [],
+      "elements": [],
+      "statusDef": [],
+      "cancel": [],
+      "name": "Properties",
+      "tags": [],
+      "key": ""
+    },
+    "id": 24,
+    "children": [
       {
         "data": {
           "script": "",
@@ -875,6 +910,153 @@
           "key": ""
         },
         "id": 20,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 0,
+            "row": 1
+          },
+          "priority": 100,
+          "visible": false,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": false,
+          "removeOnDamage": false,
+          "battleOnly": false,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [
+            {
+              "type": 0,
+              "id": 5,
+              "value": 0
+            },
+            {
+              "type": 1,
+              "id": 5,
+              "value": 100
+            }
+          ],
+          "statusDef": [
+            9,
+            10,
+            11
+          ],
+          "cancel": [],
+          "name": "Fire Elemental (Hidden)",
+          "tags": [],
+          "key": ""
+        },
+        "id": 21,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 1,
+            "row": 1
+          },
+          "priority": 100,
+          "visible": false,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": false,
+          "removeOnDamage": false,
+          "battleOnly": false,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [
+            {
+              "type": 0,
+              "id": 6,
+              "value": 0
+            },
+            {
+              "type": 1,
+              "id": 6,
+              "value": 100
+            }
+          ],
+          "statusDef": [
+            9,
+            10,
+            11
+          ],
+          "cancel": [],
+          "name": "Ice Elemental (Hidden)",
+          "tags": [],
+          "key": ""
+        },
+        "id": 22,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
+            "col": 1,
+            "row": 2
+          },
+          "priority": 100,
+          "visible": false,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": false,
+          "removeOnDamage": false,
+          "battleOnly": false,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [
+            {
+              "type": 0,
+              "id": 7,
+              "value": 0
+            },
+            {
+              "type": 1,
+              "id": 7,
+              "value": 100
+            }
+          ],
+          "statusDef": [
+            9,
+            10,
+            11
+          ],
+          "cancel": [],
+          "name": "Thunder Elemental (Hidden)",
+          "tags": [],
+          "key": ""
+        },
+        "id": 23,
         "children": []
       }
     ]

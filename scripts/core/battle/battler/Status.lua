@@ -46,18 +46,7 @@ function Status:init(data, list, caster, state)
     self.attMul[bonus.key] = (bonus.mul or 0) / 100
   end
   -- Element bonus
-  self.elementAtk = {}
-  self.elementDef = {}
-  self.elementBuff = {}
-  for _, b in ipairs(data.elements) do
-    if b.type == 0 then
-      self.elementDef[b.id] = b.value / 100 - 1
-    elseif b.type == 1 then
-      self.elementAtk[b.id] = b.value / 100
-    else
-      self.elementBuff[b.id] = b.value / 100 - 1
-    end
-  end
+  self.elementAtk, self.elementDef, self.elementBuff = self:statusElements(data)
   -- Status
   self.statusDef = {}
   self.statusBuff = {}
@@ -97,7 +86,7 @@ function Status:getState()
 end
 
 ---------------------------------------------------------------------------------------------------
--- Drain / Regen
+-- Effects
 ---------------------------------------------------------------------------------------------------
 
 -- Applies drain effect.
@@ -120,6 +109,25 @@ function Status:drain(char)
   if not char.battler:isAlive() then
     char:playKOAnimation()
   end
+end
+-- Gets the table of status element bonus.
+-- @param(equip : table) Status data.
+-- @ret(table) Array for attack elements.
+-- @ret(table) Array for element immunity.
+-- @ret(table) Array for element damage.
+function Status:statusElements(data)
+  local atk, def, buff = {}, {}, {}
+  for i = 1, #data.elements do
+    local b = data.elements[i]
+    if b.type == 0 then
+      def[b.id + 1] = b.value / 100 - 1
+    elseif b.type == 1 then
+      atk[b.id + 1] = b.value / 100
+    else
+      buff[b.id + 1] = b.value / 100 - 1
+    end
+  end
+  return atk, def, buff
 end
 
 ---------------------------------------------------------------------------------------------------

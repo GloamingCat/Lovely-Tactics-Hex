@@ -42,6 +42,14 @@
           "x": 2,
           "y": 2,
           "list": 2
+        },
+        {
+          "key": "Test",
+          "charID": 14,
+          "battlerID": -1,
+          "x": 3,
+          "y": 3,
+          "list": 2
         }
       ],
       "name": "Player Party",
@@ -49,6 +57,37 @@
       "key": ""
     },
     "id": 0,
+    "children": []
+  },
+  {
+    "data": {
+      "ai": "troop/DefaultAI.lua",
+      "persistent": false,
+      "money": 0,
+      "items": [],
+      "members": [
+        {
+          "key": "e1",
+          "charID": 0,
+          "battlerID": -1,
+          "x": 2,
+          "y": 2,
+          "list": 0
+        },
+        {
+          "key": "e2",
+          "charID": 0,
+          "battlerID": -1,
+          "x": 4,
+          "y": 2,
+          "list": 0
+        }
+      ],
+      "name": "Jelly Party 0",
+      "tags": [],
+      "key": ""
+    },
+    "id": 2,
     "children": []
   },
   {
@@ -79,7 +118,7 @@
       "tags": [],
       "key": ""
     },
-    "id": 2,
+    "id": 5,
     "children": []
   },
   {
@@ -181,6 +220,37 @@
       "key": ""
     },
     "id": 4,
+    "children": []
+  },
+  {
+    "data": {
+      "ai": "troop/DefaultAI.lua",
+      "persistent": false,
+      "money": 0,
+      "items": [],
+      "members": [
+        {
+          "key": "e1",
+          "charID": 17,
+          "battlerID": -1,
+          "x": 2,
+          "y": 3,
+          "list": 0
+        },
+        {
+          "key": "e2",
+          "charID": 16,
+          "battlerID": -1,
+          "x": 4,
+          "y": 3,
+          "list": 0
+        }
+      ],
+      "name": "Test Troop",
+      "tags": [],
+      "key": ""
+    },
+    "id": 6,
     "children": []
   }
 ]

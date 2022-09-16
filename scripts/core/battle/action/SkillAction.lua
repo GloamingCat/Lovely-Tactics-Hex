@@ -359,7 +359,7 @@ function SkillAction:calculateEffectPoints(effect, user, target, rand)
     local skillFactor = max(0, self.elements[i] + userFactor)
     -- 0 if target is neutral on element i, negative if immune and positive if weak.
     local targetFactor = target:elementDef(i)
-    -- 0 if no bonus if applied.
+    -- 0 if no bonus is applied.
     local buffFactor = user:elementBuff(i)
     -- If target is neutral or skill does not have this element, result does not change.
     immunity = immunity * (targetFactor * skillFactor + 1)

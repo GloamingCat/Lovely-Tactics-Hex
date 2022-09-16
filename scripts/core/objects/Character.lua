@@ -285,7 +285,7 @@ end
 -- Callback for when the character moves.
 -- @param(path : Path) The path that the battler just walked.
 function Character:onMove(path)
-  self.steps = self.steps - path.totalCost
+  self.steps = math.floor(self.steps - path.totalCost)
   self.battler.statusList:callback('Move', self, path)
 end
 -- Callback for when the character enters the given tiles.

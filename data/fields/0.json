@@ -1905,25 +1905,23 @@
     {
       "name": "Right Party",
       "memberGen": 1,
-      "x": 12,
+      "x": 11,
       "y": 6,
       "h": 1,
       "rotation": 3,
       "troops": [
-        2,
-        1
+        2
       ]
     },
     {
       "name": "Left Party",
       "memberGen": 1,
-      "x": 2,
+      "x": 3,
       "y": 6,
       "h": 1,
       "rotation": 1,
       "troops": [
-        2,
-        1
+        2
       ]
     }
   ],

@@ -387,11 +387,11 @@ function EquipSet:equipElements(equip)
     for i = 1, #equip.elements do
       local b = equip.elements[i]
       if b.type == 0 then
-        def[b.id] = b.value / 100 - 1
+        def[b.id + 1] = b.value / 100 - 1
       elseif b.type == 1 then
-        atk[b.id] = b.value / 100 - 1
+        atk[b.id + 1] = b.value / 100
       else
-        buff[b.id] = b.value / 100 - 1
+        buff[b.id + 1] = b.value / 100 - 1
       end
     end
   end
