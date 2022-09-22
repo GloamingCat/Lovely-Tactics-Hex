@@ -1909,8 +1909,17 @@
       "y": 6,
       "h": 1,
       "rotation": 3,
-      "troops": [
-        2
+      "troopSpawn": [
+        {
+          "id": 2,
+          "maxLevel": 3,
+          "minLevel": 1
+        },
+        {
+          "id": 5,
+          "maxLevel": 99,
+          "minLevel": 4
+        }
       ]
     },
     {
@@ -1920,8 +1929,17 @@
       "y": 6,
       "h": 1,
       "rotation": 1,
-      "troops": [
-        2
+      "troopSpawn": [
+        {
+          "id": 2,
+          "maxLevel": 3,
+          "minLevel": 1
+        },
+        {
+          "id": 5,
+          "maxLevel": 99,
+          "minLevel": 4
+        }
       ]
     }
   ],

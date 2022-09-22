@@ -205,5 +205,14 @@ function Troop:getState(saveFormation)
   end
   return data
 end
+-- @ret(number) The higher level among visible members.
+function Troop:getLevel()
+  local level = 0
+  local list = self:visibleBattlers()
+  for i = 1, #list do
+    level = math.max(level, list[i].job.level)
+  end
+  return level
+end
 
 return Troop

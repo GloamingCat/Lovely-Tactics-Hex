@@ -823,17 +823,26 @@
     ],
     "region": []
   },
-  "characters": [],
-  "parties": [
+  "characters": [
     {
-      "name": "Player",
-      "memberGen": 1,
-      "x": 4,
+      "key": "Test",
+      "persistent": false,
+      "passable": false,
+      "visible": true,
+      "x": 6,
       "y": 7,
       "h": 1,
-      "rotation": 2,
-      "troops": []
-    },
+      "party": 0,
+      "charID": 14,
+      "battlerID": -1,
+      "animation": "Idle",
+      "frame": 1,
+      "direction": 135,
+      "scripts": [],
+      "repeatCollisions": false
+    }
+  ],
+  "parties": [
     {
       "name": "Enemy",
       "memberGen": 1,
@@ -841,10 +850,23 @@
       "y": 2,
       "h": 1,
       "rotation": 0,
-      "troops": [
-        6
+      "troopSpawn": [
+        {
+          "id": 6,
+          "maxLevel": 99,
+          "minLevel": 1
+        }
       ]
+    },
+    {
+      "name": "Player",
+      "memberGen": 0,
+      "x": 4,
+      "y": 7,
+      "h": 1,
+      "rotation": 2,
+      "troopSpawn": []
     }
   ],
-  "playerParty": 0
+  "playerParty": 1
 }

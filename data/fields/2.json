@@ -963,7 +963,13 @@
       "y": 7,
       "h": 1,
       "rotation": 2,
-      "troops": []
+      "troopSpawn": [
+        {
+          "id": 4,
+          "maxLevel": 99,
+          "minLevel": 1
+        }
+      ]
     },
     {
       "name": "Enemy",
@@ -972,8 +978,12 @@
       "y": 2,
       "h": 1,
       "rotation": 0,
-      "troops": [
-        4
+      "troopSpawn": [
+        {
+          "id": 4,
+          "maxLevel": 99,
+          "minLevel": 1
+        }
       ]
     }
   ],

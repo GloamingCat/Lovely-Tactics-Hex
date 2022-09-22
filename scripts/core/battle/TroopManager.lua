@@ -50,6 +50,7 @@ function TroopManager:createTroops(save)
   else
     playerID = playerID
   end
+  local playerTroop = nil
   self.playerParty = playerID
   -- Create parties
   self.partyCount = #parties
@@ -60,9 +61,12 @@ function TroopManager:createTroops(save)
       self:createTroop(partySave.id, partyInfo, id, partySave)
     elseif id == playerID then
       self:createTroop(self.playerTroopID, partyInfo, id)
-    elseif #partyInfo.troops > 0 then
-      local r = rand(#partyInfo.troops)
-      self:createTroop(partyInfo.troops[r], partyInfo, id)
+    else
+      playerTroop = playerTroop or Troop()
+      local troopID = self:getRandomTroop(partyInfo.troopSpawn, playerTroop)
+      if troopID >= 0 then
+        self:createTroop(troopID, partyInfo, id)
+      end
     end
   end
   for char in FieldManager.characterList:iterator() do
@@ -71,6 +75,24 @@ function TroopManager:createTroops(save)
     end
   end
   self.centers = self:getPartyCenters()
+end
+-- Gets a valid troop ID given the list of candidate troops.
+-- @param(troops : table) Array of troop spawn.
+-- @param(playerTroop : Troop) Player's troop data.
+-- @ret(number) Chosen troop's ID.
+function TroopManager:getRandomTroop(troops, playerTroop)
+  local n = 0
+  local id = -1
+  local level = playerTroop:getLevel()
+  for _, t in ipairs(troops) do
+    if level <= t.maxLevel and level >= t.minLevel then
+      n = n + 1
+      if rand(n) then
+        id = t.id
+      end
+    end
+  end
+  return id
 end
 -- Creates the troop's characters.
 -- @param(troopID : number) Troop's ID.
