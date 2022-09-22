@@ -832,7 +832,7 @@
       "x": 6,
       "y": 7,
       "h": 1,
-      "party": 0,
+      "party": 1,
       "charID": 14,
       "battlerID": -1,
       "animation": "Idle",
