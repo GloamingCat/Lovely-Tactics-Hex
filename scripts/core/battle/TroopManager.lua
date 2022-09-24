@@ -87,7 +87,7 @@ function TroopManager:getRandomTroop(troops, playerTroop)
   for _, t in ipairs(troops) do
     if level <= t.maxLevel and level >= t.minLevel then
       n = n + 1
-      if rand(n) then
+      if rand(n) == 1 then
         id = t.id
       end
     end

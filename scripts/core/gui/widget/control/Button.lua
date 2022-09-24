@@ -43,6 +43,7 @@ function Button:fromKey(window, key)
   local button = self(window, window[key .. 'Confirm'], window[key .. 'Enabled'])
   local icon = Config.icons[key]
   if icon then
+    icon = ResourceManager:loadIconAnimation(icon, GUIManager.renderer)
     button:createIcon(icon)
   end
   local text = Vocab[key]
@@ -87,14 +88,10 @@ function Button:createInfoText(info, fontName, align, w, pos)
   self.content:add(text)
   return text
 end
--- @param(icon : Animation | string) the icon graphics or the path to the icon
+-- @param(icon : Animation) the icon graphics or the path to the icon
 function Button:createIcon(icon)
   if not icon then
     return
-  end
-  if type(icon) == 'string' then
-    local img = love.graphics.newImage(Project.imagePath .. icon)
-    icon = Animation:fromImage(img, GUIManager.renderer)
   end
   icon.sprite:setColor(Color.gui_icon_enabled)
   self.icon = icon

@@ -26,7 +26,7 @@ function Inventory:init(list)
   if list then
     for i = 1, #list do
       local r = rand(100)
-      if r <= (list[i].rate or 100) then
+      if r <= (list[i].value or 100) then
         self:addItem(list[i].id, list[i].count)
       end
     end

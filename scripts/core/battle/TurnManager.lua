@@ -49,7 +49,9 @@ function TurnManager:setUp(state)
     for i = 1, #state.characters do
       self.turnCharacters[i] = FieldManager.characterList[state.characters[i]]
     end
+    self.turns = state.turns or 0
   else
+    self.turns = 0
     self.party = TroopManager.playerParty - 1
     self.turnCharacters = {}
   end
@@ -113,22 +115,11 @@ function TurnManager:runTurn()
     end
   end
   self:startTurn()
-  local result = true
-  for i = 1, #self.turnCharacters do
-    if self.turnCharacters[i].battler:isActive() then
-      result = nil
-      break
-    end
-  end
-  if result then
-    return nil
+  if not self:hasActiveCharacters() then
+    return
   end
   local troop = TroopManager.troops[self.party]
-  if troop.AI then
-    result = troop.AI(troop)
-  else
-    result = self:runPlayerTurn()
-  end
+  local result = troop.AI and troop.AI(troop) or self:runPlayerTurn()
   _G.Fiber:wait(self.finishTime)
   if result.escaped then
     if self.party == TroopManager.playerParty then
@@ -141,6 +132,7 @@ function TurnManager:runTurn()
     end
   end
   self:endTurn(result)
+  self.turns = self.turns + 1
 end
 -- [COROUTINE] Runs the player's turn.
 -- @ret(table) The action result table of the turn.
@@ -190,6 +182,15 @@ function TurnManager:nextCharacterIndex(i, controllable)
     index = math.mod1(index + i, count)
   end
   return index
+end
+-- @ret(boolean) Whether there are characters on battle that can act, either by input or AI.
+function TurnManager:hasActiveCharacters()
+  for i = 1, #self.turnCharacters do
+    if self.turnCharacters[i].battler:isActive() then
+      return true
+    end
+  end
+  return false
 end
 
 ---------------------------------------------------------------------------------------------------

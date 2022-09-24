@@ -54,13 +54,13 @@ function SkillAction:init(skillID)
   -- Time before initial animation starts.
   self.introTime = tonumber(data.introTime) or 20
   -- Time after cast animation starts and before user steps back to tile.
-  self.castTime = tonumber(data.castTime) or 10
+  self.castTime = tonumber(data.castTime) or 15
   -- Time after cast animation starts and before starting individual target animations.
-  self.centerTime = tonumber(data.centerTime) or 10
+  self.centerTime = tonumber(data.centerTime) or 5
   -- Time between start of each individual target animation.
   self.targetTime = tonumber(data.targetTime) or 0
   -- Time after all animations finished.
-  self.finishTime = tonumber(data.finishTime) or 0
+  self.finishTime = tonumber(data.finishTime) or 20
   -- Cost formulas
   self.costs = {}
   for i = 1, #data.costs do
