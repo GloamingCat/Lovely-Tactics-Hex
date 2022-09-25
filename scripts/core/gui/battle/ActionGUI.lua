@@ -257,7 +257,7 @@ end
 
 -- Checks if the mouse pointer in the slide area.
 function ActionGUI:checkSlide()
-  if not InputManager.mouse.active or InputManager.usingKeyboard then
+  if not self.buttonWindow or not self.buttonWindow.lastOpen then
     return
   end
   if GameManager:isMobile() and not InputManager.keys.touch:isPressing() then
@@ -310,9 +310,6 @@ function ActionGUI:startGridSelecting(target)
   if self.buttonWindow then
     self.buttonWindow.active = true
     self.buttonWindow.result = nil
-    --if InputManager.usingKeyboard or not InputManager.mouse.active then
-    --  GUIManager.fiberList:fork(self.buttonWindow.show, self.buttonWindow)
-    --end
   end
   FieldManager:showGrid()
   FieldManager.renderer:moveToTile(target)

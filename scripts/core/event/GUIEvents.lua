@@ -107,6 +107,9 @@ function EventSheet:closeDialogueWindow(args)
       window:removeSelf()
       window:destroy()
       self.gui.dialogues[args.id] = nil
+      if self.gui.activeWindow == window then
+        self.gui:setActiveWindow(nil)
+      end
     end
   end
 end

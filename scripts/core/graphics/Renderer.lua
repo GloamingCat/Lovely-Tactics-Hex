@@ -108,7 +108,9 @@ function Renderer:draw()
   local r, g, b, a = lgraphics.getColor()
   lgraphics.setShader()
   lgraphics.setColor(self:getRGBA())
-  spriteShader:send('phsv', {self:getHSV()})
+  if spriteShader then
+    spriteShader:send('phsv', {self:getHSV()})
+  end
   lgraphics.draw(self.canvas, 0, 0)
   lgraphics.setColor(r, g, b, a)
 end
@@ -208,7 +210,9 @@ end
 -- Draws current and clears.
 function Renderer:clearBatch()
   if self.batch and self.toDraw.size > 0 then
-    spriteShader:send('phsv', self.batchHSV)
+    if spriteShader then
+      spriteShader:send('phsv', self.batchHSV)
+    end
     self.batch:setTexture(self.batchTexture)
     lgraphics.draw(self.batch)
     self.batch:clear()

@@ -57,14 +57,7 @@ end
 -- Checks if button was clicked on.
 -- @ret(boolean) Whether the button was pressed or not.
 function FieldHUD:checkInput()
-  if self.buttonWindow then
-    self.buttonWindow:checkInput()
-    if self.buttonWindow.result then
-      self.buttonWindow.result = nil
-      return true
-    end
-  end
-  return false
+  return self.buttonWindow and self.buttonWindow:checkClick()
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -92,7 +85,7 @@ end
 -- Overrides GUI:show.
 function FieldHUD:show(...)
   if self.buttonWindow then
-    self.buttonWindow.lastOpen = not InputManager.usingKeyboard and InputManager.mouse.active
+    self.buttonWindow:refreshLastOpen()
   end
   self.time = GameManager:currentPlayTime()
   GUI.show(self, ...)

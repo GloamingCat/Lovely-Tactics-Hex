@@ -184,6 +184,7 @@ function AudioManager:playBGM(bgm, time, wait)
     pitch = pitch * (bgm.pitch or 100) / 100
   end
   if self.BGM and self.BGM.name == bgm.name then
+    self:fadein(time or 0, wait)
     return
   end
   if self.BGM then

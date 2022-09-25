@@ -54,8 +54,8 @@ end
 -- Opens or closes automatically depending if the player is using the mouse or not.
 function ButtonWindow:update()
   if self.GUI.open and self.active then
-    self.lastOpen = InputManager.usingKeyboard or not InputManager.mouse.active
-    if self.lastOpen then
+    self:refreshLastOpen()
+    if not self.lastOpen then
       if self.open then
         GUIManager.fiberList:fork(self.hide, self)
       end
@@ -88,6 +88,21 @@ function ButtonWindow:checkInput()
   elseif InputManager.mouse.moved then
     self:onMouseMove(x, y)
   end
+end
+-- Checks input and returns whether the player clicked the button or not.
+-- @ret(boolean)
+function ButtonWindow:checkClick()
+  self:checkInput()
+  if self.result then
+    self.result = nil
+    return true
+  end
+  return false
+end
+-- Refreshes the lastOpen property by checking if the mouse cursor is the current main input.
+function ButtonWindow:refreshLastOpen()
+  self.lastOpen = not InputManager.usingKeyboard and InputManager.mouse.active
+    or GameManager:isMobile()
 end
 
 ---------------------------------------------------------------------------------------------------
