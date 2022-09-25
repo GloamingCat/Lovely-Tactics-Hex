@@ -73,6 +73,7 @@ end
 -- @ret(Sprite) Sprite of new image.
 function FieldCamera:addImage(name, icon, foreground, visible, glued)
   local sprite = ResourceManager:loadIcon(icon, self)
+  sprite.texture:setFilter('linear', 'linear')
   self.images[name] = sprite
   sprite:setVisible(visible)
   local field = FieldManager.currentField

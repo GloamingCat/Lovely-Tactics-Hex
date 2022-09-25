@@ -99,8 +99,8 @@ function FieldCommandWindow:openPartyWindow(GUI)
     result = self.GUI:waitForResult()
   end
   self.GUI.partyWindow:hide()
-  self.GUI:show()
   self:activate()
+  self.GUI:show()
 end
 -- Open the member GUI for the selected character.
 -- @param(memberID : number) Character's position in the party.

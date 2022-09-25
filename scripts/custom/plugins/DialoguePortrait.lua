@@ -39,6 +39,7 @@ function DialogueWindow:setPortrait(icon)
   end
   if icon and icon.id >= 0 then
     local portrait = ResourceManager:loadIcon(icon, GUIManager.renderer)
+    portrait.texture:setFilter('linear', 'linear')
     if char then
       portrait:applyTransformation(char.data.transform)
     end

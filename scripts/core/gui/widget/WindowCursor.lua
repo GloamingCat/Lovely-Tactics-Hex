@@ -62,7 +62,7 @@ end
 -- Shows sprite.
 function WindowCursor:show()
   local active = not self.hideOnDeactive or self.window.active
-  self.anim.sprite:setVisible(active and #self.window.matrix > 0)
+  self.anim.sprite:setVisible(active and #self.window.matrix > 0 and InputManager:hasKeyboard())
 end
 
 return WindowCursor

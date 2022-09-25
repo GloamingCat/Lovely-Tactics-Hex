@@ -118,6 +118,7 @@ end
 -- Sets each slice visibility.
 -- @param(value : boolean) True to show, false to hide.
 function SpriteGrid:setVisible(value)
+  self.visible = value
   for i = 1, 9 do
     self.slices[i]:setVisible(value)
   end

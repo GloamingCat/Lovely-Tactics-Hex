@@ -100,7 +100,13 @@ end
 -- Confirm Callbacks
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides ListWindow:cellWidth.
 function ShopItemWindow:cellWidth()
   return ListWindow.cellWidth(self) * 4 / 5
 end
+-- @ret(string) String representation (for debugging).
+function ShopItemWindow:__tostring()
+  return 'Shop Item Window'
+end
+
 return ShopItemWindow

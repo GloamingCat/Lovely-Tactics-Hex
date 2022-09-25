@@ -41,6 +41,7 @@ function MemberInfo:createContent(w, h, battler)
   local icon = findByName(charData.portraits, "SmallIcon")
   if icon then
     local sprite = ResourceManager:loadIcon(icon, GUIManager.renderer)
+    sprite.texture:setFilter('linear', 'linear')
     sprite:applyTransformation(charData.transform)
     self.icon = SimpleImage(sprite, topLeft.x, topLeft.y, topLeft.z, nil, h)   
     local ix, iy, iw, ih = sprite:totalBounds()

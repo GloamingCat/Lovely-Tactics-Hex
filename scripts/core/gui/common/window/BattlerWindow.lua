@@ -175,6 +175,7 @@ function BattlerWindow:setPortrait(member)
   local icon = findByName(charData.portraits, "BigIcon")
   if icon then
     local sprite = ResourceManager:loadIcon(icon, GUIManager.renderer)
+    sprite.texture:setFilter('linear', 'linear')
     sprite:applyTransformation(charData.transform)
     self.portrait:setSprite(sprite)
   else

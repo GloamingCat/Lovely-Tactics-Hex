@@ -29,16 +29,14 @@ function GridWindow:createContent(width, height)
   self.currentRow = 1
   self.offsetCol = 0
   self.offsetRow = 0
-  if not GameManager:isMobile() then
-    if not self.noCursor then
-      self.cursor = WindowCursor(self)
-    end
-    if not self.noHighlight then
-      self.highlight = Highlight(self)
-    end
-    self.loopVertical = true
-    self.loopHorizontal = true
+  if not self.noCursor then
+    self.cursor = WindowCursor(self)
   end
+  if not self.noHighlight then
+    self.highlight = Highlight(self)
+  end
+  self.loopVertical = true
+  self.loopHorizontal = true
   Window.createContent(self, width or self:computeWidth(), height or self:computeHeight())
   self:packWidgets()
 end
@@ -259,7 +257,6 @@ end
 
 -- Called when player confirms.
 function GridWindow:onConfirm(widget)
-  assert(not GameManager:isMobile(), "This shouldn't be called on mobile.")
   widget = widget or self:currentWidget()
   if widget.enabled then
     if widget.confirmSound then

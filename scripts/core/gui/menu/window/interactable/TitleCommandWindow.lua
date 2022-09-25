@@ -30,7 +30,9 @@ function TitleCommandWindow:createWidgets()
   Button:fromKey(self, 'newGame')
   Button:fromKey(self, 'loadGame')
   Button:fromKey(self, 'config')
-  Button:fromKey(self, 'quit')
+  if GameManager:isDesktop() then
+    Button:fromKey(self, 'quit')
+  end
 end
 
 ---------------------------------------------------------------------------------------------------

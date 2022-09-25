@@ -102,7 +102,7 @@ end
 -- Refreshes the lastOpen property by checking if the mouse cursor is the current main input.
 function ButtonWindow:refreshLastOpen()
   self.lastOpen = not InputManager.usingKeyboard and InputManager.mouse.active
-    or GameManager:isMobile()
+    or not InputManager:hasKeyboard()
 end
 
 ---------------------------------------------------------------------------------------------------

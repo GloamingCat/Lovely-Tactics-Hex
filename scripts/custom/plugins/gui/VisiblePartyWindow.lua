@@ -72,8 +72,8 @@ function FieldCommandWindow:openPartyWindow(GUI)
     self.GUI:show()
     result = self.GUI:waitForResult()
   end
-  self.GUI.partyWindow.highlight:hide()
   self:activate()
+  self.GUI.partyWindow.highlight:hide()
 end
 -- To make the window thinner to fit the party window.
 local FieldCommandWindow_colCount = FieldCommandWindow.colCount
