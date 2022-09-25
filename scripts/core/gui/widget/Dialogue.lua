@@ -38,6 +38,7 @@ end
 function Dialogue:buttonPressed()
   return InputManager.keys['confirm']:isTriggered() or InputManager.keys['cancel']:isTriggered() 
     or InputManager.keys['mouse1']:isTriggered() or InputManager.keys['mouse2']:isTriggered()
+    or InputManager.keys['touch']:isTriggered()
 end
 -- Shows text interactively, character by character.
 -- @param(text : string) Raw text string.

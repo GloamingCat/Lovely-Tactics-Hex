@@ -103,6 +103,12 @@
   ],
   "icons": [
     {
+      "name": "empty",
+      "id": 34,
+      "col": 4,
+      "row": 0
+    },
+    {
       "name": "money",
       "id": 36,
       "col": 2,

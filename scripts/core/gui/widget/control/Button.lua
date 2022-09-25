@@ -34,6 +34,7 @@ function Button:init(window, onConfirm, enableCondition)
   self.onSelect = self.onSelect or window.onButtonSelect
   self.onMove = self.onMove or window.onButtonMove
   self.onClick = self.onClick or self.onConfirm
+  self.iconPos = 0
 end
 -- Creates a button for the action represented by the given key.
 -- @param(window : GridWindow) the window that this button is component of
@@ -53,15 +54,22 @@ function Button:fromKey(window, key)
   button.key = key
   return button
 end
--- @param(text : string) the text shown in the button
--- @param(fontName : string) the text's font, from Fonts folder (optional, uses default)
+-- @param(text : string) The text shown in the button.
+-- @param(fontName : string) The text's font, from Fonts folder (optional, uses default).
+-- @param(align : string) The text's horizontal alignment (optional, left by default).
+-- @param(w : number) The text's maximum width (optional, uses all empty space by default).
+-- @param(pos : Vector) The text's maximum width (optional, top left by default).
 function Button:createText(name, fontName, align, w, pos)
   if self.text then
     self.text:destroy()
   end
   fontName = fontName or 'gui_button'
   w = (w or self.window:cellWidth()) - self:iconWidth()
-  pos = pos or Vector(0, 0, 0)
+  if self.iconPos < 0.25 then
+    pos = pos or Vector(self:iconWidth(), 0, 0)
+  else
+    pos = pos or Vector(0, 0, 0)
+  end
   local text = SimpleText(name, pos, w, align or 'left', Fonts[fontName])
   text.sprite.alignY = 'center'
   text.sprite.maxHeight = self.window:cellHeight()
@@ -76,9 +84,12 @@ function Button:createInfoText(info, fontName, align, w, pos)
   if self.infoText then
     self.infoText:destroy()
   end
-  local bw = self.window:cellWidth() - self:iconWidth()
-  w = w or bw
-  pos = pos or Vector(bw - w - self.window:paddingX(), 0, 0)
+  w = (w or self.window:cellWidth()) - self:iconWidth()
+  if self.iconPos > 0.75 then
+    pos = pos or Vector(self.window:cellWidth() - w - self:iconWidth(), 0, 0)
+  else
+    pos = pos or Vector(self.window:cellWidth() - w, 0, 0)
+  end
   fontName = fontName or 'gui_button'
   local text = SimpleText(info, pos, w, align or 'right', Fonts[fontName])
   text.sprite.alignY = 'center'
@@ -120,6 +131,17 @@ end
 function Button:setInfoText(text)
   self.infoText:setText(text)
   self.infoText:redraw()
+end
+-- @param(icon : table) Icon data.
+function Button:setIcon(icon)
+  if self.icon then
+    self.icon:destroy()
+    self.icon = nil
+  end
+  if icon and icon.id >= 0 then
+    icon = ResourceManager:loadIconAnimation(icon, GUIManager.renderer)
+    self:createIcon(icon)
+  end
 end
 -- Converting to string.
 function Button:__tostring()
@@ -173,7 +195,7 @@ function Button:setEnabled(value)
   end
 end
 -- Selects/deselects this button.
--- @param(value : boolean) true to select, false to deselect
+-- @param(value : boolean)
 function Button:setSelected(value)
   if value ~= self.selected then
     self.selected = value
@@ -194,8 +216,9 @@ function Button:updatePosition(windowPos)
   if self.icon then
     self.icon.sprite:setXYZ(0, 0)
     local x, y, w, h = self.icon.sprite:totalBounds()
-    self.icon.sprite:setXYZ(pos.x - x, pos.y + self.window:cellHeight() / 2, pos.z)
-    pos:add(Vector(w, 0))
+    x = pos.x - x + (self.window:cellWidth() - w) * self.iconPos
+    y = pos.y + self.window:cellHeight() / 2
+    self.icon.sprite:setXYZ(x, y, pos.z)
   end
   for i = 1, #self.content do
     local c = self.content[i]

@@ -44,7 +44,7 @@ function GridWidget:setIndex(i)
   self.row = ceil(i / self.window:colCount())
   self.col = i - (self.row - 1) * self.window:colCount()
 end
--- @ret(Vector) the offset from the window's position.
+-- @ret(Vector) The offset from the window's center.
 function GridWidget:relativePosition()
   local w = self.window
   local col, row = self.col - w.offsetCol, self.row - w.offsetRow
