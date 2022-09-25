@@ -46,8 +46,9 @@ end
 -- @param(eff : table) Effect to check validity (optional, first effect by default).
 -- @ret(boolean)
 function SkillRule:isValidTarget(char, eff)
+  local support = eff and eff.heal or self.skill.support
   eff = eff or self.skill.effects[1]
-  if eff and (char.party == self.input.user.party) ~= eff.heal then
+  if eff and (char.party == self.input.user.party) ~= support then
     return false
   end
   if self.targetCondition and not self:targetCondition(self.input.user, char) then

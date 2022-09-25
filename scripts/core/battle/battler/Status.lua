@@ -93,7 +93,7 @@ end
 -- @param(char : Character) The battle character with this status.
 function Status:drain(char)
   local pos = char.position
-  local popupText = PopupText(pos.x, pos.y - 20, pos.z - 60)
+  local popupText = PopupText(pos.x, pos.y - 20, pos.z - 20)
   local value = self.data.drainValue
   if self.data.percentage then
     value = math.floor(char.battler['m' .. self.data.drainAtt]() * value / 100)

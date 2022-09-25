@@ -22,9 +22,9 @@ local CallRule = class(AIRule)
 function CallRule:onSelect(user)
   local troop = TroopManager.troops[user.party]
   local backup = troop:backupMembers()
-  self.input = ActionInput(CallAction(), user or TurnManager:currentCharacter())
-  self.input.action:onSelect(self.input)
   if backup.size > 0 then
+    self.input = ActionInput(CallAction(), user or TurnManager:currentCharacter())
+    self.input.action:onSelect(self.input)
     local validTiles = 0
     for tile in FieldManager.currentField:gridIterator() do
       if tile.gui.selectable then
@@ -36,10 +36,10 @@ function CallRule:onSelect(user)
     end
     if self.input.target then
       self.input.member = backup[1].key
-      return
+    else
+      self.input = nil
     end
   end
-  self.input.action = nil
 end
 -- @ret(string) String identifier.
 function CallRule:__tostring()

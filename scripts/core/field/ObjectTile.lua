@@ -161,13 +161,13 @@ function ObjectTile:collidesCharacters(char, other)
   if not other.battler then
     return not char.passable
   end
-  if not other.battler:isActive() and Config.battle.overpassDeads then
+  if not other.battler:isActive() and Config.grid.overpassDeads then
     return false
   end
-  if char.party == other.party and Config.battle.overpassAllies then
+  if char.party == other.party and Config.grid.overpassAllies then
     return false
   end
-  return true
+  return not char.passable
 end
 -- Checks if there is a bridge object that connects given tile to this tile.
 -- @param(obj : Object) The object that is trying to access this tile (optional).

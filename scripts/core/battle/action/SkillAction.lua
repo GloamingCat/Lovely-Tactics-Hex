@@ -395,7 +395,7 @@ function SkillAction:singleTargetEffect(results, input, targetChar, originTile)
     -- Miss
     if wasAlive then
       local pos = targetChar.position
-      local popupText = PopupText(pos.x, pos.y - 10, pos.z - 60)
+      local popupText = PopupText(pos.x, pos.y - 10, pos.z - 20)
       popupText:addLine(Vocab.miss, 'popup_miss', 'popup_miss')
       popupText:popup()
     end

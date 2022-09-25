@@ -78,7 +78,7 @@ function EventSheet:healAll(args)
     battler.state.sp = battler.msp()
     if args.status then
       for _, id in ipairs(args.status) do
-        battler.statusList:removeStatus(id)
+        battler.statusList:removeStatusAll(id)
       end
     end
   end

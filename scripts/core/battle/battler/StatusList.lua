@@ -54,11 +54,12 @@ function StatusList:__tostring()
   return 'Status' .. getmetatable(List).__tostring(self)
 end
 -- Gets the status with the given ID (the first created).
--- @param(id : number) The status' ID in the database.
+-- @param(id : number | string) The status' ID or key in the database.
 -- @ret(Status)
 function StatusList:findStatus(id)
+  local data = Database.status[id]
   for status in self:iterator() do
-    if status.data.id == id then
+    if status.data == data then
       return status
     end
   end
@@ -105,7 +106,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Add a new status.
--- @param(id : number) The status' ID.
+-- @param(id : number | string) The status' ID or key.
 -- @param(state : table) The status persistent data.
 -- @param(character : Character) The character with this status.
 -- @param(caster : string) Key of the character who casted this status 
@@ -125,7 +126,7 @@ function StatusList:addStatus(id, state, character, caster)
       status:onAdd(self.battler, character)
     end
     for _, id in ipairs(status.cancel) do
-      self:removeAllStatus(id, character)
+      self:removeStatusAll(id, character)
     end
     if character then
       self:updateGraphics(character)
@@ -152,8 +153,8 @@ function StatusList:removeStatus(status, character)
   end
 end
 -- Removes all status instances of the given ID.
--- @param(id : number) Status' ID on database.
-function StatusList:removeAllStatus(id, character)
+-- @param(id : number | string) Status' ID or key in the database.
+function StatusList:removeStatusAll(id, character)
   local all = {}
   local status = self:findStatus(id)
   while status do

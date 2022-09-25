@@ -35,8 +35,8 @@ function RewardItemWindow:createWidgets()
   local icon = Config.icons.money.id >= 0 and 
     ResourceManager:loadIconAnimation(Config.icons.money, GUIManager.renderer)
   local button = Button(self)
-  button:createText(Vocab.money, 'gui_button')
   button:createIcon(icon)
+  button:createText(Vocab.money, 'gui_button')
   button:createInfoText(self.money, 'gui_button')
   InventoryWindow.createWidgets(self)
 end

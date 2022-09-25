@@ -142,7 +142,7 @@ end
 -- @param(pos : Vector) the character's position
 -- @param(results : table) the array of effect results
 function Battler:popupResults(pos, results, character)
-  local popupText = PopupText(pos.x, pos.y - 10, pos.z - 60)
+  local popupText = PopupText(pos.x, pos.y - 10, pos.z - 20)
   for i = 1, #results.points do
     local points = results.points[i]
     if points.heal then
@@ -160,7 +160,7 @@ function Battler:popupResults(pos, results, character)
       local s = self.statusList:addStatus(r.id, nil, character, r.caster)
       popupText:addStatus(s)
     else
-      local s = self.statusList:removeAllStatus(r.id, character)
+      local s = self.statusList:removeStatusAll(r.id, character)
       popupText:removeStatus(s)
     end
   end
@@ -181,7 +181,7 @@ function Battler:applyResults(results, character)
     if r.add then
       self.statusList:addStatus(r.id, nil, character)
     else
-      self.statusList:removeAllStatus(r.id, character)
+      self.statusList:removeStatusAll(r.id, character)
     end
   end
 end

@@ -34,7 +34,7 @@ local SkillAction_calculateEffectResults = SkillAction.calculateEffectResults
 function SkillAction:calculateEffectResults(user, target)
   local results = SkillAction_calculateEffectResults(self, user, target)
    if self.tags.critical then
-    local crit = user.att[attName]() -- Test 
+    local crit = user.att[attName]()
     local rand = self.rand or love.math.random
     if rand() * 100 <= crit then
       results.critical = true

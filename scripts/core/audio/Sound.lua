@@ -98,7 +98,7 @@ function Sound:refreshVolume()
 end
 -- Updates source's pitch according to AudioManager's pitch.
 function Sound:refreshPitch()
-  self.source:setPitch((self.pitch / 100) * (AudioManager.pitchSFX / 100))
+  self.source:setPitch((self.pitch / 100) * (AudioManager.pitchSFX / 100) * GameManager.speed)
 end
 
 return Sound
