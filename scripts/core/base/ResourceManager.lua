@@ -164,7 +164,7 @@ end
 -- Uses LÖVE's newFont to load a new font's data, or gets it from the cache.
 -- @param(data : table) Array with options in order: name, format, size, italic, bold.
 -- @ret(Font) Font data.
-function ResourceManager:loadFont(data)
+function ResourceManager:loadFont(data, scale)
   local path = data[1]
   if data[4] then
     path = path .. '_i'
@@ -173,11 +173,12 @@ function ResourceManager:loadFont(data)
     path = path .. '_b'
   end
   path = path .. '.' .. data[2]
-  local size = data[3]
+  local size = data[3] * (scale or 1)
   local key = path .. size
   local font = FontCache[key]
   if not font then
-    font = newFont('fonts/' .. path, size * Fonts.scale)
+    local multiplier = GameManager:isMobile() and 1 or 0.9
+    font = newFont('fonts/' .. path, size * multiplier)
     FontCache[key] = font
   end
   return font

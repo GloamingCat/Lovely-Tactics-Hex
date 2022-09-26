@@ -51,14 +51,14 @@ end
 function Text:setText(text)
   assert(text, 'Nil text')
   self.text = text
-  self.lines = nil
   if text == '' then
     self.events = nil
     self.parsedLines = nil
   else
+    local sx = ScreenManager.scaleX * self.renderer.scaleX
     local maxWidth = self.wrap and (self.maxWidth / self.scaleX)
     local fragments = TextParser.parse(text, self.plainText)
-    local lines, events = TextParser.createLines(fragments, self.defaultFont, maxWidth)
+    local lines, events = TextParser.createLines(fragments, self.defaultFont, maxWidth, sx)
     self.parsedLines = lines
     assert(lines, "Couldn't parse lines: " .. tostring(text))
     self.events = events
@@ -69,14 +69,31 @@ end
 function Text:requestRedraw()
   self.renderer.needsRedraw = true
   self.needsRedraw = true
-  self.bufferLines = nil
+  self.lines = nil
   if not self.parsedLines then
     return
   end
+  local s = ScreenManager.scaleX * self.renderer.scaleX
+  for _, line in ipairs(self.parsedLines) do
+    for _, f in ipairs(line) do
+      if f.info then
+        f.content = ResourceManager:loadFont(f.info, s)
+      end
+      if f.width then
+        f.width = f.width / self.parsedLines.scale * s
+      end
+      if f.height then
+        f.height = f.height / self.parsedLines.scale * s
+      end
+    end
+    line.width = line.width / self.parsedLines.scale * s
+    line.height = line.height / self.parsedLines.scale * s
+  end
+  self.parsedLines.scale = s
   if self.cutPoint then
-    self.bufferLines = TextParser.cutText(self.parsedLines, self.cutPoint)
+    self.lines = TextParser.cutText(self.parsedLines, self.cutPoint - 1)
   else
-    self.bufferLines = self.parsedLines
+    self.lines = self.parsedLines
   end
   self:recalculateBox()
 end
@@ -93,7 +110,7 @@ end
 -- Checks if sprite is visible on screen.
 -- @ret(boolean)
 function Text:isVisible()
-  return (self.lines or self.bufferLines) and self.visible
+  return self.lines and self.visible
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -104,10 +121,10 @@ end
 function Text:getWidth()
   local w = 0
   if self.parsedLines then
-    for i = 1, #self.parsedLines do
-      local line = self.parsedLines[i]
-      w = max(w, (line.width + Fonts.outlineSize * 2) / Fonts.scale)
+    for i, line in ipairs(self.parsedLines) do
+      w = max(w, line.width)
     end
+    w = w / (ScreenManager.scaleX * self.renderer.scaleX)
   end
   return w
 end
@@ -115,10 +132,10 @@ end
 function Text:getHeight()
   local h = 0
   if self.parsedLines then
-    for i = 1, #self.parsedLines do
-      local line = self.parsedLines[i]
-      h = h + line.height / Fonts.scale
+    for i, line in ipairs(self.parsedLines) do
+      h = h + line.height
     end
+    h = h / (ScreenManager.scaleY * self.renderer.scaleY)
   end
   return h
 end
@@ -174,6 +191,7 @@ end
 -- @param(w : number) Line's width in GUI pixels.
 -- @ret(number) The x offset in GUI pixels.
 function Text:alignOffsetX(w)
+  w = w or self:getWidth()
   if self.maxWidth then
     if self.alignX == 'right' then
       return self.maxWidth - w
@@ -205,50 +223,43 @@ end
 -- Called when renderer is iterating through its rendering list.
 -- @param(renderer : Renderer)
 function Text:draw(renderer)
-  if self.needsRedraw then
-    self:redrawBuffers(renderer)
-  end
   renderer:clearBatch()
-  local sx, sy, lsx = self.scaleX / Fonts.scale, self.scaleY / Fonts.scale
-  local rsx = ScreenManager.scaleX * renderer.scaleX
-  local rsy = ScreenManager.scaleY * renderer.scaleY
-  local x, y = 0, self:alignOffsetY() - 0.5
   local r, g, b, a = lgraphics.getColor()
   local shader = lgraphics.getShader()
   lgraphics.setColor(self.color.red, self.color.green, self.color.blue, self.color.alpha)
   lgraphics.setShader()
-  for i = 1, #self.lines do
-    local line = self.lines[i]
-    local w = line.buffer:getWidth() * sx
-    if self.maxWidth and w > self.maxWidth then
-      lsx = self.maxWidth / line.buffer:getWidth()
-      x = 0
-    else
-      lsx = sx
-      x = self:alignOffsetX(w)
-    end
-    lgraphics.draw(line.buffer, line.quad, 
-      round((self.position.x + x) * rsx), round((self.position.y + y) * rsy), 
-      self.rotation, lsx * rsx, sy * rsy, self.offsetX, self.offsetY)
-    y = y + line.height * sy
-  end
-  lgraphics.setShader(shader)
-  lgraphics.setColor(r, g, b, a)
-end
--- Redraws each line buffer.
-function Text:redrawBuffers(renderer)
   lgraphics.push()
-  lgraphics.origin()
   local sx = ScreenManager.scaleX * renderer.scaleX
   local sy = ScreenManager.scaleY * renderer.scaleY
-  self.lines = TextRenderer.createLineBuffers(self.bufferLines, sx, sy)
-  local width, height = 0, 0
-  for i = 1, #self.lines do
-    width = max(self.lines[i].buffer:getWidth(), width)
-    height = height + self.lines[i].height
-  end
-  self.needsRedraw = false
+  lgraphics.translate(-self.offsetX, -self.offsetY)
+  lgraphics.scale(self.scaleX, self.scaleY)
+  lgraphics.rotate(self.rotation)
+  lgraphics.translate(self.position.x * sx, self.position.y * sy)
+  self:drawLines(sx, sy)
   lgraphics.pop()
+  lgraphics.setColor(r, g, b, a)
+  lgraphics.setShader(shader)
+end
+-- Prints parsed lines in the current graphics context.
+-- All fragments are assumed to have pre-multiplied width/height.
+-- @para(sx : number) Scale x.
+-- @para(sy : number) Scale y.
+function Text:drawLines(sx, sy)
+  local x = 0
+  local y = self:alignOffsetY() * sy - 0.5
+  local shrink = 1
+  for i, line in ipairs(self.lines) do
+    y = y + line.height
+    local w = self:getWidth()
+    if self.maxWidth and w > self.maxWidth then
+      shrink = self.maxWidth / w
+      x = 0
+    else
+      shrink = 1
+      x = self:alignOffsetX(w) * sx
+    end
+    TextRenderer.drawLine(line, x, y, self.color)
+  end
 end
 
 return Text

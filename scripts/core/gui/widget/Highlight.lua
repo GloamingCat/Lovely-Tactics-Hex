@@ -23,7 +23,7 @@ local Highlight = class(Component, Transformable)
 -- @param(window : GridWindow) Parent window.
 function Highlight:init(window, width, height, pos)
   if window then
-    local mx = window:colMargin() / 2 + 4
+    local mx = window:colMargin() / 2 + 6
     local my = window:rowMargin() / 2 + 4
     width = width or window:cellWidth() + mx
     height = height or window:cellHeight() + my

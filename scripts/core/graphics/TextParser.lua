@@ -106,26 +106,26 @@ end
 -- @param(fragments : table) Array of fragments.
 -- @ret(table) Array of lines.
 -- @ret(table) Array of text events.
-function TextParser.createLines(fragments, initialFont, maxWidth)
-  local currentFont = ResourceManager:loadFont(initialFont)
+function TextParser.createLines(fragments, initialFont, maxWidth, scale)
+  local currentFont = ResourceManager:loadFont(initialFont, scale)
   local currentFontInfo = { unpack(initialFont) }
-  local currentLine = { width = 0, height = 0, length = 0, { content = currentFont } }
-  local lines = { currentLine, length = 0 }
+  local currentLine = { width = 0, height = 0, length = 0, { content = currentFont, info = currentFontInfo } }
+  local lines = { currentLine, length = 0, scale = scale }
   local events = {}
   local point = 0
 	for i = 1, #fragments do
     local fragment = fragments[i]
 		if type(fragment) == 'string' then -- Piece of text
       local line, length = TextParser.addTextFragment(lines, currentLine, fragment, 
-        currentFont, maxWidth)
+        currentFont, maxWidth, scale)
       currentLine = line
       point = point + length
     elseif fragment.type == 'sprite' then
       local quad, texture = ResourceManager:loadIconQuad(fragment.value)
       local x, y, w, h = quad:getViewport()
-      w = w * Fonts.scale
-      h = h * Fonts.scale
-      if currentLine.width + w > maxWidth * Fonts.scale then
+      w = w * scale
+      h = h * scale
+      if currentLine.width + w > maxWidth * scale then
         currentLine = TextParser.addTextFragment(lines, currentLine, '\n')
       end
       TextParser.insertFragment(lines, currentLine, { content = texture, quad = quad, 
@@ -150,8 +150,8 @@ function TextParser.createLines(fragments, initialFont, maxWidth)
       elseif fragment.type == 'size' then
         currentFontInfo[3] = fragment.size + currentFontInfo[3]
       end
-      currentFont = ResourceManager:loadFont(currentFontInfo)
-      insert(currentLine, { content = currentFont })
+      currentFont = ResourceManager:loadFont(currentFontInfo, scale)
+      insert(currentLine, { content = currentFont, info = util.table.shallowCopy(currentFontInfo) })
     end
 	end
 	return lines, events
@@ -196,17 +196,19 @@ end
 -- @param(lines : table) The array of lines.
 -- @param(currentLine : table) The line of the fragment.
 -- @param(fragment : string) The text fragment.
+-- @param(maxWidth : number) Max width for wrapping.
+-- @param(scale : number) Font scale.
 -- @ret(table) The new current line.
 -- @ret(number) Total length of the fragment inserted.
-function TextParser.addTextFragment(lines, currentLine, fragment, font, width)
+function TextParser.addTextFragment(lines, currentLine, fragment, font, maxWidth, scale)
   if fragment == '\n' then
     -- New line
     currentLine = { width = 0, height = 0, length = 0 }
     insert(lines, currentLine)
     return currentLine, 0
   end
-  if width then
-    return TextParser.wrapText(lines, currentLine, fragment, font, width * Fonts.scale)
+  if maxWidth then
+    return TextParser.wrapText(lines, currentLine, fragment, font, maxWidth * scale)
   else
     return currentLine, TextParser.insertFragment(lines, currentLine, fragment, font)
   end
@@ -215,6 +217,7 @@ end
 -- @param(lines : table) The array of lines.
 -- @param(currentLine : table) The line of the fragment.
 -- @param(fragment : string) The text fragment.
+-- @param(width : number) Max width for wrapping.
 -- @ret(table) The new current line.
 -- @ret(number) Total length of the fragment inserted.
 function TextParser.wrapText(lines, currentLine, fragment, font, width)

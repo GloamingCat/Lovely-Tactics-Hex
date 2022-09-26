@@ -10,7 +10,7 @@ Draws the text with an outline.
 // Size of the pixel. It depends on the text's texture size.
 extern vec2 pixelSize;
 // Width of the outline in pixels.
-extern number outlineSize;
+extern vec2 outlineSize;
 // The scale of the step
 extern vec2 stepSize;
 
@@ -28,15 +28,15 @@ vec4 effect(vec4 color, sampler2D texture, vec2 texture_coords, vec2 screen_coor
   number outlineAlpha = 0.0;
   for (number i = 0.0; i <= N_STEPS; i += 1.0) {
       for (number j = 0.0; j <= N_STEPS; j += 1.0) {
-          if (i * stepSize.x <= outlineSize * 2.0 && j * stepSize.y <= outlineSize * 2.0) {
-              vec4 neighborColor = texture2D(texture, texture_coords + vec2(i * stepSize.x - outlineSize, j * stepSize.y - outlineSize) * pixelSize);
+          if (i * stepSize.x <= outlineSize.x * 2.0 && j * stepSize.y <= outlineSize.y * 2.0) {
+              vec4 neighborColor = texture2D(texture, texture_coords + (vec2(i, j) * stepSize - outlineSize) * pixelSize);
               outlineAlpha += neighborColor[3];
           }
       }
   }
   
   // Combine initial and outline colors.
-  outlineAlpha = min(outlineAlpha / (outlineSize * outlineSize), 1.0) * outlineColor[3];
+  outlineAlpha = min(outlineAlpha / (outlineSize.x * outlineSize.y), 1.0) * outlineColor[3];
   number finalAlpha = initialAlpha + (1.0 - initialAlpha) * outlineAlpha;
   vec4 finalColor = (initialAlpha * initialColor + (1.0 - initialAlpha) * outlineAlpha * outlineColor);
   finalColor[3] = finalAlpha;

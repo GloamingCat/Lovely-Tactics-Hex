@@ -29,8 +29,14 @@
     "key": ""
   },
   {
+    "on": true,
+    "name": "plugins/graphics/TextOutline.lua",
+    "tags": [],
+    "key": ""
+  },
+  {
     "on": false,
-    "name": "plugins/BatchMesh.lua",
+    "name": "plugins/graphics/BatchMesh.lua",
     "tags": [],
     "key": ""
   },
@@ -88,7 +94,7 @@
   },
   {
     "on": true,
-    "name": "plugins/ChildAnimations.lua",
+    "name": "plugins/graphics/ChildAnimations.lua",
     "tags": [],
     "key": ""
   },

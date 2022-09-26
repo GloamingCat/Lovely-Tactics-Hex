@@ -1,14 +1,12 @@
 
-local multiplier = Config.platform == 1 and 1 or 0.9
-
-local huge_font = { 'Roboto', 'ttf', 25 * multiplier }
-local big_font = { 'Roboto', 'ttf', 20 * multiplier }
-local critical_font = { 'Roboto', 'ttf', 17 * multiplier }
-local default_font = { 'Roboto', 'ttf', 14 * multiplier }
-local medium_font = { 'Roboto', 'ttf', 11 * multiplier }
-local small_font = { 'Roboto', 'ttf', 9 * multiplier }
-local tiny_font = { 'Roboto', 'ttf', 7.5 * multiplier }
-local fps_font = { 'Roboto', 'ttf', 5 * multiplier }
+local huge_font = { 'Roboto', 'ttf', 25 }
+local big_font = { 'Roboto', 'ttf', 20 }
+local critical_font = { 'Roboto', 'ttf', 17 }
+local default_font = { 'Roboto', 'ttf', 14 }
+local medium_font = { 'Roboto', 'ttf', 11 }
+local small_font = { 'Roboto', 'ttf', 9 }
+local tiny_font = { 'Roboto', 'ttf', 7.5 }
+local fps_font = { 'Roboto', 'ttf', 5 }
 
 return  {
 
@@ -38,10 +36,6 @@ return  {
 	popup_levelup = default_font,
 
 	fps = fps_font,
-  pause = medium_font,
-
-	-- Settings
-	scale = 5,
-	outlineSize = 5
+  pause = medium_font
 
 }
