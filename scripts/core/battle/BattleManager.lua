@@ -43,7 +43,6 @@ function BattleManager:setUp(state)
   TroopManager:setPartyTiles(self.currentField)
   for tile in FieldManager.currentField:gridIterator() do
     tile.gui = TileGUI(tile, true, true)
-    tile.gui:updateDepth()
   end
   TroopManager:createTroops(state and state.troops)
   TurnManager:setUp(state and state.turn)

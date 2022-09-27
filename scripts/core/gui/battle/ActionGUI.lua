@@ -207,18 +207,18 @@ end
 function ActionGUI:mouseInput()
   self:checkSlide()
   if InputManager.mouse.moved then
-    local target = self:mouseTarget()
+    local target = FieldManager.currentField:getHoveredTile()
     if target and target ~= self.input.target then
       self:selectTarget(target)
     end
   elseif InputManager.keys['touch']:isReleased() then
-    local target = self:mouseTarget()
+    local target = FieldManager.currentField:getHoveredTile()
     if target and target ~= self.input.target then
       self:selectTarget(target)
       FieldManager.renderer:moveToTile(target)
     end
   elseif InputManager.keys['mouse1']:isTriggered() then
-    local target = self:mouseTarget()
+    local target = FieldManager.currentField:getHoveredTile()
     if target then
       if target ~= self.input.target then
         self:selectTarget(target)
@@ -239,16 +239,6 @@ function ActionGUI:mouseInput()
     return false
   end
   return true
-end
--- @ret(ObjectTile) The tile that the mouse is over.
-function ActionGUI:mouseTarget()
-  local field = FieldManager.currentField
-  for l = field.maxh, field.minh, -1 do
-    local x, y = InputManager.mouse:fieldCoord(l)
-    if not field:exceedsBorder(x, y) and field:isGrounded(x, y, l) then
-      return field:getObjectTile(x, y, l)
-    end
-  end
 end
 
 ---------------------------------------------------------------------------------------------------

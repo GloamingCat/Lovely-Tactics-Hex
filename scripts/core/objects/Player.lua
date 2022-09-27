@@ -171,23 +171,18 @@ function Player:moveByMouse(button)
     self.pathButton = button
     self.dashPath = false
   end
-  local field = FieldManager.currentField
   local currentTile = self:getTile()
-  for l = field.maxh, field.minh, -1 do
-    local x, y = InputManager.mouse:fieldCoord(l)
-    if field:exceedsBorder(x, y) then
+  local tile = FieldManager.currentField:getHoveredTile()
+  if tile then
+    local interacted = (tile == currentTile or indexOf(self:getFrontTiles(), tile) ~= nil) 
+      and self:interactTile(tile)
+    local moved = not interacted and tile ~= currentTile and 
+      self:tryPathMovement(tile, Config.player.pathLength or 12)
+    if not moved then
       self:playIdleAnimation()
-    elseif field:isGrounded(x, y, l) then
-      local tile = field:getObjectTile(x, y, l)
-      local interacted = (tile == currentTile or indexOf(self:getFrontTiles(), tile) ~= nil) 
-        and self:interactTile(tile)
-      local moved = not interacted and tile ~= currentTile and 
-        self:tryPathMovement(tile, Config.player.pathLength or 12)
-      if not moved then
-        self:playIdleAnimation()
-      end
-      break
     end
+  else
+    self:playIdleAnimation()
   end
 end
 

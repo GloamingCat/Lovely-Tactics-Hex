@@ -32,6 +32,7 @@ function TileGUI:init(tile, baseAnim, highlightAnim)
   end
   self.x, self.y, self.h = tile:coordinates()
   self.grounded = FieldManager.currentField:isGrounded(tile:coordinates())
+  self:updateDepth()
   self:hide()
 end
 

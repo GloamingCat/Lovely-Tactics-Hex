@@ -166,6 +166,15 @@ function Field:gridIterator()
     end
   end
 end
+-- @ret(ObjectTile) The tile that the mouse is over.
+function Field:getHoveredTile()
+  for l = self.maxh, self.minh, -1 do
+    local x, y = InputManager.mouse:fieldCoord(l)
+    if not self:exceedsBorder(x, y) and self:isGrounded(x, y, l) then
+      return self:getObjectTile(x, y, l)
+    end
+  end
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Tile Properties
