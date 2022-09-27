@@ -258,7 +258,8 @@ function Text:drawLines(sx, sy)
       shrink = 1
       x = self:alignOffsetX(w) * sx
     end
-    TextRenderer.drawLine(line, x, y, self.color)
+    local drawCalls = TextRenderer.drawLine(line, x, y, self.color)
+    self.renderer.textDraws = self.renderer.textDraws + drawCalls
   end
 end
 

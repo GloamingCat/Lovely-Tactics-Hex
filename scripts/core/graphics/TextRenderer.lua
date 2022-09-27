@@ -17,11 +17,12 @@ local TextRenderer = {}
 -- Individual buffers
 ---------------------------------------------------------------------------------------------------
 
--- Draw the image buffer of a single line.
+-- Draws a line of text in the current graphics context.
 -- The size of the buffer image is Fonts.scale * size of the text in-game.
 -- @param(line : table) A list of text fragments.
--- @ret(Canvas) Rendered line.
+-- @ret(number) Number of draw calls (for profiling).
 function TextRenderer.drawLine(line, x, y, color)
+  local drawCalls = 0
   for j = 1, #line do
     local fragment = line[j]
     local t = type(fragment.content)
@@ -29,10 +30,10 @@ function TextRenderer.drawLine(line, x, y, color)
       -- Drawable
       if t == 'string' then
         -- Print text
-        TextRenderer.drawText(fragment, x, y)
+        drawCalls = drawCalls + TextRenderer.drawText(fragment, x, y)
       elseif t == 'userdata' then
         -- Print sprite
-        TextRenderer.drawSprite(fragment, x, y)
+        drawCalls = drawCalls + TextRenderer.drawSprite(fragment, x, y)
       end
       x = x + fragment.width
     else
@@ -52,26 +53,34 @@ function TextRenderer.drawLine(line, x, y, color)
       end
     end
   end
+  return drawCalls
 end
 -- Prints a text fragment in the current graphic context.
 -- @param(fragment : table)
 -- @param(x : number)
 -- @param(y : number)
+-- @ret(number) Number of draw calls (for profiling).
 function TextRenderer.drawText(fragment, x, y)
   if fragment.content ~= '' then
     lgraphics.print(fragment.content, x, y - fragment.height)
     if TextRenderer.underlined then
       lgraphics.line(x, y, x + fragment.width, y)
+      return 2
+    else
+      return 1
     end
   end
+  return 0
 end
 -- Prints a sprite fragment in the current graphic context.
 -- @param(fragment : table)
 -- @param(x : number)
 -- @param(y : number)
+-- @ret(number) Number of draw calls (for profiling).
 function TextRenderer.drawSprite(fragment, x, y)
   local _, _, w, h = fragment.quad:getViewport()
   lgraphics.draw(fragment.content, fragment.quad, x, y - fragment.height, 0, fragment.width / w, fragment.height / h)
+  return 1
 end
 
 return TextRenderer

@@ -44,6 +44,8 @@ function Renderer:init(minDepth, maxDepth, batchSize)
   self.maxx = math.huge
   self.miny = -math.huge
   self.maxy = math.huge
+  self.batchDraws = 0
+  self.textDraws = 0
 end
 -- Resize canvas acording to the zoom.
 -- @param(newW : number) New width of the canvas in pixels.
@@ -102,6 +104,8 @@ end
 
 -- Draws all sprites in the renderer's table.
 function Renderer:draw()
+  self.batchDraws = 0
+  self.textDraws = 0
   if self.needsRedraw then
     self:redrawCanvas()
   end
@@ -217,6 +221,7 @@ function Renderer:clearBatch()
     lgraphics.draw(self.batch)
     self.batch:clear()
     self.toDraw.size = 0
+    self.batchDraws = self.batchDraws + 1
   end
 end
 -- Checks if sprite may be added to the current batch.

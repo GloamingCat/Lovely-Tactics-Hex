@@ -2371,17 +2371,17 @@
         "data": {
           "script": "",
           "quad": {
-            "path": "Obstacle/Tree.png",
-            "x": 4,
-            "y": 7,
-            "width": 75,
-            "height": 89
+            "path": "Forest-HexV.png",
+            "x": 0,
+            "y": 23,
+            "width": 60,
+            "height": 73
           },
           "rows": 1,
           "cols": 1,
           "transform": {
-            "offsetX": 38,
-            "offsetY": 79,
+            "offsetX": 31,
+            "offsetY": 65,
             "offsetDepth": 0,
             "scaleX": 100,
             "scaleY": 100,
@@ -2410,17 +2410,17 @@
         "data": {
           "script": "",
           "quad": {
-            "path": "Obstacle/Tree.png",
-            "x": 84,
-            "y": 2,
-            "width": 76,
-            "height": 94
+            "path": "Forest-HexV.png",
+            "x": 59,
+            "y": 20,
+            "width": 60,
+            "height": 76
           },
           "rows": 1,
           "cols": 1,
           "transform": {
-            "offsetX": 40,
-            "offsetY": 86,
+            "offsetX": 31,
+            "offsetY": 67,
             "offsetDepth": 0,
             "scaleX": 100,
             "scaleY": 100,
@@ -2449,55 +2449,16 @@
         "data": {
           "script": "",
           "quad": {
-            "path": "Obstacle/Rock0.png",
-            "x": 47,
+            "path": "Forest-HexV.png",
+            "x": 0,
             "y": 0,
-            "width": 36,
-            "height": 34
+            "width": 75,
+            "height": 17
           },
           "rows": 1,
-          "cols": 1,
+          "cols": 3,
           "transform": {
-            "offsetX": 18,
-            "offsetY": 23,
-            "offsetDepth": 0,
-            "scaleX": 100,
-            "scaleY": 100,
-            "rotation": 0,
-            "red": 255,
-            "green": 255,
-            "blue": 255,
-            "alpha": 255,
-            "hue": 0,
-            "saturation": 100,
-            "brightness": 100
-          },
-          "introPattern": "",
-          "introDuration": "",
-          "loopPattern": "",
-          "loopDuration": "",
-          "audio": [],
-          "name": "Rock 1",
-          "tags": [],
-          "key": ""
-        },
-        "id": 43,
-        "children": []
-      },
-      {
-        "data": {
-          "script": "",
-          "quad": {
-            "path": "Obstacle/Rock0.png",
-            "x": 47,
-            "y": 33,
-            "width": 26,
-            "height": 15
-          },
-          "rows": 1,
-          "cols": 1,
-          "transform": {
-            "offsetX": 13,
+            "offsetX": 12,
             "offsetY": 10,
             "offsetDepth": 0,
             "scaleX": 100,
@@ -2516,103 +2477,25 @@
           "loopPattern": "",
           "loopDuration": "",
           "audio": [],
-          "name": "Rock 2",
+          "name": "Forest Details",
           "tags": [],
           "key": ""
         },
-        "id": 44,
+        "id": 43,
         "children": []
       },
       {
         "data": {
           "script": "",
           "quad": {
-            "path": "Obstacle/Grass0.png",
-            "x": 0,
+            "path": "Forest-HexV.png",
+            "x": 119,
             "y": 0,
-            "width": 18,
-            "height": 18
-          },
-          "rows": 1,
-          "cols": 1,
-          "transform": {
-            "offsetX": 9,
-            "offsetY": 9,
-            "offsetDepth": 0,
-            "scaleX": 100,
-            "scaleY": 100,
-            "rotation": 0,
-            "red": 255,
-            "green": 255,
-            "blue": 255,
-            "alpha": 255,
-            "hue": 0,
-            "saturation": 100,
-            "brightness": 100
-          },
-          "introPattern": "",
-          "introDuration": "",
-          "loopPattern": "",
-          "loopDuration": "",
-          "audio": [],
-          "name": "Grass 1",
-          "tags": [],
-          "key": ""
-        },
-        "id": 45,
-        "children": []
-      },
-      {
-        "data": {
-          "script": "",
-          "quad": {
-            "path": "Obstacle/Grass1.png",
-            "x": 0,
-            "y": 0,
-            "width": 26,
-            "height": 18
-          },
-          "rows": 1,
-          "cols": 1,
-          "transform": {
-            "offsetX": 13,
-            "offsetY": 9,
-            "offsetDepth": 0,
-            "scaleX": 100,
-            "scaleY": 100,
-            "rotation": 0,
-            "red": 255,
-            "green": 255,
-            "blue": 255,
-            "alpha": 255,
-            "hue": 0,
-            "saturation": 100,
-            "brightness": 100
-          },
-          "introPattern": "",
-          "introDuration": "",
-          "loopPattern": "",
-          "loopDuration": "",
-          "audio": [],
-          "name": "Grass 2",
-          "tags": [],
-          "key": ""
-        },
-        "id": 46,
-        "children": []
-      },
-      {
-        "data": {
-          "script": "",
-          "quad": {
-            "path": "Obstacle/Bush.png",
-            "x": 0,
-            "y": 0,
-            "width": 80,
+            "width": 120,
             "height": 96
           },
           "rows": 3,
-          "cols": 2,
+          "cols": 3,
           "transform": {
             "offsetX": 20,
             "offsetY": 24,
@@ -2633,7 +2516,7 @@
           "loopPattern": "",
           "loopDuration": "",
           "audio": [],
-          "name": "Jungle",
+          "name": "Forest Objects",
           "tags": [],
           "key": ""
         },
@@ -3747,9 +3630,9 @@
         "data": {
           "script": "",
           "quad": {
-            "path": "Terrain/HexV.png",
+            "path": "Forest-HexV.png",
             "x": 0,
-            "y": 0,
+            "y": 96,
             "width": 36,
             "height": 198
           },
@@ -3786,9 +3669,9 @@
         "data": {
           "script": "",
           "quad": {
-            "path": "Terrain/HexV.png",
+            "path": "Forest-HexV.png",
             "x": 36,
-            "y": 0,
+            "y": 96,
             "width": 36,
             "height": 198
           },
@@ -3825,9 +3708,9 @@
         "data": {
           "script": "",
           "quad": {
-            "path": "Terrain/HexV.png",
+            "path": "Forest-HexV.png",
             "x": 72,
-            "y": 0,
+            "y": 96,
             "width": 36,
             "height": 198
           },
@@ -3864,9 +3747,9 @@
         "data": {
           "script": "",
           "quad": {
-            "path": "Terrain/HexV.png",
+            "path": "Forest-HexV.png",
             "x": 108,
-            "y": 0,
+            "y": 96,
             "width": 108,
             "height": 198
           },
@@ -3903,9 +3786,9 @@
         "data": {
           "script": "",
           "quad": {
-            "path": "Terrain/HexV.png",
+            "path": "Forest-HexV.png",
             "x": 216,
-            "y": 0,
+            "y": 96,
             "width": 36,
             "height": 198
           },
@@ -3942,9 +3825,9 @@
         "data": {
           "script": "",
           "quad": {
-            "path": "Terrain/HexV.png",
+            "path": "Forest-HexV.png",
             "x": 252,
-            "y": 0,
+            "y": 96,
             "width": 36,
             "height": 198
           },
@@ -3981,9 +3864,9 @@
         "data": {
           "script": "",
           "quad": {
-            "path": "Terrain/HexV.png",
+            "path": "Forest-HexV.png",
             "x": 288,
-            "y": 0,
+            "y": 96,
             "width": 108,
             "height": 198
           },
@@ -4020,9 +3903,9 @@
         "data": {
           "script": "",
           "quad": {
-            "path": "Terrain/HexV.png",
+            "path": "Forest-HexV.png",
             "x": 396,
-            "y": 0,
+            "y": 96,
             "width": 36,
             "height": 198
           },

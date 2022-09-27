@@ -54,7 +54,8 @@ end
 -- @param(renderer : Renderer)
 function Text:drawLines(rsx, rsy)
   if self.needsRedraw then
-    self:redrawBuffers(rsx, rsy)
+    local drawCalls = self:redrawBuffers(rsx, rsy)
+    self.renderer.textDraws = self.renderer.textDraws + drawCalls
   end
   local x = 0
   local y = self:alignOffsetY() - 0.5 * rsy
@@ -73,13 +74,15 @@ function Text:drawLines(rsx, rsy)
       x - (line.buffer:getWidth() - line.width) / 2, y, 
       0, shrink, 1)
     y = y + line.height
+    self.renderer.textDraws = self.renderer.textDraws + 1
   end
 end
 -- Redraws each line buffer.
 function Text:redrawBuffers(sx, sy)
   lgraphics.push()
   lgraphics.origin()
-  self.bufferLines = TextRenderer.createLineBuffers(self.lines, sx, sy)
+  local drawCalls = 0
+  self.bufferLines, drawCalls = TextRenderer.createLineBuffers(self.lines, sx, sy)
   local width, height = 0, 0
   for i = 1, #self.bufferLines do
     width = max(self.bufferLines[i].buffer:getWidth(), width)
@@ -87,6 +90,7 @@ function Text:redrawBuffers(sx, sy)
   end
   self.needsRedraw = false
   lgraphics.pop()
+  return drawCalls
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -95,6 +99,8 @@ end
 
 -- Creates the image buffers of each line.
 -- @param(lines : table) Array of parsed lines.
+-- @ret(table) Array of line image buffers.
+-- @ret(number) Draw calls (for debugginf).
 function TextRenderer.createLineBuffers(lines, sx, sy)
   -- Previous graphics state
   local r, g, b, a = lgraphics.getColor()
@@ -104,6 +110,7 @@ function TextRenderer.createLineBuffers(lines, sx, sy)
   -- Render lines individually
   lgraphics.setColor(1, 1, 1, 1)
   TextRenderer.underlined = false
+  local drawCalls = 0
 	local renderedLines = {}
   for i = 1, #lines do
     lgraphics.setShader()
@@ -111,9 +118,10 @@ function TextRenderer.createLineBuffers(lines, sx, sy)
     buffer:setFilter('linear', 'linear')
     lgraphics.setCanvas(buffer)
     lgraphics.setLineWidth(sy)
-    TextRenderer.drawLine(lines[i], outlineSize * sx, lines[i].height + outlineSize * sy, Color.white)
+    drawCalls = drawCalls + TextRenderer.drawLine(lines[i], outlineSize * sx, lines[i].height + outlineSize * sy, Color.white)
     lgraphics.setShader(textShader)
     local shadedBuffer = TextRenderer.shadeBuffer(buffer, sx, sy)
+    drawCalls = drawCalls + 1
     renderedLines[i] = {
       buffer = shadedBuffer,
       height = lines[i].height,
@@ -124,7 +132,7 @@ function TextRenderer.createLineBuffers(lines, sx, sy)
   lgraphics.setFont(font)
   lgraphics.setShader(shader)
   lgraphics.setCanvas(canvas)
-  return renderedLines
+  return renderedLines, drawCalls
 end
 -- Renders texture with the shader in a buffer with the correct size.
 -- @param(texture : Canvas) Unshaded rendered text.

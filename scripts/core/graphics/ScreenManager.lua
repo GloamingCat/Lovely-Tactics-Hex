@@ -246,6 +246,7 @@ function ScreenManager:onResize(w, h)
   self:setScale(scaleX, scaleY)
   self.offsetX = (w - self:totalWidth()) / 2
   self.offsetY = (h - self:totalHeight()) / 2
+  ResourceManager:clearFontCache()
   self:refreshRenderers()
 end
 -- Called when window receives/loses focus.

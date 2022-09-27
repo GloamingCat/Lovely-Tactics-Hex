@@ -39,6 +39,8 @@ function GameManager:init()
   self.garbage = setmetatable({}, {__mode = 'v'})
   self.speed = 1
   self.debugMessages = {}
+  self.avgStats = {}
+  self.stats = { 0, 0, 0, 0, 0, 0 }
   --PROFI = require('core/base/ProFi')
   --require('core/base/Stats').printStats()
 end
@@ -60,8 +62,6 @@ end
 function GameManager:start()
   print('Mobile: ' .. tostring(self:isMobile()))
   print('Web: ' .. tostring(self:isWeb()))
-  self.fpsFont = ResourceManager:loadFont(Fonts.fps)
-  self.pauseFont = ResourceManager:loadFont(Fonts.pause)
   if self.editor then
     EditorManager:start()
   else
@@ -193,11 +193,10 @@ function GameManager:draw()
     return
   end
   ScreenManager:draw()
-  love.graphics.setFont(self.fpsFont)
   self:printStats()
   --self:printCoordinates()
   if self.paused then
-    love.graphics.setFont(self.pauseFont)
+    love.graphics.setFont(ResourceManager:loadFont(Fonts.pause, ScreenManager.scaleX))
     love.graphics.printf('PAUSED', 0, 0, ScreenManager:totalWidth(), 'right')
   end
 end
@@ -211,19 +210,38 @@ function GameManager:printCoordinates()
 end
 -- Prints FPS and draw call counts on the screen.
 function GameManager:printStats()
-  local gstats = love.graphics.getStats()
-  love.graphics.print(love.timer.getFPS())
-  love.graphics.print(gstats.drawcalls, 32, 0)
+  self:updateGStats()
+  love.graphics.setFont(ResourceManager:loadFont(Fonts.log, ScreenManager.scaleX))
+  for i = 1, #self.avgStats do
+    love.graphics.print(math.ceil(self.avgStats[i] / 60), (i - 1) * 16 * ScreenManager.scaleX + love.graphics.getWidth() / 3, 0)
+  end
   for i = 1, #self.debugMessages do
-    love.graphics.print(self.debugMessages[i], 0, 24 * i)
+    love.graphics.print(self.debugMessages[i], 0, i * Fonts.log[3] * 1.2 * ScreenManager.scaleX)
   end
 end
 -- Logs a string on screen. No more than 10 strings are shown at once.
--- @param(str : string) Log.
-function GameManager:print(str)
+-- @param(str : string) Log message.
+function GameManager:log(str)
   table.insert(self.debugMessages, 1, str)
-  if #self.debugMessages > 10 then
-    self.debugMessages[11] = nil
+  if #self.debugMessages > 30 then
+    self.debugMessages[31] = nil
+  end
+end
+-- Updates the average graphic stats per second.
+function GameManager:updateGStats()
+  local gstats = love.graphics.getStats()
+  local fps = love.timer.getFPS()
+  self.stats[1] = self.stats[1] + fps
+  self.stats[2] = self.stats[2] + gstats.drawcalls
+  if FieldManager.renderer then
+    self.stats[3] = self.stats[3] + FieldManager.renderer.batchDraws
+    self.stats[5] = self.stats[5] + FieldManager.renderer.textDraws
+  end
+  self.stats[4] = self.stats[4] + GUIManager.renderer.batchDraws
+  self.stats[6] = self.stats[6] + GUIManager.renderer.textDraws
+  if self.frame % 60 == 0 then
+    self.avgStats = self.stats
+    self.stats = { 0, 0, 0, 0, 0, 0 }
   end
 end
 

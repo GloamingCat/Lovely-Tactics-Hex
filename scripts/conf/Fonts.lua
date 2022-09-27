@@ -6,7 +6,7 @@ local default_font = { 'Roboto', 'ttf', 14 }
 local medium_font = { 'Roboto', 'ttf', 11 }
 local small_font = { 'Roboto', 'ttf', 9 }
 local tiny_font = { 'Roboto', 'ttf', 7.5 }
-local fps_font = { 'Roboto', 'ttf', 5 }
+local log_font = { 'Roboto', 'ttf', 5 }
 
 return  {
 
@@ -35,7 +35,7 @@ return  {
 	popup_status_remove = default_font,
 	popup_levelup = default_font,
 
-	fps = fps_font,
+	log = log_font,
   pause = medium_font
 
 }

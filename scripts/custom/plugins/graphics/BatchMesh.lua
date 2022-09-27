@@ -22,9 +22,9 @@ local vertexFormat = { { 'vhsv', 'float', 3 } }
 
 -- Initializes mesh.
 local Renderer_init = Renderer.init
-function Renderer:init(size, ...)
-  Renderer_init(self, size, ...)
-  self.mesh = lgraphics.newMesh(vertexFormat, size * 4)
+function Renderer:init(...)
+  Renderer_init(self, ...)
+  self.mesh = lgraphics.newMesh(vertexFormat, self.batchSize * 4)
 end
 -- Draws current batch and clears it.
 function Renderer:clearBatch()

@@ -2,13 +2,13 @@
   {
     "data": {
       "image": {
-        "id": 51,
-        "col": 0,
-        "row": 0
+        "id": 211,
+        "col": 2,
+        "row": 1
       },
       "transform": {
         "offsetX": 0,
-        "offsetY": 0,
+        "offsetY": -2,
         "offsetDepth": 5,
         "scaleX": 100,
         "scaleY": 100,
@@ -49,13 +49,13 @@
   {
     "data": {
       "image": {
-        "id": 51,
-        "col": 0,
-        "row": 0
+        "id": 211,
+        "col": 2,
+        "row": 1
       },
       "transform": {
         "offsetX": 0,
-        "offsetY": -8,
+        "offsetY": -10,
         "offsetDepth": 8,
         "scaleX": 100,
         "scaleY": 100,
@@ -220,13 +220,13 @@
   {
     "data": {
       "image": {
-        "id": 43,
-        "col": 0,
+        "id": 211,
+        "col": 2,
         "row": 0
       },
       "transform": {
         "offsetX": 0,
-        "offsetY": 0,
+        "offsetY": -3,
         "offsetDepth": 0,
         "scaleX": 100,
         "scaleY": 100,
@@ -267,12 +267,12 @@
   {
     "data": {
       "image": {
-        "id": 44,
-        "col": 0,
+        "id": 43,
+        "col": 2,
         "row": 0
       },
       "transform": {
-        "offsetX": 0,
+        "offsetX": -1,
         "offsetY": 0,
         "offsetDepth": 4,
         "scaleX": 100,
@@ -297,12 +297,12 @@
   {
     "data": {
       "image": {
-        "id": 45,
+        "id": 43,
         "col": 0,
         "row": 0
       },
       "transform": {
-        "offsetX": 0,
+        "offsetX": 1,
         "offsetY": 0,
         "offsetDepth": 4,
         "scaleX": 100,
@@ -327,12 +327,12 @@
   {
     "data": {
       "image": {
-        "id": 46,
-        "col": 0,
+        "id": 43,
+        "col": 1,
         "row": 0
       },
       "transform": {
-        "offsetX": 0,
+        "offsetX": 1,
         "offsetY": 0,
         "offsetDepth": 4,
         "scaleX": 100,
@@ -550,7 +550,7 @@
         "row": 0
       },
       "transform": {
-        "offsetX": 0,
+        "offsetX": 1,
         "offsetY": 0,
         "offsetDepth": 0,
         "scaleX": 100,
