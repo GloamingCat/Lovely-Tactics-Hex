@@ -39,7 +39,7 @@ function SkillAction:calculateEffectResults(user, target)
     if rand() * 100 <= crit then
       results.critical = true
       for i = 1, #results.points do
-        results.points[i].value = results.points[i].value * ratio
+        results.points[i].value = math.floor(results.points[i].value * ratio)
         results.points[i].critical = true
       end
     end

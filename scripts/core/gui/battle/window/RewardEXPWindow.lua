@@ -87,7 +87,7 @@ function RewardEXPWindow:addEXP()
           if nextLevel then
             local x = self:paddingX() - self.width / 2
             local y = exp1.position.y + 8
-            local popupText = PopupText(x, y + 10, -10, GUIManager.renderer)
+            local popupText = PopupText(x, y + 10, -10)
             popupText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
             popupText:popup()
             levelup = true
@@ -115,6 +115,7 @@ function RewardEXPWindow:addEXP()
 end
 -- Overrides Window:onConfirm.
 function RewardEXPWindow:onConfirm()
+  AudioManager:playSFX(Config.sounds.buttonConfirm)
   if self.done then
     self.result = 1
     self.fiber:interrupt()
@@ -123,16 +124,15 @@ function RewardEXPWindow:onConfirm()
   self.done = true
   self.fiber = GUIManager.fiberList:fork(self.addEXP, self)
 end
+-- Overrides Window:onCancel.
+function RewardEXPWindow:onCancel()
+  self:onConfirm()
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Properties
 ---------------------------------------------------------------------------------------------------
 
--- Overrides Window:hide.
-function RewardEXPWindow:hide(...)
-  AudioManager:playSFX(Config.sounds.buttonConfirm)
-  Window.hide(self, ...)
-end
 -- @ret(string) String representation (for debugging).
 function RewardEXPWindow:__tostring()
   return 'EXP Reward Window'

@@ -38,7 +38,7 @@ function PopupText:init(x, y, z, renderer)
   self.width = 100
   self.align = 'center'
   self.font = nil
-  self.renderer = renderer or FieldManager.renderer
+  self.renderer = renderer or GUIManager.renderer
 end
 
 ---------------------------------------------------------------------------------------------------
