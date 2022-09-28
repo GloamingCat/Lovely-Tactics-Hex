@@ -74,10 +74,17 @@ function IntroWindow:inspectConfirm()
   FieldManager.renderer:moveToPoint(center.x, center.y)
   self.result = nil
 end
+-- "Options" button callback. Opens save window.
+function IntroWindow:optionsConfirm(button)
+  self:hide()
+  self.GUI:showWindowForResult(self.GUI.optionsWindow)
+  self:show()
+end
 -- Overrides GridWindow:onCancel.
 function IntroWindow:onCancel()
-  FieldCommandWindow.onCancel(self)
-  self:inspectConfirm()
+  AudioManager:playSFX(Config.sounds.buttonCancel)
+  self:optionsConfirm()
+  self.result = nil
 end
 
 ---------------------------------------------------------------------------------------------------

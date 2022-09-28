@@ -14,10 +14,12 @@
   "menu": "Menu",
   "inventory": "Inventory",
   "members": "Characters",
+  "options": "Options",
+  
+  // Options Window
   "config": "Settings",
   "save": "Save",
   "quit": "Quit",
-  "return": "Return",
   
   // Settings
   "volumeBGM": "BGM Volume",
@@ -113,6 +115,7 @@
   
   // General
   "ok": "OK",
+  "return": "Return",
   "yes": "Yes",
   "no": "No",
   

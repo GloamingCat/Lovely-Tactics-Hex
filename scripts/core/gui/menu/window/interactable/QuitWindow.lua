@@ -9,9 +9,9 @@ Window with options to close / restart game.
 
 -- Imports
 local Button = require('core/gui/widget/control/Button')
-local GridWindow = require('core/gui/GridWindow')
+local OptionsWindow = require('core/gui/menu/window/interactable/OptionsWindow')
 
-local QuitWindow = class(GridWindow)
+local QuitWindow = class(OptionsWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -25,24 +25,9 @@ function QuitWindow:createWidgets()
     Button:fromKey(self, 'close').text.sprite:setAlignX('center')
   end
 end
-
----------------------------------------------------------------------------------------------------
--- Buttons
----------------------------------------------------------------------------------------------------
-
 -- When player cancels the quit action.
 function QuitWindow:cancelConfirm()
   self.result = 0
-end
--- When players chooses to return to TitleGUI.
-function QuitWindow:titleConfirm()
-  self:hide()
-  FieldManager.renderer:fadeout(nil, true)
-  GameManager.restartRequested = true
-end
--- When player chooses to shut the game down.
-function QuitWindow:closeConfirm()
-  GameManager:quit()
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -59,7 +44,7 @@ function QuitWindow:rowCount()
 end
 -- @ret(string) String representation (for debugging).
 function QuitWindow:__tostring()
-  return 'Field Command Window'
+  return 'Quit Window'
 end
 
 return QuitWindow

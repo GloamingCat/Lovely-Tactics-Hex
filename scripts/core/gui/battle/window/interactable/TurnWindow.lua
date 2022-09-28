@@ -54,10 +54,10 @@ function TurnWindow:createWidgets()
   Button:fromKey(self, 'move')
   Button:fromKey(self, 'skill')
   Button:fromKey(self, 'item')
-  Button:fromKey(self, 'escape')
+  Button:fromKey(self, 'inspect')
   Button:fromKey(self, 'callAlly')
   Button:fromKey(self, 'wait')
-  Button:fromKey(self, 'save')
+  Button:fromKey(self, 'escape')
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -88,20 +88,24 @@ end
 function TurnWindow:itemConfirm(button)
   self:changeWindow(self.GUI.itemWindow, true)
 end
+-- "Inspect" button callback. Starts visualize action.
+function TurnWindow:inspectConfirm(button)
+  self:selectAction(self.visualizeAction)
+end
 -- "Wait" button callback. End turn.
 function TurnWindow:waitConfirm(button)
   self:selectAction(self.waitAction)
 end
 -- "Save" button callback. Opens save window.
-function TurnWindow:saveConfirm(button)
-  self.GUI:hide()
-  GUIManager:showGUIForResult(SaveGUI(self.GUI))
-  self.GUI:show()
+function TurnWindow:optionsConfirm(button)
+  self:hide()
+  self.GUI:showWindowForResult(self.GUI.optionsWindow)
+  self:show()
 end
 -- Overrides GridWindow:onCancel.
 function TurnWindow:onCancel()
   AudioManager:playSFX(Config.sounds.buttonCancel)
-  self:selectAction(self.visualizeAction)
+  self:optionsConfirm()
   self.result = nil
 end
 -- Overrides Window:onNext.

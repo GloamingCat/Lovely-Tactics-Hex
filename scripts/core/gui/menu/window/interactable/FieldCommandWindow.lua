@@ -9,15 +9,13 @@ Main GUI's selectable window.
 
 -- Imports
 local Button = require('core/gui/widget/control/Button')
-local GridWindow = require('core/gui/GridWindow')
+local OptionsWindow = require('core/gui/menu/window/interactable/OptionsWindow')
 local InventoryGUI = require('core/gui/common/InventoryGUI')
 local MemberGUI = require('core/gui/members/MemberGUI')
-local SaveGUI = require('core/gui/menu/SaveGUI')
-local SettingsGUI = require('core/gui/menu/SettingsGUI')
 local EquipGUI = require('core/gui/members/EquipGUI')
 local SkillGUI = require('core/gui/members/SkillGUI')
 
-local FieldCommandWindow = class(GridWindow)
+local FieldCommandWindow = class(OptionsWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -56,25 +54,6 @@ end
 -- Chooses a member to manage.
 function FieldCommandWindow:skillsConfirm()
   self:openPartyWindow(SkillGUI)
-end
--- Opens the settings screen.
-function FieldCommandWindow:configConfirm()
-  self.GUI:hide()
-  GUIManager:showGUIForResult(SettingsGUI(self.GUI))
-  self.GUI:show()
-end
--- Opens the save screen.
-function FieldCommandWindow:saveConfirm()
-  self.GUI:hide()
-  FieldManager:storePlayerState()
-  GUIManager:showGUIForResult(SaveGUI(self.GUI))
-  self.GUI:show()
-end
--- Opens the exit screen.
-function FieldCommandWindow:quitConfirm()
-  self.GUI:hide()
-  self.GUI:showWindowForResult(self.GUI.quitWindow)
-  self.GUI:show()
 end
 -- Closes menu.
 function FieldCommandWindow:returnConfirm()

@@ -14,6 +14,8 @@ local TurnWindow = require('core/gui/battle/window/interactable/TurnWindow')
 local ActionSkillWindow = require('core/gui/battle/window/interactable/ActionSkillWindow')
 local ActionItemWindow = require('core/gui/battle/window/interactable/ActionItemWindow')
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
+local QuitWindow = require('core/gui/menu/window/interactable/QuitWindow')
+local OptionsWindow = require('core/gui/menu/window/interactable/OptionsWindow')
 local Vector = require('core/math/Vector')
 
 local BattleGUI = class(GUI)
@@ -34,6 +36,8 @@ function BattleGUI:createWindows()
   self:createSkillWindow(2 / 3)
   self:createItemWindow(2 / 3)
   self:createDescriptionWindow(1 / 3)
+  self:createQuitWindow()
+  self:createOptionsWindow()
   -- Initial state
   self:setActiveWindow(self.turnWindow)
 end
@@ -95,6 +99,16 @@ function BattleGUI:hideDescriptionWindow()
       self.descriptionWindow:removeSelf()
     end)
   end
+end
+-- Creates the window the shows when player selects "Quit" button.
+function BattleGUI:createQuitWindow()
+  self.quitWindow = QuitWindow(self)
+  self.quitWindow:setVisible(false)
+end
+-- Creates the window the shows when player selects "Quit" button.
+function BattleGUI:createOptionsWindow()
+  self.optionsWindow = OptionsWindow(self)
+  self.optionsWindow:setVisible(false)
 end
 
 ---------------------------------------------------------------------------------------------------
