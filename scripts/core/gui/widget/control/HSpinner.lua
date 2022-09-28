@@ -74,7 +74,9 @@ end
 
 -- Called when player presses arrows on this spinner.
 function HSpinner.onMove(window, self, dx, dy)
-  self:changeValue(dx, dy)
+  if dx ~= 0 then
+    self:changeValue(dx, dy)
+  end
 end
 -- Called when player presses a mouse button.
 function HSpinner.onClick(window, self, x, y)
