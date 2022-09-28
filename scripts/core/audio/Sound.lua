@@ -29,6 +29,7 @@ function Sound:initSource(source, volume, pitch)
   self.volume = volume or 100
   self.pitch = pitch or 100
   self.source = source
+  self.source:seek(0)
   self:refreshVolume()
   self:refreshPitch()
   self.paused = true
@@ -41,7 +42,7 @@ end
 -- Tells if the sound already ended.
 -- @ret(boolean)
 function Sound:isFinished()
-  return not (self.source:isPlaying() or self.paused)
+  return not self.source:isPlaying() and not self.paused
 end
 -- @param(unit : string) "seconds" or "samples" (first by default)
 -- @ret(number) the duration in the given unit
@@ -56,7 +57,7 @@ end
 -- Plays sound.
 function Sound:play()
   self.paused = false
-  assert(self.source:play(), "Couldn't play sound.")
+  assert(self.source:play(), "Couldn't play sound. Active sounds: " .. love.audio.getActiveSourceCount())
 end
 -- Stops sound.
 function Sound:stop()
