@@ -57,7 +57,9 @@ end
 -- Plays sound.
 function Sound:play()
   self.paused = false
-  assert(self.source:play(), "Couldn't play sound. Active sounds: " .. love.audio.getActiveSourceCount())
+  if not self.source:isPlaying() then
+    return self.source:play()
+  end
 end
 -- Stops sound.
 function Sound:stop()

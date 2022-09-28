@@ -54,10 +54,11 @@ end
 -- Overrides Sound:stop.
 function Music:stop()
   if self.intro then
+    self.intro:stop()
     self.intro:seek(0)
   end
+  self.loop:stop()
   self.loop:seek(0)
-  self.source:stop()
   self.source = self.intro or self.loop
 end
 

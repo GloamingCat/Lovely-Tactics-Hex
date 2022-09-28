@@ -64,6 +64,16 @@ function AudioManager:setPaused(paused)
     self.sfx[i]:setPaused(paused)
   end
 end
+-- Stops all SFX and tries to resume BGM.
+function AudioManager:resetAudio()
+  print("Couldn't play sound. Active sounds: " .. love.audio.getActiveSourceCount())
+  love.audio.stop()
+  if self.BGM then
+    if not self.BGM:play() then
+      print("Couldn't resume BGM. Active sounds: " .. love.audio.getActiveSourceCount())
+    end
+  end
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Volume
@@ -155,7 +165,9 @@ function AudioManager:playSFX(sfx)
   if fileInfo(Project.audioPath .. sfx.name) then
     local sound = Sound(sfx.name, volume, pitch)
     self.sfx:add(sound)
-    sound:play()
+    if not sound:play() then
+      self:resetAudio()
+    end
   else
     print("Missing SFX: " ..  Project.audioPath .. sfx.name)
   end
@@ -183,16 +195,19 @@ function AudioManager:playBGM(bgm, time, wait)
     volume = volume * (bgm.volume or 100) / 100
     pitch = pitch * (bgm.pitch or 100) / 100
   end
-  if self.BGM and self.BGM.name == bgm.name then
-    self:fadein(time or 0, wait)
-    return
-  end
   if self.BGM then
-    self.BGM:pause()
+    if self.BGM.name == bgm.name then
+      -- Same music
+      self:fadein(time or 0, wait)
+      return
+    end
+    self.BGM:stop()
   end
   if fileInfo(Project.audioPath .. bgm.name) then
     self.BGM = Music(bgm.name, volume, pitch, bgm.intro, bgm.loop)
-    self.BGM:play()
+    if not self.BGM:play() then
+      self:resetAudio()
+    end
     self.pausedBGM = false
     self:fadein(time or 0, wait)
   else
