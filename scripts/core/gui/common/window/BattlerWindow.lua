@@ -151,12 +151,17 @@ function BattlerWindow:setMember(member)
     text:redraw()
   end
   -- Elements
+  local weakColor, strongColor = Color.element_strong, Color.element_weak
+  local char = TroopManager:getBattlerCharacter(member)
+  if char and char.party ~= TroopManager.playerParty then
+    weakColor, strongColor = Color.element_weak, Color.element_strong
+  end
   for i, text in pairs(self.elementValues) do
     local total = round(member:elementDef(i) * 100) + 100
     if total < 100 then
-      text.sprite:setColor(Color.element_strong)
+      text.sprite:setColor(strongColor)
     elseif total > 100 then
-      text.sprite:setColor(Color.element_weak)
+      text.sprite:setColor(weakColor)
     else
       text.sprite:setColor(Color.element_neutral)
     end
