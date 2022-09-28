@@ -90,7 +90,6 @@ function PathFinder.findPath(action, user, target, initial, ignoreDistance, w, h
   if not w or not h or not d then
     w, h, d = FieldManager.currentField:getSize()
   end
-  
   if action:isFinal(initial, target, user) then
     return Path(initial)
   end

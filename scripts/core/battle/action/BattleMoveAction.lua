@@ -47,12 +47,21 @@ function BattleMoveAction:calculatePath(input)
   local path = input.path
   if not path then
     path = not self:isRanged() and TurnManager:pathMatrix():get(input.target.x, input.target.y)
-    path = path or PathFinder.findPath(self, input.user, input.target)
+    path = path or PathFinder.findPath(self, input.user, input.target, nil, true)
   end
-  if path then
+  if not path then
+    -- Unreachable due to obstacles.
+    path = PathFinder.findPathToUnreachable(self, input.user, input.target)
+    return path, false
+  end
+  local pathLimit = self:maxDistance(input.user)
+  local furthestPath = path:getFurthestPath(pathLimit)
+  if furthestPath == path then
+    -- Reachable.
     return path, true
   else
-    path = PathFinder.findPathToUnreachable(self, input.user, input.target)
+    -- Unreachable due to cost limit.
+    path = PathFinder.findPathToUnreachable(MoveAction(nil, pathLimit), input.user, furthestPath.lastStep)
     return path, false
   end
 end

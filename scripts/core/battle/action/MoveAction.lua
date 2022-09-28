@@ -75,13 +75,21 @@ end
 -- @ret(Path) Path to input target, if any.
 -- @ret(boolean) True if the whole path may be walked, false otherwise.
 function MoveAction:calculatePath(input)
-  local path = input.path or PathFinder.findPath(self, input.user, input.target)
-  local fullPath = true
+  local path = input.path or PathFinder.findPath(self, input.user, input.target, nil, true)
   if not path then
-    fullPath = false
+    -- Unreachable due to obstacles.
     path = PathFinder.findPathToUnreachable(self, input.user, input.target)
+    return path, false
   end
-  return path, fullPath
+  local furthestPath = path:getFurthestPath(self:maxDistance(input.user))
+  if furthestPath == path then
+    -- Reachable.
+    return path, true
+  else
+    -- Unreachable due to cost limit.
+    path = PathFinder.findPathToUnreachable(self, input.user, furthestPath.lastStep)
+    return path, false
+  end
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -38,6 +38,16 @@ end
 function Path:addStep(step, cost)
   return Path(step, self, self.totalCost + cost)
 end
+-- Reduces path until the total cost is less than or equal the maximum cost.
+-- @param(maxCost : number) The maximum cost.
+-- @ret(Path) The path to the furthest tile within reach.
+function Path:getFurthestPath(maxCost)
+  local path = self
+  while path and path.totalCost > maxCost do
+    path = path.previousPath
+  end
+  return path
+end
 -- Iterates through the tiles, from the final tile to the first.
 -- @ret(function) The iterator function.
 function Path:iterator()
