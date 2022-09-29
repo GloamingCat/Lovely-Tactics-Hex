@@ -64,6 +64,7 @@ function Text:setText(text)
     self.parsedLines = lines
     self.lines = lines
     self.events = events
+    self:recalculateBox()
   end
 end
 -- Sets the point in which the text is cut (not rendered).
@@ -101,7 +102,6 @@ function Text:rescale(renderer)
   end
   self.parsedLines.scale = s
   self:recalculateBox()
-  self.renderer.needsRedraw = true
 end
 
 ---------------------------------------------------------------------------------------------------
