@@ -25,16 +25,25 @@ local outlineSize = tonumber(args.width) or 1
 local textShader = lgraphics.newShader('shaders/Text.glsl')
 
 ---------------------------------------------------------------------------------------------------
--- Initialization
+-- Redraw
 ---------------------------------------------------------------------------------------------------
 
--- Sets/changes the text content.
--- @param(text : string) The rich text.
 local Text_setText = Text.setText
-function Text:setText(text)
+function Text:setText(...)
   self.bufferLines = nil
-  Text_setText(self, text)
-  self:requestRedraw()
+  self.needsRedraw = true
+  Text_setText(self, ...)
+end
+local Text_rescale = Text.rescale
+function Text:rescale(...)
+  self.needsRedraw = true
+  Text_rescale(self, ...)
+end
+local Text_setCutPoint = Text.setCutPoint
+function Text:setCutPoint(...)
+  self.bufferLines = nil
+  self.needsRedraw = true
+  Text_setCutPoint(self, ...)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -52,26 +61,27 @@ end
 
 -- Called when renderer is iterating through its rendering list.
 -- @param(renderer : Renderer)
-function Text:drawLines(rsx, rsy)
+function Text:drawLines(sx, sy)
   if self.needsRedraw then
-    local drawCalls = self:redrawBuffers(rsx, rsy)
+    local drawCalls = self:redrawBuffers(sx, sy)
     self.renderer.textDraws = self.renderer.textDraws + drawCalls
   end
-  local x = 0
-  local y = self:alignOffsetY() - 0.5 * rsy
+  local h = self:getHeight()
+  local y = self:alignOffsetY(h) * sy
   local shrink = 1
   for i = 1, #self.bufferLines do
     local line = self.bufferLines[i]
-    local w = line.width / rsx
+    local w = line.width / sx
+    local x = 0
     if self.maxWidth and w > self.maxWidth then
       shrink = self.maxWidth / w
-      x = 0
     else
       shrink = 1
-      x = self:alignOffsetX(w) * rsx
+      x = self:alignOffsetX(w) * sx
     end
     lgraphics.draw(line.buffer, 
-      x - (line.buffer:getWidth() - line.width) / 2, y, 
+      x - (line.buffer:getWidth() - line.width) / 2, 
+      y - (line.buffer:getHeight() / 1.5 - line.height) / 2, 
       0, shrink, 1)
     y = y + line.height
     self.renderer.textDraws = self.renderer.textDraws + 1
@@ -114,7 +124,7 @@ function TextRenderer.createLineBuffers(lines, sx, sy)
 	local renderedLines = {}
   for i = 1, #lines do
     lgraphics.setShader()
-    local buffer = lgraphics.newCanvas(lines[i].width + (outlineSize + 1) * sx * 2, lines[i].height * 1.5 + outlineSize * 2 * sy)
+    local buffer = lgraphics.newCanvas(lines[i].width + outlineSize * sx * 2, lines[i].height * 1.5 + outlineSize * sy * 2)
     buffer:setFilter('linear', 'linear')
     lgraphics.setCanvas(buffer)
     lgraphics.setLineWidth(sy)
@@ -148,8 +158,8 @@ function TextRenderer.shadeBuffer(texture, sx, sy)
   local stepX = 1 / (sx * sx)
   local stepY = 1 / (sy * sy)
   textShader:send('stepSize', { stepX, stepY })
-  textShader:send('pixelSize', { outlineSize * sx / w, outlineSize * sy / h })
-  textShader:send('outlineSize', { outlineSize, outlineSize })
+  textShader:send('pixelSize', { outlineSize * 0.8 * sx / w, outlineSize * 0.8 * sy / h })
+  textShader:send('outlineSize', { outlineSize * 0.8, outlineSize * 0.8 })
   --lgraphics.setBlendMode('alpha', 'premultiplied')
   lgraphics.draw(texture)
   --lgraphics.rectangle('line', 0, 0, w-1, h-1)

@@ -73,17 +73,14 @@ function Dialogue:rollText(text)
     end
     -- Update cut point.
     if self.sprite.cutPoint ~= math.ceil(time) then
-    	self.sprite.cutPoint = math.ceil(time) 
-	    while not pcall(self.sprite.requestRedraw, self.sprite) do
+	    while not pcall(self.sprite.setCutPoint, self.sprite, math.ceil(time)) do
         time = time + 1
-        self.sprite.cutPoint = math.ceil(time)
 	    end
       self:triggerEvents(previousTime, time)
     end
     Fiber:wait()
   end
-  self.sprite.cutPoint = nil
-  self.sprite:requestRedraw()
+  self.sprite:setCutPoint(nil)
 end
 -- Triggers events in the given character (cut point) interval.
 -- @param(min : number) Interval's minimum (inclusive).

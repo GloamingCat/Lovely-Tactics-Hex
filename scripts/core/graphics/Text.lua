@@ -51,6 +51,7 @@ end
 function Text:setText(text)
   assert(text, 'Nil text')
   self.text = text
+  self.renderer.needsRedraw = true
   if text == '' then
     self.events = nil
     self.parsedLines = nil
@@ -59,21 +60,30 @@ function Text:setText(text)
     local maxWidth = self.wrap and (self.maxWidth / self.scaleX)
     local fragments = TextParser.parse(text, self.plainText)
     local lines, events = TextParser.createLines(fragments, self.defaultFont, maxWidth, sx)
-    self.parsedLines = lines
     assert(lines, "Couldn't parse lines: " .. tostring(text))
+    self.parsedLines = lines
+    self.lines = lines
     self.events = events
   end
-  self:requestRedraw()
 end
--- Redraws each line buffer.
-function Text:requestRedraw()
+-- Sets the point in which the text is cut (not rendered).
+-- @param(cutPoint : number) The index of the last character.
+function Text:setCutPoint(cutPoint)
   self.renderer.needsRedraw = true
-  self.needsRedraw = true
-  self.lines = nil
+  self.cutPoint = cutPoint
+  if self.cutPoint and self.parsedLines then
+    self.lines = TextParser.cutText(self.parsedLines, self.cutPoint - 1)
+  else
+    self.lines = self.parsedLines
+  end
+end
+-- Called when the scale of screen changes.
+-- @param(renderer : Renderer) The renderer that is drawing this text.
+function Text:rescale(renderer)
   if not self.parsedLines then
     return
   end
-  local s = ScreenManager.scaleX * self.renderer.scaleX
+  local s = ScreenManager.scaleX * renderer.scaleX
   for _, line in ipairs(self.parsedLines) do
     for _, f in ipairs(line) do
       if f.info then
@@ -90,17 +100,8 @@ function Text:requestRedraw()
     line.height = line.height / self.parsedLines.scale * s
   end
   self.parsedLines.scale = s
-  if self.cutPoint then
-    self.lines = TextParser.cutText(self.parsedLines, self.cutPoint - 1)
-  else
-    self.lines = self.parsedLines
-  end
   self:recalculateBox()
-end
--- Called when the scale of screen changes.
--- @param(renderer : Renderer) The renderer that is drawing this text.
-function Text:rescale(renderer)
-  self:requestRedraw()
+  self.renderer.needsRedraw = true
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -124,7 +125,7 @@ function Text:getWidth()
     for i, line in ipairs(self.parsedLines) do
       w = max(w, line.width)
     end
-    w = w / (ScreenManager.scaleX * self.renderer.scaleX)
+    w = w / self.parsedLines.scale
   end
   return w
 end
@@ -135,7 +136,7 @@ function Text:getHeight()
     for i, line in ipairs(self.parsedLines) do
       h = h + line.height
     end
-    h = h / (ScreenManager.scaleY * self.renderer.scaleY)
+    h = h / self.parsedLines.scale
   end
   return h
 end
@@ -210,7 +211,7 @@ function Text:alignOffsetY(h)
     if self.alignY == 'bottom' then
       return self.maxHeight - h
     elseif self.alignY == 'center' then
-      return (self.maxHeight - h) / 2
+      return (self.maxHeight - h) / 2 - 1
     end
   end
   return 0
@@ -245,15 +246,14 @@ end
 -- @para(sx : number) Scale x.
 -- @para(sy : number) Scale y.
 function Text:drawLines(sx, sy)
-  local x = 0
-  local y = self:alignOffsetY() * sy - 0.5
+  local w, h = self:quadBounds()
+  local y = self:alignOffsetY(h) * sy
   local shrink = 1
   for i, line in ipairs(self.lines) do
     y = y + line.height
-    local w = self:getWidth()
+    local x = 0
     if self.maxWidth and w > self.maxWidth then
       shrink = self.maxWidth / w
-      x = 0
     else
       shrink = 1
       x = self:alignOffsetX(w) * sx
