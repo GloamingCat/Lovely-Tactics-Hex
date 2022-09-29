@@ -7,8 +7,8 @@
         "row": 1
       },
       "transform": {
-        "offsetX": 0,
-        "offsetY": -2,
+        "offsetX": 1,
+        "offsetY": -3,
         "offsetDepth": 5,
         "scaleX": 100,
         "scaleY": 100,
@@ -54,8 +54,8 @@
         "row": 1
       },
       "transform": {
-        "offsetX": 0,
-        "offsetY": -10,
+        "offsetX": 1,
+        "offsetY": -11,
         "offsetDepth": 8,
         "scaleX": 100,
         "scaleY": 100,
@@ -168,7 +168,55 @@
       "key": ""
     },
     "id": 1,
-    "children": []
+    "children": [
+      {
+        "data": {
+          "image": {
+            "id": 44,
+            "col": 0,
+            "row": 0
+          },
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "tiles": [
+            {
+              "neighbors": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "mode": 0,
+              "dx": 0,
+              "dy": 0,
+              "height": 4
+            }
+          ],
+          "name": "Tree 1 (Top)",
+          "tags": [],
+          "key": ""
+        },
+        "id": 0,
+        "children": []
+      }
+    ]
   },
   {
     "data": {
@@ -215,7 +263,55 @@
       "key": ""
     },
     "id": 2,
-    "children": []
+    "children": [
+      {
+        "data": {
+          "image": {
+            "id": 45,
+            "col": 0,
+            "row": 0
+          },
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "tiles": [
+            {
+              "neighbors": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "mode": 0,
+              "dx": 0,
+              "dy": 0,
+              "height": 4
+            }
+          ],
+          "name": "Tree 2 (Top)",
+          "tags": [],
+          "key": ""
+        },
+        "id": 8,
+        "children": []
+      }
+    ]
   },
   {
     "data": {
