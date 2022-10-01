@@ -99,7 +99,10 @@ function EventSheet:openDialogueWindow(args)
   end
   window:resize(args.width, args.height)
   window:setXYZ(args.x, args.y)
-  window:show()
+  if window.closed then
+    window:setVisible(false)
+    window:show()
+  end
   self.gui:setActiveWindow(window)
 end
 

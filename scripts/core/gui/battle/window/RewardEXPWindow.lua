@@ -30,30 +30,33 @@ function RewardEXPWindow:createContent(...)
   local title = SimpleText(Vocab.experience, Vector(x, y), w, 'center')
   self.content:add(title)
   y = y + 20
-  for k, v in pairs(self.GUI.rewards.exp) do
-    local battler = self.GUI.troop.battlers[k]
-    -- Name
-    local posName = Vector(x, y)
-    local name = SimpleText(battler.name, posName, w / 2, 'left', font)
-    self.content:add(name)
-    -- EXP - Arrow
-    local plusPos = Vector(x + w / 2, y - 2, 0)
-    local plus = SimpleText('+', plusPos, w / 2, 'center')
-    local exp = battler.job.exp
-    local aw = plus.sprite:getWidth()
-    local expw = w / 4 - aw / 2
-    self.content:add(plus)
-    -- EXP - Values
-    local posEXP1 = Vector(x + w / 2, y)
-    local posEXP2 = Vector(x + w / 2 + expw + plus.sprite:getWidth(), y)
-    local exp1 = SimpleText(exp .. '', posEXP1, expw, 'left', font)
-    local exp2 = SimpleText(v .. '', posEXP2, expw, 'left', font)    
-    self.content:add(exp1)
-    self.content:add(exp2)
-    exp1.battler = battler
-    exp1.value = exp
-    exp2.value = v
-    y = y + 12
+  for _, member in ipairs(self.GUI.troop.members) do
+    local v = self.GUI.rewards.exp[member.key]
+    if v then
+      local battler = self.GUI.troop.battlers[member.key]
+      -- Name
+      local posName = Vector(x, y)
+      local name = SimpleText(battler.name, posName, w / 2, 'left', font)
+      self.content:add(name)
+      -- EXP - Arrow
+      local plusPos = Vector(x + w / 2, y - 2, 0)
+      local plus = SimpleText('+', plusPos, w / 2, 'center')
+      local exp = battler.job.exp
+      local aw = plus.sprite:getWidth()
+      local expw = w / 4 - aw / 2
+      self.content:add(plus)
+      -- EXP - Values
+      local posEXP1 = Vector(x + w / 2, y)
+      local posEXP2 = Vector(x + w / 2 + expw + plus.sprite:getWidth(), y)
+      local exp1 = SimpleText(exp .. '', posEXP1, expw, 'left', font)
+      local exp2 = SimpleText(v .. '', posEXP2, expw, 'left', font)    
+      self.content:add(exp1)
+      self.content:add(exp2)
+      exp1.battler = battler
+      exp1.value = exp
+      exp2.value = v
+      y = y + 12
+    end
   end
   self.soundPeriod = 5
   self.expSound = Config.sounds.exp

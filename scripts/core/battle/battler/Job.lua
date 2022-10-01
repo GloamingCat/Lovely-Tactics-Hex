@@ -20,16 +20,8 @@ local Job = class()
 -- @param(battler : Battler) The battler with this class.
 -- @param(save : table) Persitent data from save.
 function Job:init(battler, save)
+  self.id = save and save.id or battler.data.jobID
   self.battler = battler
-  if save and save.job then
-    self.id = save.job.id
-    self.level = save.job.level
-    self.exp = save.job.exp
-  else
-    self.id = battler.data.jobID
-    self.level = battler.data.level
-    self.exp = battler.data.exp
-  end
   local jobData = Database.jobs[self.id]
   self.data = jobData
   self.expCurve = loadformula(jobData.expCurve, 'lvl')
@@ -39,7 +31,13 @@ function Job:init(battler, save)
   end
   self.skills = List(jobData.skills)
   self.skills:sort(function(a, b) return a.level < b.level end)
-  self.exp = self.exp or self.expCurve(self.level)
+  if save then
+    self.level = save.level
+    self.exp = save.exp
+  else
+    self.level = battler.data.level
+    self.exp = battler.data.exp + self.expCurve(self.level)
+  end
   self:learnSkills()
 end
 

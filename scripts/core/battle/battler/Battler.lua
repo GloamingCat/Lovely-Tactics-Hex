@@ -64,7 +64,7 @@ end
 -- @param(save : table) the data from save
 function Battler:initState(data, save)
   self.skillList = SkillList(self, save)
-  self.job = Job(self, save)
+  self.job = Job(self, save and save.job)
   self.inventory = Inventory(save and save.items or data.items or {})
   self.statusList = StatusList(self, save)
   self.equipSet = EquipSet(self, save)
