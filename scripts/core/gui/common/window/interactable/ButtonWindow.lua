@@ -65,7 +65,15 @@ function ButtonWindow:update()
       end
     end
   end
+  for _, button in ipairs(self.matrix) do
+    button:refreshEnabled()
+  end
   GridWindow.update(self)
+end
+-- Implements GridWindow:buttonEnabled.
+-- Disables when window is inactive.
+function ButtonWindow:buttonEnabled(button)
+  return self.active
 end
 -- Overrides GridWindow:checkInput.
 -- Ignores keyboard input.

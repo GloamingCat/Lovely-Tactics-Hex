@@ -91,11 +91,7 @@ function MemberInfo:createContent(w, h, battler)
   self.content:add(txtEXP)
   -- EXP gauge
   local gaugeEXP = Gauge(bottomRight, rw, Color.barEXP, 2 + txtEXP.sprite:getWidth())
-  local expCurrent = battler.job.expCurve(battler.job.level)
-  local expNext = battler.job.expCurve(battler.job.level + 1)
-  local expMax = expNext - expCurrent
-  local exp = battler.job.level == Config.battle.maxLevel and expMax or battler.job.exp - expCurrent
-  gaugeEXP:setValues(exp, expMax)
+  gaugeEXP:setValues(battler.job:nextLevelEXP())
   self.content:add(gaugeEXP)
 end
 

@@ -97,6 +97,9 @@ function FieldHUD:update(...)
   if self.open then
     self:refreshSave()
   end
+  if self.buttonWindow then
+    self.buttonWindow.active = not FieldManager.player:isBusy()
+  end
 end
 
 return FieldHUD

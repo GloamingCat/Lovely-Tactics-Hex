@@ -3,6 +3,7 @@
   "fpsMax": 120,
   "fpsMin": 15,
   "coverID": -1,
+  "logoID": -1,
   "platform": 2,
   "player": {
     "walkSpeed": 104,

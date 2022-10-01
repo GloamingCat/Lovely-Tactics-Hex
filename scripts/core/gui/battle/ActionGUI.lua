@@ -120,9 +120,9 @@ function ActionGUI:checkInput()
     self.buttonWindow:checkInput()
     if self.buttonWindow.result then
       if self.buttonWindow.result + #self.buttonWindow.matrix == 3 then
-        self.result = self.input:execute()
+        self:confirmAction()
       else
-        self.result = self.input.action:onCancel(self.input)
+        self:cancelAction()
       end
       self.buttonWindow.result = nil
       return
@@ -152,6 +152,16 @@ function ActionGUI:selectTarget(target)
     self.buttonWindow.matrix[1]:setEnabled(self.input.target.gui.selectable)
   end
 end
+-- Executes the given input.
+function ActionGUI:confirmAction()
+  self.result = self.input:execute()
+  Fiber:wait()
+end
+-- Cancels the selected action.
+function ActionGUI:cancelAction()
+  self.result = self.input.action:onCancel(self.input)
+  Fiber:wait()
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Keyboard
@@ -162,13 +172,13 @@ function ActionGUI:keyboardInput()
   if InputManager.keys['confirm']:isTriggered() then
     if self.input.target.gui.selectable then
       self:playConfirmSound()
-      self.result = self.input:execute()
+      self:confirmAction()
     else
       self:playErrorSound()
     end
   elseif InputManager.keys['cancel']:isTriggered() then
     self:playCancelSound()
-    self.result = self.input.action:onCancel(self.input)
+    self:cancelAction()
   elseif InputManager.keys['next']:isTriggered() then
     local target = self.input.action:nextLayer(self.input, 1)
     if target and target ~= self.input.target then
@@ -211,7 +221,10 @@ function ActionGUI:mouseInput()
     if target and target ~= self.input.target then
       self:selectTarget(target)
     end
-  elseif InputManager.keys['touch']:isReleased() then
+  elseif InputManager.keys['touch']:isTriggered() then
+    self.waitingForTouch = true
+  elseif InputManager.keys['touch']:isReleased() and self.waitingForTouch then
+    self.waitingForTouch = false
     local target = FieldManager.currentField:getHoveredTile()
     if target and target ~= self.input.target then
       self:selectTarget(target)
@@ -225,7 +238,7 @@ function ActionGUI:mouseInput()
       end
       if self.input.target.gui.selectable then
         self:playConfirmSound()
-        self.result = self.input:execute()
+        self:confirmAction()
       else
         self:playErrorSound()
       end
@@ -234,7 +247,7 @@ function ActionGUI:mouseInput()
     end
   elseif InputManager.keys['mouse2']:isTriggered() then
     self:playCancelSound()
-    self.result = self.input.action:onCancel(self.input)
+    self:cancelAction()
   else
     return false
   end
@@ -300,6 +313,7 @@ function ActionGUI:startGridSelecting(target)
   if self.buttonWindow then
     self.buttonWindow.active = true
     self.buttonWindow.result = nil
+    GUIManager.fiberList:fork(self.buttonWindow.show, self.buttonWindow)
   end
   FieldManager:showGrid()
   FieldManager.renderer:moveToTile(target)
