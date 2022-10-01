@@ -18,6 +18,7 @@ local TextRenderer = require('core/graphics/TextRenderer')
 local lgraphics = love.graphics
 local Quad = lgraphics.newQuad
 local max = math.max
+local round = math.round
 
 -- Parameters
 local outlineSize = tonumber(args.width) or 1
@@ -80,8 +81,8 @@ function Text:drawLines(sx, sy)
       x = self:alignOffsetX(w) * sx
     end
     lgraphics.draw(line.buffer, 
-      x - (line.buffer:getWidth() - line.width) / 2, 
-      y - (line.buffer:getHeight() / 1.5 - line.height) / 2, 
+      round(x - (line.buffer:getWidth() - line.width) / 2), 
+      round(y - (line.buffer:getHeight() / 1.5 - line.height) / 2), 
       0, shrink, 1)
     y = y + line.height
     self.renderer.textDraws = self.renderer.textDraws + 1

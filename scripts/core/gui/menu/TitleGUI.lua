@@ -42,14 +42,21 @@ function TitleGUI:createCover()
 end
 -- Creates the text at the top of the screen to show that the player won.
 function TitleGUI:createTopText()
-  local prop = {
-    ScreenManager.width,
-    'center',
-    Fonts.gui_title }
-  self.topText = Text(Config.name, prop, GUIManager.renderer)
-  local x = -ScreenManager.width / 2
-  local y = -ScreenManager.height / 2 + self:windowMargin() * 2
-  self.topText:setXYZ(x, y, 9)
+  local id = Config.logoID
+  if id and id >= 0 then
+    self.topText = ResourceManager:loadSprite(Database.animations[id], GUIManager.renderer)
+    self.topText.texture:setFilter('linear', 'linear')
+    self.topText:setXYZ(0, 0, 9)
+  else 
+    local prop = {
+      ScreenManager.width,
+      'center',
+      Fonts.gui_title }
+    self.topText = Text(Config.name, prop, GUIManager.renderer)
+    local x = -ScreenManager.width / 2
+    local y = -ScreenManager.height / 2 + self:windowMargin() * 2
+    self.topText:setXYZ(x, y, 9)
+  end
   self.topText:setRGBA(nil, nil, nil, 0)
 end
 -- Creates the main window with New / Load / etc.
@@ -75,35 +82,46 @@ end
 -- Overrides GUI:show to show cover before windows.
 function TitleGUI:show(...)
   if not self.cover or self.cover.color.alpha == 0 then
-    self:showCover()
+    self:showCover(false, true)
+    self:showCover(true, false)
   end
   GUI.show(self, ...)
 end
 -- Fades in cover and title.
-function TitleGUI:showCover()
+function TitleGUI:showCover(title, cover)
   if AudioManager.titleTheme then
     AudioManager:playBGM(AudioManager.titleTheme, 60 / self.coverSpeed)
+  end
+  if not title and not (self.cover and cover) then
+    return
   end
   local time = 0
   while time < 1 do
     time = math.min(1, time + GameManager:frameTime() * self.coverSpeed)
-    self.topText:setRGBA(nil, nil, nil, time)
-    if self.cover then
+    if title then
+      self.topText:setRGBA(nil, nil, nil, time)
+    end
+    if self.cover and cover then
       self.cover:setRGBA(nil, nil, nil, time)
     end
     Fiber:wait()
   end
 end
 -- Faces out cover and title.
-function TitleGUI:hideCover()
+function TitleGUI:hideCover(title, cover)
   if Config.sounds.titleTheme then
     AudioManager:pauseBGM(60 / self.coverSpeed)
+  end
+  if not title and not (self.cover and cover) then
+    return
   end
   local time = 1
   while time > 0 do
     time = math.max(0, time - GameManager:frameTime() * self.coverSpeed)
-    self.topText:setRGBA(nil, nil, nil, time)
-    if self.cover then
+    if title then
+      self.topText:setRGBA(nil, nil, nil, time)
+    end
+    if self.cover and cover then
       self.cover:setRGBA(nil, nil, nil, time)
     end
     Fiber:wait()

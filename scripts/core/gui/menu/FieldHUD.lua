@@ -32,7 +32,7 @@ function FieldHUD:createWindows()
   self:createSaveInfoWindow()
   self:createButtonWindow()
 end
--- Creates the window with the information of the chosen member.
+-- Creates the window with the information of the current save.
 function FieldHUD:createSaveInfoWindow()
   local width = Config.troop.maxMembers * 20 + 60
   local height = 44

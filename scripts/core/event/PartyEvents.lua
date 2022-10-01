@@ -30,11 +30,17 @@ function EventSheet:increaseExp(args)
     end
   end
   TroopManager:saveTroop(troop)
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
 end
 -- @param(args.value : number) Value to be added to the party's money.
 function EventSheet:increaseMoney(args)
   local save = TroopManager.troopData[TroopManager.playerTroopID .. '']
   save.money = save.money + args.value
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
 end
 -- @param(args.id : number) ID of the item to be added.
 -- @param(args.value : number) Quantity to be added.
@@ -42,6 +48,9 @@ function EventSheet:increaseItem(args)
   local troop = Troop()
   troop.inventory:addItem(args.id, args.value)
   TroopManager:saveTroop(troop)
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
 end
 -- @param(args.key : string) New member's key.
 -- @param(args.x : number) Member's grid X (if nil, it's added to backup list).
@@ -83,6 +92,9 @@ function EventSheet:healAll(args)
     end
   end
   TroopManager:saveTroop(troop)
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -100,6 +112,9 @@ function EventSheet:learnSkill(args)
   assert(battler, "No battler with key: " .. tostring(args.key))
   battler.skillList:learn(args.id)
   TroopManager:saveTroop(troop)
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
 end
 -- Sets a member's level. 
 -- Learns new skills if level increased, but keeps old skills if decreased.
@@ -116,6 +131,9 @@ function EventSheet:setLevel(args)
     battler.job:addExperience(exp)
   end
   TroopManager:saveTroop(troop)
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
 end
 -- Sets that item equiped in the specified slot.
 -- @param(args.id : number) Item ID.
@@ -136,6 +154,9 @@ function EventSheet:setEquip(args)
     battler.equipSet.setEquip(args.slot, item)
   end
   TroopManager:saveTroop(troop)
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
 end
 
 return EventSheet

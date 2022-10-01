@@ -303,6 +303,7 @@ function GameManager:restart()
   ScreenManager:clear()
   FieldManager = require('core/field/FieldManager')()
   GUIManager = require('core/gui/GUIManager')()
+  BattleManager = require('core/battle/BattleManager')()
   ScreenManager:refreshRenderers()
   self:start()
 end

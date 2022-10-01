@@ -28,6 +28,7 @@ function Job:init(battler, save)
   else
     self.id = battler.data.jobID
     self.level = battler.data.level
+    self.exp = battler.data.exp
   end
   local jobData = Database.jobs[self.id]
   self.data = jobData
@@ -75,17 +76,26 @@ end
 -- @param(exp : number) The quantity of EXP to be added.
 -- @ret(number) The new level, or nil if did not level up.
 function Job:levelsup(exp)
-  if self.level == Config.battle.maxLevel then
-    return nil
-  end
   local level = self.level
   exp = exp + self.exp
-  while exp >= self.expCurve(level + 1) do
+  while level < Config.battle.maxLevel and exp >= self.expCurve(level + 1) do
     level = level + 1
   end
   if level > self.level then
     return level
+  else
+    return nil
   end
+end
+-- Computes the EXP progress to towards the next level.
+-- @ret(number) Current EXP progress.
+-- @ret(number) The total EXP needed from the current level to the next.
+function Job:nextLevelEXP()
+  local expCurrent = self.expCurve(self.level)
+  local expNext = self.expCurve(self.level + 1)
+  local expMax = expNext - expCurrent
+  local exp = self.level == Config.battle.maxLevel and expMax or self.exp - expCurrent
+  return exp, expMax
 end
 
 ---------------------------------------------------------------------------------------------------
