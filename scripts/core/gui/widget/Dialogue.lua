@@ -44,7 +44,6 @@ end
 -- @param(text : string) Raw text string.
 function Dialogue:rollText(text)
   self.sprite:setText(text)
-  local skipPoints = self:findSkipPoints()
   local time = 0
   local soundTime = self.soundFrequence
   while true do
@@ -56,9 +55,9 @@ function Dialogue:rollText(text)
     -- Check if player skipped dialogue.
     if self:buttonPressed() then
       Fiber:wait()
-      if #skipPoints > 0 then
-        time = skipPoints[#skipPoints] - 1
-        skipPoints[#skipPoints] = nil
+      local skipPoint = self:findSkipPoint(time)
+      if skipPoint then
+        time = skipPoint
       else
         break
       end
@@ -101,16 +100,15 @@ function Dialogue:triggerEvents(min, max)
     end
   end
 end
--- Searchs for text events that waits for player's input.
-function Dialogue:findSkipPoints()
-  local points = {}
-  for i = #self.sprite.events, 1, -1 do
-    local event = self.sprite.events[i]
-    if event.type == 'input' then
-      points[#points + 1] = event.point
+-- Searchs for the next point in the text after player skips.
+-- @param(min : number) Current text character.
+-- @ret(number) Next skip point or nil if reached the end of text.
+function Dialogue:findSkipPoint(min)
+  for _, event in ipairs(self.sprite.events) do
+    if event.point >= min and event.type == 'input' then
+      return event.point
     end
   end
-  return points
 end
 
 return Dialogue

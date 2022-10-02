@@ -82,6 +82,7 @@ end
 -- Overrides GUI:show to show cover before windows.
 function TitleGUI:show(...)
   if not self.cover or self.cover.color.alpha == 0 then
+    self:playBGM()
     self:showCover(false, true)
     self:showCover(true, false)
   end
@@ -89,9 +90,6 @@ function TitleGUI:show(...)
 end
 -- Fades in cover and title.
 function TitleGUI:showCover(title, cover)
-  if AudioManager.titleTheme then
-    AudioManager:playBGM(AudioManager.titleTheme, 60 / self.coverSpeed)
-  end
   if not title and not (self.cover and cover) then
     return
   end
@@ -109,9 +107,6 @@ function TitleGUI:showCover(title, cover)
 end
 -- Faces out cover and title.
 function TitleGUI:hideCover(title, cover)
-  if Config.sounds.titleTheme then
-    AudioManager:pauseBGM(60 / self.coverSpeed)
-  end
   if not title and not (self.cover and cover) then
     return
   end
@@ -125,6 +120,18 @@ function TitleGUI:hideCover(title, cover)
       self.cover:setRGBA(nil, nil, nil, time)
     end
     Fiber:wait()
+  end
+end
+-- Starts playing the title theme, if any.
+function TitleGUI:playBGM()
+  if AudioManager.titleTheme then
+    AudioManager:playBGM(AudioManager.titleTheme, 60 / self.coverSpeed)
+  end
+end
+-- Stops playing the title theme, if any.
+function TitleGUI:pauseBGM()
+  if Config.sounds.titleTheme then
+    AudioManager:pauseBGM(60 / self.coverSpeed)
   end
 end
 

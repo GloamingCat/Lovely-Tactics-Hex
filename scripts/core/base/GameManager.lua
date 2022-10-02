@@ -193,7 +193,7 @@ function GameManager:draw()
     return
   end
   ScreenManager:draw()
-  self:printStats()
+  --self:printStats()
   --self:printCoordinates()
   if self.paused then
     love.graphics.setFont(ResourceManager:loadFont(Fonts.pause, ScreenManager.scaleX))
@@ -275,6 +275,9 @@ end
 -- Gets the current total play time.
 -- @ret(number) The time in seconds.
 function GameManager:currentPlayTime()
+  if not SaveManager.loadTime then
+    return 0
+  end
   return self.playTime + (now() - SaveManager.loadTime)
 end
 -- Duration of the last frame.

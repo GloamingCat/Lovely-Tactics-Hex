@@ -41,6 +41,7 @@ end
 
 -- New Game button.
 function TitleCommandWindow:newGameConfirm()
+  self.GUI:pauseBGM()
   self.GUI:hide()
   self.GUI:hideCover(true, false)
   self.GUI:hideCover(false, true)
@@ -54,6 +55,7 @@ function TitleCommandWindow:loadGameConfirm()
   self:hide()
   local result = self.GUI:showWindowForResult(self.GUI.loadWindow)
   if result ~= '' then
+    self.GUI:pauseBGM()
     self.GUI:hide()
     self.GUI:hideCover(false, true)
     self.result = 1
