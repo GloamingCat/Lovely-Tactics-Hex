@@ -53,6 +53,7 @@ function Text:setText(text)
   self.text = text
   self.renderer.needsRedraw = true
   if text == '' then
+    self.lines = ''
     self.events = nil
     self.parsedLines = nil
   else

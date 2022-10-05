@@ -79,7 +79,7 @@ function BattleManager:loadBattle(state)
       FieldManager:loadField(self.params.fieldID or self.currentField.id)
       state = nil
     elseif result == 3 then -- Title Screen
-      GameManager:restart()
+      GameManager.restartRequested = true
       return
     end
   end

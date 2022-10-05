@@ -44,6 +44,7 @@ end
 function EquipItemWindow:createListButton(itemSlot)
   local button = InventoryWindow.createListButton(self, itemSlot)
   button:setEnabled(self.member.equipSet:canEquip(self.slotKey, button.item))
+  button.description = button.item and button.item.description
   button.confirmSound = Config.sounds.equip
   button.clickSound = Config.sounds.equip
   return button
