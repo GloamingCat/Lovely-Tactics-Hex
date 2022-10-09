@@ -146,12 +146,6 @@ end
 -- Sets the speed according to dash input.
 function Player:refreshSpeed()
   local dash = InputManager.keys['dash']:isPressing()
-  if self.path and self.pathButton then
-    if InputManager.keys[self.pathButton]:isDoubleTriggered() then
-      self.dashPath = true
-    end
-    dash = dash ~= (self.dashPath or false)
-  end
   local auto = InputManager.autoDash or false
   if dash ~= auto then
     self.speed = self.dashSpeed
@@ -167,10 +161,6 @@ end
 -- [COROUTINE] Moves player to the mouse coordinate.
 -- @param(button : string) Key of the button used to move (mouse1 or touch).
 function Player:moveByMouse(button)
-  if button then
-    self.pathButton = button
-    self.dashPath = false
-  end
   local currentTile = self:getTile()
   local tile = FieldManager.currentField:getHoveredTile()
   if tile then

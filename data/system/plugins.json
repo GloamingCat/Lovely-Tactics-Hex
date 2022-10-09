@@ -94,6 +94,21 @@
   },
   {
     "on": true,
+    "name": "plugins/DoubleClickDash.lua",
+    "tags": [
+      {
+        "key": "player",
+        "value": "false"
+      },
+      {
+        "key": "spinner",
+        "value": "true"
+      }
+    ],
+    "key": ""
+  },
+  {
+    "on": true,
     "name": "plugins/graphics/ChildAnimations.lua",
     "tags": [],
     "key": ""

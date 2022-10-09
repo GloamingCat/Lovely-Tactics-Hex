@@ -102,12 +102,7 @@ end
 -- @param(dx : number) Input axis X.
 -- @param(dy : number) Input axis Y.
 function VSpinner:changeValue(dx, dy, click)
-  local bigIncrement = InputManager.keys['dash']:isPressing()
-    or InputManager.keys['mouse1']:isDoubleTriggered()
-    or InputManager.keys['touch']:isDoubleTriggered()
-  if self.bigIncrement and bigIncrement then
-    dy = dy * self.bigIncrement
-  end
+  dy = dy * self:multiplier()
   local value = math.min(self.maxValue, math.max(self.minValue, self.value + dy))
   if self.enabled then
     self:setValue(value)
@@ -127,6 +122,12 @@ function VSpinner:setValue(value)
     self.valueText:setText(value .. '')
     self.valueText:redraw()
   end
+end
+-- The values the multiplies the change input.
+-- @ret(number)
+function VSpinner:multiplier()
+  return InputManager.keys['dash']:isPressing()
+      and self.bigIncrement or 1
 end
 
 return VSpinner

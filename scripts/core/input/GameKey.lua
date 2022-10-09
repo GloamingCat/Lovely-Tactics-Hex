@@ -18,7 +18,6 @@ local now = love.timer.getTime
 -- Constants
 local defaultStartGap = 0.5
 local defaultRepreatGap = 0.05
-local defaultDoubleClickGap = 0.2
 
 local GameKey = class()
 
@@ -49,15 +48,6 @@ end
 -- @ret(boolean) True if was triggered in the current frame, false otherwise.
 function GameKey:isTriggered(gap)
   return self.pressState == 2
-end
--- Checks if button was triggered (just pressed).
--- @ret(boolean) True if was triggered in the current frame, false otherwise.
-function GameKey:isDoubleTriggered(gap)
-  if self.pressState ~= 2 then
-    return false
-  end
-  gap = gap or defaultDoubleClickGap
-  return self.pressTime <= self.previousPressTime + gap
 end
 -- Checks if player is pressing the key.
 -- @ret(boolean) True if pressing, false otherwise.
