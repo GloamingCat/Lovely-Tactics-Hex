@@ -45,6 +45,7 @@ end
 function Dialogue:rollText(text)
   self.sprite:setText(text)
   local time = 0
+  local skipPoint = self:findSkipPoint(time)
   local soundTime = self.soundFrequence
   while true do
   	-- Play character sound.
@@ -53,9 +54,9 @@ function Dialogue:rollText(text)
       AudioManager:playSFX(self.textSound)
     end
     -- Check if player skipped dialogue.
+    skipPoint = self:findSkipPoint(time)
     if self:buttonPressed() then
       Fiber:wait()
-      local skipPoint = self:findSkipPoint(time)
       if skipPoint then
         time = skipPoint
       else
@@ -65,6 +66,9 @@ function Dialogue:rollText(text)
     -- Update time.
     local previousTime = time
     time = time + GameManager:frameTime() * self.textSpeed
+    if skipPoint then
+      time = math.min(time, skipPoint + 1)
+    end
     soundTime = soundTime + GameManager:frameTime() * self.textSpeed
     if time >= self.sprite.parsedLines.length then
     	self:triggerEvents(previousTime, time + 1)

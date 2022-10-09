@@ -194,10 +194,6 @@ function GameManager:draw()
   if ScreenManager.closed then
     return
   end
-  if self:isMobile() then
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.rectangle('line', 0, 0, love.graphics.getWidth() - 1, love.graphics.getHeight() - 1)
-  end
   ScreenManager:draw()
   --self:printStats()
   --self:printCoordinates()

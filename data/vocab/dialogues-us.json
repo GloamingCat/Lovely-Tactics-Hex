@@ -17,7 +17,7 @@
   },
   
   "tutorial": {
-    "Arrows": "Use {cbabypink}mouse{cwhite} or {cbabypink}arrows{cwhite} (or {cbabypink}WASD{cwhite} is enabled) to {cbabyblue}navigate{cwhite} around the field or menu.",
+    "Arrows": "Use {cbabypink}mouse{cwhite} or {cbabypink}arrows{cwhite} (or {cbabypink}WASD{cwhite} if enabled) to {cbabyblue}navigate{cwhite} the around field or menu options. Hold {cbabypink}[Shift]{cwhite} to walk {cbabyblue}faster{cwhite}.",
     "Z": "Use {cbabypink}[Z]{cwhite}, {cbabypink}[Enter]{cwhite} or the {cbabypink}left mouse button{cwhite} to {cbabyblue}interact{cwhite} with an NPC or {cbabyblue}select{cwhite} an option in a menu.",
     "X": "Use {cbabypink}[X]{cwhite}, {cbabypink}[Backspace]{cwhite} or the {cbabypink}right mouse button{cwhite} to {cbabyblue}return{cwhite}/close a menu window or open the {cbabyblue}main menu{cwhite} when navigating the field.",
     "Page": "Press {cbabypink}[N]{cwhite}/{cbabypink}[M]{cwhite} or {cbabypink}[Page Up]{cwhite}/{cbabypink}[Page Down]{cwhite} to {cbabyblue}switch{cwhite} menu screens or select a tile at a {cbabyblue}different height{cwhite} during battle.\n ",

@@ -22,6 +22,7 @@ local SwitchButton = class(Button)
 -- @param(x : number) Position x of the switch text relative to the button width (from 0 to 1).
 function SwitchButton:init(window, initValue, x)
   Button.init(self, window)
+  self.clickSound = nil
   x = x or 0.3
   local w = self.window:cellWidth()
   self:initContent(initValue or false, w * x, self.window:cellHeight() / 2, w * (1 - x))
