@@ -364,7 +364,13 @@
           "visible": true,
           "cumulative": false,
           "charAnim": "",
-          "transformations": [],
+          "transformations": [
+            {
+              "type": 12,
+              "value": 125,
+              "override": false
+            }
+          ],
           "duration": -1,
           "removeOnKO": true,
           "removeOnDamage": false,

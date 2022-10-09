@@ -172,15 +172,10 @@ end
 -- Updates the character's graphics (transform and animation) according to the current status.
 -- @param(character : Character)
 function StatusList:updateGraphics(character)
-  local transform = nil
+  local transform = character.statusTransform
   for i = 1, #self do
     local data = self[i].data
-    if data.override or not transform then
-      transform = data.transform
-    else
-      transform = Affine.combineTransforms(character.statusTransform, transform)
-    end
-    if data.transformations then
+    if #data.transformations > 0 then
       transform = Affine.createTransform(transform, data.transformations)
     end
   end
