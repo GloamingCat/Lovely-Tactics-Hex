@@ -14,6 +14,7 @@ local List = require('core/datastruct/List')
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
 local PathFinder = require('core/battle/ai/PathFinder')
 local PopupText = require('core/battle/PopupText')
+local BattleAnimations = require('core/battle/BattleAnimations')
 
 -- Alias
 local expectation = math.randomExpectation
@@ -209,31 +210,16 @@ end
 -- The effect applied when the user is prepared to use the skill.
 -- It executes animations and applies damage/heal to the targets.
 function SkillAction:battleUse(input)
-  -- Apply costs.
-  input.user.battler:damageCosts(self.costs)
   -- Intro time.
   _G.Fiber:wait(self.introTime)
-  -- User's initial animation.
+  -- User animation.
   local originTile = input.user:getTile()
-  local dir = input.user:turnToTile(input.target.x, input.target.y)
-  dir = math.field.angle2Row(dir) * 45
-  _G.Fiber:wait(input.user:loadSkill(self.data, dir))
-  -- Cast animation.
-  FieldManager.renderer:moveToTile(input.target)
-  local minTime = input.user:castSkill(self.data, dir, input.target) + GameManager.frame
-  input.user.battler:onSkillUse(input, input.user)
-  -- Return user to original position and animation.
-  _G.Fiber:fork(function()
-    _G.Fiber:wait(self.castTime)
-    if not input.user:moving() then
-      input.user:finishSkill(originTile, self.data)
-    end
-  end)
+  local endFrame = self:userEffects(input) + GameManager.frame
   -- Target animations.
   _G.Fiber:wait(self.centerTime)
   self:allTargetsEffect(input, originTile)
   -- Wait until everything finishes.
-  _G.Fiber:wait(max(minTime - GameManager.frame, 0) + self.finishTime)
+  _G.Fiber:wait(max(endFrame - GameManager.frame, 0) + self.finishTime)
 end
 -- Applies the effects of the skill to the given battler.
 -- @param(results : table) Skill result table.
@@ -250,6 +236,33 @@ function SkillAction:applyResults(input, results, battler, char)
     end
   end
 end
+-- Plays user's load and cast animations.
+function SkillAction:userEffects(input)
+  -- Apply costs.
+  input.user.battler:damageCosts(self.costs)
+  -- User's initial animation.
+  local originTile = input.user:getTile()
+  local dir = input.user:turnToTile(input.target.x, input.target.y)
+  dir = math.field.angle2Row(dir) * 45
+  _G.Fiber:wait(math.max(
+    input.user:loadSkill(self.data), 
+    BattleAnimations.loadEffect(self.data, input.user.position, dir)))
+  -- Cast animation.
+  FieldManager.renderer:moveToTile(input.target)
+  local minTime = math.max(
+    input.user:castSkill(self.data, dir, input.target),
+    BattleAnimations.castEffect(self.data, input.target, dir))
+  input.user.battler:onSkillUse(input, input.user)
+  -- Return user to original position and animation.
+  _G.Fiber:fork(function()
+    _G.Fiber:wait(self.castTime)
+    if not input.user:moving() then
+      input.user:finishSkill(originTile, self.data)
+    end
+  end)
+  return minTime
+end
+
 
 ---------------------------------------------------------------------------------------------------
 -- Menu Use
@@ -280,7 +293,7 @@ function SkillAction:menuUse(input)
   end
   input.user:damageCosts(self.costs)
   if self.data.castAnimID >= 0 then
-    BattleManager:playMenuAnimation(self.data.castAnimID, false)
+    BattleAnimations.playOnMenu(self.data.castAnimID, false)
   end
   input.user:onSkillUse(input, TroopManager:getBattlerCharacter(input.user))
   return BattleAction.execute(self, input)
@@ -402,13 +415,7 @@ function SkillAction:singleTargetEffect(results, input, targetChar, originTile)
     end
   elseif wasAlive or not results.damage then
     targetChar.battler:popupResults(targetChar.position, results, targetChar)
-    if self.data.individualAnimID >= 0 then
-      local dir = targetChar:tileToAngle(originTile.x, originTile.y)
-      local mirror = dir > 90 and dir <= 270
-      local pos = targetChar.position
-      BattleManager:playBattleAnimation(self.data.individualAnimID,
-        pos.x, pos.y, pos.z - 10, mirror)
-    end
+    BattleAnimations.targetEffect(self.data, targetChar, originTile)
     if results.damage and self.data.damageAnim and wasAlive then
       if self:isArea() then
         originTile = input.target

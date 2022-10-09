@@ -840,7 +840,7 @@
         "children": [
           {
             "data": {
-              "script": "animation/Projectile.lua",
+              "script": "",
               "quad": {
                 "path": "Battle/pulsating heart.png",
                 "x": 0,
@@ -879,7 +879,7 @@
           },
           {
             "data": {
-              "script": "animation/Projectile.lua",
+              "script": "",
               "quad": {
                 "path": "Battle/magic ball.png",
                 "x": 0,
@@ -3023,7 +3023,7 @@
               "introPattern": "",
               "introDuration": "",
               "loopPattern": "",
-              "loopDuration": "10",
+              "loopDuration": "",
               "audio": [],
               "name": "Sword Load",
               "tags": [],
@@ -3072,7 +3072,12 @@
                 }
               ],
               "name": "Sword Skill",
-              "tags": [],
+              "tags": [
+                {
+                  "key": "skillTime",
+                  "value": "5"
+                }
+              ],
               "key": ""
             },
             "id": 60,
@@ -3108,7 +3113,7 @@
               "introPattern": "",
               "introDuration": "",
               "loopPattern": "",
-              "loopDuration": "10",
+              "loopDuration": "",
               "audio": [],
               "name": "Magic Load",
               "tags": [],
@@ -3145,7 +3150,7 @@
                 "brightness": 100
               },
               "introPattern": "",
-              "introDuration": "8",
+              "introDuration": "10",
               "loopPattern": "",
               "loopDuration": "",
               "audio": [],
@@ -3536,7 +3541,7 @@
                 "brightness": 100
               },
               "introPattern": "",
-              "introDuration": "12",
+              "introDuration": "",
               "loopPattern": "",
               "loopDuration": "",
               "audio": [],
@@ -3574,12 +3579,12 @@
                 "saturation": 100,
                 "brightness": 100
               },
-              "introPattern": "",
-              "introDuration": "",
-              "loopPattern": "1 2 1 0",
-              "loopDuration": "20",
+              "introPattern": "1 2 1 0",
+              "introDuration": "20",
+              "loopPattern": "",
+              "loopDuration": "",
               "audio": [],
-              "name": "Cast",
+              "name": "Attack",
               "tags": [],
               "key": ""
             },

@@ -16,7 +16,6 @@ local MoveAction = require('core/battle/action/MoveAction')
 -- Alias
 local mathf = math.field
 local max = math.max
-local tile2Pixel = math.field.tile2Pixel
 
 local Character = class(CharacterBase)
 
@@ -149,28 +148,22 @@ end
 -- Skill (user)
 ---------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Executes the intro animations (load and cast) for skill use.
--- @param(target : ObjectTile) The target tile of the skill.
+-- [COROUTINE] Play load animation.
 -- @param(skill : table) Skill data from database.
 -- @ret(number) The duration of the animation.
-function Character:loadSkill(skill, dir)
-  local minTime = 0
+function Character:loadSkill(skill)
   -- Load animation (user)
+  local minTime = 0
   if skill.userLoadAnim ~= '' then
     local anim = self:playAnimation(skill.userLoadAnim)
-    anim:setIndex(1)
-    anim.time = 0
-    minTime = anim.duration
+    anim:reset()
+    local waitTime = tonumber(anim.tags and anim.tags.skillTime)
+    if waitTime then
+      _G.Fiber:wait(waitTime)
+      return math.max(anim.duration, waitTime) - waitTime
+    end
   end
-  -- Load animation (effect on tile)
-  if skill.loadAnimID >= 0 then
-    local mirror = skill.mirror and dir > 90 and dir <= 270
-    local pos = self.position
-    local anim = BattleManager:playBattleAnimation(skill.loadAnimID, 
-      pos.x, pos.y, pos.z - 1, mirror)
-    minTime = max(minTime, anim.duration)
-  end
-  return minTime
+  return 0
 end
 -- [COROUTINE] Plays cast animation.
 -- @param(skill : table) Skill's data.
@@ -189,15 +182,11 @@ function Character:castSkill(skill, dir, target)
   if skill.userCastAnim ~= '' then
     local anim = self:playAnimation(skill.userCastAnim)
     anim:reset()
-    minTime = anim.duration
-  end
-  -- Cast animation (effect on tile)
-  if skill.castAnimID >= 0 then
-    local mirror = skill.mirror and dir > 90 and dir <= 270
-    local x, y, z = tile2Pixel(target:coordinates())
-    local anim = BattleManager:playBattleAnimation(skill.castAnimID,
-      x, y, z - 1, mirror)
-    minTime = max(minTime, anim.duration)
+    local waitTime = tonumber(anim.tags and anim.tags.skillTime)
+    if waitTime then
+      minTime = math.max(anim.duration, waitTime) - waitTime
+    end
+    _G.Fiber:wait(waitTime)
   end
   return minTime
 end
@@ -206,7 +195,7 @@ end
 -- @param(skill : table) Skill data from database.
 function Character:finishSkill(origin, skill)
   if skill.stepOnCast then
-    local x, y, z = tile2Pixel(origin:coordinates())
+    local x, y, z = origin.center:coordinates()
     if self.position:almostEquals(x, y, z) then
       return
     end

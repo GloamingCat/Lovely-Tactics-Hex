@@ -82,6 +82,9 @@ end
 -- Gets the current battle state to save the game mid-battle.
 -- @ret(table) Turn state data.
 function TurnManager:getState()
+  if not self.initialTurnCharacters then
+    return nil
+  end
   local initialCharacters = util.table.deepCopy(self.initialTurnCharacters)
   local characters = {}
   for i = 1, #self.turnCharacters do

@@ -11,7 +11,6 @@ The FieldCamera is a renderer with transform properties.
 local Renderer = require('core/graphics/Renderer')
 
 -- Alias
-local tile2Pixel = math.field.tile2Pixel
 local pixelCenter = math.field.pixelCenter
 local sqrt = math.sqrt
 
@@ -111,7 +110,7 @@ end
 -- @param(speed : number) the speed of the movement (optional, uses default speed)
 -- @param(wait : boolean) flag to wait until the move finishes (optional, false by default)
 function FieldCamera:moveToTile(tile, speed, wait)
-  local x, y = tile2Pixel(tile:coordinates())
+  local x, y = tile.center:coordinates()
   self:moveToPoint(x, y, speed, wait)
 end
 -- [COROUTINE] Movec camera to the given object.

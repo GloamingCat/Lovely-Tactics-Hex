@@ -105,13 +105,13 @@ end
 -- Sets object's current position to the given tile.
 -- @param(tile : ObjectTile) Destination tile.
 function Object:setTile(tile)
-  local x, y, z = tile2Pixel(tile:coordinates())
+  local x, y, z = tile.center:coordinates()
   self:setXYZ(x, y, z)
 end
 -- Move to the given tile.
 -- @param(tile : ObjectTile) Destination tile.
 function Object:moveToTile(tile, ...)
-  local x, y, z = tile2Pixel(tile:coordinates())
+  local x, y, z = tile.center:coordinates()
   self:moveTo(x, y, z, ...)
 end
 -- Gets all tiles this object is occuping.

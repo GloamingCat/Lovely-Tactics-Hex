@@ -12,9 +12,6 @@ It may be passable or not, and have an image or not.
 local Vector = require('core/math/Vector')
 local Object = require('core/objects/Object')
 
--- Alias
-local tile2Pixel = math.field.tile2Pixel
-
 -- Constants
 local neighborShift = math.field.fullNeighborShift
 
@@ -29,7 +26,7 @@ local Obstacle = class(Object)
 -- @param(initTile : ObjectTile) The object this tile is in.
 -- @param(group : table) The group this obstacle is part of.
 function Obstacle:init(data, tileData, initTile, group)
-  local x, y, z = tile2Pixel(initTile:coordinates())
+  local x, y, z = initTile.center:coordinates()
   Object.init(self, data, Vector(x, y, z))
   self.type = 'obstacle'
   self.group = group

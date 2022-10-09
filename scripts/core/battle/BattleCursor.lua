@@ -67,7 +67,7 @@ function BattleCursor:setTile(tile)
   if not self.anim then
     return
   end
-  local x, y, z = mathf.tile2Pixel(tile:coordinates())
+  local x, y, z = tile.center:coordinates()
   self.anim.sprite:setVisible(tile.gui.selectable)
   local maxH = 0
   for obj in tile.obstacleList:iterator() do

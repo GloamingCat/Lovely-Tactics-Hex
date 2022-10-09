@@ -71,7 +71,7 @@ function BattleManager:loadBattle(state)
   while true do
     FieldManager:playFieldBGM()
     self:setUp(state)
-    local result = self:runBattle(state ~= nil)
+    local result = self:runBattle(state and state.turn ~= nil)
     self:clear()
     if result == 1 then -- Continue
       break
@@ -193,47 +193,6 @@ function BattleManager:isGameOver()
   else
     return false
   end
-end
-
----------------------------------------------------------------------------------------------------
--- Animations
----------------------------------------------------------------------------------------------------
-
--- [COROUTINE] Plays a battle animation.
--- @param(animID : number) the animation's ID from database
--- @param(x : number) pixel x of the animation
--- @param(y : number) pixel y of the animation
--- @param(z : number) pixel depth of the animation
--- @param(mirror : boolean) mirror the sprite in x-axis
--- @param(wait : boolean) true to wait until first loop finishes (optional)
--- @ret(Animation) the newly created animation
-function BattleManager:playAnimation(manager, animID, x, y, z, mirror, wait)
-  local animation = ResourceManager:loadAnimation(animID, manager.renderer)
-  if animation.sprite then
-    animation.sprite:setXYZ(x, y, z - 10)
-    animation.sprite:setTransformation(animation.data.transform)
-    if mirror then
-      animation.sprite:setScale(-animation.sprite.scaleX, animation.sprite.scaleY)
-    end
-  end
-  manager.updateList:add(animation)
-  local fiber = manager.fiberList:fork(function()
-    _G.Fiber:wait(animation.duration)
-    manager.updateList:removeElement(animation)
-    animation:destroy()
-  end)
-  if wait then
-    fiber:waitForEnd()
-  end
-  return animation
-end
--- Play animation in field.
-function BattleManager:playBattleAnimation(animID, x, y, z, mirror, wait)
-  return self:playAnimation(FieldManager, animID, x, y, z, mirror, wait)
-end
--- Play animation in GUI.
-function BattleManager:playMenuAnimation(animID, wait)
-  return self:playAnimation(GUIManager, animID, 0, 0, 200, false, wait)
 end
 
 return BattleManager

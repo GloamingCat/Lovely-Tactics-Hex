@@ -10,6 +10,7 @@ There's only one ObjectTile for each (i, j, height) in the field.
 
 -- Imports
 local List = require('core/datastruct/List')
+local Vector = require('core/math/Vector')
 
 local ObjectTile = class()
 
@@ -32,6 +33,7 @@ function ObjectTile:init(layer, x, y)
   self.parties = {}
   self.neighborList = nil
   self.rampNeighbors = List()
+  self.center = Vector(math.field.tile2Pixel(self:coordinates()))
 end
 -- Stores the list of neighbor tiles.
 function ObjectTile:createNeighborList()

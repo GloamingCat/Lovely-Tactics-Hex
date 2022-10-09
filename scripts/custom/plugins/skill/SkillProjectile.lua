@@ -11,61 +11,92 @@ Set <projectileID> tag as projectile animation ID. Must the an animation with "P
 =================================================================================================]]
 
 -- Imports
+local Animation = require('core/graphics/Animation')
 local Character = require('core/objects/Character')
+local BattleAnimations = require('core/battle/BattleAnimations')
+local Vector = require('core/math/Vector')
 
 -- Alias
 local max = math.max
+local min = math.min
+local nextCoordDir = math.field.nextCoordDir
+local pixel2Tile = math.field.pixel2Tile
 local tile2Pixel = math.field.tile2Pixel
 
 ---------------------------------------------------------------------------------------------------
--- Cast
+-- Animation
 ---------------------------------------------------------------------------------------------------
 
--- Overrides. Change throw projectile before skill animation.
+-- Sets origin position.
+-- @param(user : Character)
+function Animation:setUser(user)
+  self.userHeight = user:getHeight(0, 0) / 2
+  local di, dj = nextCoordDir(user:getRoundedDirection())
+  local i, j, h = user:getTile():coordinates()
+  local x, y, z = tile2Pixel(i + di, j + dj, h + self.userHeight)
+  local row = self.tags and self.tags.rotate and user.animation.row or 0
+  self.sprite:setXYZ(x, y, z)
+  self.origin = Vector(x, y, z)
+  self:setRow(row)
+end
+-- Sets target position.
+-- @param(target : ObjectTile)
+-- @ret(number) The distance from the current position to the target position.
+function Animation:setTarget(target)
+  local i, j, h = target:coordinates()
+  self.target = Vector(tile2Pixel(i, j, h + (self.userHeight or 0)))
+  self.moveTime = 0
+  return self.sprite.position:distance2DTo(self.target:coordinates())
+end
+-- [COROUTINE] Starts the movement towards the target tile.
+-- @param(user : Character)
+-- @param(target : ObjectTile) The target tile.
+-- @param(speed : number) Speed in pixels per second (optional if speed is set in tags).
+-- @param(wait : boolean) True to wait until the end of movement (false by default).
+-- @ret(number) Duration of the movement in frames.
+function Animation:throw(user, target, speed, wait)
+  self:setUser(user)
+  local d = self:setTarget(target)
+  speed = speed or self.tags and self.tags.speed
+  self.moveSpeed = speed / d
+  local time = d * 60 / speed
+  FieldManager.updateList:add(self)
+  local fiber = FieldManager.fiberList:fork(function()
+    _G.Fiber:wait(time)
+    FieldManager.updateList:removeElement(self)
+    self:destroy()
+  end)
+  if wait then
+    fiber:waitForEnd()
+  end
+  return time
+end
+-- Overrides Animation:update.
+-- Updates sprite position.
+local Animation_update = Animation.update
+function Animation:update()
+  Animation_update(self)
+  if self.moveSpeed then
+    self.moveTime = min(self.moveTime + GameManager:frameTime() * self.moveSpeed, 1)
+    self.sprite:setPosition(self.origin:lerp(self.target, self.moveTime))
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Character
+---------------------------------------------------------------------------------------------------
+
+-- Overrides. Change throw projectile after cast animation.
 local Character_castSkill = Character.castSkill
 function Character:castSkill(skill, dir, target)
-  -- Forward step
-  if skill.stepOnCast then
-    self:playMoveAnimation()
-    self:walkInAngle(self.castStep or 6, dir)
-    self:playIdleAnimation()
-  end
-  -- Cast animation (user)
-  local minTime = 0
-  if skill.userCastAnim ~= '' then
-    local anim = self:playAnimation(skill.userCastAnim)
-    anim:reset()
-    minTime = anim.duration
-  end
+  local minTime = Character_castSkill(self, skill, dir, target)
   -- Projectile
   local projectileTag = util.array.findByKey(skill.tags, 'projectileID')
   if projectileTag then
     _G.Fiber:wait(minTime)
-    self:throwSkillProjectile(tonumber(projectileTag.value), target, true)
-    minTime = 0
-  end
-  -- Cast animation (effect on tile)
-  if skill.castAnimID >= 0 then
-    local mirror = skill.mirror and dir > 90 and dir <= 270
-    local x, y, z = tile2Pixel(target:coordinates())
-    local anim = BattleManager:playBattleAnimation(skill.castAnimID,
-      x, y, z - 1, mirror)
-    minTime = max(minTime, anim.duration)
+    local anim = ResourceManager:loadAnimation(tonumber(projectileTag.value), FieldManager.renderer)
+    local speed = anim.tags and anim.tags.moveSpeed or 500
+    minTime = minTime - math.min(minTime, anim:throw(self, target, speed, true))
   end
   return minTime
-end
-
----------------------------------------------------------------------------------------------------
--- Projectile
----------------------------------------------------------------------------------------------------
-
--- Instantiates new projectile animation in the user's current tile.
--- @param(animID : number) Animation ID.
--- @param(target : ObjectTile) Destination tile.
--- @param(wait : boolean) True to wait until movement finishes.
--- @ret(number) The duration of the movement in frames.
-function Character:throwSkillProjectile(animID, target, wait)
-  local animation = ResourceManager:loadAnimation(animID, FieldManager.renderer)
-  assert(animation.throw, 'Animation is not of type Projectile: ' .. tostring(animation.throw))
-  return animation:throw(self, target, 600, true)
 end

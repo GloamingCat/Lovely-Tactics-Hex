@@ -511,7 +511,7 @@
       },
       {
         "data": {
-          "description": "Simple melee physical attack,\r\nwith 150% damage and\r\n100% of success rate.",
+          "description": "Simple melee physical attack, with 150% damage and 100% of success rate.",
           "icon": {
             "id": 34,
             "col": 1,
@@ -641,7 +641,7 @@
       },
       {
         "data": {
-          "description": "Melee physical attack that damages 50% of the target's HP,\r\nwith 100% chance. Can only be used with 10% of HP or less.",
+          "description": "Melee physical attack that damages 50% of the target's HP, with 100% chance. Can only be used with 10% of HP or less.",
           "icon": {
             "id": 34,
             "col": 1,

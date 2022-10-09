@@ -11,7 +11,6 @@ ObjectTile graphics for battle interface.
 local TileGraphic = require('core/field/TileGraphic')
 
 -- Alias
-local tile2Pixel = math.field.tile2Pixel
 local min = math.min
 
 local TileGUI = class()
@@ -23,7 +22,7 @@ local TileGUI = class()
 -- Constructor.
 -- @param(tile : ObjectTile) The tile this object belongs to.
 function TileGUI:init(tile, baseAnim, highlightAnim)
-  local x, y, z = tile2Pixel(tile:coordinates())
+  local x, y, z = tile.center:coordinates()
   if baseAnim and Config.animations.tile >= 0 then
     self.baseAnim = TileGraphic(Config.animations.tile, x, y, z)
   end

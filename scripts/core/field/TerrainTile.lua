@@ -43,7 +43,7 @@ function TerrainTile:init(layer, x, y, order, initialID)
   self.order = order
   self.data = Database.terrains[initialID]
   self.moveCost = 0
-  self.center = Vector(math.field.tile2Pixel(self.x, self.y, self.layer.height))
+  self.center = Vector(math.field.tile2Pixel(self:coordinates()))
 end
 -- Gets its grid coordinates.
 -- @ret(number) Tile's grid x.

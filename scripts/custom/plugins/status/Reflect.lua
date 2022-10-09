@@ -22,6 +22,7 @@ skill is reflected.
 local ActionInput = require('core/battle/action/ActionInput')
 local Battler = require('core/battle/battler/Battler')
 local SkillAction = require('core/battle/action/SkillAction')
+local BattleAnimations = require('core/battle/BattleAnimations')
 
 -- Parameters
 local animID = tonumber(args.animID)
@@ -42,11 +43,11 @@ function SkillAction:singleTargetEffect(results, input, targetChar, originTile)
         FieldManager.renderer:moveToTile(targetChar:getTile())
         if animID then
           local x, y, z = targetChar.position:coordinates()
-          BattleManager:playBattleAnimation(animID, x, y, z, false, true)
+          BattleAnimations.playOnField(animID, x, y, z, false, true)
         end
         FieldManager.renderer:moveToTile(input.user:getTile())
         if self.data.castAnimID >= 0 and self.data.individuaAnimlID < 0 then
-          minTime = BattleManager:playBattleAnimation(self.data.castAnimID,
+          minTime = BattleAnimations.playOnField(self.data.castAnimID,
             input.user.position:coordinates()).duration + GameManager.frame
           _G.Fiber:wait(self.centerTime)
         end
