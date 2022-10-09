@@ -248,6 +248,7 @@ function ScreenManager:onResize(w, h)
   self.offsetY = (h - self:totalHeight()) / 2
   ResourceManager:clearFontCache()
   self:refreshRenderers()
+  GameManager:log('Resize :' .. tostring(w) .. ' ' .. tostring(h))
 end
 -- Called when window receives/loses focus.
 -- @param(f : boolean) True if screen received focus, false if lost.

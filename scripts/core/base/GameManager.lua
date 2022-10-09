@@ -31,6 +31,7 @@ function GameManager:init()
   self.mobileMode = maxWidth <= 900
   self.webMode = false
   self.paused = false
+  self.userPaused = false
   self.cleanTime = 300
   self.cleanCount = 0
   self.startedProfi = false
@@ -148,7 +149,8 @@ function GameManager:update(dt)
   end
   -- Update input.
   if InputManager.keys['pause']:isTriggered() then
-    self:setPaused(not self.paused, true, false)
+    self.userPaused = not self.userPaused
+    self:setPaused(self.userPaused, true, false)
   end
   if not InputManager.paused then
     InputManager:update()
@@ -192,9 +194,16 @@ function GameManager:draw()
   if ScreenManager.closed then
     return
   end
+  if self:isMobile() then
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.rectangle('line', 0, 0, love.graphics.getWidth() - 1, love.graphics.getHeight() - 1)
+  end
   ScreenManager:draw()
   --self:printStats()
   --self:printCoordinates()
+  for i = 1, #self.debugMessages do
+    love.graphics.print(self.debugMessages[i], 0, i * Fonts.log[3] * 1.2 * ScreenManager.scaleX)
+  end
   if self.paused then
     love.graphics.setFont(ResourceManager:loadFont(Fonts.pause, ScreenManager.scaleX))
     love.graphics.printf('PAUSED', 0, 0, ScreenManager:totalWidth(), 'right')
@@ -215,13 +224,14 @@ function GameManager:printStats()
   for i = 1, #self.avgStats do
     love.graphics.print(math.ceil(self.avgStats[i] / 60), (i - 1) * 16 * ScreenManager.scaleX + love.graphics.getWidth() / 3, 0)
   end
-  for i = 1, #self.debugMessages do
-    love.graphics.print(self.debugMessages[i], 0, i * Fonts.log[3] * 1.2 * ScreenManager.scaleX)
-  end
 end
--- Logs a string on screen. No more than 10 strings are shown at once.
+-- Logs a string on screen on mobile mode. No more than 30 strings are shown at once.
 -- @param(str : string) Log message.
 function GameManager:log(str)
+  if not self:isMobile() then
+    print(str)
+    return
+  end
   table.insert(self.debugMessages, 1, str)
   if #self.debugMessages > 30 then
     self.debugMessages[31] = nil
@@ -254,6 +264,7 @@ end
 -- @param(audio : boolean) Also affect audio.
 -- @param(input : boolean) Also affect input.
 function GameManager:setPaused(paused, audio, input)
+  paused = paused or self.userPaused
   self.paused = paused
   if audio then
     AudioManager:setPaused(paused)
