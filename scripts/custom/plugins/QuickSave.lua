@@ -26,7 +26,7 @@ KeyMap.main['load'] = args.load
 
 local function popup(msg)
   GUIManager.fiberList:fork(function()
-    local popup = PopupText(ScreenManager.width / 2 - 50, ScreenManager.height / 2)
+    local popup = PopupText(ScreenManager.width / 2 - 50, ScreenManager.height / 2, GUIManager.renderer)
     popup.align = 'right'
     popup:addLine(msg, 'white', 'gui_default')
     popup:popup()

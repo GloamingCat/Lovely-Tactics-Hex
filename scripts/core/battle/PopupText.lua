@@ -28,17 +28,17 @@ local PopupText = class()
 -- @param(x : number) origin pixel x
 -- @param(y : number) origin pixel y
 -- @param(z : number) origin pixel z (depth)
-function PopupText:init(x, y, z, renderer)
+function PopupText:init(x, y, renderer)
   self.x = x
   self.y = y
-  self.z = z
+  self.z = renderer.minDepth
   self.text = nil
   self.lineCount = 0
   self.resources = {}
   self.width = 100
   self.align = 'center'
   self.font = nil
-  self.renderer = renderer or GUIManager.renderer
+  self.renderer = renderer
 end
 
 ---------------------------------------------------------------------------------------------------

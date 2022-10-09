@@ -142,8 +142,7 @@ end
 -- @param(pos : Vector) the character's position
 -- @param(results : table) the array of effect results
 function Battler:popupResults(pos, results, character)
-  local x, y = ScreenManager:world2Screen(FieldManager.renderer, pos.x, pos.y - 10)
-  local popupText = PopupText(ScreenManager:screen2World(GUIManager.renderer, x, y))
+  local popupText = PopupText(pos.x, pos.y - 10, FieldManager.renderer)
   for i = 1, #results.points do
     local points = results.points[i]
     if points.heal then
