@@ -24,7 +24,7 @@ local PartyWindow = class(ListWindow)
 -- Gets the member list from the troop.
 -- @param(troop : Troop)
 function PartyWindow:init(gui, troop)
-  self.visibleRowCount = 4
+  self.visibleRowCount = GameManager:isMobile() and 3 or 4
   local list = troop:visibleBattlers()
   self.troop = troop
   ListWindow.init(self, gui, list)

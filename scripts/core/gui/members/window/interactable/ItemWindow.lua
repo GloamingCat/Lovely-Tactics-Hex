@@ -76,6 +76,14 @@ end
 -- Properties
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides GridWindow:colCount.
+function ItemWindow:colCount()
+  return 1
+end
+-- Overrides ListWindow:cellWidth.
+function ItemWindow:cellWidth()
+  return 200
+end
 -- @ret(string) String representation (for debugging).
 function ItemWindow:__tostring()
   return 'Menu Item Window'

@@ -21,7 +21,7 @@ local SaveWindow = class(GridWindow)
 
 function SaveWindow:init(...)
   GridWindow.init(self, ...)
-  self.confirmWindow = ConfirmWindow(self.GUI, Vocab.overwrite)
+  self.confirmWindow = ConfirmWindow(self.GUI, 'overwrite')
   self.confirmWindow:setXYZ(0, 0, -50)
   self.confirmWindow:setVisible(false)
   local button = self.confirmWindow.matrix[1]

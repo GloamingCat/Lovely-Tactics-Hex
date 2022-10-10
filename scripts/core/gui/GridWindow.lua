@@ -536,7 +536,7 @@ function GridWindow:cellWidth()
 end
 -- @ret(number) The height of a cell in pixels.
 function GridWindow:cellHeight()
-  return 18
+  return GameManager:isMobile() and 22 or 18
 end
 -- @ret(number) The space between columns in pixels.
 function GridWindow:colMargin()

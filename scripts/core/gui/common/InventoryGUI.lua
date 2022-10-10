@@ -34,7 +34,7 @@ function InventoryGUI:createWindows()
 end
 -- Creates the main item window.
 function InventoryGUI:createItemWindow()
-  local window = ItemWindow(self, 6, self.troop.inventory)
+  local window = ItemWindow(self, GameManager:isMobile() and 5 or 6, self.troop.inventory)
   window:setXYZ(nil, -ScreenManager.height / 2 + window.height / 2 + self:windowMargin())
   self.mainWindow = window
 end

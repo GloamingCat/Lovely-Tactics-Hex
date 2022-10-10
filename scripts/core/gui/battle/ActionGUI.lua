@@ -45,7 +45,7 @@ end
 -- Creates the GUI's windows and sets the first active window.
 function ActionGUI:createConfirmWindow()
   if not self.buttonWindow then
-    local window = ConfirmWindow(self, Vocab.confirmTile, Vocab.cancel)
+    local window = ConfirmWindow(self, 'confirmTile', 'cancelTile')
     self.buttonWindow = window
     local x = -ScreenManager.width / 2 + window.width / 2 + self.slideMargin
     local y = -ScreenManager.height / 2 + window.height / 2 + self.slideMargin

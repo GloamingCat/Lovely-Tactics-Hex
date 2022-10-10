@@ -87,7 +87,8 @@
   "skill": "Skill",
   "callAlly": "Call Ally",
   "wait": "Wait",
-  "confirmTile": "Confirm Tile",
+  "confirmTile": "Select",
+  "cancelTile": "Return",
   
   // Keys
   "confirm": "Confirm",
@@ -116,6 +117,7 @@
   // General
   "ok": "OK",
   "return": "Return",
+  "select": "Select",
   "yes": "Yes",
   "no": "No",
   

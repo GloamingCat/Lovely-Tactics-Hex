@@ -17,10 +17,10 @@ local ConfirmGUI = class(GUI)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
-function ConfirmGUI:init(confirmTerm, cancelTerm, ...)
+function ConfirmGUI:init(parent, confirmTerm, cancelTerm, ...)
   self.confirmTerm = confirmTerm
   self.cancelTerm = cancelTerm
-  GUI.init(self, ...)
+  GUI.init(self, parent, ...)
 end
 -- Overrides GUI:createWindow.
 function ConfirmGUI:createWindows()
