@@ -34,7 +34,7 @@ function GameMouse:init()
   self.hideTime = not GameManager:isMobile() and 2 or math.huge
   self.position = Vector(0, 0)
   self.lastMove = 0
-  self.active = false
+  self.active = GameManager:isMobile()
   self.buttons = {}
 end
 
