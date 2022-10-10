@@ -60,9 +60,9 @@ function WindowCursor:updatePosition(wpos)
   end
 end
 -- Shows sprite.
-function WindowCursor:show()
+function WindowCursor:setVisible(value)
   local active = not self.hideOnDeactive or self.window.active
-  self.anim.sprite:setVisible(active and #self.window.matrix > 0 and InputManager:hasKeyboard())
+  Component.setVisible(self, value and active and #self.window.matrix > 0)
 end
 
 return WindowCursor

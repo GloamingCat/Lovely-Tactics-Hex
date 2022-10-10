@@ -19,6 +19,12 @@
   },
   {
     "on": true,
+    "name": "plugins/gui/HideCursorOnMobile.lua",
+    "tags": [],
+    "key": ""
+  },
+  {
+    "on": true,
     "name": "plugins/Tutorial.lua",
     "tags": [
       {
