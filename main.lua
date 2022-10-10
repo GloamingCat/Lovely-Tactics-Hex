@@ -40,17 +40,25 @@ end
 
 -- Callback function triggered when window receives or loses focus.
 -- @param(f : boolean) True if received focus, false if lost focus.
+function love.visible(v)
+  GameManager:log('on visible ' .. tostring(v))
+end
+-- Callback function triggered when window receives or loses focus.
+-- @param(f : boolean) True if received focus, false if lost focus.
 function love.focus(f)
+  GameManager:log('on focus ' .. tostring(f))
   ScreenManager:onFocus(f)
 end
 -- Callback function triggered when player resizes the window.
 -- @param(w : number) New window width.
 -- @param(h : number) New window height.
 function love.resize(w, h)
+  GameManager:log('on resize ' .. tostring(w) .. ' ' .. tostring(h))
   ScreenManager:onResize(w, h)
 end
 -- Callback function triggered when the device is rotated (for mobile).
 function love.displayrotated(index, orientation)
+  GameManager:log('on rotate ' .. tostring(orientation))
   ScreenManager:onResize(love.graphics.getDimensions())
 end
 

@@ -198,7 +198,8 @@ function GameManager:draw()
   --self:printStats()
   --self:printCoordinates()
   for i = 1, #self.debugMessages do
-    love.graphics.print(self.debugMessages[i], 0, i * Fonts.log[3] * 1.2 * ScreenManager.scaleX)
+    love.graphics.print(self.debugMessages[i], 0, 
+      love.graphics.getHeight() - i * Fonts.log[3] * 1.2 * ScreenManager.scaleY)
   end
   if self.paused then
     love.graphics.setFont(ResourceManager:loadFont(Fonts.pause, ScreenManager.scaleX))
@@ -218,17 +219,17 @@ function GameManager:printStats()
   self:updateGStats()
   love.graphics.setFont(ResourceManager:loadFont(Fonts.log, ScreenManager.scaleX))
   for i = 1, #self.avgStats do
-    love.graphics.print(math.ceil(self.avgStats[i] / 60), (i - 1) * 16 * ScreenManager.scaleX + love.graphics.getWidth() / 3, 0)
+    love.graphics.print(math.ceil(self.avgStats[i] / 60), (i - 1) * 16 * ScreenManager.scaleX, 0)
   end
 end
 -- Logs a string on screen on mobile mode. No more than 30 strings are shown at once.
 -- @param(str : string) Log message.
 function GameManager:log(str)
+  print(str)
   if not self:isMobile() then
-    print(str)
     return
   end
-  table.insert(self.debugMessages, 1, str)
+  --table.insert(self.debugMessages, 1, str)
   if #self.debugMessages > 30 then
     self.debugMessages[31] = nil
   end

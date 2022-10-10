@@ -241,13 +241,15 @@ end
 -- @param(w : number) New window width in pixels.
 -- @param(h : number) New window height in pixels.
 function ScreenManager:onResize(w, h)
-  local scaleX = w / self.width
-  local scaleY = h / self.height
-  self:setScale(scaleX, scaleY)
-  self.offsetX = (w - self:totalWidth()) / 2
-  self.offsetY = (h - self:totalHeight()) / 2
-  ResourceManager:clearFontCache()
-  self:refreshRenderers()
+  if w > 0 and h > 0 then
+    local scaleX = w / self.width
+    local scaleY = h / self.height
+    self:setScale(scaleX, scaleY)
+    self.offsetX = (w - self:totalWidth()) / 2
+    self.offsetY = (h - self:totalHeight()) / 2
+    ResourceManager:clearFontCache()
+    self:refreshRenderers()
+  end
 end
 -- Called when window receives/loses focus.
 -- @param(f : boolean) True if screen received focus, false if lost.
