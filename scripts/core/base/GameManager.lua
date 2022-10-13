@@ -63,6 +63,7 @@ end
 function GameManager:start()
   print('Mobile: ' .. tostring(self:isMobile()))
   print('Web: ' .. tostring(self:isWeb()))
+  self.playTime = nil
   if self.editor then
     EditorManager:start()
   else
@@ -310,20 +311,19 @@ end
 
 -- Restarts the game from the TitleGUI.
 function GameManager:restart()
-  self.restartRequested = false
   ScreenManager:clear()
   FieldManager = require('core/field/FieldManager')()
   GUIManager = require('core/gui/GUIManager')()
   BattleManager = require('core/battle/BattleManager')()
   ScreenManager:refreshRenderers()
   self:start()
+  self.restartRequested = false
 end
--- Closes game.
-function GameManager:quit(force)
+-- Closes game from internal game functions.
+function GameManager:quit()
   if _G.Fiber then
     _G.Fiber:wait(15)
   end
-  self.forceQuit = force
   love.event.quit()
 end
 -- Called when player closes the window.

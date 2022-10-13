@@ -103,7 +103,7 @@ function SaveWindow:colCount()
 end
 -- Overrides GridWindow:rowCount.
 function SaveWindow:rowCount()
-  return math.min(SaveManager.maxSaves, 4)
+  return math.min(SaveManager.maxSaves, GameManager:isMobile() and 3 or 4)
 end
 -- Overrides ListWindow:cellWidth.
 function SaveWindow:cellWidth()

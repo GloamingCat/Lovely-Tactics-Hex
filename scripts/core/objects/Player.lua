@@ -234,7 +234,9 @@ function Player:openGUI()
   FieldManager.playerInput = false
   AudioManager:playSFX(Config.sounds.menu)
   FieldManager.hud:hide()
-  GUIManager:showGUIForResult(FieldGUI(nil))
+  self.openMenu = FieldGUI(nil)
+  GUIManager:showGUIForResult(self.openMenu)
+  self.openMenu = nil
   FieldManager.hud:show()
   FieldManager.playerInput = true
 end

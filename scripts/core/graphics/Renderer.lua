@@ -15,6 +15,8 @@ local Transformable = require('core/math/transform/Transformable')
 -- Alias
 local lgraphics = love.graphics
 local round = math.round
+local getShader = love.graphics.getShader
+local setShader = love.graphics.setShader
 
 -- Constants
 local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
@@ -33,6 +35,8 @@ local Renderer = class(Transformable)
 -- @param(batchSize : number) Max number of sprites.
 function Renderer:init(minDepth, maxDepth, batchSize)
   Transformable.init(self)
+  self.spriteShader = spriteShader
+  self.blankTexture = blankTexture
   self.minDepth = minDepth
   self.maxDepth = maxDepth
   self.batchSize = batchSize
@@ -112,8 +116,8 @@ function Renderer:draw()
   local r, g, b, a = lgraphics.getColor()
   lgraphics.setShader()
   lgraphics.setColor(self:getRGBA())
-  if spriteShader then
-    spriteShader:send('phsv', {self:getHSV()})
+  if self.spriteShader then
+    self.spriteShader:send('phsv', {self:getHSV()})
   end
   lgraphics.draw(self.canvas, 0, 0)
   lgraphics.setColor(r, g, b, a)
@@ -137,7 +141,7 @@ function Renderer:redrawCanvas()
   local ty = -self.position.y + oy * 2 / sy
   lgraphics.translate(round(tx * sx), round(ty * sy))
   lgraphics.clear()
-  lgraphics.setShader(spriteShader)
+  lgraphics.setShader(self.spriteShader)
   local w, h = ScreenManager.width * self.scaleX / 2, ScreenManager.height * self.scaleY / 2
   self.minx, self.maxx = self.position.x - w, self.position.x + w
   self.miny, self.maxy = self.position.y - h, self.position.y + h
@@ -214,8 +218,15 @@ end
 -- Draws current and clears.
 function Renderer:clearBatch()
   if self.batch and self.toDraw.size > 0 then
-    if spriteShader then
-      spriteShader:send('phsv', self.batchHSV)
+    if self.batchHSV[1] == 0 and self.batchHSV[2] == 1 and self.batchHSV[3] == 1 then
+      if getShader() == self.spriteShader then
+        setShader(nil)
+      end
+    elseif self.spriteShader then
+      if getShader() ~= self.spriteShader then
+        setShader(self.spriteShader)
+      end
+      self.spriteShader:send('phsv', self.batchHSV)
     end
     self.batch:setTexture(self.batchTexture)
     lgraphics.draw(self.batch)

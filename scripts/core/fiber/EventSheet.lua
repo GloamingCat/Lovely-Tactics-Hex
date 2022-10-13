@@ -94,15 +94,19 @@ function EventSheet:runEvents()
   self.vars.runningIndex = self.vars.runningIndex or 0
   while self.vars.runningIndex < #self.events do
     self.vars.runningIndex = self.vars.runningIndex + 1
-    local event = self.events[self.vars.runningIndex]
-    if not event.condition or event.condition(self) then
-      event.execute(self, unpack(event.args))
-    end
+    self:runCurrentEvent()
     if not self:running() or not self.vars.runningIndex then
       return
     end
   end
   self.vars.runningIndex = nil
+end
+-- Executes the event indicated by the current running index.
+function EventSheet:runCurrentEvent()
+  local event = self.events[self.vars.runningIndex]
+  if not event.condition or event.condition(self) then
+    event.execute(self, unpack(event.args))
+  end
 end
 -- Sets any variable needed to indicate that this script is running.
 function EventSheet:setUp()
