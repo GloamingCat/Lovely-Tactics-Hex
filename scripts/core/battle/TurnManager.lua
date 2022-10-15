@@ -103,7 +103,7 @@ end
 -- [COROUTINE] Executes turn and returns when the turn finishes.
 -- @ret(number) Result code (nil if battle is still running).
 -- @ret(number) The party that won or escaped (nil if battle is still running).
-function TurnManager:runTurn()
+function TurnManager:runTurn(skipStart)
   local winner = TroopManager:winnerParty()
   if winner then
     if winner == TroopManager.playerParty then
@@ -117,7 +117,7 @@ function TurnManager:runTurn()
       return -1, winner
     end
   end
-  self:startTurn()
+  self:startTurn(skipStart)
   if not self:hasActiveCharacters() then
     return
   end
@@ -201,20 +201,22 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Prepares for turn.
-function TurnManager:startTurn()
+function TurnManager:startTurn(skipStart)
   while #self.turnCharacters == 0 do
     self:nextParty()
   end 
   self.pathMatrixes = {}
-  self.initialTurnCharacters = {}
+  if not skipStart then
+    self.initialTurnCharacters = {}
+  end
   for i = 1, #self.turnCharacters do
     local char = self.turnCharacters[i]
     self.initialTurnCharacters[char.key] = true
-    char:onTurnStart(true)
+    char.battler:onTurnStart(char, skipStart)
   end
   for char in TroopManager.characterList:iterator() do
     if not self.initialTurnCharacters[char.key] then
-      char:onTurnStart(false)
+      char.battler:onTurnStart(char, skipStart)
     end
   end
 end
@@ -222,7 +224,7 @@ end
 -- @param(char : Character) the character of the turn
 function TurnManager:endTurn(result)
   for char in TroopManager.characterList:iterator() do
-    char:onTurnEnd(self.initialTurnCharacters[char.key])
+    char.battler:onTurnEnd(char)
   end
 end
 -- Gets the next party.
@@ -244,7 +246,7 @@ end
 -- Called when a character is selected so it's their turn.
 function TurnManager:characterTurnStart()
   local char = self:currentCharacter()
-  char:onSelfTurnStart()
+  char.battler:onSelfTurnStart(char)
   self:updatePathMatrix()
   FieldManager.renderer:moveToObject(char, nil, true)
 end
@@ -252,7 +254,7 @@ end
 -- @param(result : table) the action result returned by the BattleAction (or wait)
 function TurnManager:characterTurnEnd(result)
   local char = self:currentCharacter()
-  char:onSelfTurnEnd(result)
+  char.battler:onSelfTurnEnd(char, result)
   table.remove(self.turnCharacters, self.characterIndex)
   if self.characterIndex > #self.turnCharacters then
     self.characterIndex = 1

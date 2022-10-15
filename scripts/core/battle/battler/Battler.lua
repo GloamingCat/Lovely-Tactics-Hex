@@ -93,6 +93,7 @@ function Battler:initState(data, save)
     self.state.sp = math.huge
   end
   self:refreshState()
+  self.steps = save and save.steps or self.maxSteps()
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -268,6 +269,44 @@ function Battler:onBattleEnd(char)
 end
 
 ---------------------------------------------------------------------------------------------------
+-- Turn callbacks
+---------------------------------------------------------------------------------------------------
+
+-- Callback for when a new turn begins.
+-- @param(char : Character) This battler's character.
+-- @param(skipStart : boolean) Skip persistent turn start effects (when loaded from save).
+function Battler:onTurnStart(char, skipStart)
+  local AI = self:getAI()
+  if AI and AI.onTurnStart then
+    AI:onTurnStart(char, skipStart)
+  end
+  self.statusList:onTurnStart(char, skipStart)
+  if not skipStart then
+    if TurnManager.initialTurnCharacters[char.key] then
+      self.steps = self.maxSteps()
+    else
+      self.steps = 0
+    end
+  end
+end
+-- Callback for when a turn ends.
+function Battler:onTurnEnd(char)
+  local AI = self:getAI()
+  if AI and AI.onTurnEnd then
+    AI:onTurnEnd(char)
+  end
+  self.statusList:callback('TurnEnd', char)
+end
+-- Callback for when this battler's turn starts.
+function Battler:onSelfTurnStart(char)
+  self.statusList:callback('SelfTurnStart', char)
+end
+-- Callback for when this battler's turn ends.
+function Battler:onSelfTurnEnd(char, result)
+  self.statusList:callback('SelfTurnEnd', char, result)
+end
+
+---------------------------------------------------------------------------------------------------
 -- Skill callbacks
 ---------------------------------------------------------------------------------------------------
 
@@ -282,6 +321,41 @@ end
 -- Callback for when the character received a skill effect.
 function Battler:onSkillResult(input, results, character)
   self.statusList:callback('SkillResult', input, results, character)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Move callbacks
+---------------------------------------------------------------------------------------------------
+
+-- Callback for when the character moves.
+-- @param(path : Path) The path that the battler just walked.
+function Battler:onMove(char, path)
+  self.steps = math.floor(self.steps - path.totalCost)
+  self.statusList:callback('Move', char, path)
+end
+-- Callback for when the character enters the given tiles.
+-- Adds terrain status.
+-- @param(tiles : table) Array of terrain tiles.
+function Battler:onTerrainEnter(char, tiles)
+  for t = 1, #tiles do
+    local data = FieldManager.currentField:getTerrainStatus(tiles[t]:coordinates())
+    for s = 1, #data do
+      self.statusList:addStatus(data[s].statusID, nil, char)
+    end
+  end
+end
+-- Callback for when the character exits the given tiles.
+-- Removes terrain status.
+-- @param(tiles : table) Array of terrain tiles.
+function Battler:onTerrainExit(char, tiles)
+  for i = 1, #tiles do
+    local data = FieldManager.currentField:getTerrainStatus(tiles[i]:coordinates())
+    for s = 1, #data do
+      if data[s].removeOnExit then
+        self.statusList:removeStatus(data[s].statusID, char)
+      end
+    end
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -313,7 +387,8 @@ function Battler:getState(list, x, y)
     job = self.job:getState(),
     equips = self.equipSet:getState(),
     status = self.statusList:getState(),
-    skills = self.skillList:getState()
+    skills = self.skillList:getState(),
+    steps = self.steps
   }
 end
 

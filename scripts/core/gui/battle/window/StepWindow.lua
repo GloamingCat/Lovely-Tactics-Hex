@@ -29,7 +29,7 @@ end
 -- Creates step text.
 function StepWindow:createContent(width, height)
   Window.createContent(self, width, height)
-  local steps = TurnManager:currentCharacter().steps
+  local steps = TurnManager:currentCharacter().battler.steps
   local w = self.width - self:paddingX() * 2
   local h = self.height - self:paddingY() * 2
   local pos = Vector(self:paddingX() - self.width / 2, self:paddingY() - self.height / 2)

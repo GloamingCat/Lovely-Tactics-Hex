@@ -96,7 +96,8 @@ function BattleManager:runBattle(skipIntro)
     TroopManager:onBattleStart()
   end
   repeat
-    self.result, self.winner = TurnManager:runTurn()
+    self.result, self.winner = TurnManager:runTurn(skipIntro)
+    skipIntro = false
   until self.result
   return self:battleEnd()
 end

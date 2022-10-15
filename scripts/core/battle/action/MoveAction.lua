@@ -57,12 +57,7 @@ function MoveAction:execute(input)
     end
     while not stack:isEmpty() do
       local nextTile = stack:pop()
-      local x, y, h = nextTile:coordinates()
-      input.user:turnToTile(x, y)
-      input.user:onTerrainExit(tiles)
-      input.user:walkToTile(x, y, h)
-      tiles = input.user:getAllTiles()
-      input.user:onTerrainEnter(tiles)
+      self:moveToTile(input, nextTile)
     end
     input.user:moveToTile(path.lastStep)
     input.user:addToTiles()
@@ -71,6 +66,12 @@ function MoveAction:execute(input)
     end
   end
   return { executed = fullPath, path = path }
+end
+-- @param(nextTile : ObjectTile) Next tile in the path sequence.
+function MoveAction:moveToTile(input, nextTile)
+  local x, y, h = nextTile:coordinates()
+  input.user:turnToTile(x, y)
+  input.user:walkToTile(x, y, h)
 end
 -- @ret(Path) Path to input target, if any.
 -- @ret(boolean) True if the whole path may be walked, false otherwise.

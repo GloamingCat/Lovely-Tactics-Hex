@@ -34,7 +34,7 @@ local function killAll(party)
 end
 -- Override. Check lose and win keys.
 local TurnManager_runTurn = TurnManager.runTurn
-function TurnManager:runTurn()
+function TurnManager:runTurn(...)
   local enemyParty = #TroopManager.troops - TroopManager.playerParty
   if InputManager.keys['win']:isPressing() and InputManager.keys['lose']:isPressing() then
     killAll(TroopManager.playerParty)
@@ -47,6 +47,6 @@ function TurnManager:runTurn()
     killAll(enemyParty)
     return -1, enemyParty
   else
-   return TurnManager_runTurn(self)
+   return TurnManager_runTurn(self, ...)
   end
 end

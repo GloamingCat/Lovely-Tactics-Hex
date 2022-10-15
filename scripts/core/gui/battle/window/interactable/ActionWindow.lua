@@ -72,12 +72,12 @@ end
 -- Move condition. Enabled if there are any tiles for the character to move to.
 function ActionWindow:moveEnabled()
   local user = TurnManager:currentCharacter()
-  if user.steps < 1 then
+  if user.battler.steps < 1 then
     return false
   end
   local userTile = user:getTile()
   for path in TurnManager:pathMatrix():iterator() do
-    if path and path.lastStep ~= userTile and path.totalCost <= user.steps + 0.001 then
+    if path and path.lastStep ~= userTile and path.totalCost <= user.battler.steps + 0.001 then
       return true
     end
   end

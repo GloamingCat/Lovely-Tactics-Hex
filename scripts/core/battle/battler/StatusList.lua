@@ -296,7 +296,6 @@ function StatusList:onTurnStart(char, ...)
   local i = 1
   while i <= self.size do
     local status = self[i]
-    status.lifeTime = status.lifeTime + 1
     status:onTurnStart(char, ...)
     if status.lifeTime > status.duration then
       self:removeStatus(status, char)

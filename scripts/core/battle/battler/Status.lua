@@ -147,10 +147,13 @@ end
 
 -- Removes status in case its lifetime is over.
 -- @param(character : Character) Character with this status.
--- @param(partyTurn : boolean) True if it's the first turn of the whole party.
-function Status:onTurnStart(character, partyTurn)
-  if partyTurn and self.data.drainAtt ~= '' then
-    self:drain(character)
+-- @param(skipStart : boolean) Skip persistent turn start effects (when loaded from save).
+function Status:onTurnStart(char, skipStart)
+  if not skipStart then
+    self.lifeTime = self.lifeTime + 1
+    if TurnManager.initialTurnCharacters[char.key] and self.data.drainAtt ~= '' then
+      self:drain(char)
+    end
   end
 end
 

@@ -116,11 +116,15 @@ function Character:applyTileMovement(tile)
     end
     local dx, dy, dh = tile:coordinates()
     local previousTiles = self:getAllTiles()
-    self:onTerrainExit(previousTiles)
+    if self.battler then
+      self.battler:onTerrainExit(self, previousTiles)
+    end
     self:removeFromTiles(previousTiles)
     self:addToTiles(self:getAllTiles(dx, dy, dh))
     self:walkToTile(dx, dy, dh)
-    self:onTerrainEnter(self:getAllTiles())
+    if self.battler then
+      self.battler:onTerrainEnter(self, self:getAllTiles())
+    end
     self:collideTile(tile)
     return true
   end
@@ -230,79 +234,6 @@ function Character:damage(skill, origin, results)
     self:playAnimation(self.idleAnim)
   else
     self:playKOAnimation()
-  end
-end
-
----------------------------------------------------------------------------------------------------
--- Turn callbacks
----------------------------------------------------------------------------------------------------
-
--- Callback for when a new turn begins.
-function Character:onTurnStart(partyTurn)
-  local AI = self.battler:getAI()
-  if AI and AI.onTurnStart then
-    AI:onTurnStart(partyTurn)
-  end
-  self.battler.statusList:onTurnStart(self, partyTurn)
-  if partyTurn then
-    self.steps = self.battler.maxSteps()
-  else
-    self.steps = 0
-  end
-end
--- Callback for when a turn ends.
-function Character:onTurnEnd(partyTurn)
-  local AI = self.battler:getAI()
-  if AI and AI.onTurnEnd then
-    AI:onTurnEnd(partyTurn)
-  end
-  self.battler.statusList:callback('TurnEnd', self, partyTurn)
-end
--- Callback for when this battler's turn starts.
-function Character:onSelfTurnStart()
-  self.battler.statusList:callback('SelfTurnStart', self)
-end
--- Callback for when this battler's turn ends.
-function Character:onSelfTurnEnd(result)
-  self.battler.statusList:callback('SelfTurnEnd', self, result)
-end
-
----------------------------------------------------------------------------------------------------
--- Other callbacks
----------------------------------------------------------------------------------------------------
-
--- Callback for when the character moves.
--- @param(path : Path) The path that the battler just walked.
-function Character:onMove(path)
-  self.steps = math.floor(self.steps - path.totalCost)
-  self.battler.statusList:callback('Move', self, path)
-end
--- Callback for when the character enters the given tiles.
--- Adds terrain status.
--- @param(tiles : table) Array of terrain tiles.
-function Character:onTerrainEnter(tiles)
-  if self.battler then
-    for t = 1, #tiles do
-      local data = FieldManager.currentField:getTerrainStatus(tiles[t]:coordinates())
-      for s = 1, #data do
-        self.battler.statusList:addStatus(data[s].statusID, nil, self)
-      end
-    end
-  end
-end
--- Callback for when the character exits the given tiles.
--- Removes terrain status.
--- @param(tiles : table) Array of terrain tiles.
-function Character:onTerrainExit(tiles)
-  if self.battler then
-    for i = 1, #tiles do
-      local data = FieldManager.currentField:getTerrainStatus(tiles[i]:coordinates())
-      for s = 1, #data do
-        if data[s].removeOnExit then
-          self.battler.statusList:removeStatus(data[s].statusID, self)
-        end
-      end
-    end
   end
 end
 

@@ -38,9 +38,16 @@ function BattleMoveAction:execute(input)
   FieldManager.renderer:moveToObject(input.user, nil, true)
   FieldManager.renderer.focusObject = input.user
   local result = MoveAction.execute(self, input)
-  input.user:onMove(result.path)
+  input.user.battler:onMove(input.user, result.path)
   TurnManager:updatePathMatrix()
   return result
+end
+-- Overrides MoveAction:moveToTile.
+function BattleMoveAction:moveToTile(input, nextTile)
+  local previousTiles = input.user:getAllTiles()
+  input.user.battler:onTerrainExit(input.user, previousTiles)
+  MoveAction.moveToTile(self, input, nextTile)
+  input.user.battler:onTerrainEnter(input.user, input.user:getAllTiles())
 end
 -- Overrides MoveAction:calculatePath.
 function BattleMoveAction:calculatePath(input)
@@ -105,9 +112,9 @@ end
 -- The max distance the character can walk.
 -- @ret(number) The distance in tiles (may not be integer).
 function BattleMoveAction:maxDistance(user)
-  return user.steps or self.pathLimit
+  return user.battler.steps or self.pathLimit
 end
-
+-- @ret(string) String representation for debugging.
 function BattleMoveAction:toString()
   if self:isRanged() then
     return "BattleMoveAction ranged"
