@@ -150,3 +150,19 @@ function love.touchmoved(id, x, y)
     InputManager:onMouseMove(x, y, true)
   end
 end
+
+---------------------------------------------------------------------------------------------------
+-- Joystick input
+---------------------------------------------------------------------------------------------------
+
+function love.gamepadpressed(joystick, button)
+  InputManager:onPress(button)
+end
+
+function love.gamepadreleased(joystick, button)
+  InputManager:onRelease(button)
+end
+
+function love.gamepadaxis(joystick, axis, value)
+  InputManager:onAxisMove(axis, value)
+end

@@ -18,6 +18,7 @@ local setTextInput = love.keyboard.setTextInput
 -- Constants
 local arrows = { 'up', 'left', 'down', 'right' }
 local wasd = { 'w', 'a', 's', 'd' }
+local dpad = { 'dpup', 'dpleft', 'dpdown', 'dpright' }
 local textControl = { 
   ['return'] = true,
   up = true, left = true, down = true, right = true 
@@ -51,6 +52,10 @@ function InputManager:init()
     self.keys['mouse' .. i] = GameKey()
   end
   self.keys.touch = GameKey()
+  self.stick = GameKey()
+  self.stick.x = 0
+  self.stick.y = 0
+  self.stick.threshold = 0.2
 end
 -- Sets axis keys.
 -- @param(useWASD : boolean)
@@ -60,22 +65,29 @@ function InputManager:setArrowMap(useWASD)
   local keys = useWASD and wasd or arrows
   for i, v in ipairs (arrows) do
     self.arrowMap[keys[i]] = v
+    self.arrowMap[dpad[i]] = v
     self.keys[v]:onRelease()
   end
 end
 -- Sets keys codes for each game key.
 -- @param(map : table) Key map with main and alt tables.
 function InputManager:setKeyMap(map)
-  self.mainMap = map.main
-  self.altMap = map.alt
+  self.mainMap = map.main or KeyMap.main
+  self.altMap = map.alt or KeyMap.alt
+  self.gamepadMap = map.gamepad or KeyMap.gamepad
   self.keyMap = {}
-  for k, v in pairs(map.main) do
+  for k, v in pairs(self.mainMap) do
     if self.keys[k] then
       self.keyMap[v] = k
       self.keys[k]:onRelease()
     end
   end
-  for k, v in pairs(map.alt) do
+  for k, v in pairs(self.altMap) do
+    if self.keys[k] then
+      self.keyMap[v] = k
+    end
+  end
+  for k, v in pairs(self.gamepadMap) do
     if self.keys[k] then
       self.keyMap[v] = k
     end
@@ -100,6 +112,7 @@ function InputManager:update()
     key:update()
   end
   self.mouse:update()
+  self.stick:update()
   self.lastKey = nil
   self.textInput = nil
 end
@@ -115,6 +128,11 @@ end
 -- Converts boolean key buttons to axis in [-1, 1].
 -- @ret(number) the x-axis value
 function InputManager:axisX(startGap, repeatGap, delay)
+  if self.stick:isPressing() then
+    if self.stick:isPressingGap(startGap, repeatGap, delay) then
+      return self.stick.x
+    end
+  end
   if self.keys['left']:isPressingGap(startGap, repeatGap, delay)  then
     if self.keys['right']:isPressingGap(startGap, repeatGap, delay) then
       return 0
@@ -132,6 +150,11 @@ end
 -- Converts boolean key buttons to axis in [-1, 1].
 -- @ret(number) the y-axis value
 function InputManager:axisY(startGap, repeatGap, delay)
+  if self.stick:isPressing() then
+    if self.stick:isPressingGap(startGap, repeatGap, delay) then
+      return self.stick.y
+    end
+  end
   if self.keys['up']:isPressingGap(startGap, repeatGap, delay) then
     if self.keys['down']:isPressingGap(startGap, repeatGap, delay) then
       return 0
@@ -156,6 +179,17 @@ end
 -- @ret(number) the x-axis value
 -- @ret(number) the y-axis value
 function InputManager:ortAxis(startGap, repeatGap, delay)
+  if self.stick:isPressing() then
+    if self.stick:isPressingGap(startGap, repeatGap, delay) then
+      if math.abs(self.stick.x) > math.abs(self.stick.y) then
+        return math.sign(self.stick.x), 0
+      else
+        return 0, math.sign(self.stick.y)
+      end
+    else
+      return 0, 0
+    end
+  end
   local x = self:axisX(startGap, repeatGap, delay)
   local y = self:axisY(startGap, repeatGap, delay)
   if x ~= 0 and y ~= 0 then
@@ -281,6 +315,32 @@ end
 function InputManager:onMouseMove(x, y, touch)
   if touch or self.mouseEnabled and not GameManager:isMobile() or self.keys['touch']:isPressing() then
     self.mouse:onMove(x, y)
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Joystick / Gamepad
+---------------------------------------------------------------------------------------------------
+
+-- Called when the axis value changes.
+-- @param(axis : string) Axis that changed.
+-- @param(value : number) New value.
+function InputManager:onAxisMove(axis, value)
+  if axis == 'leftx' then
+    self.stick.x = value
+  elseif axis == 'lefty' then
+    self.stick.y = value
+  else
+    return
+  end
+  if math.abs(self.stick.x) < self.stick.threshold and math.abs(self.stick.y) < self.stick.threshold then
+    if self.stick:isPressing() then
+      self.stick:onRelease()
+    end
+  else
+    if not self.stick:isPressing() then
+      self.stick:onPress()
+    end
   end
 end
 

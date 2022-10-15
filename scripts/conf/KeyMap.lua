@@ -26,4 +26,13 @@ local alt = {
   next = 'e'
 }
 
-return { main = main, alt = alt }
+local gamepad = {
+  confirm = 'a',
+  cancel = 'y',
+  pause = 'start',
+  dash = 'b',
+  prev = 'leftshoulder',
+  next = 'rightshoulder'
+}
+
+return { main = main, alt = alt, gamepad = gamepad }

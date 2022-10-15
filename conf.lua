@@ -42,7 +42,7 @@ function love.conf(t)
   t.window.resizable = true
   t.window.usedpiscale = false
   t.window.vsync = false
-  t.modules.joystick = false
+  t.modules.joystick = true
   t.modules.physics = false
   t.window.minwidth = Config.screen.nativeWidth
   t.window.minheight = Config.screen.nativeHeight
