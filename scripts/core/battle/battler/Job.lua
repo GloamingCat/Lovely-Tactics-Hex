@@ -89,10 +89,14 @@ end
 -- @ret(number) Current EXP progress.
 -- @ret(number) The total EXP needed from the current level to the next.
 function Job:nextLevelEXP()
+  if self.level == Config.battle.maxLevel then
+    local expMax = self.expCurve(self.level) - self.expCurve(self.level - 1)
+    return expMax, expMax
+  end
   local expCurrent = self.expCurve(self.level)
   local expNext = self.expCurve(self.level + 1)
   local expMax = expNext - expCurrent
-  local exp = self.level == Config.battle.maxLevel and expMax or self.exp - expCurrent
+  local exp = self.exp - expCurrent
   return exp, expMax
 end
 
