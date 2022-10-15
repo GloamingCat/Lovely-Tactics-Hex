@@ -287,6 +287,9 @@ function GameManager:currentPlayTime()
   if not SaveManager.loadTime then
     return 0
   end
+  if not self.playTime then
+    return nil
+  end
   return self.playTime + (now() - SaveManager.loadTime)
 end
 -- Duration of the last frame.
