@@ -85,7 +85,7 @@ function SettingsWindow:wasdEnabled(button)
   for k, v in pairs(InputManager.keyMap) do
     if InputManager.arrowMap[k] then
       InputManager:setArrowMap(button.value)
-      return false
+      return true
     end
   end
   InputManager:setArrowMap(button.value)
