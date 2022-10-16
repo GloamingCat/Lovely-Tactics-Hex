@@ -118,10 +118,10 @@ function SaveManager:loadSave(file)
     self.current = self:newSave()
   elseif type(file) == 'table' then
     self.current = file
-  elseif fileInfo('saves/' .. file .. '.save') then
-    self.current = Serializer.load('saves/' .. file .. '.save')
+  elseif fileInfo('saves/' .. file .. '.json') then
+    self.current = Serializer.load('saves/' .. file .. '.json')
   else
-    print('No such save file: ' .. file .. '.save')
+    print('No such save file: ' .. file .. '.json')
     self.current = self:newSave()
   end
   self.loadTime = now()
@@ -184,7 +184,7 @@ end
 function SaveManager:storeSave(file, data)
   self.current = data or self:currentSaveData()
   self.saves[file] = self:createHeader(self.current)
-  Serializer.store('saves/' .. file .. '.save', self.current)
+  Serializer.store('saves/' .. file .. '.json', self.current)
   Serializer.store('saves.json', self.saves)
 end
 -- Stores config file.
