@@ -84,6 +84,14 @@ function GameKey:isPressingGap(startGap, repeatGap)
     return false
   end
 end
+-- The time the player spent holding this key before releasing.
+-- @ret(number) Hold time. 0 if the key was never pressed or released.
+function GameKey:getHoldTime()
+  if not self.pressTime or not self.releaseTime then
+    return 0
+  end
+  return self.releaseTime - self.pressTime
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Input handlers

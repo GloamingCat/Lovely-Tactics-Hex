@@ -37,6 +37,7 @@ local Window = class(Component, Transformable)
 function Window:init(gui, width, height, position)
   Transformable.init(self, position)
   self.GUI = gui
+  self.maxTouchHoldTime = 2
   self.speed = 10
   self.spriteGrid = (not self.noSkin) and SpriteGrid(self:getSkin(), Vector(0, 0, 1))
   self.width = width
@@ -264,7 +265,9 @@ function Window:checkInput()
   elseif InputManager.keys['touch']:isReleased() and self.triggerPoint then
     local triggerPoint = self.triggerPoint
     self.triggerPoint = nil
-    self:onClick(5, x, y, triggerPoint)
+    if InputManager.keys['touch']:getHoldTime() <= self.maxTouchHoldTime then
+      self:onClick(5, x, y, triggerPoint)
+    end
   elseif InputManager.keys['touch']:isTriggered() then
     self.triggerPoint = Vector(x, y)
     self:onClick(4, x, y)
