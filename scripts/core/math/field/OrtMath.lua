@@ -251,6 +251,15 @@ end
 -- @ret(number) The next tile's x.
 -- @ret(number) The next tile's y.
 function OrtMath.nextCoord(x, y, axisX, axisY, sizeX, sizeY)
+  axisX = math.abs(axisX) > 0.15 and axisX or 0
+  axisY = math.abs(axisY) > 0.15 and axisY or 0
+  if math.abs(axisY) > math.abs(axisX) and math.abs(axisX) < 0.3 then
+    axisX = 0
+  elseif math.abs(axisX) > math.abs(axisY) and math.abs(axisY) < 0.3 then
+    axisY = 0
+  end
+  axisX = math.sign(axisX)
+  axisY = math.sign(axisY)
   if x + axisX <= sizeX and x + axisX > 0 then
     x = x + axisX
   end

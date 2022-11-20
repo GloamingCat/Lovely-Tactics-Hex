@@ -131,6 +131,8 @@ function InputManager:axisX(startGap, repeatGap, delay)
   if self.stick:isPressing() then
     if self.stick:isPressingGap(startGap, repeatGap, delay) then
       return self.stick.x
+    else
+      return 0
     end
   end
   if self.keys['left']:isPressingGap(startGap, repeatGap, delay)  then
@@ -153,6 +155,8 @@ function InputManager:axisY(startGap, repeatGap, delay)
   if self.stick:isPressing() then
     if self.stick:isPressingGap(startGap, repeatGap, delay) then
       return self.stick.y
+    else
+      return 0
     end
   end
   if self.keys['up']:isPressingGap(startGap, repeatGap, delay) then
