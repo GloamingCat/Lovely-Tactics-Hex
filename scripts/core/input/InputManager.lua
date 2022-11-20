@@ -97,6 +97,15 @@ end
 function InputManager:hasKeyboard()
   return not GameManager:isMobile()
 end
+-- Gets the key by name and creates new one if it doesn't exist.
+-- @param(name : string) Key's name or code (in keyboard).
+-- @ret(GameKey) The key associated with given name.
+function InputManager:getKey(name)
+  if not self.keys[name] then
+    self.keys[name] = GameKey()
+  end
+  return self.keys[name]
+end
 
 ---------------------------------------------------------------------------------------------------
 -- General
@@ -227,7 +236,11 @@ function InputManager:onPress(code, scancode, isrepeat)
     end
   end
   local key = self.arrowMap[code] or self.keyMap[code]
-  if key and not isrepeat then
+  if not key then
+    self.keys[code] = GameKey()
+    key = code
+  end
+  if not isrepeat then
     self.keys[key]:onPress(isrepeat)
   end
   self.lastKey = code
@@ -239,10 +252,8 @@ function InputManager:onRelease(code, scancode)
   if self.readingText and not textControl[code] then
     return
   end
-  local key = self.arrowMap[code] or self.keyMap[code]
-  if key then
-    self.keys[key]:onRelease()
-  end
+  local key = self.arrowMap[code] or self.keyMap[code] or code
+  self.keys[key]:onRelease()
 end
 -- Called when player types a character.
 -- @param(t : string) Input character.
