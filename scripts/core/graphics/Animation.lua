@@ -159,6 +159,9 @@ function Animation:onEnd()
     self:nextCol()
   else
     self.paused = true
+    if self.oneshot then
+      self:destroy()
+    end
   end
 end
 -- Sets to the next column.
@@ -240,11 +243,19 @@ function Animation:reset()
   end
   self:setIndex(1)
 end
+-- Makes the animation self-destroy when it ends.
+function Animation:setOneshot(value)
+  self.oneshot = value
+end
 -- Destroy this animation.
 function Animation:destroy()
+  if self.destroyed then
+    return
+  end
   if self.sprite then
     self.sprite:destroy()
   end
+  self.destroyed = true
 end
 -- String representation.
 -- @ret(string)
@@ -272,6 +283,20 @@ end
 -- Sets this animation as invisible.
 function Animation:hide()
   self.sprite:setVisible(false)
+end
+
+---------------------------------------------------------------------------------------------------
+-- Transform
+---------------------------------------------------------------------------------------------------
+
+function Animation:setXYZ(...)
+  self.sprite:setXYZ(...)
+end
+function Animation:setTransformation(...)
+  self.sprite:setTransformation(...)
+end
+function Animation:applyTransformation(...)
+  self.sprite:applyTransformation(...)
 end
 
 return Animation

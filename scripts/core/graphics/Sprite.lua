@@ -138,7 +138,6 @@ end
 -- Sets sprite's offset, scale, rotation and color
 -- @param(data : table) Transformation data.
 function Sprite:setTransformation(data)
-  local x, y, w, h = self.quad:getViewport()
   self:setOffset(data.offsetX, data.offsetY, data.offsetDepth)
   self:setScale(data.scaleX / 100, data.scaleY / 100)
   self:setRotation(math.rad(data.rotation))
@@ -148,7 +147,6 @@ end
 -- Merges sprite's current transformation with a new one.
 -- @param(data : table) Transformation data.
 function Sprite:applyTransformation(data)
-  local x, y, w, h = self.quad:getViewport()
   self:setOffset(data.offsetX + self.offsetX, self.offsetY + data.offsetY, 
     data.offsetDepth + self.offsetDepth)
   self:setScale(data.scaleX / 100 * self.scaleX, data.scaleY / 100 * self.scaleY)

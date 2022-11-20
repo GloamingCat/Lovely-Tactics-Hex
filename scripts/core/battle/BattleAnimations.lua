@@ -24,20 +24,17 @@ local BattleAnimations = {}
 function BattleAnimations.play(manager, animID, x, y, z, mirror, wait)
   local animation = ResourceManager:loadAnimation(animID, manager.renderer)
   if animation.sprite then
-    animation.sprite:setXYZ(x, y, z - 10)
-    animation.sprite:setTransformation(animation.data.transform)
+    animation:setXYZ(x, y, z - 10)
     if mirror then
       animation.sprite:setScale(-animation.sprite.scaleX, animation.sprite.scaleY)
     end
   end
+  animation:setOneshot(true)
   manager.updateList:add(animation)
-  local fiber = manager.fiberList:fork(function()
-    _G.Fiber:wait(animation.duration)
-    manager.updateList:removeElement(animation)
-    animation:destroy()
-  end)
   if wait then
-    fiber:waitForEnd()
+    while not animation.destroyed do
+      _G.Fiber:wait()
+    end
   end
   return animation
 end

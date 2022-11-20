@@ -35,7 +35,7 @@ function Animation:setUser(user)
   local i, j, h = user:getTile():coordinates()
   local x, y, z = tile2Pixel(i + di, j + dj, h + self.userHeight)
   local row = self.tags and self.tags.rotate and user.animation.row or 0
-  self.sprite:setXYZ(x, y, z)
+  self:setXYZ(x, y, z)
   self.origin = Vector(x, y, z)
   self:setRow(row)
 end

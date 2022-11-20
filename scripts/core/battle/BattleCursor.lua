@@ -76,15 +76,15 @@ function BattleCursor:setTile(tile)
   for obj in tile.characterList:iterator() do
     maxH = max(maxH, obj:getHeight())
   end
-  self.anim.sprite:setXYZ(x, y - maxH * pph, z - 1)
+  self.anim:setXYZ(x, y - maxH * pph, z - 1)
 end
 -- Sets the position to the given character.
 -- @param(char : Character) the target character
 function BattleCursor:setCharacter(char)
   local x, y, z = char.position:coordinates()
-  self.anim.sprite:setVisible(true)
+  self.anim:setVisible(true)
   local maxH = char:getHeight()
-  self.anim.sprite:setXYZ(x, y - maxH * pph, z - 1)
+  self.anim:setXYZ(x, y - maxH * pph, z - 1)
 end
 
 return BattleCursor

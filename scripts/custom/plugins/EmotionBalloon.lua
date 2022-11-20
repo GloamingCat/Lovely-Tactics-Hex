@@ -84,9 +84,9 @@ function CharacterBase:setXYZ(x, y, z)
   if self.balloon then
     local p = self.position
     local h = self:getPixelHeight() + (self.jumpHeight or 0) + balloonY
-    self.balloon.sprite:setXYZ(p.x, p.y - h, p.z)
-    self.balloon.children[1].sprite:setXYZ(p.x, p.y - h, p.z - 1)
-    --self.iconAnim.sprite:setXYZ(p.x, p.y - h - self.height / 2, p.z - 1)
+    self.balloon:setXYZ(p.x, p.y - h, p.z)
+    self.balloon.children[1]:setXYZ(p.x, p.y - h, p.z - 1)
+    --self.iconAnim:setXYZ(p.x, p.y - h - self.height / 2, p.z - 1)
   end
 end
 -- Override. Updates balloon animation.
