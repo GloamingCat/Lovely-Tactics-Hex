@@ -98,7 +98,7 @@ function FieldHUD:update(...)
     self:refreshSave()
   end
   if self.buttonWindow then
-    self.buttonWindow.active = not FieldManager.player:isBusy()
+    self.buttonWindow.active = FieldManager.player and not FieldManager.player:isBusy()
   end
 end
 

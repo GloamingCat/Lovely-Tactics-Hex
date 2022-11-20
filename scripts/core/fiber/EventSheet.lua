@@ -56,7 +56,7 @@ end
 --  Can be either a constant or a function to be computed before the event executes.
 -- @param(...) Any aditional argumentes to the event's function.
 function EventSheet:addEvent(func, condition, ...)
-  if condition and type(condition) ~= 'function' then
+  if condition ~= nil and type(condition) ~= 'function' then
     local value = condition
     condition = function() return value end
   end

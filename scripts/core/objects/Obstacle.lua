@@ -25,12 +25,12 @@ local Obstacle = class(Object)
 -- @param(tileData : table) The data about ramp and collision.
 -- @param(initTile : ObjectTile) The object this tile is in.
 -- @param(group : table) The group this obstacle is part of.
-function Obstacle:init(data, tileData, initTile, group)
+function Obstacle:init(data, tileData, initTile, sprite, group)
   local x, y, z = initTile.center:coordinates()
   Object.init(self, data, Vector(x, y, z))
   self.type = 'obstacle'
   self.group = group
-  self.sprite = group.sprite
+  self.sprite = sprite
   self.collisionHeight = tileData.height
   self.ramp = tileData.mode == 1
   self.bridge = tileData.mode == 2

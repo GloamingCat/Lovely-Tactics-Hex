@@ -76,7 +76,7 @@ function ObjectLayer:mergeObstacles(layerData)
           local y = j + tileData.dy
           if x >= 1 and y >= 1 and x <= self.sizeX and y <= self.sizeY then
             local tile = self.grid[x][y]
-            local obstacle = Obstacle(obstacleData, tileData, tile, group)
+            local obstacle = Obstacle(obstacleData, tileData, tile, k == 1 and group.sprite, group)
             group[k] = obstacle
           end
         end

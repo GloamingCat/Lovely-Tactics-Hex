@@ -91,7 +91,7 @@ function ObjectTile:destroy()
   if self.gui then
     self.gui:destroy()
   end
-  for i = 1, #self.obstacleList do
+  for i = #self.obstacleList, 1, -1 do
     self.obstacleList[i]:destroy()
   end
 end
