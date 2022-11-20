@@ -37,12 +37,12 @@ end
 -- Creates a button for each choice.
 function ButtonWindow:createWidgets()
   for _, name in ipairs(self.buttonNames) do
-    local button = Button(self)
+    local button = Button:fromKey(self, name)
+    button.text:setAlign(self.align, 'center')
     button.confirmSound = nil
     button.selectSound = nil
     button.cancelSound = nil
     button.clickSound = nil
-    button:createText(name, 'gui_button', self.align)
   end
 end
 

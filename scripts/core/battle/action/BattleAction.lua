@@ -84,7 +84,7 @@ function BattleAction:onActionGUI(input)
     input.GUI:createStepWindow():show()
   end
   if GameManager:isMobile() then
-    input.GUI:createConfirmWindow():show()
+    input.GUI:createConfirmWindow()
   else
     input.GUI:createCancelWindow()
   end

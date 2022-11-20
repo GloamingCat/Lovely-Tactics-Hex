@@ -14,7 +14,7 @@ Its result is the action time that the character spent.
 local BattleCursor = require('core/battle/BattleCursor')
 local GUI = require('core/gui/GUI')
 local ButtonWindow = require('core/gui/common/window/interactable/ButtonWindow')
-local ConfirmWindow = require('core/gui/common/window/interactable/ConfirmWindow')
+local ConfirmButtonWindow = require('core/gui/common/window/interactable/ConfirmButtonWindow')
 local StepWindow = require('core/gui/battle/window/StepWindow')
 local TargetWindow = require('core/gui/battle/window/TargetWindow')
 
@@ -45,20 +45,23 @@ end
 -- Creates the GUI's windows and sets the first active window.
 function ActionGUI:createConfirmWindow()
   if not self.buttonWindow then
-    local window = ConfirmWindow(self, 'confirmTile', 'cancelTile')
+    local window = ConfirmButtonWindow(self, 'confirmTile', 'cancelTile')
     self.buttonWindow = window
     local x = -ScreenManager.width / 2 + window.width / 2 + self.slideMargin
     local y = -ScreenManager.height / 2 + window.height / 2 + self.slideMargin
     window:setXYZ(x, y)
     window.offBoundsCancel = false
     window:setVisible(false)
+    if not InputManager:hasKeyboard() then
+      window:show()
+    end
   end
   return self.buttonWindow
 end
 -- Creates the GUI's windows and sets the first active window.
 function ActionGUI:createCancelWindow()
   if not self.buttonWindow then
-    local window = ButtonWindow(self, Vocab.cancel, 'left')
+    local window = ButtonWindow(self, 'cancel', 'left')
     self.buttonWindow = window
     local x = -ScreenManager.width / 2 + window.width / 2 + self.slideMargin
     local y = -ScreenManager.height / 2 + window.height / 2 + self.slideMargin

@@ -45,7 +45,7 @@ function FieldHUD:createSaveInfoWindow()
 end
 -- Creates the window with the menu button, for mobile.
 function FieldHUD:createButtonWindow()
-  local window = ButtonWindow(self, Vocab.menu)
+  local window = ButtonWindow(self, 'menu')
   window:setXYZ((ScreenManager.width - window.width) / 2, (window.height - ScreenManager.height) / 2)
   self.buttonWindow = window
 end
