@@ -36,12 +36,9 @@ end
 -- Creates highlight.
 function TextBox:createContent(...)
   SimpleText.createContent(self, ...)
-  local mx = self.window:colMargin() / 2 + 4
-  local my = self.window:rowMargin() / 2 + 4
-  local width = self.window:cellWidth() * 2 + self.window:colMargin() + mx
-  local height = self.window:cellHeight() + my
-  local y = -self.window.height / 2 + height / 2 - my / 2 + self.window:paddingY()
-  self.highlight = Highlight(nil, width, height, Vector(0, y, 0))
+  local width = self.window.width - self.window:colMargin() / 2 - 4
+  local height = self.window:cellHeight() + self.window:rowMargin() / 2 + 4
+  self.highlight = Highlight(nil, width, height, Vector(0, 0, 0))
   self.content:add(self.highlight)
 end
 
@@ -72,6 +69,14 @@ end
 -- Cursor
 ---------------------------------------------------------------------------------------------------
 
+function TextBox:updatePosition(...)
+  local my = self.window:rowMargin() / 2 + 4
+  local height = self.window:cellHeight() + my
+  self.highlight.displacement.x = 0
+  self.highlight.displacement.y = -self.window.height / 2 + height / 2 - my / 2 + self.window:paddingY()
+  SimpleText.updatePosition(self, ...)
+  self.highlight:updatePosition(...)
+end
 -- Hides or redraws cursor according to its position and visibility.
 function TextBox:refreshCursor()
   if self.cursorVisible then

@@ -106,6 +106,9 @@ function TextInputWindow:onTextInput(c)
   if c == 'backspace' then
     if #self.textBox.input >= self.textBox.cursorPoint - 1 then
       self.textBox:eraseCharacter()
+      if self.onTextChange then
+        self:onTextChange(self.textBox.input)
+      end
     else
       AudioManager:playSFX(Config.sounds.buttonError)
       return
@@ -113,6 +116,9 @@ function TextInputWindow:onTextInput(c)
   else
     if #self.textBox.input < self.maxLength then
       self.textBox:insertCharacter(c)
+      if self.onTextChange then
+        self:onTextChange(self.textBox.input)
+      end
     else
       AudioManager:playSFX(Config.sounds.buttonError)
       return
@@ -120,26 +126,57 @@ function TextInputWindow:onTextInput(c)
   end
   self.confirmButton:refreshEnabled()
 end
+-- Shows text cursor.
+function TextInputWindow:selectText()
+  self.textBox:setCursorVisible(true)
+  self:setSelectedWidget(nil)
+  InputManager:startTextInput()
+end
+-- Hides test cursor.
+function TextInputWindow:deselectText()
+  self.textBox:setCursorVisible(false)
+  self:setSelectedWidget(self:currentWidget())
+  InputManager:endTextInput()
+end
+-- Overrides GridWindow:setSelectedWidget.
+-- Hides text cursor.
+function TextInputWindow:setSelectedWidget(widget)
+  if widget ~= nil then
+    self.textBox:setCursorVisible(false)
+    InputManager:endTextInput()
+  end
+  GridWindow.setSelectedWidget(self, widget)
+end
 -- Overrides GridWindow:onMove.
 -- Updates current selected widget.
 function TextInputWindow:onMove(dx, dy)
   if dy < 0 then
-    self.currentRow = 0
-    self.textBox:setCursorVisible(true)
-    self:setSelectedWidget(nil)
-    InputManager:startTextInput()
+    if self.currentRow == 1 then
+      self.currentRow = 0
+      self:selectText()
+      return
+    elseif self.currentRow == 0 then
+      self.currentRow = self:rowCount()
+      self:deselectText()
+      return
+    end
   elseif dy > 0 then
-    self.currentRow = 1
-    self.textBox:setCursorVisible(false)
-    self:setSelectedWidget(self:currentWidget())
-    InputManager:endTextInput()
+    if self.currentRow == 0 then
+      self.currentRow = 1
+      self:deselectText()
+      return
+    elseif self.currentRow == self:rowCount() then
+      self.currentRow = 0
+      self:selectText()
+      return
+    end
   elseif dx ~= 0 then
     if self.currentRow == 0 then
       self.textBox:moveCursor(dx)
-    else
-      GridWindow.onMove(self, dx, dy)
+      return
     end
   end
+  GridWindow.onMove(self, dx, dy)
 end
 -- Overrides GridWindow:show.
 -- Start text input.

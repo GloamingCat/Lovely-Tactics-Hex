@@ -129,7 +129,7 @@ end
 
 -- Increments the frame count and automatically changes que sprite.
 function Animation:update()
-  if self.paused or not self.duration or not self.timing then
+  if self.paused or not self.duration or not self.timing or self.destroyed then
     return
   end
   self.time = self.time + GameManager:frameTime() * 60 * self.speed
@@ -274,15 +274,21 @@ end
 -- Sets the sprite's visibility.
 -- @param(value : boolean)
 function Animation:setVisible(value)
-  self.sprite:setVisible(value)
+  if self.sprite then
+    self.sprite:setVisible(value)
+  end
 end
 -- Sets this animation as visible.
 function Animation:show()
-  self.sprite:setVisible(true)
+  if self.sprite then
+    self.sprite:setVisible(true)
+  end
 end
 -- Sets this animation as invisible.
 function Animation:hide()
-  self.sprite:setVisible(false)
+  if self.sprite then
+    self.sprite:setVisible(false)
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -290,13 +296,19 @@ end
 ---------------------------------------------------------------------------------------------------
 
 function Animation:setXYZ(...)
-  self.sprite:setXYZ(...)
+  if self.sprite then
+    self.sprite:setXYZ(...)
+  end
 end
 function Animation:setTransformation(...)
-  self.sprite:setTransformation(...)
+  if self.sprite then
+    self.sprite:setTransformation(...)
+  end
 end
 function Animation:applyTransformation(...)
-  self.sprite:applyTransformation(...)
+  if self.sprite then
+    self.sprite:applyTransformation(...)
+  end
 end
 
 return Animation

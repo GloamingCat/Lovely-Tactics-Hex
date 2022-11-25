@@ -212,7 +212,9 @@ function GridWindow:nextWidget(dx, dy, playSound)
     if playSound and newWidget.selectSound then
       AudioManager:playSFX(newWidget.selectSound)
     end
-    oldWidget:setSelected(false)
+    if oldWidget then
+      oldWidget:setSelected(false)
+    end
   end
   self:setSelectedWidget(newWidget)
 end
