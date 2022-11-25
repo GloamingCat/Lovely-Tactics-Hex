@@ -58,6 +58,8 @@ function KeyPoint:addKeyPoint(t, field, ...)
       layer[0] = { self.sprite:getRGBA() }
     elseif field == 'HSV' then
       layer[0] = { self.sprite:getHSV() }
+    elseif field == 'Quad' then
+      layer[0] = { self.sprite.quad:getViewport() }
     else
       print('Unknown tranformation field: ' .. field)
       return
