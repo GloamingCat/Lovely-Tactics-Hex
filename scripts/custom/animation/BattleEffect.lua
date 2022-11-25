@@ -38,26 +38,12 @@ function BattleEffect:nextFrame()
   local lastIndex = self.pattern and #self.pattern or self.colCount
   if self.index < lastIndex then
     self:nextCol()
-    self:playAudio()
   else
     if self.row < self.rowCount - 1 then
       self:nextCol()
       self:nextRow()
-      self:playAudio()
     else
       self:onEnd()
-    end
-  end
-end
--- Plays the audio in the current index, if any.
-function BattleEffect:playAudio()
-  local index = self.row * self.colCount + self.col
-  if self.audio then
-    for i = 1, #self.audio do
-      local audio = self.audio[i]
-      if audio.time == index then
-        AudioManager:playSFX(audio)
-      end
     end
   end
 end
@@ -74,6 +60,9 @@ function BattleEffect:onEnd()
     self:nextRow()
   else
     self.paused = true
+    if self.oneshot then
+      self:destroy()
+    end
   end
 end
 

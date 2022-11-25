@@ -33,6 +33,7 @@ function Animation:init(sprite, data)
   self.index = 1
   self.speed = 1
   self.loop = false
+  self.lastEventTime = -1
   -- Time in frames (1/60s) relative to current quad/frame/column.
   self.time = 0
   if data then
@@ -47,13 +48,13 @@ function Animation:init(sprite, data)
     -- Audio
     if data.audio and #data.audio > 0 then
       self.audio = data.audio
-      self:playAudio()
     end
     -- Tags
     if data.tags and #data.tags > 0 then
       self.tags = Database.loadTags(data.tags)
     end
     self.paused = sprite == nil
+    self:callEvents()
   else
     if sprite and sprite.texture then
       self.quadWidth = sprite.texture:getWidth()
@@ -133,6 +134,7 @@ function Animation:update()
     return
   end
   self.time = self.time + GameManager:frameTime() * 60 * self.speed
+  self:callEvents()
   if self.time >= self.timing[self.index] then
     self.time = self.time - self.timing[self.index]
     self:nextFrame()
@@ -143,7 +145,6 @@ function Animation:nextFrame()
   local lastIndex = self.pattern and #self.pattern or self.colCount
   if self.index < lastIndex then
     self:nextCol()
-    self:playAudio()
   else
     self:onEnd()
   end
@@ -183,12 +184,17 @@ function Animation:setIndex(i)
     self:setCol(self.index - 1)
   end
 end
+-- Calls the animation events in the current time (e.g. audio).
+function Animation:callEvents()
+  self:playAudio()
+  self.lastEventTime = self.time
+end
 -- Plays the audio in the current index, if any.
 function Animation:playAudio()
   if self.audio then
     for i = 1, #self.audio do
       local audio = self.audio[i]
-      if audio.time == self.index - 1 then
+      if audio.time > self.lastEventTime and audio.time <= self.time then
         AudioManager:playSFX(audio)
       end
     end

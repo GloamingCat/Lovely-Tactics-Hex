@@ -21,7 +21,14 @@ function Animation:init(...)
   Animation_init(self, ...)
   if self.tags and self.tags.child then
     for _, childID in ipairs(self.tags:getAll('child')) do
-      self:addChild(childID)
+      childID = childID:split()
+      childID[2] = tonumber(childID[2])
+      if childID[2] then
+        self.childQueue = self.childQueue or {}
+        self.childQueue[#self.childQueue + 1] = childID
+      else
+        self:addChild(childID[1])
+      end
     end
   end
 end
@@ -34,6 +41,18 @@ function Animation:addChild(anim)
     anim.sprite:setPosition(self.sprite.position)
   end
   self.children:add(anim)
+end
+-- Override. Instantiate delayed children.
+local Animation_callEvents = Animation.callEvents
+function Animation:callEvents()
+  if self.childQueue then
+    for _, c in pairs(self.childQueue) do
+      if c[2] > self.lastEventTime and c[2] <= self.time then
+        self:addChild(c[1])
+      end
+    end
+  end
+  Animation_callEvents(self)
 end
 
 ---------------------------------------------------------------------------------------------------
