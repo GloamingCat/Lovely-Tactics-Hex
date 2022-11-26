@@ -293,7 +293,7 @@ function SkillAction:menuUse(input)
   end
   input.user:damageCosts(self.costs)
   if self.data.castAnimID >= 0 then
-    BattleAnimations.playOnMenu(self.data.castAnimID, false)
+    BattleAnimations.playOnMenu(self.data.castAnimID, input.x, input.y, input.z, false)
   end
   input.user:onSkillUse(input, TroopManager:getBattlerCharacter(input.user))
   return BattleAction.execute(self, input)

@@ -24,7 +24,7 @@ local BattleAnimations = {}
 function BattleAnimations.play(manager, animID, x, y, z, mirror, wait)
   local animation = ResourceManager:loadAnimation(animID, manager.renderer)
   if animation.sprite then
-    animation:setXYZ(x, y, z - 10)
+    animation:setXYZ(x, y, z - 10)    
     if mirror then
       animation.sprite:setScale(-animation.sprite.scaleX, animation.sprite.scaleY)
     end
@@ -43,8 +43,8 @@ function BattleAnimations.playOnField(animID, x, y, z, mirror, wait)
   return BattleAnimations.play(FieldManager, animID, x, y, z, mirror, wait)
 end
 -- Play animation in GUI.
-function BattleAnimations.playOnMenu(animID, wait)
-  return BattleAnimations.play(GUIManager, animID, 0, 0, 200, false, wait)
+function BattleAnimations.playOnMenu(animID, x, y, z, wait)
+  return BattleAnimations.play(GUIManager, animID, x or 0, y or 0, z or -50, false, wait)
 end
 
 ---------------------------------------------------------------------------------------------------

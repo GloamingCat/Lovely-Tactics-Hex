@@ -38,8 +38,8 @@ function Animation:addChild(anim)
   self.children = self.children or List()
   if type(anim) == 'number' or type(anim) == 'string' then
     anim = ResourceManager:loadAnimation(Database.animations[anim], self.sprite.renderer)
-    anim.sprite:setPosition(self.sprite.position)
   end
+  anim:setXYZ(self.sprite.position:coordinates())
   self.children:add(anim)
 end
 -- Override. Instantiate delayed children.
@@ -59,6 +59,7 @@ end
 -- Update
 ---------------------------------------------------------------------------------------------------
 
+-- Override. Updates children.
 local Animation_update = Animation.update
 function Animation:update()
   Animation_update(self)
@@ -76,6 +77,7 @@ end
 -- Finish
 ---------------------------------------------------------------------------------------------------
 
+-- Override. Destroys children.
 local Animation_destroy = Animation.destroy
 function Animation:destroy()
   Animation_destroy(self)
@@ -85,6 +87,7 @@ function Animation:destroy()
     end
   end
 end
+-- Override. Resets children.
 local Animation_reset = Animation.reset
 function Animation:reset()
   Animation_reset(self)
@@ -94,6 +97,7 @@ function Animation:reset()
     end
   end
 end
+-- Override. Sets children as oneshot.
 local Animation_setOneshot = Animation.setOneshot
 function Animation:setOneshot(value)
   Animation_setOneshot(self, value)
@@ -108,6 +112,7 @@ end
 -- Position
 ---------------------------------------------------------------------------------------------------
 
+-- Override. Sets children's position.
 local Animation_setXYZ = Animation.setXYZ
 function Animation:setXYZ(...)
   Animation_setXYZ(self, ...)

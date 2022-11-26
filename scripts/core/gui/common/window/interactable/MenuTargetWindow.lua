@@ -21,6 +21,10 @@ local MenuTargetWindow = class(PartyWindow)
 function MenuTargetWindow:onButtonConfirm(button)
   local input = self.GUI.input
   input.target = self.list[button.index]
+  local pos = button:relativePosition()
+  input.x = pos.x + self:cellWidth() / 2
+  input.y = pos.y + self:cellHeight() / 2
+  input.z = -50
   local result = input.action:menuUse(input)
   if result.executed then
     self:refreshMembers()
