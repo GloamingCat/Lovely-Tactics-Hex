@@ -128,11 +128,15 @@ end
 -- @param(wait : boolean) flag to wait until the move finishes (optional, false by default)
 function FieldCamera:moveToPoint(x, y, speed, wait)
   self.focusObject = nil
-  local dx = self.position.x - x
-  local dy = self.position.y - y
-  local distance = sqrt(dx * dx + dy * dy)
-  speed = ((speed or self.cameraSpeed) + distance * 3)
-  self:moveTo(x, y, 0, speed / distance, wait)
+  if speed == 0 then
+    speed = nil
+  else
+    local dx = self.position.x - x
+    local dy = self.position.y - y
+    local distance = sqrt(dx * dx + dy * dy)
+    speed = ((speed or self.cameraSpeed) + distance * 3) / distance
+  end
+  self:moveTo(x, y, 0, speed, wait)
 end
 
 ---------------------------------------------------------------------------------------------------
