@@ -244,14 +244,13 @@ function TextParser.wrapText(lines, currentLine, fragment, font, width)
       local part2 = fragment:sub(breakPoint + 1)
       local line, length2 = TextParser.wrapText(lines, currentLine, part2, font, width)
       return line, length1 + length2
-    else
+    elseif nextBreakPoint < #fragment + 1 then
       currentLine = { width = 0, height = 0, length = 0 }
       insert(lines, currentLine)
       return TextParser.wrapText(lines, currentLine, fragment, font, width)
     end
-  else
-    return currentLine, TextParser.insertFragment(lines, currentLine, fragment, font)
   end
+  return currentLine, TextParser.insertFragment(lines, currentLine, fragment, font)
 end
 -- Inserts a new fragment into the line.
 -- @param(lines : table) Array of all lines.
