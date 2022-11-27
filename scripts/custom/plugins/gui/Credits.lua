@@ -86,7 +86,8 @@ function GUIEvents:showCredits(args)
   local bodyText = createText(self.gui:windowMargin() * 2 + font[3])
   local fiber = self:fork(showCredits, titleText, bodyText)
   while fiber:running() do
-    if InputManager.keys['confirm']:isTriggered() then
+    if InputManager.keys['confirm']:isTriggered() or InputManager.keys['cancel']:isTriggered() or
+        InputManager.keys['touch']:isTriggered() or InputManager.keys['mouse1']:isTriggered() then
       fiber:interrupt()
       local time = math.max(titleText.colorTime, bodyText.colorTime)
       local titleTime = titleText.colorTime / time
