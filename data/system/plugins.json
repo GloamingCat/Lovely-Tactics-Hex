@@ -25,11 +25,34 @@
   },
   {
     "on": true,
-    "name": "plugins/Tutorial.lua",
+    "name": "plugins/gui/Tutorial.lua",
     "tags": [
       {
         "key": "text",
         "value": "Arrows Z X Page Skip Save Kill Lose"
+      }
+    ],
+    "key": ""
+  },
+  {
+    "on": true,
+    "name": "plugins/gui/Credits.lua",
+    "tags": [
+      {
+        "key": "pages",
+        "value": "Game Art Sound"
+      },
+      {
+        "key": "Game",
+        "value": "GloamingCatMain"
+      },
+      {
+        "key": "Art",
+        "value": "Chars GloamingCat Scenary Bibi"
+      },
+      {
+        "key": "Sound",
+        "value": "Music Musicians SFX SFXDesigners"
       }
     ],
     "key": ""

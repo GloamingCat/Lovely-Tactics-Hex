@@ -21,11 +21,28 @@
     "Z": "Use {cbabypink}[Z]{cwhite}, {cbabypink}[Enter]{cwhite} or the {cbabypink}left mouse button{cwhite} to {cbabyblue}interact{cwhite} with an NPC or {cbabyblue}select{cwhite} an option in a menu.",
     "X": "Use {cbabypink}[X]{cwhite}, {cbabypink}[Backspace]{cwhite} or the {cbabypink}right mouse button{cwhite} to {cbabyblue}return{cwhite}/close a menu window or open the {cbabyblue}main menu{cwhite} when navigating the field.",
     "Page": "Press {cbabypink}[N]{cwhite}/{cbabypink}[M]{cwhite} or {cbabypink}[Page Up]{cwhite}/{cbabypink}[Page Down]{cwhite} to {cbabyblue}switch{cwhite} menu screens or select a tile at a {cbabyblue}different height{cwhite} during battle.\n ",
+    
     "Skip": "Press {cbabypink}[J]{cwhite} to {cbabyblue}accelerate{cbabyblue} the game.",
     "Save": "Press {cbabypink}F1{cwhite}/{cbabypink}F5{cwhite} to {cbabyblue}quick save{cwhite}/load (only when no menu is open).",
     "Debug": "Press {cbabypink}[ESC]{cwhite} to open a {cbabyblue}debug window{cwhite} (only when no menu is open).",
     "Kill": "Keep pressing {cbabypink}[K]{cwhite} during the change of turns in battle to automatically {cbabyblue}kill all enemies{cwhite}.",
     "Lose": "Keep pressing {cbabypink}[L]{cwhite} during the change of turns in battle to automatically {cbabyblue}kill all allies{cwhite}."
+  }
+  
+  "credits": {
+    "Game": "\nProgramming, Game Design",
+    "Art": "\nVisual Art",
+    "Chars": "\n{fgui_button}Characters, UI and ugly scenary tiles:",
+    "Scenary": "\n{fgui_button}Pretty scenary tiles:",
+    "Sound": "\nSound",
+    "Music": "\n{fgui_button}Music:",
+    "SFX": "\n{fgui_button}Sound effects:",
+    
+    "GloamingCatMain": "\n{fgui_button}GloamingCat",
+    "GloamingCat": "{fgui_dialogue}GloamingCat\n",
+    "Bibi": "{fgui_dialogue}Alex dos Ventos",
+    "Musicians": "{fgui_dialogue}Generated with Melody Raiser 1999\n",
+    "SFXDesigners": "{fgui_dialogue}Generated with Bfxr"
   }
   
 }
