@@ -213,18 +213,18 @@ end
 function Button:updatePosition(windowPos)
   local pos = self:relativePosition()
   pos:add(windowPos)
-  if self.icon then
-    self.icon.sprite:setXYZ(0, 0)
-    local x, y, w, h = self.icon.sprite:totalBounds()
-    x = pos.x - x + (self.window:cellWidth() - w) * self.iconPos
-    y = pos.y + self.window:cellHeight() / 2
-    self.icon.sprite:setXYZ(x, y, pos.z)
-  end
   for i = 1, #self.content do
     local c = self.content[i]
     if c.updatePosition then
       c:updatePosition(pos)
     end
+  end
+  if self.icon then
+    self.icon.sprite:setXYZ(0, 0)
+    local x, y, w, h, _ = self.icon.sprite:totalBounds()
+    x = -x + (self.window:cellWidth() - w) * self.iconPos
+    _, y = self.text:getCenter()
+    self.icon.sprite:setXYZ(pos.x + x, pos.y + y, pos.z)
   end
 end
 

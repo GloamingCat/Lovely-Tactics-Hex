@@ -60,6 +60,15 @@ function SimpleText:updatePosition(pos)
   local rpos = self.position
   self.sprite:setXYZ(pos.x + rpos.x, pos.y + rpos.y, pos.z + rpos.z)
 end
+-- Gets the center of the text sprite, considering alignment.
+-- @ret(number) Pixel x of the center.
+-- @ret(number) Pixel y of the center.
+function SimpleText:getCenter()
+  local w, h = self.sprite:quadBounds()
+  local x = self.sprite:alignOffsetX(w)
+  local y = self.sprite:alignOffsetY(h)
+  return self.position.x + x + w / 2, self.position.y + y + h / 2
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Text

@@ -31,7 +31,7 @@ end
 
 -- Overrides ButtonWindow:cellWidth.
 function ConfirmButtonWindow:cellWidth()
-  return (self.width or 80) / self:colCount() + ButtonWindow.paddingX(self) / 2
+  return ConfirmWindow.cellWidth(self) + ConfirmWindow.paddingX(self) * 2 / self:colCount()
 end
 -- Overrides ButtonWindow:cellHeight.
 function ConfirmButtonWindow:cellHeight()
