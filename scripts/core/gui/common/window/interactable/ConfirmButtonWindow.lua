@@ -29,9 +29,17 @@ end
 -- Properties
 ---------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:cellWidth.
+-- Overrides ButtonWindow:cellWidth.
 function ConfirmButtonWindow:cellWidth()
-  return 80
+  return (self.width or 80) / self:colCount() + ButtonWindow.paddingX(self) / 2
+end
+-- Overrides ButtonWindow:cellHeight.
+function ConfirmButtonWindow:cellHeight()
+  return ConfirmWindow.cellHeight(self) + ConfirmWindow.paddingY(self) * 2 / self:rowCount()
+end
+-- Overrides GridWindow:cellHeight.
+function ConfirmButtonWindow:rowMargin()
+  return ButtonWindow.rowMargin(self) - 6
 end
 -- @ret(string) String representation (for debugging).
 function ConfirmButtonWindow:__tostring()

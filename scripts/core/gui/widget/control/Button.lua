@@ -20,12 +20,12 @@ local Button = class(GridWidget)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
--- @param(window : GridWindow) the window that this button is component of
--- @param(onConfirm : function) the function called when player confirms (optinal)
--- @param(onSelects : function) the function called when player selects this button (optinal)
--- @param(enableCondition : function) the function that tells if 
+-- @param(window : GridWindow) The window that this button is component of.
+-- @param(onConfirm : function) The function called when player confirms (optinal).
+-- @param(onSelects : function) The function called when player selects this button (optinal).
+-- @param(enableCondition : function) The function that tells if 
 --  this button is enabled (optional)
--- @param(onMove : function) the function called when player presses arrows (optinal)
+-- @param(onMove : function) The function called when player presses arrows (optinal).
 function Button:init(window, onConfirm, enableCondition)
   GridWidget.init(self, window)
   self.enableCondition = enableCondition or self.enableCondition or window.buttonEnabled
@@ -37,9 +37,9 @@ function Button:init(window, onConfirm, enableCondition)
   self.iconPos = 0
 end
 -- Creates a button for the action represented by the given key.
--- @param(window : GridWindow) the window that this button is component of
--- @param(key : string) action's key
--- @ret(Button)
+-- @param(window : GridWindow) The window that this button is component of.
+-- @param(key : string) Action's key.
+-- @ret(Button) New button.
 function Button:fromKey(window, key)
   local button = self(window, window[key .. 'Confirm'], window[key .. 'Enabled'])
   local icon = Config.icons[key]
@@ -78,8 +78,8 @@ function Button:createText(name, fontName, align, w, pos)
   self.content:add(text)
   return self.text
 end
--- @param(info : string) the auxiliar info text in the right side of the button
--- @param(fontName : string) the text's font, from Fonts folder (optional, uses default)
+-- @param(info : string) The auxiliar info text in the right side of the button.
+-- @param(fontName : string) The text's font, from Fonts folder (optional, uses default).
 function Button:createInfoText(info, fontName, align, w, pos)
   if self.infoText then
     self.infoText:destroy()
@@ -99,7 +99,7 @@ function Button:createInfoText(info, fontName, align, w, pos)
   self.content:add(text)
   return text
 end
--- @param(icon : Animation) the icon graphics or the path to the icon
+-- @param(icon : Animation) The icon graphics or the path to the icon.
 function Button:createIcon(icon)
   if not icon then
     return

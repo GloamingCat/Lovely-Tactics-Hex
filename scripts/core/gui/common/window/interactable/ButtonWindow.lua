@@ -127,7 +127,19 @@ function ButtonWindow:rowCount()
 end
 -- Overrides GridWindow:cellWidth.
 function ButtonWindow:cellWidth()
-  return (self.width or 60) - self:paddingX() * 2
+  return self.width or 60
+end
+-- Overrides GridWindow:cellHeight.
+function ButtonWindow:cellHeight()
+  return self.height or 30
+end
+-- Overrides GridWindow:paddingX.
+function ButtonWindow:paddingX()
+  return GridWindow.paddingX(self) / 4
+end
+-- Overrides GridWindow:paddingY.
+function ButtonWindow:paddingY()
+  return GridWindow.paddingY(self) / 4
 end
 -- @ret(string) String representation (for debugging).
 function ButtonWindow:__tostring()
