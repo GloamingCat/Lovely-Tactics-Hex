@@ -69,18 +69,16 @@ function SaveInfo:refreshInfo(save)
       self.content[i]:redraw()
     end
     self.content[5]:setSprites({})
-    self.content[1]:setText(Vocab.noSave)
+    self.content[1]:setTerm('noSave', '')
     self.content[1]:redraw()
     return
   end
-  local txt = { '',
-    string.time(save.playTime),
-    save.money .. ' ' .. Vocab.g,
-    save.location }
-  for i = 1, 4 do
-    self.content[i]:setText(txt[i])
-    self.content[i]:redraw()
-  end
+  self.content[2]:setText(string.time(save.playTime))
+  self.content[2]:redraw()
+  self.content[3]:setTerm(save.money .. ' {%g}', save.money .. '')
+  self.content[3]:redraw()  
+  self.content[4]:setTerm('data.field.' .. save.location, save.location)
+  self.content[4]:redraw()  
   local icons = {}
   for i = 1, Config.troop.maxMembers do
     if save.members[i] then

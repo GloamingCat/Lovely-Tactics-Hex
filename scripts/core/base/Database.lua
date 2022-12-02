@@ -164,9 +164,13 @@ function Database.getVocabDirectory()
   return Database.getDataDirectory() .. 'vocab/'
 end
 -- Loads config data and store in the Config table.
-function Database.loadVocabFiles()
-  Vocab = Serializer.load(Database.getVocabDirectory() .. 'terms-' .. Project.language .. '.json')
-  Vocab.dialogues = Serializer.load(Database.getVocabDirectory() .. 'dialogues-' .. Project.language .. '.json')
+-- @param(lang : string) Selected language (optional, uses first one by default).
+function Database.loadVocabFiles(lang)
+  lang = Project.languages[lang or 1]
+  local dir = Database.getVocabDirectory()
+  Vocab = Serializer.load(dir .. 'terms-' .. lang .. '.json')
+  Vocab.dialogues = Serializer.load(dir .. 'dialogues-' .. lang.. '.json')
+  Vocab.data = Serializer.load(dir .. 'data-' .. lang.. '.json')
 end
 
 ---------------------------------------------------------------------------------------------------

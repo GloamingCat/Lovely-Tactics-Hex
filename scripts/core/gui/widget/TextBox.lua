@@ -85,9 +85,9 @@ function TextBox:refreshCursor()
     local part1 = input:sub(1, pos - 1)
     local char = input:sub(pos, pos)
     local part2 = input:sub(pos + 1)
-    self:setText(part1 .. '{u}' .. char .. '{u}' .. part2)
+    self.text = part1 .. '{u}' .. char .. '{u}' .. part2
   else
-    self:setText(self.input)
+    self.text = self.input
   end
   self:redraw()
 end

@@ -36,8 +36,8 @@ function RewardItemWindow:createWidgets()
     ResourceManager:loadIconAnimation(Config.icons.money, GUIManager.renderer)
   local button = Button(self)
   button:createIcon(icon)
-  button:createText(Vocab.money, 'gui_button')
-  button:createInfoText(self.money, 'gui_button')
+  button:createText('money', '', 'gui_button')
+  button:createInfoText(self.money .. '{%g}', '', 'gui_button')
   InventoryWindow.createWidgets(self)
 end
 -- Tells if an item can be used.

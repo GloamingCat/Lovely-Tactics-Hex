@@ -36,7 +36,7 @@ end
 -- Sets the money value shown.
 -- @param(money : number) The current number of money.
 function GoldWindow:setGold(money)
-  self.value:setText(money .. '')
+  self.value:setTerm(money .. ' {%g}', money .. '')
   self.value:redraw()
 end
 

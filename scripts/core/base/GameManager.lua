@@ -28,6 +28,7 @@ function GameManager:init()
   for i = 1, #modes do
     maxWidth = math.max(maxWidth, modes[i].width)
   end
+  self.language = 1
   self.mobileMode = maxWidth <= 900
   self.webMode = false
   self.paused = false
@@ -57,7 +58,6 @@ function GameManager:readArguments(args)
       self.webMode = true
     end
   end
-  ScreenManager:initCanvas()
 end
 -- Starts the game.
 function GameManager:start()
@@ -101,6 +101,10 @@ function GameManager:setConfig(config)
   InputManager:setKeyMap(config.keyMap)
   if config.resolution and self:isDesktop() then
     ScreenManager:setMode(config.resolution)
+  end
+  if (config.language or 1) ~= self.language then
+    self.language = config.language or 1
+    Database.loadVocabFiles(self.language)
   end
 end
 

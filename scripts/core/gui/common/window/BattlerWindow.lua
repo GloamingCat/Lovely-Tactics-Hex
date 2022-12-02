@@ -91,7 +91,9 @@ function BattlerWindow:createAtts(list, x, y, w)
   for i, att in ipairs(list) do
     -- Attribute name
     local posName = Vector(x, y + 10 * i)
-    local textName = SimpleText(att.shortName .. ':', posName, w - 30, 'left', self.font)
+    local textName = SimpleText('', posName, w - 30, 'left', self.font)
+    textName:setTerm('{%data.conf.' .. att.key .. '}:', att.shortName .. ':')
+    textName:redraw()
     -- Attribute value
     local posValue = Vector(x + 30, y + 10 * i)
     local textValue = SimpleText('', posValue, w, 'left', self.font)
@@ -132,7 +134,7 @@ end
 -- @param(member : Battler) The battler shown in the window.
 function BattlerWindow:setMember(member)
   self:setPortrait(member)
-  self.textName:setText(member.name)
+  self.textName:setTerm('data.battler.' .. member.key, member.name)
   self.textName:redraw()
   -- Attributes
   for key, text in pairs(self.attValues) do

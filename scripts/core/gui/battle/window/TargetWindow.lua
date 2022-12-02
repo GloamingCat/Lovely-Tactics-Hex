@@ -50,9 +50,9 @@ function TargetWindow:createContent(width, height)
   self.content:add(self.txtLevel)
   -- State values texts
   local posHP = Vector(x, y + 25, -2)
-  self.gaugeHP = self:addStateVariable(Vocab.hp, posHP, w, Color.barHP)
+  self.gaugeHP = self:addStateVariable('hp', posHP, w, Color.barHP)
   local posSP = Vector(x, y + 35, -2)
-  self.gaugeSP = self:addStateVariable(Vocab.sp, posSP, w, Color.barSP)
+  self.gaugeSP = self:addStateVariable('sp', posSP, w, Color.barSP)
   -- Icon List
   local posIcons = Vector(x + 8, y + 55)
   self.iconList = IconList(posIcons, w, 16)
@@ -64,7 +64,9 @@ end
 -- @param(pos : Vector) the position of the text
 -- @param(w : width) the max width of the text
 function TargetWindow:addStateVariable(name, pos, w, barColor)
-  local textName = SimpleText(name, pos, w, 'left', Fonts.gui_small)
+  local textName = SimpleText('', pos, w, 'left', Fonts.gui_small)
+  textName:setTerm(name, name)
+  textName:redraw()
   self.content:add(textName)
   local gauge = Gauge(pos, w, barColor, 30)
   self.content:add(gauge)
@@ -81,16 +83,17 @@ function TargetWindow:setBattler(battler)
   local icons = battler.statusList:getIcons()
   local height = self:computeHeight(#icons > 0)
   local pos = self.spriteGrid.position
+  local job = battler.job.data
   pos.y = pos.y + (height - self.height) / 2
   self:resize(nil, height)
   -- Name text
-  self.textName:setText(battler.name)
+  self.textName:setTerm('data.battler.' .. battler.key, battler.name)
   self.textName:redraw()
   -- Class text
-  self.txtJob:setText(battler.job.data.name)
+  self.txtJob:setTerm('data.job.' .. job.key, job.name)
   self.txtJob:redraw()
   -- Level text
-  self.txtLevel:setText(Vocab.level .. ' ' .. battler.job.level)
+  self.txtLevel:setTerm('{%level} ' .. battler.job.level, battler.job.level)
   self.txtLevel:redraw()
   -- HP Gauge
   self.gaugeHP:setValues(battler.state.hp, battler.mhp())

@@ -33,7 +33,7 @@ end
 function EquipItemWindow:createWidgets(...)
   if self.slotKey then
     local button = Button(self)
-    button:createText(Vocab.unequip, 'gui_button')
+    button:createText('unequip', '', 'gui_button')
     button:setEnabled(self.member.equipSet:canUnequip(self.slotKey))
     button.confirmSound = Config.sounds.unequip
     button.clickSound = Config.sounds.unequip

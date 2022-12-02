@@ -52,7 +52,7 @@ function TitleGUI:createTopText()
       ScreenManager.width,
       'center',
       Fonts.gui_title }
-    self.topText = Text(Config.name, prop, GUIManager.renderer)
+    self.topText = Text(Vocab.data.conf.title or Config.name, prop, GUIManager.renderer)
     local x = -ScreenManager.width / 2
     local y = -ScreenManager.height / 2 + self:windowMargin() * 2
     self.topText:setXYZ(x, y, 9)
@@ -139,6 +139,13 @@ end
 -- General
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides GUI:refresh. Refreshes title.
+function TitleGUI:refresh()
+  GUI.refresh(self)
+  if self.topText and self.topText.text then
+    self.topText:setText(Vocab.data.conf.title or Config.name)
+  end
+end
 -- Overrides GUI:destroy to destroy top text.
 function TitleGUI:destroy(...)
   GUI.destroy(self, ...)

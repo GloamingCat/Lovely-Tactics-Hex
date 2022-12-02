@@ -17,7 +17,7 @@ return function(script)
   local id = tonumber(script.args.id) or script.args.id
   local item = Database.items[id]
   local count = tonumber(script.args.count) or 1
-  Config.variables["loot"].value = item.name
+  Config.variables["loot"].value = Vocab.data[item.key] or item.name
   Config.variables["lootq"].value = count
   script:showDialogue { id = 1, message = Vocab.loot }
   script:increaseItem { id = item.id, value = count }

@@ -50,7 +50,7 @@ end
 
 -- Sets current text.
 function TextInputWindow:setText(text)
-  self.textBox:setText(text)
+  self.textBox.text = text
   self.textBox.cursorPoint = #text + 1
   self.textBox:refreshCursor()
 end

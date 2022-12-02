@@ -34,12 +34,12 @@ function ShopItemWindow:createListButton(item)
     ResourceManager:loadIconAnimation(item.icon, GUIManager.renderer)
   local button = Button(self)
   button:createIcon(icon)
-  button:createText(item.name, 'gui_button')
+  button:createText('data.item.' .. item.key, item.name, 'gui_button')
   if self.buy then
-    button:createInfoText(price, 'gui_button')
+    button:createInfoText(price .. ' {%g}', nil, 'gui_button')
   else
     price = -(math.floor(price / 2))
-    button:createInfoText(-price, 'gui_button')
+    button:createInfoText(-price .. ' {%g}', nil, 'gui_button')
   end
   button.item = item
   button.description = item.description

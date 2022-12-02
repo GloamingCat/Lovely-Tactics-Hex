@@ -85,11 +85,11 @@ function GUIEvents:showDialogue(args)
     if type(args.character) == 'number' then
       local char = Database.characters[args.character]
       portrait = util.array.findByName(char.portraits, args.portrait)
-      args.name = args.name or char.name
+      args.name = args.name or Vocab.data[char.key] or char.name
     elseif args.character ~= '' then -- Change to other image
       local char = self:findCharacter(args.character)
       portrait = { char = char, name = args.portrait }
-      args.name = args.name or char.name
+      args.name = args.name or Vocab.data[char.key] or char.name
     end
     window:setPortrait(portrait)
   elseif args.portrait then -- Change portrait

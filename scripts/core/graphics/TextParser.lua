@@ -68,8 +68,13 @@ function TextParser.parse(text, plainText)
         insert(fragments, { event = true, type = 'input' })
       elseif t == '%' then
         local key = resourceKey:sub(2)
-        assert(vars[key], 'Text variable ' .. tostring(key) .. ' not found.')
-        TextParser.parseFragment(fragments, tostring(vars[key].value))
+        if vars[key] then
+          TextParser.parseFragment(fragments, tostring(vars[key].value))
+        else
+          local value = util.table.access(Vocab, key)
+          assert(value, 'Text variable or term ' .. tostring(key) .. ' not found.')
+          TextParser.parseFragment(fragments, tostring(value))
+        end
       else
         TextParser.parseFragment(fragments, textFragment .. '{' .. resourceKey .. '}')
         --error('Text command not identified: ' .. (t or 'nil'))

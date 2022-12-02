@@ -125,8 +125,8 @@ function ShopCountWindow:updateStats(id)
   for battler in troop:visibleBattlers():iterator() do
     equipped = equipped + battler.equipSet:getCount(id)
   end
-  self.owned:setText(Vocab.owned .. ': ' .. (owned + equipped))
-  self.equipped:setText(Vocab.equipped .. ': ' .. equipped)
+  self.owned:setTerm('{%owned}: ' .. (owned + equipped), '')
+  self.equipped:setTerm('{%equipped}: ' .. equipped, '')
   self.owned:redraw()
   self.equipped:redraw()
 end
@@ -188,12 +188,12 @@ end
 -- Use this window to buy items.
 function ShopCountWindow:setBuyMode()
   self.buy = true
-  self.matrix[2]:setText(Vocab.buy)
+  self.matrix[2]:setText('buy')
 end
 -- Use this window to sell items.
 function ShopCountWindow:setSellMode()
   self.buy = false
-  self.matrix[2]:setText(Vocab.sell)
+  self.matrix[2]:setText('sell')
 end
 
 ---------------------------------------------------------------------------------------------------

@@ -47,19 +47,19 @@ function Button:fromKey(window, key)
     icon = ResourceManager:loadIconAnimation(icon, GUIManager.renderer)
     button:createIcon(icon)
   end
-  local text = Vocab[key]
-  if text then
-    button:createText(text, window.buttonFont)
+  if key and Vocab[key] then
+    button:createText(key, key, window.buttonFont)
   end
   button.key = key
   return button
 end
--- @param(text : string) The text shown in the button.
+-- @param(term : string) The text term to be localized.
+-- @param(fallback : string) If no localization is found, use this text (optional).
 -- @param(fontName : string) The text's font, from Fonts folder (optional, uses default).
 -- @param(align : string) The text's horizontal alignment (optional, left by default).
 -- @param(w : number) The text's maximum width (optional, uses all empty space by default).
 -- @param(pos : Vector) The text's maximum width (optional, top left by default).
-function Button:createText(name, fontName, align, w, pos)
+function Button:createText(term, fallback, fontName, align, w, pos)
   if self.text then
     self.text:destroy()
   end
@@ -70,17 +70,20 @@ function Button:createText(name, fontName, align, w, pos)
   else
     pos = pos or Vector(0, 0, 0)
   end
-  local text = SimpleText(name, pos, w, align or 'left', Fonts[fontName])
+  local text = SimpleText('', pos, w, align or 'left', Fonts[fontName])
+  text:setTerm(term, fallback)
   text.sprite.alignY = 'center'
   text.sprite.maxHeight = self.window:cellHeight()
   text.sprite:setColor(Color.gui_text_enabled)
+  text:redraw()
   self.text = text
   self.content:add(text)
   return self.text
 end
--- @param(info : string) The auxiliar info text in the right side of the button.
+-- @param(term : string) The text term to be localized.
+-- @param(fallback : string) If no localization is found, use this text (optional).
 -- @param(fontName : string) The text's font, from Fonts folder (optional, uses default).
-function Button:createInfoText(info, fontName, align, w, pos)
+function Button:createInfoText(term, fallback, fontName, align, w, pos)
   if self.infoText then
     self.infoText:destroy()
   end
@@ -91,10 +94,12 @@ function Button:createInfoText(info, fontName, align, w, pos)
     pos = pos or Vector(self.window:cellWidth() - w, 0, 0)
   end
   fontName = fontName or 'gui_button'
-  local text = SimpleText(info, pos, w, align or 'right', Fonts[fontName])
+  local text = SimpleText('', pos, w, align or 'right', Fonts[fontName])
+  text:setTerm(term, fallback)
   text.sprite.alignY = 'center'
   text.sprite.maxHeight = self.window:cellHeight()
   text.sprite:setColor(Color.gui_text_enabled)
+  text:redraw()
   self.infoText = text
   self.content:add(text)
   return text
@@ -123,13 +128,23 @@ function Button:iconWidth()
   end
 end
 -- @param(text : string)
-function Button:setText(text)
-  self.text:setText(text)
+function Button:setText(...)
+  self.text:setText(...)
+  self.text:redraw()
+end
+-- @param(text : string)
+function Button:setTerm(...)
+  self.text:setTerm(...)
   self.text:redraw()
 end
 -- @param(text : string)
 function Button:setInfoText(text)
   self.infoText:setText(text)
+  self.infoText:redraw()
+end
+-- @param(text : string)
+function Button:setInfoTerm(text)
+  self.infoText:setTerm(text)
   self.infoText:redraw()
 end
 -- @param(icon : table) Icon data.

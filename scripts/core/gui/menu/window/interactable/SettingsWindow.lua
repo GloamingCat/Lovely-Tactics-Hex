@@ -21,6 +21,7 @@ local SettingsWindow = class(GridWindow)
 
 -- Implements GridWindow:createWidgets.
 function SettingsWindow:createWidgets()
+  SwitchButton:fromKey(self, 'language', GameManager.language, nil, Project.languages)
   HSpinnerButton:fromKey(self, 'volumeBGM', 0, 100, AudioManager.volumeBGM).bigIncrement = 10
   HSpinnerButton:fromKey(self, 'volumeSFX', 0, 100, AudioManager.volumeSFX).bigIncrement = 10
   HSpinnerButton:fromKey(self, 'windowScroll', 10, 100, GUIManager.windowScroll).bigIncrement = 10
@@ -61,6 +62,11 @@ end
 -- Switches
 ---------------------------------------------------------------------------------------------------
 
+function SettingsWindow:languageChange(button)
+  GameManager.language = button.value
+  Database.loadVocabFiles(GameManager.language)
+  GUIManager:refresh()
+end
 -- Change auto dash option.
 function SettingsWindow:autoDashChange(button)
   InputManager.autoDash = button.value
@@ -129,7 +135,7 @@ function SettingsWindow:colCount()
 end
 -- Overrides GridWindow:rowCount.
 function SettingsWindow:rowCount()
-  return GameManager:isDesktop() and 9 or GameManager:isMobile() and 5 or 8
+  return GameManager:isDesktop() and 10 or GameManager:isMobile() and 6 or 9
 end
 -- Overrides GridWindow:cellWidth.
 function SettingsWindow:cellWidth()

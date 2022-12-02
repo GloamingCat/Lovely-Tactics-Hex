@@ -49,8 +49,8 @@ function InventoryWindow:createListButton(itemSlot)
     ResourceManager:loadIconAnimation(item.icon, GUIManager.renderer)
   local button = Button(self)
   button:createIcon(icon)
-  button:createText(item.name, 'gui_default')
-  button:createInfoText(itemSlot.count, 'gui_default')
+  button:createText('data.item.' .. item.key, item.name, 'gui_default')
+  button:createInfoText('x' .. itemSlot.count, nil, 'gui_default')
   button.item = item
   button.description = item.description
   if item.skillID >= 0 then

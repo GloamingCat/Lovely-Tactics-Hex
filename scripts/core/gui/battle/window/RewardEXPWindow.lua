@@ -28,6 +28,8 @@ function RewardEXPWindow:createContent(...)
   local y = - self.height / 2 + self:paddingY()
   local w = self.width - self:paddingX() * 2
   local title = SimpleText(Vocab.experience, Vector(x, y), w, 'center')
+  title:setTerm('experience', '')
+  title:redraw()
   self.content:add(title)
   y = y + 20
   for _, member in ipairs(self.GUI.troop.members) do
@@ -36,7 +38,9 @@ function RewardEXPWindow:createContent(...)
       local battler = self.GUI.troop.battlers[member.key]
       -- Name
       local posName = Vector(x, y)
-      local name = SimpleText(battler.name, posName, w / 2, 'left', font)
+      local name = SimpleText('', posName, w / 2, 'left', font)
+      name:setTerm('data.battler.' .. battler.key, battler.name)
+      name:redraw()
       self.content:add(name)
       -- EXP - Arrow
       local plusPos = Vector(x + w / 2, y - 2, 0)

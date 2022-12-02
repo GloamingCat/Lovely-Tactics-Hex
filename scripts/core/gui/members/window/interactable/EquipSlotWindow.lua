@@ -40,8 +40,8 @@ function EquipSlotWindow:createListButton(slot)
   for i = 1, slot.count do
     local button = Button(self)
     local w = self:cellWidth()
-    button:createText(slot.name, 'gui_button', 'left', w / 3)
-    button:createInfoText(Vocab.noEquip, 'gui_button', 'right', w / 3 * 2 - self:colMargin(), Vector(w / 3, 1, 0))
+    button:createText('data.conf.' .. slot.key, slot.name, 'gui_button', 'left', w / 3)
+    button:createInfoText('noEquip', '', 'gui_button', 'right', w / 3 * 2 - self:colMargin(), Vector(w / 3, 1, 0))
     button.key = slot.key .. i
     button.slot = slot
     button.iconPos = 1
@@ -57,10 +57,11 @@ function EquipSlotWindow:refreshSlots()
   for i = 1, #self.matrix do
     local button = self.matrix[i]
     local slot = self.member.equipSet.slots[button.key]
-    local name = Vocab.noEquip
+    local term, fb = 'noEquip', ''
     if slot and slot.id >= 0 then
       local item = Database.items[slot.id]
-      name = item.name
+      term = 'data.item.' .. item.key
+      fb = item.name
       button.item = item
       button:setIcon(item.icon)
     else
@@ -68,7 +69,7 @@ function EquipSlotWindow:refreshSlots()
       button:setIcon(Config.icons.empty)
     end
     local w = self:cellWidth()
-    button:createInfoText(name, 'gui_button', 'right', w / 3 * 2 - self:colMargin(), Vector(w / 3, 1, 0))
+    button:createInfoText(term, fb, 'gui_button', 'right', w / 3 * 2 - self:colMargin(), Vector(w / 3, 1, 0))
     local slotType = self.member.equipSet.types[button.slot.key]
     button:setEnabled(slotType.state <= 2)
     if not self.open then

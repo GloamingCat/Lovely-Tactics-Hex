@@ -23,8 +23,8 @@ return function(script)
       Vocab.dialogues.npc.CanIJoin
     }
     script:openChoiceWindow { width = 50, y = -20, choices = {
-      Vocab.yes,
-      Vocab.no
+      'yes',
+      'no'
     }}
     if script.vars.choiceInput == 1 then
       script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 

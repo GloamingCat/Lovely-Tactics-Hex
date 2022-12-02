@@ -55,14 +55,20 @@ function MemberInfo:createContent(w, h, battler)
   local medium = Fonts.gui_medium
   -- Name
   local txtName = SimpleText(battler.name, topLeft, rw, 'left', medium)
+  txtName:setTerm('data.battler.' .. battler.key, battler.name) 
+  txtName:redraw()
   self.content:add(txtName)
   -- HP
   local middleLeft = Vector(topLeft.x, topLeft.y + 17, topLeft.z)
   local txtHP = SimpleText(Vocab.hp, middleLeft, rw, 'left', small)
+  txtHP:setTerm('hp', '') 
+  txtHP:redraw()
   self.content:add(txtHP)
   -- SP
   local bottomLeft = Vector(middleLeft.x, middleLeft.y + 11, middleLeft.z)
   local txtSP = SimpleText(Vocab.sp, bottomLeft, rw, 'left', small)
+  txtSP:setTerm('sp', '') 
+  txtSP:redraw()
   self.content:add(txtSP)
   -- HP gauge
   local gaugeX = 2 + math.max(txtSP.sprite:getWidth(), txtHP.sprite:getWidth())
@@ -80,14 +86,20 @@ function MemberInfo:createContent(w, h, battler)
   self.content:add(status)
   -- Level / Class
   local middleRight = Vector(topRight.x - 7, topRight.y + 8, topRight.z)
-  local level = Vocab.level .. ' ' .. battler.job.level
-  local txtLevel = SimpleText(level, middleRight, rw, 'left', small)
-  local txtJob = SimpleText(battler.job.data.name, middleRight, rw, 'right', small)
+  local job = battler.job.data
+  local txtLevel = SimpleText('', middleRight, rw, 'left', small)
+  txtLevel:setTerm('{%level} ' .. battler.job.level)
+  txtLevel:redraw()
+  local txtJob = SimpleText('', middleRight, rw, 'right', small)
+  txtJob:setTerm('data.job.' .. job.key, job.name)
+  txtJob:redraw()
   self.content:add(txtLevel)
   self.content:add(txtJob)
   -- EXP
   local bottomRight = Vector(middleRight.x, middleRight.y + 11, middleRight.z)
-  local txtEXP = SimpleText(Vocab.exp, bottomRight, rw, 'left', small)
+  local txtEXP = SimpleText('', bottomRight, rw, 'left', small)
+  txtEXP:setTerm('exp', '')
+  txtEXP:redraw()
   self.content:add(txtEXP)
   -- EXP gauge
   local gaugeEXP = Gauge(bottomRight, rw, Color.barEXP, 2 + txtEXP.sprite:getWidth())

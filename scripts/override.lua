@@ -30,13 +30,6 @@ end
 function string.trim(inputstr)
   return inputstr:gsub("^%s+", ""):gsub("%s+$", "")
 end
--- Checks if first string contains the second.
--- @param(inputstr : string) Longer string.
--- @param(substr : string) Substring.
--- @ret(boolean)
-function string.contains(inputstr, substr)
-  return inputstr:gmatch(substr) ~= nil
-end
 -- Checks if first string ends with the second.
 -- @param(inputstr : string)
 -- @param(suffix : string)

@@ -43,6 +43,15 @@ function GUIManager:update()
   end
   self.fiberList:update()
 end
+-- Refresh GUI content.
+function GUIManager:refresh()
+  for i = 1, #self.stack do
+    self.stack[i]:refresh()
+  end
+  if self.current then
+    self.current:refresh()
+  end
+end
 
 ---------------------------------------------------------------------------------------------------
 -- GUI calls

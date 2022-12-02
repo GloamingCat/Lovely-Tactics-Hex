@@ -33,7 +33,9 @@ function StepWindow:createContent(width, height)
   local w = self.width - self:paddingX() * 2
   local h = self.height - self:paddingY() * 2
   local pos = Vector(self:paddingX() - self.width / 2, self:paddingY() - self.height / 2)
-  local text = SimpleText(Vocab.steps .. ':', pos, w)
+  local text = SimpleText('', pos, w)
+  text:setTerm('{%steps}:')
+  text:redraw()
   local value = SimpleText('' .. steps, pos, w)
   text:setAlign('left', 'center')
   text:setMaxHeight(h)

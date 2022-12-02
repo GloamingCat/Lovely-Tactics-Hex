@@ -58,7 +58,7 @@ function FieldGUI:createLocationWindow()
   local x = 0
   local y = -(ScreenManager.height - h) / 2 + self:windowMargin()
   self.locationWindow = LocationWindow(self, w, h, Vector(x, y))
-  self.locationWindow:setLocal(FieldManager.currentField.name)
+  self.locationWindow:setLocal(FieldManager.currentField)
 end
 -- Creates the window that shows the total playtime.
 function FieldGUI:createTimeWindow()

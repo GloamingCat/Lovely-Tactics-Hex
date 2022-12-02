@@ -45,6 +45,12 @@ function GUI:update()
     window:update()
   end
 end
+-- Refreshes all windows.
+function GUI:refresh()
+  for w in self.windowList:iterator() do
+    w:refresh()
+  end
+end
 -- Destroys all windows.
 function GUI:destroy()
   for window in self.windowList:iterator() do

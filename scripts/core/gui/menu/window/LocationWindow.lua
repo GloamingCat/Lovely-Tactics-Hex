@@ -38,8 +38,8 @@ function LocationWindow:createContent(width, height)
 end
 -- Sets the name shown.
 -- @param(text : string) The name of the location.
-function LocationWindow:setLocal(text)
-  self.name:setText(text)
+function LocationWindow:setLocal(field)
+  self.name:setTerm('data.field.' .. (field.key or ''), field.name)
   self.name:redraw()
 end
 

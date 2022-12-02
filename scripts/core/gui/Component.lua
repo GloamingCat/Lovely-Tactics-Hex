@@ -75,6 +75,14 @@ end
 function Component:hide(...)
   self:setVisible(false, ...)
 end
+-- Refreshes content.
+function Component:refresh()
+  for child in self.content:iterator() do
+    if child.refresh then
+      child:refresh()
+    end
+  end
+end
 -- Updates child content position.
 function Component:updatePosition(parentPosition, ...)
   if parentPosition then

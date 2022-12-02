@@ -68,6 +68,7 @@ function SaveManager:newConfig()
   conf.wasd = false
   conf.keyMap = copyTable(KeyMap)
   conf.useMouse = true
+  conf.language = 1
   return conf
 end
 
@@ -104,6 +105,7 @@ function SaveManager:currentConfigData()
   conf.keyMap = { main = copyTable(InputManager.mainMap), alt = copyTable(InputManager.altMap) }
   conf.useMouse = InputManager.mouseEnabled
   conf.resolution = ScreenManager.mode
+  conf.language = GameManager.language
   return conf
 end
 
@@ -173,10 +175,11 @@ function SaveManager:createHeader(save)
       members[#members + 1] = troop.members[i].charID
     end
   end
+  local field = FieldManager.currentField
   return { members = members,
     playTime = save.playTime,
     money = troop.money,
-    location = FieldManager.currentField.name,
+    location = Vocab.data[field.key] and field.key or field.name,
     version = save.version }
 end
 -- Stores current save.

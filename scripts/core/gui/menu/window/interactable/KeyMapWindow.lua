@@ -35,11 +35,13 @@ end
 -- @param(key : string) Key type code.
 function KeyMapWindow:createKeyButtons(key)
   local button1 = Button(self)
-  button1:createText((Vocab[key] or key))
+  button1:createText(key)
   button1.key = key
   button1.map = 'main'
   local button2 = Button(self)
-  button2:createText((Vocab[key] or key) .. ' (' .. Vocab.alt .. ')')
+  local term = '{%' .. key .. '} ({%alt})'
+  local fb = key .. ' (alt)'
+  button2:createText(term, fb)
   button2.key = key
   button2.map = 'alt'
 end

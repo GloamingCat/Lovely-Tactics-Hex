@@ -8,13 +8,14 @@ Generic widget for windows (like button or spinner).
 =================================================================================================]]
 
 -- Imports
-local Vector = require('core/math/Vector')
+local Component = require('core/gui/Component')
 local List = require('core/datastruct/List')
+local Vector = require('core/math/Vector')
 
 -- Alias
 local ceil = math.ceil
 
-local GridWidget = class()
+local GridWidget = class(Component)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
@@ -24,12 +25,12 @@ local GridWidget = class()
 -- @param(window : GridWindow) the window this widget belongs to
 -- @param(index : number) the child index of this widget
 function GridWidget:init(window)
+  Component.init(self)
   local index = #window.matrix + 1
   self.window = window
   self:setIndex(index)
   window.content:add(self)
   window.matrix[index] = self
-  self.content = List()
   self.enabled = true
   self.selected = false
   self.confirmSound = Config.sounds.buttonConfirm

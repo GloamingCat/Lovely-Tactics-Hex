@@ -46,7 +46,7 @@ end
 -- @ret(Button)
 function CallWindow:createBattlerButton(battler)
   local button = Button(self)
-  button:createText(battler.name)
+  button:createText('data.battler.' .. battler.key, battler.name)
   button.battler = battler
   button.memberKey = battler.key
   return button
@@ -54,7 +54,7 @@ end
 -- @ret(Button)
 function CallWindow:createNoneButton()
   local button = Button(self)
-  button:createText(Vocab.none)
+  button:createText('none', '')
   button.memberKey = ''
   if self.GUI.targetWindow then
     self.GUI.targetWindow:setVisible(false)

@@ -43,6 +43,7 @@ end
 -- Refreshes widgets' color, position, and enabled condition.
 function GridWindow:refreshWidgets()
   for i = 1, #self.matrix do
+    self.matrix[i]:refresh()
     self.matrix[i]:refreshEnabled()
     self.matrix[i]:refreshState()
   end

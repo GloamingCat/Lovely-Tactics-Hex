@@ -86,5 +86,23 @@ function util.printEntries(t)
     print(k, v)
   end
 end
+-- Accesses a deep-located value in a path.
+-- @param(root : table) Root path when path is empty.
+-- @param(path : string) Fields to be accessed, separated by dots.
+-- @ret(unknown) The value if found, nil otherwise.
+function util.access(root, path)
+  if path == '' or path:endswith('.') then
+    return nil
+  end
+  local value = root
+  local parts = path:split('%.')
+  for _, k in ipairs(parts) do
+    value = value[k]
+    if value == nil then
+      return nil
+    end
+  end
+  return value
+end
 
 return util

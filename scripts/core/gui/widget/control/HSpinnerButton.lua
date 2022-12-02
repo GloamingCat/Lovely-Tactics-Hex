@@ -42,9 +42,8 @@ function HSpinnerButton:fromKey(window, key, maxValue, minValue, initValue)
   if icon then
     button:createIcon(icon)
   end
-  local text = Vocab[key]
-  if text then
-    button:createText(text)
+  if key and Vocab[key] then
+    button:createText(key, key, window.buttonFont)
   end
   button.onConfirm = window[key .. 'Confirm'] or button.onConfirm
   button.onChange = window[key .. 'Change'] or button.onChange

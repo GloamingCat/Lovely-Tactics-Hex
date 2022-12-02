@@ -123,6 +123,11 @@
   
   // Messages
   "loot": "You gained {%lootq}x {%loot}!",
-  "rest": "Do you want to rest?"
+  "rest": "Do you want to rest?",
+  
+  // Languages
+  "language": "Language",
+  "us": "English (US)",
+  "br": "Português (BR)"
   
 }

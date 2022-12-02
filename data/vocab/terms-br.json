@@ -1,0 +1,132 @@
+{
+  // Title Window
+  "newGame": "Novo Jogo",
+  "loadGame": "Continuar",
+  "quickSave": "Salvo Rápido",
+  "tutorial": "Instruções",
+  
+  // Save
+  "saveName": "Salvo",
+  "noSave": "Vazio",
+  "overwrite": "Sobrescrever",
+  
+  // Main Window
+  "menu": "Menu",
+  "inventory": "Inventário",
+  "members": "Personagens",
+  "options": "Opções",
+  
+  // Options Window
+  "config": "Configurar",
+  "save": "Salvar",
+  "quit": "Sair",
+  
+  // Settings
+  "volumeBGM": "Vol. de Música",
+  "volumeSFX": "Vol. de Sons",
+  "windowScroll": "Scroll da Janela",
+  "fieldScroll": "Scroll do Mapa",
+  "resolution": "Resolução",
+  "keys": "Mapeamento de Botões",
+  "alt": "alt",
+  "on": "ON",
+  "off": "OFF",
+  "autoDash": "Correr por padrão",
+  "useMouse": "Usar Mouse",
+  "wasd": "Usar WASD",
+  "resolution1": "0.5x",
+  "resolution2": "1.0x",
+  "resolution3": "1.5x",
+  "fullScreen": "Tela Cheia",
+  "default": "Padrão",
+  "apply": "Aplicar",
+  
+  // Quit Window
+  "title": "Tela de Título",
+  "close": "Fechar Jogo",
+  
+  // Member Window
+  "items": "Usar Item",
+  "equips": "Equipamento",
+  "skills": "Usar Habilidade",
+  "stats": "Atributos",
+  
+  // Equip Window
+  "noEquip": "Vazio",
+  "unequip": "Desequipar",
+  
+  // Battle intro Window
+  "start": "Começar",
+  "formation": "Formação",
+  "inspect": "Inspecionar",
+  "none": "Nenhum",
+  
+  // Shop
+  "buy": "Comprar",
+  "sell": "Vender",
+  "owned": "Possuídos",
+  "equipped": "Equipados",
+  
+  // Battle win
+  "win": "Você venceu!",
+  "money": "Gold",
+  "g": "G",
+  "experience": "Experiência",
+  
+  // Battle lose
+  "lose": "Game Over",
+  "continue": "Continuar",
+  "retry": "Tentar de Novo",
+  
+  // Turn Window
+  "attack": "Atacar",
+  "move": "Mover",
+  "escape": "Fugir",
+  "item": "Item",
+  "skill": "Habilidade",
+  "callAlly": "Chamar Aliado",
+  "wait": "Esperar",
+  "confirmTile": "Selecionar",
+  "cancelTile": "Voltar",
+  
+  // Keys
+  "confirm": "Confirmar",
+  "cancel": "Cancelar",
+  "dash": "Correr",
+  "pause": "Pausar",
+  "prev": "Ante",
+  "next": "Próx",
+  
+  // Battler info
+  "hp": "HP",
+  "sp": "SP",
+  "steps": "Passos",
+  "turnCount": "CT",
+  "exp": "EXP",
+  "level": "Nível",
+  
+  // Pop-up
+  "miss": "Errou",
+  "critical": "CRÍTICO",
+  
+  // Quicksave
+  "saved": "Salvo",
+  "loaded": "Carregado",
+  
+  // General
+  "ok": "OK",
+  "return": "Voltar",
+  "select": "Selecionar",
+  "yes": "Sim",
+  "no": "Não",
+  
+  // Messages
+  "loot": "Você chamou {%lootq}x {%loot}!",
+  "rest": "Quer descançar?",
+  
+  // Languages
+  "language": "Idioma",
+  "us": "English (US)",
+  "br": "Português (BR)"
+  
+}

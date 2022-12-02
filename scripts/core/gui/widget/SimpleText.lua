@@ -77,7 +77,24 @@ end
 -- Changes text content (must be redrawn later).
 -- @param(text : string) The new text content.
 function SimpleText:setText(text)
+  self.term = nil
+  self.fallback = nil
   self.text = text
+end
+-- Changes text content from a given localization term (must be redrawn later).
+-- @param(term : string) The localization term.
+-- @param(fallback : string) The text shown if localization fails (optional, uses term by default).
+function SimpleText:setTerm(term, fallback)
+  if fallback then
+    self.fallback = fallback
+    if not term:find("%%") then    
+      self.term = "{%" .. term .. "}"
+    else
+      self.term = term
+    end
+  else
+    self:setText(term)
+  end
 end
 -- Sets max width (must be redrawn later).
 -- @param(w : number)
@@ -99,6 +116,21 @@ end
 -- Redraws text buffer.
 function SimpleText:redraw()
   self.sprite:setText(self.text)
+  if self.term then
+    if pcall(self.sprite.setText, self.sprite, self.term) then
+      self.text = self.term
+    else
+      self.text = self.fallback
+      self.sprite:setText(self.fallback)
+    end
+  end
+end
+-- Redraws text buffer.
+function SimpleText:refresh()
+  Component.refresh(self)
+  if self.term then
+    self:redraw()
+  end
 end
 
 return SimpleText

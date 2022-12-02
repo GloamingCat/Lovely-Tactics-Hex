@@ -18,9 +18,9 @@ return function(script)
     }
     script:openChoiceWindow { width = 70, y = -20,
       choices = {
-        Vocab.dialogues.npc.Shop,
-        Vocab.dialogues.npc.Battle,
-        Vocab.dialogues.npc.Nothing
+        'dialogues.npc.Shop',
+        'dialogues.npc.Battle',
+        'dialogues.npc.Nothing'
       }
     }
     script:closeDialogueWindow { id = 1 }
