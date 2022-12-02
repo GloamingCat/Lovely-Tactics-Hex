@@ -24,6 +24,7 @@ function Job:init(battler, save)
   self.battler = battler
   local jobData = Database.jobs[self.id]
   self.data = jobData
+  self.tags = Database.loadTags(jobData.tags)
   self.expCurve = loadformula(jobData.expCurve, 'lvl')
   self.build = {}
   for i, att in ipairs(Config.attributes) do

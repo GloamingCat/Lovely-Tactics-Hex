@@ -180,6 +180,12 @@
   },
   {
     "on": true,
+    "name": "plugins/battle/JobEquips.lua",
+    "tags": [],
+    "key": ""
+  },
+  {
+    "on": true,
     "name": "plugins/skill/RingArea.lua",
     "tags": [],
     "key": ""

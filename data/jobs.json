@@ -45,7 +45,20 @@
         }
       ],
       "name": "Knight",
-      "tags": [],
+      "tags": [
+        {
+          "key": "equip",
+          "value": "blade"
+        },
+        {
+          "key": "equip",
+          "value": "cloth"
+        },
+        {
+          "key": "equip",
+          "value": "armor"
+        }
+      ],
       "key": "knight"
     },
     "id": 1,
@@ -105,7 +118,16 @@
         }
       ],
       "name": "Mage",
-      "tags": [],
+      "tags": [
+        {
+          "key": "equip",
+          "value": "staff"
+        },
+        {
+          "key": "equip",
+          "value": "cloth"
+        }
+      ],
       "key": "mage"
     },
     "id": 2,
@@ -136,7 +158,12 @@
       "expCurve": "lvl * (lvl + 1) * 2",
       "skills": [],
       "name": "Jelly",
-      "tags": [],
+      "tags": [
+        {
+          "key": "equip",
+          "value": "none"
+        }
+      ],
       "key": "slime"
     },
     "id": 0,
@@ -167,7 +194,12 @@
       "expCurve": "lvl * (lvl + 1) * 2",
       "skills": [],
       "name": "Giant Jelly",
-      "tags": [],
+      "tags": [
+        {
+          "key": "equip",
+          "value": "none"
+        }
+      ],
       "key": "slime2"
     },
     "id": 3,

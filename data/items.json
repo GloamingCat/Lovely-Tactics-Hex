@@ -268,7 +268,12 @@
             }
           ],
           "name": "Sword",
-          "tags": [],
+          "tags": [
+            {
+              "key": "equip",
+              "value": "blade"
+            }
+          ],
           "key": "sword"
         },
         "id": 5,
@@ -302,7 +307,12 @@
             }
           ],
           "name": "Spear",
-          "tags": [],
+          "tags": [
+            {
+              "key": "equip",
+              "value": "blade"
+            }
+          ],
           "key": "spear"
         },
         "id": 10,
@@ -341,7 +351,12 @@
             }
           ],
           "name": "Staff",
-          "tags": [],
+          "tags": [
+            {
+              "key": "equip",
+              "value": "staff"
+            }
+          ],
           "key": "staff"
         },
         "id": 6,
@@ -375,7 +390,12 @@
             }
           ],
           "name": "Hat",
-          "tags": [],
+          "tags": [
+            {
+              "key": "equip",
+              "value": "cloth"
+            }
+          ],
           "key": "hat"
         },
         "id": 9,
@@ -408,7 +428,12 @@
           "elements": [],
           "equipAttributes": [],
           "name": "Ribbon",
-          "tags": [],
+          "tags": [
+            {
+              "key": "equip",
+              "value": "cloth"
+            }
+          ],
           "key": "ribbon"
         },
         "id": 7,
