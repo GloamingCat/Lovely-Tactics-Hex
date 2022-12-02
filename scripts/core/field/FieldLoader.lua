@@ -30,6 +30,7 @@ function FieldLoader.loadField(id, save)
   local prefs = save and save.prefs or data.prefs.persistent and FieldManager:getFieldSave(id).prefs or data.prefs
   local maxH = data.prefs.maxHeight
   local field = Field(data.id, data.prefs.name, data.sizeX, data.sizeY, maxH)
+  field.key = data.prefs.key
   field.persistent = data.prefs.persistent
   field.vars = prefs.vars or {}
   field.images = prefs.images or data.prefs.images

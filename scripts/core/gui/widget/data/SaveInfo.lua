@@ -77,7 +77,7 @@ function SaveInfo:refreshInfo(save)
   self.content[2]:redraw()
   self.content[3]:setTerm(save.money .. ' {%g}', save.money .. '')
   self.content[3]:redraw()  
-  self.content[4]:setTerm('data.field.' .. save.location, save.location)
+  self.content[4]:setTerm('data.field.' .. (save.field or ''), save.location)
   self.content[4]:redraw()  
   local icons = {}
   for i = 1, Config.troop.maxMembers do

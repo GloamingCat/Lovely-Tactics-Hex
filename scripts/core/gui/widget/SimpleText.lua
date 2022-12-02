@@ -115,7 +115,6 @@ function SimpleText:setAlign(h, v)
 end
 -- Redraws text buffer.
 function SimpleText:redraw()
-  self.sprite:setText(self.text)
   if self.term then
     if pcall(self.sprite.setText, self.sprite, self.term) then
       self.text = self.term
@@ -123,6 +122,8 @@ function SimpleText:redraw()
       self.text = self.fallback
       self.sprite:setText(self.fallback)
     end
+  else
+    self.sprite:setText(self.text)
   end
 end
 -- Redraws text buffer.

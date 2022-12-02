@@ -39,7 +39,7 @@ end
 -- Sets the name shown.
 -- @param(text : string) The name of the location.
 function LocationWindow:setLocal(field)
-  self.name:setTerm('data.field.' .. (field.key or ''), field.name)
+  self.name:setTerm('data.field.' .. field.key, field.name)
   self.name:redraw()
 end
 

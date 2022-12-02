@@ -121,7 +121,7 @@
   "no": "Não",
   
   // Messages
-  "loot": "Você chamou {%lootq}x {%loot}!",
+  "loot": "Você ganhou {%lootq}x {%loot}!",
   "rest": "Quer descançar?",
   
   // Languages

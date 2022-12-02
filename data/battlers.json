@@ -115,7 +115,9 @@
             0,
             0
           ],
-          "skills": [],
+          "skills": [
+            30
+          ],
           "status": [
             2
           ],
@@ -234,7 +236,7 @@
           "equip": [],
           "name": "Jelly",
           "tags": [],
-          "key": ""
+          "key": "slime1"
         },
         "id": 6,
         "children": []
@@ -287,7 +289,7 @@
           "equip": [],
           "name": "Killer Jelly",
           "tags": [],
-          "key": ""
+          "key": "slime2"
         },
         "id": 4,
         "children": []
@@ -346,7 +348,7 @@
           "equip": [],
           "name": "Poison Jelly",
           "tags": [],
-          "key": ""
+          "key": "slime3"
         },
         "id": 7,
         "children": []
@@ -416,7 +418,7 @@
           "equip": [],
           "name": "Chicken Jelly",
           "tags": [],
-          "key": ""
+          "key": "slime4"
         },
         "id": 9,
         "children": []
@@ -509,7 +511,7 @@
           "equip": [],
           "name": "Magic Jelly",
           "tags": [],
-          "key": ""
+          "key": "slime5"
         },
         "id": 5,
         "children": []
@@ -620,7 +622,7 @@
           "equip": [],
           "name": "Boss Jelly",
           "tags": [],
-          "key": ""
+          "key": "slime6"
         },
         "id": 8,
         "children": []

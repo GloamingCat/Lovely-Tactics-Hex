@@ -27,7 +27,7 @@
     "Debug": "Press {cbabypink}[ESC]{cwhite} to open a {cbabyblue}debug window{cwhite} (only when no menu is open).",
     "Kill": "Keep pressing {cbabypink}[K]{cwhite} during the change of turns in battle to automatically {cbabyblue}kill all enemies{cwhite}.",
     "Lose": "Keep pressing {cbabypink}[L]{cwhite} during the change of turns in battle to automatically {cbabyblue}kill all allies{cwhite}."
-  }
+  },
   
   "credits": {
     "Game": "\nProgramming, Game Design",

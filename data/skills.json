@@ -634,7 +634,7 @@
           },
           "name": "Strong Attack",
           "tags": [],
-          "key": ""
+          "key": "atk1"
         },
         "id": 28,
         "children": []
@@ -764,7 +764,7 @@
           },
           "name": "Dying Attack",
           "tags": [],
-          "key": ""
+          "key": "atk2"
         },
         "id": 29,
         "children": []
@@ -1011,7 +1011,7 @@
               "value": "-4"
             }
           ],
-          "key": ""
+          "key": "mgk1"
         },
         "id": 7,
         "children": []
@@ -1124,7 +1124,7 @@
               "value": "-2"
             }
           ],
-          "key": ""
+          "key": "mgk2"
         },
         "id": 8,
         "children": []
@@ -1229,7 +1229,7 @@
               "value": "-3"
             }
           ],
-          "key": ""
+          "key": "blaze"
         },
         "id": 17,
         "children": []
@@ -1334,7 +1334,7 @@
               "value": "-3"
             }
           ],
-          "key": ""
+          "key": "frost"
         },
         "id": 19,
         "children": []
@@ -1439,7 +1439,7 @@
               "value": "-3"
             }
           ],
-          "key": ""
+          "key": "bolt"
         },
         "id": 20,
         "children": []
@@ -1616,7 +1616,7 @@
               "value": "-3"
             }
           ],
-          "key": ""
+          "key": "heal"
         },
         "id": 10,
         "children": []
@@ -1708,7 +1708,7 @@
               "value": "-3"
             }
           ],
-          "key": ""
+          "key": "reflect"
         },
         "id": 14,
         "children": []
@@ -1800,9 +1800,83 @@
               "value": "true"
             }
           ],
-          "key": ""
+          "key": "cheer"
         },
         "id": 27,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Recovers a bit of SP.",
+          "icon": {
+            "id": 34,
+            "col": 2,
+            "row": 2
+          },
+          "script": "",
+          "type": 2,
+          "allParties": false,
+          "effectCondition": "target == user",
+          "selection": 1,
+          "autoPath": false,
+          "freeNavigation": false,
+          "condition": "",
+          "restriction": 1,
+          "costs": [],
+          "elements": [],
+          "userElements": false,
+          "userLoadAnim": "Load1",
+          "userCastAnim": "",
+          "stepOnCast": false,
+          "loadAnimID": -1,
+          "castAnimID": -1,
+          "individualAnimID": 14,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "",
+          "centerTime": "",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": false,
+          "effects": [
+            {
+              "key": "sp",
+              "basicResult": "a.atk() + a.dex() * 2",
+              "successRate": "100",
+              "heal": true,
+              "absorb": false,
+              "statusID": -1
+            }
+          ],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "name": "Rest",
+          "tags": [],
+          "key": "rest"
+        },
+        "id": 30,
         "children": []
       }
     ]
@@ -1958,7 +2032,7 @@
               "value": "-3"
             }
           ],
-          "key": ""
+          "key": "poison"
         },
         "id": 12,
         "children": []
@@ -2083,7 +2157,7 @@
           },
           "name": "Sleeping Polen",
           "tags": [],
-          "key": ""
+          "key": "polen"
         },
         "id": 13,
         "children": []
@@ -2167,7 +2241,7 @@
               "value": "true"
             }
           ],
-          "key": ""
+          "key": "blind"
         },
         "id": 21,
         "children": []
@@ -2267,7 +2341,7 @@
               "value": "173"
             }
           ],
-          "key": ""
+          "key": "charm"
         },
         "id": 22,
         "children": []

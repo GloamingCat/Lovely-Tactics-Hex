@@ -1,10 +1,68 @@
 {
   "conf": {
-    "title": "Projeto de Exemplo"
+    "title": "Projeto de Exemplo",
+    "hand": "Arma",
+    "body": "Corpo",
+    "head": "Cabeça",
+    "acc": "Acessório"
   },
-  "item": {},
-  "skill": {},
-  "battler": {},
-  "job": {},
+  "item": {
+    // Usable
+    "potionHP": "Poção de Vida",
+    "potionSP": "Poção de Energia",
+    "antidote": "Antídoto",
+    "potionKO": "Poção de Reviver",
+    "apple": "Maçã",
+    // Equip
+    "sword": "Espada",
+    "spear": "Lança",
+    "staff": "Cajado",
+    "hat": "Chapéu",
+    "ribbon": "Lacinho"
+  },
+  "skill": {
+    // Attacks
+    "atk1": "Ataque Forte",
+    "atk2": "Ataque da Morte",
+    "mgk1": "Explosão Mágica",
+    "mgk2": "Grande Explosão Mágica",
+    "blaze": "Fogo",
+    "frost": "Gelo",
+    "bolt": "Raio",
+    // Support
+    "heal": "Cura",
+    "reflect": "Refletir",
+    "cheer": "Motivar",
+    "rest": "Descançar",
+    // Debuffs
+    "poison": "Envenenar",
+    "polen": "Pólen do Sono",
+    "blind": "Luz Cegante",
+    "charm": "Encantar"
+  },
+  "battler": {
+    "slime1": "Gosma",
+    "slime2": "Gosma Assassina",
+    "slime3": "Gosma Fujona",
+    "slime4": "Gosma Venenosa",
+    "slime5": "Gosma Mágica",
+    "slime6": "Super Gosma"
+  },
+  "job": {
+    "knight": "Cavaleiro",
+    "mage": "Mago",
+    "slime": "Gosma",
+    "slime2": "Super Gosma"
+  },
+  "field": {
+    "hf1": "Floresta Feliz 1",
+    "hf2": "Floresta Feliz 2",
+    "hf3": "Floresta Feliz 3",
+    "hf4": "Floresta Feliz 4",
+    "hf5": "Floresta Feliz 5",
+    "hfbattle": "Batalha na Floresta",
+    "battle1": "Batalha de Teste",
+    "battle2": "Batalha de Teste 2",
+  },
   "char": {}
 }

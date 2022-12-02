@@ -46,7 +46,7 @@
       ],
       "name": "Knight",
       "tags": [],
-      "key": ""
+      "key": "knight"
     },
     "id": 1,
     "children": []
@@ -106,7 +106,7 @@
       ],
       "name": "Mage",
       "tags": [],
-      "key": ""
+      "key": "mage"
     },
     "id": 2,
     "children": []
@@ -137,7 +137,7 @@
       "skills": [],
       "name": "Jelly",
       "tags": [],
-      "key": ""
+      "key": "slime"
     },
     "id": 0,
     "children": []
@@ -168,7 +168,7 @@
       "skills": [],
       "name": "Giant Jelly",
       "tags": [],
-      "key": ""
+      "key": "slime2"
     },
     "id": 3,
     "children": []

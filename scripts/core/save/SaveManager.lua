@@ -179,7 +179,8 @@ function SaveManager:createHeader(save)
   return { members = members,
     playTime = save.playTime,
     money = troop.money,
-    location = Vocab.data[field.key] and field.key or field.name,
+    field = field.key,
+    location = field.name,
     version = save.version }
 end
 -- Stores current save.
