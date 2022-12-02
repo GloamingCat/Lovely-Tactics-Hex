@@ -44,7 +44,6 @@ function SkillWindow:createListButton(skill)
   button:createIcon(icon)
   button:createText('data.skill.' .. skill.data.key, skill.data.name, 'gui_button')
   button.skill = skill
-  button.description = skill.data.description
   -- Get SP cost
   local cost = 0
   for i = 1, #skill.costs do
@@ -102,7 +101,7 @@ end
 -- @param(button : Button)
 function SkillWindow:onButtonSelect(button)
   if self.GUI.descriptionWindow then
-    self.GUI.descriptionWindow:updateText(button.description)
+    self.GUI.descriptionWindow:updateTerm('data.skill.' .. button.skill.data.key .. '_desc', button.skill.data.description)
   end
 end
 -- Changes current member to the next member in the party.

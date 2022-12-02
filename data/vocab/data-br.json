@@ -9,36 +9,61 @@
   "item": {
     // Usable
     "potionHP": "Poção de Vida",
+    "potionHP_desc": "Cura 200HP.",
     "potionSP": "Poção de Energia",
+    "potionSP_desc": "Cura 100SP.",
     "antidote": "Antídoto",
+    "antidote_desc": "Cura Veneno.",
     "potionKO": "Poção de Reviver",
+    "potionKO_desc": "Acorda um aliado nocauteado.",
     "apple": "Maçã",
+    "apple_desc": "Cura metade do HP total.",
     // Equip
     "sword": "Espada",
+    "sword_desc": "Aumenta 5ATK.",
     "spear": "Lança",
+    "spear_desc": "Aumenta 10ATK.",
     "staff": "Cajado",
+    "staff_desc": "Aumenta 5ATK e 5SPR.",
     "hat": "Chapéu",
+    "hat_desc": "Aumenta 5DEF.",
     "ribbon": "Lacinho"
+    "ribbon_desc": "Protege contra todos os status negativos."
   },
   "skill": {
     // Attacks
     "atk1": "Ataque Forte",
+    "atk1_desc": "Simples ataque melee, com 150% de dano e 100% de chance de sucesso.",
     "atk2": "Ataque da Morte",
+    "atk2_desc": "Ataque melee que tira 50% do HP do alvo, com 100% de chance. Só pode ser usada quando estiver com 10% do HP ou menos.",
     "mgk1": "Explosão Mágica",
+    "mgk1_desc": "Atinge uma área de 3 tiles de diâmetro.",
     "mgk2": "Grande Explosão Mágica",
+    "mgk2_desc": "Atinge uma área de 5 tiles de diâmetro.",
     "blaze": "Fogo",
+    "blaze_desc": "Ataque mágico normal com elemento de fogo.",
     "frost": "Gelo",
+    "frost_desc": "Ataque mágico normal com elemento de gelo.",
     "bolt": "Raio",
+    "bolt_desc": "Ataque mágico normal com elemento de trovão.",
     // Support
     "heal": "Cura",
+    "heal_desc": "Cura um aliado.",
     "reflect": "Refletir",
+    "reflect_desc": "Põe status de Reflexão em um aliado.",
     "cheer": "Motivar",
+    "cheer_desc": "Aumenta ATK e DEF de todos os aliados.",
     "rest": "Descançar",
+    "rest_desc": "Recupera um pouco de SP.",
     // Debuffs
     "poison": "Envenenar",
+    "poison_desc": "Deixa um inimigo envenedado.",
     "polen": "Pólen do Sono",
+    "polen_desc": "Adormece os inimigos que estão em volta do usuário, à distância de 1 tile.",
     "blind": "Luz Cegante",
-    "charm": "Encantar"
+    "blind_desc": "Deixa todos os inimigos do campo cegos com 50% de chance.",
+    "charm": "Encantar",
+    "charm_desc": "Faz um inimigo ir para o seu lado com uma chance de 50%."
   },
   "battler": {
     "slime1": "Gosma",

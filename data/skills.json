@@ -871,7 +871,7 @@
       },
       {
         "data": {
-          "description": "Attacks an area of 2 tiles of radius.",
+          "description": "Attacks an area of 3 tiles of diameter.",
           "icon": {
             "id": 34,
             "col": 0,
@@ -1018,7 +1018,7 @@
       },
       {
         "data": {
-          "description": "Attacks an area of 3 tiles of radius.",
+          "description": "Attacks an area of 5 tiles of diameter.",
           "icon": {
             "id": 34,
             "col": 0,

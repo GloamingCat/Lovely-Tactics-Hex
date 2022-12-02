@@ -38,6 +38,13 @@ function DescriptionWindow:updateText(txt)
   self.text:updatePosition(self.position)
   self.text:redraw()
 end
+-- Sets text to be shown.
+-- @param(txt : string)
+function DescriptionWindow:updateTerm(term, fb)
+  self.text:setTerm(term, fb)
+  self.text:updatePosition(self.position)
+  self.text:redraw()
+end
 -- Gets the text the is being shown in the window.
 -- @ret(string) The text as string.
 function DescriptionWindow:getText()

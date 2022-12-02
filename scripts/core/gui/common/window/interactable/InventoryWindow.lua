@@ -52,7 +52,6 @@ function InventoryWindow:createListButton(itemSlot)
   button:createText('data.item.' .. item.key, item.name, 'gui_default')
   button:createInfoText('x' .. itemSlot.count, nil, 'gui_default')
   button.item = item
-  button.description = item.description
   if item.skillID >= 0 then
     button.skill = ItemAction:fromData(item.skillID, button.item)
   end
@@ -82,7 +81,7 @@ end
 -- @param(button : Button)
 function InventoryWindow:onButtonSelect(button)
   if self.GUI.descriptionWindow then
-    self.GUI.descriptionWindow:updateText(button.description)
+    self.GUI.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
   end
 end
 -- Tells if an item can be used.

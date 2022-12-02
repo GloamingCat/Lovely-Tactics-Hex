@@ -93,7 +93,7 @@ function ShopItemWindow:onButtonCancel(button)
 end
 -- Updates item description.
 function ShopItemWindow:onButtonSelect(button)
-  self.GUI.descriptionWindow:updateText(button.item.description)
+  self.GUI.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
 end
 
 ---------------------------------------------------------------------------------------------------
