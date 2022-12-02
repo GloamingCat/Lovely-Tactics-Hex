@@ -101,7 +101,11 @@ end
 -- @param(button : Button)
 function SkillWindow:onButtonSelect(button)
   if self.GUI.descriptionWindow then
-    self.GUI.descriptionWindow:updateTerm('data.skill.' .. button.skill.data.key .. '_desc', button.skill.data.description)
+    if button.skill then
+      self.GUI.descriptionWindow:updateTerm('data.skill.' .. button.skill.data.key .. '_desc', button.skill.data.description)
+    else
+      self.GUI.descriptionWindow:updateText('')
+    end
   end
 end
 -- Changes current member to the next member in the party.

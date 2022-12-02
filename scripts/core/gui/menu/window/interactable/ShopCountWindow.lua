@@ -188,12 +188,12 @@ end
 -- Use this window to buy items.
 function ShopCountWindow:setBuyMode()
   self.buy = true
-  self.matrix[2]:setText('buy')
+  self.matrix[2]:setTerm('buy', '')
 end
 -- Use this window to sell items.
 function ShopCountWindow:setSellMode()
   self.buy = false
-  self.matrix[2]:setText('sell')
+  self.matrix[2]:setTerm('sell', '')
 end
 
 ---------------------------------------------------------------------------------------------------
