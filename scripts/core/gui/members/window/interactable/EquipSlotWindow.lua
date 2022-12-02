@@ -40,11 +40,12 @@ function EquipSlotWindow:createListButton(slot)
   for i = 1, slot.count do
     local button = Button(self)
     local w = self:cellWidth()
-    button:createText('data.conf.' .. slot.key, slot.name, 'gui_button', 'left', w / 3)
-    button:createInfoText('noEquip', '', 'gui_button', 'right', w / 3 * 2 - self:colMargin(), Vector(w / 3, 1, 0))
+    button.iconPos = 1
+    button:setIcon(Config.icons.empty)
+    button:createText('data.conf.' .. slot.key, slot.name, 'gui_button')
+    button:createInfoText('noEquip', '', 'gui_button')
     button.key = slot.key .. i
     button.slot = slot
-    button.iconPos = 1
   end
 end
 -- @param(member : Battler) The battler which the current equipment belongs to.
@@ -69,10 +70,12 @@ function EquipSlotWindow:refreshSlots()
       button:setIcon(Config.icons.empty)
     end
     local w = self:cellWidth()
-    button:createInfoText(term, fb, 'gui_button', 'right', w / 3 * 2 - self:colMargin(), Vector(w / 3, 1, 0))
+    button:setInfoTerm(term, fb)
     local slotType = self.member.equipSet.types[button.slot.key]
     button:setEnabled(slotType.state <= 2)
-    if not self.open then
+    if self.open then
+      button:updatePosition(self.position)
+    else
       button:hide()
     end
   end

@@ -88,7 +88,7 @@ function Button:createInfoText(term, fallback, fontName, align, w, pos)
     self.infoText:destroy()
   end
   w = (w or self.window:cellWidth()) - self:iconWidth()
-  if self.iconPos > 0.75 then
+  if self.iconPos > 0.5 then
     pos = pos or Vector(self.window:cellWidth() - w - self:iconWidth(), 0, 0)
   else
     pos = pos or Vector(self.window:cellWidth() - w, 0, 0)
@@ -138,13 +138,13 @@ function Button:setTerm(...)
   self.text:redraw()
 end
 -- @param(text : string)
-function Button:setInfoText(text)
-  self.infoText:setText(text)
+function Button:setInfoText(...)
+  self.infoText:setText(...)
   self.infoText:redraw()
 end
 -- @param(text : string)
-function Button:setInfoTerm(text)
-  self.infoText:setTerm(text)
+function Button:setInfoTerm(...)
+  self.infoText:setTerm(...)
   self.infoText:redraw()
 end
 -- @param(icon : table) Icon data.

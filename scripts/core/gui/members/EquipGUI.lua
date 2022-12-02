@@ -79,7 +79,9 @@ function EquipGUI:refreshMember(member)
   MemberGUI.refreshMember(self, member)
   self.bonusWindow:setMember(member)
   self.itemWindow:setMember(member)
-  self.mainWindow:onButtonSelect(self.mainWindow:currentWidget())
+  if self.open then
+    self.mainWindow:onButtonSelect(self.mainWindow:currentWidget())
+  end
 end
 
 return EquipGUI
