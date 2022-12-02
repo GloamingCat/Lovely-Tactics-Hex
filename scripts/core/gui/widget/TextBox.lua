@@ -49,6 +49,9 @@ end
 -- Insert character in the position pointed by cursor.
 -- @param(c : string) Character to be inserted.
 function TextBox:insertCharacter(c)
+  if #c > 1 then
+    c = '?'
+  end
   local part1 = self.input:sub(1, self.cursorPoint - 1) .. c
   local part2 = self.input:sub(self.cursorPoint)
   self.input = part1 .. part2
@@ -85,9 +88,9 @@ function TextBox:refreshCursor()
     local part1 = input:sub(1, pos - 1)
     local char = input:sub(pos, pos)
     local part2 = input:sub(pos + 1)
-    self.text = part1 .. '{u}' .. char .. '{u}' .. part2
+    self:setText(part1 .. '{u}' .. char .. '{u}' .. part2)
   else
-    self.text = self.input
+    self:setText(self.input)
   end
   self:redraw()
 end

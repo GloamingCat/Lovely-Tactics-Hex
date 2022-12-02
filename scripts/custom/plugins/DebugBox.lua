@@ -13,7 +13,8 @@ local Player = require('core/objects/Player')
 local TextInputGUI = require('core/gui/common/TextInputGUI')
 
 -- Parameters
-KeyMap.main['debug'] = args.key
+local key = args.key
+local mod = args.mod
 
 ---------------------------------------------------------------------------------------------------
 -- Shortcuts
@@ -38,7 +39,7 @@ end
 -- Checks for the debug key input.
 local Player_checkFieldInput = Player.checkFieldInput
 function Player:checkFieldInput()
-  if InputManager.keys['debug']:isTriggered() then
+  if InputManager:getKey(key):isTriggered() and (not mod or InputManager:getKey(mod):isPressing()) then
     self:openDebugGUI()
   else
     Player_checkFieldInput(self)

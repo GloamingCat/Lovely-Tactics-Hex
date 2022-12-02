@@ -101,7 +101,11 @@
     "tags": [
       {
         "key": "key",
-        "value": "escape"
+        "value": "insert"
+      },
+      {
+        "key": "mod",
+        "value": "lalt"
       }
     ],
     "key": ""
