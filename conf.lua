@@ -16,6 +16,7 @@ require('class')
 local Serializer = require('core/save/Serializer')
 
 function love.conf(t)
+  print("OS: " .. love._os)
   local projectName = nil
   for k, v in pairs(arg) do
     if v == '-p' then
@@ -35,6 +36,15 @@ function love.conf(t)
   print("Loading project '" .. projectName .. "'")
   Project = Serializer.load(projectName)
   Config = Serializer.load(Project.dataPath .. '/system/config.json')
+  if love._os == 'Android' or love._os == 'iOS' then
+    if Config.platform % 2 == 0 then
+      Config.platform = Config.platform + 1 -- Make mobile
+    end
+  elseif love._os == 'Web' then
+    if Config.platform < 2 then
+      Config.platform = Config.platform + 2 -- Make web
+    end
+  end
   t.identity = Config.name 
   t.window.title = Config.name
   t.window.icon = Project.imagePath .. '/icon.png'

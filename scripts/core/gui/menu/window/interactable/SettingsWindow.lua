@@ -21,7 +21,9 @@ local SettingsWindow = class(GridWindow)
 
 -- Implements GridWindow:createWidgets.
 function SettingsWindow:createWidgets()
-  SwitchButton:fromKey(self, 'language', GameManager.language, nil, Project.languages)
+  if #Project.languages > 1 then
+    SwitchButton:fromKey(self, 'language', GameManager.language, nil, Project.languages)
+  end
   HSpinnerButton:fromKey(self, 'volumeBGM', 0, 100, AudioManager.volumeBGM).bigIncrement = 10
   HSpinnerButton:fromKey(self, 'volumeSFX', 0, 100, AudioManager.volumeSFX).bigIncrement = 10
   HSpinnerButton:fromKey(self, 'windowScroll', 10, 100, GUIManager.windowScroll).bigIncrement = 10
@@ -135,7 +137,14 @@ function SettingsWindow:colCount()
 end
 -- Overrides GridWindow:rowCount.
 function SettingsWindow:rowCount()
-  return GameManager:isDesktop() and 10 or GameManager:isMobile() and 6 or 9
+  local n = #Project.languages > 1 and 6 or 5 -- General config
+  if not GameManager:isMobile() then
+    n = n + 3 -- PC-only
+  end
+  if GameManager:isDesktop() then
+    n = n + 1 -- Desktop-only
+  end
+  return n
 end
 -- Overrides GridWindow:cellWidth.
 function SettingsWindow:cellWidth()
