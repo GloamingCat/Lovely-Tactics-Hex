@@ -106,8 +106,7 @@ end
 -- @param(input : ActionInput)
 function InventoryWindow:singleTargetItem(input)
   self.GUI:hide()
-  local gui = MenuTargetGUI(self.GUI, input.user.troop)
-  gui.input = input
+  local gui = MenuTargetGUI(self.GUI, input.user.troop, input)
   GUIManager:showGUIForResult(gui)
   self:refreshItems()
   _G.Fiber:wait()

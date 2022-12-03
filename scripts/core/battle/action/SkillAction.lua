@@ -14,6 +14,7 @@ local List = require('core/datastruct/List')
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
 local PathFinder = require('core/battle/ai/PathFinder')
 local PopupText = require('core/battle/PopupText')
+local Vector = require('core/math/Vector')
 local BattleAnimations = require('core/battle/BattleAnimations')
 
 -- Alias
@@ -221,21 +222,6 @@ function SkillAction:battleUse(input)
   -- Wait until everything finishes.
   _G.Fiber:wait(max(endFrame - GameManager.frame, 0) + self.finishTime)
 end
--- Applies the effects of the skill to the given battler.
--- @param(results : table) Skill result table.
--- @param(char : Character) Battler's character.
-function SkillAction:applyResults(input, results, battler, char)
-  battler:onSkillEffect(input, results, char)
-  battler:applyResults(results, char)
-  battler:onSkillResult(input, results, char)
-  if char then
-    if battler:isAlive() then
-      char:playAnimation(char.idleAnim)
-    else
-      char:playAnimation(char.koAnim)
-    end
-  end
-end
 -- Plays user's load and cast animations.
 function SkillAction:userEffects(input)
   -- Apply costs.
@@ -280,21 +266,16 @@ end
 function SkillAction:menuUse(input)
   if input.target then
     local results = self:calculateEffectResults(input.user, input.target)
-    local char = TroopManager:getBattlerCharacter(input.target)
-    self:applyResults(input, results, input.target, char)
+    self:singleTargetEffect(results, input, input.target)
   elseif input.targets then
     for i = 1, #input.targets do
       local results = self:calculateEffectResults(input.user, input.targets[i])
-      local char = TroopManager:getBattlerCharacter(input.targets[i])
-      self:applyResults(input, results, input.targets[i], char)
+      self:singleTargetEffect(results, input, input.targets[i])
     end
   else
     return { executed = false }
   end
   input.user:damageCosts(self.costs)
-  if self.data.castAnimID >= 0 then
-    BattleAnimations.playOnMenu(self.data.castAnimID, input.x, input.y, input.z, false)
-  end
   input.user:onSkillUse(input, TroopManager:getBattlerCharacter(input.user))
   return BattleAction.execute(self, input)
 end
@@ -309,7 +290,7 @@ function SkillAction:isCharacterAffected(input, char)
     return false
   end
   if self.effectCondition then
-    return self:effectCondition(input.user, char)
+    return self:effectCondition(input.user.battler, char.battler)
   else
     return true
   end
@@ -393,7 +374,7 @@ function SkillAction:allTargetsEffect(input, originTile)
   for i = #allTargets, 1, -1 do
     for targetChar in allTargets[i].characterList:iterator() do
       local results = self:calculateEffectResults(input.user.battler, targetChar.battler)
-      self:singleTargetEffect(results, input, targetChar, originTile)
+      self:singleTargetEffect(results, input, targetChar.battler, originTile)
     end
   end
   return allTargets
@@ -401,28 +382,39 @@ end
 -- Executes individual animation for a single tile.
 -- @param(targetChar : Character) the character that will be affected
 -- @param(originTile : ObjectTile) the user's original tile
-function SkillAction:singleTargetEffect(results, input, targetChar, originTile)
-  targetChar.battler:onSkillEffect(input, results, targetChar)
-  local wasAlive = targetChar.battler.state.hp > 0
+function SkillAction:singleTargetEffect(results, input, target, originTile)
+  local targetChar = TroopManager:getBattlerCharacter(target)
+  target:onSkillEffect(input, results, targetChar)
+  local wasAlive = target.state.hp > 0
   if #results.points == 0 and #results.status == 0 then
     -- Miss
     if wasAlive then
-      local pos = targetChar.position
-      local popupText = PopupText(pos.x, pos.y - 10, FieldManager.renderer)
+      local pos = targetChar and targetChar.position
+      local popupText = pos and
+        PopupText(pos.x, pos.y - 10, FieldManager.renderer) or
+        PopupText(input.x, input.y, GUIManager.renderer)
       popupText:addLine(Vocab.miss, 'popup_miss', 'popup_miss')
       popupText:popup()
     end
   elseif wasAlive or not results.damage then
-    targetChar.battler:popupResults(targetChar.position, results, targetChar)
-    BattleAnimations.targetEffect(self.data, targetChar, originTile)
-    if results.damage and self.data.damageAnim and wasAlive then
-      if self:isArea() then
-        originTile = input.target
+    local pos = targetChar and targetChar.position
+    local popupText = pos and
+      PopupText(pos.x, pos.y - 10, FieldManager.renderer) or
+      PopupText(input.x, input.y, GUIManager.renderer)
+    target:popupResults(popupText, results, targetChar)
+    if targetChar then
+      BattleAnimations.targetEffect(self.data, targetChar, originTile)
+      if results.damage and self.data.damageAnim and wasAlive then
+        if self:isArea() then
+          originTile = input.target
+        end
+        _G.Fiber:fork(targetChar.damage, targetChar, self.data, originTile, results)
       end
-      _G.Fiber:fork(targetChar.damage, targetChar, self.data, originTile, results)
+    else
+      BattleAnimations.menuTargetEffect(self.data, input.x, input.y)
     end
-    targetChar.battler:onSkillResult(input, results, targetChar)
-    if targetChar.battler.state.hp > 0 then
+    target:onSkillResult(input, results, targetChar)
+    if targetChar and target.state.hp > 0 then
       targetChar:playAnimation(targetChar.idleAnim)
     end
   end

@@ -86,8 +86,7 @@ function SkillWindow:onButtonConfirm(button)
   else
     -- Choose a target
     self.GUI:hide()
-    local gui = MenuTargetGUI(self.GUI, self.member.troop)
-    gui.input = input
+    local gui = MenuTargetGUI(self.GUI, self.member.troop, input)
     GUIManager:showGUIForResult(gui)
     _G.Fiber:wait()
     self.GUI:show()

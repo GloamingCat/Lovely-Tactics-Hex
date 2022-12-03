@@ -78,9 +78,9 @@ end
 
 -- Plays sound before pop-up.
 local Battler_popupResults = Battler.popupResults
-function Battler:popupResults(pos, results, character)
+function Battler:popupResults(popupText, results, character)
   if Config.sounds.critical and results.critical then
     AudioManager:playSFX(Config.sounds.critical)
   end
-  Battler_popupResults(self, pos, results, character)
+  Battler_popupResults(self, popupText, results, character)
 end

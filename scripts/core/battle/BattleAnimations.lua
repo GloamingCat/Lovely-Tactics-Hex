@@ -80,6 +80,7 @@ function BattleAnimations.castEffect(skill, tile, dir)
   end
   return 0
 end
+-- Plays the visual effect for the skill's target.
 -- @param(skill : table) Skill data.
 -- @param(char : Character) Target character.
 -- @param(tile : ObjectTile) Skill's origin tile.
@@ -92,6 +93,17 @@ function BattleAnimations.targetEffect(skill, char, tile)
     local anim = BattleAnimations.playOnField(skill.individualAnimID,
       pos.x, pos.y, pos.z - 10, mirror)
     return anim.duration
+  end
+  return 0
+end
+-- Plays the visual effect for the skill's target.
+-- @param(skill : table) Skill data.
+-- @param(x : number) Position x of the target (in pixels).
+-- @param(y : number) Position y of the target (in pixels).
+-- @ret(number) The duration of the animation.
+function BattleAnimations.menuTargetEffect(skill, x, y)
+  if skill.castAnimID >= 0 then
+    return BattleAnimations.playOnMenu(skill.castAnimID, x, y, -50, false)
   end
   return 0
 end

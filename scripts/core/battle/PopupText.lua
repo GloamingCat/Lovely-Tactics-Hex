@@ -16,7 +16,7 @@ local max = math.max
 -- Constants
 local distance = 15
 local speed = 8
-local pause = 30
+local pause = 15
 
 local PopupText = class()
 
@@ -117,7 +117,7 @@ function PopupText:popup(wait)
       Fiber:wait()
     end
     Fiber:wait(pause)
-    local f = speed * 100 / sprite.color.alpha
+    local f = speed / 4 / sprite.color.alpha
     while sprite.color.alpha > 0 do
       local a = max(sprite.color.alpha - f * GameManager:frameTime(), 0)
       sprite:setRGBA(nil, nil, nil, a)

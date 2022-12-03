@@ -33,18 +33,20 @@ local animID = tonumber(args.animID)
 
 -- Overrides. Changes targets if reflect.
 local SkillAction_singleTargetEffect = SkillAction.singleTargetEffect
-function SkillAction:singleTargetEffect(results, input, targetChar, originTile)
+function SkillAction:singleTargetEffect(results, input, target, originTile)
   local minTime = 0
-  if #results.points > 0 or #results.status > 0 then
-    if self.tags.reflectable then
-      local status = input.user.battler:reflects()
+  if self.tags.reflectable and (#results.points > 0 or #results.status > 0) then
+    local targetChar = TroopManager:getBattlerCharacter(target)
+    if targetChar then
+      local status = target:reflects()
       if status then
-        -- Animation
+        -- Reflect Animation
         FieldManager.renderer:moveToTile(targetChar:getTile())
         if animID then
           local x, y, z = targetChar.position:coordinates()
           BattleAnimations.playOnField(animID, x, y, z, false, true)
         end
+        -- Original skill's animation
         FieldManager.renderer:moveToTile(input.user:getTile())
         if self.data.castAnimID >= 0 and self.data.individuaAnimlID < 0 then
           minTime = BattleAnimations.playOnField(self.data.castAnimID,
@@ -54,13 +56,13 @@ function SkillAction:singleTargetEffect(results, input, targetChar, originTile)
         -- Change target
         originTile = targetChar:getTile()
         targetChar = input.user
-        results = self:calculateEffectResults(input.user.battler, targetChar.battler)
+        results = self:calculateEffectResults(input.user.battler, target)
         -- Remove reflect status
         input.user.battler.statusList:removeStatus(status, input.user)
       end
     end
   end
-  SkillAction_singleTargetEffect(self, results, input, targetChar, originTile)
+  SkillAction_singleTargetEffect(self, results, input, target, originTile)
   _G.Fiber:wait(math.max(minTime - GameManager.frame, 0))
 end
 

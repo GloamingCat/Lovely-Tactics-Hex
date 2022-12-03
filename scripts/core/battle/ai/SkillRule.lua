@@ -54,7 +54,7 @@ function SkillRule:isValidTarget(char, eff)
   if self.targetCondition and not self:targetCondition(self.input.user, char) then
     return false
   end
-  if self.skill.effectCondition and not self.skill:effectCondition(self.input.user, char) then
+  if self.skill.effectCondition and not self.skill:effectCondition(self.input.user.battler, char.battler) then
     return false
   end
   return true
