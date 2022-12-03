@@ -31,9 +31,17 @@ local TroopManager = class()
 
 -- Constructor.
 function TroopManager:init()
-  self.characterList = List()
-  self.troops = {}
   self.troopData = {}
+  self.characterList = nil
+  self.troops = nil
+  self.troopDirections = nil
+  self.centers = nil
+  self:reset()
+end
+-- Reset party configuration.
+function TroopManager:reset()
+  self.chosenTroops = {}
+  self.playerParty = nil
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -42,13 +50,14 @@ end
 
 -- Creates all battle characters based on field's tile data.
 function TroopManager:createTroops(save)
+  self.characterList = List()
+  self.troops = {}
   local parties = FieldManager.currentField.parties
   -- Player's party ID
   local playerID = save and save.playerParty or FieldManager.currentField.playerParty
   if playerID == -1 then
-    playerID = rand(0, #parties - 1)
-  else
-    playerID = playerID
+    playerID = Config.battle.keepParties and self.playerParty -- Keep previous troop
+      or rand(0, #parties - 1)
   end
   local playerTroop = nil
   self.playerParty = playerID
@@ -63,7 +72,8 @@ function TroopManager:createTroops(save)
       self:createTroop(self.playerTroopID, partyInfo, id)
     else
       playerTroop = playerTroop or Troop()
-      local troopID = self:getRandomTroop(partyInfo.troopSpawn, playerTroop)
+      local troopID = Config.battle.keepParties and self.chosenTroops[id] -- Keep previous troop
+        or self:getRandomTroop(partyInfo.troopSpawn, playerTroop)
       if troopID >= 0 then
         self:createTroop(troopID, partyInfo, id)
       end
@@ -105,6 +115,9 @@ function TroopManager:createTroop(troopID, partyInfo, party, save)
   troop.x = partyInfo.x
   troop.y = partyInfo.y
   troop.h = partyInfo.h
+  if Config.battle.keepParties then
+    self.chosenTroops[party] = troopID
+  end
   self.troops[party] = troop
   if partyInfo.memberGen == 0 then
     return
@@ -186,28 +199,36 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Searches for the Character with the given Battler.
--- @param(battler : Battler) the battler to search for
--- @ret(Character) the character with the battler (nil of not found)
+-- @param(battler : Battler) The battler to search for.
+-- @ret(Character) The character with the battler (nil of not found).
 function TroopManager:getBattlerCharacter(battler)
+  if not self.characterList then
+    return nil
+  end
   for bc in self.characterList:iterator() do 
     if bc.battler == battler then
       return bc
     end
   end
 end
--- Searches for the Character with the given battler ID.
--- @param(id : number) the battler ID to search for
--- @ret(Character) the character with the battler ID (nil of not found)
-function TroopManager:getBattlerIDCharacter(id)
-   for bc in self.characterList:iterator() do 
+-- Searches for the Characters with the battlers of the given ID.
+-- @param(id : number) The ID of the battler to search for.
+-- @ret(table) An array with all the characters with the given battler.
+function TroopManager:getBattlerCharacters(id)
+  local c = {}
+  if not self.characterList then
+    return c
+  end
+  for bc in self.characterList:iterator() do 
     if bc.battler.id == id then
-      return bc
+      c[#c + 1] = bc
     end
   end
+  return c
 end
 -- Counts the number of characters that have the given battler.
--- @param(battler : table) the data of the battler
--- @ret(number) the number of characters
+-- @param(battler : table) The data of the battler.
+-- @ret(number) The number of characters.
 function TroopManager:getBattlerCount(battler)
   local c = 0
   for char in self.characterList:iterator() do
@@ -218,8 +239,8 @@ function TroopManager:getBattlerCount(battler)
   return c
 end
 -- Gets the number of characters in the given party.
--- @param(party : number) party of the character (optional, player's party by default)
--- @ret(number) the number of battler in the party
+-- @param(party : number) Party of the character (optional, player's party by default).
+-- @ret(number) The number of battler in the party.
 function TroopManager:getMemberCount(party)
   party = party or self.playerParty
   local count = 0
@@ -381,9 +402,9 @@ function TroopManager:clear()
     bc.battler = nil
     bc.troopSlot = nil
   end
-  self.characterList = List()
-  self.troopDirections = {}
-  self.troops = {}
+  self.characterList = nil
+  self.troops = nil
+  self.troopDirections = nil
   self.centers = nil
 end
 -- Store troop data in save.

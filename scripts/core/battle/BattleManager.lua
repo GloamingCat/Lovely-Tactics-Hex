@@ -67,6 +67,7 @@ end
 -- @param(state : table) Data about battle state for when the game is loaded mid-battle (optional).
 function BattleManager:loadBattle(state)
   self.saveData = state
+  TroopManager:reset()
   FieldManager:loadField(self.params.fieldID or self.currentField.id)
   -- Run battle
   while true do

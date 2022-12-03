@@ -23,7 +23,8 @@
     "attStep": "mov",
     "attJump": "jmp",
     "itemSkillID": 1,
-    "battleEndRevive": true
+    "battleEndRevive": true,
+    "keepParties": true
   },
   "troop": {
     "initialTroopID": 0,
