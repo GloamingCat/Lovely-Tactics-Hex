@@ -67,7 +67,7 @@
           "cancel": [],
           "name": "Poison",
           "tags": [],
-          "key": ""
+          "key": "poison"
         },
         "id": 0,
         "children": []
@@ -101,7 +101,7 @@
           "cancel": [],
           "name": "Sleep",
           "tags": [],
-          "key": ""
+          "key": "sleep"
         },
         "id": 1,
         "children": []
@@ -141,7 +141,7 @@
           "cancel": [],
           "name": "Blindness",
           "tags": [],
-          "key": ""
+          "key": "blind"
         },
         "id": 17,
         "children": []
@@ -187,7 +187,7 @@
               "value": "true"
             }
           ],
-          "key": ""
+          "key": "charm"
         },
         "id": 18,
         "children": []
@@ -228,7 +228,7 @@
           "cancel": [],
           "name": "Panic",
           "tags": [],
-          "key": ""
+          "key": "panic"
         },
         "id": 19,
         "children": []
@@ -270,7 +270,7 @@
           ],
           "name": "ATK-",
           "tags": [],
-          "key": ""
+          "key": "atk-"
         },
         "id": 15,
         "children": []
@@ -312,7 +312,7 @@
           ],
           "name": "DEF-",
           "tags": [],
-          "key": ""
+          "key": "def-"
         },
         "id": 16,
         "children": []
@@ -392,7 +392,7 @@
               "value": "true"
             }
           ],
-          "key": ""
+          "key": "reflect"
         },
         "id": 2,
         "children": []
@@ -429,7 +429,7 @@
           "cancel": [],
           "name": "Protect",
           "tags": [],
-          "key": ""
+          "key": "protect"
         },
         "id": 7,
         "children": []
@@ -471,7 +471,7 @@
           ],
           "name": "ATK+",
           "tags": [],
-          "key": ""
+          "key": "atk+"
         },
         "id": 5,
         "children": []
@@ -513,7 +513,7 @@
           ],
           "name": "DEF+",
           "tags": [],
-          "key": ""
+          "key": "def+"
         },
         "id": 6,
         "children": []
@@ -612,7 +612,7 @@
           ],
           "name": "Fire Elemental",
           "tags": [],
-          "key": ""
+          "key": "fire"
         },
         "id": 9,
         "children": []
@@ -666,7 +666,7 @@
           ],
           "name": "Ice Elemental",
           "tags": [],
-          "key": ""
+          "key": "ice"
         },
         "id": 10,
         "children": []
@@ -720,7 +720,7 @@
           ],
           "name": "Thunder Elemental",
           "tags": [],
-          "key": ""
+          "key": "thunder"
         },
         "id": 11,
         "children": []
@@ -760,7 +760,7 @@
           "cancel": [],
           "name": "Fire Amplifier",
           "tags": [],
-          "key": ""
+          "key": "fire+"
         },
         "id": 12,
         "children": []
@@ -800,7 +800,7 @@
           "cancel": [],
           "name": "Ice Amplifier",
           "tags": [],
-          "key": ""
+          "key": "ice+"
         },
         "id": 13,
         "children": []
@@ -840,7 +840,7 @@
           "cancel": [],
           "name": "Thunder Amplifier",
           "tags": [],
-          "key": ""
+          "key": "thunder+"
         },
         "id": 14,
         "children": []
@@ -874,7 +874,7 @@
       "elements": [],
       "statusDef": [],
       "cancel": [],
-      "name": "Properties",
+      "name": "Hidden Properties",
       "tags": [],
       "key": ""
     },

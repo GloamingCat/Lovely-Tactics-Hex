@@ -65,6 +65,25 @@
     "charm": "Encantar",
     "charm_desc": "Faz um inimigo ir para o seu lado com uma chance de 50%."
   },
+  "status": {
+    "poison": "Veneno",
+    "sleep": "Sono",
+    "blind": "Cegueira",
+    "charm": "Charme",
+    "panic": "Pânico",
+    "atk+": "ATK-",
+    "def+": "DEF-",
+    "reflect": "Reflexo",
+    "protect": "Proteção",
+    "atk+": "ATK+",
+    "def+": "DEF+",
+    "fire": "Elemental de Fogo",
+    "ice": "Elemental de Gelo",
+    "thunder": "Elemental de Raio"
+    "fire+": "Amplificar Fogo",
+    "ice+": "Amplificar Gelo",
+    "thunder+": "Amplificar Raio"
+  },
   "battler": {
     "slime1": "Gosma",
     "slime2": "Gosma Assassina",

@@ -76,7 +76,7 @@ function PopupText:addStatus(s)
   local popupName = 'popup_status_add' .. s.data.id
   local color = Color[popupName] and popupName or 'popup_status_add'
   local font = Fonts[popupName] and popupName or 'popup_status_add'
-  local name = Vocab.data[self.data.name] or s.data.name
+  local name = Vocab.data.status[s.data.key] or s.data.name
   self:addLine('+' .. name, color, font)
 end
 -- Add lines to show status removal.
@@ -87,7 +87,7 @@ function PopupText:removeStatus(all)
     local popupName = 'popup_status_remove' .. s.data.id
     local color = Color[popupName] and popupName or 'popup_status_remove'
     local font = Fonts[popupName] and popupName or 'popup_status_remove'
-    local name = Vocab.data[self.data.name] or s.data.name
+    local name = Vocab.data.status[s.data.key] or s.data.name
     self:addLine('-' .. name, color, font)
   end
 end
