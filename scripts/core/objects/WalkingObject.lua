@@ -20,7 +20,7 @@ local pixel2Tile = math.field.pixel2Tile
 local tile2Pixel = math.field.tile2Pixel
 
 -- Constants
-local speedLimit = (Config.player.dashSpeed + Config.player.walkSpeed) / 2
+local speedLimit = Config.player.walkSpeed * (1 + (Config.player.dashSpeed - 100) / 200)
 
 local WalkingObject = class(DirectedObject)
 
@@ -30,7 +30,7 @@ local WalkingObject = class(DirectedObject)
 
 -- Initializes movement / animation properties.
 function WalkingObject:initProperties()
-  self.speed = 60
+  self.speed = Config.player.walkSpeed
   self.autoAnim = true
   self.autoTurn = true
   self.walkAnim = 'Walk'

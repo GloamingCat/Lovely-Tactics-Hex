@@ -877,6 +877,7 @@
       "animation": "Idle",
       "frame": 1,
       "direction": 315,
+      "defaultSpeed": 60,
       "scripts": [
         {
           "global": false,

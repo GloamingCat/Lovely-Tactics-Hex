@@ -767,6 +767,7 @@
       "animation": "Idle",
       "frame": 1,
       "direction": 225,
+      "defaultSpeed": 60,
       "scripts": [
         {
           "global": false,
@@ -831,6 +832,7 @@
       "animation": "Potion",
       "frame": 2,
       "direction": 45,
+      "defaultSpeed": 100,
       "scripts": [
         {
           "global": false,

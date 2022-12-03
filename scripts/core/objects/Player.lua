@@ -39,6 +39,7 @@ function Player:init(transition, save)
     x = transition.x,
     y = transition.y,
     h = transition.h,
+    defaultSpeed = 100,
     direction = transition.direction,
     animation = 'Idle',
     scripts = {} }
@@ -46,12 +47,11 @@ function Player:init(transition, save)
   self.waitList = List()
 end
 -- Overrides CharacterBase:initProperties.
-function Player:initProperties(name, collisionTiles, colliderHeight)
-  Character.initProperties(self, name, collisionTiles, colliderHeight)
+function Player:initProperties(instData, name, collisionTiles, colliderHeight)
+  Character.initProperties(self, instData, name, collisionTiles, colliderHeight)
   self.inputDelay = 6 / 60
-  self.dashSpeed = Config.player.dashSpeed
   self.walkSpeed = Config.player.walkSpeed
-  self.speed = Config.player.walkSpeed
+  self.dashSpeed = self.walkSpeed * Config.player.dashSpeed / 100
   -- Step sound
   self.stepCount = 0
   self.freq = 16

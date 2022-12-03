@@ -838,6 +838,7 @@
       "animation": "Idle",
       "frame": 1,
       "direction": 135,
+      "defaultSpeed": 150,
       "scripts": [],
       "repeatCollisions": false
     }

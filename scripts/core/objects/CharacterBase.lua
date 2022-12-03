@@ -53,7 +53,7 @@ function CharacterBase:init(instData, save)
   FieldManager.characterList[self.key] = self
   -- Initialize properties
   self.persistent = instData.persistent
-  self:initProperties(data.name, data.tiles, data.collider, save)
+  self:initProperties(instData, data.name, data.tiles, data.collider, save)
   self:initGraphics(instData, data.animations, data.portraits, data.transform, data.shadowID, save)
   self:initScripts(instData, save)
   -- Initial position
@@ -64,13 +64,17 @@ end
 -- @param(name : string) The name of the character.
 -- @param(tiles : table) A list of collision tiles.
 -- @param(colliderHeight : number) Collider's height in height units.
-function CharacterBase:initProperties(name, tiles, colliderHeight, save)
+function CharacterBase:initProperties(instData, name, tiles, colliderHeight, save)
   self.name = name
   self.collisionTiles = tiles
   self.passable = false
   self.damageAnim = 'Damage'
   self.koAnim = 'KO'
   JumpingObject.initProperties(self)
+  self.speed = instData.defaultSpeed / 100 * Config.player.walkSpeed
+  if save then
+    self.speed = save.speed or (save.defaultSpeed or 100) * Config.player.walkSpeed / 100
+  end
 end
 -- Override DirectedObject:initGraphics. Creates the animation sets.
 function CharacterBase:initGraphics(instData, animations, portraits, transform, shadowID, save)
@@ -250,6 +254,7 @@ function CharacterBase:getPersistentData()
   data.z = self.position.z
   data.direction = self.direction
   data.animName = self.animName
+  data.speed = self.speed
   return data
 end
 

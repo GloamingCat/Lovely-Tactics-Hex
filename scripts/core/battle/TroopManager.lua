@@ -20,9 +20,6 @@ local Troop = require('core/battle/Troop')
 local rand = love.math.random
 local mathf = math.field
 
--- Constants
-local charSpeed = (Config.player.dashSpeed + Config.player.walkSpeed) / 2
-
 local TroopManager = class()
 
 ---------------------------------------------------------------------------------------------------
@@ -180,12 +177,11 @@ function TroopManager:createCharacter(tile, dir, member, party)
     party = party,
     animation = 'Idle',
     direction = dir,
+    defaultSpeed = Config.battle.charSpeed,
     scripts = {},
     tags = {} }
   charData.x, charData.y, charData.h = tile:coordinates()
-  local character = Character(charData)
-  character.speed = charSpeed
-  return character
+  return Character(charData)
 end
 -- Removes the given character.
 function TroopManager:deleteCharacter(char)
