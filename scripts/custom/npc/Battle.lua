@@ -32,6 +32,7 @@ return function(script)
     script:finishBattle { fade = 60, wait = true }
     print(script.battleLog)
     if not escaped then
+      script.char.vars.defeated = true
       script:deleteChar { permanent = script.args.permanent, key = 'self' }
     end
   end)

@@ -66,23 +66,25 @@ end
 -- lost in the field transition. At the end of the battle, it reloads the previous field.
 -- @param(state : table) Data about battle state for when the game is loaded mid-battle (optional).
 function BattleManager:loadBattle(state)
+  self.saveData = state
   FieldManager:loadField(self.params.fieldID or self.currentField.id)
   -- Run battle
   while true do
     FieldManager:playFieldBGM()
-    self:setUp(state)
-    local result = self:runBattle(state and state.turn ~= nil)
+    self:setUp(self.saveData)
+    local result = self:runBattle(self.saveData and self.saveData.turn ~= nil)
     self:clear()
     if result == 1 then -- Continue
       break
     elseif result == 2 then -- Retry
       FieldManager:loadField(self.params.fieldID or self.currentField.id)
-      state = nil
+      self.saveData = nil
     elseif result == 3 then -- Title Screen
       GameManager.restartRequested = true
       return
     end
   end
+  self.saveData = nil
   FieldManager:loadTransition(FieldManager.playerState.transition, FieldManager.playerState.field)
 end
 -- Runs until battle finishes.

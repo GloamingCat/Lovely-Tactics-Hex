@@ -892,6 +892,23 @@
         },
         {
           "global": false,
+          "block": false,
+          "wait": false,
+          "onLoad": true,
+          "onInteract": false,
+          "onCollide": false,
+          "description": "Spawn Verification",
+          "name": "npc/BattleSetup.lua",
+          "tags": [
+            {
+              "key": "resetPos",
+              "value": "true"
+            }
+          ],
+          "key": ""
+        },
+        {
+          "global": false,
           "block": true,
           "wait": true,
           "onLoad": false,

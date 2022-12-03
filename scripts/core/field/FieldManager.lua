@@ -81,7 +81,7 @@ end
 -- The loaded field will the treated as an exploration field.
 -- Don't use this function if you just want to move the player to another tile in the same field.
 -- @param(transition : table) The transition data.
--- @param(fromSave : boolean) True if the transition is load from save, as the last player's 
+-- @param(fieldSave : table) Field persistent state (if any).
 --  position.
 function FieldManager:loadTransition(transition, fieldSave)
   if self.currentField then
@@ -253,6 +253,14 @@ end
 function FieldManager:hideGrid()
   for tile in self.currentField:gridIterator() do
     tile.gui:hide()
+  end
+end
+-- Tells if the field was loaded from save instead of from a field transition.
+function FieldManager:loadedFromSave()
+  if self.player then
+    return self.player.saveData ~= nil
+  else
+    return BattleManager.saveData ~= nil
   end
 end
 
