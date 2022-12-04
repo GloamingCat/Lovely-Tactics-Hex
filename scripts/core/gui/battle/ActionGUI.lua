@@ -15,7 +15,7 @@ local BattleCursor = require('core/battle/BattleCursor')
 local GUI = require('core/gui/GUI')
 local ButtonWindow = require('core/gui/common/window/interactable/ButtonWindow')
 local ConfirmButtonWindow = require('core/gui/common/window/interactable/ConfirmButtonWindow')
-local StepWindow = require('core/gui/battle/window/StepWindow')
+local PropertyWindow = require('core/gui/battle/window/PropertyWindow')
 local TargetWindow = require('core/gui/battle/window/TargetWindow')
 
 local ActionGUI = class(GUI)
@@ -72,14 +72,15 @@ function ActionGUI:createCancelWindow()
   return self.buttonWindow
 end
 -- Creates step window if not created yet.
--- @ret(StepWindow) This GUI's step window.
-function ActionGUI:createStepWindow()
-  if not self.stepWindow then
-    local window = StepWindow(self)
-    self.stepWindow = window
+-- @ret(PropertyWindow) This GUI's step window.
+function ActionGUI:createPropertyWindow(label, value)
+  if not self.propertyWindow then
+    local window = PropertyWindow(self)
+    window:setProperty(label, value)
+    self.propertyWindow = window
     window:setVisible(false)
   end
-  return self.stepWindow
+  return self.propertyWindow
 end
 -- Creates target window if not created yet.
 -- @ret(TargetWindow) This GUI's target window.
@@ -310,8 +311,8 @@ end
 
 -- Shows grid and cursor.
 function ActionGUI:startGridSelecting(target)
-  if self.stepWindow then
-    GUIManager.fiberList:fork(self.stepWindow.show, self.stepWindow)
+  if self.propertyWindow then
+    GUIManager.fiberList:fork(self.propertyWindow.show, self.propertyWindow)
   end
   if self.buttonWindow then
     self.buttonWindow.active = true
@@ -330,15 +331,15 @@ function ActionGUI:endGridSelecting()
     self.buttonWindow.active = false
     GUIManager.fiberList:fork(self.buttonWindow.hide, self.buttonWindow)
   end
-  if self.stepWindow then
-    GUIManager.fiberList:fork(self.stepWindow.hide, self.stepWindow)
+  if self.propertyWindow then
+    GUIManager.fiberList:fork(self.propertyWindow.hide, self.propertyWindow)
   end
   if self.targetWindow then
     GUIManager.fiberList:fork(self.targetWindow.hide, self.targetWindow)
   end
   while (self.targetWindow and not self.targetWindow.closed 
       or self.buttonWindow and not self.buttonWindow.closed
-      or self.stepWindow and not self.stepWindow.closed) do
+      or self.propertyWindow and not self.propertyWindow.closed) do
     Fiber:wait()
   end
   FieldManager:hideGrid()

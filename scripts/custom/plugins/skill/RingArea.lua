@@ -24,6 +24,7 @@ the center by exactly X.
 
 -- Imports
 local SkillAction = require('core/battle/action/SkillAction')
+local ActionGUI = require('core/gui/battle/ActionGUI')
 
 -- Alias
 local mathf = math.field
@@ -49,6 +50,18 @@ function SkillAction:init(...)
     self.area = nil
     self.range = self:createRingMask() -- Only the center tile.
     self.moveAction.range = self.range
+  end
+end
+-- Overrides to create Range window.
+local SkillAction_onActionGUI = SkillAction.onActionGUI
+function SkillAction:onActionGUI(input)
+  SkillAction_onActionGUI(self, input)
+  local far = self.tags.cast_far
+  local near = self.tags.cast_near
+  if not self.showStepWindow and self:isLongRanged() and (far or near) then
+    far = far or '1'
+    near = tonumber(near or '1')
+    input.GUI:createPropertyWindow('range', near > 1 and (near .. '-' .. far) or far):show()
   end
 end
 -- Creates a mask for the ring format.

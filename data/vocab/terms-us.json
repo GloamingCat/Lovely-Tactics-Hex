@@ -102,6 +102,7 @@
   "hp": "HP",
   "sp": "SP",
   "steps": "Steps",
+  "range": "Range",
   "turnCount": "TC",
   "exp": "EXP",
   "level": "Level",

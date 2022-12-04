@@ -81,7 +81,7 @@ function BattleAction:onActionGUI(input)
   end
   FieldAction.onActionGUI(self, input)
   if self.showStepWindow then
-    input.GUI:createStepWindow():show()
+    input.GUI:createPropertyWindow('steps', input.user.battler.steps):show()
   end
   if GameManager:isMobile() then
     input.GUI:createConfirmWindow()
