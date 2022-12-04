@@ -83,6 +83,7 @@ function SpriteGrid:createGrid(renderer, width, height)
   for i = 1, 9 do
     local sprite = Sprite(renderer, texture, self.skinData[i].quad)
     self.slices[i] = ResourceManager:loadAnimation(self.skin, sprite)
+    sprite:setTransformation(self.skin.transform)
     sprite:setOffset(self.skinData[i].x, self.skinData[i].y)
     sprite:setScale(self.skinData[i].sx, self.skinData[i].sy)
   end
@@ -122,6 +123,14 @@ function SpriteGrid:setVisible(value)
   for i = 1, 9 do
     self.slices[i]:setVisible(value)
   end
+end
+-- Makes visible.
+function SpriteGrid:show()
+  self:setVisible(true)
+end
+-- Makes invisible.
+function SpriteGrid:hide()
+  self:setVisible(false)
 end
 -- Updates each slice position.
 -- @param(pos : Vector) Parent position.
