@@ -37,6 +37,10 @@ end
 -- @param(args.value : number) Value to be added to the party's money.
 function EventSheet:increaseMoney(args)
   local save = TroopManager.troopData[TroopManager.playerTroopID .. '']
+  if not save then
+    TroopManager:saveTroop(Troop())
+    save = TroopManager.troopData[TroopManager.playerTroopID .. '']
+  end
   save.money = save.money + args.value
   if FieldManager.hud then
     FieldManager.hud:refreshSave(true)

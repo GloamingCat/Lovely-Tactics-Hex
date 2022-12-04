@@ -299,7 +299,7 @@ end
 --  or player's troop from current save's data otherwise.
 -- @ret(Troop) The troop controlled by the player.
 function TroopManager:getPlayerTroop()
-  return self.troops[self.playerParty] or Troop()
+  return self.troops and self.troops[self.playerParty] or Troop()
 end
 -- Searchs for a winner party (when all alive characters belong to the same party).
 -- @ret(number) The number of the party (returns nil if no one won yet, -1 if there's a draw).
