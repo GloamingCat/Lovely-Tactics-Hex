@@ -13,6 +13,7 @@ return function(script)
   
   script:addEvent(function()
     script:turnCharTile { key = 'self', other = 'player' }
+    script:turnCharTile { key = 'player', other = 'self' }
     script:showDialogue { id = 1, character = "self", portrait = "BigIcon", message = 
       Vocab.dialogues.npc.Hi
     }

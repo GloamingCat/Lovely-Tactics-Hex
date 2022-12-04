@@ -23,7 +23,7 @@ return function(script)
       if script.char.cooldown and script.char.cooldown > 0 then
         script.char.cooldown = script.char.cooldown - GameManager:frameTime() * 60
       else
-        if script.char:tryPathMovement(FieldManager.player:getTile(), vision) then
+        if script.char:tryPathMovement(FieldManager.player:getTile(), vision) and script.char:consumePath() then
           script.char:playIdleAnimation()
           script:wait(pause + rand(-pauseVar, pauseVar))
         end

@@ -54,16 +54,23 @@ function DirectedObject:getRoundedDirection()
   local row = angle2Row(self.direction)
   return row * 45
 end
--- The tile on front of the character, considering character's direction.
+-- Gets the tile on front of the character, considering character's direction.
 -- @ret(ObjectTile) The front tile (nil if exceeds field border).
-function DirectedObject:getFrontTiles(angle)
+function DirectedObject:getFrontTile(angle)
   angle = angle or self:getRoundedDirection()
   local tile = self:getTile()
   local dx, dy = nextCoordDir(angle)
   if not tile.layer.grid[tile.x + dx] then
-    return {}
+    return nil
   end
-  local neighbor = tile.layer.grid[tile.x + dx][tile.y + dy]
+  return tile.layer.grid[tile.x + dx][tile.y + dy]
+end
+-- Gets the tiles on front of the character, considering character's direction.
+-- It includes tiles in other layers that are accessible from ramps.
+-- @ret(table) Array of ObjectTiles.
+function DirectedObject:getFrontTiles(angle)
+  local tile = self:getTile()
+  local neighbor = self:getFrontTile(angle)
   if not neighbor then
     return {}
   end
@@ -143,14 +150,20 @@ function DirectedObject:tileToAngle(x, y)
   local dx, dy, dz = tile2Pixel(x, y, 0)
   return self:vectorToAngle(dx - ox, oz - dz)
 end
--- Gets the angle given a difference in tiles.
--- @param(x : number) The grid x difference.
--- @param(y : number) The grid y difference.
+-- Gets the angle to a given grid point.
+-- @param(dx : number) The grid x difference.
+-- @param(dy : number) The grid y difference.
 -- @ret(number) The angle to the given tile.
 function DirectedObject:shiftToAngle(dx, dy)
   local tx, ty = self:tileCoordinates()
-  local angle = self:tileToAngle(tx + dx, ty + dy)
-  return angle2Row(angle) * 45
+  return self:tileToAngle(tx + dx, ty + dy)
+end
+-- Gets the angle given a difference in tiles.
+-- @param(dx : number) The grid x difference.
+-- @param(dy : number) The grid y difference.
+-- @ret(number) The row direction to look to the given tile (0-7).
+function DirectedObject:shiftToRow(dx, dy)
+  return angle2Row(self:shiftToAngle(dx, dy))
 end
 
 return DirectedObject

@@ -68,6 +68,8 @@ function Interactable:initScripts(instData, save)
     end
     self.vars = {}
   end
+  self.faceToInteract = false
+  self.approachToInteract = true
 end
 
 ---------------------------------------------------------------------------------------------------

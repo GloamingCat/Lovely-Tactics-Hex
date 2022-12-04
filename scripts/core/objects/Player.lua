@@ -161,19 +161,27 @@ end
 -- [COROUTINE] Moves player to the mouse coordinate.
 -- @param(button : string) Key of the button used to move (mouse1 or touch).
 function Player:moveByMouse(button)
-  local currentTile = self:getTile()
   local tile = FieldManager.currentField:getHoveredTile()
   if tile then
-    local interacted = (tile == currentTile or indexOf(self:getFrontTiles(), tile) ~= nil) 
-      and self:interactTile(tile)
-    local moved = not interacted and tile ~= currentTile and 
-      self:tryPathMovement(tile, Config.player.pathLength or 12)
-    if not moved then
-      self:playIdleAnimation()
+    if not self:tryInteract(tile) then
+      local moved = self:tryPathMovement(tile, Config.player.pathLength or 12) 
+      if not moved then
+        self:playIdleAnimation()
+      end
     end
   else
     self:playIdleAnimation()
   end
+end
+-- Checks if the tile is within reach to interact then interacts.
+-- @param(tile : ObjectTile) Selected tile.
+-- @ret(boolean) Whether of not the player interacted with this tile.
+function Player:tryInteract(tile)
+  local currentTile = self:getTile()
+  if math.field.tileDistance(tile.x, tile.y, currentTile.x, currentTile.y) > 1 then
+    return false
+  end
+  return self:interactTile(tile)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -196,11 +204,22 @@ function Player:moveByKeyboard(dx, dy, move)
       self:setDirection(angle)
       self:playIdleAnimation()
     end
-  elseif self.path then
-    self:consumePath()
-  else
+  elseif not self:moveFromPath() then
     self:playIdleAnimation()
   end
+end
+-- Follow the current path, if any.
+-- @ret(boolean) Whether the character moved or not.
+function Player:moveFromPath()
+  if not self.path then
+    return false
+  end
+  local path = self.path
+  local walked, tile = self:consumePath()
+  if not walked and #path == 0 then
+    self:interactTile(tile, true)
+  end
+  return walked
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -257,14 +276,25 @@ end
 -- Tries to interact with any character in the given tile.
 -- @param(tile : ObjectTile) The tile where the interactable is.
 -- @ret(boolean) True if the character interacted with someone, false otherwise.
-function Player:interactTile(tile)
+function Player:interactTile(tile, fromPath)
   if not tile then
     return false
   end
+  local isFront = true
+  local currentTile = self:getTile()
+  if currentTile ~= tile then
+    local frontTile = self:getFrontTile()
+    isFront = math.field.tileDistance(tile.x, tile.y, frontTile.x, frontTile.y) <= 1
+  end
+  local dir = self:shiftToRow(tile.x, tile.y) * 45
+  isFront = self:getRoundedDirection() - dir
   local interacted = false
   for i = #tile.characterList, 1, -1 do
     local char = tile.characterList[i]
-    if char ~= self and char:onInteract() then
+    if char ~= self and 
+        not (char.approachToInteract and fromPath) and
+        (not char.faceToInteract or isFront) and
+        char:onInteract() then
       interacted = true
     end
   end

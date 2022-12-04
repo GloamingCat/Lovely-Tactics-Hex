@@ -102,7 +102,7 @@ function Character:tryPathMovement(tile, pathLength)
     return false
   end
   self.path = path:addStep(tile, 1):toStack()
-  return self:consumePath()
+  return true
 end
 -- [COROUTINE] Moves to the given tile.
 -- @param(tile : ObjectTile) The destination tile.
