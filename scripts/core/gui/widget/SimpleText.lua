@@ -38,6 +38,7 @@ function SimpleText:createContent(text, properties)
   self.sprite = Text(text .. '', properties, GUIManager.renderer)
   self.text = text
   self.content:add(self.sprite)
+  self:updatePosition()
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -58,7 +59,11 @@ end
 -- @param(pos : Vector) Window position.
 function SimpleText:updatePosition(pos)
   local rpos = self.position
-  self.sprite:setXYZ(pos.x + rpos.x, pos.y + rpos.y, pos.z + rpos.z)
+  if pos then
+    self.sprite:setXYZ(pos.x + rpos.x, pos.y + rpos.y, pos.z + rpos.z)
+  else
+    self.sprite:setXYZ(rpos.x, rpos.y, rpos.z)
+  end
 end
 -- Gets the center of the text sprite, considering alignment.
 -- @ret(number) Pixel x of the center.

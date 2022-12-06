@@ -38,6 +38,11 @@ function TurnWindow:init(...)
   self.waitAction = WaitAction()
   ActionWindow.init(self, ...)
 end
+-- Overrides GridWindow:setProperties.
+function TurnWindow:setProperties()
+  ActionWindow.setProperties(self)
+  self.tooltipTerm = ''
+end
 -- Overrides GridWindow:createContent.
 -- Creates character cursor and stores troop's data.
 function TurnWindow:createContent(...)

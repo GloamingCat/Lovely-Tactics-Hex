@@ -48,7 +48,10 @@ function Button:fromKey(window, key)
     button:createIcon(icon)
   end
   if key and Vocab[key] then
-    button:createText(key, key, window.buttonFont)
+    button:createText(key, key, window.buttonFont, window.buttonAlign)
+    if Vocab.manual[key] then
+      button.tooltipTerm = key
+    end
   end
   button.key = key
   return button

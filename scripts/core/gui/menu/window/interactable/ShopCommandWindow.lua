@@ -26,11 +26,17 @@ function ShopCommandWindow:init(GUI, buy, sell)
   self.sell = sell
   GridWindow.init(self, GUI)
 end
+-- Overrides GridWindow:setProperties.
+function ShopCommandWindow:setProperties()
+  GridWindow.setProperties(self)
+  self.tooltipTerm = ''
+  self.buttonAlign = 'center'
+end
 -- Implements GridWindow:createWidgets.
 function ShopCommandWindow:createWidgets()
   Button:fromKey(self, 'buy').text:setAlign('center', 'center')
   Button:fromKey(self, 'sell').text:setAlign('center', 'center')
-  Button:fromKey(self, 'cancel').text:setAlign('center', 'center')
+  Button:fromKey(self, 'return').text:setAlign('center', 'center')
 end
 
 ---------------------------------------------------------------------------------------------------

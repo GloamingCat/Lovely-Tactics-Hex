@@ -1,0 +1,53 @@
+{
+  // Save
+  "loadSlot": "Select a save file to load.",
+  "saveSlot": "Select one of the slots to save.",
+  
+  // Settings
+  "wasd": "Use WASD to walk/navigate instead of arrows.",
+  "useMouse": "Enable/disable mouse input.",
+  "keys": "Change key bindings to game actions.",
+  "fieldScroll": "The velocity in which the camera moves when the cursor touches the screen edges (battle only).",
+  "windowScroll": "The velocity in which the window scrolls to show more buttons/options.",
+  "autoDash": "Makes the player character move faster by default.",
+  "volumeBGM": "Volume of background music.",
+  "volumeSFX": "Volume of sound effects.",
+  "resolution": "Select the size of the game's window.",
+  "buttonChange": "Select button to change the key binding.",
+  "pressKey": "Press new key.",
+  "apply": "Apply changes.",
+  "default": "Reset to default bindings.",
+  
+  // Main Menu
+  "inventory": "View and select an item to use on a character.",
+  "equips": "View and select the items that a character is wearing.",
+  "skills": "View and select a skill to use.",
+  "members": "View a character's attributes and stats.",
+  "save": "Save progress.",
+  "config": "Sound volume, controls and other game settings.",
+  "quit": "Options to exit game.",
+  "return": "Close menu.",
+  "close": "Close game.",
+  "title": "Returns to the game's initial screen."
+  "target": "Select the target.",
+  "user": "Select a character to use a skill.",
+  "equipper": "Select a character to equip items on.",
+  "battler": "Select a character to get their stats shown.",
+  
+  // Battle
+  "start": "Start battle.",
+  "formation": "Change the initial positions of your battlers.",
+  "attack": "Attack an enemy.",
+  "move": "Move character.",
+  "skill": "Select a special skill to use.",
+  "item": "Select an item from the inventory to use on a character.",
+  "escape": "Remove character from battle and add to back-up.",
+  "callAlly": "Bring a character from back-up to battle.",
+  "options": "Change settings or exit game.",
+  "inspect": "Navigate the field and view characters' details.",
+  "wait": "Ends current turn.",
+  
+  // Shop
+  "buy": "Buy items to your inventory.",
+  "sell": "Sell unused items from your inventory."
+}

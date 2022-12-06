@@ -19,6 +19,11 @@ local SettingsWindow = class(GridWindow)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides GridWindow:setProperties.
+function SettingsWindow:setProperties()
+  GridWindow.setProperties(self)
+  self.tooltipTerm = ''
+end
 -- Implements GridWindow:createWidgets.
 function SettingsWindow:createWidgets()
   if #Project.languages > 1 then

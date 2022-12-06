@@ -20,6 +20,7 @@ return  {
 	gui_medium = medium_font,
 	gui_big = big_font,
 	gui_huge = huge_font,
+  gui_tooltip = medium_font,
 
 	popup_dmghp = default_font,
 	popup_dmgsp = default_font,

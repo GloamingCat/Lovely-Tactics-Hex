@@ -171,6 +171,7 @@ function Database.loadVocabFiles(lang)
   Vocab = Serializer.load(dir .. 'terms-' .. lang .. '.json')
   Vocab.dialogues = Serializer.load(dir .. 'dialogues-' .. lang.. '.json')
   Vocab.data = Serializer.load(dir .. 'data-' .. lang.. '.json')
+  Vocab.manual = Serializer.load(dir .. 'manual-' .. lang.. '.json')
 end
 
 ---------------------------------------------------------------------------------------------------

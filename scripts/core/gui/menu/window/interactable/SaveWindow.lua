@@ -12,6 +12,7 @@ local Button = require('core/gui/widget/control/Button')
 local ConfirmWindow = require('core/gui/common/window/interactable/ConfirmWindow')
 local GridWindow = require('core/gui/GridWindow')
 local SaveInfo = require('core/gui/widget/data/SaveInfo')
+local Vector = require('core/math/Vector')
 
 local SaveWindow = class(GridWindow)
 
@@ -27,6 +28,11 @@ function SaveWindow:init(...)
   local button = self.confirmWindow.matrix[1]
   button.confirmSound = Config.sounds.save or button.confirmSound
   button.clickSound = button.confirmSound
+end
+-- Overrides GridWindow:setProperties.
+function SaveWindow:setProperties()
+  GridWindow.setProperties(self)
+  self.tooltipTerm = 'saveSlot'
 end
 -- Overrides GridWindow:createWidgets.
 function SaveWindow:createWidgets()

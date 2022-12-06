@@ -21,6 +21,13 @@ local GridWindow = class(Window)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides Window:setProperties.
+function GridWindow:setProperties()
+  Window.setProperties(self)
+  self.loopVertical = true
+  self.loopHorizontal = true
+  self.tooltipTerm = nil
+end
 -- Overrides Window:createContent.
 function GridWindow:createContent(width, height)
   self.matrix = Matrix2(self:colCount(), 1)
@@ -35,8 +42,6 @@ function GridWindow:createContent(width, height)
   if not self.noHighlight then
     self.highlight = Highlight(self)
   end
-  self.loopVertical = true
-  self.loopHorizontal = true
   Window.createContent(self, width or self:computeWidth(), height or self:computeHeight())
   self:packWidgets()
 end
@@ -83,7 +88,7 @@ end
 -- Hides cursor and unselected widget if deactivated.
 function GridWindow:setActive(value)
   if self.active ~= value then
-    self.active = value
+    Window.setActive(self, value)
     local widget = self:currentWidget()
     if value then
       if widget then
@@ -91,6 +96,7 @@ function GridWindow:setActive(value)
         if widget.onSelect then
           widget.onSelect(self, widget)
         end
+        self:setWidgetTooltip(widget)
         if self.cursor and self.open then
           self.cursor:show()
         end
@@ -119,6 +125,7 @@ function GridWindow:showContent()
     if widget.onSelect then
       widget.onSelect(self, widget)
     end
+    self:setWidgetTooltip(widget)
   else
     if self.cursor then
       self.cursor:hide()
@@ -227,6 +234,7 @@ function GridWindow:setSelectedWidget(widget)
     if widget.onSelect then
       widget.onSelect(self, widget)
     end
+    self:setWidgetTooltip(widget)
     self:updateViewport()
     if self.cursor then
       self.cursor:updatePosition(self.position)
@@ -252,6 +260,21 @@ function GridWindow:setSelectedWidget(widget)
       self.highlight:hide()
     end
   end
+end
+-- Gets the tooltip term according to gven widget.
+-- @param(widget : GridWidget : string) The new term or the widget with the new term.
+function GridWindow:setWidgetTooltip(widget)
+  if not self.tooltip then
+    return
+  end
+  if type(widget) == 'string' then
+    self.tooltip:setTerm('manual.' .. widget, self.tooltipTerm)
+  elseif widget and widget.tooltipTerm then
+    self.tooltip:setTerm('manual.' .. widget.tooltipTerm, widget.tooltipTerm)
+  else
+    self.tooltip:setTerm('manual.' .. self.tooltipTerm, self.tooltipTerm)
+  end
+  self.tooltip:redraw()
 end
 
 ---------------------------------------------------------------------------------------------------

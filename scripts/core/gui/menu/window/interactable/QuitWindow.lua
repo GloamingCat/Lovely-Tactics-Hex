@@ -19,10 +19,10 @@ local QuitWindow = class(OptionsWindow)
 
 -- Implements GridWindow:createWidgets.
 function QuitWindow:createWidgets()
-  Button:fromKey(self, 'cancel').text.sprite:setAlignX('center')
-  Button:fromKey(self, 'title').text.sprite:setAlignX('center')
+  Button:fromKey(self, 'cancel')
+  Button:fromKey(self, 'title')
   if GameManager:isDesktop() then
-    Button:fromKey(self, 'close').text.sprite:setAlignX('center')
+    Button:fromKey(self, 'close')
   end
 end
 -- When player cancels the quit action.

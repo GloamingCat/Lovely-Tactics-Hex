@@ -17,6 +17,11 @@ local MenuTargetWindow = class(PartyWindow)
 -- Member Input
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides GridWindow:setProperties.
+function MenuTargetWindow:setProperties()
+  PartyWindow.setProperties(self)
+  self.tooltipTerm = 'target'
+end
 -- When player selects a character from the member list window.
 function MenuTargetWindow:onButtonConfirm(button)
   local input = self.GUI.input

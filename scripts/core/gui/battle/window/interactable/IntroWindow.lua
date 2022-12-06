@@ -23,21 +23,20 @@ local IntroWindow = class(FieldCommandWindow, ActionWindow)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
+-- Changes the alignment of the button.
+function IntroWindow:setProperties(...)
+  FieldCommandWindow.setProperties(self, ...)
+  self.buttonAlign = 'center'
+  self.visualizeAction = VisualizeAction()
+end
 -- Creates a button for each backup member.
 function IntroWindow:createWidgets()
-  self.visualizeAction = VisualizeAction()
-  self:addButton('start')
-  self:addButton('formation')
-  self:addButton('inventory')
-  self:addButton('skills')
-  self:addButton('equips')
-  self:addButton('inspect')
-end
--- Overriden to align text.
-function IntroWindow:addButton(key)
-  local button = Button:fromKey(self, key)
-  button.text.sprite:setAlignX('center')
-  return button
+  Button:fromKey(self, 'start')
+  Button:fromKey(self, 'formation')
+  Button:fromKey(self, 'inventory')
+  Button:fromKey(self, 'skills')
+  Button:fromKey(self, 'equips')
+  Button:fromKey(self, 'inspect')
 end
 
 ---------------------------------------------------------------------------------------------------

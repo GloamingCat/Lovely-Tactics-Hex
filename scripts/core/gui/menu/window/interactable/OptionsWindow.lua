@@ -19,17 +19,23 @@ local OptionsWindow = class(GridWindow)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides GridWindow:setProperties.
+function OptionsWindow:setProperties(...)
+  GridWindow.setProperties(self, ...)
+  self.tooltipTerm = ''
+  self.buttonAlign = 'center'
+end
 -- Implements GridWindow:createWidgets.
 function OptionsWindow:createWidgets()
-  Button:fromKey(self, 'return').text.sprite:setAlignX('center')
-  Button:fromKey(self, 'config').text.sprite:setAlignX('center')
-  Button:fromKey(self, 'save').text.sprite:setAlignX('center')
+  Button:fromKey(self, 'return')
+  Button:fromKey(self, 'config')
+  Button:fromKey(self, 'save')
   if self.GUI.quitWindow then
-    Button:fromKey(self, 'quit').text.sprite:setAlignX('center')
+    Button:fromKey(self, 'quit')
   else
-    Button:fromKey(self, 'title').text.sprite:setAlignX('center')
+    Button:fromKey(self, 'title')
     if GameManager:isDesktop() then
-      Button:fromKey(self, 'close').text.sprite:setAlignX('center')
+      Button:fromKey(self, 'close')
     end
   end
 end

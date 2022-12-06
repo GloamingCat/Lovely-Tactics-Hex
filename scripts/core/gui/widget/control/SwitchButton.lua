@@ -40,7 +40,10 @@ function SwitchButton:fromKey(window, key, ...)
     button:createIcon(icon)
   end
   if key and Vocab[key] then
-    button:createText(key, key, window.buttonFont)
+    button:createText(key, key, window.buttonFont, 'left')
+    if Vocab.manual[key] then
+      button.tooltipTerm = key
+    end
   end
   button.onConfirm = window[key .. 'Confirm'] or button.onConfirm
   button.onChange = window[key .. 'Change'] or button.onChange

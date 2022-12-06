@@ -23,6 +23,12 @@ local KeyMapWindow = class(GridWindow)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides GridWindow:setProperties.
+-- Sets tooltip.
+function KeyMapWindow:setProperties()
+  GridWindow.setProperties(self)
+  self.tooltipTerm = 'buttonChange'
+end
 -- Implements GridWindow:createWidgets.
 function KeyMapWindow:createWidgets()
   for i = 1, #keys do
@@ -35,15 +41,17 @@ end
 -- @param(key : string) Key type code.
 function KeyMapWindow:createKeyButtons(key)
   local button1 = Button(self)
-  button1:createText(key)
+  button1:createText(key, key)
   button1.key = key
   button1.map = 'main'
+  button1.tooltipTerm = self.tooltipTerm
   local button2 = Button(self)
   local term = '{%' .. key .. '} ({%alt})'
-  local fb = key .. ' (alt)'
+  local fb = key .. ' ({%alt})'
   button2:createText(term, fb)
   button2.key = key
   button2.map = 'alt'
+  button2.tooltipTerm = self.tooltipTerm
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -78,6 +86,7 @@ end
 
 -- Chooses new resolution.
 function KeyMapWindow:onButtonConfirm(button)
+  self:setWidgetTooltip('pressKey')
   self.cursor.paused = true
   button:createInfoText('')
   repeat
@@ -92,6 +101,7 @@ function KeyMapWindow:onButtonConfirm(button)
   button:updatePosition(self.position)
   map[button.key] = code
   self.cursor.paused = false
+  self:setWidgetTooltip(button)
 end
 -- Applies changes.
 function KeyMapWindow:applyConfirm()

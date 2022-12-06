@@ -185,6 +185,12 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Changes the alignment of the button.
+local FieldCommandWindow_setProperties = FieldCommandWindow.setProperties
+function FieldCommandWindow:setProperties(...)
+  FieldCommandWindow_setProperties(self, ...)
+  self.buttonAlign = 'center'
+end
+-- Changes the alignment of the button.
 function FieldCommandWindow:createWidgets(...)
   Button:fromKey(self, 'inventory')
   Button:fromKey(self, 'members')
@@ -192,9 +198,6 @@ function FieldCommandWindow:createWidgets(...)
   Button:fromKey(self, 'save')
   Button:fromKey(self, 'quit')
   Button:fromKey(self, 'return')
-  for i = 1, #self.matrix do
-    self.matrix[i].text.sprite:setAlignX('center')
-  end
 end
 function FieldCommandWindow:colCount()
   return 1

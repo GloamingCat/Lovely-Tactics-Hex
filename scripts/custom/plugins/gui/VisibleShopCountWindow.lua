@@ -19,7 +19,6 @@ local ShopGUI = require('core/gui/menu/ShopGUI')
 local ShopItemWindow_onButtonSelect = ShopItemWindow.onButtonSelect
 function ShopItemWindow:onButtonSelect(button)
   ShopItemWindow_onButtonSelect(self, button)
-  self.GUI.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
   self.GUI.countWindow:setItem(button.item, button.price)
 end
 -- Shows the window to select the quantity.

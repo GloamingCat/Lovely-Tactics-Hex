@@ -17,6 +17,7 @@ Every content element for the window must have all the following methods:
 local Component = require('core/gui/Component')
 local List = require('core/datastruct/List')
 local SpriteGrid = require('core/graphics/SpriteGrid')
+local SimpleText = require('core/gui/widget/SimpleText')
 local Transformable = require('core/math/transform/Transformable')
 local Vector = require('core/math/Vector')
 
@@ -37,18 +38,23 @@ local Window = class(Component, Transformable)
 function Window:init(gui, width, height, position)
   Transformable.init(self, position)
   self.GUI = gui
-  self.maxTouchHoldTime = 2
-  self.speed = 10
+  self:setProperties()
   self.spriteGrid = (not self.noSkin) and SpriteGrid(self:getSkin(), Vector(0, 0, 1))
   self.width = width
   self.height = height
   self.active = false
-  self.offBoundsCancel = true
   self:insertSelf()
   Component.init(self, position, width, height)
   self:setPosition(position or Vector(0, 0, 0))
   self:setVisible(false)
   self.lastOpen = true
+end
+-- Sets general properties.
+function Window:setProperties()
+  self.noSkin = false
+  self.maxTouchHoldTime = 2
+  self.speed = 10
+  self.offBoundsCancel = true
 end
 -- Overrides Component:createContent.
 -- By default, only creates the skin.
@@ -57,6 +63,15 @@ function Window:createContent(width, height)
   self.height = height
   if self.spriteGrid then
     self.spriteGrid:createGrid(GUIManager.renderer, width, height)
+  end
+  if self.tooltipTerm then
+    local w = ScreenManager.width - self.GUI:windowMargin() * 2
+    local h = ScreenManager.height - self.GUI:windowMargin() * 2
+    self.tooltip = SimpleText('', Vector(-w/2, -h/2, -50), w, 'left', Fonts.gui_tooltip)
+    self.tooltip:setTerm('manual.' .. self.tooltipTerm, '')
+    self.tooltip:setAlign('left', self.tooltipAlign or 'bottom')
+    self.tooltip:setMaxHeight(h)
+    self.tooltip:redraw()
   end
 end
 
@@ -84,6 +99,9 @@ function Window:destroy()
   if self.spriteGrid then
     self.spriteGrid:destroy()
   end
+  if self.tooltip then
+    self.tooltip:destroy()
+  end
   Component.destroy(self)
 end
 -- Sets this window as the active one.
@@ -100,7 +118,14 @@ end
 -- @param(value : boolean) true to activate, false to deactivate
 function Window:setActive(value)
   self.active = value
+  if self.tooltip then
+    self.tooltip:setVisible(value)
+  end
 end
+-- Checks in a screen point is within window's bounds.
+-- @param(x : number) Pixel x of point.
+-- @param(y : number) Pixel y of point.
+-- @ret(boolean) Whether the given point is inside window.
 function Window:isInside(x, y)
   local w = self.width / 2
   local h = self.height / 2
@@ -226,11 +251,17 @@ function Window:showContent(...)
     end
     c:show(...)
   end
+  if self.tooltip and self.active then
+    self.tooltip:show(...)
+  end
 end
 -- Hides all content elements.
 function Window:hideContent(...)
   for c in self.content:iterator() do
     c:hide(...)
+  end
+  if self.tooltip then
+    self.tooltip:hide(...)
   end
 end
 

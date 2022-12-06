@@ -1,0 +1,55 @@
+{
+  // Save
+  "loadSlot": "Escolha um salvo pra continuar.",
+  "saveSlot": "Escolha um slot para salvar.",
+  
+  // Settings
+  "wasd": "Usar WASD para andar/navegar em vez das setas.",
+  "useMouse": "Ativar/desativar entrada de mouse.",
+  "keys": "Mudar mapeamentos de teclas para ações do jogo.",
+  "fieldScroll": "Velocidade de movimento da câmera quando o cursor toca nas bordas da tela (só em batalha).",
+  "windowScroll": "Velocidade com que a janela mostra os próximos botões/opções.",
+  "virtualGamepad": "Mostrar controles virtuais que emulam teclado/gamepad.",
+  "autoDash": "Faz o personagem correr por padrão.",
+  "volumeBGM": "Volume da música de fundo.",
+  "volumeSFX": "Volume de efeitos sonoros.",
+  "resolution": "Mudar o tamanho da janela do jogo.",
+  "tooltips": "Mostrar descrição de botões na borda inferior da tela.",
+  "buttonChange": "Selecione um botão para trocar a tecla.",
+  "pressKey": "Pressione a nova tecla.",
+  "apply": "Aplicar mudanças.",
+  "default": "Resetar para o mapeamento padrão.",
+  
+  // Main Menu
+  "inventory": "Visualizar e selecionar um item para usar em um personagem.",
+  "equips": "Visualizar e selecionar os itens equipados de um personagem.",
+  "skills": "Visualizar e selecionar uma habilidade de um personagem para usar.",
+  "members": "Visualizar os atributos e estado de um personagem.",
+  "save": "Salvar o progresso.",
+  "config": "Volume de áudio, controles e outras configurações de jogo.",
+  "quit": "Opções para sair do jogo.",
+  "return": "Fechar menu.",
+  "close": "Fecha jogo.",
+  "title": "Voltar à tela inicial do jogo."
+  "target": "Escolha um alvo.",
+  "user": "Escolha um personagem para usar uma habilidade.",
+  "equipper": "Escolha um personagem para mudar os equipamentos.",
+  "battler": "Escolha um personagem para visualizar os atributos.",
+  
+  // Battle
+  "start": "Iniciar batalha.",
+  "formation": "Trocar posições iniciais dos personagens do seu grupo.",
+  "attack": "Atacar um inimigo.",
+  "move": "Mover personagem.",
+  "skill": "Selecionar uma habilidade para usar.",
+  "item": "Selecionar um item do seu inventário para usar num personagem.",
+  "escape": "Remover personagem do campo e colocar na reserva.",
+  "callAlly": "Trazer um personagem da reserva e por em campo.",
+  "options": "Mudar configurações ou sair do jogo.",
+  "inspect": "Navegar pelo campo e checar atributos dos personagens em batalha.",
+  "wait": "Passar o turno.",
+  
+  // Shop
+  "buy": "Comprar itens pro seu inventário.",
+  "sell": "Vender itens não usados do seu inventário."
+}

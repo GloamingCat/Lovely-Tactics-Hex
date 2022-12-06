@@ -13,9 +13,14 @@ local SaveWindow = require('core/gui/menu/window/interactable/SaveWindow')
 local LoadWindow = class(SaveWindow)
 
 ---------------------------------------------------------------------------------------------------
--- Button
+-- Initialization
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides SaveWindow:setProperties.
+function LoadWindow:setProperties()
+  SaveWindow.setProperties(self)
+  self.tooltipTerm = 'loadSlot'
+end
 -- Overrides SaveWindow:createSaveButton.
 function LoadWindow:createSaveButton(file, name)
   if SaveManager:getHeader(file) then

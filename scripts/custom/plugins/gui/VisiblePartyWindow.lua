@@ -54,15 +54,14 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Changes the alignment of the button.
-local FieldCommandWindow_createWidgets = FieldCommandWindow.createWidgets
-function FieldCommandWindow:createWidgets(...)
-  FieldCommandWindow_createWidgets(self, ...)
-  for i = 1, #self.matrix do
-    self.matrix[i].text.sprite:setAlignX('left')
-  end
+local FieldCommandWindow_setProperties = FieldCommandWindow.setProperties
+function FieldCommandWindow:setProperties(...)
+  FieldCommandWindow_setProperties(self, ...)
+  self.buttonAlign = 'left'
 end
 -- Do not open/close GUI when changing focus to/from the PartyWindow.
-function FieldCommandWindow:openPartyWindow(GUI)
+function FieldCommandWindow:openPartyWindow(GUI, tooltip)
+  self.GUI.partyWindow.tooltipTerm = tooltip
   self.GUI.partyWindow:activate()
   Fiber:wait()
   local result = self.GUI:waitForResult()

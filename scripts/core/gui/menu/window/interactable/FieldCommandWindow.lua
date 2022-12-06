@@ -21,6 +21,12 @@ local FieldCommandWindow = class(OptionsWindow)
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides OptionsWindow:setPropertis.
+-- Changes button alingment.
+function FieldCommandWindow:setProperties()
+  OptionsWindow.setProperties(self)
+  self.buttonAlign = 'left'
+end
 -- Implements GridWindow:createWidgets.
 function FieldCommandWindow:createWidgets()
   Button:fromKey(self, 'inventory')
@@ -45,15 +51,15 @@ function FieldCommandWindow:inventoryConfirm()
 end
 -- Chooses a member to manage.
 function FieldCommandWindow:membersConfirm()
-  self:openPartyWindow(MemberGUI)
+  self:openPartyWindow(MemberGUI, 'battler')
 end
 -- Chooses a member to manage.
 function FieldCommandWindow:equipsConfirm()
-  self:openPartyWindow(EquipGUI)
+  self:openPartyWindow(EquipGUI, 'equipper')
 end
 -- Chooses a member to manage.
 function FieldCommandWindow:skillsConfirm()
-  self:openPartyWindow(SkillGUI)
+  self:openPartyWindow(SkillGUI, 'user')
 end
 -- Closes menu.
 function FieldCommandWindow:returnConfirm()
@@ -66,8 +72,9 @@ end
 
 -- Open the GUI's party window.
 -- @param(GUI : class) The sub GUI class to open after the character selection.
-function FieldCommandWindow:openPartyWindow(GUI)
+function FieldCommandWindow:openPartyWindow(GUI, tooltip)
   self.GUI:hide()
+  self.GUI.partyWindow.tooltipTerm = tooltip
   self.GUI.partyWindow:show()
   self.GUI.partyWindow:activate()
   local result = self.GUI:waitForResult()

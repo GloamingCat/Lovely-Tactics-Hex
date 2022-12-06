@@ -29,6 +29,12 @@ function PartyWindow:init(gui, troop)
   self.troop = troop
   ListWindow.init(self, gui, list)
 end
+-- Overrides GridWindow:setProperties.
+-- Initialized tooltip.
+function PartyWindow:setProperties()
+  ListWindow.setProperties(self)
+  self.tooltipTerm = ''
+end
 -- Overrides ListWindow:createListButton.
 -- Creates a button for the given member.
 -- @param(battler : Battler)
