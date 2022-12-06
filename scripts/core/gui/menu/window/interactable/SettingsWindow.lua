@@ -34,6 +34,7 @@ function SettingsWindow:createWidgets()
   HSpinnerButton:fromKey(self, 'windowScroll', 10, 100, GUIManager.windowScroll).bigIncrement = 10
   HSpinnerButton:fromKey(self, 'fieldScroll', 10, 100, GUIManager.fieldScroll).bigIncrement = 10
   SwitchButton:fromKey(self, 'autoDash', InputManager.autoDash)
+  SwitchButton:fromKey(self, 'tooltips', not GUIManager.disableTooltips)
   if not GameManager:isMobile() then
     SwitchButton:fromKey(self, 'useMouse', InputManager.mouseEnabled)
     SwitchButton:fromKey(self, 'wasd', InputManager.wasd)
@@ -77,6 +78,11 @@ end
 -- Change auto dash option.
 function SettingsWindow:autoDashChange(button)
   InputManager.autoDash = button.value
+end
+-- Change tooltips option.
+function SettingsWindow:tooltipsChange(button)
+  GUIManager.disableTooltips = not button.value
+  self.tooltip:setVisible(button.value)
 end
 -- Change mouse enabled option.
 function SettingsWindow:useMouseChange(button)
@@ -142,7 +148,7 @@ function SettingsWindow:colCount()
 end
 -- Overrides GridWindow:rowCount.
 function SettingsWindow:rowCount()
-  local n = #Project.languages > 1 and 6 or 5 -- General config
+  local n = #Project.languages > 1 and 7 or 6 -- General config
   if not GameManager:isMobile() then
     n = n + 3 -- PC-only
   end

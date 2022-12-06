@@ -13,6 +13,7 @@
   "volumeBGM": "Volume of background music.",
   "volumeSFX": "Volume of sound effects.",
   "resolution": "Select the size of the game's window.",
+  "tooltips": "Show tooltips at the bottom of the screen.",
   "buttonChange": "Select button to change the key binding.",
   "pressKey": "Press new key.",
   "apply": "Apply changes.",

@@ -119,7 +119,7 @@ end
 function Window:setActive(value)
   self.active = value
   if self.tooltip then
-    self.tooltip:setVisible(value)
+    self.tooltip:setVisible(value and not GUIManager.disableTooltips)
   end
 end
 -- Checks in a screen point is within window's bounds.
@@ -251,7 +251,7 @@ function Window:showContent(...)
     end
     c:show(...)
   end
-  if self.tooltip and self.active then
+  if self.tooltip and self.active and not GUIManager.disableTooltips then
     self.tooltip:show(...)
   end
 end

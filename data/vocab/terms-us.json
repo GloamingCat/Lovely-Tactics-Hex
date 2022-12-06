@@ -32,6 +32,7 @@
   "on": "ON",
   "off": "OFF",
   "autoDash": "Auto Dash",
+  "tooltips": "Tooltips",
   "useMouse": "Use Mouse",
   "wasd": "Use WASD",
   "resolution1": "0.5x",

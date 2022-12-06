@@ -323,6 +323,7 @@ function GameManager:restart()
   GUIManager = require('core/gui/GUIManager')()
   BattleManager = require('core/battle/BattleManager')()
   ScreenManager:refreshRenderers()
+  self:setConfig(SaveManager.config)
   self:start()
   self.restartRequested = false
 end

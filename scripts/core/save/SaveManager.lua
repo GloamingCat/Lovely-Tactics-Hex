@@ -69,6 +69,7 @@ function SaveManager:newConfig()
   conf.keyMap = copyTable(KeyMap)
   conf.useMouse = true
   conf.language = 1
+  conf.disableTooltips = false
   return conf
 end
 
@@ -106,6 +107,7 @@ function SaveManager:currentConfigData()
   conf.useMouse = InputManager.mouseEnabled
   conf.resolution = ScreenManager.mode
   conf.language = GameManager.language
+  conf.disableTooltips = GUIManager.disableTooltips
   return conf
 end
 
