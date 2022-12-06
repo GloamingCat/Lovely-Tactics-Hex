@@ -36,6 +36,32 @@ function ActionGUI:init(parent, input)
   self.errorSound = Config.sounds.buttonError
   self.input = input
   input.GUI = self
+  self:createScrollArrows()
+end
+-- Creates the scroll arrows, one for each direction.
+function ActionGUI:createScrollArrows()
+  self.scrollArrows = {}
+  local icon = {id = Config.animations.arrow}
+  icon.col, icon.row = 0, 1
+  for i = 1, 4 do
+    icon.col = (i - 1) % 2
+    icon.row = (i - 1 - icon.col) / 2
+    self.scrollArrows[i] = ResourceManager:loadIcon(icon, GUIManager.renderer)
+  end
+  self.scrollArrows[1]:setXYZ((ScreenManager.width - self.slideMargin) / 2, 0)
+  self.scrollArrows[2]:setXYZ(0, (ScreenManager.height - self.slideMargin) / 2)
+  self.scrollArrows[4]:setXYZ(-(ScreenManager.width - self.slideMargin) / 2, 0)
+  self.scrollArrows[3]:setXYZ(0, -(ScreenManager.height - self.slideMargin) / 2)
+end
+-- Overrides GUI:destroy.
+-- Destroys scroll arrows.
+function ActionGUI:destroy(...)
+  GUI.destroy(self, ...)
+  if self.scrollArrows then
+    for i = 1, #self.scrollArrows do
+      self.scrollArrows[i]:destroy()
+    end
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -109,6 +135,13 @@ function ActionGUI:waitForResult()
   while self.result == nil do
     if self.cursor then
       self.cursor:update()
+    end
+    if self.scrollArrows then
+      local visible = self.buttonWindow and not self.buttonWindow.closed
+      for i = 1, #self.scrollArrows do
+        self.scrollArrows[i]:setVisible(visible and not self.scrollArrows[i].offBounds)
+        
+      end
     end
     Fiber:wait()
     self:checkInput()
@@ -264,7 +297,7 @@ end
 
 -- Checks if the mouse pointer in the slide area.
 function ActionGUI:checkSlide()
-  if not self.buttonWindow or not self.buttonWindow.lastOpen then
+  if not self.buttonWindow or not self.buttonWindow.lastOpen or not self.scrollArrows then
     return
   end
   if GameManager:isMobile() and not InputManager.keys.touch:isPressing() then
@@ -287,10 +320,18 @@ function ActionGUI:slideX(d)
   local speed = self.slideSpeed * GUIManager.fieldScroll * 2 / 100
   local x = camera.position.x + d * speed * GameManager:frameTime() * 60
   local field = FieldManager.currentField 
-  if x >= field.minx and x <= field.maxx then
-    camera:setXYZ(x, nil)
-    InputManager.mouse:show()
+  self.scrollArrows[1].offBounds = false
+  self.scrollArrows[4].offBounds = false
+  if x < field.minx then
+    self.scrollArrows[4].offBounds = true
+    return
   end
+  if x > field.maxx then
+    self.scrollArrows[1].offBounds = true
+    return
+  end
+  camera:setXYZ(x, nil)
+  InputManager.mouse:show()
 end
 -- Slides the screen vertically.
 -- @param(d : number) Direction (1 or -1).
@@ -299,10 +340,18 @@ function ActionGUI:slideY(d)
   local speed = self.slideSpeed * GUIManager.fieldScroll * 2 / 100
   local y = camera.position.y + d * speed * GameManager:frameTime() * 60
   local field = FieldManager.currentField 
-  if y >= field.miny and y <= field.maxy then
-    camera:setXYZ(nil, y)
-    InputManager.mouse:show()
+  self.scrollArrows[2].offBounds = false
+  self.scrollArrows[3].offBounds = false
+  if y < field.miny then
+    self.scrollArrows[3].offBounds = true
+    return
   end
+  if y > field.maxy then
+    self.scrollArrows[2].offBounds = true
+    return
+  end
+  camera:setXYZ(nil, y)
+  InputManager.mouse:show()
 end
 
 ---------------------------------------------------------------------------------------------------
