@@ -153,7 +153,7 @@ function GridWindow:createWidgets()
   -- Abstract.
 end
 -- Getscurrent selected widget.
--- @ret(GridWidget) the selected widget
+-- @ret(GridWidget) The selected widget.
 function GridWindow:currentWidget()
   if self.currentCol < 1 or self.currentCol > self.matrix.width or
       self.currentRow < 1 or self.currentRow > self.matrix.height then
@@ -167,12 +167,12 @@ function GridWindow:widgetCount()
   return #self.matrix
 end
 -- Insert widget at the given index.
--- @param(widget : GridWidget) the widget to insert
--- @param(i : number) the index of the widget (optional, last position by default)
+-- @param(widget : GridWidget) The widget to insert.
+-- @param(i : number) The index of the widget (optional, last position by default).
 function GridWindow:insertWidget(widget, i)
   i = i or #self.matrix + 1
   local last = #self.matrix
-  assert(i >= 1 and i <= last + 1, 'invalid widget index: ' .. pos)
+  assert(i >= 1 and i <= last + 1, 'invalid widget index: ' .. i)
   for w = last + 1, i + 1, -1 do
     self.matrix[w] = self.matrix[w - 1]
     self.matrix[w]:setIndex(w)
@@ -183,8 +183,8 @@ function GridWindow:insertWidget(widget, i)
   widget:updatePosition(self.position)
 end
 -- Removes widget at the given index.
--- @param(i : number) the index of the widget
--- @ret(GridWidget) the removed widget
+-- @param(i : number) The index of the widget.
+-- @ret(GridWidget) The removed widget.
 function GridWindow:removeWidget(i)
   local last = #self.matrix
   assert(i >= 1 and i <= last, 'invalid widget index: ' .. i)
@@ -276,6 +276,28 @@ function GridWindow:setWidgetTooltip(widget)
   end
   self.tooltip:redraw()
 end
+-- Moves to the next #cols widgets at once, keeping the cursor in place when possible.
+-- @param(dx : number) Page change direction (1 or -1).
+function GridWindow:nextPage(dx)
+  local oldWidget = self:currentWidget()
+  self.offsetRow = math.max(0, self.offsetRow + dx * self:rowCount())
+  self.currentRow = self.currentRow + dx * self:rowCount()
+  self:refreshGrid()
+  local newWidget = self:currentWidget()
+  while not newWidget do
+    self.currentRow = self.currentRow - dx
+    newWidget = self:currentWidget()
+  end
+  if oldWidget ~= newWidget then
+    if newWidget.selectSound then
+      AudioManager:playSFX(newWidget.selectSound)
+    end
+    if oldWidget then
+      oldWidget:setSelected(false)
+    end
+  end
+  self:setSelectedWidget(newWidget)
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Input - Keybord
@@ -284,27 +306,35 @@ end
 -- Called when player confirms.
 function GridWindow:onConfirm(widget)
   widget = widget or self:currentWidget()
-  if widget.enabled then
-    if widget.confirmSound then
-      AudioManager:playSFX(widget.confirmSound)
-    end
-    if widget.onConfirm then
-      widget.onConfirm(self, widget)
+  if widget then
+    if widget.enabled then
+      if widget.confirmSound then
+        AudioManager:playSFX(widget.confirmSound)
+      end
+      if widget.onConfirm then
+        widget.onConfirm(self, widget)
+      end
+    else
+      if widget.errorSound then
+        AudioManager:playSFX(widget.errorSound)
+      end
     end
   else
-    if widget.errorSound then
-      AudioManager:playSFX(widget.errorSound)
-    end
+    Window.onConfirm(self)
   end
 end
 -- Called when player cancels.
 function GridWindow:onCancel(widget)
   widget = widget or self:currentWidget()
-  if widget.cancelSound then
-    AudioManager:playSFX(widget.cancelSound)
-  end
-  if widget.onCancel then
-    widget.onCancel(self, widget)
+  if widget then
+    if widget.cancelSound then
+      AudioManager:playSFX(widget.cancelSound)
+    end
+    if widget.onCancel then
+      widget.onCancel(self, widget)
+    end
+  else
+    Window.onCancel(self)
   end
 end
 -- Called when a text input is received.
@@ -327,6 +357,15 @@ end
 -- Input - Mouse
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides Window:onClick.
+-- First verifies if user clicked on scroll.
+function GridWindow:onClick(button, x, y, triggerPoint)
+  if button == 1 and self.scroll and self.scroll:onClick(x, y) then
+    return
+  else
+    Window.onClick(self, button, x, y, triggerPoint)
+  end
+end
 -- Called when player confirms a button by mouse or touch.
 -- Overrides Window:onMouseConfirm.
 function GridWindow:onMouseConfirm(x, y, triggerPoint)
@@ -408,12 +447,12 @@ function GridWindow:getCellCoordinates(x, y)
   return x, y
 end
 -- Gets the coordinates adjusted depending on loop types.
--- @param(c : number) the column number
--- @param(r : number) the row number
--- @param(dx : number) the direction in x
--- @param(dy : number) the direction in y
--- @ret(number) new column number
--- @ret(number) new row number
+-- @param(c : number) The column number.
+-- @param(r : number) The row number.
+-- @param(dx : number) The direction in x.
+-- @param(dy : number) The direction in y.
+-- @ret(number) New column number.
+-- @ret(number) New row number.
 function GridWindow:movedCoordinates(c, r, dx, dy)
   local widget = self.matrix:get(c + dx, r + dy)
   if widget then
@@ -422,24 +461,24 @@ function GridWindow:movedCoordinates(c, r, dx, dy)
   if dx ~= 0 then
     if self.loopHorizontal then
       if dx > 0 then
-        c = self:rightLoop(r)
+        c = self:rightCell(r)
       else
-        c = self:leftLoop(r)
+        c = self:leftCell(r)
       end
     end
   else
     if self.loopVertical then
       if dy > 0 then
-        r = self:upLoop(c)
+        r = self:upperCell(c)
       else
-        r = self:downLoop(c)
+        r = self:bottomCell(c)
       end
     end
   end
   return c, r
 end
 -- Loops row r to the right.
-function GridWindow:rightLoop(r)
+function GridWindow:rightCell(r)
   local c = 1
   while not self.matrix:get(c,r) do
     c = c + 1
@@ -447,7 +486,7 @@ function GridWindow:rightLoop(r)
   return c
 end
 -- Loops row r to the left.
-function GridWindow:leftLoop(r)
+function GridWindow:leftCell(r)
   local c = self.matrix.width
   while not self.matrix:get(c,r) do
     c = c - 1
@@ -455,7 +494,7 @@ function GridWindow:leftLoop(r)
   return c
 end
 -- Loops column c up.
-function GridWindow:upLoop(c)
+function GridWindow:upperCell(c)
   local r = 1
   while not self.matrix:get(c,r) do
     r = r + 1
@@ -463,7 +502,7 @@ function GridWindow:upLoop(c)
   return r
 end
 -- Loops column c down.
-function GridWindow:downLoop(c)
+function GridWindow:bottomCell(c)
   local r = self.matrix.height
   while not self.matrix:get(c,r) do
     r = r - 1
@@ -476,26 +515,33 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Adapts the visible buttons.
--- @param(c : number) the current widget's column
--- @param(r : number) the current widget's row
+-- @param(c : number) The current widget's column.
+-- @param(r : number) The current widget's row.
 function GridWindow:updateViewport(c, r)
   local newOffsetCol, newOffsetRow = self:newViewport(c, r)
   if newOffsetCol ~= self.offsetCol or newOffsetRow ~= self.offsetRow then
     self.offsetCol = newOffsetCol
     self.offsetRow = newOffsetRow
-    for widget in self.matrix:iterator() do
-      widget:hide()
-      widget:updatePosition(self.position)
-      widget:show()
-    end
-    if self.scroll then
-      self.scroll:updatePosition(self.position)
-    end
+    self:refreshGrid()
   end
 end
--- Determines the new (c, r) coordinates of the widget matrix viewport.
--- @param(newc : number) the selected widget's column
--- @param(newr : number) the selected widget's row
+-- Refreshes which widget is visible according to current offset.
+function GridWindow:refreshGrid()
+  for widget in self.matrix:iterator() do
+    widget:hide()
+    widget:updatePosition(self.position)
+    widget:show()
+  end
+  if self.scroll then
+    self.scroll:updatePosition(self.position)
+  end
+end
+-- Determines the new minimum offset (c, r) coordinates of the widget matrix viewport.
+-- The offset if the difference between the current widget's coordinates and the selected visible cell's coordinates.
+-- @param(newc : number) The selected widget's column.
+-- @param(newr : number) The selected widget's row.
+-- @ret(number) Offset column.
+-- @ret(number) Offset row.
 function GridWindow:newViewport(newc, newr)
   newc, newr = newc or self.currentCol, newr or self.currentRow
   local c, r = self.offsetCol, self.offsetRow

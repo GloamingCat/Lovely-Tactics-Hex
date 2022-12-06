@@ -208,10 +208,10 @@ function Sprite:scaledBounds()
   return w * self.scaleX, h * self.scaleY
 end
 -- Gets the extreme values for the bounding box.
--- @ret(number) Min x.
--- @ret(number) Min y.
--- @ret(number) Max x.
--- @ret(number) Max y.
+-- @ret(number) Transformed min x.
+-- @ret(number) Transformed min y.
+-- @ret(number) Transformed width.
+-- @ret(number) Transformed height.
 function Sprite:totalBounds()
   local w, h = self:quadBounds()
   return Affine.getBoundingBox(self, w, h)

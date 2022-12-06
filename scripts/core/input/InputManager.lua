@@ -35,7 +35,7 @@ function InputManager:init()
   self.paused = false
   self.usingKeyboard = true
   self.mouseEnabled = true
-  self.wasd = false
+  self.wasd = true
   self.autoDash = false
   self.readingText = false
   self.lastKey = nil

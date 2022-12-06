@@ -4,7 +4,8 @@
   "saveSlot": "Select one of the slots to save.",
   
   // Settings
-  "wasd": "Use WASD to walk/navigate instead of arrows.",
+  "language": "Game's language.",
+  "wasd": "Use WASD to walk/navigate alongside arrows.",
   "useMouse": "Enable/disable mouse input.",
   "keys": "Change key bindings to game actions.",
   "fieldScroll": "The velocity in which the camera moves when the cursor touches the screen edges (battle only).",

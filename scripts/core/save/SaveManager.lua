@@ -65,7 +65,7 @@ function SaveManager:newConfig()
   conf.windowScroll = 50
   conf.fieldScroll = 50
   conf.autoDash = false
-  conf.wasd = false
+  conf.wasd = true
   conf.keyMap = copyTable(KeyMap)
   conf.useMouse = true
   conf.language = 1

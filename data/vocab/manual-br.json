@@ -4,7 +4,8 @@
   "saveSlot": "Escolha um slot para salvar.",
   
   // Settings
-  "wasd": "Usar WASD para andar/navegar em vez das setas.",
+  "language": "Idioma do jogo.",
+  "wasd": "Usar WASD para andar/navegar além das setas.",
   "useMouse": "Ativar/desativar entrada de mouse.",
   "keys": "Mudar mapeamentos de teclas para ações do jogo.",
   "fieldScroll": "Velocidade de movimento da câmera quando o cursor toca nas bordas da tela (só em batalha).",

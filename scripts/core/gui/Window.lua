@@ -52,7 +52,7 @@ end
 -- Sets general properties.
 function Window:setProperties()
   self.noSkin = false
-  self.maxTouchHoldTime = 2
+  self.maxTouchHoldTime = 1
   self.speed = 10
   self.offBoundsCancel = true
 end

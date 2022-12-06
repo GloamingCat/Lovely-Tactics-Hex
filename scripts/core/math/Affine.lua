@@ -42,12 +42,12 @@ function Affine.getTransformedPoints(t, w, h)
 end
 -- Gets the rectangle the represents the final bounding box of the given transformable.
 -- @param(t : Transformable)
--- @param(w : number) the width of the original rectangle
--- @param(h : number) the height of the original rectangle
--- @ret(number) the x of the new rectangle
--- @ret(number) the y of the new rectangle
--- @ret(number) the width of the new rectangle
--- @ret(number) the height of the new rectangle
+-- @param(w : number) The width of the original rectangle.
+-- @param(h : number) The height of the original rectangle.
+-- @ret(number) The x of the new rectangle.
+-- @ret(number) The y of the new rectangle.
+-- @ret(number) The width of the new rectangle.
+-- @ret(number) The height of the new rectangle.
 function Affine.getBoundingBox(t, w, h)
   local p = Affine.getTransformedPoints(t, w, h)
   local minx, maxx, miny, maxy = p[1], p[1], p[2], p[2]

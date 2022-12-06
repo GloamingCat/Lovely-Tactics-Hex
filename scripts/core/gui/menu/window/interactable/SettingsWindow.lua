@@ -29,12 +29,14 @@ function SettingsWindow:createWidgets()
   if #Project.languages > 1 then
     SwitchButton:fromKey(self, 'language', GameManager.language, nil, Project.languages)
   end
+  SwitchButton:fromKey(self, 'tooltips', not GUIManager.disableTooltips)
   HSpinnerButton:fromKey(self, 'volumeBGM', 0, 100, AudioManager.volumeBGM).bigIncrement = 10
   HSpinnerButton:fromKey(self, 'volumeSFX', 0, 100, AudioManager.volumeSFX).bigIncrement = 10
-  HSpinnerButton:fromKey(self, 'windowScroll', 10, 100, GUIManager.windowScroll).bigIncrement = 10
-  HSpinnerButton:fromKey(self, 'fieldScroll', 10, 100, GUIManager.fieldScroll).bigIncrement = 10
+  --HSpinnerButton:fromKey(self, 'windowScroll', 0, 100, GUIManager.windowScroll).bigIncrement = 10
+  if not GameManager:isMobile() then
+    HSpinnerButton:fromKey(self, 'fieldScroll', 0, 100, GUIManager.fieldScroll).bigIncrement = 10
+  end
   SwitchButton:fromKey(self, 'autoDash', InputManager.autoDash)
-  SwitchButton:fromKey(self, 'tooltips', not GUIManager.disableTooltips)
   if not GameManager:isMobile() then
     SwitchButton:fromKey(self, 'useMouse', InputManager.mouseEnabled)
     SwitchButton:fromKey(self, 'wasd', InputManager.wasd)
@@ -148,18 +150,12 @@ function SettingsWindow:colCount()
 end
 -- Overrides GridWindow:rowCount.
 function SettingsWindow:rowCount()
-  local n = #Project.languages > 1 and 7 or 6 -- General config
-  if not GameManager:isMobile() then
-    n = n + 3 -- PC-only
-  end
-  if GameManager:isDesktop() then
-    n = n + 1 -- Desktop-only
-  end
-  return n
+  local n = GameManager:isMobile() and 4 or GameManager:isWeb() and 8 or 9
+  return #Project.languages > 1 and n + 1 or n 
 end
 -- Overrides GridWindow:cellWidth.
 function SettingsWindow:cellWidth()
-  return 200
+  return 240
 end
 -- @ret(string) String representation (for debugging).
 function SettingsWindow:__tostring()
