@@ -68,7 +68,11 @@ function EventSheet:openTitleWindow(args)
     self.gui.titleWindow.text:setAlign('center', 'center')
   end
   self.gui.titleWindow:show()
-  self.gui.titleWindow:updateText(args.text)
+  if args.term then
+    self.gui.titleWindow:updateTerm(args.term, args.fallback)
+  else
+    self.gui.titleWindow:updateText(args.text)
+  end
 end
 -- Closes and destroys title window.
 function EventSheet:closeTitleWindow(args)

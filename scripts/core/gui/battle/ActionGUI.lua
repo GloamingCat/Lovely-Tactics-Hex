@@ -140,7 +140,6 @@ function ActionGUI:waitForResult()
       local visible = self.buttonWindow and not self.buttonWindow.closed
       for i = 1, #self.scrollArrows do
         self.scrollArrows[i]:setVisible(visible and not self.scrollArrows[i].offBounds)
-        
       end
     end
     Fiber:wait()
@@ -385,6 +384,11 @@ function ActionGUI:endGridSelecting()
   end
   if self.targetWindow then
     GUIManager.fiberList:fork(self.targetWindow.hide, self.targetWindow)
+  end
+  if self.scrollArrows then
+    for i = 1, #self.scrollArrows do
+      self.scrollArrows[i]:setVisible(false)
+    end
   end
   while (self.targetWindow and not self.targetWindow.closed 
       or self.buttonWindow and not self.buttonWindow.closed
