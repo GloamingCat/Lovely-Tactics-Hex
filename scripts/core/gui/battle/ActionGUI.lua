@@ -47,6 +47,7 @@ function ActionGUI:createScrollArrows()
     icon.col = (i - 1) % 2
     icon.row = (i - 1 - icon.col) / 2
     self.scrollArrows[i] = ResourceManager:loadIcon(icon, GUIManager.renderer)
+    self.scrollArrows[i]:setVisible(false)
   end
   self.scrollArrows[1]:setXYZ((ScreenManager.width - self.slideMargin) / 2, 0)
   self.scrollArrows[2]:setXYZ(0, (ScreenManager.height - self.slideMargin) / 2)
