@@ -284,7 +284,7 @@ function Player:interactTile(tile, fromPath)
   local currentTile = self:getTile()
   if currentTile ~= tile then
     local frontTile = self:getFrontTile()
-    isFront = math.field.tileDistance(tile.x, tile.y, frontTile.x, frontTile.y) <= 1
+    isFront = frontTile and math.field.tileDistance(tile.x, tile.y, frontTile.x, frontTile.y) <= 1
   end
   local dir = self:shiftToRow(tile.x, tile.y) * 45
   isFront = self:getRoundedDirection() - dir
