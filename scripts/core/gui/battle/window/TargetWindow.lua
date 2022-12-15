@@ -87,7 +87,7 @@ function TargetWindow:setBattler(battler)
   pos.y = pos.y + (height - self.height) / 2
   self:resize(nil, height)
   -- Name text
-  self.textName:setTerm('data.battler.' .. battler.key, battler.name)
+  self.textName:setTerm('data.battler.' .. battler.data.key, battler.name)
   self.textName:redraw()
   -- Class text
   self.txtJob:setTerm('data.job.' .. job.key, job.name)

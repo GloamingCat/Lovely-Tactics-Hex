@@ -27,7 +27,7 @@
     "staff_desc": "Aumenta 5ATK e 5SPR.",
     "hat": "Chapéu",
     "hat_desc": "Aumenta 5DEF.",
-    "ribbon": "Lacinho"
+    "ribbon": "Lacinho",
     "ribbon_desc": "Protege contra todos os status negativos."
   },
   "skill": {
@@ -71,8 +71,8 @@
     "blind": "Cegueira",
     "charm": "Charme",
     "panic": "Pânico",
-    "atk+": "ATK-",
-    "def+": "DEF-",
+    "atk-": "ATK-",
+    "def-": "DEF-",
     "reflect": "Reflexo",
     "protect": "Proteção",
     "atk+": "ATK+",
