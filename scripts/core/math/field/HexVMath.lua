@@ -11,7 +11,6 @@ Implements FieldMath methods to hexagonal fields in which the tiles are connecte
 local Vector = require('core/math/Vector')
 
 -- Alias
-local angle2Coord = math.angle2Coord
 local min = math.min
 local max = math.max
 local abs = math.abs
@@ -34,7 +33,7 @@ local HexVMath = require('core/math/field/FieldMath')
 -----------------------------------------------------------------------------------------------
 
 -- Creates an array with Vectors representing all neighbors of a tile.
--- @ret(table) array of Vectors
+-- @ret(table) Array of Vectors.
 function HexVMath.createNeighborShift()
   local s = HexVMath.createFullNeighborShift()
   table.remove(s, 5)
@@ -42,7 +41,7 @@ function HexVMath.createNeighborShift()
   return s
 end
 -- Creates an array with Vectors representing all Vertex by its distance from the center.
--- @ret(table) array of Vectors
+-- @ret(table) Array of Vectors.
 function HexVMath.createVertexShift()
   local v = {}
   local function put(x, y)
@@ -72,14 +71,16 @@ end
 -----------------------------------------------------------------------------------------------
 
 -- Gets the world width of the given field.
--- @param(field : Field)
--- @ret(number) width in world coordinates
+-- @param(sizeX : number) Field's maximum tile x.
+-- @param(sizeY : number) Field's maximum tile y.
+-- @ret(number) Width in world coordinates.
 function HexVMath.pixelWidth(sizeX, sizeY)
   return (sizeX + sizeY - 1) * (tileW + tileB) / 2 + (tileW - tileB) / 2
 end
 -- Gets the world height of the given field.
--- @param(field : Field)
--- @ret(number) height in world coordinates
+-- @param(sizeX : number) Field's maximum tile x.
+-- @param(sizeY : number) Field's maximum tile y.
+-- @ret(number) Height in world coordinates.
 function HexVMath.pixelHeight(sizeX, sizeY, lastLayer)
   return (sizeX + sizeY - 1) * tileH / 2 + tileH / 2 + lastLayer * pph
 end
@@ -88,8 +89,8 @@ end
 -- Field depth
 -----------------------------------------------------------------------------------------------
 
--- @param(sizeX : number) Field's maximum x.
--- @param(sizeY : number) Field's maximum y.
+-- @param(sizeX : number) Field's maximum tile x.
+-- @param(sizeY : number) Field's maximum tile y.
 -- @param(height : number) Field's maximum height.
 -- @ret(number) The maximum depth of the field's renderer.
 function HexVMath.maxDepth(sizeX, sizeY, maxHeight)
@@ -219,8 +220,8 @@ end
 -- Iterates through the set of tiles inside the given radius.
 -- The radius is the maximum distance to the center tile, so the center is always included.
 -- @param(radius : number) The max distance.
--- @param(centerx : number) The starting tile's x.
--- @param(centery : number) The starting tile's y.
+-- @param(centerX : number) The starting tile's x.
+-- @param(centerY : number) The starting tile's y.
 -- @param(sizeX : number) The max value of x.
 -- @param(sizeY : number) The max value of y.
 -- @ret(function) The iterator function.
@@ -293,10 +294,10 @@ function HexVMath.nextCoord(x, y, axisX, axisY, sizeX, sizeY)
   return x, y
 end
 -- Gets the next coordinates given a input direction.
--- @param(dx : number) the input's delta x in world coordinates
--- @param(dy : number) the input's delta y in world coordinates
--- @ret(number) the new x
--- @ret(number) the new y
+-- @param(dx : number) The input's delta x in world coordinates.
+-- @param(dy : number) The input's delta y in world coordinates.
+-- @ret(number) The new x.
+-- @ret(number) The new y.
 function HexVMath.nextCoordAxis(dx, dy)
   dx, dy = dx - dy, dx + dy
   return round(max(min(dx, 1), -1)), round(max(min(dy, 1), -1))

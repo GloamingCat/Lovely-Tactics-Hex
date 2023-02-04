@@ -32,7 +32,7 @@ local OrtMath = require('core/math/field/FieldMath')
 -----------------------------------------------------------------------------------------------
 
 -- Creates an array with Vectors representing all neighbors of a tile.
--- @ret(table) array of Vectors
+-- @ret(table) Array of Vectors.
 function OrtMath.createNeighborShift()
   local s = OrtMath.createFullNeighborShift()
   table.remove(s, 7)
@@ -42,7 +42,7 @@ function OrtMath.createNeighborShift()
   return s
 end
 -- Creates an array with Vectors representing all Vertex by its distance from the center.
--- @ret(table) array of Vectors
+-- @ret(table) Array of Vectors.
 function OrtMath.createVertexShift()
   local v = {}
   local function put(x, y)
@@ -70,14 +70,16 @@ end
 -----------------------------------------------------------------------------------------------
 
 -- Gets the world width of the given field.
--- @param(field : Field)
--- @ret(number) width in world coordinates
+-- @param(sizeX : number) Field's maximum tile x.
+-- @param(sizeY : number) Field's maximum tile y.
+-- @ret(number) Width in world coordinates.
 function OrtMath.pixelWidth(sizeX, sizeY)
   return sizeX * tileW
 end
 -- Gets the world height of the given field.
--- @param(field : Field)
--- @ret(number) height in world coordinates
+-- @param(sizeX : number) Field's maximum tile x.
+-- @param(sizeY : number) Field's maximum tile y.
+-- @ret(number) Height in world coordinates.
 function OrtMath.pixelHeight(sizeX, sizeY, lastLayer)
   return sizeY * tileH + lastLayer * pph
 end
@@ -86,15 +88,15 @@ end
 -- Field depth
 -----------------------------------------------------------------------------------------------
 
--- @param(sizeX : number) Field's maximum x.
--- @param(sizeY : number) Field's maximum y.
+-- @param(sizeX : number) Field's maximum tile x.
+-- @param(sizeY : number) Field's maximum tile y.
 -- @param(height : number) Field's maximum height.
 -- @ret(number) The maximum depth of the field's renderer.
 function OrtMath.maxDepth(sizeX, sizeY, maxHeight)
   return ceil(pph + dph * (maxHeight + 1))
 end
--- @param(sizeX : number) Field's maximum x.
--- @param(sizeY : number) Field's maximum y.
+-- @param(sizeX : number) Field's maximum tile x.
+-- @param(sizeY : number) Field's maximum tile y.
 -- @param(height : number) Field's maximum height.
 -- @ret(number) The minimum depth of the field's renderer.
 function OrtMath.minDepth(sizeX, sizeY, maxHeight)
@@ -210,30 +212,24 @@ end
 -- Iterates through the set of tiles inside the given radius.
 -- The radius is the maximum distance to the center tile, so the center is always included.
 -- @param(radius : number) The max distance.
--- @param(centerx : number) The starting tile's x.
--- @param(centery : number) The starting tile's y.
+-- @param(centerX : number) The starting tile's x.
+-- @param(centerY : number) The starting tile's y.
 -- @param(sizeX : number) The max value of x.
 -- @param(sizeY : number) The max value of y.
 -- @ret(function) The iterator function.
-function OrtMath.radiusIterator(radius, centerX, centerY, sizeX, sizeY)
-  local maxX, maxY = sizeX - centerX, sizeY - centerY
-  local minX, minY = 1 - centerX, 1 - centerY
-	local nradius = -radius
-  local i     = max(nradius, minX)
-  local maxdX = min(radius, maxX)
-  local j     = max(nradius, nradius + abs(i), minY) - 1
-  local maxdY = min(radius, radius - abs(i), maxY)
+function OrtMath.radiusIterator(r, centerX, centerY, sizeX, sizeY)
+  local i = max(1, centerX - r) - 1
+  local j = max(1, centerY - r)
   return function()
-    j = j + 1
-    if j > maxdY then
-      i = i + 1
-      if i > maxdX then
+    i = i + 1
+    if i > min(centerX + r, sizeX) then
+      j = j + 1
+      if j > min(centerY + r, sizeY) then
         return
       end
-      j     = max(nradius, nradius + abs(i), minY)
-      maxdY = min(radius, radius - abs(i), maxY)
+      i = max(1, centerX - r)
     end
-    return i + centerX, j + centerY
+    return i, j
   end
 end
 
