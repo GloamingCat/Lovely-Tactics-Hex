@@ -145,7 +145,7 @@ function TurnManager:runPlayerTurn()
       return { escaped = false }
     end
     if not self:currentCharacter().battler:isActive() then
-      self.characterIndex = self:nextCharacterIndex()
+      self.characterIndex = self:nextCharacterIndex(nil, false) or self:nextCharacterIndex(nil, true) 
       if not self.characterIndex then
         return { endTurn = true }
       end
@@ -169,6 +169,7 @@ function TurnManager:runPlayerTurn()
 end
 -- Gets the next active character in the current party.
 -- @param(i : number) 1 or -1 to indicate direction.
+-- @param(controllable : boolean) True to exclude NPC, false to ONLY include NPC (nil by default).
 -- @ret(number) Next character index, or nil if there's no active character.
 function TurnManager:nextCharacterIndex(i, controllable)
   i = i or 1
@@ -178,7 +179,8 @@ function TurnManager:nextCharacterIndex(i, controllable)
   end
   local index = math.mod1(self.characterIndex + i, count)
   while not self.turnCharacters[index].battler:isActive() or
-      (controllable and self.turnCharacters[index].battler:getAI())  do
+      (controllable and self.turnCharacters[index].battler:getAI()) or
+      (controllable == false and not self.turnCharacters[index].battler:getAI())  do
     if index == self.characterIndex then
       return nil
     end
@@ -221,7 +223,7 @@ function TurnManager:startTurn(skipStart)
   end
 end
 -- Closes turn.
--- @param(char : Character) the character of the turn
+-- @param(char : Character) The character of the turn.
 function TurnManager:endTurn(result)
   for char in TroopManager.characterList:iterator() do
     char.battler:onTurnEnd(char)
@@ -236,7 +238,7 @@ function TurnManager:nextParty()
       table.insert(self.turnCharacters, char)
     end
   end
-  self.characterIndex = 1
+  self.characterIndex = self:nextCharacterIndex(nil, false) or self:nextCharacterIndex(nil, true)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -251,13 +253,18 @@ function TurnManager:characterTurnStart()
   FieldManager.renderer:moveToObject(char, nil, true)
 end
 -- Called the character's turn ended
--- @param(result : table) the action result returned by the BattleAction (or wait)
+-- @param(result : table) The action result returned by the BattleAction (or wait action).
 function TurnManager:characterTurnEnd(result)
   local char = self:currentCharacter()
   char.battler:onSelfTurnEnd(char, result)
   table.remove(self.turnCharacters, self.characterIndex)
   if self.characterIndex > #self.turnCharacters then
     self.characterIndex = 1
+  end
+  local index = self:nextCharacterIndex(nil, false)
+  if index then
+    -- Select NPC, if any.
+    self.characterIndex = index
   end
 end
 

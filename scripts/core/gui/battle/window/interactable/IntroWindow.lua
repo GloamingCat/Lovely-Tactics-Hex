@@ -28,6 +28,7 @@ function IntroWindow:setProperties(...)
   FieldCommandWindow.setProperties(self, ...)
   self.buttonAlign = 'center'
   self.visualizeAction = VisualizeAction()
+  self.formationAction = FormationAction()
 end
 -- Creates a button for each backup member.
 function IntroWindow:createWidgets()
@@ -50,25 +51,23 @@ end
 -- When player chooses Party button.
 function IntroWindow:formationConfirm(button)
   -- Executes action grid selecting.
-  local action = FormationAction()
-  local input = ActionInput(action, nil, nil, self.GUI)
+  local center = TroopManager.centers[TroopManager.playerParty]
+  local x, y, z = math.field.pixel2Tile(center.x, center.y, center.z)
+  x, y, z = math.round(x), math.round(y), math.round(z)
+  local target = FieldManager.currentField:getObjectTile(x, y, z)
+  local input = ActionInput(self.formationAction, nil, target, self.GUI)
   input.party = TroopManager.playerParty
-  action:onSelect(input)
-  self.GUI:hide()
-  GUIManager:showGUIForResult(ActionGUI(self.GUI, input))
-  local center = TroopManager.centers[input.party]
+  self:selectAction(self.formationAction, input)
   FieldManager.renderer:moveToPoint(center.x, center.y)
-  self.GUI:show()
+  self.result = nil
 end
 -- Overrides GridWindow:onCancel.
 function IntroWindow:inspectConfirm()
   local center = TroopManager.centers[TroopManager.playerParty]
   local x, y, z = math.field.pixel2Tile(center.x, center.y, center.z)
-  local tx = math.round(x)
-  local ty = math.round(y)
-  local tz = math.round(z)
-  local target = FieldManager.currentField:getObjectTile(tx, ty, tz)
-  local input = ActionInput(nil, nil, target, self.GUI)
+  x, y, z = math.round(x), math.round(y), math.round(z)
+  local target = FieldManager.currentField:getObjectTile(x, y, z)
+  local input = ActionInput(self.visualizeAction, nil, target, self.GUI)
   self:selectAction(self.visualizeAction, input)
   FieldManager.renderer:moveToPoint(center.x, center.y)
   self.result = nil
