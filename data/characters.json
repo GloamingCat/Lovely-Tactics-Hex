@@ -127,7 +127,7 @@
           ],
           "name": "Arthur",
           "tags": [],
-          "key": ""
+          "key": "arthur"
         },
         "id": 1,
         "children": []
@@ -220,7 +220,7 @@
           ],
           "name": "Merlin",
           "tags": [],
-          "key": ""
+          "key": "merlin"
         },
         "id": 2,
         "children": []
@@ -277,7 +277,7 @@
           ],
           "name": "Lancelot",
           "tags": [],
-          "key": ""
+          "key": "lancelot"
         },
         "id": 5,
         "children": []
@@ -306,7 +306,7 @@
       },
       "portraits": [],
       "animations": [],
-      "name": "Jelly",
+      "name": "Slime",
       "tags": [],
       "key": ""
     },
@@ -377,9 +377,9 @@
               "id": 161
             }
           ],
-          "name": "Green Jelly",
+          "name": "Green Slime",
           "tags": [],
-          "key": ""
+          "key": "slime1"
         },
         "id": 0,
         "children": []
@@ -449,9 +449,9 @@
               "id": 161
             }
           ],
-          "name": "Purple Jelly",
+          "name": "Purple Slime",
           "tags": [],
-          "key": ""
+          "key": "slime2"
         },
         "id": 3,
         "children": []
@@ -521,9 +521,9 @@
               "id": 161
             }
           ],
-          "name": "Yellow Jelly",
+          "name": "Yellow Slime",
           "tags": [],
-          "key": ""
+          "key": "slime3"
         },
         "id": 4,
         "children": []
@@ -593,9 +593,9 @@
               "id": 161
             }
           ],
-          "name": "Red Jelly",
+          "name": "Red Slime",
           "tags": [],
-          "key": ""
+          "key": "slime4"
         },
         "id": 11,
         "children": []
@@ -669,9 +669,9 @@
               "id": 161
             }
           ],
-          "name": "Cyan Jelly",
+          "name": "Cyan Slime",
           "tags": [],
-          "key": ""
+          "key": "slime5"
         },
         "id": 12,
         "children": []
@@ -760,11 +760,83 @@
               "id": 161
             }
           ],
-          "name": "Giant Jelly",
+          "name": "Giant Slime",
           "tags": [],
-          "key": ""
+          "key": "slime6"
         },
         "id": 13,
+        "children": []
+      },
+      {
+        "data": {
+          "battlerID": 14,
+          "shadowID": 200,
+          "tiles": [
+            {
+              "dx": 0,
+              "dy": 0,
+              "height": 1
+            }
+          ],
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 280,
+            "saturation": 40,
+            "brightness": 100
+          },
+          "portraits": [],
+          "animations": [
+            {
+              "name": "Idle",
+              "id": 77
+            },
+            {
+              "name": "Walk",
+              "id": 78
+            },
+            {
+              "name": "Dash",
+              "id": 79
+            },
+            {
+              "name": "Battle:Idle",
+              "id": 77
+            },
+            {
+              "name": "Battle:Dash",
+              "id": 79
+            },
+            {
+              "name": "Battle:Damage",
+              "id": 81
+            },
+            {
+              "name": "Battle:Skill1",
+              "id": 68
+            },
+            {
+              "name": "Battle:KO",
+              "id": 82
+            },
+            {
+              "name": "Sleep:Idle",
+              "id": 161
+            }
+          ],
+          "name": "Ally Slime",
+          "tags": [],
+          "key": "slime0"
+        },
+        "id": 18,
         "children": []
       }
     ]
@@ -1087,9 +1159,9 @@
               "id": 161
             }
           ],
-          "name": "Neutral Jelly",
+          "name": "Neutral Slime",
           "tags": [],
-          "key": ""
+          "key": "slime7"
         },
         "id": 17,
         "children": []
@@ -1163,9 +1235,9 @@
               "id": 161
             }
           ],
-          "name": "Fire Jelly",
+          "name": "Fire Slime",
           "tags": [],
-          "key": ""
+          "key": "slime8"
         },
         "id": 16,
         "children": []

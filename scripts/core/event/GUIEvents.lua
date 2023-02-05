@@ -14,6 +14,7 @@ local FieldGUI = require('core/gui/menu/FieldGUI')
 local NumberWindow = require('core/gui/common/window/interactable/NumberWindow')
 local SaveGUI = require('core/gui/menu/SaveGUI')
 local ShopGUI = require('core/gui/menu/ShopGUI')
+local RecruitGUI = require('core/gui/menu/RecruitGUI')
 local TextInputWindow = require('core/gui/common/window/interactable/TextInputWindow')
 local Vector = require('core/math/Vector')
 
@@ -38,6 +39,17 @@ function EventSheet:openShopMenu(args)
   self.vars.hudOpen = FieldManager.hud.visible
   FieldManager.hud:hide()
   GUIManager:showGUIForResult(ShopGUI(nil, args.items, args.sell))
+  if self.vars.hudOpen then
+    FieldManager.hud:show()
+  end
+end
+-- Opens the ShopGUI.
+-- @param(args.items : table) Array of items.
+-- @param(args.sell : boolean) Sell enabling.
+function EventSheet:openRecruitMenu(args)
+  self.vars.hudOpen = FieldManager.hud.visible
+  FieldManager.hud:hide()
+  GUIManager:showGUIForResult(RecruitGUI(nil, args.chars, args.dismiss))
   if self.vars.hudOpen then
     FieldManager.hud:show()
   end

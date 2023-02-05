@@ -30,7 +30,7 @@
   "quit": "Options to exit game.",
   "return": "Close menu.",
   "close": "Close game.",
-  "title": "Returns to the game's initial screen."
+  "title": "Returns to the game's initial screen.",
   "target": "Select the target.",
   "user": "Select a character to use a skill.",
   "equipper": "Select a character to equip items on.",
@@ -51,5 +51,9 @@
   
   // Shop
   "buy": "Buy items to your inventory.",
-  "sell": "Sell unused items from your inventory."
+  "sell": "Sell unused items from your inventory.",
+
+  // Recruit
+  "hire": "Hire new generic allies.",
+  "dismiss": "Dismiss generic allies."
 }

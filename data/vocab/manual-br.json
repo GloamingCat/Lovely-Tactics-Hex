@@ -30,7 +30,7 @@
   "quit": "Opções para sair do jogo.",
   "return": "Fechar menu.",
   "close": "Fecha jogo.",
-  "title": "Voltar à tela inicial do jogo."
+  "title": "Voltar à tela inicial do jogo.",
   "target": "Escolha um alvo.",
   "user": "Escolha um personagem para usar uma habilidade.",
   "equipper": "Escolha um personagem para mudar os equipamentos.",
@@ -51,5 +51,9 @@
   
   // Shop
   "buy": "Comprar itens pro seu inventário.",
-  "sell": "Vender itens não usados do seu inventário."
+  "sell": "Vender itens não usados do seu inventário.",
+  
+  // Recruit
+  "hire": "Contratar novos aliados genéricos.",
+  "dismiss": "Dispensar aliados genéricos."
 }

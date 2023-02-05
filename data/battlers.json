@@ -33,6 +33,13 @@
       "elements": [],
       "items": [],
       "equip": [],
+      "recruit": false,
+      "icon": {
+        "id": -1,
+        "col": 0,
+        "row": 0
+      },
+      "description": "",
       "name": "Heroes",
       "tags": [],
       "key": ""
@@ -79,9 +86,16 @@
               "state": 1
             }
           ],
+          "recruit": false,
+          "icon": {
+            "id": -1,
+            "col": 0,
+            "row": 0
+          },
+          "description": "",
           "name": "Arthur",
           "tags": [],
-          "key": ""
+          "key": "arthur"
         },
         "id": 1,
         "children": []
@@ -119,7 +133,7 @@
             30
           ],
           "status": [
-            2
+            19
           ],
           "elements": [
             {
@@ -133,11 +147,66 @@
           ],
           "items": [],
           "equip": [],
+          "recruit": false,
+          "icon": {
+            "id": -1,
+            "col": 0,
+            "row": 0
+          },
+          "description": "",
           "name": "Merlin",
           "tags": [],
-          "key": ""
+          "key": "merlin"
         },
         "id": 2,
+        "children": []
+      },
+      {
+        "data": {
+          "persistent": true,
+          "ai": [],
+          "jobID": 0,
+          "attackID": 15,
+          "level": 2,
+          "money": 20,
+          "exp": 10,
+          "attributes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "skills": [],
+          "status": [],
+          "elements": [],
+          "items": [],
+          "equip": [],
+          "recruit": true,
+          "icon": {
+            "id": 46,
+            "col": 0,
+            "row": 0
+          },
+          "description": "Level 2 neutral slime with no skills.",
+          "name": "Ally Slime",
+          "tags": [],
+          "key": "slime0"
+        },
+        "id": 14,
         "children": []
       }
     ]
@@ -176,6 +245,13 @@
       "elements": [],
       "items": [],
       "equip": [],
+      "recruit": false,
+      "icon": {
+        "id": -1,
+        "col": 0,
+        "row": 0
+      },
+      "description": "",
       "name": "Enemies",
       "tags": [],
       "key": ""
@@ -234,7 +310,14 @@
             }
           ],
           "equip": [],
-          "name": "Jelly",
+          "recruit": false,
+          "icon": {
+            "id": -1,
+            "col": 0,
+            "row": 0
+          },
+          "description": "",
+          "name": "Slime",
           "tags": [],
           "key": "slime1"
         },
@@ -287,7 +370,14 @@
           ],
           "items": [],
           "equip": [],
-          "name": "Killer Jelly",
+          "recruit": false,
+          "icon": {
+            "id": -1,
+            "col": 0,
+            "row": 0
+          },
+          "description": "",
+          "name": "Killer Slime",
           "tags": [],
           "key": "slime2"
         },
@@ -346,7 +436,14 @@
             }
           ],
           "equip": [],
-          "name": "Poison Jelly",
+          "recruit": false,
+          "icon": {
+            "id": -1,
+            "col": 0,
+            "row": 0
+          },
+          "description": "",
+          "name": "Poison Slime",
           "tags": [],
           "key": "slime3"
         },
@@ -416,7 +513,14 @@
             }
           ],
           "equip": [],
-          "name": "Chicken Jelly",
+          "recruit": false,
+          "icon": {
+            "id": -1,
+            "col": 0,
+            "row": 0
+          },
+          "description": "",
+          "name": "Chicken Slime",
           "tags": [],
           "key": "slime4"
         },
@@ -509,7 +613,14 @@
             }
           ],
           "equip": [],
-          "name": "Magic Jelly",
+          "recruit": false,
+          "icon": {
+            "id": -1,
+            "col": 0,
+            "row": 0
+          },
+          "description": "",
+          "name": "Magic Slime",
           "tags": [],
           "key": "slime5"
         },
@@ -620,7 +731,14 @@
             }
           ],
           "equip": [],
-          "name": "Boss Jelly",
+          "recruit": false,
+          "icon": {
+            "id": -1,
+            "col": 0,
+            "row": 0
+          },
+          "description": "",
+          "name": "Boss Slime",
           "tags": [],
           "key": "slime6"
         },
@@ -657,6 +775,13 @@
       "elements": [],
       "items": [],
       "equip": [],
+      "recruit": false,
+      "icon": {
+        "id": -1,
+        "col": 0,
+        "row": 0
+      },
+      "description": "",
       "name": "Test",
       "tags": [],
       "key": ""
@@ -701,9 +826,16 @@
           "elements": [],
           "items": [],
           "equip": [],
+          "recruit": false,
+          "icon": {
+            "id": -1,
+            "col": 0,
+            "row": 0
+          },
+          "description": "",
           "name": "Test Battler",
           "tags": [],
-          "key": ""
+          "key": "test"
         },
         "id": 10,
         "children": []
@@ -755,9 +887,16 @@
             }
           ],
           "equip": [],
-          "name": "Neutral Jelly",
+          "recruit": false,
+          "icon": {
+            "id": -1,
+            "col": 0,
+            "row": 0
+          },
+          "description": "",
+          "name": "Neutral Slime",
           "tags": [],
-          "key": ""
+          "key": "slime7"
         },
         "id": 11,
         "children": []
@@ -816,9 +955,16 @@
             }
           ],
           "equip": [],
-          "name": "Fire Jelly",
+          "recruit": false,
+          "icon": {
+            "id": -1,
+            "col": 0,
+            "row": 0
+          },
+          "description": "",
+          "name": "Fire Slime",
           "tags": [],
-          "key": ""
+          "key": "slime8"
         },
         "id": 13,
         "children": []

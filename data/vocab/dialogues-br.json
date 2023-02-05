@@ -8,6 +8,7 @@
     "ThatsBad": "Meh.{p} Mas ainda estou disponível.",
     "WhatDoYou": "O que você quer fazer?",
     "Shop": "Loja",
+    "Recruit": "Recrutar",
     "Battle": "Batalha",
     "Nothing": "Nada"
   },
@@ -31,10 +32,10 @@
   
   "credits": {
     "Game": "\nProgramação, Design de Jogo",
-    "Art": "\Arte Visual",
+    "Art": "\nArte Visual",
     "Chars": "\n{fgui_button}Personagens, menus e tiles de cenários feios:",
     "Scenary": "\n{fgui_button}Tiles de cenário bonitos:",
-    "Sound": "\Sons",
+    "Sound": "\nSons",
     "Music": "\n{fgui_button}Música:",
     "SFX": "\n{fgui_button}Efeitos Sonoros:",
     

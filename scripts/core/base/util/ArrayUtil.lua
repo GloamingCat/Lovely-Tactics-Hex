@@ -54,19 +54,23 @@ end
 -- Inserts an element at the given position. Shifts remaining elements accordingly.
 -- @param(array : table) Array to be modified.
 -- @param(index : number) Position of the inserted element.
+-- @param(element : unknown) Element to be added.
 function util.insert(array, index, element)
   for i = #array, index, -1 do
     array[i + 1] = array[i]
   end
   array[index] = element
 end
--- Remoes the element in the given position. Shifts remaining elements accordingly.
+-- Removes the element. Shifts remaining elements accordingly.
 -- @param(array : table) Array to be modified.
--- @param(index : number) Position of the element to be removed.
-function util.remove(array, index)
-  for i = index, #array do
-    array[i] = array[i + 1]
+-- @param(element : unknown) Element to be removed.
+-- @ret(number) Index of the removed element (nil if not found).
+function util.remove(array, element)
+  local i = util.indexOf(array, element)
+  if i then
+    table.remove(array, i)
   end
+  return i
 end
 
 ---------------------------------------------------------------------------------------------------

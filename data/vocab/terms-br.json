@@ -68,6 +68,10 @@
   "owned": "Possuídos",
   "equipped": "Equipados",
   
+  // Recruit
+  "hire": "Contratar",
+  "dismiss": "Dispensar",
+  
   // Battle win
   "win": "Você venceu!",
   "money": "Gold",

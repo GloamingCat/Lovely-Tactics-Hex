@@ -168,6 +168,7 @@ function ShopCountWindow:apply()
     troop.inventory:addItem(self.item.id, self.spinner.value)
   else
     troop.inventory:removeItem(self.item.id, self.spinner.value)
+    self.GUI.listWindow:setSellMode()
   end
   self.GUI.goldWindow:setGold(troop.money)
   self:returnWindow()

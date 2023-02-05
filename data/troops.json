@@ -46,7 +46,7 @@
           "battlerID": -1,
           "x": 2,
           "y": 2,
-          "list": 2
+          "list": 0
         },
         {
           "key": "Test",
@@ -88,7 +88,7 @@
           "list": 0
         }
       ],
-      "name": "Jelly Party 0",
+      "name": "Slime Party 0",
       "tags": [],
       "key": ""
     },
@@ -119,7 +119,7 @@
           "list": 0
         }
       ],
-      "name": "Jelly Party 1",
+      "name": "Slime Party 1",
       "tags": [],
       "key": ""
     },
@@ -150,7 +150,7 @@
           "list": 0
         }
       ],
-      "name": "Jelly Party 2",
+      "name": "Slime Party 2",
       "tags": [],
       "key": ""
     },
@@ -181,7 +181,7 @@
           "list": 0
         }
       ],
-      "name": "Jelly Party 3",
+      "name": "Slime Party 3",
       "tags": [],
       "key": ""
     },

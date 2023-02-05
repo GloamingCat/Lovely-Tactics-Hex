@@ -136,6 +136,36 @@ function Troop:visibleBattlers()
   end
   return list
 end
+-- @param(number : string) The battler's key or ID in the database.
+-- @ret(number) The number of members in the party with the given battler ID.
+function Troop:battlerCount(id)
+  local count = 0
+  local battler = Database.battlers[id]
+  for member in self.members:iterator() do
+    if member.list < 2 and member.battlerID == battler.id then
+      count = count + 1
+    end
+  end
+  return count
+end
+-- Adds a new member to the troop.
+-- @param(member : table) Member data.
+-- @param(battler : Battler) Member's battler (optional).
+function Troop:addMember(member, battler)
+  self.members[member.key] = member
+  self.members[#self.members + 1] = member
+  self.battlers[member.key] = battler
+  member.list = 1
+  member.x = 1
+  member.y = 1
+end
+-- Deletes a member completely.
+-- @param(key : string) Member's key.
+function Troop:removeMember(key)
+  util.array.remove(self.members, self.members[key])
+  self.members[key] = nil
+  self.battlers[key] = nil
+end
 -- Moves a member to another list.
 -- @param(key : string) Member's key.
 -- @param(list : number) List type. 0 is current, 1 is backup, 2 is hidden.
