@@ -107,7 +107,7 @@ end
 -- @param(final : ObjectTile) The destination tile.
 -- @ret(number) The move cost.
 function BattleMoveAction:getDistanceBetween(initial, final, user)
-  return (initial:getMoveCost() + final:getMoveCost()) / 2
+  return (initial:getMoveCost(user) + final:getMoveCost(user)) / 2
 end
 -- The max distance the character can walk.
 -- @ret(number) The distance in tiles (may not be integer).

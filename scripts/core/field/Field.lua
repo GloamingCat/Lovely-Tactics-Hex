@@ -181,17 +181,19 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Gets the move cost in the given coordinates.
+-- @param(char : Character) The character walking.
 -- @param(x : number) The x in tiles.
 -- @param(y : number) The y in tiles.
 -- @param(height : number) The layer height.
 -- @ret(number) The max of the move costs.
-function Field:getMoveCost(x, y, height)
-  local cost = 0
+function Field:getMoveCost(char, x, y, height)
+  local maxCost = 0
   local layers = self.terrainLayers[height]
   for _, layer in ipairs(layers) do
-    cost = max(cost, layer.grid[x][y].moveCost)
+    local cost = layer.grid[x][y]:getMoveCost(char)
+    maxCost = max(maxCost, cost)
   end
-  return cost
+  return maxCost
 end
 -- Gets the list of all terrain tiles with status effects in the given coordinates.
 -- @param(x : number) The x in tiles.

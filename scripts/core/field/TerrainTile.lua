@@ -108,7 +108,7 @@ function TerrainTile:updateGraphics()
     return
   end
   -- Create new terrain images.
-  self.moveCost = self.data.moveCost / 100
+  self:setMoveCost(self.data)
   self.tags = self.data and Database.loadTags(self.data.tags)
   if self.data.animID >= 0 then
     local rows = mathf.autoTileRows(self.layer, self.x, self.y, self.layer.sameType)
@@ -146,6 +146,31 @@ function TerrainTile:createQuarters(data, rows, depth)
     quarters[i]:setOffset(data.transform.offsetX - x, data.transform.offsetY - y, depth + d)
   end
   return quarters
+end
+
+---------------------------------------------------------------------------------------------------
+-- Move Cost
+---------------------------------------------------------------------------------------------------
+
+-- Gets the move cost for given character.
+-- @param(char : Character)
+-- @ret(number)
+function TerrainTile:getMoveCost(char)
+  if not char.battler or not self.jobMoveCost then
+    return self.moveCost / 100
+  end
+  return (self.jobMoveCost[char.battler.job.id] or self.moveCost) / 100
+end
+-- Sets move cost according to data.
+-- @param(data : table) Terrain data from database.
+function TerrainTile:setMoveCost(data)
+  if type(data) == 'number' then
+    self.moveCost = data
+    self.jobMoveCost = nil
+  else
+    self.moveCost = data.moveCost
+    self.jobMoveCost = data.jobMoveCost and Database.loadBonusTable(data.jobMoveCost)
+  end
 end
 
 return TerrainTile

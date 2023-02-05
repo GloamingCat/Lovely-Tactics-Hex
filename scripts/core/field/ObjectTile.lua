@@ -72,8 +72,8 @@ function ObjectTile:coordinates()
 end
 -- Gets the terrain move cost in this tile.
 -- @ret(number) The move cost.
-function ObjectTile:getMoveCost()
-  return FieldManager.currentField:getMoveCost(self:coordinates())
+function ObjectTile:getMoveCost(char)
+  return FieldManager.currentField:getMoveCost(char, self:coordinates())
 end
 -- Updates graphics animation.
 function ObjectTile:update()

@@ -181,6 +181,7 @@ end
 -- Cache tables
 local PatternCache = {}
 local TimingCache = {}
+local BonusCache = {}
 local TagMapCache = {}
 
 --Constants
@@ -240,6 +241,20 @@ function Database.loadDuration(durationstr, size)
   end
   return arr
 end
+-- Gets the table of move costs per job ID.
+-- @param(costs : table) Array of map entries.
+-- @ret(table) Map table.
+function Database.loadBonusTable(entries)
+  if BonusCache[entries] then
+    return BonusCache[entries]
+  end
+  local t = {}
+  for i = 1, #entries do
+    t[entries[i].id] = entries[i].value
+  end
+  BonusCache[entries] = t
+  return t
+end
 -- Gets the map of tags of the given tag array.
 -- @param(tags : table) Array of {key, value} entries.
 -- @ret(TagMap) The map with the given entries.
@@ -261,6 +276,9 @@ function Database.clearCache()
   end
   for k in pairs(TimingCache) do
     TimingCache[k] = nil
+  end
+  for k in pairs(BonusCache) do
+    BonusCache[k] = nil
   end
   for k in pairs(TagMapCache) do
     TagMapCache[k] = nil
