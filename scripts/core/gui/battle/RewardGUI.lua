@@ -81,6 +81,10 @@ function RewardGUI:getBattleRewards()
   -- Rewards per troop
   for party, troop in pairs(TroopManager.troops) do
     if troop ~= self.troop then
+      -- Troop EXP
+      for char in characters:iterator() do
+        r.exp[char.key] = (r.exp[char.key] or 0) + troop.data.exp
+      end
       -- Troop items
       r.items:addAllItems(troop.inventory)
       -- Troop money

@@ -380,8 +380,8 @@ function SkillAction:allTargetsEffect(input, originTile)
   return allTargets
 end
 -- Executes individual animation for a single tile.
--- @param(targetChar : Character) the character that will be affected
--- @param(originTile : ObjectTile) the user's original tile
+-- @param(target : Battler) The battler that will be affected.
+-- @param(originTile : ObjectTile) The user's original tile.
 function SkillAction:singleTargetEffect(results, input, target, originTile)
   local targetChar = TroopManager:getBattlerCharacter(target)
   target:onSkillEffect(input, results, targetChar)
