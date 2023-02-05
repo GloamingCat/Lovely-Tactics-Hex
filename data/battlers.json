@@ -82,7 +82,7 @@
           "equip": [
             {
               "key": "hand1",
-              "id": 5,
+              "id": 12,
               "state": 1
             }
           ],
@@ -132,9 +132,7 @@
           "skills": [
             30
           ],
-          "status": [
-            19
-          ],
+          "status": [],
           "elements": [
             {
               "id": 0,

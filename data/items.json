@@ -281,6 +281,50 @@
       },
       {
         "data": {
+          "description": "Increases 5ATK. Enables counter-attack.",
+          "icon": {
+            "id": 33,
+            "col": 0,
+            "row": 1
+          },
+          "price": 200,
+          "sellable": true,
+          "skillID": -1,
+          "consume": false,
+          "needsUser": false,
+          "effects": [],
+          "attributes": [],
+          "slot": "hand",
+          "allSlots": true,
+          "blocked": [],
+          "equipStatus": [
+            {
+              "id": 25,
+              "battle": false
+            }
+          ],
+          "elements": [],
+          "equipAttributes": [
+            {
+              "key": "atk",
+              "add": 5,
+              "mul": 0
+            }
+          ],
+          "name": "Counter Sword",
+          "tags": [
+            {
+              "key": "equip",
+              "value": "blade"
+            }
+          ],
+          "key": "swordcounter"
+        },
+        "id": 12,
+        "children": []
+      },
+      {
+        "data": {
           "description": "Increases 10ATK.",
           "icon": {
             "id": 33,

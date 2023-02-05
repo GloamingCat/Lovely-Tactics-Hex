@@ -15,6 +15,25 @@ battler does not counter-attack.
 local ActionInput = require('core/battle/action/ActionInput')
 local Battler = require('core/battle/battler/Battler')
 local SkillAction = require('core/battle/action/SkillAction')
+local BattleMoveAction = require('core/battle/action/BattleMoveAction')
+
+-- Parameters
+local maxCounters = tonumber(args.maxCounters) or 1
+
+---------------------------------------------------------------------------------------------------
+-- Skill Action
+---------------------------------------------------------------------------------------------------
+
+-- Overrides. Initializes counter attack skill.
+local Battler_initState = Battler.initState
+function Battler:initState(data, save)
+  Battler_initState(self, data, save)
+  if self.tags.counterID then
+    self.counterSkill = SkillAction:fromData(tonumber(self.tags.counterID))
+  else
+    self.counterSkill = self.attackSkill
+  end
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Skill Action
@@ -24,13 +43,14 @@ local SkillAction = require('core/battle/action/SkillAction')
 local SkillAction_allTargetsEffect = SkillAction.allTargetsEffect
 function SkillAction:allTargetsEffect(input, originTile)
   local allTargets = SkillAction_allTargetsEffect(self, input, originTile)
-  if not self.offensive or self.counter then
+  if not self.offensive or (self.counter and self.counter >= maxCounters) then
     return allTargets
   end
+  local userTile = input.user:getTile()
   for i = #allTargets, 1, -1 do
     for targetChar in allTargets[i].characterList:iterator() do
-      if targetChar.battler and targetChar.battler:isActive() and targetChar.battler:counterAttacks() then
-        targetChar.battler:attack(targetChar, input.user:getTile())
+      if targetChar.battler and targetChar.battler:isActive() and input.user.battler:isAlive() and targetChar.battler:counters() then
+        targetChar.battler:counterAttack(targetChar, userTile, self.counter)
       end
     end
   end
@@ -42,25 +62,27 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Checks if this character counter-attacks.
-function Battler:counterAttacks()
+function Battler:counters()
   for status in self.statusList:iterator() do
     if status.tags.counter then
-      return true
+      return status
     end
   end
-  return false
+  return nil
 end
 -- Attacks the given character.
-function Battler:attack(user, target)
-  local skill = self.attackSkill
+function Battler:counterAttack(user, target, counter)
+  local skill = self.counterSkill or self.attackSkill
   if self.tags.counter then
     skill = SkillAction(tonumber(self.tags.counter))
   end
   local input = ActionInput(skill, user, target)
+  input.moveAction = BattleMoveAction()
+  skill:onSelect(input)
   if input:canExecute() then
-    skill.counter = true
+    skill.counter = (counter or 0) + 1
     local result = input:execute()
-    skill.counter = false
+    skill.counter = nil
     return result
   end
 end
