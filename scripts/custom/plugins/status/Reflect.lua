@@ -48,17 +48,17 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
         end
         -- Original skill's animation
         FieldManager.renderer:moveToTile(input.user:getTile())
-        if self.data.castAnimID >= 0 and self.data.individuaAnimlID < 0 then
+        if self.data.castAnimID >= 0 and self.data.individualAnimID < 0 then
           minTime = BattleAnimations.playOnField(self.data.castAnimID,
             input.user.position:coordinates()).duration + GameManager.frame
           _G.Fiber:wait(self.centerTime)
         end
+        -- Remove reflect status
+        input.user.battler.statusList:removeStatus(status, targetChar)
         -- Change target
         originTile = targetChar:getTile()
-        targetChar = input.user
-        results = self:calculateEffectResults(input.user.battler, target)
-        -- Remove reflect status
-        input.user.battler.statusList:removeStatus(status, input.user)
+        target = input.user.battler
+        results = self:calculateEffectResults(target, target)
       end
     end
   end

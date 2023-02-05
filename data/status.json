@@ -402,6 +402,45 @@
           "script": "",
           "icon": {
             "id": 34,
+            "col": 1,
+            "row": 0
+          },
+          "priority": 101,
+          "visible": false,
+          "cumulative": false,
+          "charAnim": "",
+          "transformations": [],
+          "duration": -1,
+          "removeOnKO": false,
+          "removeOnDamage": false,
+          "battleOnly": false,
+          "deactivate": false,
+          "ko": false,
+          "behavior": [],
+          "drainAtt": "",
+          "drainValue": 0,
+          "percentage": true,
+          "attributes": [],
+          "elements": [],
+          "statusDef": [],
+          "cancel": [],
+          "name": "Counter",
+          "tags": [
+            {
+              "key": "counter",
+              "value": "true"
+            }
+          ],
+          "key": "counter"
+        },
+        "id": 25,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "icon": {
+            "id": 34,
             "col": 0,
             "row": 0
           },

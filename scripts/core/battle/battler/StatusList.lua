@@ -172,7 +172,7 @@ end
 -- Updates the character's graphics (transform and animation) according to the current status.
 -- @param(character : Character)
 function StatusList:updateGraphics(character)
-  local transform = character.statusTransform
+  local transform = nil
   for i = 1, #self do
     local data = self[i].data
     if #data.transformations > 0 then

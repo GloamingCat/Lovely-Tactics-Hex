@@ -862,6 +862,10 @@
             {
               "key": "projectileID",
               "value": "49"
+            },
+            {
+              "key": "reflectable",
+              "value": "true"
             }
           ],
           "key": ""
@@ -1009,6 +1013,10 @@
             {
               "key": "cast_minh",
               "value": "-4"
+            },
+            {
+              "key": "reflectable",
+              "value": "true"
             }
           ],
           "key": "mgk1"
@@ -1122,6 +1130,10 @@
             {
               "key": "effect_minh",
               "value": "-2"
+            },
+            {
+              "key": "reflectable",
+              "value": "true"
             }
           ],
           "key": "mgk2"
@@ -1227,6 +1239,10 @@
             {
               "key": "cast_minh",
               "value": "-3"
+            },
+            {
+              "key": "reflectable",
+              "value": "true"
             }
           ],
           "key": "blaze"
@@ -1332,6 +1348,10 @@
             {
               "key": "cast_minh",
               "value": "-3"
+            },
+            {
+              "key": "reflectable",
+              "value": "true"
             }
           ],
           "key": "frost"
@@ -1437,6 +1457,10 @@
             {
               "key": "cast_minh",
               "value": "-3"
+            },
+            {
+              "key": "reflectable",
+              "value": "true"
             }
           ],
           "key": "bolt"
@@ -2239,6 +2263,10 @@
             {
               "key": "wholeField",
               "value": "true"
+            },
+            {
+              "key": "reflectable",
+              "value": "true"
             }
           ],
           "key": "blind"
@@ -2752,6 +2780,10 @@
             {
               "key": "cast_minh",
               "value": "-3"
+            },
+            {
+              "key": "reflectable",
+              "value": "true"
             }
           ],
           "key": ""
@@ -2839,6 +2871,10 @@
             {
               "key": "cast_minh",
               "value": "-3"
+            },
+            {
+              "key": "reflectable",
+              "value": "true"
             }
           ],
           "key": ""
@@ -2926,6 +2962,10 @@
             {
               "key": "cast_minh",
               "value": "-3"
+            },
+            {
+              "key": "reflectable",
+              "value": "true"
             }
           ],
           "key": ""
@@ -3013,6 +3053,10 @@
             {
               "key": "cast_minh",
               "value": "-3"
+            },
+            {
+              "key": "reflectable",
+              "value": "true"
             }
           ],
           "key": ""

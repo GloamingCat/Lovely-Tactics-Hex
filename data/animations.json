@@ -470,7 +470,7 @@
               "introPattern": "",
               "introDuration": "",
               "loopPattern": "",
-              "loopDuration": "72",
+              "loopDuration": "54",
               "audio": [],
               "name": "Sparks",
               "tags": [],
@@ -676,8 +676,8 @@
                 "scaleY": 100,
                 "rotation": 0,
                 "red": 255,
-                "green": 128,
-                "blue": 0,
+                "green": 255,
+                "blue": 255,
                 "alpha": 255,
                 "hue": 0,
                 "saturation": 100,
@@ -747,8 +747,8 @@
                 "scaleY": 100,
                 "rotation": 0,
                 "red": 255,
-                "green": 128,
-                "blue": 0,
+                "green": 255,
+                "blue": 255,
                 "alpha": 255,
                 "hue": 0,
                 "saturation": 100,
@@ -1415,6 +1415,65 @@
           "key": ""
         },
         "id": 232,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "animation/KeyPoint.lua",
+          "quad": {
+            "path": "Icon/Skills.png",
+            "x": 40,
+            "y": 60,
+            "width": 20,
+            "height": 20
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 10,
+            "offsetY": 10,
+            "offsetDepth": -12,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 180,
+            "saturation": 20,
+            "brightness": 300
+          },
+          "introPattern": "",
+          "introDuration": "30",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [
+            {
+              "name": "crystal",
+              "volume": 70,
+              "pitch": 110,
+              "time": 0
+            }
+          ],
+          "name": "Shield",
+          "tags": [
+            {
+              "key": "kp",
+              "value": "15 Scale 2 2"
+            },
+            {
+              "key": "kp",
+              "value": "15 RGBA 1 1 1 1"
+            },
+            {
+              "key": "kp",
+              "value": "30 RGBA 1 1 1 0"
+            }
+          ],
+          "key": ""
+        },
+        "id": 98,
         "children": []
       }
     ]
