@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-ShopItemWindow
+ShopListWindow
 ---------------------------------------------------------------------------------------------------
 Window with the list of items available to buy.
 
@@ -11,18 +11,18 @@ Window with the list of items available to buy.
 local Button = require('core/gui/widget/control/Button')
 local ListWindow = require('core/gui/common/window/interactable/ListWindow')
 
-local ShopItemWindow = class(ListWindow)
+local ShopListWindow = class(ListWindow)
 
 ---------------------------------------------------------------------------------------------------
 -- Initialization
 ---------------------------------------------------------------------------------------------------
 
-function ShopItemWindow:init(gui)
+function ShopListWindow:init(gui)
   self.visibleRowCount = 4
   ListWindow.init(self, gui, {})
 end
 -- Implements ListWindow:createListButton.
-function ShopItemWindow:createListButton(item)
+function ShopListWindow:createListButton(item)
   local price = item.price
   item = Database.items[item.id]
   local id = item.id
@@ -52,12 +52,12 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Use this window to buy items.
-function ShopItemWindow:setBuyMode()
+function ShopListWindow:setBuyMode()
   self.buy = true
   self:refreshButtons(self.GUI.items)
 end
 -- Use this window to sell items.
-function ShopItemWindow:setSellMode()
+function ShopListWindow:setSellMode()
   self.buy = false
   self:refreshButtons(self.GUI.troop.inventory)
 end
@@ -67,7 +67,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- @ret(boolean) True if at least one item of this type can be bought.
-function ShopItemWindow:buttonEnabled(button)
+function ShopListWindow:buttonEnabled(button)
   if self.buy then
     return self.GUI.troop.money >= button.price
   else
@@ -80,7 +80,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Shows the window to select the quantity.
-function ShopItemWindow:onButtonConfirm(button)
+function ShopListWindow:onButtonConfirm(button)
   local w = self.GUI.countWindow
   self:hide()
   w:show()
@@ -88,11 +88,11 @@ function ShopItemWindow:onButtonConfirm(button)
   w:activate()
 end
 -- Closes buy GUI.
-function ShopItemWindow:onButtonCancel(button)
+function ShopListWindow:onButtonCancel(button)
   self.GUI:hideShopGUI()
 end
 -- Updates item description.
-function ShopItemWindow:onButtonSelect(button)
+function ShopListWindow:onButtonSelect(button)
   self.GUI.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
 end
 
@@ -101,12 +101,12 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides ListWindow:cellWidth.
-function ShopItemWindow:cellWidth()
+function ShopListWindow:cellWidth()
   return ListWindow.cellWidth(self) * 4 / 5
 end
 -- @ret(string) String representation (for debugging).
-function ShopItemWindow:__tostring()
+function ShopListWindow:__tostring()
   return 'Shop Item Window'
 end
 
-return ShopItemWindow
+return ShopListWindow

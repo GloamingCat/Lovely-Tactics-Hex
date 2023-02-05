@@ -87,7 +87,7 @@ function MemberGUI:refreshMember(member)
     self.infoWindow.page:set(self.memberID, #self.members)
   end
   if self.mainWindow then
-    self.mainWindow:setMember(member)
+    self.mainWindow:setBattler(member)
   end
 end
 -- Gets the current selected troop member.

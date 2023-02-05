@@ -27,7 +27,7 @@ end
 -- Override GUI:createWindows.
 function VisualizeGUI:createWindows()
   local mainWindow = BattlerWindow(self)
-  mainWindow:setMember(self.character.battler)
+  mainWindow:setBattler(self.character.battler)
   self:setActiveWindow(mainWindow)
 end
 

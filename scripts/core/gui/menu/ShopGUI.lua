@@ -3,7 +3,7 @@
 
 ShopGUI
 ---------------------------------------------------------------------------------------------------
-
+Menu to buy or sell items from the database.
 
 =================================================================================================]]
 
@@ -13,7 +13,7 @@ local GoldWindow = require('core/gui/menu/window/GoldWindow')
 local GUI = require('core/gui/GUI')
 local ShopCommandWindow = require('core/gui/menu/window/interactable/ShopCommandWindow')
 local ShopCountWindow = require('core/gui/menu/window/interactable/ShopCountWindow')
-local ShopItemWindow = require('core/gui/menu/window/interactable/ShopItemWindow')
+local ShopListWindow = require('core/gui/menu/window/interactable/ShopListWindow')
 local Troop = require('core/battle/Troop')
 local Vector = require('core/math/Vector')
 
@@ -38,7 +38,7 @@ end
 function ShopGUI:createWindows()
   self:createCommandWindow()
   self:createGoldWindow()
-  self:createItemWindow()
+  self:createListWindow()
   self:createCountWindow()
   self:createDescriptionWindow()
   self:setActiveWindow(self.commandWindow)
@@ -61,26 +61,26 @@ function ShopGUI:createGoldWindow()
   self.goldWindow:setGold(self.troop.money)
 end
 -- Creates the window with the list of items to buy.
-function ShopGUI:createItemWindow()
-  local window = ShopItemWindow(self)
+function ShopGUI:createListWindow()
+  local window = ShopListWindow(self)
   local y = window.height / 2 - ScreenManager.height / 2 +
     self.commandWindow.height + self:windowMargin() * 2
   window:setXYZ(nil, y)
-  self.itemWindow = window
+  self.listWindow = window
   window:setVisible(false)
 end
 -- Creates the window with the number of items to buy.
 function ShopGUI:createCountWindow()
   local width = ScreenManager.width / 2
-  local height = self.itemWindow.height
-  self.countWindow = ShopCountWindow(self, width, height, self.itemWindow.position)
+  local height = self.listWindow.height
+  self.countWindow = ShopCountWindow(self, width, height, self.listWindow.position)
   self.countWindow:setVisible(false)
 end
 -- Creates the window with the description of the selected item.
 function ShopGUI:createDescriptionWindow()
   local width = ScreenManager.width - self:windowMargin() * 2
   local height = ScreenManager.height - self:windowMargin() * 4 - 
-    self.commandWindow.height - self.itemWindow.height
+    self.commandWindow.height - self.listWindow.height
   local y = ScreenManager.height / 2 - height / 2 - self:windowMargin()
   self.descriptionWindow = DescriptionWindow(self, width, height, Vector(0, y))
   self.descriptionWindow:setVisible(false)
@@ -94,14 +94,14 @@ end
 function ShopGUI:showShopGUI()
   GUIManager.fiberList:fork(self.descriptionWindow.show, self.descriptionWindow)
   Fiber:wait()
-  self.itemWindow:show()
-  self.itemWindow:activate()
+  self.listWindow:show()
+  self.listWindow:activate()
 end
 -- Hides shop windows.
 function ShopGUI:hideShopGUI()
   GUIManager.fiberList:fork(self.descriptionWindow.hide, self.descriptionWindow)
   Fiber:wait()
-  self.itemWindow:hide()
+  self.listWindow:hide()
   self.commandWindow:activate()
 end
 -- Overrides GUI:hide. Saves troop modifications.

@@ -130,19 +130,19 @@ end
 -- Member
 ---------------------------------------------------------------------------------------------------
 
--- Shows the given member stats.
--- @param(member : Battler) The battler shown in the window.
-function BattlerWindow:setMember(member)
-  self:setPortrait(member)
-  self.textName:setTerm('data.battler.' .. member.key, member.name)
+-- Shows the given battler stats.
+-- @param(battler : Battler) The battler shown in the window.
+function BattlerWindow:setBattler(battler)
+  self:setPortrait(battler)
+  self.textName:setTerm('data.battler.' .. battler.key, battler.name)
   self.textName:redraw()
   -- Attributes
   for key, text in pairs(self.attValues) do
     -- Attribute value
-    local total = round(member.att[key]())
-    member.att.bonus = false
-    local base = round(member.att:getBase(key))
-    member.att.bonus = true
+    local total = round(battler.att[key]())
+    battler.att.bonus = false
+    local base = round(battler.att:getBase(key))
+    battler.att.bonus = true
     local value = base .. ''
     if base < total then
       value = value .. ' + ' .. (total - base)
@@ -154,12 +154,12 @@ function BattlerWindow:setMember(member)
   end
   -- Elements
   local weakColor, strongColor = Color.element_strong, Color.element_weak
-  local char = TroopManager:getBattlerCharacter(member)
+  local char = TroopManager:getBattlerCharacter(battler)
   if char and char.party ~= TroopManager.playerParty then
     weakColor, strongColor = Color.element_weak, Color.element_strong
   end
   for i, text in pairs(self.elementValues) do
-    local total = round(member:elementDef(i) * 100) + 100
+    local total = round(battler:elementDef(i) * 100) + 100
     if total < 100 then
       text.sprite:setColor(strongColor)
     elseif total > 100 then
@@ -174,11 +174,11 @@ function BattlerWindow:setMember(member)
     self:hideContent()
   end
 end
--- Shows the graphics of the given member.
+-- Shows the graphics of the given battler.
 -- If they have a full body image, it is used. Otherwise, it uses the idle animation.
--- @param(member : Battler) The battler shown in the window.
-function BattlerWindow:setPortrait(member)
-  local charData = Database.characters[member.charID]
+-- @param(battler : Battler) The battler shown in the window.
+function BattlerWindow:setPortrait(battler)
+  local charData = Database.characters[battler.charID]
   local icon = findByName(charData.portraits, "BigIcon")
   if icon then
     local sprite = ResourceManager:loadIcon(icon, GUIManager.renderer)
