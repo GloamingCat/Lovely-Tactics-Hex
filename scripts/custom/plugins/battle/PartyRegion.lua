@@ -20,7 +20,7 @@ do
     i = i + 1
   end
 end
-local merge = not args.override
+local merge = args.override ~= 'true'
 
 -- Imports
 local TroopManager = require('core/battle/TroopManager')
@@ -31,10 +31,11 @@ local TroopManager = require('core/battle/TroopManager')
 
 -- Override. Checks for tile regions.
 local TroopManager_setPartyTiles = TroopManager.setPartyTiles
-function TroopManager.setPartyTiles(field)
+function TroopManager:setPartyTiles()
   if merge then
-    TroopManager_setPartyTiles(field)
+    TroopManager_setPartyTiles(self)
   end
+  local field = FieldManager.currentField
   for i, partyInfo in ipairs(field.parties) do
     local id = i - 1
     local regionID = regionIDs[id]

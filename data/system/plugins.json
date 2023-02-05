@@ -165,6 +165,17 @@
   },
   {
     "on": true,
+    "name": "plugins/battle/PartyRegion.lua",
+    "tags": [
+      {
+        "key": "override",
+        "value": "false"
+      }
+    ],
+    "key": ""
+  },
+  {
+    "on": true,
     "name": "plugins/battle/KillCheat.lua",
     "tags": [
       {
