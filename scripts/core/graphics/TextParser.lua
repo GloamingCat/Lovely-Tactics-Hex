@@ -31,9 +31,9 @@ local TextParser = {}
 -- @param(text : string) Raw text.
 -- @param(plainText : boolean) When true, will not parse commands (optional, false by default).
 -- @ret(table) Array of fragments.
-function TextParser.parse(text, plainText)
+function TextParser.parse(text, plainText, fragments)
   local vars = Config.variables
-  local fragments = {}
+  fragments = fragments or {}
 	if text ~= '' then 
     if plainText then
       TextParser.parseFragment(fragments, text)
@@ -68,12 +68,18 @@ function TextParser.parse(text, plainText)
         insert(fragments, { event = true, type = 'input' })
       elseif t == '%' then
         local key = resourceKey:sub(2)
+        local f
         if vars[key] then
-          TextParser.parseFragment(fragments, tostring(vars[key].value))
+          f = tostring(vars[key].value)
         else
           local value = util.table.access(Vocab, key)
           assert(value, 'Text variable or term ' .. tostring(key) .. ' not found.')
-          TextParser.parseFragment(fragments, tostring(value))
+          f = tostring(value)
+        end
+        if plainText then
+          TextParser.parseFragment(fragments, f)
+        else
+          TextParser.parse(f, false, fragments)
         end
       else
         TextParser.parseFragment(fragments, textFragment .. '{' .. resourceKey .. '}')
