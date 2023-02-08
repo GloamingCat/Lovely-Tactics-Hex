@@ -63,12 +63,14 @@
   "none": "None",
   
   // Shop
+  "shop": "Shop",
   "buy": "Buy",
   "sell": "Sell",
   "owned": "Owned",
   "equipped": "Equipped",
   
   // Recruit
+  "recruit": "Recruit",
   "hire": "Hire",
   "dismiss": "Dismiss",
   

@@ -153,7 +153,7 @@ end
 -- @param(battler : Battler) Member's battler (optional).
 function Troop:addMember(member, battler)
   self.members[member.key] = member
-  self.members[#self.members + 1] = member
+  self.members:add(member)
   self.battlers[member.key] = battler
   member.list = 1
   member.x = 1

@@ -63,12 +63,14 @@
   "none": "Nenhum",
   
   // Shop
+  "shop": "Loja",
   "buy": "Comprar",
   "sell": "Vender",
   "owned": "Possuídos",
   "equipped": "Equipados",
   
   // Recruit
+  "recruit": "Recrutar",
   "hire": "Contratar",
   "dismiss": "Dispensar",
   
