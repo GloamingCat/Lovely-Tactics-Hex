@@ -846,7 +846,7 @@
           "tags": [
             {
               "key": "id",
-              "value": "apple"
+              "value": "\"apple\""
             }
           ],
           "key": ""

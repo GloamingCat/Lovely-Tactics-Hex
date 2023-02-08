@@ -259,7 +259,7 @@ end
 -- @param(tags : table) Array of {key, value} entries.
 -- @ret(TagMap) The map with the given entries.
 function Database.loadTags(tags)
-  if tags == nil then
+  if tags == nil or #tags == 0 then
     return emptyMap
   end
   local map = TagMapCache[tags]

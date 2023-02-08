@@ -7,10 +7,6 @@ Functions that are loaded from the EventSheet.
 
 =================================================================================================]]
 
--- Imports
-local AIRule = require('core/battle/ai/AIRule')
-local TagMap = require('core/datastruct/TagMap')
-
 local EventSheet = {}
 
 ---------------------------------------------------------------------------------------------------
@@ -66,8 +62,6 @@ function EventSheet:startBattle(args)
       args.gameOverCondition = 1 -- Default.
     end
   end
-  args.fieldID = tonumber(args.fieldID)
-  args.fade = tonumber(args.fade)
   self.vars.hudOpen = FieldManager.hud.visible
   FieldManager.currentField.vars.onBattle = true
   if self.char then
@@ -90,7 +84,6 @@ end
 -- Loads battle field.
 -- @param(args.fade : boolean) Fade out/in effect when exiting/returning to previous field.
 function EventSheet:finishBattle(args)
-  args.fade = tonumber(args.fade)
   if BattleManager:playerWon() then
     self.battleLog = 'You won!'
   elseif BattleManager:enemyWon() then

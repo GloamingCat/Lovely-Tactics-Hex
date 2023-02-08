@@ -29,7 +29,7 @@
     "tags": [
       {
         "key": "text",
-        "value": "Arrows Z X Page Skip Save Kill Lose"
+        "value": "\"Arrows Z X Page Skip Save Kill Lose\""
       }
     ],
     "key": ""
@@ -40,19 +40,19 @@
     "tags": [
       {
         "key": "pages",
-        "value": "Game Art Sound"
+        "value": "\"Game Art Sound\""
       },
       {
         "key": "Game",
-        "value": "GloamingCatMain"
+        "value": "\"GloamingCatMain\""
       },
       {
         "key": "Art",
-        "value": "Chars GloamingCat Scenary Bibi"
+        "value": "\"Chars GloamingCat Scenary Bibi\""
       },
       {
         "key": "Sound",
-        "value": "Music Musicians SFX SFXDesigners"
+        "value": "\"Music Musicians SFX SFXDesigners\""
       }
     ],
     "key": ""
@@ -86,11 +86,11 @@
     "tags": [
       {
         "key": "save",
-        "value": "f2"
+        "value": "\"f2\""
       },
       {
         "key": "load",
-        "value": "f6"
+        "value": "\"f6\""
       }
     ],
     "key": ""
@@ -101,11 +101,11 @@
     "tags": [
       {
         "key": "key",
-        "value": "insert"
+        "value": "\"insert\""
       },
       {
         "key": "mod",
-        "value": "lalt"
+        "value": "\"lalt\""
       }
     ],
     "key": ""
@@ -116,7 +116,7 @@
     "tags": [
       {
         "key": "key",
-        "value": "j"
+        "value": "\"j\""
       },
       {
         "key": "speed",
@@ -180,11 +180,11 @@
     "tags": [
       {
         "key": "win",
-        "value": "k"
+        "value": "\"k\""
       },
       {
         "key": "lose",
-        "value": "l"
+        "value": "\"l\""
       }
     ],
     "key": ""
@@ -207,7 +207,7 @@
     "tags": [
       {
         "key": "attName",
-        "value": "crit"
+        "value": "\"crit\""
       }
     ],
     "key": ""

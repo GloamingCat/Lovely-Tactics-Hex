@@ -31,9 +31,13 @@ end
 -- @param(text : string) The string codification of the object.
 -- @ret The object that the string represents.
 function Serializer.decode(text)
+  if type(text) ~= 'string' then
+    return text
+  end
   local data, err, msg = JSON.decode(text)
   if err and msg then
-    print (err, msg)
+    print(err, msg, "on: " .. tostring(text))
+    return nil
   else
     return data
   end

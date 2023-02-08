@@ -501,7 +501,7 @@
           "tags": [
             {
               "key": "critical",
-              "value": ""
+              "value": "true"
             }
           ],
           "key": ""
@@ -845,7 +845,7 @@
           "tags": [
             {
               "key": "critical",
-              "value": ""
+              "value": "true"
             },
             {
               "key": "cast_far",
@@ -1226,7 +1226,7 @@
           "tags": [
             {
               "key": "critical",
-              "value": ""
+              "value": "true"
             },
             {
               "key": "cast_far",
@@ -1335,7 +1335,7 @@
           "tags": [
             {
               "key": "critical",
-              "value": ""
+              "value": "true"
             },
             {
               "key": "cast_far",
@@ -1444,7 +1444,7 @@
           "tags": [
             {
               "key": "critical",
-              "value": ""
+              "value": "true"
             },
             {
               "key": "cast_far",
@@ -2562,7 +2562,7 @@
           "tags": [
             {
               "key": "critical",
-              "value": ""
+              "value": "true"
             }
           ],
           "key": ""
@@ -2692,7 +2692,7 @@
           "tags": [
             {
               "key": "critical",
-              "value": ""
+              "value": "true"
             }
           ],
           "key": ""

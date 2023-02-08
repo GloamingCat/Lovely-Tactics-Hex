@@ -19,6 +19,7 @@
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
+      "sheetID": -1,
       "description": "",
       "name": "",
       "tags": [],

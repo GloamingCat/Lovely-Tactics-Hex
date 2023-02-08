@@ -48,15 +48,15 @@
       "tags": [
         {
           "key": "equip",
-          "value": "blade"
+          "value": "\"blade\""
         },
         {
           "key": "equip",
-          "value": "cloth"
+          "value": "\"cloth\""
         },
         {
           "key": "equip",
-          "value": "armor"
+          "value": "\"armor\""
         }
       ],
       "key": "knight"
@@ -121,11 +121,11 @@
       "tags": [
         {
           "key": "equip",
-          "value": "staff"
+          "value": "\"staff\""
         },
         {
           "key": "equip",
-          "value": "cloth"
+          "value": "\"cloth\""
         }
       ],
       "key": "mage"
@@ -161,7 +161,7 @@
       "tags": [
         {
           "key": "equip",
-          "value": "none"
+          "value": "\"none\""
         }
       ],
       "key": "slime"
@@ -197,7 +197,7 @@
       "tags": [
         {
           "key": "equip",
-          "value": "none"
+          "value": "\"none\""
         }
       ],
       "key": "slime2"

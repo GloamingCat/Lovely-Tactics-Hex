@@ -33,7 +33,10 @@ function KeyPoint:init(...)
   Animation.init(self, ...)
   self.keyPoints = {}
   for _, kp in ipairs(self.tags:getAll('kp')) do
-    self:addKeyPoint(unpack(string.split(kp, ' ')))
+    if type(kp) == 'string' then
+      kp = string.split(kp, ' ')
+    end
+    self:addKeyPoint(unpack(kp))
   end
 end
 -- Adds a new transformation key point.

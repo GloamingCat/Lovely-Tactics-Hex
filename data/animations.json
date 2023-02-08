@@ -424,15 +424,15 @@
               "tags": [
                 {
                   "key": "kp",
-                  "value": "0 RGBA 1 1 1 1"
+                  "value": "[0, \"RGBA\", 1,, ,1,, 1, 1]"
                 },
                 {
                   "key": "kp",
-                  "value": "15 RGBA 1 1 1 0"
+                  "value": "[15, \"RGBA\", 1,, ,1,, 1, 0]"
                 },
                 {
                   "key": "kp",
-                  "value": "30 RGBA 1 1 1 1"
+                  "value": "[30, \"RGBA\", 1,, ,1,, 1, 1]"
                 }
               ],
               "key": ""
@@ -522,15 +522,15 @@
               "tags": [
                 {
                   "key": "kp",
-                  "value": "15 Scale 2 2"
+                  "value": "[15, \"Scale\", 2, 2]"
                 },
                 {
                   "key": "kp",
-                  "value": "15 RGBA 1 1 1 1"
+                  "value": "[15, \"RGBA\", 1, 1, 1, 1]"
                 },
                 {
                   "key": "kp",
-                  "value": "30 RGBA 1 1 1 0"
+                  "value": "[30, \"RGBA\", 1, 1, 1, 0]"
                 }
               ],
               "key": ""
@@ -581,15 +581,15 @@
               "tags": [
                 {
                   "key": "kp",
-                  "value": "15 Scale 2 2"
+                  "value": "[15, \"Scale\", 2, 2]"
                 },
                 {
                   "key": "kp",
-                  "value": "15 RGBA 1 1 1 1"
+                  "value": "[15, \"RGBA\", 1, 1, 1, 1]"
                 },
                 {
                   "key": "kp",
-                  "value": "30 RGBA 1 1 1 0"
+                  "value": "[30, \"RGBA\", 1, 1, 1, 0]"
                 }
               ],
               "key": ""
@@ -640,15 +640,15 @@
               "tags": [
                 {
                   "key": "kp",
-                  "value": "15 Scale 2 2"
+                  "value": "[15, \"Scale\", 2, 2]"
                 },
                 {
                   "key": "kp",
-                  "value": "15 RGBA 1 1 1 1"
+                  "value": "[15, \"RGBA\", 1, 1, 1, 1]"
                 },
                 {
                   "key": "kp",
-                  "value": "30 RGBA 1 1 1 0"
+                  "value": "[30, \"RGBA\", 1, 1, 1, 0]"
                 }
               ],
               "key": ""
@@ -699,27 +699,27 @@
               "tags": [
                 {
                   "key": "kp",
-                  "value": "0 Offset 10 15 -12"
+                  "value": "[0, \"Offset\", 10, 15, -12]"
                 },
                 {
                   "key": "kp",
-                  "value": "30 Offset 10 30 -12"
+                  "value": "[30, \"Offset\", 10, 30, -12]"
                 },
                 {
                   "key": "kp",
-                  "value": "20 Scale 2 2"
+                  "value": "[20, \"Scale\", 2, 2]"
                 },
                 {
                   "key": "kp",
-                  "value": "30 Scale 1 1"
+                  "value": "[30, \"Scale\", 1, 1]"
                 },
                 {
                   "key": "kp",
-                  "value": "15 RGBA 1 1 1 1"
+                  "value": "[15, \"RGBA\", 1, 1, 1, 1]"
                 },
                 {
                   "key": "kp",
-                  "value": "30 RGBA 1 1 0 0"
+                  "value": "[30, \"RGBA\", 1, 1, 0, 0]"
                 }
               ],
               "key": ""
@@ -770,27 +770,27 @@
               "tags": [
                 {
                   "key": "kp",
-                  "value": "0 Offset 10 30 -12"
+                  "value": "[0, \"Offset\", 10, 30, -12]"
                 },
                 {
                   "key": "kp",
-                  "value": "30 Offset 10 15 -12"
+                  "value": "[30, \"Offset\", 10, 15, -12]"
                 },
                 {
                   "key": "kp",
-                  "value": "20 Scale 2 2"
+                  "value": "[20, \"Scale\", 2, 2]"
                 },
                 {
                   "key": "kp",
-                  "value": "30 Scale 1 1"
+                  "value": "[30, \"Scale\", 1, 1]"
                 },
                 {
                   "key": "kp",
-                  "value": "15 RGBA 1 1 1 1"
+                  "value": "[15, \"RGBA\", 1, 1, 1, 1]"
                 },
                 {
                   "key": "kp",
-                  "value": "30 RGBA 1 1 0 0"
+                  "value": "[30, \"RGBA\", 1, 1, 0, 0]"
                 }
               ],
               "key": ""
@@ -961,23 +961,23 @@
           "tags": [
             {
               "key": "kp",
-              "value": "0 Scale 1 0.75"
+              "value": "[0, \"Scale\", 1, 0.75]"
             },
             {
               "key": "kp",
-              "value": "15 Scale 2 1.5"
+              "value": "[15, \"Scale\", 2, 1.5]"
             },
             {
               "key": "kp",
-              "value": "30 Scale 1 0.75"
+              "value": "[30, \"Scale\", 1, 0.75]"
             },
             {
               "key": "kp",
-              "value": "15 RGBA 1 1 1 1"
+              "value": "[15, \"RGBA\", 1, 1, 1, 1]"
             },
             {
               "key": "kp",
-              "value": "30 RGBA 1 1 1 0"
+              "value": "[30, \"RGBA\", 1, 1, 1, 0]"
             }
           ],
           "key": ""
@@ -1166,27 +1166,27 @@
           "tags": [
             {
               "key": "kp",
-              "value": "0 Offset 10 15 -12"
+              "value": "[0, \"Offset\", 10, 15, -12]"
             },
             {
               "key": "kp",
-              "value": "30 Offset 10 30 -12"
+              "value": "[30, \"Offset\", 10, 30, -12]"
             },
             {
               "key": "kp",
-              "value": "20 Scale 2 2"
+              "value": "[20, \"Scale\", 2, 2]"
             },
             {
               "key": "kp",
-              "value": "30 Scale 1 1"
+              "value": "[30, \"Scale\", 1, 1]"
             },
             {
               "key": "kp",
-              "value": "15 RGBA 1 1 1 1"
+              "value": "[15, \"RGBA\", 1, 1, 1, 1]"
             },
             {
               "key": "kp",
-              "value": "30 RGBA 1 1 0 0"
+              "value": "[30, \"RGBA\", 1, 1, 0, 0]"
             }
           ],
           "key": ""
@@ -1237,15 +1237,15 @@
           "tags": [
             {
               "key": "kp",
-              "value": "15 Scale 2 2"
+              "value": "[15, \"Scale\", 2, 2]"
             },
             {
               "key": "kp",
-              "value": "15 RGBA 1 1 1 1"
+              "value": "[15, \"RGBA\", 1, 1, 1, 1]"
             },
             {
               "key": "kp",
-              "value": "30 RGBA 1 1 1 0"
+              "value": "[30, \"RGBA\", 1, 1, 1, 0]"
             }
           ],
           "key": ""
@@ -1296,35 +1296,35 @@
           "tags": [
             {
               "key": "kp",
-              "value": "20 RGBA 1 1 1 1"
+              "value": "[20, \"RGBA\", 1, 1, 1, 1]"
             },
             {
               "key": "kp",
-              "value": "30 RGBA 1 1 1 0"
+              "value": "[30, \"RGBA\", 1, 1, 1, 0]"
             },
             {
               "key": "kp",
-              "value": "5 Rotation -0.5"
+              "value": "[5, \"Rotation\", -0.5]"
             },
             {
               "key": "kp",
-              "value": "10 Rotation 0.5"
+              "value": "[10, \"Rotation\", 0.5]"
             },
             {
               "key": "kp",
-              "value": "15 Rotation -0.25"
+              "value": "[15, \"Rotation\", -0.25]"
             },
             {
               "key": "kp",
-              "value": "20 Rotation 0"
+              "value": "[20, \"Rotation\", 0]"
             },
             {
               "key": "kp",
-              "value": "25 Rotation 0.25"
+              "value": "[25, \"Rotation\", 0.25]"
             },
             {
               "key": "kp",
-              "value": "30 Rotation -0.5"
+              "value": "[30, \"Rotation\", -0.5]"
             }
           ],
           "key": ""
@@ -1460,15 +1460,15 @@
           "tags": [
             {
               "key": "kp",
-              "value": "15 Scale 2 2"
+              "value": "[15, \"Scale\", 2, 2]"
             },
             {
               "key": "kp",
-              "value": "15 RGBA 1 1 1 1"
+              "value": "[15, \"RGBA\", 1, 1, 1, 1]"
             },
             {
               "key": "kp",
-              "value": "30 RGBA 1 1 1 0"
+              "value": "[30, \"RGBA\", 1, 1, 1, 0]"
             }
           ],
           "key": ""
