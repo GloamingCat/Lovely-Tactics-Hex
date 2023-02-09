@@ -60,7 +60,6 @@ function TagMap:add(name, value)
     arr = {}
     self.tags[name] = arr
   end
-  assert(value, "??")
   value = Serializer.decode(value) or value
   arr[#arr + 1] = value
   self[name] = self[name] or value
@@ -76,7 +75,6 @@ function TagMap:addAll(tags)
       arr = {}
       self.tags[name] = arr
     end
-    assert(value, "???")
     value = Serializer.decode(value) or value
     arr[#arr + 1] = value
     self[name] = self[name] or value

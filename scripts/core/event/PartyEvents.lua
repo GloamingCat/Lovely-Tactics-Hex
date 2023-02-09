@@ -56,6 +56,30 @@ function EventSheet:increaseItem(args)
     FieldManager.hud:refreshSave(true)
   end
 end
+-- Heal all members' HP and SP.
+-- @param(args.onlyCurrent : boolean) True to ignore backup members (false by default).
+function EventSheet:healAll(args)
+  local troop = Troop()
+  local list = args.onlyCurrent and troop:currentBattlers() or troop:visibleBattlers()
+  for battler in list:iterator() do
+    battler.state.hp = battler.mhp()
+    battler.state.sp = battler.msp()
+    if args.status then
+      for _, id in ipairs(args.status) do
+        battler.statusList:removeStatusAll(id)
+      end
+    end
+  end
+  TroopManager:saveTroop(troop)
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Formation
+---------------------------------------------------------------------------------------------------
+
 -- @param(args.key : string) New member's key.
 -- @param(args.x : number) Member's grid X (if nil, it's added to backup list).
 -- @param(args.y : number) Member's grid Y (if nil, it's added to backup list).
@@ -77,25 +101,6 @@ function EventSheet:hideMember(args)
   local troop = Troop()
   troop:moveMember(args.key, 2)
   TroopManager:saveTroop(troop, true)
-  if FieldManager.hud then
-    FieldManager.hud:refreshSave(true)
-  end
-end
--- Heal all members' HP and SP.
--- @param(args.onlyCurrent : boolean) True to ignore backup members (false by default).
-function EventSheet:healAll(args)
-  local troop = Troop()
-  local list = args.onlyCurrent and troop:currentBattlers() or troop:visibleBattlers()
-  for battler in list:iterator() do
-    battler.state.hp = battler.mhp()
-    battler.state.sp = battler.msp()
-    if args.status then
-      for _, id in ipairs(args.status) do
-        battler.statusList:removeStatusAll(id)
-      end
-    end
-  end
-  TroopManager:saveTroop(troop)
   if FieldManager.hud then
     FieldManager.hud:refreshSave(true)
   end

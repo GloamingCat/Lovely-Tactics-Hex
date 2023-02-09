@@ -37,6 +37,7 @@ function EventSheet:init(root, data, char)
     self.data.running = true
   end
   self.events = {}
+  self.labels = {}
   Fiber.init(self, root, nil)
 end
 -- @ret(string) String identification.
@@ -51,14 +52,23 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Adds an event to the execution list.
--- @param(func : functtion) The function to be executed.
--- @param(condition : unknown) A condition to execute the command.
+-- @param(func : functtion | string) The function to be executed, the name of the event, or the
+--  the function's code.
+-- @param(condition : function | unknown) A condition to execute the command, either a function or
+--  a constant value.
 --  Can be either a constant or a function to be computed before the event executes.
 -- @param(...) Any aditional argumentes to the event's function.
 function EventSheet:addEvent(func, condition, ...)
   if condition ~= nil and type(condition) ~= 'function' then
     local value = condition
     condition = function() return value end
+  end
+  if type(func) == 'string' then
+    if self[func] then
+      func = self[func]
+    else
+      func = loadfunction(func, 'script, args')
+    end
   end
   self.events[#self.events + 1] = {
     execute = func,
@@ -75,6 +85,19 @@ end
 -- @param(n : number) Index of the next event.
 function EventSheet:setEvent(i)
   self.vars.runningIndex = i - 1
+end
+-- Stores a label name.
+-- @param(name : string) Name of the label.
+-- @param(i : number) The index that the label points to (optional, last event by default).
+function EventSheet:setLabel(name, i)
+  i = i or #self.events + 1
+  self.labels[name] = i
+end
+-- Sets the next event to the one pointed by the given label.
+-- @param(name : string) Name of the label.
+function EventSheet:jumpTo(name)
+  assert(self.labels[name], 'Label not defined: ' .. name)
+  self:setEvent(self.labels[name])
 end
 
 ---------------------------------------------------------------------------------------------------

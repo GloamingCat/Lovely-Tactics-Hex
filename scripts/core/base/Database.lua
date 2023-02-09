@@ -27,7 +27,7 @@ end
 -- @ret(table) Array with the names of all data files.
 function Database.getDataFileNames()
   return {'animations', 'battlers', 'characters', 'items', 'jobs', 'obstacles',
-  'skills', 'status', 'terrains', 'troops'}
+  'skills', 'status', 'terrains', 'troops', 'events' }
 end
 -- Loads all data files and store in the Database table.
 function Database.loadDataFiles()

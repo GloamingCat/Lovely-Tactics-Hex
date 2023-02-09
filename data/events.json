@@ -1,0 +1,199 @@
+[
+  {
+    "data": {
+      "events": [
+        {
+          "condition": "",
+          "name": "turnCharTile",
+          "tags": [
+            {
+              "key": "key",
+              "value": "\"player\""
+            },
+            {
+              "key": "other",
+              "value": "\"self\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "turnCharTile",
+          "tags": [
+            {
+              "key": "key",
+              "value": "\"self\""
+            },
+            {
+              "key": "other",
+              "value": "\"player\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "showDialogue",
+          "tags": [
+            {
+              "key": "id",
+              "value": "1"
+            },
+            {
+              "key": "character",
+              "value": "\"self\""
+            },
+            {
+              "key": "portrait",
+              "value": "\"BigIcon\""
+            },
+            {
+              "key": "message",
+              "value": "\"{%dialogues.npc.Hi}\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "TroopManager:getPlayerTroop():hasMember('Merlin')",
+          "name": "jumpTo",
+          "tags": [
+            {
+              "key": "name",
+              "value": "\"dialogueEnd\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "showDialogue",
+          "tags": [
+            {
+              "key": "id",
+              "value": "1"
+            },
+            {
+              "key": "character",
+              "value": "\"self\""
+            },
+            {
+              "key": "portrait",
+              "value": "\"BigIcon\""
+            },
+            {
+              "key": "message",
+              "value": "\"{%dialogues.npc.CanIJoin}\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "openChoiceWindow",
+          "tags": [
+            {
+              "key": "width",
+              "value": "50"
+            },
+            {
+              "key": "y",
+              "value": "-20"
+            },
+            {
+              "key": "choices",
+              "value": "[\"yes\", \"no\"]"
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "script.vars.choiceInput == 1",
+          "name": "showDialogue",
+          "tags": [
+            {
+              "key": "id",
+              "value": "1"
+            },
+            {
+              "key": "character",
+              "value": "\"self\""
+            },
+            {
+              "key": "portrait",
+              "value": "\"BigIcon\""
+            },
+            {
+              "key": "message",
+              "value": "\"{%dialogues.npc.ThatsGood}\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "script.vars.choiceInput == 1",
+          "name": "addMember",
+          "tags": [
+            {
+              "key": "key",
+              "value": "\"Merlin\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "script.vars.choiceInput == 2",
+          "name": "showDialogue",
+          "tags": [
+            {
+              "key": "id",
+              "value": "1"
+            },
+            {
+              "key": "character",
+              "value": "\"self\""
+            },
+            {
+              "key": "portrait",
+              "value": "\"BigIcon\""
+            },
+            {
+              "key": "message",
+              "value": "\"{%dialogues.npc.ThatsBad}\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "setLabel",
+          "tags": [
+            {
+              "key": "name",
+              "value": "\"dialogueEnd\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "closeDialogueWindow",
+          "tags": [
+            {
+              "key": "id",
+              "value": "1"
+            }
+          ],
+          "key": ""
+        }
+      ],
+      "description": "Merlins asks if he can join the party.",
+      "name": "Merlin",
+      "tags": [],
+      "key": "Merlin"
+    },
+    "id": 0,
+    "children": []
+  }
+]

@@ -9,8 +9,6 @@ Simple dialogue with choice. It adds a new member if the player wishes so.
 
 return function(script)
 
-  local troop = TroopManager:getPlayerTroop()
-  
   script:addEvent(function()
     script:turnCharTile { key = 'self', other = 'player' }
     script:turnCharTile { key = 'player', other = 'self' }
@@ -37,7 +35,7 @@ return function(script)
         Vocab.dialogues.npc.ThatsBad
       }
     end
-  end, not troop:hasMember('Merlin'))
+  end, not TroopManager:getPlayerTroop():hasMember('Merlin'))
 
   script:addEvent(function()
     script:closeDialogueWindow { id = 1 }

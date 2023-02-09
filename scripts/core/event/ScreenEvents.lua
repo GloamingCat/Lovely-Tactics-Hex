@@ -39,6 +39,18 @@ function EventSheet:shaderout(args)
   ScreenManager.shader:send('time', 0)
   ScreenManager.shader = nil
 end
+-- Lightens the screen.
+-- @param(args.time : number) Duration of effect in frames.
+-- @param(args.wait : boolean) True to wait until effect is finished.
+function EventSheet:fadein(args)
+  FieldManager.renderer:fadein(args.time, args.wait)
+end
+-- Darkens the screen.
+-- @param(args.time : number) Duration of effect in frames.
+-- @param(args.wait : boolean) True to wait until effect is finished.
+function EventSheet:fadeout(args)
+  FieldManager.renderer:fadeout(args.time, args.wait)
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Camera

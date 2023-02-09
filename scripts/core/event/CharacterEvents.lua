@@ -147,4 +147,22 @@ function EventSheet:turnCharDir(args)
   char:setDirection(args.angle)
 end
 
+---------------------------------------------------------------------------------------------------
+-- Animations
+---------------------------------------------------------------------------------------------------
+
+function EventSheet:stopChar(args)
+  local char = self:findCharacter(args.key)
+  char:playIdleAnimation()
+end
+-- @param(args.name : string) Name of specific animation of a default animation for the character.
+function EventSheet:playCharAnim(args)
+  local char = self:findCharacter(args.key)
+  if args.name:find('Anim') then
+    char:playAnimation(char[args.name])
+  else
+    char:playAnimation(args.name)
+  end
+end
+
 return EventSheet

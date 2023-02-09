@@ -11,7 +11,7 @@ return function(script)
   
   -- Event 1: choice
   script:addEvent(function()
-    FieldManager.player:playIdleAnimation()
+    script:stopChar { key = 'player' }
     script:turnCharTile { key = 'self', other = 'player' }
     script:turnCharTile { key = 'player', other = 'self' }
     script:showDialogue { id = 1, character = 'self', portrait = 'BigIcon', nameX = -0.85, message = 
@@ -39,6 +39,7 @@ return function(script)
       { id = 'staff' },
       { id = 'ribbon' }
     }}
+    script:skipEvents(3) -- Skips battle events.
   end, 
   function() return script.char.vars.choiceInput == 1 end)
   

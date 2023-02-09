@@ -837,8 +837,13 @@
           "onCollide": false,
           "sheetID": -1,
           "description": "",
-          "name": "test/Merlin.lua",
-          "tags": [],
+          "name": "EventSheet.lua",
+          "tags": [
+            {
+              "key": "sheet",
+              "value": "\"Merlin\""
+            }
+          ],
           "key": ""
         }
       ],
