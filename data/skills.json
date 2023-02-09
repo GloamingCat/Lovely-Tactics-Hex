@@ -1654,7 +1654,7 @@
             "row": 0
           },
           "script": "",
-          "type": 2,
+          "type": 0,
           "allParties": false,
           "effectCondition": "target:isAlive()",
           "selection": 1,
@@ -1845,7 +1845,7 @@
           "autoPath": false,
           "freeNavigation": false,
           "condition": "",
-          "restriction": 1,
+          "restriction": 0,
           "costs": [],
           "elements": [],
           "userElements": false,

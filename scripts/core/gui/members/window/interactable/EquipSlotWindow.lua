@@ -49,8 +49,8 @@ function EquipSlotWindow:createListButton(slot)
   end
 end
 -- @param(member : Battler) The battler which the current equipment belongs to.
-function EquipSlotWindow:setMember(member)
-  self.member = member
+function EquipSlotWindow:setBattler(battler)
+  self.member = battler
   self:refreshSlots()
 end
 -- Refresh slot buttons, in case the member chaged.

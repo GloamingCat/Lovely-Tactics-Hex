@@ -9,6 +9,13 @@ set in the project's config.
 -- Requires: 
 ChildAnimations
 
+-- Plugin parameters:
+Use <balloonY> to shift the balloon sprite in pixels.
+Use <emotions> to set a different list of emotions. It should be a list of strings, with each
+string being the emotion's code.
+Use <rows> to set custons rows for each emotion. The rows should be in the same order as the
+emotions listed in <emotions>.
+
 =================================================================================================]]
 
 -- Imports
@@ -25,12 +32,11 @@ keyToRow['...'] = 2 -- Silent
 keyToRow['@'] = 3 -- Angry
 keyToRow['<3'] = 4 -- Love
 if args.emotions then
-  for i = 1, #args.emotions do
-    local e = args.emotions[i]:split()
-    keyToRow[e[1]] = tonumber(e[2])
+  for i, e in ipairs(args.emotions) do
+    keyToRow[e] = args.rows and args.rows[i] or i
   end
 end
-local balloonY = tonumber(args.balloonY) or 0
+local balloonY = args.balloonY or 0
 
 ---------------------------------------------------------------------------------------------------
 -- ResourceManager
@@ -59,7 +65,6 @@ end
 function ResourceManager:loadBalloonIconAnimation(icon, renderer)
   if type(icon) == 'string' then
     icon = Config.icons[icon]
-    print(icon.id, icon.col, icon.row)
   end
   local sprite = ResourceManager:loadIcon({id = icon.id, row = 0, col = 0}, renderer)
   local anim = Animation(sprite, Database.animations[icon.id])

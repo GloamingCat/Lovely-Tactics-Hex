@@ -16,11 +16,11 @@ local regionIDs = {}
 do
   local i = 0
   while args['party' .. i] do
-    regionIDs[i] = tonumber(args['party' .. i])
+    regionIDs[i] = args['party' .. i]
     i = i + 1
   end
 end
-local merge = args.override ~= 'true'
+local merge = args.override ~= true
 
 -- Imports
 local TroopManager = require('core/battle/TroopManager')

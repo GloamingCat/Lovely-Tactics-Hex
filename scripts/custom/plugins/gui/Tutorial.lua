@@ -14,8 +14,8 @@ local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
 local TitleCommandWindow = require('core/gui/menu/window/interactable/TitleCommandWindow')
 
 -- Parameters
-local width = tonumber(args.width)
-local height = tonumber(args.height)
+local width = args.width
+local height = args.height
 local texts = args.text:split()
 
 ---------------------------------------------------------------------------------------------------

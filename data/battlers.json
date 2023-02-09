@@ -550,7 +550,7 @@
                 },
                 {
                   "key": "target",
-                  "value": "target.battler.state.hp < target.battler.mhp() / 2"
+                  "value": "\"target.battler.state.hp < target.battler.mhp() / 2\""
                 }
               ],
               "key": ""
@@ -645,7 +645,7 @@
                 },
                 {
                   "key": "target",
-                  "value": "target.battler.state.hp < target.battler.mhp() / 2"
+                  "value": "\"target.battler.state.hp < target.battler.mhp() / 2\""
                 }
               ],
               "key": ""
@@ -660,7 +660,7 @@
                 },
                 {
                   "key": "target",
-                  "value": "target.battler.statusList:findStatus(6) ~= nil"
+                  "value": "\"target.battler.statusList:findStatus(6) ~= nil\""
                 }
               ],
               "key": ""

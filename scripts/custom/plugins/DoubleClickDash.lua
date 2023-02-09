@@ -18,8 +18,8 @@ local HSpinner = require('core/gui/widget/control/HSpinner')
 local VSpinner = require('core/gui/widget/control/VSpinner')
 
 -- Parameters
-local fasterPlayer = args.player == 'true'
-local fasterSpinner = args.spinner == 'true'
+local fasterPlayer = args.player
+local fasterSpinner = args.spinner
 
 ---------------------------------------------------------------------------------------------------
 -- GameKey

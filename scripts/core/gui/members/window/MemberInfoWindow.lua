@@ -33,7 +33,7 @@ function MemberInfoWindow:createContent(...)
   Window.createContent(self, ...)
   self.page = Pagination(self)
   self.content:add(self.page)
-  self:setMember(self.member)
+  self:setBattler(self.member)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -41,8 +41,8 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- @param(member : Battler) Changes the member info to another member's.
-function MemberInfoWindow:setMember(member)
-  self.member = member
+function MemberInfoWindow:setBattler(battler)
+  self.member = battler
   if self.info then
     self.info:destroy()
     self.content:removeElement(self.info)

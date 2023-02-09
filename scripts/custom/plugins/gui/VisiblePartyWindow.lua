@@ -9,6 +9,7 @@ Use this together with the MemberCommandWindow script for better fit.
 
 =================================================================================================]]
 
+-- Imports
 local FieldGUI = require('core/gui/menu/FieldGUI')
 local FieldCommandWindow = require('core/gui/menu/window/interactable/FieldCommandWindow')
 local PartyWindow = require('core/gui/members/window/interactable/PartyWindow')

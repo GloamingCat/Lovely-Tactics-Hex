@@ -22,7 +22,8 @@ local BattleAnimations = {}
 -- @param(wait : boolean) true to wait until first loop finishes (optional)
 -- @ret(Animation) the newly created animation
 function BattleAnimations.play(manager, animID, x, y, z, mirror, wait)
-  local animation = ResourceManager:loadAnimation(animID, manager.renderer)
+  local data = Database.animations[animID]
+  local animation = ResourceManager:loadAnimation(data, manager.renderer)
   if animation.sprite then
     animation:setXYZ(x, y, z - 10)    
     if mirror then
@@ -102,10 +103,18 @@ end
 -- @param(y : number) Position y of the target (in pixels).
 -- @ret(number) The duration of the animation.
 function BattleAnimations.menuTargetEffect(skill, x, y)
+  local t = 0
   if skill.castAnimID >= 0 then
-    return BattleAnimations.playOnMenu(skill.castAnimID, x, y, -50, false)
+    if skill.individualAnimID >= 0 then
+      t = BattleAnimations.playOnMenu(skill.castAnimID, 0, 0, -50, false)
+    else
+      t = BattleAnimations.playOnMenu(skill.castAnimID, x, y, -50, false)
+    end
   end
-  return 0
+  if skill.individualAnimID >= 0 then
+    t = math.max(BattleAnimations.playOnMenu(skill.individualAnimID, x, y, -50, false), t)
+  end
+  return t
 end
 
 return BattleAnimations

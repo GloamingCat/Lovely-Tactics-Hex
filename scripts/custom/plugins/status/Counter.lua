@@ -18,7 +18,7 @@ local SkillAction = require('core/battle/action/SkillAction')
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
 
 -- Parameters
-local maxCounters = tonumber(args.maxCounters) or 1
+local maxCounters = args.maxCounters or 1
 
 ---------------------------------------------------------------------------------------------------
 -- Skill Action
@@ -29,7 +29,7 @@ local Battler_initState = Battler.initState
 function Battler:initState(data, save)
   Battler_initState(self, data, save)
   if self.tags.counterID then
-    self.counterSkill = SkillAction:fromData(tonumber(self.tags.counterID))
+    self.counterSkill = SkillAction:fromData(self.tags.counterID)
   else
     self.counterSkill = self.attackSkill
   end
@@ -49,7 +49,8 @@ function SkillAction:allTargetsEffect(input, originTile)
   local userTile = input.user:getTile()
   for i = #allTargets, 1, -1 do
     for targetChar in allTargets[i].characterList:iterator() do
-      if targetChar.battler and targetChar.battler:isActive() and input.user.battler:isAlive() and targetChar.battler:counters() then
+      if targetChar.battler and targetChar.battler:isActive() and input.user.battler:isAlive() 
+          and targetChar.party ~= input.user.party and targetChar.battler:counters() then
         targetChar.battler:counterAttack(targetChar, userTile, self.counter)
       end
     end
@@ -74,7 +75,7 @@ end
 function Battler:counterAttack(user, target, counter)
   local skill = self.counterSkill or self.attackSkill
   if self.tags.counter then
-    skill = SkillAction(tonumber(self.tags.counter))
+    skill = SkillAction(self.tags.counter)
   end
   local input = ActionInput(skill, user, target)
   input.moveAction = BattleMoveAction()

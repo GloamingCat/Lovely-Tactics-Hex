@@ -55,8 +55,8 @@ end
 ----------------------------------------------------------------------------------------------------
 
 -- @param(member : Battler)
-function EquipItemWindow:setMember(member)
-  self.member = member
+function EquipItemWindow:setBattler(battler)
+  self.member = battler
 end
 -- @param(slot : string)
 function EquipItemWindow:setSlot(key, slot)

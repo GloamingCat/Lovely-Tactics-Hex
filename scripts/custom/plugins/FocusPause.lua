@@ -15,8 +15,12 @@ Set <fullscreen> to true to pause when it's not fullscreen (mobile only).
 local ScreenManager = require('core/graphics/ScreenManager')
 
 -- Parameters
-local pauseAudio = args.pauseAudio == 'true'
-local fullscreen = args.fullscreen == 'true'
+local pauseAudio = args.pauseAudio
+local fullscreen = args.fullscreen
+
+---------------------------------------------------------------------------------------------------
+-- ScreenManager
+---------------------------------------------------------------------------------------------------
 
 -- Pause when window loses focus.
 local ScreenManager_onFocus = ScreenManager.onFocus

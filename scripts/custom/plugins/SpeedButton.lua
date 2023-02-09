@@ -5,6 +5,10 @@ SpeedButton
 --------------------------------------------------------------------------------------------------- 
 Speeds game up when pressing a certain button.
 
+-- Plugin parameters:
+<key> is the key to be held to speed-up the game.
+<speed> is the speed multiplier (3 times by default)
+
 =================================================================================================]]
 
 -- Imports
@@ -12,7 +16,7 @@ local GameManager = require('core/base/GameManager')
 
 -- Parameters
 KeyMap.main['speedup'] = args.key
-local speedup = tonumber(args.speed)
+local speedup = args.speed or 3
 
 ---------------------------------------------------------------------------------------------------
 -- GameManager

@@ -235,8 +235,12 @@
     "name": "plugins/status/Reflect.lua",
     "tags": [
       {
-        "key": "animID",
-        "value": "98"
+        "key": "anim",
+        "value": "\"shield\""
+      },
+      {
+        "key": "selfReflect",
+        "value": "\"offensive\""
       }
     ],
     "key": ""

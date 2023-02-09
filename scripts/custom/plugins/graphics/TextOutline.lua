@@ -21,7 +21,7 @@ local max = math.max
 local round = math.round
 
 -- Parameters
-local outlineSize = tonumber(args.width) or 1
+local outlineSize = args.width or 1
 
 local textShader = lgraphics.newShader('shaders/Text.glsl')
 

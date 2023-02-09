@@ -61,8 +61,8 @@ end
 
 -- Changes current member.
 -- @param(member : Battler)
-function SkillWindow:setMember(member)
-  self.member = member
+function SkillWindow:setBattler(battler)
+  self.member = battler
   self:refreshSkills()
 end
 -- Updates buttons to match new state of the skill list.
@@ -83,13 +83,18 @@ function SkillWindow:onButtonConfirm(button)
     input.targets = self.member.troop:currentBattlers()
     input.action:menuUse(input)
     self.GUI:refreshMember()
-  else
+  elseif button.skill:isRanged() then
     -- Choose a target
     self.GUI:hide()
     local gui = MenuTargetGUI(self.GUI, self.member.troop, input)
     GUIManager:showGUIForResult(gui)
     _G.Fiber:wait()
     self.GUI:show()
+  else
+    -- Use on user themselves
+    input.target = input.user
+    input.action:menuUse(input)
+    self.GUI:refreshMember()
   end
   for i = 1, #self.matrix do
     self.matrix[i]:refreshEnabled()

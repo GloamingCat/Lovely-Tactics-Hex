@@ -6,7 +6,8 @@ SkillProjectile
 Abstraction of a projectile thrown during the use of a skill.
 
 -- Skill parameters:
-Set <projectileID> tag as projectile animation ID. Must the an animation with "Projectile" script.
+Set <projectileID> tag as projectile animation ID or key.
+Must be an animation with "Projectile" script.
 
 =================================================================================================]]
 
@@ -94,7 +95,8 @@ function Character:castSkill(skill, dir, target)
   local projectileTag = util.array.findByKey(skill.tags, 'projectileID')
   if projectileTag then
     _G.Fiber:wait(minTime)
-    local anim = ResourceManager:loadAnimation(tonumber(projectileTag.value), FieldManager.renderer)
+    local animID = tonumber(projectileTag.value) or projectileTag.value
+    local anim = ResourceManager:loadAnimation(animID, FieldManager.renderer)
     local speed = anim.tags and anim.tags.moveSpeed or 500
     minTime = minTime - math.min(minTime, anim:throw(self, target, speed, true))
   end

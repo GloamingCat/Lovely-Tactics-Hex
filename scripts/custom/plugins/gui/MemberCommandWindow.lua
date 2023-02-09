@@ -19,7 +19,7 @@ local GridWindow = require('core/gui/GridWindow')
 local SkillGUI = require('core/gui/members/SkillGUI')
 
 -- Arguments
-local useItem = args.useItem == 'true'
+local useItem = args.useItem
 
 local MemberCommandWindow = class(GridWindow)
 
@@ -82,7 +82,7 @@ function MemberCommandWindow:onPrev()
 end
 -- Changes current selected member.
 -- @param(member : Battler)
-function MemberCommandWindow:setMember(member)
+function MemberCommandWindow:setBattler(battler)
   for i = 1, #self.matrix do
     self.matrix[i]:refreshEnabled()
     self.matrix[i]:refreshState()
@@ -150,7 +150,7 @@ function MemberGUI:refreshMember(member)
   else
     -- Is parent GUI
     member = member or self:currentMember()
-    self.commandWindow:setMember(member)
+    self.commandWindow:setBattler(member)
   end
 end
 -- @ret(boolean) True if the member is active, false otherwise.
@@ -175,7 +175,7 @@ function MemberGUI:showSubGUI(GUI)
   GUIManager:showGUIForResult(gui)
   self.subGUI = nil
   self.mainWindow:show()
-  self.mainWindow:setMember(self:currentMember())
+  self.mainWindow:setBattler(self:currentMember())
   self:setActiveWindow(self.commandWindow)
   self.commandWindow.cursor:show()
 end

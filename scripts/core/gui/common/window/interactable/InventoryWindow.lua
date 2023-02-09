@@ -73,8 +73,10 @@ function InventoryWindow:onButtonConfirm(button)
   local input = ActionInput(button.skill, self.member or self.leader)
   if input.action:isArea() then
     self:areaTargetItem(input)
-  else
+  elseif input.action:isRanged() then
     self:singleTargetItem(input)
+  else
+    self:userOnlyItem(input)
   end
 end
 -- Updates description when button is selected.
@@ -116,6 +118,13 @@ end
 -- @param(input : ActionInput)
 function InventoryWindow:areaTargetItem(input)
   input.targets = input.user.troop:currentBattlers()
+  input.action:menuUse(input)
+  self:refreshItems()
+end
+-- Use item on user themselves.
+-- @param(input : ActionInput)
+function InventoryWindow:userOnlyItem(input)
+  input.target = input.user
   input.action:menuUse(input)
   self:refreshItems()
 end

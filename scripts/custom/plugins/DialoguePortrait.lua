@@ -11,7 +11,7 @@ Use <indent> to fix an indentation length instead of using portrait's width.
 =================================================================================================]]
 
 -- Parameters
-local indent = tonumber(args.indent)
+local indent = args.indent
 
 -- Imports
 local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')

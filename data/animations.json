@@ -631,8 +631,8 @@
               "audio": [
                 {
                   "name": "debuff",
-                  "volume": 70,
-                  "pitch": 110,
+                  "volume": 100,
+                  "pitch": 90,
                   "time": 0
                 }
               ],
@@ -689,7 +689,7 @@
               "loopDuration": "",
               "audio": [
                 {
-                  "name": "explosion",
+                  "name": "buff",
                   "volume": 100,
                   "pitch": 100,
                   "time": 0
@@ -760,7 +760,7 @@
               "loopDuration": "",
               "audio": [
                 {
-                  "name": "explosion",
+                  "name": "debuff",
                   "volume": 100,
                   "pitch": 100,
                   "time": 0
@@ -1445,7 +1445,7 @@
             "brightness": 300
           },
           "introPattern": "",
-          "introDuration": "30",
+          "introDuration": "45",
           "loopPattern": "",
           "loopDuration": "",
           "audio": [
@@ -1460,18 +1460,18 @@
           "tags": [
             {
               "key": "kp",
-              "value": "[15, \"Scale\", 2, 2]"
+              "value": "[30, \"Scale\", 3, 3]"
             },
             {
               "key": "kp",
-              "value": "[15, \"RGBA\", 1, 1, 1, 1]"
+              "value": "[30, \"RGBA\", 1, 1, 1, 1]"
             },
             {
               "key": "kp",
-              "value": "[30, \"RGBA\", 1, 1, 1, 0]"
+              "value": "[45, \"RGBA\", 1, 1, 1, 0]"
             }
           ],
-          "key": ""
+          "key": "shield"
         },
         "id": 98,
         "children": []

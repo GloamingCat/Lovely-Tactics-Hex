@@ -16,6 +16,10 @@ local Inventory = require('core/battle/Inventory')
 -- Alias
 local indexOf = util.array.indexOf
 
+---------------------------------------------------------------------------------------------------
+-- Inventory
+---------------------------------------------------------------------------------------------------
+
 -- Checks if given item can be equipped by a job with the given equip tags available.
 -- @param(item : data) The item to be equipped.
 -- @param(equipTags : table) Array of equip types allowed.

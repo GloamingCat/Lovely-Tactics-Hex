@@ -374,7 +374,7 @@
           "duration": -1,
           "removeOnKO": true,
           "removeOnDamage": false,
-          "battleOnly": false,
+          "battleOnly": true,
           "deactivate": false,
           "ko": false,
           "behavior": [],
@@ -389,6 +389,10 @@
           "tags": [
             {
               "key": "reflect",
+              "value": "true"
+            },
+            {
+              "key": "removeOnUse",
               "value": "true"
             }
           ],

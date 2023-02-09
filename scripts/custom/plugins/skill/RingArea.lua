@@ -40,7 +40,7 @@ function SkillAction:init(...)
   SkillAction_init(self, ...)
   local t = self.tags
   if t.cast_maxh or t.cast_minh or t.cast_far or t.cast_near then
-    self.range = self:createRingMask(t.cast_far or '1', t.cast_near, t.cast_minh, t.cast_maxh)
+    self.range = self:createRingMask(t.cast_far or 1, t.cast_near, t.cast_minh, t.cast_maxh)
     self.moveAction.range = self.range
   end
   if t.effect_maxh or t.effect_minh or t.effect_far or t.effect_near then
@@ -59,8 +59,8 @@ function SkillAction:onActionGUI(input)
   local far = self.tags.cast_far
   local near = self.tags.cast_near
   if not self.showStepWindow and self:isLongRanged() and (far or near) then
-    far = far or '1'
-    near = tonumber(near or '1')
+    far = far or 1
+    near = near or 1
     input.GUI:createPropertyWindow('range', near > 1 and (near .. '-' .. far) or far):show()
   end
 end
@@ -70,10 +70,10 @@ end
 -- @param(minh : number) Minimum height difference (usually negative).
 -- @param(minh : number) Minimum height difference (usually positive).
 function SkillAction:createRingMask(far, near, minh, maxh)
-  far = far and tonumber(far) or 0
-  near = near and tonumber(near) or 0
-  minh = minh and tonumber(minh) or 0
-  maxh = maxh and tonumber(maxh) or 0
+  far = far or 0
+  near = near or 0
+  minh = minh or 0
+  maxh = maxh or 0
   local grid = mathf.radiusMask(far, minh, maxh)
   for i, j in mathf.radiusIterator(near - 1, far + 1, far + 1,
       far * 2 + 1, far * 2 + 1) do
@@ -90,6 +90,7 @@ end
 function SkillAction:wholeField()
   return self.area == nil
 end
+-- Override.
 -- Returns all field tiles if area is nil.
 local SkillAction_getAreaTiles = SkillAction.getAreaTiles
 function SkillAction:getAreaTiles(input, centerTile)
@@ -105,6 +106,7 @@ function SkillAction:getAreaTiles(input, centerTile)
     return SkillAction_getAreaTiles(self, input, centerTile)
   end
 end
+-- Override.
 -- Only one tile (user's tile) is selectable if the skill affects the whole field.
 local SkillAction_isSelectable = SkillAction.isSelectable
 function SkillAction:isSelectable(input, tile)
@@ -115,6 +117,7 @@ function SkillAction:isSelectable(input, tile)
     return SkillAction_isSelectable(self, input, tile)
   end
 end
+-- Override. All tiles are affected if marked as whole field.
 local SkillAction_resetAffectedTiles = SkillAction.resetAffectedTiles
 function SkillAction:resetAffectedTiles(input)
   if self:wholeField() then

@@ -34,6 +34,7 @@ end
 -- Overrides BattleAction:execute.
 function VisualizeAction:execute(input)
   local character = input.target:getFirstBattleCharacter()
+  FieldManager.renderer:moveToTile(input.target)
   GUIManager:showGUIForResult(VisualizeGUI(input.GUI, character))
   if input.GUI then
     input.GUI:startGridSelecting(input.target)

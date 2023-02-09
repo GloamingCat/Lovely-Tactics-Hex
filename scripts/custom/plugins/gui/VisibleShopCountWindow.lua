@@ -7,6 +7,7 @@ Makes the ShopCountWindow in the ShopGUI visible alongside the ShopListWindow.
 
 =================================================================================================]]
 
+-- Imports
 local ShopCountWindow = require('core/gui/menu/window/interactable/ShopCountWindow')
 local ShopListWindow = require('core/gui/menu/window/interactable/ShopListWindow')
 local ShopGUI = require('core/gui/menu/ShopGUI')

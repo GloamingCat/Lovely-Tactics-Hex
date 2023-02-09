@@ -23,7 +23,7 @@ local SkillAction = require('core/battle/action/SkillAction')
 
 -- Parameters
 local attName = args.attName
-local ratio = tonumber(args.ratio) or 2
+local ratio = args.ratio or 2
 
 ---------------------------------------------------------------------------------------------------
 -- Rate

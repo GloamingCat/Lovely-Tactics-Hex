@@ -258,7 +258,9 @@ end
 -- @param(user : Battler)
 -- @ret(boolean) True if this skill may be selected to use out of battle.
 function SkillAction:canMenuUse(user)
-  return self:canUse(user) and self.support
+  return self:canUse(user) and self.support and (self.data.restriction == 0 or
+    self.data.restriction == 1 and BattleManager.onBattle or
+    self.data.restriction == 2 and not BattleManager.onBattle)
 end
 -- Executes the skill in the menu, out of the battle field.
 -- @param(user : Battler)
@@ -383,7 +385,7 @@ end
 -- @param(target : Battler) The battler that will be affected.
 -- @param(originTile : ObjectTile) The user's original tile.
 function SkillAction:singleTargetEffect(results, input, target, originTile)
-  local targetChar = TroopManager:getBattlerCharacter(target)
+  local targetChar = originTile and TroopManager:getBattlerCharacter(target)
   target:onSkillEffect(input, results, targetChar)
   local wasAlive = target.state.hp > 0
   if #results.points == 0 and #results.status == 0 then
@@ -392,7 +394,7 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
       local pos = targetChar and targetChar.position
       local popupText = pos and
         PopupText(pos.x, pos.y - 10, FieldManager.renderer) or
-        PopupText(input.x, input.y, GUIManager.renderer)
+        PopupText(input.x or 0, input.y or 0, GUIManager.renderer)
       popupText:addLine(Vocab.miss, 'popup_miss', 'popup_miss')
       popupText:popup()
     end
@@ -400,7 +402,7 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
     local pos = targetChar and targetChar.position
     local popupText = pos and
       PopupText(pos.x, pos.y - 10, FieldManager.renderer) or
-      PopupText(input.x, input.y, GUIManager.renderer)
+      PopupText(input.x or 0, input.y or 0, GUIManager.renderer)
     target:popupResults(popupText, results, targetChar)
     if targetChar then
       BattleAnimations.targetEffect(self.data, targetChar, originTile)
@@ -411,6 +413,7 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
         _G.Fiber:fork(targetChar.damage, targetChar, self.data, originTile, results)
       end
     else
+      print(input.x, input.y)
       BattleAnimations.menuTargetEffect(self.data, input.x, input.y)
     end
     target:onSkillResult(input, results, targetChar)

@@ -79,11 +79,11 @@ function MemberGUI:prevMember()
   until self:memberEnabled(self:currentMember())
   self:refreshMember()
 end
--- Refreshs current open windows to match the new selected member.
+-- Refreshes current open windows to match the new selected member.
 function MemberGUI:refreshMember(member)
   member = member or self:currentMember()
   if self.infoWindow then
-    self.infoWindow:setMember(member)
+    self.infoWindow:setBattler(member)
     self.infoWindow.page:set(self.memberID, #self.members)
   end
   if self.mainWindow then

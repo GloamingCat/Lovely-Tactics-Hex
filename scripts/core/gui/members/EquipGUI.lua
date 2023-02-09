@@ -77,8 +77,8 @@ end
 function EquipGUI:refreshMember(member)
   member = member or self:currentMember()
   MemberGUI.refreshMember(self, member)
-  self.bonusWindow:setMember(member)
-  self.itemWindow:setMember(member)
+  self.bonusWindow:setBattler(member)
+  self.itemWindow:setBattler(member)
   if self.open then
     self.mainWindow:onButtonSelect(self.mainWindow:currentWidget())
   end

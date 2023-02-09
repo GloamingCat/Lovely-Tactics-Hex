@@ -20,6 +20,10 @@ local WindowCursor = require('core/gui/widget/WindowCursor')
 local cursor = args.cursor or 'list'
 local hl = args.highlight or 'hide'
 
+---------------------------------------------------------------------------------------------------
+-- WindowCursor
+---------------------------------------------------------------------------------------------------
+
 -- Hide window cursor.
 local WindowCursor_setVisible = WindowCursor.setVisible
 function WindowCursor:setVisible(value)
@@ -32,6 +36,11 @@ function WindowCursor:setVisible(value)
   end
   WindowCursor_setVisible(self, value)
 end
+
+---------------------------------------------------------------------------------------------------
+-- Highlight
+---------------------------------------------------------------------------------------------------
+
 -- Hide button highlight.
 local Highlight_setVisible = Highlight.setVisible
 function Highlight:setVisible(value)

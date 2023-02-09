@@ -80,7 +80,7 @@ function MemberCommandWindow:onPrev()
 end
 -- Changes current selected member.
 -- @param(member : Battler)
-function MemberCommandWindow:setMember(member)
+function MemberCommandWindow:setBattler(battler)
   for i = 1, #self.matrix do
     self.matrix[i]:refreshEnabled()
     self.matrix[i]:refreshState()

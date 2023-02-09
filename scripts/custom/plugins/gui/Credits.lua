@@ -17,8 +17,8 @@ local pages = args.pages:split(' ')
 for i = 1, #pages do
   pages[i] = { name = pages[i], lines = args[pages[i]]:split(' ') }
 end
-local speed = tonumber(args.speed) or 2
-local pause = tonumber(args.pause) or 60
+local speed = args.speed or 2
+local pause = args.pause or 60
 local font = args.font or Fonts.gui_big
 
 ---------------------------------------------------------------------------------------------------

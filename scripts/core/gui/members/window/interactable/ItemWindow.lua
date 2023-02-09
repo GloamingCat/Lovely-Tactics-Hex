@@ -40,8 +40,8 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- @param(member : Battler)
-function ItemWindow:setMember(member)
-  self.member = member
+function ItemWindow:setBattler(battler)
+  self.member = battler
   for i = 1, #self.matrix do
     self.matrix[i]:refreshEnabled()
     self.matrix[i]:refreshState()

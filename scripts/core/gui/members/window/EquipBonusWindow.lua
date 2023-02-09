@@ -113,9 +113,9 @@ function EquipBonusWindow:setEquip(slotKey, newEquip)
 end
 -- @param(member : Battler) The owner of the current equipment set.
 --  It is necessary so the attribute to calculate the attribute bonus.
-function EquipBonusWindow:setMember(member)
-  self.member = member
-  self:setEquip(self.slotKey, member.equipSet:getEquip(self.slotKey))
+function EquipBonusWindow:setBattler(battler)
+  self.member = battler
+  self:setEquip(self.slotKey, battler.equipSet:getEquip(self.slotKey))
 end
 
 ----------------------------------------------------------------------------------------------------

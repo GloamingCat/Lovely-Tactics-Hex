@@ -20,14 +20,13 @@ local Animation_init = Animation.init
 function Animation:init(...)
   Animation_init(self, ...)
   if self.tags and self.tags.child then
-    for _, childID in ipairs(self.tags:getAll('child')) do
-      childID = childID:split()
-      childID[2] = tonumber(childID[2])
-      if childID[2] then
+    for _, child in ipairs(self.tags:getAll('child')) do
+      if type(child) == 'table' then
         self.childQueue = self.childQueue or {}
-        self.childQueue[#self.childQueue + 1] = childID
+        self.childQueue[#self.childQueue + 1] = child
+        self:addChild(child[1])
       else
-        self:addChild(childID[1])
+        self:addChild(child)
       end
     end
   end
