@@ -41,26 +41,29 @@ end
 -- Check / Change
 ---------------------------------------------------------------------------------------------------
 
--- @param(id : number) Skill's ID.
--- @ret(boolean)
+-- @param(id : number | string) Skill's ID or key.
+-- @ret(number) The position of the skill if found, nil if not found.
 function SkillList:containsSkill(id)
+  local data = Database.skills[id]
   for i = 1, self.size do
-    if self[i].data.id == id then
-      return true
+    if self[i].data == data then
+      return i
     end
   end
-  return false
+  return nil
 end
--- @param(skill : number | SkillAction) The skill or the skill's ID.
+-- @param(skill : number | string | SkillAction) The skill or the skill's ID or key.
 function SkillList:learn(skill)
   local id = skill
-  if type(skill) == 'number' then
+  if type(skill) == 'number' or type(skill) == 'string' then
     skill = nil
   else
     id = skill.data.id
   end
   if not self:containsSkill(id) then
-    self:add(skill or SkillAction:fromData(id))
+    skill = skill or SkillAction:fromData(id)
+    self:add(skill)
+    return skill
   end
 end
 -- @param(list : table) Array of skill IDs. 

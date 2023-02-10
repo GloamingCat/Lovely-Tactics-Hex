@@ -405,15 +405,15 @@
           ],
           "userElements": true,
           "userLoadAnim": "",
-          "userCastAnim": "Skill2",
+          "userCastAnim": "Skill1",
           "stepOnCast": true,
           "loadAnimID": -1,
-          "castAnimID": -1,
+          "castAnimID": 80,
           "individualAnimID": -1,
           "mirror": true,
           "introTime": "",
-          "castTime": "35",
-          "centerTime": "20",
+          "castTime": "",
+          "centerTime": "",
           "targetTime": "",
           "finishTime": "",
           "damageAnim": true,
@@ -504,9 +504,9 @@
               "value": "true"
             }
           ],
-          "key": ""
+          "key": "atk0"
         },
-        "id": 5,
+        "id": 31,
         "children": []
       },
       {
@@ -539,16 +539,16 @@
             }
           ],
           "userElements": true,
-          "userLoadAnim": "Load2",
-          "userCastAnim": "Skill2",
+          "userLoadAnim": "Load1",
+          "userCastAnim": "Skill1",
           "stepOnCast": true,
           "loadAnimID": 13,
-          "castAnimID": -1,
+          "castAnimID": 80,
           "individualAnimID": -1,
           "mirror": true,
           "introTime": "",
-          "castTime": "35",
-          "centerTime": "20",
+          "castTime": "",
+          "centerTime": "",
           "targetTime": "",
           "finishTime": "",
           "damageAnim": true,
@@ -669,16 +669,16 @@
             }
           ],
           "userElements": true,
-          "userLoadAnim": "Load2",
-          "userCastAnim": "Skill2",
+          "userLoadAnim": "Load1",
+          "userCastAnim": "Skill1",
           "stepOnCast": true,
           "loadAnimID": 13,
-          "castAnimID": -1,
+          "castAnimID": 80,
           "individualAnimID": -1,
           "mirror": true,
           "introTime": "",
-          "castTime": "35",
-          "centerTime": "20",
+          "castTime": "",
+          "centerTime": "",
           "targetTime": "",
           "finishTime": "",
           "damageAnim": true,
@@ -1466,6 +1466,476 @@
           "key": "bolt"
         },
         "id": 20,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "description": "",
+      "icon": {
+        "id": -1,
+        "col": 0,
+        "row": 0
+      },
+      "script": "",
+      "type": 0,
+      "allParties": false,
+      "effectCondition": "target.battler:isAlive()",
+      "selection": 1,
+      "autoPath": true,
+      "freeNavigation": true,
+      "condition": "",
+      "restriction": 0,
+      "costs": [
+        {
+          "key": "sp",
+          "value": "10"
+        }
+      ],
+      "elements": [],
+      "userElements": true,
+      "userLoadAnim": "",
+      "userCastAnim": "",
+      "stepOnCast": true,
+      "loadAnimID": -1,
+      "castAnimID": -1,
+      "individualAnimID": -1,
+      "mirror": true,
+      "introTime": "",
+      "castTime": "",
+      "centerTime": "",
+      "targetTime": "",
+      "finishTime": "",
+      "damageAnim": true,
+      "effects": [
+        {
+          "key": "hp",
+          "basicResult": "action:defaultPhysicalDamage(user, target, a, b)",
+          "successRate": "action:defaultSuccessRate(user, target, a, b)",
+          "heal": false,
+          "absorb": false,
+          "statusID": -1
+        }
+      ],
+      "effectMask": {
+        "centerX": 1,
+        "centerY": 1,
+        "centerH": 1,
+        "grid": [
+          [
+            [
+              true
+            ]
+          ]
+        ]
+      },
+      "castMask": {
+        "centerX": 1,
+        "centerY": 1,
+        "centerH": 1,
+        "grid": [
+          [
+            [
+              true
+            ]
+          ]
+        ]
+      },
+      "name": "Blade",
+      "tags": [],
+      "key": ""
+    },
+    "id": 32,
+    "children": [
+      {
+        "data": {
+          "description": "Simple melee physical attack.",
+          "icon": {
+            "id": 33,
+            "col": 0,
+            "row": 1
+          },
+          "script": "",
+          "type": 1,
+          "allParties": false,
+          "effectCondition": "target:isAlive()",
+          "selection": 1,
+          "autoPath": true,
+          "freeNavigation": false,
+          "condition": "",
+          "restriction": 1,
+          "costs": [],
+          "elements": [
+            {
+              "id": 0,
+              "value": 100
+            }
+          ],
+          "userElements": true,
+          "userLoadAnim": "",
+          "userCastAnim": "Skill2",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": -1,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "35",
+          "centerTime": "20",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "action:defaultPhysicalDamage(user, target, a, b)",
+              "successRate": "action:defaultSuccessRate(user, target, a, b)",
+              "heal": false,
+              "absorb": false,
+              "statusID": -1
+            }
+          ],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 2,
+            "centerY": 2,
+            "centerH": 2,
+            "grid": [
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ]
+            ]
+          },
+          "name": "Blade Attack",
+          "tags": [
+            {
+              "key": "critical",
+              "value": "true"
+            }
+          ],
+          "key": "atk0b"
+        },
+        "id": 5,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Simple melee physical attack, with 150% damage and 100% of success rate.",
+          "icon": {
+            "id": 33,
+            "col": 0,
+            "row": 1
+          },
+          "script": "",
+          "type": 1,
+          "allParties": false,
+          "effectCondition": "target:isAlive()",
+          "selection": 1,
+          "autoPath": true,
+          "freeNavigation": false,
+          "condition": "",
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [
+            {
+              "id": 0,
+              "value": 100
+            }
+          ],
+          "userElements": true,
+          "userLoadAnim": "Load2",
+          "userCastAnim": "Skill2",
+          "stepOnCast": true,
+          "loadAnimID": 13,
+          "castAnimID": -1,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "35",
+          "centerTime": "20",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "1.5 * action:defaultPhysicalDamage(user, target, a, b)",
+              "successRate": "100",
+              "heal": false,
+              "absorb": false,
+              "statusID": -1
+            }
+          ],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 2,
+            "centerY": 2,
+            "centerH": 2,
+            "grid": [
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ]
+            ]
+          },
+          "name": "Strong Attack",
+          "tags": [],
+          "key": "atk1b"
+        },
+        "id": 34,
+        "children": []
+      },
+      {
+        "data": {
+          "description": "Melee physical attack that damages 50% of the target's HP, with 100% chance. Can only be used with 10% of HP or less.",
+          "icon": {
+            "id": 33,
+            "col": 0,
+            "row": 1
+          },
+          "script": "",
+          "type": 1,
+          "allParties": false,
+          "effectCondition": "target:isAlive()",
+          "selection": 1,
+          "autoPath": true,
+          "freeNavigation": false,
+          "condition": "user.state.hp <= user.mhp() / 10",
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "10"
+            }
+          ],
+          "elements": [
+            {
+              "id": 0,
+              "value": 100
+            }
+          ],
+          "userElements": true,
+          "userLoadAnim": "Load2",
+          "userCastAnim": "Skill2",
+          "stepOnCast": true,
+          "loadAnimID": 13,
+          "castAnimID": -1,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "35",
+          "centerTime": "20",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "b.hp() / 2",
+              "successRate": "100",
+              "heal": false,
+              "absorb": false,
+              "statusID": -1
+            }
+          ],
+          "effectMask": {
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
+            "grid": [
+              [
+                [
+                  true
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 2,
+            "centerY": 2,
+            "centerH": 2,
+            "grid": [
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ]
+            ]
+          },
+          "name": "Dying Attack",
+          "tags": [],
+          "key": "atk2b"
+        },
+        "id": 33,
         "children": []
       }
     ]

@@ -259,7 +259,13 @@
           "allSlots": false,
           "blocked": [],
           "equipStatus": [],
-          "elements": [],
+          "elements": [
+            {
+              "type": 1,
+              "id": 8,
+              "value": 100
+            }
+          ],
           "equipAttributes": [
             {
               "key": "atk",
@@ -272,6 +278,18 @@
             {
               "key": "equip",
               "value": "\"blade\""
+            },
+            {
+              "key": "attack",
+              "value": "atk0b"
+            },
+            {
+              "key": "skill",
+              "value": "atk1b 1 atk1"
+            },
+            {
+              "key": "skill",
+              "value": "atk2b 1 atk2"
             }
           ],
           "key": "sword"
@@ -303,7 +321,13 @@
               "battle": false
             }
           ],
-          "elements": [],
+          "elements": [
+            {
+              "type": 1,
+              "id": 8,
+              "value": 100
+            }
+          ],
           "equipAttributes": [
             {
               "key": "atk",
@@ -316,6 +340,18 @@
             {
               "key": "equip",
               "value": "\"blade\""
+            },
+            {
+              "key": "attack",
+              "value": "atk0b"
+            },
+            {
+              "key": "skill",
+              "value": "atk1b 1 atk1"
+            },
+            {
+              "key": "skill",
+              "value": "atk2b 1 atk2"
             }
           ],
           "key": "swordcounter"

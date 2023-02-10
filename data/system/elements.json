@@ -78,5 +78,15 @@
     "name": "Thunder",
     "tags": [],
     "key": ""
+  },
+  {
+    "icon": {
+      "id": 33,
+      "col": 0,
+      "row": 1
+    },
+    "name": "Blade",
+    "tags": [],
+    "key": ""
   }
 ]

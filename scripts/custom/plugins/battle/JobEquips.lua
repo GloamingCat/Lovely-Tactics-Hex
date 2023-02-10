@@ -12,6 +12,7 @@ Jobs with no equip tags have no restrictions.
 
 -- Imports
 local Inventory = require('core/battle/Inventory') 
+local TagMap = require('core/datastruct/TagMap')
 
 -- Alias
 local indexOf = util.array.indexOf
@@ -21,13 +22,13 @@ local indexOf = util.array.indexOf
 ---------------------------------------------------------------------------------------------------
 
 -- Checks if given item can be equipped by a job with the given equip tags available.
--- @param(item : data) The item to be equipped.
--- @param(equipTags : table) Array of equip types allowed.
+-- @param(itemTags : table) Array of equip types in the item.
+-- @param(jobTags : table) Array of equip types allowed.
 -- @ret(boolean) Whether or not there's intersection between the equip types allowed and
 --  the item's equip types.
-local function canEquip(item, equipTags)
-  for _, tag in ipairs(item.tags) do
-    if tag.key == 'equip' and indexOf(equipTags, tag.value) then
+local function canEquip(itemTags, jobTags)
+  for _, tag in ipairs(jobTags) do
+    if indexOf(itemTags, tag) then
       return true
     end
   end
@@ -40,7 +41,8 @@ function Inventory:getEquipItems(key, member)
   if member.job.tags.equip then
     local availableEquips = member.job.tags:getAll('equip')
     for i = #items, 1, -1 do
-      if not canEquip(Database.items[items[i].id], availableEquips) then
+      local tagMap = TagMap(Database.items[items[i].id].tags)
+      if not canEquip(tagMap:getAll('equip'), availableEquips) then
         table.remove(items, i)
       end
     end
