@@ -25,7 +25,7 @@ local SkillWindow = class(ListWindow)
 function SkillWindow:init(gui)
   self.visibleRowCount = 4
   self.member = gui:currentMember()
-  ListWindow.init(self, gui, self.member.skillList)
+  ListWindow.init(self, gui, self.member:getSkillList())
 end
 -- Overrides ListWindow:createButtons.
 function SkillWindow:createWidgets()
@@ -67,7 +67,7 @@ function SkillWindow:setBattler(battler)
 end
 -- Updates buttons to match new state of the skill list.
 function SkillWindow:refreshSkills()
-  self:refreshButtons(self.member and self.member.skillList or {})
+  self:refreshButtons(self.member and self.member:getSkillList() or {})
 end
 
 ---------------------------------------------------------------------------------------------------

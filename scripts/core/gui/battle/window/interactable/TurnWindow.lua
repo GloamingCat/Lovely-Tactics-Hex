@@ -71,7 +71,7 @@ end
 
 -- "Attack" button callback.
 function TurnWindow:attackConfirm(button)
-  self:selectAction(TurnManager:currentCharacter().battler.attackSkill)
+  self:selectAction(TurnManager:currentCharacter().battler:getAttackSkill())
 end
 -- "Move" button callback.
 function TurnWindow:moveConfirm(button)
@@ -136,7 +136,7 @@ end
 --  enemies that the skill can reach.
 function TurnWindow:attackEnabled(button)
   local user = TurnManager:currentCharacter()
-  return self:skillActionEnabled(user.battler.attackSkill)
+  return self:skillActionEnabled(user.battler:getAttackSkill())
 end
 -- Skill condition. Enabled if character has any skills to use.
 function TurnWindow:skillEnabled(button)

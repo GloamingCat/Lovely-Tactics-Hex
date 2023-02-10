@@ -14,7 +14,6 @@ local Job = require('core/battle/battler/Job')
 local EquipSet = require('core/battle/battler/EquipSet')
 local Inventory = require('core/battle/Inventory')
 local PopupText = require('core/battle/PopupText')
-local SkillAction = require('core/battle/action/SkillAction')
 local SkillList = require('core/battle/battler/SkillList')
 local StatusList = require('core/battle/battler/StatusList')
 
@@ -68,7 +67,6 @@ function Battler:initState(data, save)
   self.inventory = Inventory(save and save.items or data.items or {})
   self.statusList = StatusList(self, save)
   self.equipSet = EquipSet(self, save)
-  self.attackSkill = SkillAction:fromData(save.attackID or data.attackID)
   -- Elements
   self.elementBase = save and save.elements and copyArray(save.elements)
   if not self.elementBase then
@@ -94,6 +92,23 @@ function Battler:initState(data, save)
   end
   self:refreshState()
   self.steps = save and save.steps or self.maxSteps()
+end
+
+---------------------------------------------------------------------------------------------------
+-- Skills
+---------------------------------------------------------------------------------------------------
+
+-- Gets all skills available for this character.
+-- @ret(SkillList)
+function Battler:getSkillList()
+  local list = self.skillList:clone()
+  list:learnAll(self.job.skillList)
+  return list
+end
+-- Gets current default attack skill.
+-- @ret(SkillAction)
+function Battler:getAttackSkill()
+  return self.job.attackSkill
 end
 
 ---------------------------------------------------------------------------------------------------

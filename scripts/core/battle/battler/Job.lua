@@ -9,6 +9,8 @@ Represents a battler's job.
 
 -- Imports
 local List = require('core/datastruct/List')
+local SkillAction = require('core/battle/action/SkillAction')
+local SkillList = require('core/battle/battler/SkillList')
 
 local Job = class()
 
@@ -30,8 +32,9 @@ function Job:init(battler, save)
   for i, att in ipairs(Config.attributes) do
     self.build[att.key] = loadformula(jobData.build[i], 'lvl')
   end
-  self.skills = List(jobData.skills)
-  self.skills:sort(function(a, b) return a.level < b.level end)
+  self.attackSkill = SkillAction:fromData(jobData.attackID)
+  self.allSkills = List(jobData.skills)
+  self.allSkills:sort(function(a, b) return a.level < b.level end)
   if save then
     self.level = save.level
     self.exp = save.exp
@@ -39,6 +42,7 @@ function Job:init(battler, save)
     self.level = battler.data.level
     self.exp = battler.data.exp + self.expCurve(self.level)
   end
+  self.skillList = SkillList(battler)
   self:learnSkills()
 end
 
@@ -64,10 +68,10 @@ function Job:addExperience(exp)
 end
 -- Learn all skills up to current level.
 function Job:learnSkills()
-  for i = 1, #self.skills do
-    local skill = self.skills[i]
+  for i = 1, #self.allSkills do
+    local skill = self.allSkills[i]
     if self.level >= skill.level then
-      self.battler.skillList:learn(skill.id)
+      self.skillList:learn(skill.id)
     end
   end
 end

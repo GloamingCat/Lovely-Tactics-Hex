@@ -97,8 +97,10 @@
   "job": {
     "knight": "Cavaleiro",
     "mage": "Mago",
-    "slime": "Gosma",
-    "slime2": "Super Gosma"
+    "slime1": "Gosma",
+    "slime2": "Gosma Mágica",
+    "slime3": "Gosma Venenosa",
+    "slime4": "Super Gosma",
   },
   "field": {
     "hf1": "Floresta Feliz 1",

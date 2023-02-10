@@ -22,7 +22,8 @@ local ActionItemWindow = class(ActionWindow, InventoryWindow)
 
 -- Constructor.
 -- @param(gui : GUI) /parent GUI.
--- @param(skillList : SkillList) Battler's skill set.
+-- @param(itemList : ItemList) Available items.
+-- @param(maxHeight : number) The height of the space available for the window (in pixels).
 function ActionItemWindow:init(gui, inventory, itemList, maxHeight)
   local y = self:fitOnTop(maxHeight) + gui:windowMargin()
   InventoryWindow.init(self, gui, nil, inventory, itemList, nil, nil, Vector(0, y, 0))

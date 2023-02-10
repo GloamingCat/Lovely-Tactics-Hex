@@ -23,7 +23,7 @@ local SkillRule = class(AIRule)
 function SkillRule:init(...)
   AIRule.init(self, ...)
   local id = self.tags and tonumber(self.tags.id)
-  self.skill = id and self.battler.skillList[id] or self.battler.attackSkill
+  self.skill = id and self.battler:getSkillList()[id] or self.battler:getAttackSkill()
   if self.tags and self.tags.target then
     self.targetCondition = loadformula(self.tags.target, 'action, user, target')
   end

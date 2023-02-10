@@ -51,7 +51,7 @@ end
 -- Creates window to use skill.
 function BattleGUI:createSkillWindow(heightFraction)
   local character = TurnManager:currentCharacter()
-  local skillList = character.battler.skillList
+  local skillList = character.battler:getSkillList()
   if not skillList:isEmpty() then
     local h = heightFraction * (ScreenManager.height - self:windowMargin() * 3)
     self.skillWindow = ActionSkillWindow(self, skillList, h)

@@ -31,7 +31,7 @@ function Battler:initState(data, save)
   if self.tags.counterID then
     self.counterSkill = SkillAction:fromData(self.tags.counterID)
   else
-    self.counterSkill = self.attackSkill
+    self.counterSkill = nil
   end
 end
 
@@ -73,7 +73,7 @@ function Battler:counters()
 end
 -- Attacks the given character.
 function Battler:counterAttack(user, target, counter)
-  local skill = self.counterSkill or self.attackSkill
+  local skill = self.counterSkill or self:getAttackSkill()
   if self.tags.counter then
     skill = SkillAction(self.tags.counter)
   end

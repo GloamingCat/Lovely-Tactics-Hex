@@ -44,6 +44,7 @@
           "level": 9
         }
       ],
+      "attackID": 5,
       "name": "Knight",
       "tags": [
         {
@@ -121,6 +122,7 @@
           "level": 10
         }
       ],
+      "attackID": 6,
       "name": "Mage",
       "tags": [
         {
@@ -161,6 +163,7 @@
       ],
       "expCurve": "lvl * (lvl + 1) * 2",
       "skills": [],
+      "attackID": 15,
       "name": "Slime",
       "tags": [
         {
@@ -168,9 +171,83 @@
           "value": "\"none\""
         }
       ],
-      "key": "slime"
+      "key": "slime1"
     },
     "id": 0,
+    "children": []
+  },
+  {
+    "data": {
+      "build": [
+        "5 * lvl",
+        "3 * lvl",
+        "2 * lvl",
+        "3 * lvl",
+        "2 * lvl",
+        "0",
+        "0",
+        "0",
+        "0",
+        "6 + math.round(lvl / 10)",
+        "3",
+        "0",
+        "5",
+        "10",
+        "10",
+        "5",
+        "5",
+        "0"
+      ],
+      "expCurve": "lvl * (lvl + 1) * 2",
+      "skills": [],
+      "attackID": 6,
+      "name": "Magic Slime",
+      "tags": [
+        {
+          "key": "equip",
+          "value": "\"none\""
+        }
+      ],
+      "key": "slime2"
+    },
+    "id": 4,
+    "children": []
+  },
+  {
+    "data": {
+      "build": [
+        "5 * lvl",
+        "4 * lvl",
+        "1 * lvl",
+        "3 * lvl",
+        "2 * lvl",
+        "0",
+        "0",
+        "0",
+        "0",
+        "6 + math.round(lvl / 10)",
+        "3",
+        "0",
+        "5",
+        "10",
+        "10",
+        "5",
+        "5",
+        "0"
+      ],
+      "expCurve": "lvl * (lvl + 1) * 2",
+      "skills": [],
+      "attackID": 18,
+      "name": "Poison Slime",
+      "tags": [
+        {
+          "key": "equip",
+          "value": "\"none\""
+        }
+      ],
+      "key": "slime3"
+    },
+    "id": 5,
     "children": []
   },
   {
@@ -197,6 +274,7 @@
       ],
       "expCurve": "lvl * (lvl + 1) * 2",
       "skills": [],
+      "attackID": 6,
       "name": "Giant Slime",
       "tags": [
         {
@@ -204,7 +282,7 @@
           "value": "\"none\""
         }
       ],
-      "key": "slime2"
+      "key": "slime4"
     },
     "id": 3,
     "children": []

@@ -27,10 +27,13 @@ local SkillList = class(List)
 function SkillList:init(battler, save)
   List.init(self)
   self.battler = battler
-  local skills = save and save.skills or battler.data.skills
+  local skills = battler.data.skills
+  if save then
+    skills = save.skills or save
+  end
   for i = 1, #skills do
-    local id = skills[i]
-    self:add(SkillAction:fromData(id))
+    local s = skills[i]
+    self:add(type(s) == 'number' and SkillAction:fromData(s) or s)
   end
 end
 
@@ -48,10 +51,22 @@ function SkillList:containsSkill(id)
   end
   return false
 end
--- @param(id : number) The skill's ID.
-function SkillList:learn(id)
+-- @param(skill : number | SkillAction) The skill or the skill's ID.
+function SkillList:learn(skill)
+  local id = skill
+  if type(skill) == 'number' then
+    skill = nil
+  else
+    id = skill.data.id
+  end
   if not self:containsSkill(id) then
-    self:add(SkillAction:fromData(id))
+    self:add(skill or SkillAction:fromData(id))
+  end
+end
+-- @param(list : table) Array of skill IDs. 
+function SkillList:learnAll(list)
+  for i = 1, #list do
+    self:learn(list[i])
   end
 end
 
@@ -71,6 +86,10 @@ function SkillList:getState()
     state[i] = self[i].data.id
   end
   return state
+end
+-- @ret(SkillList)
+function SkillList:clone()
+  return SkillList(self.battler, self)
 end
 
 return SkillList

@@ -1,1 +1,2 @@
-lib\editor.jar ..\
+cd lib
+.\editor.jar ..\project.json

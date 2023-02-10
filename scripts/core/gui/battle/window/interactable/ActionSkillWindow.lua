@@ -22,6 +22,7 @@ local ActionSkillWindow = class(ActionWindow, ListWindow)
 -- Constructor.
 -- @param(gui : GUI) /parent GUI.
 -- @param(skillList : SkillList) Battler's skill set.
+-- @param(maxHeight : number) The height of the space available for the window (in pixels).
 function ActionSkillWindow:init(gui, skillList, maxHeight)
   local y = self:fitOnTop(maxHeight) + gui:windowMargin()
   ListWindow.init(self, gui, skillList, nil, nil, Vector(0, y, 0))

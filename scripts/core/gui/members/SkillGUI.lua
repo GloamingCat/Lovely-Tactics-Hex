@@ -53,7 +53,7 @@ end
 -- @param(member : Battler) Member to check.
 -- @ret(boolean) True if the member is active, false otherwise.
 function SkillGUI:memberEnabled(member)
-  return not member.skillList:isEmpty()
+  return not member:getSkillList():isEmpty()
 end
 
 return SkillGUI
