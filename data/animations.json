@@ -3326,7 +3326,7 @@
                 "brightness": 75
               },
               "introPattern": "",
-              "introDuration": "",
+              "introDuration": "60",
               "loopPattern": "",
               "loopDuration": "",
               "audio": [],
@@ -3717,7 +3717,7 @@
                 "brightness": 75
               },
               "introPattern": "",
-              "introDuration": "",
+              "introDuration": "60",
               "loopPattern": "",
               "loopDuration": "",
               "audio": [],

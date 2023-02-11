@@ -23,7 +23,7 @@
     "attStep": "mov",
     "attJump": "jmp",
     "itemSkillID": 1,
-    "battleEndRevive": true,
+    "battleEndRevive": false,
     "keepParties": true,
     "charSpeed": 150
   },

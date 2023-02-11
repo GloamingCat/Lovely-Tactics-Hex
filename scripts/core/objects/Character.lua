@@ -10,6 +10,7 @@ The [COUROUTINE] functions must ONLY be called from a fiber.
 
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
+local BattleAnimations = require('core/battle/BattleAnimations')
 local CharacterBase = require('core/objects/CharacterBase')
 local MoveAction = require('core/battle/action/MoveAction')
 
@@ -218,7 +219,7 @@ end
 -- Skill (target)
 ---------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Plays damage animation and shows the result in a pop-up.
+-- [COROUTINE] Plays damage and KO (if died) animation.
 -- @param(skill : Skill) The skill used.
 -- @param(origin : ObjectTile) The tile of the skill user.
 -- @param(results : table) Results of the skill.
@@ -231,7 +232,7 @@ function Character:damage(skill, origin, results)
   anim:reset()
   _G.Fiber:wait(anim.duration)
   if self.battler:isAlive() then
-    self:playAnimation(self.idleAnim)
+    self:playIdleAnimation()
   else
     self:playKOAnimation()
   end

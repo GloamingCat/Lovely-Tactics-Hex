@@ -622,7 +622,12 @@
             {
               "condition": "self:chance(50)",
               "name": "rule/CallRule.lua",
-              "tags": [],
+              "tags": [
+                {
+                  "key": "member",
+                  "value": "\"member:isAlive()\""
+                }
+              ],
               "key": ""
             },
             {

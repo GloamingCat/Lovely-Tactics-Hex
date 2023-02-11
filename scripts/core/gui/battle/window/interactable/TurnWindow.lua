@@ -48,7 +48,8 @@ end
 function TurnWindow:createContent(...)
   local troop = TurnManager:currentTroop()
   self.backupBattlers = troop:backupBattlers()
-  self.currentBattlers = TroopManager:currentCharacters(troop.party, true)
+  self.fieldBattlers = troop:currentBattlers()
+  self.livingAllies = TroopManager:currentCharacters(troop.party, true)
   ActionWindow.createContent(self, ...)
   self.userCursor = BattleCursor()
   self.content:add(self.userCursor)
@@ -148,8 +149,10 @@ function TurnWindow:itemEnabled(button)
 end
 -- Escape condition. Only escapes if the character is in a tile of their party.
 function TurnWindow:escapeEnabled()
-  if not BattleManager.params.escapeEnabled and #self.currentBattlers == 1 then
-    return false
+  if #self.livingAllies == 1 then
+    if not BattleManager.params.escapeEnabled or #self.fieldBattlers > 1 then
+      return false
+    end
   end
   local char = TurnManager:currentCharacter()
   local userParty = char.party

@@ -97,6 +97,17 @@ function BattleAnimations.targetEffect(skill, char, tile)
   end
   return 0
 end
+-- Plays the visual effect for a character's death.
+-- @param(char : Character) Target character.
+-- @ret(number) The duration of the animation.
+function BattleAnimations.dieEffect(char)
+  if char.data.koAnimID and char.data.koAnimID >= 0 then
+    local x, y, z = char.position:coordinates()
+    local anim = BattleAnimations.playOnField(char.data.koAnimID, x, y, z)
+    return anim.duration
+  end
+  return 0
+end
 -- Plays the visual effect for the skill's target.
 -- @param(skill : table) Skill data.
 -- @param(x : number) Position x of the target (in pixels).

@@ -85,32 +85,28 @@ function SkillAction:allTargetsEffect(input, originTile)
   end
   local allTargets = self:getAllAffectedTiles(input)
   local maxGain = 0
-  local wait = 0
   for i = #allTargets, 1, -1 do
     for targetChar in allTargets[i].characterList:iterator() do
       local gain = self.tags.exp or defaultExp
       local results = self:calculateEffectResults(input.user.battler, targetChar.battler)
-      local popupText = self:singleTargetEffect(results, input, targetChar.battler, originTile)
-      if popupText then
-        wait = popupText:popup() - self.targetTime
-      end
+      self:singleTargetEffect(results, input, targetChar.battler, originTile)
       _G.Fiber:wait(self.targetTime)
       maxGain = math.max(maxGain, self:expGain(input.user.battler, targetChar.battler, results))
     end
   end
+  local wait = 0
   if maxGain > 0 then
     local nextLevel = input.user.battler.job:levelsup(maxGain)
     local pos = input.user.position
     if expPopup then
-      _G.Fiber:wait(wait)
-      local popupText = popupText or PopupText(pos.x, pos.y - 10, FieldManager.renderer)
+      local popupText = PopupText(pos.x, pos.y - 10, FieldManager.renderer)
       popupText:addLine('+' .. tostring(maxGain) .. ' ' .. Vocab.exp, 'popup_exp', 'popup_exp')
       wait = popupText:popup()
     end
     input.user.battler.job:addExperience(maxGain)
     if nextLevel then
       _G.Fiber:wait(wait)
-      local popupText = popupText or PopupText(pos.x, pos.y - 10, FieldManager.renderer)
+      local popupText = PopupText(pos.x, pos.y - 10, FieldManager.renderer)
       popupText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
       if Config.sounds.levelup then
         AudioManager:playSFX(Config.sounds.levelup)

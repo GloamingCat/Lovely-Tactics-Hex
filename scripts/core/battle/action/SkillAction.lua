@@ -387,10 +387,7 @@ function SkillAction:allTargetsEffect(input, originTile)
   for i = #allTargets, 1, -1 do
     for targetChar in allTargets[i].characterList:iterator() do
       local results = self:calculateEffectResults(input.user.battler, targetChar.battler)
-      local popupText = self:singleTargetEffect(results, input, targetChar.battler, originTile)
-      if popupText then
-        popupText:popup()
-      end
+      self:singleTargetEffect(results, input, targetChar.battler, originTile)
       _G.Fiber:wait(self.targetTime)
     end
   end
@@ -428,17 +425,26 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
         if self:isArea() then
           originTile = input.target
         end
-        _G.Fiber:fork(targetChar.damage, targetChar, self.data, originTile, results)
+        if targetChar.battler:isAlive() then
+          _G.Fiber:fork(targetChar.damage, targetChar, self.data, originTile, results)
+        else
+          targetChar:damage(self.data, originTile, results)
+          BattleAnimations.dieEffect(targetChar)
+          if targetChar.data.koFadeout and targetChar.data.koFadeout >= 0 then
+            targetChar:colorizeTo(nil, nil, nil, 0, 60 / targetChar.data.koFadeout, true)
+            local troop = TroopManager.troops[targetChar.party]
+            local member = troop:moveMember(targetChar.key, 1)
+            TroopManager:deleteCharacter(targetChar)
+            targetChar = nil
+          end
+        end
       end
     else
       BattleAnimations.menuTargetEffect(self.data, input.targetX, input.targetY)
     end
     target:onSkillResult(input, results, targetChar)
-    if targetChar and target.state.hp > 0 then
-      targetChar:playAnimation(targetChar.idleAnim)
-    end
   end
-  return popupText, targetChar
+  return targetChar
 end
 
 ---------------------------------------------------------------------------------------------------

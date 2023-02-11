@@ -15,13 +15,24 @@ local CallAction = require('core/battle/action/CallAction')
 local CallRule = class(AIRule)
 
 ---------------------------------------------------------------------------------------------------
--- General
+-- Initialization
 ---------------------------------------------------------------------------------------------------
 
+-- Constructor.
+-- @param(...) AIRule constructor arguments.
+function CallRule:init(...)
+  AIRule.init(self, ...)
+  if self.tags and self.tags.member then
+    self.memberCondition = loadformula('not (' .. self.tags.member .. ')', 'member')
+  end
+end
 -- Overrides AIRule:onSelect.
 function CallRule:onSelect(user)
   local troop = TroopManager.troops[user.party]
-  local backup = troop:backupMembers()
+  local backup = troop:backupBattlers()
+  if self.memberCondition then
+    backup:conditionalRemove(self.memberCondition)
+  end
   if backup.size > 0 then
     self.input = ActionInput(CallAction(), user or TurnManager:currentCharacter())
     self.input.action:onSelect(self.input)

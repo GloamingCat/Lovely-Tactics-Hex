@@ -3,6 +3,8 @@
     "data": {
       "battlerID": -1,
       "shadowID": -1,
+      "koAnimID": -1,
+      "koFadeout": -1,
       "tiles": [],
       "transform": {
         "offsetX": 0,
@@ -31,6 +33,8 @@
         "data": {
           "battlerID": 1,
           "shadowID": 1,
+          "koAnimID": -1,
+          "koFadeout": -1,
           "tiles": [
             {
               "dx": 0,
@@ -136,6 +140,8 @@
         "data": {
           "battlerID": 2,
           "shadowID": 1,
+          "koAnimID": -1,
+          "koFadeout": -1,
           "tiles": [
             {
               "dx": 0,
@@ -229,6 +235,8 @@
         "data": {
           "battlerID": -1,
           "shadowID": 1,
+          "koAnimID": -1,
+          "koFadeout": -1,
           "tiles": [
             {
               "dx": 0,
@@ -288,6 +296,8 @@
     "data": {
       "battlerID": -1,
       "shadowID": -1,
+      "koAnimID": -1,
+      "koFadeout": -1,
       "tiles": [],
       "transform": {
         "offsetX": 0,
@@ -316,6 +326,8 @@
         "data": {
           "battlerID": 6,
           "shadowID": 200,
+          "koAnimID": -1,
+          "koFadeout": 45,
           "tiles": [
             {
               "dx": 0,
@@ -388,6 +400,8 @@
         "data": {
           "battlerID": 7,
           "shadowID": 200,
+          "koAnimID": -1,
+          "koFadeout": 45,
           "tiles": [
             {
               "dx": 0,
@@ -460,6 +474,8 @@
         "data": {
           "battlerID": 9,
           "shadowID": 200,
+          "koAnimID": -1,
+          "koFadeout": 45,
           "tiles": [
             {
               "dx": 0,
@@ -532,6 +548,8 @@
         "data": {
           "battlerID": 4,
           "shadowID": 200,
+          "koAnimID": -1,
+          "koFadeout": 45,
           "tiles": [
             {
               "dx": 0,
@@ -604,6 +622,8 @@
         "data": {
           "battlerID": 5,
           "shadowID": 200,
+          "koAnimID": -1,
+          "koFadeout": 45,
           "tiles": [
             {
               "dx": 0,
@@ -680,6 +700,8 @@
         "data": {
           "battlerID": 8,
           "shadowID": 106,
+          "koAnimID": -1,
+          "koFadeout": 45,
           "tiles": [
             {
               "dx": 0,
@@ -771,6 +793,8 @@
         "data": {
           "battlerID": 14,
           "shadowID": 200,
+          "koAnimID": -1,
+          "koFadeout": 45,
           "tiles": [
             {
               "dx": 0,
@@ -845,6 +869,8 @@
     "data": {
       "battlerID": -1,
       "shadowID": -1,
+      "koAnimID": -1,
+      "koFadeout": -1,
       "tiles": [
         {
           "dx": 0,
@@ -884,6 +910,8 @@
         "data": {
           "battlerID": -1,
           "shadowID": -1,
+          "koAnimID": -1,
+          "koFadeout": -1,
           "tiles": [
             {
               "dx": 0,
@@ -924,6 +952,8 @@
         "data": {
           "battlerID": -1,
           "shadowID": 1,
+          "koAnimID": -1,
+          "koFadeout": -1,
           "tiles": [
             {
               "dx": 0,
@@ -970,6 +1000,8 @@
     "data": {
       "battlerID": -1,
       "shadowID": -1,
+      "koAnimID": -1,
+      "koFadeout": -1,
       "tiles": [
         {
           "dx": 0,
@@ -1009,6 +1041,8 @@
         "data": {
           "battlerID": 10,
           "shadowID": 1,
+          "koAnimID": -1,
+          "koFadeout": -1,
           "tiles": [
             {
               "dx": 0,
@@ -1102,6 +1136,8 @@
         "data": {
           "battlerID": 11,
           "shadowID": 200,
+          "koAnimID": -1,
+          "koFadeout": -1,
           "tiles": [
             {
               "dx": 0,
@@ -1170,6 +1206,8 @@
         "data": {
           "battlerID": 13,
           "shadowID": 200,
+          "koAnimID": -1,
+          "koFadeout": -1,
           "tiles": [
             {
               "dx": 0,

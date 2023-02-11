@@ -78,7 +78,7 @@ function EscapeAction:escape(input)
   end
   char:colorizeTo(nil, nil, nil, 0, self.animSpeed, true)
   local troop = TurnManager:currentTroop()
-  local member = troop:moveMember(char.key, 1)
+  troop:moveMember(char.key, 1)
   TroopManager:deleteCharacter(char)
   if TroopManager:getMemberCount(party) == 0 then
     return { executed = true, endTurn = true, escaped = true }
