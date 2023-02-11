@@ -42,6 +42,7 @@ end
 function PartyWindow:createListButton(battler)
   local button = Button(self)
   button.battler = battler
+  return button
 end
 
 ---------------------------------------------------------------------------------------------------

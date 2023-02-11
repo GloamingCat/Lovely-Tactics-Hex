@@ -203,6 +203,33 @@
   },
   {
     "on": true,
+    "name": "plugins/battle/SkillEXP.lua",
+    "tags": [
+      {
+        "key": "battleOnly",
+        "value": "true"
+      },
+      {
+        "key": "expPopup",
+        "value": "true"
+      },
+      {
+        "key": "defaultExp",
+        "value": "10"
+      },
+      {
+        "key": "missExp",
+        "value": "0.5"
+      },
+      {
+        "key": "levelDiff",
+        "value": "1"
+      }
+    ],
+    "key": ""
+  },
+  {
+    "on": true,
     "name": "plugins/skill/RingArea.lua",
     "tags": [],
     "key": ""

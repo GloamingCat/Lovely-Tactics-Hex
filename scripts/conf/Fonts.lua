@@ -35,6 +35,7 @@ return  {
 	popup_status_add = default_font,
 	popup_status_remove = default_font,
 	popup_levelup = default_font,
+	popup_exp = medium_font,
 
 	log = log_font,
   pause = medium_font

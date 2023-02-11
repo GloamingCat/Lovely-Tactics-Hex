@@ -99,12 +99,14 @@ end
 -- [COROUTINE] Show the text lines in a pop-up.
 -- @param(wait : boolean) True if the execution should wait until the animation finishes 
 --  (optional, false by default).
+-- @ret(number) The duration in frames.
 function PopupText:popup(wait)
   if not self.text then
-    return
+    return 0
   end
   if not wait then
     Fiber:fork(self.popup, self, true)
+    return 60 / speed + pause + 60 / speed * 4
   else
     local p = {self.width, self.align}
     local sprite = Text(self.text, p, self.renderer)
@@ -124,6 +126,7 @@ function PopupText:popup(wait)
       Fiber:wait()
     end
     sprite:destroy()
+    return 0
   end
 end
 -- Destroys this popup's sprite.

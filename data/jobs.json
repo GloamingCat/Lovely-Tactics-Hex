@@ -21,7 +21,7 @@
         "10",
         "0"
       ],
-      "expCurve": "lvl * (lvl + 1) * 2",
+      "expCurve": "lvl * (lvl + 1) * 4",
       "skills": [
         {
           "id": 22,
@@ -87,7 +87,7 @@
         "10",
         "0"
       ],
-      "expCurve": "lvl * (lvl + 1) * 2",
+      "expCurve": "lvl * (lvl + 1) * 4",
       "skills": [
         {
           "id": 14,
@@ -161,7 +161,7 @@
         "5",
         "0"
       ],
-      "expCurve": "lvl * (lvl + 1) * 2",
+      "expCurve": "lvl * (lvl + 1) * 4",
       "skills": [],
       "attackID": 15,
       "name": "Slime",
@@ -198,7 +198,7 @@
         "5",
         "0"
       ],
-      "expCurve": "lvl * (lvl + 1) * 2",
+      "expCurve": "0",
       "skills": [],
       "attackID": 6,
       "name": "Magic Slime",
@@ -235,7 +235,7 @@
         "5",
         "0"
       ],
-      "expCurve": "lvl * (lvl + 1) * 2",
+      "expCurve": "0",
       "skills": [],
       "attackID": 18,
       "name": "Poison Slime",
@@ -272,7 +272,7 @@
         "5",
         "0"
       ],
-      "expCurve": "lvl * (lvl + 1) * 2",
+      "expCurve": "0",
       "skills": [],
       "attackID": 6,
       "name": "Giant Slime",

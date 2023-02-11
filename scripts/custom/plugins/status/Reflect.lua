@@ -72,8 +72,7 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
       end
     end
   end
-  SkillAction_singleTargetEffect(self, results, input, target, originTile)
-  _G.Fiber:wait(math.max(minTime - GameManager.frame, 0))
+  return SkillAction_singleTargetEffect(self, results, input, target, originTile)
 end
 
 ---------------------------------------------------------------------------------------------------

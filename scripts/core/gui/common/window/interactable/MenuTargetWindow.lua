@@ -27,9 +27,16 @@ function MenuTargetWindow:onButtonConfirm(button)
   local input = self.GUI.input
   input.target = self.list[button.index]
   local pos = button:relativePosition()
-  input.x = pos.x + self:cellWidth() / 2
-  input.y = pos.y + self:cellHeight() / 2
-  input.z = -50
+  input.targetX = pos.x + self:cellWidth() / 2
+  input.targetY = pos.y + self:cellHeight() / 2 + 10
+  for i = 1, #self.list do
+    if self.list[i] == input.user then
+      local pos = self.matrix[i]:relativePosition()
+      input.originX = pos.x + self:cellWidth() / 2
+      input.originY = pos.y + self:cellHeight() / 2 + 10
+      break
+    end
+  end
   local result = input.action:menuUse(input)
   if result.executed then
     self:refreshMembers()

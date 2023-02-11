@@ -57,11 +57,10 @@ math.field.init()
 -- Plugins
 ---------------------------------------------------------------------------------------------------
 
-local TagMap = require('core/datastruct/TagMap')
 for i = 1, #Config.plugins do
   local plugin = Config.plugins[i]
   if plugin.on then
-    args = TagMap(plugin.tags)
+    args = Database.loadTags(plugin.tags)
     require('custom/' .. plugin.name)
   end
 end

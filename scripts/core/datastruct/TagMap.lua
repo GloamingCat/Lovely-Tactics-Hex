@@ -53,14 +53,17 @@ end
 
 -- Inserts a new tag pair.
 -- @param(name : string) Tag name.
--- @param(value : string) Tag value.
-function TagMap:add(name, value)
+-- @param(str : string) Tag value.
+function TagMap:add(name, str)
   local arr = self.tags[name]
   if not arr then
     arr = {}
     self.tags[name] = arr
   end
-  value = Serializer.decode(value) or value
+  local value = Serializer.decode(str)
+  if value == nil then
+    value = str
+  end
   arr[#arr + 1] = value
   self[name] = self[name] or value
 end
@@ -69,13 +72,16 @@ end
 function TagMap:addAll(tags)
   for i = 1, #tags do
     local name = tags[i].key
-    local value = tags[i].value
+    local str = tags[i].value
     local arr = self.tags[name]
     if not arr then
       arr = {}
       self.tags[name] = arr
     end
-    value = Serializer.decode(value) or value
+    local value = Serializer.decode(str)
+    if value == nil then
+      value = str
+    end
     arr[#arr + 1] = value
     self[name] = self[name] or value
   end

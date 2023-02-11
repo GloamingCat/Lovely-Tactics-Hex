@@ -106,13 +106,13 @@ function BattleAnimations.menuTargetEffect(skill, x, y)
   local t = 0
   if skill.castAnimID >= 0 then
     if skill.individualAnimID >= 0 then
-      t = BattleAnimations.playOnMenu(skill.castAnimID, 0, 0, -50, false)
+      t = BattleAnimations.playOnMenu(skill.castAnimID, 0, 0, -50, false).duration
     else
-      t = BattleAnimations.playOnMenu(skill.castAnimID, x, y, -50, false)
+      t = BattleAnimations.playOnMenu(skill.castAnimID, x, y, -50, false).duration
     end
   end
   if skill.individualAnimID >= 0 then
-    t = math.max(BattleAnimations.playOnMenu(skill.individualAnimID, x, y, -50, false), t)
+    t = math.max(BattleAnimations.playOnMenu(skill.individualAnimID, x, y, -50, false).duration, t)
   end
   return t
 end

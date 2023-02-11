@@ -48,6 +48,7 @@ return {
   popup_status_add = white,
   popup_status_remove = white,
   popup_levelup = yellow,
+  popup_exp = white,
   
   -- GUI
   gui_text_enabled = white,
