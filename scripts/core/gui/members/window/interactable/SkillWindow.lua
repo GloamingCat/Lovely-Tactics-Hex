@@ -138,9 +138,13 @@ end
 -- Properties
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides ListWindow:cellWidth.
+function SkillWindow:cellWidth()
+  return 200
+end
 -- Overrides GridWindow:colCount.
 function SkillWindow:colCount()
-  return 2
+  return 1
 end
 -- Overrides GridWindow:rowCount.
 function SkillWindow:rowCount()

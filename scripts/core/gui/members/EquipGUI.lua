@@ -39,7 +39,7 @@ end
 -- Creates the window with the battler's slots.
 function EquipGUI:createSlotWindow()
   local window = EquipSlotWindow(self)
-  local x = self:windowMargin() + (window.width - ScreenManager.width) / 2
+  local x = self:windowMargin() + (window.width - ScreenManager.width) / 2 + 30
   local y = self.initY + (window.height - ScreenManager.height) / 2
   window:setXYZ(x, y)
   self.mainWindow = window
@@ -54,7 +54,7 @@ function EquipGUI:createItemWindow()
 end
 -- Creates the window with the equipment's attribute and element bonus.
 function EquipGUI:createBonusWindow()
-  local w = ScreenManager.width - self.mainWindow.width - self:windowMargin() * 3
+  local w = ScreenManager.width - self.mainWindow.width - self:windowMargin() * 3 - 60
   local h = self.mainWindow.height
   local x = (ScreenManager.width - w) / 2 - self:windowMargin()
   local y = self.mainWindow.position.y

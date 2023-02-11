@@ -56,24 +56,25 @@ function EquipBonusWindow:createBonusText(att, x, y, w)
   local font = Fonts.gui_small
   for i = 1, #att do
     local key = att[i].key
-    local valueW = 30
-    local arrowW = 15
+    local valueW = 25
+    local arrowW = 12
+    local nameW = 30
     local namePos = Vector(x, y, 0)
-    local txtName = SimpleText(key, namePos, w / 2, 'left', font)
+    local txtName = SimpleText(key, namePos, nameW, 'left', font)
     txtName:setTerm('data.conf.' .. key, Config.attributes[key].shortName)
     txtName:redraw()
     self.content:add(txtName)
     self.bonus:add(txtName)
-    local valuePos1 = Vector(x + w / 2, y, 0)
+    local valuePos1 = Vector(x + nameW, y, 0)
     local value1 = SimpleText(round(att[i].oldValue), valuePos1, valueW, 'left', font)
     self.content:add(value1)
     self.bonus:add(value1)
     local arrowIcon = {id = Config.animations.arrow, col = 0, row = 0}
     local arrowImg = ResourceManager:loadIcon(arrowIcon, GUIManager.renderer)
-    local arrow = SimpleImage(arrowImg, x + w / 2 + valueW, y, 0, arrowW, value1.sprite:getHeight())
+    local arrow = SimpleImage(arrowImg, x + nameW + valueW, y, 0, arrowW, value1.sprite:getHeight())
     self.content:add(arrow)
     self.bonus:add(arrow)
-    local valuePos2 = Vector(x + w / 2 + valueW + arrowW, y, 0)
+    local valuePos2 = Vector(x + nameW + valueW + arrowW, y, 0)
     local value2 = SimpleText(round(att[i].newValue), valuePos2, valueW, 'left', font)
     self.content:add(value2)
     self.bonus:add(value2)

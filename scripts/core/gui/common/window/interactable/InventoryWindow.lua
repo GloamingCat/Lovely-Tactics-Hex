@@ -133,9 +133,13 @@ end
 -- Properties
 ---------------------------------------------------------------------------------------------------
 
--- New col count.
+-- Overrides ListWindow:cellWidth.
+function InventoryWindow:cellWidth()
+  return 200
+end
+-- Overrides GridWindow:colCount.
 function InventoryWindow:colCount()
-  return 2
+  return 1
 end
 -- New row count.
 function InventoryWindow:rowCount()

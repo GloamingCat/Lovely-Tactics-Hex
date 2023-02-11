@@ -128,8 +128,7 @@ function EquipSlotWindow:colCount()
 end
 -- Overrides ListWindow:computeWidth.
 function EquipSlotWindow:cellWidth(width)
-  local w = (ScreenManager.width - self.GUI:windowMargin() * 3) / 2
-  return self:computeCellWidth(w)
+  return 200
 end
 -- @ret(string) String representation (for debugging).
 function EquipSlotWindow:__tostring()
