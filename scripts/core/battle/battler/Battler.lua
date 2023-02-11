@@ -59,10 +59,10 @@ function Battler:initProperties(data, save)
   self.tags = Database.loadTags(data.tags)
 end
 -- Initializes battle state.
--- @param(data : table) the battler's data from database
--- @param(save : table) the data from save
+-- @param(data : table) The battler's data from database.
+-- @param(save : table) The state data from save.
 function Battler:initState(data, save)
-  self.skillList = SkillList(self, save)
+  self.skillList = SkillList(self, save and save.skills)
   self.job = Job(self, save and save.job)
   self.inventory = Inventory(save and save.items or data.items or {})
   self.statusList = StatusList(self, save)

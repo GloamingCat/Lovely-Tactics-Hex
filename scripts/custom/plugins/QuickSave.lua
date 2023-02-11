@@ -40,8 +40,8 @@ function Player:checkFieldInput()
     SaveManager:storeSave('quick')
     popup(Vocab.saved)
   elseif InputManager.keys['load']:isTriggered() then
-    SaveManager:loadSave('quick')
-    GameManager:setSave(SaveManager.current)
+    local save = SaveManager:loadSave('quick')
+    GameManager:setSave(save)
     popup(Vocab.loaded)
   else
     Player_checkFieldInput(self)

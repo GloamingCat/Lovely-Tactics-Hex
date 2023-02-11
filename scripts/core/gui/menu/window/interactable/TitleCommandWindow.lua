@@ -46,8 +46,8 @@ function TitleCommandWindow:newGameConfirm()
   self.GUI:hideCover(true, false)
   self.GUI:hideCover(false, true)
   self.result = 1
-  SaveManager:loadSave()
-  GameManager:setSave(SaveManager.current)
+  local save = SaveManager:loadSave()
+  GameManager:setSave(save)
 end
 -- Load Game button.
 function TitleCommandWindow:loadGameConfirm()
@@ -59,8 +59,8 @@ function TitleCommandWindow:loadGameConfirm()
     self.GUI:hide()
     self.GUI:hideCover(false, true)
     self.result = 1
-    SaveManager:loadSave(result)
-    GameManager:setSave(SaveManager.current)
+    local save = SaveManager:loadSave(result)
+    GameManager:setSave(save)
   else
     self.GUI.topText:setVisible(true)
     self:show()

@@ -42,7 +42,7 @@ function Job:init(battler, save)
     self.level = battler.data.level
     self.exp = battler.data.exp + self.expCurve(self.level)
   end
-  self.skillList = SkillList(battler)
+  self.skillList = SkillList()
   self:learnSkills()
 end
 

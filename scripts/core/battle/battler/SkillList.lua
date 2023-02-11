@@ -27,9 +27,9 @@ local SkillList = class(List)
 function SkillList:init(battler, save)
   List.init(self)
   self.battler = battler
-  local skills = battler.data.skills
-  if save then
-    skills = save.skills or save
+  local skills = save or battler and battler.data.skills
+  if not skills then
+    return
   end
   for i = 1, #skills do
     local s = skills[i]
@@ -93,6 +93,10 @@ end
 -- @ret(SkillList)
 function SkillList:clone()
   return SkillList(self.battler, self)
+end
+-- @ret(List)
+function SkillList:toList()
+  return List(self)
 end
 
 return SkillList

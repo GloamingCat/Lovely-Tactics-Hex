@@ -42,7 +42,7 @@ function EquipSet:updateSlotBonus(key)
     self.skills[key] = nil
     return
   end
-  self.skills[key] = SkillList(self.battler)
+  self.skills[key] = SkillList()
   for i, tag in ipairs(data.tags) do 
     if tag.key == 'skill' then
       local skill = tag.value:split()

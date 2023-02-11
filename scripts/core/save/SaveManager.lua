@@ -27,7 +27,6 @@ local SaveManager = class()
 
 -- Constructor. 
 function SaveManager:init()
-  self.current = nil
   if fileInfo('saves.json') then
     self.saves = Serializer.load('saves.json')
   else
@@ -117,18 +116,21 @@ end
 
 -- Loads the specified save.
 -- @param(file : string) File name. If nil, a new save is created.
+-- @ret(table) The loaded save data.
 function SaveManager:loadSave(file)
+  local current = nil
   if file == nil then
-    self.current = self:newSave()
+    current = self:newSave()
   elseif type(file) == 'table' then
-    self.current = file
+    current = file
   elseif fileInfo('saves/' .. file .. '.json') then
-    self.current = Serializer.load('saves/' .. file .. '.json')
+    current = Serializer.load('saves/' .. file .. '.json')
   else
     print('No such save file: ' .. file .. '.json')
-    self.current = self:newSave()
+    current = self:newSave()
   end
   self.loadTime = now()
+  return current
 end
 -- Load config file. If 
 function SaveManager:loadConfig()
@@ -169,8 +171,9 @@ end
 -- @param(save : table) The save, uses the current save if nil.
 -- @ret(table) Header of the save.
 function SaveManager:createHeader(save)
-  save = save or self.current
-  local troop = Troop()
+  local db = save and save.troops or TroopManager.troopData
+  local id = save and save.playerTroopID or TroopManager.playerTroopID
+  local troop = db[id .. ''] or Database.troops[id]
   local members = {}
   for i = 1, #troop.members do
     if troop.members[i].list == 0 then
@@ -179,11 +182,11 @@ function SaveManager:createHeader(save)
   end
   local field = FieldManager.currentField
   return { members = members,
-    playTime = save.playTime,
+    playTime = save and save.playTime or GameManager:currentPlayTime(),
     money = troop.money,
     field = field.key,
     location = field.name,
-    version = save.version }
+    version = save and save.version or saveVersion }
 end
 -- Stores current save.
 -- @param(name : string) File name.
