@@ -23,7 +23,7 @@ return function(script)
 
   -- Event 2: aftermath
   script:addEvent(function()
-    local escaped = BattleManager:playerEscaped() or BattleManager:enemyEscaped()
+    local escaped = BattleManager:playerEscaped()
     if escaped then
       script.char.cooldown = 180
     else

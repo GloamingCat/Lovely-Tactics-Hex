@@ -169,23 +169,23 @@ end
 -- Battle results
 ---------------------------------------------------------------------------------------------------
 
--- Checks if player won battle.
+-- @ret(boolean) Whether the player party won the battle.
 function BattleManager:playerWon()
-  return self.result == 1
+  return self.result > 0
 end
--- Checks if player escaped.
+-- @ret(boolean) Whether the player party escaped.
 function BattleManager:playerEscaped()
-  return self.result == -2 and self.winner == TroopManager.playerParty
+  return self.result == -2
 end
--- Checks if enemy won battle.
+-- @ret(boolean) Whether the enemy party won battle.
 function BattleManager:enemyWon()
   return self.result == -1
 end
--- Checks if enemy escaped.
+-- @ret(boolean) Whether the enemy party escaped.
 function BattleManager:enemyEscaped()
-  return self.result == -2 and self.winner ~= TroopManager.playerParty
+  return self.result == 2
 end
--- Checks if there was a draw.
+-- @ret(boolean) Whether both parties lost.
 function BattleManager:drawed()
   return self.result == 0
 end

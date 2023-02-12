@@ -84,17 +84,18 @@ end
 -- Loads battle field.
 -- @param(args.fade : boolean) Fade out/in effect when exiting/returning to previous field.
 function EventSheet:finishBattle(args)
-  if BattleManager:playerWon() then
-    self.battleLog = 'You won!'
+  if BattleManager:playerEscaped() then
+    self.battleLog = 'You escaped!'
+  elseif BattleManager:enemyEscaped() then
+    self.battleLog = 'The enemy escaped...'
   elseif BattleManager:enemyWon() then
     assert(BattleManager.params.gameOverCondition < 2, "Player shouldn't have the option to continue.")
     self.battleLog = 'You lost...'
   elseif BattleManager:drawed() then
+    assert(BattleManager.params.gameOverCondition < 1, "Player shouldn't have the option to continue.")
     self.battleLog = 'Draw.'
-  elseif BattleManager:playerEscaped() then
-    self.battleLog = 'You escaped!'
-  elseif BattleManager:enemyEscaped() then
-    self.battleLog = 'The enemy escaped...'
+  elseif BattleManager:playerWon() then
+    self.battleLog = 'You won!'
   end
   if args.fade then
     FieldManager.renderer:fadein(args.fade, args.wait)

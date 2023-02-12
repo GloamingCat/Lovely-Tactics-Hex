@@ -125,12 +125,12 @@ function TurnManager:runTurn(skipStart)
   local result = troop.AI and troop.AI(troop) or self:runPlayerTurn()
   _G.Fiber:wait(self.finishTime)
   if result.escaped then
-    if self.party == TroopManager.playerParty then
-      return -2, TroopManager.playerParty
-    else
-      local winner = TroopManager:winnerParty()
-      if winner then
-        return -2, self.party
+    local winner = TroopManager:winnerParty()
+    if winner then
+      if self.party == TroopManager.playerParty then
+        return -2, winner
+      else
+        return 2, winner
       end
     end
   end
