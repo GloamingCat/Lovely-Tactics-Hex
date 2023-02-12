@@ -405,5 +405,9 @@ function Battler:getState(list, x, y)
     steps = self.steps
   }
 end
+-- Discards save changes.
+function Battler:resetState()
+  self:initState(self.data)
+end
 
 return Battler

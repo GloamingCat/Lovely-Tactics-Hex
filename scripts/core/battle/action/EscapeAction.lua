@@ -23,6 +23,7 @@ local EscapeAction = class(BattleAction)
 function EscapeAction:init(move, ...)
   BattleAction.init(self, ...)
   self.animSpeed = 2
+  self.hide = false
   if move then
     self.moveAction = BattleMoveAction()
   end
@@ -78,7 +79,7 @@ function EscapeAction:escape(input)
   end
   char:colorizeTo(nil, nil, nil, 0, self.animSpeed, true)
   local troop = TurnManager:currentTroop()
-  troop:moveMember(char.key, 1)
+  troop:moveMember(char.key, self.hide and 2 or 1)
   TroopManager:deleteCharacter(char)
   if TroopManager:getMemberCount(party) == 0 then
     return { executed = true, endTurn = true, escaped = true }

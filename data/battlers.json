@@ -628,6 +628,10 @@
                 {
                   "key": "member",
                   "value": "\"member:isAlive()\""
+                },
+                {
+                  "key": "reset",
+                  "value": "true"
                 }
               ],
               "key": ""

@@ -23,6 +23,7 @@ function CallAction:init()
   self.showTargetWindow = false
   self.freeNavigation = true
   self.animSpeed = 2
+  self.resetBattler = false
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -93,6 +94,9 @@ function CallAction:callMember(key, tile, fade)
   local y = tile.y - self.troop.y
   self.troop:moveMember(key, 0, x, y)
   local battler = self.troop.battlers[key]
+  if self.resetBattler then
+    battler:resetState()
+  end
   local dir = self.troop:getCharacterDirection()
   local character = TroopManager:createCharacter(tile, dir, battler, self.troop.party)
   if fade then

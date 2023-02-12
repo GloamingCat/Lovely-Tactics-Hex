@@ -5,6 +5,10 @@ CallRule
 ---------------------------------------------------------------------------------------------------
 The rule for an AI that removes character from battle field.
 
+-- Parameters:
+The <member> as a boolean formula to only consider the members that satifies it. 
+Set <reset> as true to discard any saved changes on the called member.
+
 =================================================================================================]]
 
 -- Imports
@@ -35,6 +39,7 @@ function CallRule:onSelect(user)
   end
   if backup.size > 0 then
     self.input = ActionInput(CallAction(), user or TurnManager:currentCharacter())
+    self.input.action.resetBattler = self.tags and self.tags.reset
     self.input.action:onSelect(self.input)
     local validTiles = 0
     for tile in FieldManager.currentField:gridIterator() do
