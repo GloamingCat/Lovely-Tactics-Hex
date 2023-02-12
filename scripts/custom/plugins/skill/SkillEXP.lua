@@ -16,7 +16,7 @@ Characters receive EXP for each action and can level-up mid-battle.
 =================================================================================================]]
 
 -- Imports
-local RewardGUI = require('core/gui/battle/RewardGUI')
+local BattleManager = require('core/battle/BattleManager')
 local Inventory = require('core/battle/Inventory')
 local SkillAction = require('core/battle/action/SkillAction')
 local Character = require('core/objects/Character')
@@ -35,15 +35,15 @@ local enemyExp = args.enemyExp
 ---------------------------------------------------------------------------------------------------
 
 -- Removes EXP rewards for each enemy.
-function RewardGUI:getBattleRewards()
+function BattleManager:getBattleRewards(winnerParty)
   local r = { exp = {},
     items = Inventory(),
     money = 0 }
   -- List of living party members
-  local characters = TroopManager:currentCharacters(self.troop.party, true)
+  local characters = TroopManager:currentCharacters(winnerParty, true)
   -- Rewards per troop
   for party, troop in pairs(TroopManager.troops) do
-    if troop ~= self.troop then
+    if party ~= winnerParty then
       -- Troop EXP
       for char in characters:iterator() do
         r.exp[char.key] = (r.exp[char.key] or 0) + troop.data.exp
@@ -52,13 +52,14 @@ function RewardGUI:getBattleRewards()
       r.items:addAllItems(troop.inventory)
       -- Troop money
       r.money = r.money + troop.money
-      for enemy in TroopManager:currentCharacters(party, false):iterator() do
-        -- Enemy items
-        r.items:addAllItems(enemy.battler.inventory)
-        -- Enemy money
-        r.money = r.money + enemy.battler.data.money
-      end
     end
+  end
+  -- Rewards per enemy
+  for enemy in TroopManager:enemyBattlers(winnerParty, false):iterator() do
+    -- Enemy items
+    r.items:addAllItems(enemy.inventory)
+    -- Enemy money
+    r.money = r.money + enemy.data.money
   end
   return r
 end

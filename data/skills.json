@@ -1978,7 +1978,7 @@
           "introTime": "",
           "castTime": "35",
           "centerTime": "20",
-          "targetTime": "",
+          "targetTime": "0",
           "finishTime": "",
           "damageAnim": true,
           "effects": [

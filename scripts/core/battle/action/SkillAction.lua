@@ -206,7 +206,7 @@ end
 -- @param(user : Character)
 -- @ret(boolean) True if this skill may be selected to be used in battle field.
 function SkillAction:canBattleUse(user)
-  return self:canUse(user.battler, user)
+  return self:canUse(user.battler, user) and self.data.restriction <= 1
 end
 -- The effect applied when the user is prepared to use the skill.
 -- It executes animations and applies damage/heal to the targets.
@@ -258,9 +258,7 @@ end
 -- @param(user : Battler)
 -- @ret(boolean) True if this skill may be selected to use out of battle.
 function SkillAction:canMenuUse(user)
-  return self:canUse(user) and self.support and (self.data.restriction == 0 or
-    self.data.restriction == 1 and BattleManager.onBattle or
-    self.data.restriction == 2 and not BattleManager.onBattle)
+  return self:canUse(user) and self.support and self.data.restriction % 2 == 0
 end
 -- Executes the skill in the menu, out of the battle field.
 -- @param(user : Battler)

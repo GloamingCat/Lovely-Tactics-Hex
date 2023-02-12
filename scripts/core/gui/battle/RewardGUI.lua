@@ -9,7 +9,6 @@ The GUI that is shown in the end of the battle.
 
 -- Imports
 local GUI = require('core/gui/GUI')
-local Inventory = require('core/battle/Inventory')
 local RewardEXPWindow = require('core/gui/battle/window/RewardEXPWindow')
 local RewardItemWindow = require('core/gui/battle/window/RewardItemWindow')
 local Vector = require('core/math/Vector')
@@ -34,7 +33,7 @@ function RewardGUI:createWindows()
   local x = ScreenManager.width / 2 - w / 2 - self:windowMargin()
   local y = ScreenManager.height / 2 - h / 2 - self:windowMargin()
   self.troop = TroopManager:getPlayerTroop()
-  self.rewards = self:getBattleRewards()
+  self.rewards = BattleManager:getBattleRewards(TroopManager.playerParty)
   self:createEXPWindow(x, y, w, h)
   self:createItemWindow(x, y, w, h)
   self:setActiveWindow(self.expWindow)
@@ -64,45 +63,6 @@ function RewardGUI:createItemWindow(x, y, w, h)
   local pos = Vector(x, y)
   local window = RewardItemWindow(self, w, h, pos)
   self.itemWindow = window
-end
-
----------------------------------------------------------------------------------------------------
--- Rewards
----------------------------------------------------------------------------------------------------
-
--- Creates a table of reward from the current state of the battle field.
--- @ret(table) Table with exp per battler, items and money.
-function RewardGUI:getBattleRewards()
-  local r = { exp = {},
-    items = Inventory(),
-    money = 0 }
-  -- List of living party members
-  local characters = TroopManager:currentCharacters(self.troop.party, true)
-  -- Rewards per troop
-  for party, troop in pairs(TroopManager.troops) do
-    if troop ~= self.troop then
-      -- Troop EXP
-      for char in characters:iterator() do
-        r.exp[char.key] = (r.exp[char.key] or 0) + troop.data.exp
-      end
-      -- Troop items
-      r.items:addAllItems(troop.inventory)
-      -- Troop money
-      r.money = r.money + troop.money
-      -- Rewards per enemy
-      for enemy in TroopManager:currentCharacters(party, false):iterator() do
-        -- Enemy EXP
-        for char in characters:iterator() do
-          r.exp[char.key] = (r.exp[char.key] or 0) + enemy.battler.data.exp
-        end
-        -- Enemy items
-        r.items:addAllItems(enemy.battler.inventory)
-        -- Enemy money
-        r.money = r.money + enemy.battler.data.money
-      end
-    end
-  end
-  return r
 end
 
 ---------------------------------------------------------------------------------------------------

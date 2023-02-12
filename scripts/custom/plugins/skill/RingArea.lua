@@ -87,47 +87,36 @@ function SkillAction:createRingMask(far, near, minh, maxh)
     centerX = far + 1,
     centerY = far + 1 }
 end
+
+---------------------------------------------------------------------------------------------------
+-- FieldAction
+---------------------------------------------------------------------------------------------------
+
 -- @ret(boolean) True if skill's area represents whole field.
-function SkillAction:wholeField()
+function FieldAction:wholeField()
   return self.area == nil
 end
--- Override.
--- Returns all field tiles if area is nil.
-local SkillAction_getAreaTiles = SkillAction.getAreaTiles
-function SkillAction:getAreaTiles(input, centerTile)
-  if self:wholeField() then
-    local tiles = {}
-    for tile in self.field:gridIterator() do
-      if tile and self.field:isGrounded(tile:coordinates()) then
-        tiles[#tiles + 1] = tile
-      end
-    end
-    return tiles
-  else
-    return SkillAction_getAreaTiles(self, input, centerTile)
-  end
-end
--- Override.
--- Only one tile (user's tile) is selectable if the skill affects the whole field.
-local SkillAction_isSelectable = SkillAction.isSelectable
-function SkillAction:isSelectable(input, tile)
-  if self:wholeField() then
-    -- User only
-    return input.user:getTile() == tile
-  else
-    return SkillAction_isSelectable(self, input, tile)
-  end
-end
 -- Override. All tiles are affected if marked as whole field.
-local SkillAction_resetAffectedTiles = SkillAction.resetAffectedTiles
-function SkillAction:resetAffectedTiles(input)
+local FieldAction_resetAffectedTiles = FieldAction.resetAffectedTiles
+function FieldAction:resetAffectedTiles(input)
   if self:wholeField() then
     local affectedTiles = self:getAllAffectedTiles(input)
     for i = 1, #affectedTiles do
       affectedTiles[i].gui.affected = true
     end
   else
-    return SkillAction_resetAffectedTiles(self, input)
+    return FieldAction_resetAffectedTiles(self, input)
+  end
+end
+-- Override.
+-- Only one tile (user's tile) is selectable if the skill affects the whole field.
+local FieldAction_isSelectable = FieldAction.isSelectable
+function FieldAction:isSelectable(input, tile)
+  if self:wholeField() then
+    -- User only
+    return input.user:getTile() == tile
+  else
+    return FieldAction_isSelectable(self, input, tile)
   end
 end
 -- Override. Returns true if marked as whole field.
@@ -137,4 +126,20 @@ function FieldAction:isArea()
     return true
   end
   return FieldAction_isArea(self)
+end
+-- Override.
+-- Returns all field tiles if area is nil.
+local FieldAction_getAreaTiles = FieldAction.getAreaTiles
+function FieldAction:getAreaTiles(input, centerTile)
+  if self:wholeField() then
+    local tiles = {}
+    for tile in self.field:gridIterator() do
+      if tile and self.field:isGrounded(tile:coordinates()) then
+        tiles[#tiles + 1] = tile
+      end
+    end
+    return tiles
+  else
+    return FieldAction_getAreaTiles(self, input, centerTile)
+  end
 end

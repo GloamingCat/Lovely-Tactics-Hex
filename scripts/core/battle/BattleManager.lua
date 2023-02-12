@@ -16,6 +16,7 @@ Results: 1 => win, 0 => draw, -1 => lost
 local Animation = require('core/graphics/Animation')
 local GameOverGUI = require('core/gui/battle/GameOverGUI')
 local IntroGUI = require('core/gui/battle/IntroGUI')
+local Inventory = require('core/battle/Inventory')
 local RewardGUI = require('core/gui/battle/RewardGUI')
 local TileGUI = require('core/field/TileGUI')
 
@@ -197,6 +198,45 @@ function BattleManager:isGameOver()
   else
     return false
   end
+end
+
+---------------------------------------------------------------------------------------------------
+-- Rewards
+---------------------------------------------------------------------------------------------------
+
+-- Creates a table of reward from the current state of the battle field.
+-- @ret(table) Table with exp per battler, items and money.
+function BattleManager:getBattleRewards(winnerParty)
+  local r = { exp = {},
+    items = Inventory(),
+    money = 0 }
+  -- List of living party members
+  local characters = TroopManager:currentCharacters(winnerParty, true)
+  -- Rewards per troop
+  for party, troop in pairs(TroopManager.troops) do
+    if party ~= winnerParty then
+      -- Troop EXP
+      for char in characters:iterator() do
+        r.exp[char.key] = (r.exp[char.key] or 0) + troop.data.exp
+      end
+      -- Troop items
+      r.items:addAllItems(troop.inventory)
+      -- Troop money
+      r.money = r.money + troop.money
+    end
+  end
+  -- Rewards per enemy
+  for enemy in TroopManager:enemyBattlers(winnerParty, false):iterator() do
+    -- Enemy EXP
+    for char in characters:iterator() do
+      r.exp[char.key] = (r.exp[char.key] or 0) + enemy.data.exp
+    end
+    -- Enemy items
+    r.items:addAllItems(enemy.inventory)
+    -- Enemy money
+    r.money = r.money + enemy.data.money
+  end
+  return r
 end
 
 return BattleManager

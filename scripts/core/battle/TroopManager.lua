@@ -248,15 +248,31 @@ function TroopManager:getMemberCount(party)
   return count
 end
 -- Gets the characters in the field that are in this troop.
--- @param(alive) True to include only alive character, false to only dead, nil to both.
+-- @param(alive) True to include only living characters, false to only dead, nil to both.
 -- @ret(List) List of characters.
 function TroopManager:currentCharacters(party, alive)
   local characters = List(self.characterList)
   characters:conditionalRemove(
     function(c)
-      return c.party ~= party or c.battler:isAlive() == not alive
+      return c.party ~= party or alive == not c.battler:isAlive() 
     end)
   return characters
+end
+-- Gets all battlers that are not in this troop.
+-- @param(alive) True to include only living battlers, false to only dead, nil to both.
+-- @ret(List) List of battlers.
+function TroopManager:enemyBattlers(yourParty, alive)
+  local battlers = List()
+  for party, troop in pairs(self.troops) do
+    if yourParty ~= party then
+      for battler in troop:visibleBattlers():iterator() do
+        if not battler:isAlive() ~= alive then
+          battlers:add(battler)
+        end
+      end
+    end
+  end
+  return battlers
 end
 
 ---------------------------------------------------------------------------------------------------
