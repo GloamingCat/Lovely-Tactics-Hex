@@ -302,5 +302,13 @@ function HexVMath.nextCoordAxis(dx, dy)
   dx, dy = dx - dy, dx + dy
   return round(max(min(dx, 1), -1)), round(max(min(dy, 1), -1))
 end
+-- Rotates the coordinates clock-wise around origin.
+-- @param(x : number) Tile x.
+-- @param(y : number) Tile y.
+-- @ret(number) Rotated tile's x.
+-- @ret(number) Rotated tile's y.
+function HexVMath.rotateCoord(x, y)
+  return -y, x + y
+end
 
 return HexVMath

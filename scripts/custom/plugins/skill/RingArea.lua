@@ -23,6 +23,7 @@ the center by exactly X.
 =================================================================================================]]
 
 -- Imports
+local FieldAction = require('core/battle/action/FieldAction')
 local SkillAction = require('core/battle/action/SkillAction')
 local ActionGUI = require('core/gui/battle/ActionGUI')
 
@@ -128,4 +129,12 @@ function SkillAction:resetAffectedTiles(input)
   else
     return SkillAction_resetAffectedTiles(self, input)
   end
+end
+-- Override. Returns true if marked as whole field.
+local FieldAction_isArea = FieldAction.isArea
+function FieldAction:isArea()
+  if self:wholeField() then
+    return true
+  end
+  return FieldAction_isArea(self)
 end

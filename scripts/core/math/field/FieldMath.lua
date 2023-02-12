@@ -33,6 +33,9 @@ function FieldMath.init()
   FieldMath.fullNeighborShift = FieldMath.createFullNeighborShift()
   FieldMath.neighborShift = FieldMath.createNeighborShift()
   FieldMath.vertexShift = FieldMath.createVertexShift()
+  FieldMath.baseX, FieldMath.baseY = FieldMath.neighborShift[1]:coordinates()
+  FieldMath.baseRotation = FieldMath.tileRotations(FieldMath.nextCoordDir(FieldMath.baseDirection()))
+  FieldMath.baseX, FieldMath.baseY = FieldMath.nextCoordDir(FieldMath.baseDirection())
   -- Angles
   FieldMath.tg = (tileH + tileS) / (tileW + tileB)
   local diag = 45 * FieldMath.tg
@@ -142,6 +145,23 @@ function FieldMath.nextCoordDir(direction)
   local dx, dy = angle2Coord(direction)
   return FieldMath.nextCoordAxis(dx, dy)
 end
+-- Gets the number of tile mask rotations is needed for the character to be looking at given
+-- direction.
+-- @param(dx : number) Neighbor X shift.
+-- @param(dy : number) Neighbor Y shift.
+-- @ret(number) Number of tile rotations (from 0 to 7). Nil if it's not possible to determine
+--  the rotation (when a direction does not match a neighbor tile).
+function FieldMath.tileRotations(dx, dy)
+  local n = 0
+  while dx ~= FieldMath.baseX or dy ~= FieldMath.baseY do
+    n = n + 1
+    if n > #FieldMath.neighborShift then
+      return nil
+    end
+    dx, dy = FieldMath.rotateCoord(dx, dy)
+  end
+  return #FieldMath.neighborShift - n
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Mask
@@ -178,13 +198,13 @@ end
 -- @param(h0 : number) Height of the center tile in the field.
 -- @ret(function) Iterator that return the coordinates of the tiles contained in the mask.
 function FieldMath.maskIterator(mask, x0, y0, h0)
-  local k, i, j = 1, 1, 1
+  local l, i, j = 1, 1, 1
   return function()
-    while k <= #mask.grid do
-      while i <= #mask.grid[k] do
-        while j <= #mask.grid[k][i] do
-          if mask.grid[k][i][j] then
-            local h = k - mask.centerH + h0
+    while l <= #mask.grid do
+      while i <= #mask.grid[l] do
+        while j <= #mask.grid[l][i] do
+          if mask.grid[l][i][j] then
+            local h = l - mask.centerH + h0
             local x = i - mask.centerX + x0
             local y = j - mask.centerY + y0  
             j = j + 1
@@ -195,7 +215,37 @@ function FieldMath.maskIterator(mask, x0, y0, h0)
         i = i + 1
         j = 1
       end
-      k = k + 1
+      l = l + 1
+      i = 1
+    end
+  end
+end
+-- Rotates the content of given mask (from origin).
+-- @param(time : number) The number of times to rotate it clockwise.
+-- @param(mask : table) A grid mask.
+-- @ret(table) A new grid for the mask, with the rotated content.
+function FieldMath.rotatedMaskIterator(times, mask, x0, y0, h0)
+  local l, i, j = 1, 1, 1
+  return function()
+    while l <= #mask.grid do
+      while i <= #mask.grid[l] do
+        while j <= #mask.grid[l][i] do
+          if mask.grid[l][i][j] then
+            local h = l - mask.centerH
+            local x = i - mask.centerX
+            local y = j - mask.centerY
+            for n = 1, times do
+              x, y = FieldMath.rotateCoord(x, y)
+            end
+            j = j + 1
+            return x + x0, y + y0, h + h0
+          end
+          j = j + 1
+        end
+        i = i + 1
+        j = 1
+      end
+      l = l + 1
       i = 1
     end
   end

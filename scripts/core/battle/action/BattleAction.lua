@@ -67,8 +67,12 @@ function BattleAction:onSelect(input)
   FieldAction.onSelect(self, input)
   if input.GUI and not self.freeNavigation then
     self.index = 1
-    local queue = self:closestSelectableTiles(input)
-    self.selectionTiles = queue:toList()
+    if self.autoPath then
+      local queue = self:closestSelectableTiles(input)
+      self.selectionTiles = queue:toList()
+    else
+      self.selectionTiles = self:rotationTiles(input)
+    end
   end
   input.moveAction = self.moveAction
 end
@@ -244,6 +248,31 @@ function BattleAction:nextLayer(input, axis)
   end
   return FieldAction.nextLayer(self, input, axis)
 end
+-- Overrides FieldAction:getAreaTiles. Rotates area mask if necessary.
+-- @param(centerTile : ObjectTile)
+function BattleAction:getAreaTiles(input, centerTile, mask)
+  if self.autoPath or not self:isArea() then
+    return FieldAction.getAreaTiles(self, input, centerTile, mask)
+  end
+  mask = mask or self.area
+  centerTile = centerTile or input.target
+  local userTile = input.user:getTile()
+  --local r = (self.index - 1 - mathf.baseRotation) % #mathf.neighborShift 
+  local r = mathf.tileRotations(centerTile.x - userTile.x, centerTile.y - userTile.y)
+  local tiles = {}
+  if not r then
+    return tiles
+  end
+  centerTile = centerTile or input.target
+  mask = mask or self.area
+  for x, y, h in mathf.rotatedMaskIterator(r, mask, centerTile:coordinates()) do
+    local n = self.field:getObjectTile(x, y, h)
+    if n and self.field:isGrounded(x, y, h) then
+      tiles[#tiles + 1] = n
+    end
+  end
+  return tiles
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Execution
@@ -308,6 +337,28 @@ function BattleAction:isWithinArea(input, tile)
     end
   end
   return false
+end
+-- Rotation targets, in clockwise order, starting from user's current direction.
+-- @ret(List) List of ObjectTiles.
+function BattleAction:rotationTiles(input)
+  local list = List()
+  local field = FieldManager.currentField
+  local dir = input.user:getRoundedDirection()
+  local r = mathf.tileRotations(mathf.nextCoordDir(dir))
+    or mathf.tileRotations(mathf.nextCoordDir(dir + 45))
+  local tile = input.user:getTile()
+  local maxh = math.min(field.maxh, tile.layer.height + #self.area.grid - self.area.centerH + 1)
+  local minh = math.max(field.minh, tile.layer.height - self.area.centerH + 1) 
+  for i = #mathf.neighborShift, 1, -1 do
+    local n = mathf.neighborShift[math.mod1(i - r, #mathf.neighborShift)]
+    for l = maxh, minh, -1 do
+      if field:isGrounded(tile.x + n.x, tile.y + n.y, l) then
+        list:add(field:getObjectTile(tile.x + n.x, tile.y + n.y, l))
+        break
+      end
+    end
+  end
+  return list
 end
 
 return BattleAction

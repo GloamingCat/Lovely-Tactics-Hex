@@ -69,22 +69,20 @@ function FieldAction:resetTileProperties(input)
   self:resetAffectedTiles(input)
   self:resetSelectableTiles(input)
 end
--- Sets all tiles as selectable or not and resets color to default.
--- @param(selectable : boolean) The value to set all tiles.
+-- Sets as affected the targets that affect at least one tiles within the effect area.
 function FieldAction:resetAffectedTiles(input)
   for tile in self.field:gridIterator() do
     tile.gui.affected = false
   end
-  -- Tiles that are included in some target's effect area.
+  -- Tiles that are included in the target's effect area.
   for tile in self.field:gridIterator() do
     local affectedTiles = self:getAllAffectedTiles(input, tile)
-    for i = 1, #affectedTiles do
-      affectedTiles[i].gui.affected = true
+    if #affectedTiles > 0 then
+      tile.gui.affected = true
     end
   end
 end
--- Sets all tiles as selectable or not and resets color to default.
--- @param(selectable : boolean) The value to set all tiles.
+-- Sets all tiles as selectable or not.
 function FieldAction:resetSelectableTiles(input)
   for tile in self.field:gridIterator() do
     tile.gui.selectable = self:isSelectable(input, tile)
@@ -141,7 +139,7 @@ function FieldAction:onSelectTarget(input)
 end
 -- Called when players deselects (highlights another tile) a tile.
 function FieldAction:onDeselectTarget(input)
-  if input.GUI and input.target then
+  if input.GUI then
     local oldTargets = self:getAreaTiles(input)
     for i = #oldTargets, 1, -1 do
       oldTargets[i].gui:setSelected(false)
@@ -151,18 +149,18 @@ end
 -- Checks if the effect area mask contains any tiles besides the center tile.
 -- @ret(boolean) True if it's an area action, false otherwise.
 function FieldAction:isArea()
-  if not self.area then
-    return true
-  end
   local grid = self.area.grid
   return #grid > 1 or #grid > 0 and #grid[1] > 1 or #grid[1][1] > 1
 end
 -- Gets the list of object tiles within effect area.
+-- @param(centerTile : ObjectTile) Selected tile (optional, use input's target by default).
+-- @param(mask : table) Area mask (optional, use action's area by default).
 -- @ret(table) Array of ObjectTile.
-function FieldAction:getAreaTiles(input, centerTile)
+function FieldAction:getAreaTiles(input, centerTile, mask)
   local tiles = {}
   centerTile = centerTile or input.target
-  for x, y, h in mathf.maskIterator(self.area, centerTile:coordinates()) do
+  mask = mask or self.area
+  for x, y, h in mathf.maskIterator(mask, centerTile:coordinates()) do
     local n = self.field:getObjectTile(x, y, h)
     if n and self.field:isGrounded(x, y, h) then
       tiles[#tiles + 1] = n

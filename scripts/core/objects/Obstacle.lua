@@ -43,7 +43,7 @@ function Obstacle:initNeighbors(neighbors)
   self.passability = {}
   self.passability[0] = {}
   self.passability[0][0] = false
-  for i, n in ipairs(neighborShift) do
+  for _, n in ipairs(neighborShift) do
     if self.passability[n.x] == nil then
       self.passability[n.x] = {}
     end

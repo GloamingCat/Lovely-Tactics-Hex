@@ -73,7 +73,9 @@
             0,
             0
           ],
-          "skills": [],
+          "skills": [
+            35
+          ],
           "status": [],
           "elements": [],
           "items": [],

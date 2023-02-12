@@ -39,7 +39,7 @@ end
 function ObjectTile:createNeighborList()
   self.neighborList = List()
   -- Create neighbors from the same layer.
-  for i, n in ipairs(math.field.neighborShift) do
+  for _, n in ipairs(math.field.neighborShift) do
     if not FieldManager.currentField:exceedsBorder(self.x + n.x, self.y + n.y) then
       self.neighborList:add(self.layer.grid[self.x + n.x][self.y + n.y])
     end

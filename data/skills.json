@@ -1937,6 +1937,173 @@
         },
         "id": 33,
         "children": []
+      },
+      {
+        "data": {
+          "description": "A melee physical attack that damages the three front tiles.",
+          "icon": {
+            "id": 33,
+            "col": 0,
+            "row": 1
+          },
+          "script": "",
+          "type": 1,
+          "allParties": false,
+          "effectCondition": "target:isAlive()",
+          "selection": 0,
+          "autoPath": false,
+          "freeNavigation": false,
+          "condition": "",
+          "restriction": 1,
+          "costs": [
+            {
+              "key": "sp",
+              "value": "20"
+            }
+          ],
+          "elements": [
+            {
+              "id": 0,
+              "value": 100
+            }
+          ],
+          "userElements": true,
+          "userLoadAnim": "Load2",
+          "userCastAnim": "Skill2",
+          "stepOnCast": true,
+          "loadAnimID": -1,
+          "castAnimID": -1,
+          "individualAnimID": -1,
+          "mirror": true,
+          "introTime": "",
+          "castTime": "35",
+          "centerTime": "20",
+          "targetTime": "",
+          "finishTime": "",
+          "damageAnim": true,
+          "effects": [
+            {
+              "key": "hp",
+              "basicResult": "action:defaultPhysicalDamage(user, target, a, b)",
+              "successRate": "action:defaultSuccessRate(user, target, a, b)",
+              "heal": false,
+              "absorb": false,
+              "statusID": -1
+            }
+          ],
+          "effectMask": {
+            "centerX": 2,
+            "centerY": 2,
+            "centerH": 2,
+            "grid": [
+              [
+                [
+                  false,
+                  true
+                ],
+                [
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true
+                ],
+                [
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true
+                ],
+                [
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  false
+                ]
+              ]
+            ]
+          },
+          "castMask": {
+            "centerX": 2,
+            "centerY": 2,
+            "centerH": 2,
+            "grid": [
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ],
+              [
+                [
+                  false,
+                  true,
+                  true
+                ],
+                [
+                  true,
+                  false,
+                  true
+                ],
+                [
+                  true,
+                  true,
+                  false
+                ]
+              ]
+            ]
+          },
+          "name": "Sweep Attack",
+          "tags": [],
+          "key": "atk3"
+        },
+        "id": 35,
+        "children": []
       }
     ]
   },

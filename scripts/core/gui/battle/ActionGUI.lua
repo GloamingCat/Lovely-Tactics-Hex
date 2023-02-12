@@ -174,7 +174,9 @@ function ActionGUI:selectTarget(target)
   if self.cursor then
     self.cursor:setTile(target)
   end
-  self.input.action:onDeselectTarget(self.input)
+  if self.input.target then
+    self.input.action:onDeselectTarget(self.input)
+  end
   self.input.target = target
   self.input.action:onSelectTarget(self.input)
   if self.targetWindow then
