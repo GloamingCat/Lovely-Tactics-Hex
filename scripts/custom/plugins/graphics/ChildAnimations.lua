@@ -24,7 +24,6 @@ function Animation:init(...)
       if type(child) == 'table' then
         self.childQueue = self.childQueue or {}
         self.childQueue[#self.childQueue + 1] = child
-        self:addChild(child[1])
       else
         self:addChild(child)
       end
