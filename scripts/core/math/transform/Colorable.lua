@@ -14,7 +14,7 @@ local Colorable = class()
 ---------------------------------------------------------------------------------------------------
 
 -- Initalizes color.
--- @param(color : table) a color table containing {red, green, blue, alpha} components (optional)
+-- @param(color : table) A color table containing {red, green, blue, alpha} components (optional).
 function Colorable:initColor(color, hsv)
   color = color or { red = 1, green = 1, blue = 1, alpha = 1 }
   self.hsv = hsv or { h = 0, s = 1, v = 1 }
@@ -33,46 +33,54 @@ function Colorable:initColor(color, hsv)
 end
 
 ---------------------------------------------------------------------------------------------------
--- RGBA
+-- RGBA & HSV
 ---------------------------------------------------------------------------------------------------
 
 -- Gets each RGBA component.
--- @ret(number) red compoent
--- @ret(number) green compoent
--- @ret(number) blue compoent
--- @ret(number) alpha compoent
+-- @ret(number) Red component.
+-- @ret(number) Green component.
+-- @ret(number) Blue component.
+-- @ret(number) Alpha component.
 function Colorable:getRGBA()
   return self.color.red, self.color.green, self.color.blue, self.color.alpha
 end
--- Sets color's rgb. If a component parameter is nil, it will not be changed.
--- @param(r : number) red component
--- @param(g : number) green component
--- @param(b : number) blue component
--- @param(a : number) alpha component
+-- Sets color's RGBA. If a component parameter is nil, it will not be changed.
+-- @param(r : number) Red component (optional, current by default).
+-- @param(g : number) Green component (optional, current by default).
+-- @param(b : number) Blue component (optional, current by default).
+-- @param(a : number) Blpha component (optional, current by default).
 function Colorable:setRGBA(r, g, b, a)
   self.color.red = r or self.color.red
   self.color.green = g or self.color.green
   self.color.blue = b or self.color.blue
   self.color.alpha = a or self.color.alpha
 end
--- Sets color's rgb.
--- @param(color : table) a color table containing {red, green, blue, alpha} components
-function Colorable:setColor(color)
-  self:setRGBA(color.red, color.green, color.blue, color.alpha)
-end
-
----------------------------------------------------------------------------------------------------
--- HSV
----------------------------------------------------------------------------------------------------
-
-function Colorable:setHSV(h, s, v)
-  self.hsv.h = h
-  self.hsv.s = s
-  self.hsv.v = v
-end
-
+-- Gets each HSV component.
+-- @ret(number) Hue component.
+-- @ret(number) Saturation component.
+-- @ret(number) Value/brightness component.
 function Colorable:getHSV()
   return self.hsv.h, self.hsv.s, self.hsv.v
+end
+-- Sets color's HSV. If a component parameter is nil, it will not be changed.
+-- @param(h : number) Hue component (optional, current by default).
+-- @param(s : number) Saturation component (optional, current by default).
+-- @param(v : number) Value/brightness component (optional, current by default).
+function Colorable:setHSV(h, s, v)
+  self.hsv.h = h or self.hsv.h
+  self.hsv.s = s or self.hsv.s
+  self.hsv.v = v or self.hsv.v
+end
+-- Sets color's RGBA. If a component parameter is nil, it will not be changed.
+-- @param(rgba : table) A table containing {red, green, blue, alpha} components (optional).
+-- @param(hsv : table) A table containing {hue, saturation, value} components (optional).
+function Colorable:setColor(rgba, hsv)
+  if rgba then
+    self:setRGBA(rgba.red, rgba.green, rgba.blue, rgba.alpha)
+  end
+  if hsv then
+    self:setHSV(hsv.h, hsv.s, hsv.v)
+  end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -96,12 +104,12 @@ function Colorable:updateColor()
   end
 end
 -- [COROUTINE] Moves to (x, y).
--- @param(r : number) red component
--- @param(g : number) green component
--- @param(b : number) blue component
--- @param(a : number) alpha component
--- @param(speed : number) the speed of the colorizing (optional)
--- @param(wait : boolean) flag to wait until the colorizing finishes (optional)
+-- @param(r : number) Red component.
+-- @param(g : number) Green component.
+-- @param(b : number) Blue component.
+-- @param(a : number) Alpha component.
+-- @param(speed : number) The speed of the colorizing (optional, instant by default).
+-- @param(wait : boolean) Flag to wait until the colorizing finishes (optional, false by default).
 function Colorable:colorizeTo(r, g, b, a, speed, wait)
   if speed and speed > 0 then
     self:gradualColorizeTo(r, g, b, a, speed, wait)
@@ -110,22 +118,22 @@ function Colorable:colorizeTo(r, g, b, a, speed, wait)
   end
 end
 -- Colorizes instantly the object.
--- @param(r : number) red component
--- @param(g : number) green component
--- @param(b : number) blue component
--- @param(a : number) alpha component
--- @ret(boolean) true if the colorizing must be interrupted, nil or false otherwise
+-- @param(r : number) Red component.
+-- @param(g : number) Green component.
+-- @param(b : number) Blue component.
+-- @param(a : number) Alpha component.
+-- @ret(boolean) True if the colorizing must be interrupted, nil or false otherwise.
 function Colorable:instantColorizeTo(r, g, b, a)
   self:setRGBA(r, g, b, a)
   return nil
 end
 -- [COROUTINE] Moves gradually (through updateMovement) to the given point.
--- @param(r : number) red component
--- @param(g : number) green component
--- @param(b : number) blue component
--- @param(a : number) alpha component
--- @param(speed : number) the speed of the colorizing
--- @param(wait : boolean) flag to wait until the colorizing finishes (optional)
+-- @param(r : number) Red component.
+-- @param(g : number) Green component.
+-- @param(b : number) Blue component.
+-- @param(a : number) Alpha component.
+-- @param(speed : number) The speed of the colorizing.
+-- @param(wait : boolean) Flag to wait until the colorizing finishes (optional, false by default).
 function Colorable:gradualColorizeTo(r, g, b, a, speed, wait)
   self.origRed, self.origGreen, self.origBlue, self.origAlpha = self:getRGBA()
   self.destRed, self.destGreen, self.destBlue, self.destAlpha = 

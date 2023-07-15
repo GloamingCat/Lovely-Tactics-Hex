@@ -10,6 +10,7 @@
   "keys": "Mudar mapeamentos de teclas para ações do jogo.",
   "fieldScroll": "Velocidade de movimento da câmera quando o cursor toca nas bordas da tela (só em batalha).",
   "windowScroll": "Velocidade com que a janela mostra os próximos botões/opções.",
+  "windowColor": "O brilho da cor de fundo das janelas.",
   "autoDash": "Faz o personagem correr por padrão.",
   "volumeBGM": "Volume da música de fundo.",
   "volumeSFX": "Volume de efeitos sonoros.",

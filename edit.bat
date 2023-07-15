@@ -1,2 +1,2 @@
 cd lib
-.\editor.jar ..\project.json
+.\editor.jar ..\*.json

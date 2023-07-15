@@ -82,9 +82,10 @@ end
 function TargetWindow:setBattler(battler)
   local icons = battler.statusList:getIcons()
   local height = self:computeHeight(#icons > 0)
-  local pos = self.spriteGrid.position
   local job = battler.job.data
-  pos.y = pos.y + (height - self.height) / 2
+  local y = (height - self.height) / 2
+  self.background.position.y = self.background.position.y + y
+  self.frame.position.y = self.frame.position.y + y
   self:resize(nil, height)
   -- Name text
   self.textName:setTerm('data.battler.' .. battler.data.key, battler.name)

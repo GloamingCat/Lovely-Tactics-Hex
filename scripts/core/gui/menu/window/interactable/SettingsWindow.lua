@@ -30,6 +30,7 @@ function SettingsWindow:createWidgets()
     SwitchButton:fromKey(self, 'language', GameManager.language, nil, Project.languages)
   end
   SwitchButton:fromKey(self, 'tooltips', not GUIManager.disableTooltips)
+  HSpinnerButton:fromKey(self, 'windowColor', 0, 100, GUIManager.windowColor).bigIncrement = 10
   HSpinnerButton:fromKey(self, 'volumeBGM', 0, 100, AudioManager.volumeBGM).bigIncrement = 10
   HSpinnerButton:fromKey(self, 'volumeSFX', 0, 100, AudioManager.volumeSFX).bigIncrement = 10
   --HSpinnerButton:fromKey(self, 'windowScroll', 0, 100, GUIManager.windowScroll).bigIncrement = 10
@@ -51,6 +52,14 @@ end
 -- Spinners
 ---------------------------------------------------------------------------------------------------
 
+-- Change window color brightness.
+function SettingsWindow:windowColorChange(spinner)
+  GUIManager.windowColor = spinner.value
+  GUIManager:refresh()
+  if FieldManager.hud then
+    FieldManager.hud:refresh()
+  end
+end
 -- Change the BGM volume.
 function SettingsWindow:volumeBGMChange(spinner)
   AudioManager:setBGMVolume(spinner.value)
@@ -150,7 +159,8 @@ function SettingsWindow:colCount()
 end
 -- Overrides GridWindow:rowCount.
 function SettingsWindow:rowCount()
-  local n = GameManager:isMobile() and 4 or GameManager:isWeb() and 8 or 9
+  --local n = GameManager:isMobile() and 5 or GameManager:isWeb() and 8 or 9
+  local n = 5
   return #Project.languages > 1 and n + 1 or n 
 end
 -- Overrides GridWindow:cellWidth.

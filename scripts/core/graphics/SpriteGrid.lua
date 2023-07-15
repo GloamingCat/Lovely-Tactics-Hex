@@ -110,6 +110,25 @@ function SpriteGrid:updateTransform(t)
     sprite:setScale(self.skinData[i].sx * t.scaleX, self.skinData[i].sy * t.scaleY)
   end
 end
+-- Sets the RGBA values of each slice.
+-- @param(r : number) Red component (optional, current by default).
+-- @param(g : number) Green component (optional, current by default).
+-- @param(b : number) Blue component (optional, current by default).
+-- @param(a : number) Blpha component (optional, current by default).
+function SpriteGrid:setRGBA(r, g, b, a)
+  for i = 1, 9 do
+    self.slices[i].sprite:setRGBA(r, g, b, a)
+  end
+end
+-- Sets the HSV values of each slice.
+-- @param(h : number) Hue component (optional, current by default).
+-- @param(s : number) Saturation component (optional, current by default).
+-- @param(v : number) Value/brightness component (optional, current by default).
+function SpriteGrid:setHSV(h, s, v)
+  for i = 1, 9 do
+    self.slices[i].sprite:setHSV(h, s, v)
+  end
+end
 -- Destroys all slices.
 function SpriteGrid:destroy()
   for i = 1, 9 do

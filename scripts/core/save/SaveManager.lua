@@ -59,15 +59,10 @@ end
 -- Creates default config file.
 function SaveManager:newConfig()
   local conf = {}
-  conf.volumeBGM = 100
-  conf.volumeSFX = 100
-  conf.windowScroll = 50
-  conf.fieldScroll = 50
   conf.autoDash = false
   conf.wasd = true
   conf.keyMap = copyTable(KeyMap)
   conf.useMouse = true
-  conf.language = 1
   conf.disableTooltips = false
   return conf
 end
@@ -107,6 +102,7 @@ function SaveManager:currentConfigData()
   conf.resolution = ScreenManager.mode
   conf.language = GameManager.language
   conf.disableTooltips = GUIManager.disableTooltips
+  conf.windowColor = GUIManager.windowColor
   return conf
 end
 

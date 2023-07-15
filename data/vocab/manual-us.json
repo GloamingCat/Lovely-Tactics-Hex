@@ -10,6 +10,7 @@
   "keys": "Change key bindings to game actions.",
   "fieldScroll": "The velocity in which the camera moves when the cursor touches the screen edges (battle only).",
   "windowScroll": "The velocity in which the window scrolls to show more buttons/options.",
+  "windowColor": "The brightness of the windows' background color.",
   "autoDash": "Makes the player character move faster by default.",
   "volumeBGM": "Volume of background music.",
   "volumeSFX": "Volume of sound effects.",

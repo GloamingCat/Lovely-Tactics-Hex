@@ -24,6 +24,7 @@
   // Settings
   "volumeBGM": "BGM Volume",
   "volumeSFX": "SFX Volume",
+  "windowColor": "Window Color",
   "windowScroll": "Window Scroll Speed",
   "fieldScroll": "Field Scroll Speed",
   "resolution": "Resolution",

@@ -69,8 +69,7 @@ function Sprite:clone(renderer)
   local copy = Sprite(renderer or self.renderer, self.texture, Quad(x, y, w, h, sw, sh))
   copy:setOffset(self.offsetX, self.offsetY, self.offsetDepth)
   copy:setScale(self.scaleX, self.scaleY)
-  copy:setColor(self.color)
-  copy:setHSV(self.hsv.h, self.hsv.s, self.hsv.v)
+  copy:setColor(self.color, self.hsv)
   copy:setPosition(self.position)
   copy:setRotation(self.rotation)
   copy:setVisible(self.visible)
@@ -256,6 +255,14 @@ function Sprite:setRGBA(newr, newg, newb, newa)
   local r, g, b, a = self:getRGBA()
   Colorable.setRGBA(self, newr, newg, newb, newa)
   if r ~= newr or g ~= newg or b ~= newb or a ~= newa then
+    self.renderer.needsRedraw = true
+  end
+end
+-- Overrides Colorable:setHSV.
+function Sprite:setHSV(newh, news, newv)
+  local h, s, v = self:getHSV()
+  Colorable.setHSV(self, newh, news, newv)
+  if h ~= newh or s ~= news or v ~= newv then
     self.renderer.needsRedraw = true
   end
 end

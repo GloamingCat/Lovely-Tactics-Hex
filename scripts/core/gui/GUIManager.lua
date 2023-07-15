@@ -26,9 +26,10 @@ function GUIManager:init()
   self.paused = false
   self.windowScroll = 0
   self.fieldScroll = 0
+  self.disableTooltips = false
+  self.windowColor = 100
   self.fiberList = FiberList()
   self.updateList = List()
-  self.disableTooltips = false
   ScreenManager:setRenderer(self.renderer, 2)
 end
 -- Calls all the update functions.

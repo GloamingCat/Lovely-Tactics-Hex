@@ -24,6 +24,7 @@
   // Settings
   "volumeBGM": "Vol. de Música",
   "volumeSFX": "Vol. de Sons",
+  "windowColor": "Cor da Janela",
   "windowScroll": "Scroll da Janela",
   "fieldScroll": "Scroll do Mapa",
   "resolution": "Resolução",

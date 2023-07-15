@@ -56,8 +56,12 @@
   },
   "animations": [
     {
-      "name": "windowSkin",
+      "name": "windowFrame",
       "id": 18
+    },
+    {
+      "name": "windowSkin",
+      "id": 99
     },
     {
       "name": "frame",

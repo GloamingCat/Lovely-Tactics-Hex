@@ -1520,6 +1520,45 @@
         "data": {
           "script": "",
           "quad": {
+            "path": "GUI/windowFrame.png",
+            "x": 0,
+            "y": 0,
+            "width": 27,
+            "height": 27
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Window Frame",
+          "tags": [],
+          "key": ""
+        },
+        "id": 18,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
             "path": "GUI/windowSkin.png",
             "x": 0,
             "y": 0,
@@ -1548,11 +1587,11 @@
           "loopPattern": "",
           "loopDuration": "",
           "audio": [],
-          "name": "Window Skin",
+          "name": "Window BG",
           "tags": [],
           "key": ""
         },
-        "id": 18,
+        "id": 99,
         "children": []
       },
       {

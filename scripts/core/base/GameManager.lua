@@ -91,10 +91,11 @@ end
 -- Sets the system config.
 -- @param(config : table) A config table loaded by SaveManager.
 function GameManager:setConfig(config)
-  AudioManager:setBGMVolume(config.volumeBGM)
-  AudioManager:setSFXVolume(config.volumeSFX)
-  GUIManager.fieldScroll = config.fieldScroll
-  GUIManager.windowScroll = config.windowScroll
+  AudioManager:setBGMVolume(config.volumeBGM or 100)
+  AudioManager:setSFXVolume(config.volumeSFX or 100)
+  GUIManager.fieldScroll = config.fieldScroll or 50
+  GUIManager.windowScroll = config.windowScroll or 50
+  GUIManager.windowColor = config.windowColor or 100
   InputManager.autoDash = config.autoDash
   InputManager.mouseEnabled = config.useMouse
   InputManager:setArrowMap(config.wasd)

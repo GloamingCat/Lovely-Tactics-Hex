@@ -39,7 +39,10 @@ function Window:init(gui, width, height, position)
   Transformable.init(self, position)
   self.GUI = gui
   self:setProperties()
-  self.spriteGrid = (not self.noSkin) and SpriteGrid(self:getSkin(), Vector(0, 0, 1))
+  if not self.noSkin then
+    self.background = SpriteGrid(self:getBG(), Vector(0, 0, 1))
+    self.frame = SpriteGrid(self:getFrame(), Vector(0, 0, 1))
+  end
   self.width = width
   self.height = height
   self.active = false
@@ -61,8 +64,12 @@ end
 function Window:createContent(width, height)
   self.width = width
   self.height = height
-  if self.spriteGrid then
-    self.spriteGrid:createGrid(GUIManager.renderer, width, height)
+  if self.background then
+    self.background:createGrid(GUIManager.renderer, width, height)
+    self.background:setHSV(nil, nil, GUIManager.windowColor / 100)
+  end
+  if self.frame then
+    self.frame:createGrid(GUIManager.renderer, width, height)
   end
   if self.tooltipTerm then
     local w = ScreenManager.width - self.GUI:windowMargin() * 2
@@ -82,22 +89,39 @@ end
 -- Updates all content elements.
 function Window:update()
   Transformable.update(self)
-  if self.spriteGrid then
-    self.spriteGrid:update()
+  if self.background then
+    self.background:update()
+  end
+  if self.frame then
+    self.frame:update()
   end
   Component.update(self)
 end
 -- Updates all content element's position.
 function Window:updatePosition()
-  if self.spriteGrid then
-    self.spriteGrid:updatePosition(self.position)
+  if self.background then
+    self.background:updatePosition(self.position)
+  end
+  if self.frame then
+    self.frame:updatePosition(self.position)
   end
   Component.updatePosition(self)
 end
+-- Overrides Component:refresh.
+-- Refreshes the background color.
+function Window:refresh()
+  Component.refresh(self)
+  if self.background then
+    self.background:setHSV(nil, nil, GUIManager.windowColor / 100)
+  end
+end
 -- Erases content.
 function Window:destroy()
-  if self.spriteGrid then
-    self.spriteGrid:destroy()
+  if self.background then
+    self.background:destroy()
+  end
+  if self.frame then
+    self.frame:destroy()
   end
   if self.tooltip then
     self.tooltip:destroy()
@@ -164,8 +188,11 @@ end
 -- @param(sy : number) scale in axis y
 function Window:setScale(sx, sy)
   Transformable.setScale(self, sx, sy)
-  if self.spriteGrid then
-    self.spriteGrid:updateTransform(self)
+  if self.background then
+    self.background:updateTransform(self)
+  end
+  if self.frame then
+    self.frame:updateTransform(self)
   end
 end
 -- Changes the window's size.
@@ -175,15 +202,24 @@ function Window:resize(w, h)
   if w ~= self.width or h ~= self.height then
     self.width = w
     self.height = h
-    if self.spriteGrid then
-      self.spriteGrid:createGrid(GUIManager.renderer, w, h)
-      self:setPosition(self.position)
+    if self.background then
+      self.background:createGrid(GUIManager.renderer, w, h)
+      self.background:setHSV(nil, nil, GUIManager.windowColor / 100)
     end
+    if self.frame then
+      self.frame:createGrid(GUIManager.renderer, w, h)
+    end
+    self:setPosition(self.position)
   end
 end
--- Window's skin.
+-- Window's frame.
 -- @ret(table) 
-function Window:getSkin()
+function Window:getFrame()
+  return Database.animations[Config.animations.windowFrame]
+end
+-- Window's background.
+-- @ret(table) 
+function Window:getBG()
   return Database.animations[Config.animations.windowSkin]
 end
 -- Horizontal padding.
