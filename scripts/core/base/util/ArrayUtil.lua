@@ -72,6 +72,18 @@ function util.remove(array, element)
   end
   return i
 end
+-- Puts the element into an array if it's not already an array.
+-- @param(element : unknown)
+-- @ret(table)
+function util.toArray(element)
+  if element == nil then
+    return nil
+  elseif type(element) ~= 'table' then
+    return {element}
+  else
+    return element
+  end
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Search
