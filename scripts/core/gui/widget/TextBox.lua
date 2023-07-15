@@ -20,7 +20,7 @@ local TextBox = class(SimpleText)
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
--- @param(window : GridWindow) the window this spinner belongs to.
+-- @param(window : GridWindow) The window this text box belongs to.
 function TextBox:init(window, initStr, position, width)
   self.input = initStr
   self.cursorPoint = #initStr + 1
@@ -72,13 +72,19 @@ end
 -- Cursor
 ---------------------------------------------------------------------------------------------------
 
+-- Overrides SimpleText:updatePosition.
+-- Updates highlight position.
 function TextBox:updatePosition(...)
-  local my = self.window:rowMargin() / 2 + 4
-  local height = self.window:cellHeight() + my
-  self.highlight.displacement.x = 0
-  self.highlight.displacement.y = -self.window.height / 2 + height / 2 - my / 2 + self.window:paddingY()
-  SimpleText.updatePosition(self, ...)
-  self.highlight:updatePosition(...)
+  if self.highlight then
+    local my = self.window:rowMargin() / 2 + 4
+    local height = self.window:cellHeight() + my
+    self.highlight.displacement.x = 0
+    self.highlight.displacement.y = -self.window.height / 2 + height / 2 - my / 2 + self.window:paddingY()
+    SimpleText.updatePosition(self, ...)
+    self.highlight:updatePosition(...)
+  else
+    SimpleText.updatePosition(self, ...)
+  end
 end
 -- Hides or redraws cursor according to its position and visibility.
 function TextBox:refreshCursor()
