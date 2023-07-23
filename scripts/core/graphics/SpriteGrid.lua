@@ -4,6 +4,7 @@
 SpriteGrid
 ---------------------------------------------------------------------------------------------------
 A group of sprites created from a 9-sliced skin.
+Each animation frame should contain within itself all 9 slices.
 
 =================================================================================================]]
 
@@ -22,7 +23,7 @@ local SpriteGrid = class()
 ---------------------------------------------------------------------------------------------------
 
 -- Constructor.
--- @param(skin : Image) The image to be 9-sliced.
+-- @param(skin : table) Skin's animation data.
 function SpriteGrid:init(skin, relativePos)
   self.skin = skin
   self.position = relativePos or Vector(0, 0)
@@ -38,6 +39,7 @@ function SpriteGrid:createGrid(renderer, width, height)
   local mw = width - 2 * w
   local mh = height - 2 * h
   self.skinData = {}
+  local texture = ResourceManager:loadTexture(skin.path)
   local x, y, ox, oy, sx, sy
   for i = 1, 9 do
     if i % 3 == 1 then
@@ -67,7 +69,7 @@ function SpriteGrid:createGrid(renderer, width, height)
       oy = -mh / 2
     end
     self.skinData[i] = {}
-    self.skinData[i].quad = Quad(skin.x + x, skin.y + y, w, h, skin.width, skin.height)
+    self.skinData[i].quad = Quad(skin.x + x, skin.y + y, w, h, texture:getWidth(), texture:getHeight())
     self.skinData[i].sx = sx / w
     self.skinData[i].sy = sy / h
     self.skinData[i].x = ox / self.skinData[i].sx
@@ -79,7 +81,6 @@ function SpriteGrid:createGrid(renderer, width, height)
     end
   end
   self.slices = {}
-  local texture = ResourceManager:loadTexture(skin.path)
   for i = 1, 9 do
     local sprite = Sprite(renderer, texture, self.skinData[i].quad)
     self.slices[i] = ResourceManager:loadAnimation(self.skin, sprite)
