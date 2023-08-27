@@ -48,6 +48,7 @@ function SkillAction:init(skillID)
   self.reachableOnly = data.selection >= 2
   self.freeNavigation = data.freeNavigation
   self.autoPath = data.autoPath
+  self.rotateEffect = data.rotateEffect
   self.useCondition = data.condition ~= '' and 
     loadformula(data.condition, 'action, user')
   self.effectCondition = data.effectCondition ~= '' and 

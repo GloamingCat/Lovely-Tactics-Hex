@@ -140,6 +140,7 @@ end
 -- Called when players deselects (highlights another tile) a tile.
 function FieldAction:onDeselectTarget(input)
   if input.GUI then
+    input.target.gui:setSelected(false)
     local oldTargets = self:getAreaTiles(input)
     for i = #oldTargets, 1, -1 do
       oldTargets[i].gui:setSelected(false)

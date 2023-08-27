@@ -59,6 +59,7 @@
           ]
         ]
       },
+      "rotateEffect": false,
       "castMask": {
         "centerX": 1,
         "centerY": 1,
@@ -123,6 +124,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -197,6 +199,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -271,6 +274,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -361,6 +365,7 @@
           ]
         ]
       },
+      "rotateEffect": false,
       "castMask": {
         "centerX": 1,
         "centerY": 1,
@@ -439,6 +444,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 2,
             "centerY": 2,
@@ -574,6 +580,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 2,
             "centerY": 2,
@@ -704,6 +711,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 2,
             "centerY": 2,
@@ -829,6 +837,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -984,6 +993,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -1089,6 +1099,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -1210,6 +1221,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -1319,6 +1331,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -1428,6 +1441,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -1530,6 +1544,7 @@
           ]
         ]
       },
+      "rotateEffect": false,
       "castMask": {
         "centerX": 1,
         "centerY": 1,
@@ -1608,6 +1623,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 2,
             "centerY": 2,
@@ -1743,6 +1759,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 2,
             "centerY": 2,
@@ -1873,6 +1890,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 2,
             "centerY": 2,
@@ -2040,6 +2058,7 @@
               ]
             ]
           },
+          "rotateEffect": true,
           "castMask": {
             "centerX": 2,
             "centerY": 2,
@@ -2167,6 +2186,7 @@
           ]
         ]
       },
+      "rotateEffect": false,
       "castMask": {
         "centerX": 1,
         "centerY": 1,
@@ -2250,6 +2270,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -2342,6 +2363,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -2442,6 +2464,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -2521,6 +2544,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -2588,6 +2612,7 @@
           ]
         ]
       },
+      "rotateEffect": false,
       "castMask": {
         "centerX": 1,
         "centerY": 1,
@@ -2666,6 +2691,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -2804,6 +2830,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -2883,6 +2910,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -2971,6 +2999,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -3059,6 +3088,7 @@
           ]
         ]
       },
+      "rotateEffect": false,
       "castMask": {
         "centerX": 1,
         "centerY": 1,
@@ -3137,6 +3167,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 2,
             "centerY": 2,
@@ -3267,6 +3298,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 2,
             "centerY": 2,
@@ -3392,6 +3424,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -3483,6 +3516,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -3574,6 +3608,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,
@@ -3665,6 +3700,7 @@
               ]
             ]
           },
+          "rotateEffect": false,
           "castMask": {
             "centerX": 1,
             "centerY": 1,

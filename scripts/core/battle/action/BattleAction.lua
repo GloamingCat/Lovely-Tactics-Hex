@@ -42,6 +42,7 @@ function BattleAction:init(colorName, range, area)
   self.freeNavigation = true
   self.autoPath = true
   self.reachableOnly = false
+  self.rotateEffect = false
 end
 -- Sets color according to action's type (general, attack or support).
 -- @param(t : number) Type code, from 0 to 2.
@@ -251,7 +252,7 @@ end
 -- Overrides FieldAction:getAreaTiles. Rotates area mask if necessary.
 -- @param(centerTile : ObjectTile)
 function BattleAction:getAreaTiles(input, centerTile, mask)
-  if self.autoPath or not self:isArea() then
+  if not self.rotateEffect or self.autoPath or not self:isArea() then
     return FieldAction.getAreaTiles(self, input, centerTile, mask)
   end
   mask = mask or self.area
