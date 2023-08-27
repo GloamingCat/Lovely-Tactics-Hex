@@ -51,6 +51,7 @@ function FieldMath.init()
     centerH = 1, centerX = 1, centerY = 1 }
   FieldMath.emptyMask = { grid = {{{false}}},
     centerH = 1, centerX = 1, centerY = 1 }
+  FieldMath.diagThreshold = Config.player.diagThreshold / 100
 end
 -- A neighbor shift is a list of "offset" values in tile coordinates (x, y)
 --  from the center tile to each neighbor.

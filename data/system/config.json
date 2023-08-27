@@ -8,6 +8,7 @@
   "player": {
     "walkSpeed": 104,
     "dashSpeed": 200,
+    "diagThreshold": 15,
     "startPos": {
       "fieldID": 6,
       "x": 7,

@@ -245,6 +245,7 @@ end
 -----------------------------------------------------------------------------------------------
 
 -- Gets the next tile coordinates given the current tile and an input.
+-- Fixates up as the northwest.
 -- @param(x : number) Current tile's x.
 -- @param(y : number) Current tile's y.
 -- @param(axisX : number) The input in x axis.
@@ -254,29 +255,8 @@ end
 -- @ret(number) The next tile's x.
 -- @ret(number) The next tile's y.
 function IsoMath.nextCoord(x, y, axisX, axisY, sizeX, sizeY)
-  local dx, dy
-  if axisX == 0 then
-    if x - axisY > sizeX or x - axisY <= 0 then
-      dx, dy = 0, axisY
-    elseif y + axisY > sizeY or y + axisY <= 0 then
-      dx, dy = -axisY, 0
-    else
-      dx = -((x + y + 1) % 2) * axisY
-      dy = ((x + y) % 2) * axisY
-    end
-  elseif axisY == 0 then
-    if x + axisX > sizeX or x + axisX <= 0 then
-      dx, dy = 0, axisX
-    elseif y + axisX > sizeY or y + axisX <= 0 then
-      dx, dy = axisX, 0
-    else
-      dx = ((x + y + 1) % 2) * axisX
-      dy = ((x + y) % 2) * axisX
-    end
-  else
-		dx = axisX
-		dy = axisY
-  end
+  local dy = (axisY - axisX) / 2
+  local dx = dy + axisX
   if x + dx <= sizeX and x + dx > 0 then
     x = x + dx
   end

@@ -69,11 +69,6 @@ end
 -- Next Coordinates
 ---------------------------------------------------------------------------
 
-function HexHMax.nextCoordDir(direction)
-  local dx, dy = math.angle2Coord(direction)
-  return HexHMax.nextCoordAxis(dx, dy)
-end
-
 function HexHMax.nextCoordAxis(dx, dy)
   dy, dx = dx - dy, dx + dy
   local m = math

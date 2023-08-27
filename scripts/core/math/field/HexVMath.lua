@@ -253,6 +253,7 @@ end
 -----------------------------------------------------------------------------------------------
 
 -- Gets the next tile coordinates given the current tile and an input.
+-- It alternates direction in the horizontal axis.
 -- @param(x : number) Current tile's x.
 -- @param(y : number) Current tile's y.
 -- @param(axisX : number) The input in x axis.
@@ -262,10 +263,11 @@ end
 -- @ret(number) The next tile's x.
 -- @ret(number) The next tile's y.
 function HexVMath.nextCoord(x, y, axisX, axisY, sizeX, sizeY)
+  local ts = HexVMath.diagThreshold
   local dx, dy
-  axisX = math.abs(axisX) > 0.15 and axisX or 0
-  axisY = math.abs(axisY) > 0.15 and axisY or 0
-  if math.abs(axisY) > math.abs(axisX) and math.abs(axisX) < 0.3 then
+  axisX = math.abs(axisX) > ts and axisX or 0
+  axisY = math.abs(axisY) > ts and axisY or 0
+  if math.abs(axisY) > math.abs(axisX) and math.abs(axisX) < ts * 2 then
     axisX = 0
   end
   axisX = math.sign(axisX)
