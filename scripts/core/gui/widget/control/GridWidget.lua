@@ -61,11 +61,11 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Enables/disables this button.
--- @param(value : boolean) true to enable, false to disable
+-- @param(value : boolean) True to enable, false to disable.
 function GridWidget:setEnabled(value)
 end
 -- Selects/deselects this button.
--- @param(value : boolean) true to select, false to deselect
+-- @param(value : boolean) True to select, false to deselect.
 function GridWidget:setSelected(value)
 end
 -- Updates each content widget's position.

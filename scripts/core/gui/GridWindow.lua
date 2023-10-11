@@ -152,7 +152,7 @@ end
 function GridWindow:createWidgets()
   -- Abstract.
 end
--- Getscurrent selected widget.
+-- Gets current selected widget.
 -- @ret(GridWidget) The selected widget.
 function GridWindow:currentWidget()
   if self.currentCol < 1 or self.currentCol > self.matrix.width or
@@ -160,6 +160,22 @@ function GridWindow:currentWidget()
     return nil
   end
   return self.matrix:get(self.currentCol, self.currentRow)
+end
+-- Gets widget that was clicked on.
+-- @ret(GridWidget) The clicked widget, or nil if the coordinates are invalid.
+function GridWindow:clickedWidget(x, y, triggerPoint)
+  if triggerPoint ~= nil then
+    -- Touch
+    local widget1 = self:getCell(self:getCellCoordinates(triggerPoint.x, triggerPoint.y))
+    local widget2 = self:getCell(self:getCellCoordinates(x, y))
+    if widget1 ~= widget2 then
+      return nil
+    end
+  end
+  if not self:onMouseMove(x, y) then
+    return nil
+  end
+  return self:currentWidget()
 end
 -- Gets the number of buttons.
 -- @ret(number)
@@ -369,18 +385,10 @@ end
 -- Called when player confirms a button by mouse or touch.
 -- Overrides Window:onMouseConfirm.
 function GridWindow:onMouseConfirm(x, y, triggerPoint)
-  if triggerPoint ~= nil then
-    -- Touch
-    local widget1 = self:getCell(self:getCellCoordinates(triggerPoint.x, triggerPoint.y))
-    local widget2 = self:getCell(self:getCellCoordinates(x, y))
-    if widget1 ~= widget2 then
-      return
-    end
-  end
-  if not self:onMouseMove(x, y) then
+  local widget = self:clickedWidget(x, y, triggerPoint)
+  if not widget then
     return
   end
-  local widget = self:currentWidget()
   if widget.enabled then
     if widget.clickSound then
       AudioManager:playSFX(widget.clickSound)
