@@ -62,6 +62,13 @@ function FieldCommandWindow:setProperties(...)
 end
 -- Do not open/close GUI when changing focus to/from the PartyWindow.
 function FieldCommandWindow:openPartyWindow(GUI, tooltip)
+  if self.GUI.partyWindow.troop:visibleMembers().size <= 1 then
+    self.GUI:hide()
+    self:openMemberGUI(1, GUI)
+    self.GUI:show()
+    self:activate()
+    return
+  end
   self.GUI.partyWindow.tooltipTerm = tooltip
   self.GUI.partyWindow:activate()
   Fiber:wait()

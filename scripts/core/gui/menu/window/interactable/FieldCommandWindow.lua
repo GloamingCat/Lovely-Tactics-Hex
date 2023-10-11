@@ -73,6 +73,13 @@ end
 -- Open the GUI's party window.
 -- @param(GUI : class) The sub GUI class to open after the character selection.
 function FieldCommandWindow:openPartyWindow(GUI, tooltip)
+  if self.GUI.partyWindow.troop:visibleMembers().size <= 1 then
+    self.GUI:hide()
+    self:openMemberGUI(1, GUI)
+    self.GUI:show()
+    self:activate()
+    return
+  end
   self.GUI:hide()
   self.GUI.partyWindow.tooltipTerm = tooltip
   self.GUI.partyWindow:show()
