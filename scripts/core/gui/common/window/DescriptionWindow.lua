@@ -29,6 +29,7 @@ function DescriptionWindow:createContent(width, height)
   local textPosition = Vector(self:paddingX() - width / 2, self:paddingY() - height / 2, -1)
   local textWidth = width - self:paddingX() * 2
   self.text = SimpleText('', textPosition, textWidth, 'left', Fonts.gui_medium)
+  self.text:setMaxHeight(height - self:paddingY() * 2)
   self.content:add(self.text)
 end
 -- Sets text to be shown.

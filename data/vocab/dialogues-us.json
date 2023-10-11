@@ -10,7 +10,9 @@
     "Shop": "Shop",
     "Recruit": "Recruit",
     "Battle": "Battle",
-    "Nothing": "Nothing"
+    "Nothing": "Nothing",
+    "Inn": "Do you want to rest?",
+    "Healed": "Your group was healed."
   },
   
   "scene": {

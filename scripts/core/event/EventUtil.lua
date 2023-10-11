@@ -11,8 +11,10 @@ EventSheet class instead.
 =================================================================================================]]
 
 -- Imports
+local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
 local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')
 local GUI = require('core/gui/GUI')
+local Vector = require('core/math/Vector')
 
 local EventSheet = class()
 
@@ -63,23 +65,65 @@ function EventSheet:createGUI()
     self.gui = GUI()
     self.gui.name = "Event GUI from " .. tostring(self)
     self.gui.dialogues = {}
+    self.gui.messages = {}
     GUIManager:showGUI(self.gui)
+  end
+end
+-- Creates a message window with default size and position for given ID.
+-- @param(id : number) Window ID.
+--  1: Window at the top of the screen, full width;
+--  2: Window at the width of the screen, full width;
+--  3+: Window in the middle of the screen, 3/4 width.
+-- @ret(DescriptionWindow)
+function EventSheet:createDefaultMessageWindow(id)
+  local x, y = 0, 0
+  local w, h = ScreenManager.width, ScreenManager.height / 3
+  if id == 2 then -- Top.
+    y = ScreenManager.height / 3
+  elseif id == 1 then -- Bottom.
+    y = -ScreenManager.height / 3
+  else -- Center.
+    w = ScreenManager.width * 3 / 4
+  end
+  return DescriptionWindow(self.gui, w, h, Vector(x, y))
+end
+-- Opens a new message window and stores in the given ID.
+-- @param(args.width : number) Width of the window (optional).
+-- @param(args.height : number) Height of the window (optional).
+-- @param(args.x : number) Pixel x of the window (optional).
+-- @param(args.y : number) Pixel y of the window (optional).
+-- @param(args.alignX : string) Horizontal alignment of text (optional).
+-- @param(args.alignY : string) Vertical alignment of text (optional).
+function EventSheet:openMessageWindow(args)
+  self:createGUI()
+  local msgs = self.gui.messages
+  local window = msgs[args.id]
+  if not window then
+    window = self:createDefaultMessageWindow(args.id)
+    msgs[args.id] = window
+  end
+  window.text:setAlign(args.alignX or 'center', args.alignY or 'center')
+  window:resize(args.width, args.height)
+  window:setXYZ(args.x, args.y)
+  if window.closed then
+    window:setVisible(false)
+    window:show()
   end
 end
 -- Creates a dialogue window with default size and position for given ID.
 -- @param(id : number) Window ID.
---  1: Speech in the bottom of the screen, full width;
---  2: Speech in the top of the screen, full width;
---  3+: Speech in the middle of the screen, 3/4 width.
+--  1: Window at the bottom of the screen, full width;
+--  2: Window at the top of the screen, full width;
+--  3+: Window in the middle of the screen, 3/4 width.
 -- @ret(DialogueWindow)
 function EventSheet:createDefaultDialogueWindow(id)
   local x, y = 0, 0
   local w, h = ScreenManager.width, ScreenManager.height / 3
-  if id == 1 then -- Bottom speech.
+  if id == 1 then -- Bottom.
     y = ScreenManager.height / 3
-  elseif id == 2 then -- Top speech.
+  elseif id == 2 then -- Top.
     y = -ScreenManager.height / 3
-  else -- Center message.
+  else -- Center.
     w = ScreenManager.width * 3 / 4
   end
   return DialogueWindow(self.gui, w, h, x, y)

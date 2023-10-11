@@ -131,6 +131,41 @@ function EventSheet:closeDialogueWindow(args)
 end
 
 ---------------------------------------------------------------------------------------------------
+-- Message
+---------------------------------------------------------------------------------------------------
+
+-- General parameters:
+-- @param(args.id : number) ID of the message window.
+
+-- Shows a message in the given window.
+-- @param(args.message : string) Message text.
+-- @param(args.wait : boolean) True to wait for player input.
+function EventSheet:showMessage(args)
+  self:openMessageWindow(args)
+  local window = self.gui.messages[args.id]
+  window:updateText(args.message)
+  if args.wait then
+    self.gui:setActiveWindow(window)
+    self.gui:waitForResult()
+  end
+end
+-- Closes and deletes a message window.
+function EventSheet:closeMessageWindow(args)
+  if self.gui and self.gui.messages then
+    local window = self.gui.messages[args.id]
+    if window then
+      window:hide()
+      window:removeSelf()
+      window:destroy()
+      self.gui.messages[args.id] = nil
+      if self.gui.activeWindow == window then
+        self.gui:setActiveWindow(nil)
+      end
+    end
+  end
+end
+
+---------------------------------------------------------------------------------------------------
 -- Input
 ---------------------------------------------------------------------------------------------------
 
