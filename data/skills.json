@@ -446,59 +446,13 @@
           },
           "rotateEffect": false,
           "castMask": {
-            "centerX": 2,
-            "centerY": 2,
-            "centerH": 2,
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
             "grid": [
               [
                 [
-                  false,
-                  true,
                   true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
                 ]
               ]
             ]
@@ -508,6 +462,22 @@
             {
               "key": "critical",
               "value": "true"
+            },
+            {
+              "key": "cast_far",
+              "value": "1"
+            },
+            {
+              "key": "cast_near",
+              "value": "1"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "1"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-1"
             }
           ],
           "key": "atk0"
@@ -582,65 +552,36 @@
           },
           "rotateEffect": false,
           "castMask": {
-            "centerX": 2,
-            "centerY": 2,
-            "centerH": 2,
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
             "grid": [
               [
                 [
-                  false,
-                  true,
                   true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
                 ]
               ]
             ]
           },
           "name": "Strong Attack",
-          "tags": [],
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "1"
+            },
+            {
+              "key": "cast_near",
+              "value": "1"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "1"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-1"
+            }
+          ],
           "key": "atk1"
         },
         "id": 28,
@@ -713,65 +654,36 @@
           },
           "rotateEffect": false,
           "castMask": {
-            "centerX": 2,
-            "centerY": 2,
-            "centerH": 2,
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
             "grid": [
               [
                 [
-                  false,
-                  true,
                   true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
                 ]
               ]
             ]
           },
           "name": "Dying Attack",
-          "tags": [],
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "1"
+            },
+            {
+              "key": "cast_near",
+              "value": "1"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "1"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-1"
+            }
+          ],
           "key": "atk2"
         },
         "id": 29,
@@ -936,59 +848,13 @@
             }
           ],
           "effectMask": {
-            "centerX": 2,
-            "centerY": 2,
-            "centerH": 2,
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
             "grid": [
               [
                 [
-                  false,
-                  true,
                   true
-                ],
-                [
-                  true,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
                 ]
               ]
             ]
@@ -1023,6 +889,18 @@
             {
               "key": "cast_minh",
               "value": "-4"
+            },
+            {
+              "key": "effect_far",
+              "value": "1"
+            },
+            {
+              "key": "effect_maxh",
+              "value": "1"
+            },
+            {
+              "key": "effect_minh",
+              "value": "-1"
             },
             {
               "key": "reflectable",
@@ -1625,59 +1503,13 @@
           },
           "rotateEffect": false,
           "castMask": {
-            "centerX": 2,
-            "centerY": 2,
-            "centerH": 2,
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
             "grid": [
               [
                 [
-                  false,
-                  true,
                   true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
                 ]
               ]
             ]
@@ -1687,6 +1519,22 @@
             {
               "key": "critical",
               "value": "true"
+            },
+            {
+              "key": "cast_far",
+              "value": "1"
+            },
+            {
+              "key": "cast_near",
+              "value": "1"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "1"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-1"
             }
           ],
           "key": "atk0b"
@@ -1761,65 +1609,36 @@
           },
           "rotateEffect": false,
           "castMask": {
-            "centerX": 2,
-            "centerY": 2,
-            "centerH": 2,
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
             "grid": [
               [
                 [
-                  false,
-                  true,
                   true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
                 ]
               ]
             ]
           },
-          "name": "Strong Attack",
-          "tags": [],
+          "name": "Strong Slash",
+          "tags": [
+            {
+              "key": "cast_far",
+              "value": "1"
+            },
+            {
+              "key": "cast_near",
+              "value": "1"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "1"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-1"
+            }
+          ],
           "key": "atk1b"
         },
         "id": 34,
@@ -1892,64 +1711,18 @@
           },
           "rotateEffect": false,
           "castMask": {
-            "centerX": 2,
-            "centerY": 2,
-            "centerH": 2,
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
             "grid": [
               [
                 [
-                  false,
-                  true,
                   true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
                 ]
               ]
             ]
           },
-          "name": "Dying Attack",
+          "name": "Dying Slash",
           "tags": [],
           "key": "atk2b"
         },
@@ -2117,7 +1890,7 @@
               ]
             ]
           },
-          "name": "Sweep Attack",
+          "name": "Sweeping Slash",
           "tags": [],
           "key": "atk3"
         },
@@ -2773,59 +2546,13 @@
             }
           ],
           "effectMask": {
-            "centerX": 2,
-            "centerY": 2,
-            "centerH": 2,
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
             "grid": [
               [
                 [
-                  false,
-                  true,
                   true
-                ],
-                [
-                  true,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
                 ]
               ]
             ]
@@ -2844,7 +2571,24 @@
             ]
           },
           "name": "Sleeping Polen",
-          "tags": [],
+          "tags": [
+            {
+              "key": "effect_far",
+              "value": "2"
+            },
+            {
+              "key": "effect_near",
+              "value": "2"
+            },
+            {
+              "key": "effect_maxh",
+              "value": "1"
+            },
+            {
+              "key": "effect_minh",
+              "value": "-1"
+            }
+          ],
           "key": "polen"
         },
         "id": 13,
@@ -3169,59 +2913,13 @@
           },
           "rotateEffect": false,
           "castMask": {
-            "centerX": 2,
-            "centerY": 2,
-            "centerH": 2,
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
             "grid": [
               [
                 [
-                  false,
-                  true,
                   true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
                 ]
               ]
             ]
@@ -3231,6 +2929,22 @@
             {
               "key": "critical",
               "value": "true"
+            },
+            {
+              "key": "cast_far",
+              "value": "1"
+            },
+            {
+              "key": "cast_near",
+              "value": "1"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "1"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-1"
             }
           ],
           "key": ""
@@ -3300,59 +3014,13 @@
           },
           "rotateEffect": false,
           "castMask": {
-            "centerX": 2,
-            "centerY": 2,
-            "centerH": 2,
+            "centerX": 1,
+            "centerY": 1,
+            "centerH": 1,
             "grid": [
               [
                 [
-                  false,
-                  true,
                   true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
-                ]
-              ],
-              [
-                [
-                  false,
-                  true,
-                  true
-                ],
-                [
-                  true,
-                  false,
-                  true
-                ],
-                [
-                  true,
-                  true,
-                  false
                 ]
               ]
             ]
@@ -3362,6 +3030,22 @@
             {
               "key": "critical",
               "value": "true"
+            },
+            {
+              "key": "cast_far",
+              "value": "1"
+            },
+            {
+              "key": "cast_near",
+              "value": "1"
+            },
+            {
+              "key": "cast_maxh",
+              "value": "1"
+            },
+            {
+              "key": "cast_minh",
+              "value": "-1"
             }
           ],
           "key": ""

@@ -280,8 +280,8 @@ function HexVMath.nextCoord(x, y, axisX, axisY, sizeX, sizeY)
     elseif y + axisX > sizeY or y + axisX <= 0 then
       dx, dy = axisX, 0
     else
-      dx = ((x + y + 1) % 2) * axisX
-      dy = ((x + y) % 2) * axisX
+      dx = axisX * ((x + y + 1) % 2)
+      dy = axisX * ((x + y) % 2)
     end
   else
 		dx = (axisX - axisY) / 2
