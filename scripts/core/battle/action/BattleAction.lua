@@ -70,7 +70,11 @@ function BattleAction:onSelect(input)
     self.index = 1
     if self.autoPath then
       local queue = self:closestSelectableTiles(input)
-      self.selectionTiles = queue:toList()
+      self.selectionTiles = List()
+      while not queue:isEmpty() do
+        local target = queue:dequeue()
+        self.selectionTiles:add(target[1])
+      end
     else
       self.selectionTiles = self:rotationTiles(input)
     end
@@ -225,9 +229,9 @@ end
 -- Overrides FieldAction:firstTarget.
 function BattleAction:firstTarget(input)
   if self.selectionTiles then
-    return self.selectionTiles[1]
+    return self.selectionTiles[self.index]
   else
-    return input.user:getTile()
+    return input.target or input.user:getTile()
   end
 end
 -- Overrides FieldAction:nextTarget.
@@ -290,16 +294,32 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Creates a queue of the closest selectable tiles.
--- @ret(PriorityQueue)
+-- @ret(PriorityQueue) A list of {tile, path} tuples sorted by cost.
 function BattleAction:closestSelectableTiles(input)
   local pathMatrix = TurnManager:pathMatrix()
   local tempQueue = PriorityQueue()
+  local target = input.target
   for tile in self.field:gridIterator() do
     if tile.gui.selectable then
-      local path = pathMatrix:get(tile.x, tile.y)
-      tempQueue:enqueue(tile, path and path.totalCost or 1000)
+      local path, cost
+      if self.moveAction then
+        input.target = tile
+        path = self.moveAction:calculatePath(input)
+        if not path then
+          cost = 2000
+        elseif not path.full then
+          cost = 1000 + path.totalCost 
+        else
+          cost = path.totalCost
+        end
+      else
+        path = pathMatrix:get(tile.x, tile.y) 
+        cost = path and path.totalCost or 1000
+      end
+      tempQueue:enqueue({tile, path}, cost)
     end
   end
+  input.target = target
   return tempQueue
 end
 -- Used for AI. Gets all tiles that may be a target from the target tile in the input.

@@ -39,7 +39,7 @@ end
 -- Called when the ActionGUI is open.
 -- By default, just updates the "selectable" field in all tiles for grid selecting.
 function FieldAction:onActionGUI(input)
-  input.GUI:startGridSelecting(input.target or self:firstTarget(input))
+  input.GUI:startGridSelecting(self:firstTarget(input))
 end
 -- Called when player chooses a target for the action. 
 -- By default, just ends grid seleting and calls execute.

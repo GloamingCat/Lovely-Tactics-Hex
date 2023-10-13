@@ -98,8 +98,8 @@ end
 -- @ret(boolean) True if the character walked the full path.
 function Character:tryPathMovement(tile, pathLength)
   local input = ActionInput(MoveAction(mathf.neighborMask, pathLength), self, tile)
-  local path, fullPath = input.action:calculatePath(input)
-  if not (path and fullPath) then
+  local path = input.action:calculatePath(input)
+  if not (path and path.full) then
     return false
   end
   self.path = path:addStep(tile, 1):toStack()
@@ -110,8 +110,8 @@ end
 -- @ret(number) Returns false if path was blocked, true otherwise.
 function Character:applyTileMovement(tile)
   local input = ActionInput(MoveAction(mathf.centerMask, 2), self, tile)
-  local path, fullPath = input.action:calculatePath(input)
-  if path and fullPath then
+  local path = input.action:calculatePath(input)
+  if path and path.full then
     if self.autoAnim then
       self:playMoveAnimation()
     end

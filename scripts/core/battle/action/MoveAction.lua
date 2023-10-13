@@ -10,7 +10,7 @@ Any action used in PathFinder must inherit from this.
 
 -- Imports
 local BattleAction = require('core/battle/action/BattleAction')
-local PathFinder = require('core/battle/ai/PathFinder')
+local BattleTactics = require('core/battle/ai/BattleTactics')
 
 -- Alias
 local mathf = math.field
@@ -47,7 +47,7 @@ end
 
 -- Overrides BattleAction:execute.
 function MoveAction:execute(input)
-  local path, fullPath = self:calculatePath(input)
+  local path = self:calculatePath(input)
   if path then
     local tiles = input.user:getAllTiles()
     input.user:removeFromTiles(tiles)
@@ -65,7 +65,7 @@ function MoveAction:execute(input)
       input.user:playIdleAnimation()
     end
   end
-  return { executed = fullPath, path = path }
+  return { executed = path and path.full, path = path }
 end
 -- @param(nextTile : ObjectTile) Next tile in the path sequence.
 function MoveAction:moveToTile(input, nextTile)
@@ -74,23 +74,8 @@ function MoveAction:moveToTile(input, nextTile)
   input.user:walkToTile(x, y, h)
 end
 -- @ret(Path) Path to input target, if any.
--- @ret(boolean) True if the whole path may be walked, false otherwise.
 function MoveAction:calculatePath(input)
-  local path = input.path or PathFinder.findPath(self, input.user, input.target, nil, true)
-  if not path then
-    -- Unreachable due to obstacles.
-    path = PathFinder.findPathToUnreachable(self, input.user, input.target)
-    return path, false
-  end
-  local furthestPath = path:getFurthestPath(self:maxDistance(input.user))
-  if furthestPath == path then
-    -- Reachable.
-    return path, true
-  else
-    -- Unreachable due to cost limit.
-    path = PathFinder.findPathToUnreachable(self, input.user, furthestPath.lastStep)
-    return path, false
-  end
+  return input.path or BattleTactics.optimalPath(self, input.user, input.target, nil) 
 end
 
 ---------------------------------------------------------------------------------------------------

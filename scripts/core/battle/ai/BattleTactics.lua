@@ -17,6 +17,34 @@ local min = math.min
 local BattleTactics = {}
 
 ---------------------------------------------------------------------------------------------------
+-- Path Optimization
+---------------------------------------------------------------------------------------------------
+
+-- @param(user : Character)
+-- @param(action : BattleAction)
+-- @param(target : ObjectTile)
+-- @ret(Path) Best path towards the target.
+function BattleTactics.optimalPath(action, user, target, pathMatrix)
+  local path = pathMatrix and pathMatrix:get(target.x, target.y)
+  path = path or PathFinder.findPath(action, user, target, nil, true)
+  if not path then
+    -- Unreachable due to obstacles.
+    path = PathFinder.findPathToUnreachable(action, user, target)
+    return path
+  end
+  local pathLimit = action:maxDistance(user)
+  local furthestPath = path:getFurthestPath(pathLimit)
+  if furthestPath == path then
+    -- Reachable.
+    path.full = true
+  else
+    -- Unreachable due to cost limit.
+    path = PathFinder.findPathToUnreachable(action, user, furthestPath.lastStep)
+  end
+  return path
+end
+
+---------------------------------------------------------------------------------------------------
 -- General Tile Optimization
 ---------------------------------------------------------------------------------------------------
 

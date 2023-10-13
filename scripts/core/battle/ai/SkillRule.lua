@@ -64,10 +64,11 @@ end
 function SkillRule:selectClosestTarget(eff)
   local queue = self.skill:closestSelectableTiles(self.input)
   while not queue:isEmpty() do
-    local tile = queue:dequeue()
-    local char = tile.characterList[1]
+    local target = queue:dequeue()
+    local char = target[1].characterList[1]
     if char and self:isValidTarget(char, eff) then
-      self.input.target = tile
+      self.input.target = target[1]
+      self.input.path = target[2]
       break
     end
   end

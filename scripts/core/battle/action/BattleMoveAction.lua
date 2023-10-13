@@ -10,7 +10,7 @@ Any action used in PathFinder must inherit from this.
 
 -- Imports
 local MoveAction = require('core/battle/action/MoveAction')
-local PathFinder = require('core/battle/ai/PathFinder')
+local BattleTactics = require('core/battle/ai/BattleTactics')
 
 -- Alias
 local mathf = math.field
@@ -51,26 +51,8 @@ function BattleMoveAction:moveToTile(input, nextTile)
 end
 -- Overrides MoveAction:calculatePath.
 function BattleMoveAction:calculatePath(input)
-  local path = input.path
-  if not path then
-    path = not self:isRanged() and TurnManager:pathMatrix():get(input.target.x, input.target.y)
-    path = path or PathFinder.findPath(self, input.user, input.target, nil, true)
-  end
-  if not path then
-    -- Unreachable due to obstacles.
-    path = PathFinder.findPathToUnreachable(self, input.user, input.target)
-    return path, false
-  end
-  local pathLimit = self:maxDistance(input.user)
-  local furthestPath = path:getFurthestPath(pathLimit)
-  if furthestPath == path then
-    -- Reachable.
-    return path, true
-  else
-    -- Unreachable due to cost limit.
-    path = PathFinder.findPathToUnreachable(MoveAction(nil, pathLimit), input.user, furthestPath.lastStep)
-    return path, false
-  end
+  local matrix = not self:isRanged() and TurnManager:pathMatrix() or nil
+  return input.path or BattleTactics.optimalPath(self, input.user, input.target, matrix)
 end
 
 ---------------------------------------------------------------------------------------------------
