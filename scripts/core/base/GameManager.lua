@@ -87,7 +87,7 @@ function GameManager:setSave(save)
     BattleManager.params = save.battleState.params
     FieldManager.fiberList:fork(BattleManager.loadBattle, BattleManager, save.battleState)
   else
-    FieldManager:loadTransition(save.playerState.transition, save.playerState.field)
+    FieldManager.fiberList:fork(FieldManager.loadTransition, FieldManager, save.playerState.transition, save.playerState.field)
   end
 end
 -- Sets the system config.
@@ -140,9 +140,36 @@ end
 function GameManager:update(dt)
   local t = os.clock()  
   -- Update game logic.
-  if self.restartRequested then
-    self:restart()
+  self:checkRequests()
+  self:updateManagers()
+  -- Update profiler.
+  self.cleanCount = self.cleanCount + 1
+  if self.cleanCount >= self.cleanTime then
+    self.cleanCount = 0
+    if PROFI then
+      self:updateProfi()
+    end
+    collectgarbage('collect')
   end
+  -- Sleep.
+  local framerate = Config.fpsMax
+  if framerate then
+    local sleep = 1 / framerate - (os.clock() - t)
+    if sleep > 0 then
+      love.timer.sleep(sleep)
+    end
+  end
+end
+-- Checks for resquests of game state changes, like restarting the game.
+function GameManager:checkRequests()
+  if self.restartRequested or self.loadRequested then
+    self:restart(self.loadRequested)
+    self.restartRequested = false
+    self.loadRequested = nil
+  end
+end
+-- Updates GUIManager, FieldManager, AudioManager and InputManager.
+function GameManager:updateManagers()
   if not self.paused then
     if not GUIManager.paused then 
       GUIManager:update()
@@ -162,23 +189,6 @@ function GameManager:update(dt)
   end
   if not InputManager.paused then
     InputManager:update()
-  end
-  -- Update profiler.
-  self.cleanCount = self.cleanCount + 1
-  if self.cleanCount >= self.cleanTime then
-    self.cleanCount = 0
-    if PROFI then
-      self:updateProfi()
-    end
-    collectgarbage('collect')
-  end
-  -- Sleep.
-  local framerate = Config.fpsMax
-  if framerate then
-    local sleep = 1 / framerate - (os.clock() - t)
-    if sleep > 0 then
-      love.timer.sleep(sleep)
-    end
   end
 end
 -- Updates profiler state.
@@ -320,15 +330,19 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Restarts the game from the TitleGUI.
-function GameManager:restart()
+-- @param(save : table) Save data to be loaded (optional, starts from title menu if nil).
+function GameManager:restart(save)
   ScreenManager:clear()
   FieldManager = require('core/field/FieldManager')()
   GUIManager = require('core/gui/GUIManager')()
   BattleManager = require('core/battle/BattleManager')()
   ScreenManager:refreshRenderers()
   self:setConfig(SaveManager.config)
-  self:start()
-  self.restartRequested = false
+  if save then
+    self:setSave(save)
+  else
+    self:start()
+  end
 end
 -- Closes game from internal game functions.
 function GameManager:quit()

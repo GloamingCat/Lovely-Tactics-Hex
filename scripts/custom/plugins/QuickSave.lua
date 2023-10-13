@@ -12,17 +12,19 @@ When player presses the button key <load>, the game in the quick save slot is lo
 =================================================================================================]]
 
 -- Imports
-local Player = require('core/objects/Player')
-local PopText = require('core/graphics/PopText')
+local GameManager = require('core/base/GameManager')
 local LoadWindow = require('core/gui/menu/window/interactable/LoadWindow')
+local PopText = require('core/graphics/PopText')
 
 -- Parameters
 KeyMap.main['save'] = args.save
 KeyMap.main['load'] = args.load
 
 ---------------------------------------------------------------------------------------------------
--- Player
+-- Auxiliary
 ---------------------------------------------------------------------------------------------------
+
+local loadRequested = false
 
 local function popUp(msg)
   GUIManager.fiberList:fork(function()
@@ -32,19 +34,36 @@ local function popUp(msg)
     popUp:popUp()
   end)
 end
--- Checks for the save/load input.
-local Player_checkFieldInput = Player.checkFieldInput
-function Player:checkFieldInput()
+
+local function checkInput()
   if InputManager.keys['save']:isTriggered() then
-    FieldManager:storePlayerState()
+    if not BattleManager.onBattle then
+      FieldManager:storePlayerState()
+    end
     SaveManager:storeSave('quick')
     popUp(Vocab.saved)
   elseif InputManager.keys['load']:isTriggered() then
     local save = SaveManager:loadSave('quick')
-    GameManager:setSave(save)
+    _G.GameManager.loadRequested = save
+    loadRequested = true
+  end
+end
+
+---------------------------------------------------------------------------------------------------
+-- GameManager
+---------------------------------------------------------------------------------------------------
+
+local GameManager_checkRequests = GameManager.checkRequests
+function GameManager:checkRequests()
+  checkInput()
+  GameManager_checkRequests(self)
+end
+local GameManager_updateManagers = GameManager.updateManagers
+function GameManager:updateManagers()
+  GameManager_updateManagers(self)
+  if loadRequested then
     popUp(Vocab.loaded)
-  else
-    Player_checkFieldInput(self)
+    loadRequested = false
   end
 end
 
