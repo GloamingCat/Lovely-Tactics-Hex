@@ -334,6 +334,9 @@ function GridWindow:onConfirm(widget)
       if widget.errorSound then
         AudioManager:playSFX(widget.errorSound)
       end
+      if widget.onError then
+        widget.onError(self, widget)
+      end
     end
   else
     Window.onConfirm(self)

@@ -22,15 +22,14 @@ local Button = class(GridWidget)
 
 -- @param(window : GridWindow) The window that this button is component of.
 -- @param(onConfirm : function) The function called when player confirms (optinal).
--- @param(onSelects : function) The function called when player selects this button (optinal).
 -- @param(enableCondition : function) The function that tells if 
 --  this button is enabled (optional)
--- @param(onMove : function) The function called when player presses arrows (optinal).
 function Button:init(window, onConfirm, enableCondition)
   GridWidget.init(self, window)
   self.enableCondition = enableCondition or self.enableCondition or window.buttonEnabled
   self.onConfirm = onConfirm or self.onConfirm or window.onButtonConfirm
   self.onCancel = self.onCancel or window.onButtonCancel
+  self.onError = self.onError or window.onButtonError
   self.onSelect = self.onSelect or window.onButtonSelect
   self.onMove = self.onMove or window.onButtonMove
   self.onClick = self.onClick or self.onConfirm
