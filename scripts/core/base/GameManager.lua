@@ -56,6 +56,8 @@ function GameManager:readArguments(args)
       self.mobileMode = true
     elseif arg == '-web' then
       self.webMode = true
+    elseif arg:find('-s') then
+      love.math.setRandomSeed(tonumber(arg:sub(3)))
     end
   end
 end
