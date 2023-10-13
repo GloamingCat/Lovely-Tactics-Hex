@@ -8,7 +8,7 @@ The window that shows the gained experience.
 =================================================================================================]]
 
 -- Imports
-local PopupText = require('core/battle/PopupText')
+local PopText = require('core/graphics/PopText')
 local SimpleText = require('core/gui/widget/SimpleText')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
@@ -94,9 +94,9 @@ function RewardEXPWindow:addEXP()
           if nextLevel then
             local x = self:paddingX() - self.width / 2
             local y = exp1.position.y + 8
-            local popupText = PopupText(x, y + 10, GUIManager.renderer)
-            popupText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
-            popupText:popup()
+            local popText = PopText(x, y + 10, GUIManager.renderer)
+            popText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
+            popText:popUp()
             levelup = true
           end
           job:addExperience(gain)

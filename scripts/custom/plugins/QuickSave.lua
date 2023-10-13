@@ -13,7 +13,7 @@ When player presses the button key <load>, the game in the quick save slot is lo
 
 -- Imports
 local Player = require('core/objects/Player')
-local PopupText = require('core/battle/PopupText')
+local PopText = require('core/graphics/PopText')
 local LoadWindow = require('core/gui/menu/window/interactable/LoadWindow')
 
 -- Parameters
@@ -24,12 +24,12 @@ KeyMap.main['load'] = args.load
 -- Player
 ---------------------------------------------------------------------------------------------------
 
-local function popup(msg)
+local function popUp(msg)
   GUIManager.fiberList:fork(function()
-    local popup = PopupText(ScreenManager.width / 2 - 50, ScreenManager.height / 2, GUIManager.renderer)
-    popup.align = 'right'
-    popup:addLine(msg, 'white', 'gui_default')
-    popup:popup()
+    local popUp = PopText(ScreenManager.width / 2 - 50, ScreenManager.height / 2, GUIManager.renderer)
+    popUp.align = 'right'
+    popUp:addLine(msg, 'white', 'gui_default')
+    popUp:popUp()
   end)
 end
 -- Checks for the save/load input.
@@ -38,11 +38,11 @@ function Player:checkFieldInput()
   if InputManager.keys['save']:isTriggered() then
     FieldManager:storePlayerState()
     SaveManager:storeSave('quick')
-    popup(Vocab.saved)
+    popUp(Vocab.saved)
   elseif InputManager.keys['load']:isTriggered() then
     local save = SaveManager:loadSave('quick')
     GameManager:setSave(save)
-    popup(Vocab.loaded)
+    popUp(Vocab.loaded)
   else
     Player_checkFieldInput(self)
   end

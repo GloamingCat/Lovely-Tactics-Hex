@@ -12,7 +12,7 @@ local ActionInput = require('core/battle/action/ActionInput')
 local BattleAction = require('core/battle/action/BattleAction')
 local List = require('core/datastruct/List')
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
-local PopupText = require('core/battle/PopupText')
+local PopText = require('core/graphics/PopText')
 local Vector = require('core/math/Vector')
 local BattleAnimations = require('core/battle/BattleAnimations')
 
@@ -279,9 +279,9 @@ end
 function SkillAction:menuTargetsEffect(input, targets)
   for i = 1, #targets do
     local results = self:calculateEffectResults(input.user, targets[i])
-    local popupText = self:singleTargetEffect(results, input, targets[i])
-    if popupText then
-      popupText:popup()
+    local popText = self:singleTargetEffect(results, input, targets[i])
+    if popText then
+      popText:popUp()
     end
   end
 end
@@ -394,29 +394,29 @@ end
 -- Executes individual animation for a single tile.
 -- @param(target : Battler) The battler that will be affected.
 -- @param(originTile : ObjectTile) The user's original tile.
--- @ret(PopupText) The popup text to be shown, with skill's results.
+-- @ret(PopText) The pop-up text to be shown, with skill's results.
 -- @ret(Character) The target character (if any).
 function SkillAction:singleTargetEffect(results, input, target, originTile)
   local targetChar = originTile and TroopManager:getBattlerCharacter(target)
   target:onSkillEffect(input, results, targetChar)
   local wasAlive = target.state.hp > 0
-  local popupText = nil
+  local popText = nil
   if #results.points == 0 and #results.status == 0 then
     -- Miss
     if wasAlive then
       local pos = targetChar and targetChar.position
-      popupText = pos and
-        PopupText(pos.x, pos.y - 10, FieldManager.renderer) or
-        PopupText(input.targetX or 0, input.targetY or 0, GUIManager.renderer)
-      popupText:addLine(Vocab.miss, 'popup_miss', 'popup_miss')
-      popupText:popup()
+      popText = pos and
+        PopText(pos.x, pos.y - 10, FieldManager.renderer) or
+        PopText(input.targetX or 0, input.targetY or 0, GUIManager.renderer)
+      popText:addLine(Vocab.miss, 'popup_miss', 'popup_miss')
+      popText:popUp()
     end
   elseif wasAlive or not results.damage then
     local pos = targetChar and targetChar.position
-    popupText = pos and
-      PopupText(pos.x, pos.y - 10, FieldManager.renderer) or
-      PopupText(input.targetX or 0, input.targetY or 0, GUIManager.renderer)
-    target:popupResults(popupText, results, targetChar)
+    popText = pos and
+      PopText(pos.x, pos.y - 10, FieldManager.renderer) or
+      PopText(input.targetX or 0, input.targetY or 0, GUIManager.renderer)
+    target:popResults(popText, results, targetChar)
     if targetChar then
       BattleAnimations.targetEffect(self.data, targetChar, originTile)
       if results.damage and self.data.damageAnim and wasAlive then

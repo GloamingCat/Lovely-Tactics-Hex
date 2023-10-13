@@ -18,7 +18,7 @@ If the skill allows critical hit to occur, then the tag <critical> must be set.
 
 -- Imports
 local Battler = require('core/battle/battler/Battler')
-local PopupText = require('core/battle/PopupText')
+local PopText = require('core/graphics/PopText')
 local SkillAction = require('core/battle/action/SkillAction')
 
 -- Parameters
@@ -52,8 +52,8 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Changes font and show text when critical.
-local PopupText_addDamage = PopupText.addDamage
-function PopupText:addDamage(points)  
+local PopText_addDamage = PopText.addDamage
+function PopText:addDamage(points)  
   local crit = points.critical and '_crit' or ''
   local popupName = 'popup_dmg' .. points.key
   if points.critical then
@@ -62,8 +62,8 @@ function PopupText:addDamage(points)
   self:addLine(points.value, popupName, popupName .. crit)
 end
 -- Changes font and show text when critical.
-local PopupText_addHeal = PopupText.addHeal
-function PopupText:addHeal(points)
+local PopText_addHeal = PopText.addHeal
+function PopText:addHeal(points)
   local crit = points.critical and '_crit' or ''
   local popupName = 'popup_heal' .. points.key
   if points.critical then
@@ -77,10 +77,10 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Plays sound before pop-up.
-local Battler_popupResults = Battler.popupResults
-function Battler:popupResults(popupText, results, character)
+local Battler_popResults = Battler.popResults
+function Battler:popResults(popText, results, character)
   if Config.sounds.critical and results.critical then
     AudioManager:playSFX(Config.sounds.critical)
   end
-  Battler_popupResults(self, popupText, results, character)
+  Battler_popResults(self, popText, results, character)
 end

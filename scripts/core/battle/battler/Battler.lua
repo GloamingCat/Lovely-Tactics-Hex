@@ -13,7 +13,7 @@ local BattlerAI = require('core/battle/ai/BattlerAI')
 local Job = require('core/battle/battler/Job')
 local EquipSet = require('core/battle/battler/EquipSet')
 local Inventory = require('core/battle/Inventory')
-local PopupText = require('core/battle/PopupText')
+local PopText = require('core/graphics/PopText')
 local SkillList = require('core/battle/battler/SkillList')
 local StatusList = require('core/battle/battler/StatusList')
 
@@ -154,17 +154,18 @@ function Battler:damage(key, value)
   end
   return true
 end
--- Applies results and creates a popup for each value.
--- @param(pos : Vector) the character's position
--- @param(results : table) the array of effect results
-function Battler:popupResults(popupText, results, character)
+-- Applies results and creates a text for each value.
+-- @param(popText : PopText) The pop text to which new lines will be added.
+-- @param(results : table) The array of effect results.
+-- @param(character : Character) The character receiving the action results (optional).
+function Battler:popResults(popText, results, character)
   for i = 1, #results.points do
     local points = results.points[i]
     if points.heal then
-      popupText:addHeal(points)
+      popText:addHeal(points)
       self:damage(points.key, -points.value)
     else
-      popupText:addDamage(points)
+      popText:addDamage(points)
       self:damage(points.key, points.value)
     end
   end
@@ -173,15 +174,17 @@ function Battler:popupResults(popupText, results, character)
     local popupName, text
     if r.add then
       local s = self.statusList:addStatus(r.id, nil, character, r.caster)
-      popupText:addStatus(s)
+      popText:addStatus(s)
     else
       local s = self.statusList:removeStatusAll(r.id, character)
-      popupText:removeStatus(s)
+      popText:removeStatus(s)
     end
   end
-  popupText:popup()
+  popText:popUp()
 end
 -- Applies the result of a skill.
+-- @param(results : table) The array of effect results.
+-- @param(character : Character) The character receiving the action results (optional).
 function Battler:applyResults(results, character)
   for i = 1, #results.points do
     local points = results.points[i]

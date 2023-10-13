@@ -10,7 +10,7 @@ The effects of them on battle and field depend on each individual implementation
 
 -- Imports
 local BattlerAI = require('core/battle/ai/BattlerAI')
-local PopupText = require('core/battle/PopupText')
+local PopText = require('core/graphics/PopText')
 
 local Status = class()
 
@@ -93,19 +93,19 @@ end
 -- @param(char : Character) The battle character with this status.
 function Status:drain(char)
   local pos = char.position
-  local popupText = PopupText(pos.x, pos.y - 20, FieldManager.renderer)
+  local popText = PopText(pos.x, pos.y - 20, FieldManager.renderer)
   local value = self.data.drainValue
   if self.data.percentage then
     value = math.floor(char.battler['m' .. self.data.drainAtt]() * value / 100)
   end
   if value < 0 then -- Heal
-    popupText:addHeal {key = self.data.drainAtt, value = value}
+    popText:addHeal {key = self.data.drainAtt, value = value}
     char.battler:heal(self.data.drainAtt, value)
   else
-    popupText:addDamage {key = self.data.drainAtt, value = value}
+    popText:addDamage {key = self.data.drainAtt, value = value}
     char.battler:damage(self.data.drainAtt, value)
   end
-  popupText:popup()
+  popText:popUp()
   if not char.battler:isAlive() then
     char:playKOAnimation()
   end

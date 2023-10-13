@@ -20,7 +20,7 @@ local BattleManager = require('core/battle/BattleManager')
 local Inventory = require('core/battle/Inventory')
 local SkillAction = require('core/battle/action/SkillAction')
 local Character = require('core/objects/Character')
-local PopupText = require('core/battle/PopupText')
+local PopText = require('core/graphics/PopText')
 
 -- Parameters
 local battleOnly = args.battleOnly
@@ -100,19 +100,19 @@ function SkillAction:allTargetsEffect(input, originTile)
     local nextLevel = input.user.battler.job:levelsup(maxGain)
     local pos = input.user.position
     if expPopup then
-      local popupText = PopupText(pos.x, pos.y - 10, FieldManager.renderer)
-      popupText:addLine('+' .. tostring(maxGain) .. ' ' .. Vocab.exp, 'popup_exp', 'popup_exp')
-      wait = popupText:popup()
+      local popText = PopText(pos.x, pos.y - 10, FieldManager.renderer)
+      popText:addLine('+' .. tostring(maxGain) .. ' ' .. Vocab.exp, 'popup_exp', 'popup_exp')
+      wait = popText:popUp()
     end
     input.user.battler.job:addExperience(maxGain)
     if nextLevel then
       _G.Fiber:wait(wait)
-      local popupText = PopupText(pos.x, pos.y - 10, FieldManager.renderer)
-      popupText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
+      local popText = PopText(pos.x, pos.y - 10, FieldManager.renderer)
+      popText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
       if Config.sounds.levelup then
         AudioManager:playSFX(Config.sounds.levelup)
       end
-      popupText:popup()
+      popText:popUp()
     end
   end
   return allTargets
@@ -124,32 +124,32 @@ function SkillAction:menuTargetsEffect(input, targets)
     return SkillAction_menuTargetsEffect(self, input, targets)
   end
   local maxGain = 0
-  local popupText = nil
+  local popText = nil
   for i = 1, #targets do
     local results = self:calculateEffectResults(input.user, targets[i])
-    popupText = self:singleTargetEffect(results, input, targets[i])
-    if popupText and input.user ~= input.target then
-      popupText:popup()
-      popupText = nil
+    popText = self:singleTargetEffect(results, input, targets[i])
+    if popText and input.user ~= input.target then
+      popText:popUp()
+      popText = nil
     end
     maxGain = math.max(maxGain, self:expGain(input.user, targets[i], results))
   end
   if maxGain > 0 then
     local nextLevel = input.user.job:levelsup(maxGain)
     if expPopup then
-      popupText = popupText or PopupText(input.originX or 0, input.originY or 0, GUIManager.renderer)
-      popupText:addLine('+' .. tostring(maxGain) .. ' ' .. Vocab.exp, 'popup_exp', 'popup_exp')
+      popText = popText or PopText(input.originX or 0, input.originY or 0, GUIManager.renderer)
+      popText:addLine('+' .. tostring(maxGain) .. ' ' .. Vocab.exp, 'popup_exp', 'popup_exp')
     end
     if nextLevel then
-      popupText = popupText or PopupText(input.originX or 0, input.originY or 0, GUIManager.renderer)
-      popupText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
+      popText = popText or PopText(input.originX or 0, input.originY or 0, GUIManager.renderer)
+      popText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
       if Config.sounds.levelup then
         AudioManager:playSFX(Config.sounds.levelup)
       end
     end
     input.user.job:addExperience(maxGain)
-    if popupText then
-      popupText:popup()
+    if popText then
+      popText:popUp()
     end
   end
 end
