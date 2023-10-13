@@ -601,7 +601,7 @@
       "transform": {
         "offsetX": 0,
         "offsetY": -8,
-        "offsetDepth": 8,
+        "offsetDepth": 4,
         "scaleX": 100,
         "scaleY": 100,
         "rotation": 0,

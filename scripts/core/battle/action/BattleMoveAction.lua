@@ -13,6 +13,7 @@ local MoveAction = require('core/battle/action/MoveAction')
 local BattleTactics = require('core/battle/ai/BattleTactics')
 
 -- Alias
+local max = math.max
 local mathf = math.field
 
 local BattleMoveAction = class(MoveAction)
@@ -89,7 +90,7 @@ end
 -- @param(final : ObjectTile) The destination tile.
 -- @ret(number) The move cost.
 function BattleMoveAction:getDistanceBetween(initial, final, user)
-  return (initial:getMoveCost(user) + final:getMoveCost(user)) / 2
+  return max(initial:getMoveCost(user), final:getMoveCost(user))
 end
 -- The max distance the character can walk.
 -- @ret(number) The distance in tiles (may not be integer).
