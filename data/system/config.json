@@ -53,7 +53,8 @@
     "heightScale": 200,
     "scaleType": 1,
     "mobileScaleType": 2,
-    "pixelPerfect": true
+    "pixelPerfect": true,
+    "vsync": false
   },
   "animations": [
     {
