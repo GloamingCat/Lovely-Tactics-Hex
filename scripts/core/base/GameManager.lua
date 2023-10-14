@@ -41,8 +41,6 @@ function GameManager:init()
   self.garbage = setmetatable({}, {__mode = 'v'})
   self.speed = 1
   self.debugMessages = {}
-  self.avgStats = {}
-  self.stats = { 0, 0, 0, 0, 0, 0 }
 end
 -- Reads flags from arguments.
 -- @param(arg : table) A sequence strings which are command line arguments given to the game.
@@ -215,8 +213,6 @@ function GameManager:draw()
     return
   end
   ScreenManager:draw()
-  --self:printStats()
-  --self:printCoordinates()
   for i = 1, #self.debugMessages do
     love.graphics.print(self.debugMessages[i], 0, 
       love.graphics.getHeight() - i * Fonts.log[3] * 1.2 * ScreenManager.scaleY)
@@ -224,22 +220,6 @@ function GameManager:draw()
   if self.paused then
     love.graphics.setFont(ResourceManager:loadFont(Fonts.pause, ScreenManager.scaleX))
     love.graphics.printf('PAUSED', 0, 0, ScreenManager:totalWidth(), 'right')
-  end
-end
--- Prints mouse tile coordinates on the screen.
-function GameManager:printCoordinates()
-  if not FieldManager.renderer then
-    return
-  end
-  local tx, ty, th = InputManager.mouse:fieldCoord()
-  love.graphics.print('(' .. tx .. ',' .. ty .. ',' .. th .. ')', 0, 12)
-end
--- Prints FPS and draw call counts on the screen.
-function GameManager:printStats()
-  self:updateGStats()
-  love.graphics.setFont(ResourceManager:loadFont(Fonts.log, ScreenManager.scaleX))
-  for i = 1, #self.avgStats do
-    love.graphics.print(math.ceil(self.avgStats[i] / 60), (i - 1) * 16 * ScreenManager.scaleX, 0)
   end
 end
 -- Logs a string on screen on mobile mode. No more than 30 strings are shown at once.
@@ -252,23 +232,6 @@ function GameManager:log(str)
   --table.insert(self.debugMessages, 1, str)
   if #self.debugMessages > 30 then
     self.debugMessages[31] = nil
-  end
-end
--- Updates the average graphic stats per second.
-function GameManager:updateGStats()
-  local gstats = love.graphics.getStats()
-  local fps = love.timer.getFPS()
-  self.stats[1] = self.stats[1] + fps
-  self.stats[2] = self.stats[2] + gstats.drawcalls
-  if FieldManager.renderer then
-    self.stats[3] = self.stats[3] + FieldManager.renderer.batchDraws
-    self.stats[5] = self.stats[5] + FieldManager.renderer.textDraws
-  end
-  self.stats[4] = self.stats[4] + GUIManager.renderer.batchDraws
-  self.stats[6] = self.stats[6] + GUIManager.renderer.textDraws
-  if self.frame % 60 == 0 then
-    self.avgStats = self.stats
-    self.stats = { 0, 0, 0, 0, 0, 0 }
   end
 end
 

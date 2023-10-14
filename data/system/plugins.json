@@ -82,6 +82,25 @@
   },
   {
     "on": true,
+    "name": "plugins/PrintStats.lua",
+    "tags": [
+      {
+        "key": "stats",
+        "value": "\"f3\""
+      },
+      {
+        "key": "profi",
+        "value": "\"f5\""
+      },
+      {
+        "key": "countdown",
+        "value": "3"
+      }
+    ],
+    "key": ""
+  },
+  {
+    "on": true,
     "name": "plugins/QuickSave.lua",
     "tags": [
       {
