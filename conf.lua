@@ -21,7 +21,8 @@ function love.conf(t)
   for k, v in pairs(arg) do
     if v == '-p' then
       projectName = arg[k + 1] .. '.json'
-      break
+    elseif v == '-jitoff' then
+      jit.off()
     end
   end
   if not projectName then

@@ -43,8 +43,6 @@ function GameManager:init()
   self.debugMessages = {}
   self.avgStats = {}
   self.stats = { 0, 0, 0, 0, 0, 0 }
-  --PROFI = require('core/base/ProFi')
-  --require('core/base/Stats').printStats()
 end
 -- Reads flags from arguments.
 -- @param(arg : table) A sequence strings which are command line arguments given to the game.
@@ -56,6 +54,10 @@ function GameManager:readArguments(args)
       self.mobileMode = true
     elseif arg == '-web' then
       self.webMode = true
+    elseif arg == '-profi' then
+      PROFI = require('core/base/ProFi')
+    elseif arg == '-stats' then
+      require('core/base/Stats').printStats()
     elseif arg:find('-s') then
       love.math.setRandomSeed(tonumber(arg:sub(3)))
     end

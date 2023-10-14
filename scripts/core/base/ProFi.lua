@@ -33,9 +33,10 @@ local FORMAT_HEADER_LINE       = "| %-50s: %-40s: %-20s: %-12s: %-12s: %-12s|\n"
 local FORMAT_OUTPUT_LINE       = "| %s: %-12s: %-12s: %-12s|\n"
 local FORMAT_INSPECTION_LINE   = "> %s: %-12s\n"
 local FORMAT_TOTALTIME_LINE    = "| TOTAL TIME = %f\n"
-local FORMAT_MEMORY_LINE 	   = "| %-20s: %-16s: %-16s| %s\n"
+local FORMAT_MEMORY_LINE 	     = "| %-20s: %-16s: %-16s| %s\n"
 local FORMAT_HIGH_MEMORY_LINE  = "H %-20s: %-16s: %-16sH %s\n"
 local FORMAT_LOW_MEMORY_LINE   = "L %-20s: %-16s: %-16sL %s\n"
+local FORMAT_KEY               = "%s:%.0s%s"
 local FORMAT_TITLE             = "%-50.50s: %-40.40s: %-20s"
 local FORMAT_LINENUM           = "%4i"
 local FORMAT_TIME              = "%04.3f"
@@ -93,7 +94,7 @@ end
 
 function ProFi:checkMemory( interval, note )
 	local time = getTime()
-	local interval = interval or 0
+	interval = interval or 0
 	if self.lastCheckMemoryTime and time < self.lastCheckMemoryTime + interval then
 		return
 	end
@@ -126,7 +127,7 @@ end
 ]]
 function ProFi:reset()
 	self.reports = {}
-	self.reportsByTitle = {}
+	self.reportsByKey = {}
 	self.memoryReports  = {}
 	self.highestMemoryReport = nil
 	self.lowestMemoryReport  = nil
@@ -201,14 +202,22 @@ function ProFi:shouldReturn( )
 end
 
 function ProFi:getFuncReport( funcInfo )
-	local title = self:getTitleFromFuncInfo( funcInfo )
-	local funcReport = self.reportsByTitle[ title ]
+	local title = self:getKeyFromFuncInfo( funcInfo )
+	local funcReport = self.reportsByKey[ title ]
 	if not funcReport then
 		funcReport = self:createFuncReport( funcInfo )
-		self.reportsByTitle[ title ] = funcReport
+		self.reportsByKey[ title ] = funcReport
 		table.insert( self.reports, funcReport )
 	end
 	return funcReport
+end
+
+function ProFi:getKeyFromFuncInfo( funcInfo )
+	local name        = funcInfo.name or 'anonymous'
+	local source      = funcInfo.short_src or 'C_FUNC'
+	local linedefined = funcInfo.linedefined or 0
+	linedefined = string.format( FORMAT_LINENUM, linedefined )
+	return string.format(FORMAT_KEY, source, name, linedefined)
 end
 
 function ProFi:getTitleFromFuncInfo( funcInfo )
@@ -224,9 +233,12 @@ function ProFi:createFuncReport( funcInfo )
 	local source = funcInfo.source or 'C Func'
 	local linedefined = funcInfo.linedefined or 0
 	local funcReport = {
-		['title']         = self:getTitleFromFuncInfo( funcInfo );
+		['title'] = self:getTitleFromFuncInfo( funcInfo );
+    ['name']  = name;
+    ['src']   = source;
 		['count'] = 0;
-		['timer']         = 0;
+		['timer'] = 0;
+		['level'] = 0;
 	}
 	return funcReport
 end
@@ -267,7 +279,7 @@ function ProFi:writeProfilingReportsToFile( reports, file )
  	for i, funcReport in ipairs( reports ) do
 		local timer         = string.format(FORMAT_TIME, funcReport.timer)
 		local count         = string.format(FORMAT_COUNT, funcReport.count)
-		local relTime 		= string.format(FORMAT_RELATIVE, (funcReport.timer / totalTime) * 100 )
+		local relTime 		  = string.format(FORMAT_RELATIVE, (funcReport.timer / totalTime) * 100 )
 		local outputLine    = string.format(FORMAT_OUTPUT_LINE, funcReport.title, timer, relTime, count )
 		file:write( outputLine )
 		if funcReport.inspections then
@@ -338,6 +350,8 @@ function ProFi:resetReports( reports )
 	for i, report in ipairs( reports ) do
 		report.timer = 0
 		report.count = 0
+    report.level = 0
+    report.callTime = nil
 		report.inspections = nil
 	end
 end
@@ -393,6 +407,7 @@ function ProFi:onFunctionCall( funcInfo )
 	local funcReport = ProFi:getFuncReport( funcInfo )
 	funcReport.callTime = getTime()
 	funcReport.count = funcReport.count + 1
+  funcReport.level = funcReport.level + 1
 	if self:shouldInspect( funcInfo ) then
 		self:doInspection( self.inspect, funcReport )
 	end
@@ -400,7 +415,10 @@ end
 
 function ProFi:onFunctionReturn( funcInfo )
 	local funcReport = ProFi:getFuncReport( funcInfo )
-	if funcReport.callTime then
+  funcReport.level = funcReport.level - 1
+  if not funcReport.callTime then
+    funcReport.level = 0
+  elseif funcReport.level == 0 then
 		funcReport.timer = funcReport.timer + (getTime() - funcReport.callTime)
 	end
 end
@@ -436,7 +454,7 @@ onDebugHook = function( hookType )
 	if hookType == "call" then
 		ProFi:onFunctionCall( funcInfo )
 	elseif hookType == "return" then
-		ProFi:onFunctionReturn( funcInfo )
+    ProFi:onFunctionReturn( funcInfo )
 	end
 end
 
