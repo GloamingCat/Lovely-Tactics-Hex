@@ -403,6 +403,9 @@ function GridWindow:onMouseConfirm(x, y, triggerPoint)
     if widget.errorSound then
       AudioManager:playSFX(widget.errorSound)
     end
+    if widget.onError then
+      widget.onError(self, widget)
+    end
   end
 end
 -- Called when player moves the mouse.
