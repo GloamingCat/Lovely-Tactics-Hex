@@ -14,9 +14,6 @@ local GridWindow = require('core/gui/GridWindow')
 -- Alias
 local copyTable = util.table.deepCopy
 
--- Constants
-local keys = { 'confirm', 'cancel', 'dash', 'pause', 'prev', 'next' }
-
 local KeyMapWindow = class(GridWindow)
 
 ---------------------------------------------------------------------------------------------------
@@ -26,13 +23,14 @@ local KeyMapWindow = class(GridWindow)
 -- Overrides GridWindow:setProperties.
 -- Sets tooltip.
 function KeyMapWindow:setProperties()
+  self.keys = { 'confirm', 'cancel', 'dash', 'pause', 'prev', 'next' }
   GridWindow.setProperties(self)
   self.tooltipTerm = 'buttonChange'
 end
 -- Implements GridWindow:createWidgets.
 function KeyMapWindow:createWidgets()
-  for i = 1, #keys do
-    self:createKeyButtons(keys[i])
+  for i = 1, #self.keys do
+    self:createKeyButtons(self.keys[i])
   end
   Button:fromKey(self, 'apply').text:setAlign('center')
   Button:fromKey(self, 'default').text:setAlign('center')
@@ -62,7 +60,8 @@ end
 function KeyMapWindow:show(...)
   if not self.open then
     self.map = { main = copyTable(InputManager.mainMap),
-      alt = copyTable(InputManager.altMap) }
+      alt = copyTable(InputManager.altMap),
+      gamepad = copyTable(InputManager.gamepadMap) }
     self:refreshKeys()
     self:hideContent()
     GridWindow.show(self, ...)
@@ -88,6 +87,7 @@ end
 function KeyMapWindow:onButtonConfirm(button)
   self:setWidgetTooltip('pressKey')
   self.cursor.paused = true
+  InputManager.keys['pause']:block()
   button:createInfoText('')
   repeat
     Fiber:wait()
@@ -97,6 +97,7 @@ function KeyMapWindow:onButtonConfirm(button)
   if InputManager.arrowMap[code] or InputManager.keyMap[code] then
     code = map[button.key]
   end
+  InputManager.keys['pause']:unblock()
   button:createInfoText(code)
   button:updatePosition(self.position)
   map[button.key] = code

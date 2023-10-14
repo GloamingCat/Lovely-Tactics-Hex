@@ -14,6 +14,7 @@ local GameMouse = require('core/input/GameMouse')
 -- Alias
 local max = math.max
 local setTextInput = love.keyboard.setTextInput
+local copy = util.table.shallowCopy
 
 -- Constants
 local arrows = { 'up', 'left', 'down', 'right' }
@@ -72,22 +73,28 @@ end
 -- Sets keys codes for each game key.
 -- @param(map : table) Key map with main and alt tables.
 function InputManager:setKeyMap(map)
-  self.mainMap = map.main or KeyMap.main
-  self.altMap = map.alt or KeyMap.alt
-  self.gamepadMap = map.gamepad or KeyMap.gamepad
+  self.mainMap = {}
+  self.altMap = {}
+  self.gamepadMap = {}
   self.keyMap = {}
-  for k, v in pairs(self.mainMap) do
+  for k, v in pairs(KeyMap.main) do
+    v = map.main and map.main[k] or v
+    self.mainMap[k] = v
     if self.keys[k] then
       self.keyMap[v] = k
       self.keys[k]:onRelease()
     end
   end
-  for k, v in pairs(self.altMap) do
+  for k, v in pairs(KeyMap.alt) do
+    v = map.alt and map.alt[k] or v
+    self.altMap[k] = v
     if self.keys[k] then
       self.keyMap[v] = k
     end
   end
-  for k, v in pairs(self.gamepadMap) do
+  for k, v in pairs(KeyMap.gamepad) do
+    v = map.gamepad and map.gamepad[k] or v
+    self.gamepadMap[k] = v
     if self.keys[k] then
       self.keyMap[v] = k
     end

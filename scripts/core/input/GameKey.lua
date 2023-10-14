@@ -30,6 +30,7 @@ function GameKey:init()
   self.pressTime = 0
   self.pressState = 0
   self.releaseTime = 0
+  self.blocked = false
 end
 -- Updates state.
 function GameKey:update()
@@ -99,14 +100,30 @@ end
 
 -- Called when this key is pressed.
 function GameKey:onPress()
-  self.previousPressTime = self.pressTime
-  self.pressTime = now()
-  self.pressState = 2
+  if not self.blocked then
+    self.previousPressTime = self.pressTime
+    self.pressTime = now()
+    self.pressState = 2
+  end
 end
 -- Called when this kay is released.
 function GameKey:onRelease()
   self.releaseTime = now()
   self.pressState = -1
+end
+
+---------------------------------------------------------------------------------------------------
+-- Block
+---------------------------------------------------------------------------------------------------
+
+-- Blocks input for this key.
+function GameKey:block()
+  self:onRelease()
+  self.blocked = true
+end
+-- Unblocks input for this key.
+function GameKey:unblock()
+  self.blocked = false
 end
 
 return GameKey
