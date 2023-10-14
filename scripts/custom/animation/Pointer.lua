@@ -49,12 +49,12 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides Animation:update.
-function Pointer:update()
-  Animation.update(self)
+function Pointer:update(dt)
+  Animation.update(self, dt)
   if self.paused or not self.duration or not self.timing then
     return
   end
-  local dt = GameManager:frameTime() * 60
+  dt = dt * 60
   self.currentX = self.currentX + self.speedx * dt
   self.currentY = self.currentY + self.speedy *dt
   if self.currentX > self.maxx or self.currentX < self.minx then

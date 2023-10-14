@@ -87,15 +87,15 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Updates all content elements.
-function Window:update()
-  Transformable.update(self)
+function Window:update(dt)
+  Transformable.update(self, dt)
   if self.background then
-    self.background:update()
+    self.background:update(dt)
   end
   if self.frame then
-    self.frame:update()
+    self.frame:update(dt)
   end
-  Component.update(self)
+  Component.update(self, dt)
 end
 -- Updates all content element's position.
 function Window:updatePosition()

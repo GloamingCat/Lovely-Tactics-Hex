@@ -34,8 +34,8 @@ end
 
 -- Override. Considers state 4, when the character has no status.
 local CharacterBase_update = CharacterBase.update
-function CharacterBase:update()
-  CharacterBase_update(self)
+function CharacterBase:update(dt)
+  CharacterBase_update(self, dt)
   if self.statusIcons and #self.statusIcons > 0 then 
     if not self.balloon then
       self:nextStatusIcon()

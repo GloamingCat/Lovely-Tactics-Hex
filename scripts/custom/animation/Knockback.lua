@@ -54,18 +54,18 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides Animation:update.
-function Knockback:update()
-  Animation.update(self)
-  self:updateTime()
+function Knockback:update(dt)
+  Animation.update(self, dt)
+  self:updateTime(dt)
   if self.knockTime > 1 then
     self.knockSpeed = -self.knockSpeed
-    self:updateTime()
+    self:updateTime(dt)
   end
   self:updatePosition()
 end
 -- Increments time.
-function Knockback:updateTime()
-  self.knockTime = self.knockTime + GameManager:frameTime() * self.knockSpeed
+function Knockback:updateTime(dt)
+  self.knockTime = self.knockTime + dt * self.knockSpeed
 end
 -- Sets position according to time.
 function Knockback:updatePosition()

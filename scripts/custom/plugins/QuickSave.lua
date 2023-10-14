@@ -59,8 +59,8 @@ function GameManager:checkRequests()
   GameManager_checkRequests(self)
 end
 local GameManager_updateManagers = GameManager.updateManagers
-function GameManager:updateManagers()
-  GameManager_updateManagers(self)
+function GameManager:updateManagers(dt)
+  GameManager_updateManagers(self, dt)
   if loadRequested then
     popUp(Vocab.loaded)
     loadRequested = false

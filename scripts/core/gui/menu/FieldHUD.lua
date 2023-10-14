@@ -92,8 +92,8 @@ function FieldHUD:show(...)
   self:refreshSave(true)
 end
 -- Overrides GUI:update.
-function FieldHUD:update(...)
-  GUI.update(self, ...)
+function FieldHUD:update(dt)
+  GUI.update(self, dt)
   if self.open then
     self:refreshSave()
   end

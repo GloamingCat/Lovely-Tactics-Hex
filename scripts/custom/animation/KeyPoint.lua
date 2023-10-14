@@ -77,8 +77,8 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides Animation:update.
-function KeyPoint:update()
-  Animation.update(self)
+function KeyPoint:update(dt)
+  Animation.update(self, dt)
   if self.paused or not self.duration or not self.timing then
     return
   end

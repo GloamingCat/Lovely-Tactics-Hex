@@ -135,10 +135,10 @@ function AnimatedObject:replayAnimation(name, row, index)
   return anim
 end
 -- Overrides Object:update. Updates animation.
-function AnimatedObject:update()
-  Object.update(self)
+function AnimatedObject:update(dt)
+  Object.update(self, dt)
   if self.animation then
-    self.animation:update()
+    self.animation:update(dt)
   end
 end
 

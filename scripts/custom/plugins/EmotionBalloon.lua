@@ -96,10 +96,10 @@ function CharacterBase:setXYZ(x, y, z)
 end
 -- Override. Updates balloon animation.
 local CharacterBase_update = CharacterBase.update
-function CharacterBase:update()
-  CharacterBase_update(self)
+function CharacterBase:update(dt)
+  CharacterBase_update(self, dt)
   if not self.paused and self.balloon then
-    self.balloon:update()
+    self.balloon:update(dt)
     if self.balloon.paused then -- Balloon animation ended
       self.balloon:destroy()
       self.balloon = nil

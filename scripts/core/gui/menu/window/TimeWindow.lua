@@ -44,8 +44,8 @@ function TimeWindow:setTime(time)
   end
 end
 -- Updates play time.
-function TimeWindow:update()
-  Window.update(self)
+function TimeWindow:update(dt)
+  Window.update(self, dt)
   if self.open then
     self:setTime(GameManager:currentPlayTime())
   end

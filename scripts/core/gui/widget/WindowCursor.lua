@@ -42,9 +42,9 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Updates animation.
-function WindowCursor:update()
+function WindowCursor:update(dt)
   if self.window.active and not self.paused then
-    self.anim:update()
+    self.anim:update(dt)
   end
 end
 -- Updates position to the selected button.

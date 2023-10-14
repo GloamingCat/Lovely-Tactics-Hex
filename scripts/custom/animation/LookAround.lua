@@ -46,9 +46,9 @@ function LookAround:init(...)
   self.lookTime = 0
 end
 -- Overrides Animation:update.
-function LookAround:update()
-  Animation.update(self)
-  self.lookTime = self.lookTime + GameManager:frameTime()
+function LookAround:update(dt)
+  Animation.update(self, dt)
+  self.lookTime = self.lookTime + dt
   if self.lookTime >= self.frequence then
     self.lookTime = 0
     self:setRandomRow()

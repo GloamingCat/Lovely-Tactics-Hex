@@ -137,12 +137,12 @@ end
 
 -- Overrides AnimatedObject:update. 
 -- Updates fibers.
-function CharacterBase:update()
+function CharacterBase:update(dt)
   if self.paused then
     return
   end
-  JumpingObject.update(self)
-  Interactable.update(self)
+  JumpingObject.update(self, dt)
+  Interactable.update(self, dt)
 end
 -- Removes from draw and update list.
 function CharacterBase:destroy(permanent)

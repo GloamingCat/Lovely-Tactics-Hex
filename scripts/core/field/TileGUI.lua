@@ -40,12 +40,12 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Updates graphics.
-function TileGUI:update()
+function TileGUI:update(dt)
   if self.highlightAnim then
-    self.highlightAnim:update()
+    self.highlightAnim:update(dt)
   end
   if self.baseAnim then
-    self.baseAnim:update()
+    self.baseAnim:update(dt)
   end
 end
 -- Erases any sprites.

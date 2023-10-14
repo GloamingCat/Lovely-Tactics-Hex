@@ -12,7 +12,7 @@ local Animation = require('core/graphics/Animation')
 
 local Flash = class(Animation)
 
-function Flash:update()
+function Flash:update(dt)
   -- TODO.
 end
 

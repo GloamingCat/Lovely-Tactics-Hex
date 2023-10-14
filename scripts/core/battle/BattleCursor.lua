@@ -33,9 +33,9 @@ function BattleCursor:init()
   end
 end
 -- Updates animation.
-function BattleCursor:update()
+function BattleCursor:update(dt)
   if self.anim then
-    self.anim:update()
+    self.anim:update(dt)
   end
 end
 -- Sets as visible.

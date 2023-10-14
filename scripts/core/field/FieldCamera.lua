@@ -42,11 +42,11 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides Movable:updateMovement.
-function FieldCamera:updateMovement()
+function FieldCamera:updateMovement(dt)
   if self.focusObject then
     self:setXYZ(self.focusObject.position.x, self.focusObject.position.y)
   else
-    Renderer.updateMovement(self)
+    Renderer.updateMovement(self, dt)
   end
 end
 

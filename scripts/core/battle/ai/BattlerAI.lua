@@ -77,8 +77,9 @@ function BattlerAI:showCursor(char)
   cursor:show()
   local t = 0.5
   while t > 0 do
-    t = t - GameManager:frameTime()
-    cursor:update()
+    local dt = GameManager:frameTime()
+    t = t - dt
+    cursor:update(dt)
     Fiber:wait()
   end
   cursor:destroy()

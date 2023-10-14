@@ -141,7 +141,7 @@ function GameManager:update(dt)
   local t = os.clock()  
   -- Update game logic.
   self:checkRequests()
-  self:updateManagers()
+  self:updateManagers(dt)
   -- Update profiler.
   self.cleanCount = self.cleanCount + 1
   if self.cleanCount >= self.cleanTime then
@@ -169,13 +169,13 @@ function GameManager:checkRequests()
   end
 end
 -- Updates GUIManager, FieldManager, AudioManager and InputManager.
-function GameManager:updateManagers()
+function GameManager:updateManagers(dt)
   if not self.paused then
     if not GUIManager.paused then 
-      GUIManager:update()
+      GUIManager:update(self:frameTime())
     end
     if not FieldManager.paused then 
-      FieldManager:update() 
+      FieldManager:update(self:frameTime()) 
     end
     self.frame = self.frame + 1
   end

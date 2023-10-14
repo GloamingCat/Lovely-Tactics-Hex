@@ -76,13 +76,13 @@ function ObjectTile:getMoveCost(char)
   return FieldManager.currentField:getMoveCost(char, self:coordinates())
 end
 -- Updates graphics animation.
-function ObjectTile:update()
+function ObjectTile:update(dt)
   if self.gui then
-    self.gui:update()
+    self.gui:update(dt)
   end
   for i = 1, #self.obstacleList do
     if self.obstacleList[i].animation then
-      self.obstaclesList[i].animation:update()
+      self.obstaclesList[i].animation:update(dt)
     end
   end
 end

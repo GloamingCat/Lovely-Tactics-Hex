@@ -53,9 +53,9 @@ function TileGraphic:createSprite(y)
   return sprite
 end
 -- Updates each animation.
-function TileGraphic:update()
-  self.topAnim:update()
-  self.bottomAnim:update()
+function TileGraphic:update(dt)
+  self.topAnim:update(dt)
+  self.bottomAnim:update(dt)
 end
 -- Erases both sprites.
 function TileGraphic:destroy()

@@ -88,9 +88,9 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Applies color speed and updates color.
-function Colorable:updateColor()
+function Colorable:updateColor(dt)
   if self.colorTime < 1 then
-    self.colorTime = self.colorTime + self.colorSpeed * GameManager:frameTime()
+    self.colorTime = self.colorTime + self.colorSpeed * dt
     if self.colorTime > 1 and self.cropColor then
       self.colorTime = 1
     end

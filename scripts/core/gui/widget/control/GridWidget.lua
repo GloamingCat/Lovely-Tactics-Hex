@@ -79,10 +79,10 @@ function GridWidget:updatePosition(windowPos)
   end
 end
 -- Updates each content widget (called once per frame).
-function GridWidget:update()
+function GridWidget:update(dt)
   for i = 1, #self.content do
     if self.content[i].udpate then
-      self.content[i]:update()
+      self.content[i]:update(dt)
     end
   end
 end

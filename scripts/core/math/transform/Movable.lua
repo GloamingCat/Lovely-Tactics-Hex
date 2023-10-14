@@ -53,9 +53,9 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Applies move speed and updates position.
-function Movable:updateMovement()
+function Movable:updateMovement(dt)
   if self.moveTime < 1 then
-    self.moveTime = self.moveTime + self.moveSpeed * GameManager:frameTime()
+    self.moveTime = self.moveTime + self.moveSpeed * dt
     if self.moveTime > 1 and self.cropMovement then
       self.moveTime = 1
     end

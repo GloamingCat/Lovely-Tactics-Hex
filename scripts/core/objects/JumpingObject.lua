@@ -50,17 +50,17 @@ function JumpingObject:jump(duration, gravity)
   self.gravity = gravity * 60
 end
 -- Updates position and velocity when jumping.
-function JumpingObject:updateJump()
+function JumpingObject:updateJump(dt)
   if self.gravity == 0 then
     return
   end
-  self.jumpHeight = self.jumpHeight + self.jumpVelocity * GameManager:frameTime()
+  self.jumpHeight = self.jumpHeight + self.jumpVelocity * dt
   if self.jumpHeight <= 0 then
     self.jumpHeight = 0
     self.jumpVelocity = 0
     self.gravity = 0
   else
-    self.jumpVelocity = self.jumpVelocity - self.gravity * GameManager:frameTime()
+    self.jumpVelocity = self.jumpVelocity - self.gravity * dt
   end
   self:setXYZ()
 end
@@ -151,10 +151,10 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides AnimatedObject:update.
-function JumpingObject:update()
-  WalkingObject.update(self)
+function JumpingObject:update(dt)
+  WalkingObject.update(self, dt)
   if not self.paused then
-    self:updateJump()
+    self:updateJump(dt)
   end
 end
 -- Overrides Object:setXYZ.

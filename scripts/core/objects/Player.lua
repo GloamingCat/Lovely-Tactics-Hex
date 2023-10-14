@@ -65,13 +65,13 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides CharacterBase:update.
-function Player:update()
+function Player:update(dt)
   if FieldManager.playerInput then
     self:refreshSpeed()
   end
-  Character.update(self)
+  Character.update(self, dt)
   if self:moving() then
-    self:updateStepCount()
+    self:updateStepCount(dt)
   end
 end
 -- Coroutine that runs in non-battle fields.
@@ -227,8 +227,8 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Plays terrain step sound.
-function Player:updateStepCount()
-  self.stepCount = self.stepCount + self.speed / Config.player.walkSpeed * 60 * GameManager:frameTime()
+function Player:updateStepCount(dt)
+  self.stepCount = self.stepCount + self.speed / Config.player.walkSpeed * 60 * dt
   if self.stepCount > self.freq then
     local sounds = FieldManager.currentField:getTerrainSounds(self:tileCoordinates())
     if sounds and #sounds > 0 then

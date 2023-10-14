@@ -95,9 +95,9 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Updates each slice animation.
-function SpriteGrid:update()
+function SpriteGrid:update(dt)
   for i = 1, 9 do
-    self.slices[i]:update()
+    self.slices[i]:update(dt)
   end
 end
 -- Updates position and scale according to the given parent transformable.

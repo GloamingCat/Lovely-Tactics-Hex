@@ -135,7 +135,7 @@ function ActionGUI:waitForResult()
   self.result = self.input.action:onActionGUI(self.input)
   while self.result == nil do
     if self.cursor then
-      self.cursor:update()
+      self.cursor:update(GameManager:frameTime())
     end
     if self.scrollArrows then
       local visible = self.buttonWindow and not self.buttonWindow.closed

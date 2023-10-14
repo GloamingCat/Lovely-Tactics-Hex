@@ -72,7 +72,7 @@ end
 
 -- Overrides Component:update.
 -- Updates scroll count.
-function GridScroll:update()
+function GridScroll:update(dt)
   if self.horizontal then
     if InputManager.usingKeyboard then
       -- Use up-down arrows
@@ -99,7 +99,7 @@ function GridScroll:update()
   if self.speed then
     if self.count then
       local speed = self.speed * GUIManager.windowScroll * 2 / 100
-      self.count = self.count + speed * GameManager:frameTime()
+      self.count = self.count + speed * dt
       if self.count >= 1 then
         self.count = 0
         self.window:nextWidget(self.dx or 0, self.dy or 0)

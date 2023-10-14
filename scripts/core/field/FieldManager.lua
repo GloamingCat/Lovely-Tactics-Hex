@@ -37,17 +37,17 @@ function FieldManager:init()
   self.playerState = {}
 end
 -- Calls all the update functions.
-function FieldManager:update()
+function FieldManager:update(dt)
   self.fiberList:update()
   if self.currentField then
-    self.currentField:update()
+    self.currentField:update(dt)
     for object in self.updateList:iterator() do
-      object:update()
+      object:update(dt)
     end
-    self.renderer:update()
+    self.renderer:update(dt)
   end
   if self.hud then
-    self.hud:update()
+    self.hud:update(dt)
   end
 end
 

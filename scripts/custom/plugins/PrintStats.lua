@@ -31,7 +31,7 @@ function GameManager:init()
 end
 -- Override. Checks for stats toggle input.
 local GameManager_updateManagers = GameManager.updateManagers
-function GameManager:updateManagers()
+function GameManager:updateManagers(dt)
   if InputManager.keys['stats']:isTriggered() then
     self.statsVisible = not self.statsVisible
   end
@@ -43,7 +43,7 @@ function GameManager:updateManagers()
       self:toggleProfi()
     end
   end
-  GameManager_updateManagers(self)
+  GameManager_updateManagers(self, dt)
 end
 -- Override. Prints stats.
 local GameManager_draw = GameManager.draw

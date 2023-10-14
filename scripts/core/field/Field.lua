@@ -52,13 +52,13 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Updates all ObjectTiles and TerrainTiles in field's layers.
-function Field:update()
+function Field:update(dt)
   self.fiberList:update()
   for l = self.minh, self.maxh do
     local layer = self.objectLayers[l]
     for i = 1, self.sizeX do
       for j = 1, self.sizeY do
-        layer.grid[i][j]:update()
+        layer.grid[i][j]:update(dt)
       end
     end
     local layerList = self.terrainLayers[l]
@@ -66,7 +66,7 @@ function Field:update()
       layer = layerList[k]
       for i = 1, self.sizeX do
         for j = 1, self.sizeY do
-          layer.grid[i][j]:update()
+          layer.grid[i][j]:update(dt)
         end
       end
     end

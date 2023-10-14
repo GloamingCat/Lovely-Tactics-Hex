@@ -59,14 +59,14 @@ end
 
 -- Override. Updates children.
 local Animation_update = Animation.update
-function Animation:update()
-  Animation_update(self)
+function Animation:update(dt)
+  Animation_update(self, dt)
   if self.paused or not self.duration or not self.timing or not self.children then
     return
   end
   if self.children then
     for i = 1, #self.children do
-      self.children[i]:update()
+      self.children[i]:update(dt)
     end
   end
 end

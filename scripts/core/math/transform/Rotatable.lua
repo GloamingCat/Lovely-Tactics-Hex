@@ -37,9 +37,9 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Applies speed and updates rotation.
-function Rotatable:updateRotation()
+function Rotatable:updateRotation(dt)
   if self.rotationTime < 1 then
-    self.rotationTime = self.rotationTime + self.rotationSpeed * GameManager:frameTime()
+    self.rotationTime = self.rotationTime + self.rotationSpeed * dt
     if self.rotationTime > 1 and self.croprotation then
       self.rotationTime = 1
     end

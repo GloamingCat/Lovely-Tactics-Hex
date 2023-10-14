@@ -33,15 +33,15 @@ function GUIManager:init()
   ScreenManager:setRenderer(self.renderer, 2)
 end
 -- Calls all the update functions.
-function GUIManager:update()
+function GUIManager:update(dt)
   for i = 1, #self.stack do
-    self.stack[i]:update()
+    self.stack[i]:update(dt)
   end
   if self.current then
-    self.current:update()
+    self.current:update(dt)
   end
   for i = 1, #self.updateList do
-    self.updateList[i]:update()
+    self.updateList[i]:update(dt)
   end
   self.fiberList:update()
 end

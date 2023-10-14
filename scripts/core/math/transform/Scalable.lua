@@ -43,9 +43,9 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Applies speed and updates scale.
-function Scalable:updateScaling()
+function Scalable:updateScaling(dt)
   if self.scaleTime < 1 then
-    self.scaleTime = self.scaleTime + self.scaleSpeed * GameManager:frameTime()
+    self.scaleTime = self.scaleTime + self.scaleSpeed * dt
     if self.scaleTime > 1 and self.cropScale then
       self.scaleTime = 1
     end

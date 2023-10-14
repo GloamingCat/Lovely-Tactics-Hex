@@ -53,10 +53,10 @@ function TerrainTile:coordinates()
   return self.x, self.y, self.layer.height
 end
 -- Updates each animation.
-function TerrainTile:update()
+function TerrainTile:update(dt)
   if self.animations then
     for i = 1, 4 do
-      self.animations[i]:update()
+      self.animations[i]:update(dt)
     end
   end
 end

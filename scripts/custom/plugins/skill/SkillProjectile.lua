@@ -75,10 +75,10 @@ end
 -- Overrides Animation:update.
 -- Updates sprite position.
 local Animation_update = Animation.update
-function Animation:update()
-  Animation_update(self)
+function Animation:update(dt)
+  Animation_update(self, dt)
   if self.moveSpeed then
-    self.moveTime = min(self.moveTime + GameManager:frameTime() * self.moveSpeed, 1)
+    self.moveTime = min(self.moveTime + dt * self.moveSpeed, 1)
     self.sprite:setPosition(self.origin:lerp(self.target, self.moveTime))
   end
 end

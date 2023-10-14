@@ -129,11 +129,11 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Increments the frame count and automatically changes que sprite.
-function Animation:update()
+function Animation:update(dt)
   if self.paused or not self.duration or not self.timing or self.destroyed then
     return
   end
-  self.time = self.time + GameManager:frameTime() * 60 * self.speed
+  self.time = self.time + dt * 60 * self.speed
   self:callEvents()
   if self.time >= self.timing[self.index] then
     self.time = self.time - self.timing[self.index]

@@ -40,9 +40,9 @@ end
 ---------------------------------------------------------------------------------------------------
 
 -- Updates all windows.
-function GUI:update()
+function GUI:update(dt)
   for window in self.windowList:iterator() do
-    window:update()
+    window:update(dt)
   end
 end
 -- Refreshes all windows.

@@ -52,7 +52,7 @@ end
 
 -- Overrides GridWindow:update.
 -- Opens or closes automatically depending if the player is using the mouse or not.
-function ButtonWindow:update()
+function ButtonWindow:update(dt)
   if self.GUI.open and self.active then
     self:refreshLastOpen()
     if not self.lastOpen then
@@ -68,7 +68,7 @@ function ButtonWindow:update()
   for _, button in ipairs(self.matrix) do
     button:refreshEnabled()
   end
-  GridWindow.update(self)
+  GridWindow.update(self, dt)
 end
 -- Implements GridWindow:buttonEnabled.
 -- Disables when window is inactive.
