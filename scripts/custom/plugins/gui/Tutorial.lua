@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Tutorial
+@script Tutorial
 ---------------------------------------------------------------------------------------------------
 Adds a new button to the title screen to show a tutorial window.
 
@@ -18,11 +18,11 @@ local width = args.width
 local height = args.height
 local texts = args.text:split()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Player
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides TitleCommandWindow:createWidgets.
+--- Overrides TitleCommandWindow:createWidgets.
 function TitleCommandWindow:createWidgets()
   Button:fromKey(self, 'newGame')
   Button:fromKey(self, 'loadGame')
@@ -32,7 +32,7 @@ function TitleCommandWindow:createWidgets()
     Button:fromKey(self, 'quit')
   end
 end
--- Settings button.
+--- Settings button.
 function TitleCommandWindow:tutorialConfirm()
   self.GUI.topText:setVisible(false)
   self:hide()
@@ -56,7 +56,7 @@ function TitleCommandWindow:tutorialConfirm()
   self.GUI.topText:setVisible(true)
   self:show()
 end
--- Overrides TitleCommandWindow:rowCount.
+--- Overrides TitleCommandWindow:rowCount.
 function TitleCommandWindow:rowCount()
   return GameManager:isDesktop() and 5 or 4
 end

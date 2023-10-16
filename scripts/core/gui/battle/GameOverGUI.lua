@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-GameOverGUI
+@classmod GameOverGUI
 ---------------------------------------------------------------------------------------------------
 The GUI that is shown when player loses the battle.
 
@@ -16,13 +16,14 @@ local Text = require('core/graphics/Text')
 -- Alias
 local floor = math.floor
 
+-- Class table.
 local GameOverGUI = class(GUI)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialize
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Implements GUI:createWindows.
+--- Implements GUI:createWindows.
 function GameOverGUI:createWindows()
   self.name = 'Game Over GUI'
   self:createTopText()
@@ -30,7 +31,7 @@ function GameOverGUI:createWindows()
   self:createMainWindow()
   self:setActiveWindow(self.mainWindow)
 end
--- Creates the text at the top of the screen to show that the player won.
+--- Creates the text at the top of the screen to show that the player won.
 function GameOverGUI:createTopText()
   local prop = {
     ScreenManager.width,
@@ -43,28 +44,28 @@ function GameOverGUI:createTopText()
   self.topText:setVisible(false)
   self.topTextSpeed = 2
 end
--- Creates the window that shows battle results.
+--- Creates the window that shows battle results.
 function GameOverGUI:createMainWindow()
   local window = GameOverWindow(self)
   self.mainWindow = window
 end
--- Overrides GUI:destroy to destroy top text.
+--- Overrides GUI:destroy to destroy top text.
 function GameOverGUI:destroy(...)
   GUI.destroy(self, ...)
   self.topText:destroy()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Show
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Show top text before openning windows.
+--- Show top text before openning windows.
 function GameOverGUI:show(...)
   self:showTopText()
   _G.Fiber:wait(15)
   GUI.show(self, ...)
 end
--- Animation that shows the text at the top.
+--- Animation that shows the text at the top.
 function GameOverGUI:showTopText()
   if AudioManager.gameoverTheme then
     AudioManager:playBGM(AudioManager.gameoverTheme)
@@ -80,16 +81,16 @@ function GameOverGUI:showTopText()
   self.topText:setRGBA(nil, nil, nil, 1)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Hide
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Hide top text after closing windows.
+--- Hide top text after closing windows.
 function GameOverGUI:hide(...)
   GUI.hide(self, ...)
   self:hideTopText()
 end
--- Animation that shows the text at the top.
+--- Animation that shows the text at the top.
 function GameOverGUI:hideTopText()
   if AudioManager.gameoverTheme then
     AudioManager:pauseBGM(120 / self.topTextSpeed)

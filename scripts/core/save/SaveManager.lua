@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-SaveManager
+@classmod SaveManager
 ---------------------------------------------------------------------------------------------------
 Responsible for storing and loading game saves.
 
@@ -19,13 +19,14 @@ local now = love.timer.getTime
 local saveVersion = 1
 local configVersion = 1
 
+-- Class table.
 local SaveManager = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor. 
+--- Constructor. 
 function SaveManager:init()
   if fileInfo('saves.json') then
     self.saves = Serializer.load('saves.json')
@@ -40,12 +41,12 @@ function SaveManager:init()
   self:loadConfig()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- New Data
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates a new save.
--- ret(table) A brand new save table.
+--- Creates a new save.
+--- ret(table) A brand new save table.
 function SaveManager:newSave()
   local save = {}
   save.playTime = 0
@@ -56,7 +57,7 @@ function SaveManager:newSave()
   save.playerState = { transition = Config.player.startPos }
   return save
 end
--- Creates default config file.
+--- Creates default config file.
 function SaveManager:newConfig()
   local conf = {}
   conf.autoDash = false
@@ -67,12 +68,12 @@ function SaveManager:newConfig()
   return conf
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Current Data
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates a save table for the current game state.
--- @ret(table) Initial save.
+--- Creates a save table for the current game state.
+-- @treturn table Initial save.
 function SaveManager:currentSaveData()
   local save = { version = saveVersion }
   save.playTime = GameManager:currentPlayTime()
@@ -87,8 +88,8 @@ function SaveManager:currentSaveData()
   end
   return save
 end
--- Creates a save table for the current settings.
--- @ret(table) Initial settings.
+--- Creates a save table for the current settings.
+-- @treturn table Initial settings.
 function SaveManager:currentConfigData()
   local conf = { version = configVersion }
   conf.volumeBGM = AudioManager.volumeBGM
@@ -106,13 +107,13 @@ function SaveManager:currentConfigData()
   return conf
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Load
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Loads the specified save.
--- @param(file : string) File name. If nil, a new save is created.
--- @ret(table) The loaded save data.
+--- Loads the specified save.
+-- @tparam string file Base file name, without the directory and extension. If nil, a new save is created.
+-- @treturn table The loaded save data.
 function SaveManager:loadSave(file)
   local current = nil
   if file == nil then
@@ -128,7 +129,7 @@ function SaveManager:loadSave(file)
   self.loadTime = now()
   return current
 end
--- Load config file. If 
+--- Load config file. If the version changed, creates a new one.
 function SaveManager:loadConfig()
   if fileInfo('config.json') then
     self.config = Serializer.load('config.json')
@@ -139,11 +140,11 @@ function SaveManager:loadConfig()
   self.config = self:newConfig()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Save
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(boolean) Whether there are saves or not.
+-- @treturn boolean Whether there are saves or not.
 function SaveManager:hasSaves()
   for k, v in pairs(self.saves) do
     if v.version == saveVersion then
@@ -152,9 +153,9 @@ function SaveManager:hasSaves()
   end
   return false
 end
--- Gets the save header for the given save file name.
--- @param(file : string)
--- @ret(table) Save header (nil if none).
+--- Gets the save header for the given save file name.
+-- @tparam string file Base file name, without the directory and extension.
+-- @treturn table Save header (nil if none).
 function SaveManager:getHeader(file)
   local save = self.saves[file]
   if save and save.version == saveVersion then
@@ -163,9 +164,9 @@ function SaveManager:getHeader(file)
     return nil
   end
 end
--- Creates the header of a save table.
--- @param(save : table) The save, uses the current save if nil.
--- @ret(table) Header of the save.
+--- Creates the header of a save table.
+-- @tparam table save The save's data.
+-- @treturn table Header of the save.
 function SaveManager:createHeader(save)
   local db = save and save.troops or TroopManager.troopData
   local id = save and save.playerTroopID or TroopManager.playerTroopID
@@ -184,15 +185,16 @@ function SaveManager:createHeader(save)
     location = field.name,
     version = save and save.version or saveVersion }
 end
--- Stores current save.
--- @param(name : string) File name.
+--- Stores current save.
+-- @tparam string file Base file name, without the directory and extension.
+-- @tparam table data The save's data.
 function SaveManager:storeSave(file, data)
   self.current = data or self:currentSaveData()
   self.saves[file] = self:createHeader(self.current)
   Serializer.store('saves/' .. file .. '.json', self.current)
   Serializer.store('saves.json', self.saves)
 end
--- Stores config file.
+--- Stores config file.
 function SaveManager:storeConfig(config)
   self.config = config or self:currentConfigData()
   Serializer.store('config.json', self.config)

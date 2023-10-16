@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-InputManager
+@classmod InputManager
 ---------------------------------------------------------------------------------------------------
 Stores relevant inputs for the game.
 
@@ -25,13 +25,14 @@ local textControl = {
   up = true, left = true, down = true, right = true 
 }
 
+-- Class table.
 local InputManager = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function InputManager:init()
   self.paused = false
   self.usingKeyboard = true
@@ -58,8 +59,8 @@ function InputManager:init()
   self.stick.y = 0
   self.stick.threshold = 0.2
 end
--- Sets axis keys.
--- @param(useWASD : boolean)
+--- Sets axis keys.
+-- @tparam boolean useWASD
 function InputManager:setArrowMap(useWASD)
   self.arrowMap = {}
   self.wasd = useWASD
@@ -70,8 +71,8 @@ function InputManager:setArrowMap(useWASD)
     self.keys[v]:onRelease()
   end
 end
--- Sets keys codes for each game key.
--- @param(map : table) Key map with main and alt tables.
+--- Sets keys codes for each game key.
+-- @tparam table map Key map with main and alt tables.
 function InputManager:setKeyMap(map)
   self.mainMap = {}
   self.altMap = {}
@@ -100,13 +101,13 @@ function InputManager:setKeyMap(map)
     end
   end
 end
--- @ret(boolean) Whether the player can use keys to play.
+-- @treturn boolean Whether the player can use keys to play.
 function InputManager:hasKeyboard()
   return not GameManager:isMobile()
 end
--- Gets the key by name and creates new one if it doesn't exist.
--- @param(name : string) Key's name or code (in keyboard).
--- @ret(GameKey) The key associated with given name.
+--- Gets the key by name and creates new one if it doesn't exist.
+-- @tparam string name Key's name or code (in keyboard).
+-- @treturn GameKey The key associated with given name.
 function InputManager:getKey(name)
   if not self.keys[name] then
     self.keys[name] = GameKey()
@@ -114,11 +115,11 @@ function InputManager:getKey(name)
   return self.keys[name]
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if player is using keyboard and updates all keys' states.
+--- Checks if player is using keyboard and updates all keys' states.
 function InputManager:update()
   self.usingKeyboard = false
   for code, key in pairs(self.keys) do
@@ -132,17 +133,17 @@ function InputManager:update()
   self.lastKey = nil
   self.textInput = nil
 end
--- Pauses / unpauses the input update.
+--- Pauses / unpauses the input update.
 function InputManager:setPaused(paused)
   self.paused = paused
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Axis keys
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Converts boolean key buttons to axis in [-1, 1].
--- @ret(number) the x-axis value
+--- Converts boolean key buttons to axis in [-1, 1].
+-- @treturn number The x-axis value.
 function InputManager:axisX(startGap, repeatGap, delay)
   if self.stick:isPressing() then
     if self.stick:isPressingGap(startGap, repeatGap, delay) then
@@ -165,8 +166,8 @@ function InputManager:axisX(startGap, repeatGap, delay)
     end
   end
 end
--- Converts boolean key buttons to axis in [-1, 1].
--- @ret(number) the y-axis value
+--- Converts boolean key buttons to axis in [-1, 1].
+-- @treturn number The y-axis value.
 function InputManager:axisY(startGap, repeatGap, delay)
   if self.stick:isPressing() then
     if self.stick:isPressingGap(startGap, repeatGap, delay) then
@@ -189,15 +190,15 @@ function InputManager:axisY(startGap, repeatGap, delay)
     end
   end
 end
--- Return input axis.
--- @ret(number) the x-axis value
--- @ret(number) the y-axis value
+--- Return input axis.
+-- @treturn number The x-axis value.
+-- @treturn number The y-axis value.
 function InputManager:axis(startGap, repeatGap)
   return self:axisX(startGap, repeatGap), self:axisY(startGap, repeatGap)
 end
--- Return a forced "orthogonal" axis (x and y can't be both non-zero).
--- @ret(number) the x-axis value
--- @ret(number) the y-axis value
+--- Return a forced "orthogonal" axis (x and y can't be both non-zero).
+-- @treturn number The x-axis value.
+-- @treturn number The y-axis value.
 function InputManager:ortAxis(startGap, repeatGap, delay)
   if self.stick:isPressing() then
     if self.stick:isPressingGap(startGap, repeatGap, delay) then
@@ -225,14 +226,14 @@ function InputManager:ortAxis(startGap, repeatGap, delay)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Keyboard
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when player presses any key.
--- @param(code : string) the code of the key based on keyboard layout
--- @param(scancode : string) the code of the key
--- @param(isrepeat : boolean) if the call is a repeat
+--- Called when player presses any key.
+-- @tparam string code The code of the key based on keyboard layout.
+-- @tparam string scancode The code of the key.
+-- @tparam boolean isrepeat If the call is a repeat.
 function InputManager:onPress(code, scancode, isrepeat)
   if self.readingText then
     if code == 'backspace' then
@@ -252,9 +253,9 @@ function InputManager:onPress(code, scancode, isrepeat)
   end
   self.lastKey = code
 end
--- Called when player releases any key.
--- @param(code : string) the code of the key based on keyboard layout
--- @param(scancode : string) the code of the key
+--- Called when player releases any key.
+-- @tparam string code The code of the key based on keyboard layout.
+-- @tparam string scancode The code of the key.
 function InputManager:onRelease(code, scancode)
   if self.readingText and not textControl[code] then
     return
@@ -262,15 +263,15 @@ function InputManager:onRelease(code, scancode)
   local key = self.arrowMap[code] or self.keyMap[code] or code
   self.keys[key]:onRelease()
 end
--- Called when player types a character.
--- @param(t : string) Input character.
+--- Called when player types a character.
+-- @tparam string char Input character.
 function InputManager:onTextInput(char)
   if self.readingText then
     self.textInput = char
   end
 end
--- Read text input from keyboard. When enabled, consumes all key events that represent either a
--- character or backspace key.
+--- Read text input from keyboard. When enabled, consumes all key events that represent either a
+--- character or backspace key.
 function InputManager:startTextInput()
   if self.readingText then
     return
@@ -281,7 +282,7 @@ function InputManager:startTextInput()
   self:setArrowMap(false)
   self.wasd = wasd
 end
--- Stops reading text input and returns to default key events.
+--- Stops reading text input and returns to default key events.
 function InputManager:endTextInput()
   if not self.readingText then
     return
@@ -294,14 +295,14 @@ function InputManager:endTextInput()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Mouse and Touch
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when a mouse button is pressed.
--- @param(x : number) Cursor's x coordinate.
--- @param(y : number) Cursor's y coordinate.
--- @param(button : number) Button type (1 to 3 for mouse, 4+ for touch IDs).
+--- Called when a mouse button is pressed.
+-- @tparam number x Cursor's x coordinate.
+-- @tparam number y Cursor's y coordinate.
+-- @tparam number button Button type (1 to 3 for mouse, 4+ for touch IDs).
 function InputManager:onMousePress(x, y, button)
   if button <= 3 and not GameManager:isMobile() then
     if self.mouseEnabled then
@@ -314,10 +315,10 @@ function InputManager:onMousePress(x, y, button)
     self.keys.touch:onPress()
   end
 end
--- Called when a mouse button is released.
--- @param(x : number) Cursor's x coordinate.
--- @param(y : number) Cursor's y coordinate.
--- @param(button : number) Button type (1 to 3 for mouse, and 4+ for touch IDs).
+--- Called when a mouse button is released.
+-- @tparam number x Cursor's x coordinate.
+-- @tparam number y Cursor's y coordinate.
+-- @tparam number button Button type (1 to 3 for mouse, and 4+ for touch IDs).
 function InputManager:onMouseRelease(x, y, button)
   if button <= 3 and not GameManager:isMobile() then
     if self.mouseEnabled then
@@ -330,23 +331,23 @@ function InputManager:onMouseRelease(x, y, button)
     self.keys.touch:onRelease()
   end
 end
--- Called when the cursor moves.
--- @param(x : number) Cursor's x coordinate.
--- @param(y : number) Cursor's y coordinate.
--- @param(touch : number) Touch ID (optional).
+--- Called when the cursor moves.
+-- @tparam number x Cursor's x coordinate.
+-- @tparam number y Cursor's y coordinate.
+-- @tparam number touch Touch ID (optional).
 function InputManager:onMouseMove(x, y, touch)
   if touch or self.mouseEnabled and not GameManager:isMobile() or self.keys['touch']:isPressing() then
     self.mouse:onMove(x, y)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Joystick / Gamepad
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when the axis value changes.
--- @param(axis : string) Axis that changed.
--- @param(value : number) New value.
+--- Called when the axis value changes.
+-- @tparam string axis Axis that changed.
+-- @tparam number value New value.
 function InputManager:onAxisMove(axis, value)
   if axis == 'leftx' then
     self.stick.x = value

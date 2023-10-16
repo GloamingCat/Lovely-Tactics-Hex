@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-DebugBox
+@script DebugBox
 ---------------------------------------------------------------------------------------------------
 Shows a text box to enter any executable Lua script. If the script has any outputs, it will be
 shown at the console.
@@ -16,9 +16,9 @@ local TextInputGUI = require('core/gui/common/TextInputGUI')
 local key = args.key
 local mod = args.mod
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Shortcuts
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 local function debugEvent(funcName, ...)
   local entries = {...}
@@ -32,11 +32,11 @@ local function debugEvent(funcName, ...)
   return FieldManager.fiberList:forkFromScript { func = func, vars = {} }
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Player
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks for the debug key input.
+--- Checks for the debug key input.
 local Player_checkFieldInput = Player.checkFieldInput
 function Player:checkFieldInput()
   if InputManager:getKey(key):isTriggered() and (not mod or InputManager:getKey(mod):isPressing()) then
@@ -45,7 +45,7 @@ function Player:checkFieldInput()
     Player_checkFieldInput(self)
   end
 end
--- Show debug text box.
+--- Show debug text box.
 function Player:openDebugGUI()
   self:playIdleAnimation()
   AudioManager:playSFX(Config.sounds.menu)

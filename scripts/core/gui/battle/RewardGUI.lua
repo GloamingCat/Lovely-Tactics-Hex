@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-RewardGUI
+@classmod RewardGUI
 ---------------------------------------------------------------------------------------------------
 The GUI that is shown in the end of the battle.
 
@@ -17,13 +17,14 @@ local Text = require('core/graphics/Text')
 -- Alias
 local floor = math.floor
 
+-- Class table.
 local RewardGUI = class(GUI)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Implements GUI:createWindows.
+--- Implements GUI:createWindows.
 function RewardGUI:createWindows()
   self.name = 'Reward GUI'
   self:createTopText()
@@ -41,7 +42,7 @@ function RewardGUI:createWindows()
   self.troop.money = self.troop.money + self.rewards.money
   self.troop.inventory:addAllItems(self.rewards.items)
 end
--- Creates the text at the top of the screen to show that the player won.
+--- Creates the text at the top of the screen to show that the player won.
 function RewardGUI:createTopText()
   local prop = { ScreenManager.width,
     'center', Fonts.gui_huge }
@@ -52,30 +53,30 @@ function RewardGUI:createTopText()
   self.topText:setVisible(false)
   self.topTextSpeed = 2
 end
--- Creates the window that shows battle results.
+--- Creates the window that shows battle results.
 function RewardGUI:createEXPWindow(x, y, w, h)
   local pos = Vector(-x, y)
   local window = RewardEXPWindow(self, w, h, pos)
   self.expWindow = window
 end
--- Creates the window that shows battle results.
+--- Creates the window that shows battle results.
 function RewardGUI:createItemWindow(x, y, w, h)
   local pos = Vector(x, y)
   local window = RewardItemWindow(self, w, h, pos)
   self.itemWindow = window
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Show
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Show top text before openning windows.
+--- Show top text before openning windows.
 function RewardGUI:show(...)
   self:showTopText()
   _G.Fiber:wait(15)
   GUI.show(self, ...)
 end
--- Animation that shows the text at the top.
+--- Animation that shows the text at the top.
 function RewardGUI:showTopText()
   if AudioManager.victoryTheme then
     AudioManager:playBGM(AudioManager.victoryTheme)
@@ -91,16 +92,16 @@ function RewardGUI:showTopText()
   self.topText:setRGBA(nil, nil, nil, 1)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Hide
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Hide top text after closing windows.
+--- Hide top text after closing windows.
 function RewardGUI:hide(...)
   GUI.hide(self, ...)
   self:hideTopText()
 end
--- Animation that shows the text at the top.
+--- Animation that shows the text at the top.
 function RewardGUI:hideTopText()
   if AudioManager.victoryTheme then
     AudioManager:pauseBGM(120 / self.topTextSpeed, true)
@@ -114,11 +115,11 @@ function RewardGUI:hideTopText()
   self.topText:setVisible(false)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GUI:destroy to destroy top text.
+--- Overrides GUI:destroy to destroy top text.
 function RewardGUI:destroy(...)
   GUI.destroy(self, ...)
   self.topText:destroy()

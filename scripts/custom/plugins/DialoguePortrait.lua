@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-DialoguePortrait
+@script DialoguePortrait
 ---------------------------------------------------------------------------------------------------
 Indents the dialogue text to fit the speaker's portrait, shown above window.
 
@@ -18,12 +18,12 @@ local DialogueWindow = require('core/gui/common/window/interactable/DialogueWind
 local GUIEvents = require('core/event/GUIEvents')
 local SimpleImage = require('core/gui/widget/SimpleImage')
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- DialogueWindow
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows the portrait of the speaker.
--- @param(icon : table) Table with id, col and row values. It may also contain char and name 
+--- Shows the portrait of the speaker.
+-- @tparam table icon Table with id, col and row values. It may also contain char and name 
 --   values, which indicates a portrait of the given character.
 function DialogueWindow:setPortrait(icon)
   if self.portrait then
@@ -55,7 +55,7 @@ function DialogueWindow:setPortrait(icon)
     self.indent = (indent or w) / self.width * 2
   end
 end
--- Override. Adjusts text position and width.
+--- Override. Adjusts text position and width.
 local DialogueWindow_showDialogue = DialogueWindow.showDialogue
 function DialogueWindow:showDialogue(...)
   local x = self.portrait and (self.indent * self.width / 2) or 0
@@ -64,18 +64,18 @@ function DialogueWindow:showDialogue(...)
   self.dialogue:updatePosition(self.position)
   DialogueWindow_showDialogue(self, ...)
 end
--- Override. Adjusts name window position.
+--- Override. Adjusts name window position.
 local DialogueWindow_setName = DialogueWindow.setName
 function DialogueWindow:setName(text, x, ...)
   x = (x or -0.7) + (self.indent or 0)
   DialogueWindow_setName(self, text, x, ...)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- GUIEvents
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Sets portrait.
+--- Override. Sets portrait.
 local GUIEvents_showDialogue = GUIEvents.showDialogue
 function GUIEvents:showDialogue(args)
   self:openDialogueWindow(args)

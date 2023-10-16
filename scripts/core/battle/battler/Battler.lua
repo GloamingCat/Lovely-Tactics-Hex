@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Battler
+@classmod Battler
 ---------------------------------------------------------------------------------------------------
 A class the holds character's information for battle formula.
 
@@ -24,15 +24,16 @@ local max = math.max
 local min = math.min
 local newArray = util.array.new
 
+-- Class table.
 local Battler = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(troop : Troop)
--- @param(save : table)
+--- Constructor.
+-- @tparam Troop troop
+-- @tparam table save
 function Battler:init(troop, save)
   self.troop = troop
   local id = save and save.battlerID or -1
@@ -48,9 +49,9 @@ function Battler:init(troop, save)
     self.AI = BattlerAI(self, data.ai)
   end
 end
--- Initializes general battler information.
--- @param(data : table) the battler's data from database
--- @param(save : table) the data from save
+--- Initializes general battler information.
+-- @tparam table data The battler's data from database.
+-- @tparam table save The data from save.
 function Battler:initProperties(data, save)
   self.key = save.key
   self.charID = save.charID
@@ -58,9 +59,9 @@ function Battler:initProperties(data, save)
   self.name = save and save.name or data.name
   self.tags = Database.loadTags(data.tags)
 end
--- Initializes battle state.
--- @param(data : table) The battler's data from database.
--- @param(save : table) The state data from save.
+--- Initializes battle state.
+-- @tparam table data The battler's data from database.
+-- @tparam table save The state data from save.
 function Battler:initState(data, save)
   self.skillList = SkillList(self, save and save.skills)
   self.job = Job(self, save and save.job)
@@ -94,30 +95,30 @@ function Battler:initState(data, save)
   self.steps = save and save.steps or self.maxSteps()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Skills
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets all skills available for this character.
--- @ret(SkillList)
+--- Gets all skills available for this character.
+-- @treturn SkillList
 function Battler:getSkillList()
   local list = self.skillList:clone()
   list:learnAll(self.job.skillList)
   return list
 end
--- Gets current default attack skill.
--- @ret(SkillAction)
+--- Gets current default attack skill.
+-- @treturn SkillAction
 function Battler:getAttackSkill()
   return self.job.attackSkill
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- HP and SP damage
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Damages HP.
--- @param(value : number) the number of the damage
--- @ret(boolean) true if reached 0, otherwise
+--- Damages HP.
+-- @tparam number value The number of the damage.
+-- @treturn boolean True if reached 0, otherwise.
 function Battler:damageHP(value)
   value = self.state.hp - value
   if value <= 0 then
@@ -128,9 +129,9 @@ function Battler:damageHP(value)
     return false
   end
 end
--- Damages SP.
--- @param(value : number) the number of the damage
--- @ret(boolean) true if reached 0, otherwise
+--- Damages SP.
+-- @tparam number value The number of the damage.
+-- @treturn boolean True if reached 0, otherwise.
 function Battler:damageSP(value)
   value = self.state.sp - value
   if value <= 0 then
@@ -141,9 +142,9 @@ function Battler:damageSP(value)
     return false
   end
 end
--- Decreases the points given by the key.
--- @param(key : string) HP, SP or other designer-defined point type
--- @param(value : number) value to be decreased
+--- Decreases the points given by the key.
+-- @tparam string key HP, SP or other designer-defined point type.
+-- @tparam number value Value to be decreased.
 function Battler:damage(key, value)
   if key == Config.battle.attHP then
     self:damageHP(value)
@@ -154,11 +155,11 @@ function Battler:damage(key, value)
   end
   return true
 end
--- Applies results and creates a text for each value.
--- @param(popText : PopText) The pop text to which new lines will be added.
--- @param(results : table) The array of effect results.
--- @param(character : Character) The character receiving the action results (optional).
-function Battler:popResults(popText, results, character)
+--- Applies results and creates a text for each value.
+-- @tparam PopText popText The pop text to which new lines will be added.
+-- @tparam table results The array of effect results.
+-- @tparam Character char The Character associated with this Battler (optional).
+function Battler:popResults(popText, results, char)
   for i = 1, #results.points do
     local points = results.points[i]
     if points.heal then
@@ -173,19 +174,19 @@ function Battler:popResults(popText, results, character)
     local r = results.status[i]
     local popupName, text
     if r.add then
-      local s = self.statusList:addStatus(r.id, nil, character, r.caster)
+      local s = self.statusList:addStatus(r.id, nil, char, r.caster)
       popText:addStatus(s)
     else
-      local s = self.statusList:removeStatusAll(r.id, character)
+      local s = self.statusList:removeStatusAll(r.id, char)
       popText:removeStatus(s)
     end
   end
   popText:popUp()
 end
--- Applies the result of a skill.
--- @param(results : table) The array of effect results.
--- @param(character : Character) The character receiving the action results (optional).
-function Battler:applyResults(results, character)
+--- Applies the result of a skill.
+-- @tparam table results The array of effect results.
+-- @tparam Character char The Character associated with this Battler (optional).
+function Battler:applyResults(results, char)
   for i = 1, #results.points do
     local points = results.points[i]
     if points.heal then
@@ -197,76 +198,77 @@ function Battler:applyResults(results, character)
   for i = 1, #results.status do
     local r = results.status[i]
     if r.add then
-      self.statusList:addStatus(r.id, nil, character)
+      self.statusList:addStatus(r.id, nil, char)
     else
-      self.statusList:removeStatusAll(r.id, character)
+      self.statusList:removeStatusAll(r.id, char)
     end
   end
 end
--- Applies a list of costs (HP, SP or other state variable).
--- @param(costs : table) array of tables with the variable key and the cost functions
+--- Applies a list of costs (HP, SP or other state variable).
+-- @tparam table costs Array of tables with the variable key and the cost functions.
 function Battler:damageCosts(costs)
   for i = 1, #costs do
     local value = costs[i].cost(self.att)
     self:damage(costs[i].key, value)
   end
 end
--- Limits each state variable to its maximum.
+--- Limits each state variable to its maximum.
 function Battler:refreshState()
   self.state.hp = min(self.mhp(), self.state.hp)
   self.state.sp = min(self.msp(), self.state.sp)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- State
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if battler is seen as defeated, either by no remaining HP or by a KO-like status effect.
--- @ret(boolean) True if battler is considered alive, false otherwise.
+--- Checks if battler is seen as defeated, either by no remaining HP or by a KO-like status effect.
+-- @treturn boolean True if battler is considered alive, false otherwise.
 function Battler:isAlive()
   return self.state.hp > 0 and not self.statusList:isDead()
 end
--- Checks if battler can execute an action in the current turn.
--- @ret(boolean) True if battler is considered active in the battle, false otherwise.
+--- Checks if battler can execute an action in the current turn.
+-- @treturn boolean True if battler is considered active in the battle, false otherwise.
 function Battler:isActive()
   return self:isAlive() and not self.statusList:isDeactive()
 end
--- Gets the attack element. This is an additive factor (0 is neutral).
--- @param(id : number) The element's ID (position in the elements database).
+--- Gets the attack element. This is an additive factor (0 is neutral).
+-- @tparam number id The element's ID (position in the elements database).
 function Battler:elementAtk(id)
   return self.statusList:elementAtk(id) + self.equipSet:elementAtk(id)
 end
--- Gets the element immunity. This is an additive factor (0 is neutral).
--- @param(id : number) The element's ID (position in the elements database).
+--- Gets the element immunity. This is an additive factor (0 is neutral).
+-- @tparam number id The element's ID (position in the elements database).
 function Battler:elementDef(id)
   return self.elementBase[id] + self.statusList:elementDef(id) + self.equipSet:elementDef(id)
 end
--- Gets the element damage bonus. This is an additive factor (0 is neutral).
--- @param(id : number) The element's ID (position in the elements database).
+--- Gets the element damage bonus. This is an additive factor (0 is neutral).
+-- @tparam number id The element's ID (position in the elements database).
 function Battler:elementBuff(id)
   return self.statusList:elementBuff(id) + self.equipSet:elementBuff(id)
 end
--- Gets the status immunity. This is a multiplicative factor (1 is neutral).
--- @param(id : number) The status ID.
+--- Gets the status immunity. This is a multiplicative factor (1 is neutral).
+-- @tparam number id The status ID.
 function Battler:statusDef(id)
   return self.statusList:statusDef(id)
 end
--- Gets the status cast chance bonus. This is a multiplicative factor (1 is neutral).
--- @param(id : number) The status ID.
+--- Gets the status cast chance bonus. This is a multiplicative factor (1 is neutral).
+-- @tparam number id The status ID.
 function Battler:statusBuff(id)
   return self.statusList:statusBuff(id)
 end
--- Gets the battler's AI, if any.
--- @ret(BattlerAI) Battler's AI. Nil if controlled by player.
+--- Gets the battler's AI, if any.
+-- @treturn BattlerAI Battler's AI. Nil if controlled by player.
 function Battler:getAI()
   return self.statusList:getAI() or self.AI
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Battle Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Callback for when the battle ends.
+--- Callback for when the battle ends.
+-- @tparam Character char The Character associated with this Battler.
 function Battler:onBattleStart(char)
   if self.AI and self.AI.onBattleStart then
     self.AI:onBattleStart(self, char)
@@ -274,7 +276,8 @@ function Battler:onBattleStart(char)
   self.equipSet:addBattleStatus(char)
   self.statusList:callback('BattleStart', char)
 end
--- Callback for when the battle ends.
+--- Callback for when the battle ends.
+-- @tparam Character char The Character associated with this Battler.
 function Battler:onBattleEnd(char)
   if self.AI and self.AI.onBattleEnd then
     self.AI:onBattleEnd(self, char)
@@ -285,13 +288,13 @@ function Battler:onBattleEnd(char)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Turn callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Callback for when a new turn begins.
--- @param(char : Character) This battler's character.
--- @param(skipStart : boolean) Skip persistent turn start effects (when loaded from save).
+--- Callback for when a new turn begins.
+-- @tparam Character char The Character associated with this Battler.
+-- @tparam boolean skipStart Skip persistent turn start effects (when loaded from save).
 function Battler:onTurnStart(char, skipStart)
   local AI = self:getAI()
   if AI and AI.onTurnStart then
@@ -306,7 +309,8 @@ function Battler:onTurnStart(char, skipStart)
     end
   end
 end
--- Callback for when a turn ends.
+--- Callback for when a turn ends.
+-- @tparam Character char The Character associated with this Battler.
 function Battler:onTurnEnd(char)
   local AI = self:getAI()
   if AI and AI.onTurnEnd then
@@ -314,45 +318,58 @@ function Battler:onTurnEnd(char)
   end
   self.statusList:callback('TurnEnd', char)
 end
--- Callback for when this battler's turn starts.
+--- Callback for when this battler's turn starts.
+-- @tparam Character char The Character associated with this Battler.
 function Battler:onSelfTurnStart(char)
   self.statusList:callback('SelfTurnStart', char)
 end
--- Callback for when this battler's turn ends.
+--- Callback for when this battler's turn ends.
+-- @tparam Character char The Character associated with this Battler.
+-- @tparam table result The results of the lattest turn.
 function Battler:onSelfTurnEnd(char, result)
   self.statusList:callback('SelfTurnEnd', char, result)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Skill callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Callback for when the character finished using a skill.
-function Battler:onSkillUse(input, character)
-  self.statusList:callback('SkillUse', input, character)
+--- Callback for when the character finished using a skill.
+-- @tparam ActionInput input User's input data.
+-- @tparam Character char The Character associated with this Battler.
+function Battler:onSkillUse(input, char)
+  self.statusList:callback('SkillUse', input, char)
 end
--- Callback for when the character is about to receive a skill effect.
-function Battler:onSkillEffect(input, results, character)
-  self.statusList:callback('SkillEffect', input, results, character)
+--- Callback for when the character is about to receive a skill effect.
+-- @tparam ActionInput input User's input data.
+-- @tparam table results The results of the lattest turn.
+-- @tparam Character char The Character associated with this Battler.
+function Battler:onSkillEffect(input, results, char)
+  self.statusList:callback('SkillEffect', input, results, char)
 end
--- Callback for when the character received a skill effect.
-function Battler:onSkillResult(input, results, character)
-  self.statusList:callback('SkillResult', input, results, character)
+--- Callback for when the character received a skill effect.
+-- @tparam ActionInput input User's input data.
+-- @tparam table results The results of the lattest turn.
+-- @tparam Character char The Character associated with this Battler.
+function Battler:onSkillResult(input, results, char)
+  self.statusList:callback('SkillResult', input, results, char)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Move callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Callback for when the character moves.
--- @param(path : Path) The path that the battler just walked.
+--- Callback for when the character moves.
+-- @tparam Character char The Character associated with this Battler.
+-- @tparam Path path The path that the battler just walked.
 function Battler:onMove(char, path)
   self.steps = math.floor(self.steps - path.totalCost)
   self.statusList:callback('Move', char, path)
 end
--- Callback for when the character enters the given tiles.
--- Adds terrain status.
--- @param(tiles : table) Array of terrain tiles.
+--- Callback for when the character enters the given tiles.
+--- Adds terrain status.
+-- @tparam Character char The Character associated with this Battler.
+-- @tparam table tiles Array of terrain tiles.
 function Battler:onTerrainEnter(char, tiles)
   for t = 1, #tiles do
     local data = FieldManager.currentField:getTerrainStatus(tiles[t]:coordinates())
@@ -361,9 +378,10 @@ function Battler:onTerrainEnter(char, tiles)
     end
   end
 end
--- Callback for when the character exits the given tiles.
--- Removes terrain status.
--- @param(tiles : table) Array of terrain tiles.
+--- Callback for when the character exits the given tiles.
+--- Removes terrain status.
+-- @tparam Character char The Character associated with this Battler.
+-- @tparam table tiles Array of terrain tiles.
 function Battler:onTerrainExit(char, tiles)
   for i = 1, #tiles do
     local data = FieldManager.currentField:getTerrainStatus(tiles[i]:coordinates())
@@ -375,20 +393,20 @@ function Battler:onTerrainExit(char, tiles)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Converting to string.
--- @ret(string) A string representation.
+--- Converting to string.
+-- @treturn string A string representation.
 function Battler:__tostring()
   return 'Battler ' .. self.data.id .. ': ' .. self.key .. ' (' .. self.name .. ')' 
 end
--- Creates the save table. It also works as an extended troop unit data table.
--- @param(list : number) List type. 0 is current, 1 is backup, 2 is hidden.
--- @param(x : number) X position in the grid (optional).
--- @param(y : number) Y position in the grid (optional). 
--- @ret(table) Table that stores the battler's current state to be saved.
+--- Creates the save table. It also works as an extended troop unit data table.
+-- @tparam number list List type. 0 is current, 1 is backup, 2 is hidden.
+-- @tparam number x X position in the grid (optional).
+-- @tparam number y Y position in the grid (optional).
+-- @treturn table Table that stores the battler's current state to be saved.
 function Battler:getState(list, x, y)
   return {
     key = self.key,
@@ -408,7 +426,7 @@ function Battler:getState(list, x, y)
     steps = self.steps
   }
 end
--- Discards save changes.
+--- Discards save changes.
 function Battler:resetState()
   self:initState(self.data)
 end

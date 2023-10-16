@@ -1,8 +1,8 @@
 
 --[[===============================================================================================
 
-BattleTactics
----------------------------------------------------------------------------------------------------
+@module BattleTactics
+-- ------------------------------------------------------------------------------------------------
 A module with some search algorithms to solve optimization problems in the battle.
 
 =================================================================================================]]
@@ -16,14 +16,14 @@ local min = math.min
 
 local BattleTactics = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Path Optimization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(user : Character)
--- @param(action : BattleAction)
--- @param(target : ObjectTile)
--- @ret(Path) Best path towards the target.
+-- @tparam Character user
+-- @tparam BattleAction action
+-- @tparam ObjectTile target
+-- @treturn Path Best path towards the target.
 function BattleTactics.optimalPath(action, user, target, pathMatrix)
   local path = pathMatrix and pathMatrix:get(target.x, target.y)
   path = path or PathFinder.findPath(action, user, target, nil, true)
@@ -44,17 +44,17 @@ function BattleTactics.optimalPath(action, user, target, pathMatrix)
   return path
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General Tile Optimization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(user : Character)
--- @param(input : ActionInput)
--- @param(isValid : function) Checks if a tile is valid (can be put in the queue).
--- @param(evaluate : function) Gets the evaluation of a tile.
--- @param(order : function) Comparison function to the priority queue
+-- @tparam Character user
+-- @tparam ActionInput input
+-- @tparam function isValid Checks if a tile is valid (can be put in the queue).
+-- @tparam function evaluate Gets the evaluation of a tile.
+-- @tparam function order Comparison function to the priority queue
 --  (optional, ascending/lowest value first by default).
--- @ret(PriorityQueue) Queue of tiles sorted by priority.
+-- @treturn PriorityQueue Queue of tiles sorted by priority.
 function BattleTactics.optimalTiles(user, input, isValid, evaluate, order)
   order = order or PriorityQueue.ascending
   local party = user.party
@@ -74,9 +74,9 @@ function BattleTactics.optimalTiles(user, input, isValid, evaluate, order)
   return queue
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Distance Optimization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 function BattleTactics.closestMovableTiles(user, input, condition)
   local x, y = user:tileCoordinates()
@@ -92,11 +92,11 @@ function BattleTactics.closestMovableTiles(user, input, condition)
   return BattleTactics.optimalTiles(user, input,
     isValid, evaluate, PriorityQueue.descending)
 end
--- @param(user : Character)
--- @param(input : ActionInput)
--- @param(getDistance : function) The distance calculator given the party and the tile.
--- @param(order : function) The comparison function for distances (optional, descending by default).
--- @ret(PriorityQueue)
+-- @tparam Character user
+-- @tparam ActionInput input
+-- @tparam function getDistance The distance calculator given the party and the tile.
+-- @tparam function order The comparison function for distances (optional, descending by default).
+-- @treturn PriorityQueue
 function BattleTactics.bestDistance(user, input, getDistance, order)
   local evaluate = function(tile)
     return getDistance(user, tile)
@@ -106,10 +106,10 @@ function BattleTactics.bestDistance(user, input, getDistance, order)
     evaluate,
     order or PriorityQueue.descending)
 end
--- @param(tile : ObjectTile)
--- @param(user : Character)
--- @param(input : ActionInput)
--- @ret(boolean)
+-- @tparam ObjectTile tile
+-- @tparam Character user
+-- @tparam ActionInput input
+-- @treturn boolean
 function BattleTactics.isPotentialMoveTarget(tile, user, input)
   if not tile.gui.movable then
     return false
@@ -124,41 +124,41 @@ function BattleTactics.isPotentialMoveTarget(tile, user, input)
     return true
   end
 end
--- @param(party : number) Character's party.
--- @ret(PriorityQueue) Queue of tiles sorted by minimum distance from enemies.
+-- @tparam number party Character's party.
+-- @treturn PriorityQueue Queue of tiles sorted by minimum distance from enemies.
 function BattleTactics.runAway(user, input)
   return BattleTactics.bestDistance(user, input, BattleTactics.minEnemyDistance)
 end
--- @param(party : number) Character's party.
--- @ret(PriorityQueue) queue of tiles sorted by proximity from allies.
+-- @tparam number party Character's party.
+-- @treturn PriorityQueue queue of tiles sorted by proximity from allies.
 function BattleTactics.runToAllies(user, input)
   return BattleTactics.bestDistance(user, input, BattleTactics.allyDistance, 
     PriorityQueue.ascending)
 end
--- @param(party : number) Character's party.
--- @ret(PriorityQueue) queue of tiles sorted by distance from enemies.
+-- @tparam number party Character's party.
+-- @treturn PriorityQueue queue of tiles sorted by distance from enemies.
 function BattleTactics.runFromEnemies(user, input)
   return BattleTactics.bestDistance(user, input, BattleTactics.enemyDistance)
 end
--- @param(party : number) Character's party.
--- @ret(PriorityQueue) queue of tiles sorted by distance from enemies plus proximity to allies.
+-- @tparam number party Character's party.
+-- @treturn PriorityQueue queue of tiles sorted by distance from enemies plus proximity to allies.
 function BattleTactics.runFromEnemiesToAllies(user, input)
   return BattleTactics.bestDistance(user, input, BattleTactics.partyDistance)
 end
--- @param(party : number) Character's party.
--- @ret(PriorityQueue) queue of tiles sorted by distance from enemies.
+-- @tparam number party Character's party.
+-- @treturn PriorityQueue queue of tiles sorted by distance from enemies.
 function BattleTactics.runToParty(user, input)
   return BattleTactics.bestDistance(user, input, BattleTactics.escapeDistance)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Distance calculators
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Minimum of the distances from the enemies.
--- @param(party : number) Character's party.
--- @param(tile : ObjectTile) The tile to check.
--- @ret(number) The minimum of the distances to all enemies.
+--- Minimum of the distances from the enemies.
+-- @tparam number party Character's party.
+-- @tparam ObjectTile tile The tile to check.
+-- @treturn number The minimum of the distances to all enemies.
 function BattleTactics.minEnemyDistance(user, tile)
   local getDistance = math.field.tileDistance
   local d = math.huge
@@ -170,10 +170,10 @@ function BattleTactics.minEnemyDistance(user, tile)
   end
   return d
 end
--- Sum of the distances from the allies.
--- @param(party : number) Character's party.
--- @param(tile : ObjectTile) The tile to check.
--- @ret(number) The sum of the distances to all allies
+--- Sum of the distances from the allies.
+-- @tparam number party Character's party.
+-- @tparam ObjectTile tile The tile to check.
+-- @treturn number The sum of the distances to all allies.
 function BattleTactics.allyDistance(user, tile)
   local getDistance = math.field.tileDistance
   local d = 0
@@ -185,10 +185,10 @@ function BattleTactics.allyDistance(user, tile)
   end
   return d
 end
--- Sum of the distances from the enemies.
--- @param(party : number) Character's party.
--- @param(tile : ObjectTile) The tile to check.
--- @ret(number) The sum of the distances to all enemies.
+--- Sum of the distances from the enemies.
+-- @tparam Character user Selected character.
+-- @tparam ObjectTile tile The tile to check.
+-- @treturn number The sum of the distances to all enemies.
 function BattleTactics.enemyDistance(user, tile)
   local getDistance = math.field.tileDistance
   local d = 0
@@ -200,10 +200,10 @@ function BattleTactics.enemyDistance(user, tile)
   end
   return d
 end
--- Sum of the distance from enemies (positive) and allies (negative).
--- @param(party : number) Character's party.
--- @param(tile : ObjectTile) The tile to check.
--- @ret(number) The sum of the distances to all enemies.
+--- Sum of the distance from enemies (positive) and allies (negative).
+-- @tparam Character user Selected character.
+-- @tparam ObjectTile tile The tile to check.
+-- @treturn number The sum of the distances to all enemies.
 function BattleTactics.partyDistance(user, tile)
   return BattleTactics.enemyDistance(user, tile) - BattleTactics.allyDistance(user, tile)
 end

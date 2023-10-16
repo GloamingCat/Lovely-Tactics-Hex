@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Button
+@classmod Button
 ---------------------------------------------------------------------------------------------------
 A window button. It may have a text and an animated icon.
 
@@ -14,15 +14,16 @@ local Animation = require('core/graphics/Animation')
 local SimpleText = require('core/gui/widget/SimpleText')
 local GridWidget = require('core/gui/widget/control/GridWidget')
 
+-- Class table.
 local Button = class(GridWidget)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(window : GridWindow) The window that this button is component of.
--- @param(onConfirm : function) The function called when player confirms (optinal).
--- @param(enableCondition : function) The function that tells if 
+-- @tparam GridWindow window The window that this button is component of.
+-- @tparam function onConfirm The function called when player confirms (optinal).
+-- @tparam function enableCondition The function that tells if 
 --  this button is enabled (optional)
 function Button:init(window, onConfirm, enableCondition)
   GridWidget.init(self, window)
@@ -35,10 +36,10 @@ function Button:init(window, onConfirm, enableCondition)
   self.onClick = self.onClick or self.onConfirm
   self.iconPos = 0
 end
--- Creates a button for the action represented by the given key.
--- @param(window : GridWindow) The window that this button is component of.
--- @param(key : string) Action's key.
--- @ret(Button) New button.
+--- Creates a button for the action represented by the given key.
+-- @tparam GridWindow window The window that this button is component of.
+-- @tparam string key Action's key.
+-- @treturn Button New button.
 function Button:fromKey(window, key)
   local button = self(window, window[key .. 'Confirm'], window[key .. 'Enabled'])
   local icon = Config.icons[key]
@@ -55,12 +56,12 @@ function Button:fromKey(window, key)
   button.key = key
   return button
 end
--- @param(term : string) The text term to be localized.
--- @param(fallback : string) If no localization is found, use this text (optional).
--- @param(fontName : string) The text's font, from Fonts folder (optional, uses default).
--- @param(align : string) The text's horizontal alignment (optional, left by default).
--- @param(w : number) The text's maximum width (optional, uses all empty space by default).
--- @param(pos : Vector) The text's maximum width (optional, top left by default).
+-- @tparam string term The text term to be localized.
+-- @tparam string fallback If no localization is found, use this text (optional).
+-- @tparam string fontName The text's font, from Fonts folder (optional, uses default).
+-- @tparam string align The text's horizontal alignment (optional, left by default).
+-- @tparam number w The text's maximum width (optional, uses all empty space by default).
+-- @tparam Vector pos The text's maximum width (optional, top left by default).
 function Button:createText(term, fallback, fontName, align, w, pos)
   if self.text then
     self.text:destroy()
@@ -82,9 +83,9 @@ function Button:createText(term, fallback, fontName, align, w, pos)
   self.content:add(text)
   return self.text
 end
--- @param(term : string) The text term to be localized.
--- @param(fallback : string) If no localization is found, use this text (optional).
--- @param(fontName : string) The text's font, from Fonts folder (optional, uses default).
+-- @tparam string term The text term to be localized.
+-- @tparam string fallback If no localization is found, use this text (optional).
+-- @tparam string fontName The text's font, from Fonts folder (optional, uses default).
 function Button:createInfoText(term, fallback, fontName, align, w, pos)
   if self.infoText then
     self.infoText:destroy()
@@ -106,7 +107,7 @@ function Button:createInfoText(term, fallback, fontName, align, w, pos)
   self.content:add(text)
   return text
 end
--- @param(icon : Animation) The icon graphics or the path to the icon.
+-- @tparam Animation icon The icon graphics or the path to the icon.
 function Button:createIcon(icon)
   if not icon then
     return
@@ -116,11 +117,11 @@ function Button:createIcon(icon)
   self.content:add(icon)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(number)
+-- @treturn number
 function Button:iconWidth()
   if self.icon then
     local x, y, w, h = self.icon.sprite:totalBounds()
@@ -129,27 +130,27 @@ function Button:iconWidth()
     return 0
   end
 end
--- @param(text : string)
+-- @tparam string text
 function Button:setText(...)
   self.text:setText(...)
   self.text:redraw()
 end
--- @param(text : string)
+-- @tparam string text
 function Button:setTerm(...)
   self.text:setTerm(...)
   self.text:redraw()
 end
--- @param(text : string)
+-- @tparam string text
 function Button:setInfoText(...)
   self.infoText:setText(...)
   self.infoText:redraw()
 end
--- @param(text : string)
+-- @tparam string text
 function Button:setInfoTerm(...)
   self.infoText:setTerm(...)
   self.infoText:redraw()
 end
--- @param(icon : table) Icon data.
+-- @tparam table icon Icon data.
 function Button:setIcon(icon)
   if self.icon then
     self.icon:destroy()
@@ -160,7 +161,7 @@ function Button:setIcon(icon)
     self:createIcon(icon)
   end
 end
--- Converting to string.
+--- Converting to string.
 function Button:__tostring()
   if not self.text then
     return '' .. self.index
@@ -168,11 +169,11 @@ function Button:__tostring()
   return self.index .. ': ' .. self.text.text
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- State
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Refreshes color, position and visibility.
+--- Refreshes color, position and visibility.
 function Button:refreshState()
   self:refreshColor()
   self:updatePosition(self.window.position)
@@ -181,7 +182,7 @@ function Button:refreshState()
     self:show()
   end
 end
--- Updates text and icon color based on button state.
+--- Updates text and icon color based on button state.
 function Button:refreshColor()
   local name = self.enabled and 'enabled' or 'disabled'
   if self.text then
@@ -197,22 +198,22 @@ function Button:refreshColor()
     self.icon.sprite:setColor(color)
   end
 end
--- Updates enabled state based on the enable condition function.
+--- Updates enabled state based on the enable condition function.
 function Button:refreshEnabled()
   if self.enableCondition then
     self:setEnabled(self.enableCondition(self.window, self))
   end
 end
--- Enables/disables this button.
--- @param(value : boolean) true to enable, false to disable
+--- Enables/disables this button.
+-- @tparam boolean value True to enable, false to disable.
 function Button:setEnabled(value)
   if value ~= self.enabled then
     self.enabled = value
     self:refreshColor()
   end
 end
--- Selects/deselects this button.
--- @param(value : boolean)
+--- Selects/deselects this button.
+-- @tparam boolean value
 function Button:setSelected(value)
   if value ~= self.selected then
     self.selected = value
@@ -222,11 +223,11 @@ function Button:setSelected(value)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Position
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates position based on window's position.
+--- Updates position based on window's position.
 function Button:updatePosition(windowPos)
   local pos = self:relativePosition()
   pos:add(windowPos)
@@ -245,11 +246,11 @@ function Button:updatePosition(windowPos)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Show/hide
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows button's text and icon.
+--- Shows button's text and icon.
 function Button:show()
   if self.col < self.window.offsetCol + 1 then
     return

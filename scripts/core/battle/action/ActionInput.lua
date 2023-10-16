@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-ActionInput
+@classmod ActionInput
 ---------------------------------------------------------------------------------------------------
 An action that represents a full decision for the turn (a movement, a BattleAction and a target).
 
@@ -10,16 +10,17 @@ An action that represents a full decision for the turn (a movement, a BattleActi
 -- Alias
 local expectation = math.randomExpectation
 
+-- Class table.
 local ActionInput = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(action : BattleAction)
--- @param(user : Character)
--- @param(target : ObjectTile) action target (optional)
--- @param(GUI : ActionGUI) current ActionGUI, if any (optional)
+-- @tparam BattleAction action
+-- @tparam Character user
+-- @tparam ObjectTile target Action target (optional).
+-- @tparam ActionGUI GUI Aurrent ActionGUI, if any (optional).
 function ActionInput:init(action, user, target, GUI)
   self.action = action
   self.user = user
@@ -28,15 +29,16 @@ function ActionInput:init(action, user, target, GUI)
   self.skipAnimations = BattleManager.params.skipAnimations
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
+-- @treturn boolean
 function ActionInput:canExecute()
   return self.action and self.action:canExecute(self)
 end
--- Executes the action.
--- @ret(number) the action time cost
+--- Executes the action.
+-- @treturn number The action time cost.
 function ActionInput:execute()
   self:executeMovement()
   if self.action then
@@ -44,21 +46,21 @@ function ActionInput:execute()
     return self.action:onConfirm(self)
   end
 end
--- Executes the BattleMoveAction to the specified move target.
+--- Executes the BattleMoveAction to the specified move target.
 function ActionInput:executeMovement()
   if self.moveAction and self.target then
     local moveInput = self:createMoveInput()
     self.moveResult = moveInput:execute()
   end
 end
--- @ret(ActionInput) New input with BattleMoveAction with the same user to the moveTarget.
+-- @treturn ActionInput New input with BattleMoveAction with the same user to the moveTarget.
 function ActionInput:createMoveInput()
   local moveInput = ActionInput(self.moveAction, self.user, self.target, self.GUI)
   moveInput.skipAnimations = self.skipAnimations
   return moveInput
 end
--- String representation.
--- @ret(string) 
+--- String representation.
+-- @treturn string
 function ActionInput:__tostring()
   return 'ActionInput: ' .. tostring(self.action) .. 
     ' | ' .. tostring(self.user) .. 

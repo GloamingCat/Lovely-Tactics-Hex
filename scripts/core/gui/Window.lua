@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Window
+@classmod Window
 ---------------------------------------------------------------------------------------------------
 Provides the base for windows.
 Every content element for the window must have all the following methods:
@@ -24,16 +24,17 @@ local Vector = require('core/math/Vector')
 -- Alias
 local floor = math.floor
 
+-- Class table.
 local Window = class(Component, Transformable)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(gui : GUI) Parent GUI.
--- @param(width : number) Total width in pixels (if nil, must be set later).
--- @param(height : number) Total height in pixels (if nil, must be set later).
--- @param(position : Vector) The position of the center of the window.
+-- @tparam GUI gui Parent GUI.
+-- @tparam number width Total width in pixels (if nil, must be set later).
+-- @tparam number height Total height in pixels (if nil, must be set later).
+-- @tparam Vector position The position of the center of the window
 --  (optional, center of the screen by default).
 function Window:init(gui, width, height, position)
   Transformable.init(self, position)
@@ -52,15 +53,15 @@ function Window:init(gui, width, height, position)
   self:setVisible(false)
   self.lastOpen = true
 end
--- Sets general properties.
+--- Sets general properties.
 function Window:setProperties()
   self.noSkin = false
   self.maxTouchHoldTime = 1
   self.speed = 10
   self.offBoundsCancel = true
 end
--- Overrides Component:createContent.
--- By default, only creates the skin.
+--- Overrides Component:createContent.
+--- By default, only creates the skin.
 function Window:createContent(width, height)
   self.width = width
   self.height = height
@@ -82,11 +83,11 @@ function Window:createContent(width, height)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates all content elements.
+--- Updates all content elements.
 function Window:update(dt)
   Transformable.update(self, dt)
   if self.background then
@@ -97,7 +98,7 @@ function Window:update(dt)
   end
   Component.update(self, dt)
 end
--- Updates all content element's position.
+--- Updates all content element's position.
 function Window:updatePosition()
   if self.background then
     self.background:updatePosition(self.position)
@@ -107,15 +108,15 @@ function Window:updatePosition()
   end
   Component.updatePosition(self)
 end
--- Overrides Component:refresh.
--- Refreshes the background color.
+--- Overrides Component:refresh.
+--- Refreshes the background color.
 function Window:refresh()
   Component.refresh(self)
   if self.background then
     self.background:setHSV(nil, nil, GUIManager.windowColor / 100)
   end
 end
--- Erases content.
+--- Erases content.
 function Window:destroy()
   if self.background then
     self.background:destroy()
@@ -128,40 +129,40 @@ function Window:destroy()
   end
   Component.destroy(self)
 end
--- Sets this window as the active one.
+--- Sets this window as the active one.
 function Window:activate()
   self.GUI:setActiveWindow(self)
 end
--- Deactivate this window if it's the current active one.
+--- Deactivate this window if it's the current active one.
 function Window:deactivate()
   if self.GUI.activeWindow == self then
     self.GUI:setActiveWindow(nil)
   end
 end
--- Activates/deactivates window.
--- @param(value : boolean) true to activate, false to deactivate
+--- Activates/deactivates window.
+-- @tparam boolean value True to activate, false to deactivate.
 function Window:setActive(value)
   self.active = value
   if self.tooltip then
     self.tooltip:setVisible(value and not GUIManager.disableTooltips)
   end
 end
--- Checks in a screen point is within window's bounds.
--- @param(x : number) Pixel x of point.
--- @param(y : number) Pixel y of point.
--- @ret(boolean) Whether the given point is inside window.
+--- Checks in a screen point is within window's bounds.
+-- @tparam number x Pixel x of point.
+-- @tparam number y Pixel y of point.
+-- @treturn boolean Whether the given point is inside window.
 function Window:isInside(x, y)
   local w = self.width / 2
   local h = self.height / 2
   return x >= -w and x <= w and y >= -h and y <= h
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Sets the window to fully open or fully closed.
--- @param(value : boolean) true to open it, false to hide
+--- Sets the window to fully open or fully closed.
+-- @tparam boolean value True to open it, false to hide.
 function Window:setVisible(value)
   if value then
     self:showContent()
@@ -177,15 +178,15 @@ function Window:setVisible(value)
     self.closed = true
   end
 end
--- Sets this window's position.
--- @param(position : Vector) new position
+--- Sets this window's position.
+-- @tparam Vector position New position.
 function Window:setXYZ(...)
   Transformable.setXYZ(self, ...)
   self:updatePosition()
 end
--- Scales this window.
--- @param(sx : number) scale in axis x
--- @param(sy : number) scale in axis y
+--- Scales this window.
+-- @tparam number sx Scale in axis x.
+-- @tparam number sy Scale in axis y.
 function Window:setScale(sx, sy)
   Transformable.setScale(self, sx, sy)
   if self.background then
@@ -195,8 +196,8 @@ function Window:setScale(sx, sy)
     self.frame:updateTransform(self)
   end
 end
--- Changes the window's size.
--- It recreates all contents.
+--- Changes the window's size.
+--- It recreates all contents.
 function Window:resize(w, h)
   w, h = w or self.width, h or self.height
   if w ~= self.width or h ~= self.height then
@@ -212,30 +213,30 @@ function Window:resize(w, h)
     self:setPosition(self.position)
   end
 end
--- Window's frame.
--- @ret(table) 
+--- Window's frame.
+-- @treturn table
 function Window:getFrame()
   return Database.animations[Config.animations.windowFrame]
 end
--- Window's background.
--- @ret(table) 
+--- Window's background.
+-- @treturn table
 function Window:getBG()
   return Database.animations[Config.animations.windowSkin]
 end
--- Horizontal padding.
+--- Horizontal padding.
 function Window:paddingX()
   return 8
 end
--- Vertical padding.
+--- Vertical padding.
 function Window:paddingY()
   return 8
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Show/hide
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Opens this window. Overrides Component:show.
+--- [COROUTINE] Opens this window. Overrides Component:show.
 function Window:show()
   if self.scaleY >= 1 then
     return
@@ -248,8 +249,8 @@ function Window:show()
     self:showContent()
   end
 end
--- [COROUTINE] Closes this window. Overrides Component:hide.
--- @param(gui : boolean) If it's called from GUI:hide.
+--- [COROUTINE] Closes this window. Overrides Component:hide.
+-- @tparam boolean gui If it's called from GUI:hide.
 --  If true, automatically opens the window back if its GUI opens again.
 --  Else, it stays hidden until it is manually openned again.
 function Window:hide(gui)
@@ -264,22 +265,22 @@ function Window:hide(gui)
     self.closed = true
   end
 end
--- Inserts this window in the GUI's list.
+--- Inserts this window in the GUI's list.
 function Window:insertSelf()
   if not self.GUI.windowList:contains(self) then
     self.GUI.windowList:add(self)
   end
 end
--- Removes this window from the GUI's list.
+--- Removes this window from the GUI's list.
 function Window:removeSelf()
   self.GUI.windowList:removeElement(self)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Content
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows all content elements.
+--- Shows all content elements.
 function Window:showContent(...)
   for c in self.content:iterator() do
     if c.updatePosition then
@@ -291,7 +292,7 @@ function Window:showContent(...)
     self.tooltip:show(...)
   end
 end
--- Hides all content elements.
+--- Hides all content elements.
 function Window:hideContent(...)
   for c in self.content:iterator() do
     c:hide(...)
@@ -301,12 +302,12 @@ function Window:hideContent(...)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if player pressed any GUI button.
--- By default, only checks the "cancel" key.
+--- Checks if player pressed any GUI button.
+--- By default, only checks the "cancel" key.
 function Window:checkInput()
   if not self.open then
     return
@@ -348,20 +349,20 @@ function Window:checkInput()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when player presses "confirm" key.
--- By default, only sets the result to 1.
+--- Called when player presses "confirm" key.
+--- By default, only sets the result to 1.
 function Window:onConfirm()
   self.result = 1
   if self.confirmSound then
     AudioManager:playSFX(self.confirmSound)
   end
 end
--- Called when player presses "cancel" key.
--- By default, only dets the result to 0.
+--- Called when player presses "cancel" key.
+--- By default, only dets the result to 0.
 function Window:onCancel()
   self.result = 0
   if self.cancelSound then
@@ -370,16 +371,16 @@ function Window:onCancel()
 end
 function Window:onTextInput(c)
 end
--- Callod when player presses arrows.
+--- Callod when player presses arrows.
 function Window:onMove(dx, dy)
 end
--- Called when player presses "next" key.
+--- Called when player presses "next" key.
 function Window:onNext()
 end
--- Called when player presses "prev" key.
+--- Called when player presses "prev" key.
 function Window:onPrev()
 end
--- Called when player presses a mouse button or touches screen.
+--- Called when player presses a mouse button or touches screen.
 function Window:onClick(button, x, y, triggerPoint)
   if button == 1 then
     if self:isInside(x, y) then
@@ -399,15 +400,15 @@ function Window:onClick(button, x, y, triggerPoint)
     self:onConfirm()
   end
 end
--- Confirmation by mouse or touch.
+--- Confirmation by mouse or touch.
 function Window:onMouseConfirm(x, y)
   self:onConfirm()
 end
--- Cancel my mouse or touch.
+--- Cancel my mouse or touch.
 function Window:onMouseCancel(x, y)
   self:onCancel()
 end
--- Called when player moves mouse.
+--- Called when player moves mouse.
 function Window:onMouseMove(x, y)
 end
 

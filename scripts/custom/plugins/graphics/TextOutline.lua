@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Text Outline
+@script Text Outline
 ---------------------------------------------------------------------------------------------------
 Renders text with a black outline.
 
@@ -25,9 +25,9 @@ local outlineSize = args.width or 1
 
 local textShader = lgraphics.newShader('shaders/Text.glsl')
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Redraw
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 local Text_setText = Text.setText
 function Text:setText(...)
@@ -47,21 +47,22 @@ function Text:setCutPoint(...)
   Text_setCutPoint(self, ...)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Visibility
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Include bufferLines.
+--- Override. Include bufferLines.
 function Text:isVisible()
   return (self.bufferLines or self.lines) and self.visible
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Draw in screen
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when renderer is iterating through its rendering list.
--- @param(renderer : Renderer)
+--- Called when renderer is iterating through its rendering list.
+-- @tparam number sx Scale X.
+-- @tparam number sy Scale Y.
 function Text:drawLines(sx, sy)
   if self.needsRedraw then
     local drawCalls = self:redrawBuffers(sx, sy)
@@ -88,7 +89,9 @@ function Text:drawLines(sx, sy)
     self.renderer.textDraws = self.renderer.textDraws + 1
   end
 end
--- Redraws each line buffer.
+--- Redraws each line buffer.
+-- @tparam number sx Scale X.
+-- @tparam number sy Scale Y.
 function Text:redrawBuffers(sx, sy)
   lgraphics.push()
   lgraphics.origin()
@@ -104,14 +107,16 @@ function Text:redrawBuffers(sx, sy)
   return drawCalls
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Text Renderer
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates the image buffers of each line.
--- @param(lines : table) Array of parsed lines.
--- @ret(table) Array of line image buffers.
--- @ret(number) Draw calls (for debugginf).
+--- Creates the image buffers of each line.
+-- @tparam table lines Array of parsed lines.
+-- @tparam number sx Scale X.
+-- @tparam number sy Scale Y.
+-- @treturn table Array of line image buffers.
+-- @treturn number Draw calls (for debugginf).
 function TextRenderer.createLineBuffers(lines, sx, sy)
   -- Previous graphics state
   local r, g, b, a = lgraphics.getColor()
@@ -145,9 +150,11 @@ function TextRenderer.createLineBuffers(lines, sx, sy)
   lgraphics.setCanvas(canvas)
   return renderedLines, drawCalls
 end
--- Renders texture with the shader in a buffer with the correct size.
--- @param(texture : Canvas) Unshaded rendered text.
--- @ret(Canvas) Pre-shaded texture.
+--- Renders texture with the shader in a buffer with the correct size.
+-- @tparam Canvas texture Unshaded rendered text.
+-- @tparam number sx Scale X.
+-- @tparam number sy Scale Y.
+-- @treturn Canvas Pre-shaded texture.
 function TextRenderer.shadeBuffer(texture, sx, sy)
   local r, g, b, a = lgraphics.getColor()
   lgraphics.setColor(1, 1, 1, 1)

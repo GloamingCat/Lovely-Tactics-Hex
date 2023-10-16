@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-SkillEXP
+@script SkillEXP
 ---------------------------------------------------------------------------------------------------
 Characters receive EXP for each action and can level-up mid-battle.
 
@@ -30,11 +30,11 @@ local missExp = args.missExp or 1
 local levelDiff = args.levelDiff or 0
 local enemyExp = args.enemyExp
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- RewardGUI
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Removes EXP rewards for each enemy.
+--- Removes EXP rewards for each enemy.
 function BattleManager:getBattleRewards(winnerParty)
   local r = { exp = {},
     items = Inventory(),
@@ -64,11 +64,11 @@ function BattleManager:getBattleRewards(winnerParty)
   return r
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- SkillAction
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the EXP optained from the action.
+--- Gets the EXP optained from the action.
 function SkillAction:expGain(user, target, results)
   local gain = (self.tags.exp or defaultExp) + (target.job.level - user.job.level) * levelDiff
   if #results.points == 0 and #results.status == 0 then
@@ -78,7 +78,7 @@ function SkillAction:expGain(user, target, results)
   end
   return gain
 end
--- Override. Gives EXP if target if killed and user is from the player's party.
+--- Override. Gives EXP if target if killed and user is from the player's party.
 local SkillAction_allTargetsEffect = SkillAction.allTargetsEffect
 function SkillAction:allTargetsEffect(input, originTile)
   if not enemyExp and input.user.party ~= TroopManager.playerParty then
@@ -117,7 +117,7 @@ function SkillAction:allTargetsEffect(input, originTile)
   end
   return allTargets
 end
--- Override.
+--- Override.
 local SkillAction_menuTargetsEffect = SkillAction.menuTargetsEffect
 function SkillAction:menuTargetsEffect(input, targets)
   if battleOnly then

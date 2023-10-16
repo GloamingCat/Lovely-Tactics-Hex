@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Status
+@classmod Status
 ---------------------------------------------------------------------------------------------------
 A generic status effect that a battler may have.
 The effects of them on battle and field depend on each individual implementation.
@@ -12,18 +12,19 @@ The effects of them on battle and field depend on each individual implementation
 local BattlerAI = require('core/battle/ai/BattlerAI')
 local PopText = require('core/graphics/PopText')
 
+-- Class table.
 local Status = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(data : table) Status' data from database file.
--- @param(list : StatusList) The list that included this status.
--- @param(caster : string) Key of the character who casted this status 
+--- Constructor.
+-- @tparam table data Status' data from database file.
+-- @tparam StatusList list The list that included this status.
+-- @tparam string caster Key of the character who casted this status 
 --  (null if it did not come from a character). 
--- @param(state : table) The persistent state of the status.
+-- @tparam table state The persistent state of the status.
 function Status:init(data, list, caster, state)
   -- General
   self.data = data
@@ -58,8 +59,8 @@ function Status:init(data, list, caster, state)
     self.AI = BattlerAI(list.battler, data.behavior)
   end
 end
--- Loads Status class from data.
--- @ret(Status) New status.
+--- Loads Status class from data.
+-- @treturn Status New status.
 function Status:fromData(data, ...)
   local class = self
   if data.script and data.script ~= '' then
@@ -68,29 +69,29 @@ function Status:fromData(data, ...)
   return class(data, ...)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Converting to string.
--- @ret(string) A string representation.
+--- Converting to string.
+-- @treturn string A string representation.
 function Status:__tostring()
   return 'Status: ' .. self.data.id .. ' (' .. self.data.name .. ')'
 end
--- Gets status persistent data. Must include its ID.
--- @ret(table) State data.
+--- Gets status persistent data. Must include its ID.
+-- @treturn table State data.
 function Status:getState()
   return { id = self.data.id,
     lifeTime = self.lifeTime,
     caster = self.caster }
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Effects
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Applies drain effect.
--- @param(char : Character) The battle character with this status.
+--- Applies drain effect.
+-- @tparam Character char The battle character with this status.
 function Status:drain(char)
   local pos = char.position
   local popText = PopText(pos.x, pos.y - 20, FieldManager.renderer)
@@ -110,11 +111,11 @@ function Status:drain(char)
     char:playKOAnimation()
   end
 end
--- Gets the table of status element bonus.
--- @param(equip : table) Status data.
--- @ret(table) Array for attack elements.
--- @ret(table) Array for element immunity.
--- @ret(table) Array for element damage.
+--- Gets the table of status element bonus.
+-- @tparam table data Status data.
+-- @treturn table Array for attack elements.
+-- @treturn table Array for element immunity.
+-- @treturn table Array for element damage.
 function Status:statusElements(data)
   local atk, def, buff = {}, {}, {}
   for i = 1, #data.elements do
@@ -130,24 +131,24 @@ function Status:statusElements(data)
   return atk, def, buff
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Battle callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Removes status in case it's battle-only.
+--- Removes status in case it's battle-only.
 function Status:onBattleEnd()
   if self.data.battleOnly then
     self.statusList:removeStatus(self)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Turn callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Removes status in case its lifetime is over.
--- @param(character : Character) Character with this status.
--- @param(skipStart : boolean) Skip persistent turn start effects (when loaded from save).
+--- Removes status in case its lifetime is over.
+-- @tparam Character char Character with this status.
+-- @tparam boolean skipStart Skip persistent turn start effects (when loaded from save).
 function Status:onTurnStart(char, skipStart)
   if not skipStart then
     self.lifeTime = self.lifeTime + 1
@@ -157,22 +158,24 @@ function Status:onTurnStart(char, skipStart)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Skill callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Removes status in case it's removable by damage.
--- @param(input : ActionInput) The action input that was executed.
--- @param(results : table) The results of the skill effect.
+--- Removes status in case it's removable by damage.
+-- @tparam ActionInput input The action input that was executed.
+-- @tparam table results The results of the skill effect.
+-- @tparam Character char Character with this status.
 function Status:onSkillEffect(input, results, char)
   local battler = self.statusList.battler
   if results.damage and self.data.removeOnDamage then
     self.statusList:removeStatus(self, char)
   end
 end
--- Removes status in case it's removable by KO.
--- @param(input : ActionInput) The action input that was executed.
--- @param(results : table) The results of the skill effect.
+--- Removes status in case it's removable by KO.
+-- @tparam ActionInput input The action input that was executed.
+-- @tparam table results The results of the skill effect.
+-- @tparam Character char Character with this status.
 function Status:onSkillResult(input, results, char)
   local battler = self.statusList.battler
   if self.data.removeOnKO and not battler:isAlive() then

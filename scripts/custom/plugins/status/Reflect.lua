@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Reflect
+@script Reflect
 ---------------------------------------------------------------------------------------------------
 Makes a skill reflect to the user.
 
@@ -32,11 +32,11 @@ local BattleAnimations = require('core/battle/BattleAnimations')
 local anim = args.anim
 local selfReflect = args.selfReflect or 'none'
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Skill Action
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides. Changes targets if reflect.
+--- Overrides. Changes targets if reflect.
 local SkillAction_singleTargetEffect = SkillAction.singleTargetEffect
 function SkillAction:singleTargetEffect(results, input, target, originTile)
   local minTime = 0
@@ -75,11 +75,11 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
   return SkillAction_singleTargetEffect(self, results, input, target, originTile)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Battler
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if the battler has a reflect status.
+--- Checks if the battler has a reflect status.
 function Battler:reflects()
   for status in self.statusList:iterator() do
     if status.tags.reflect then

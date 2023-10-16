@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-PartyRegion
+@script PartyRegion
 ---------------------------------------------------------------------------------------------------
 Sets custom party tiles in a battle field.
 
@@ -25,11 +25,11 @@ local merge = args.override ~= true
 -- Imports
 local TroopManager = require('core/battle/TroopManager')
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- TroopManager
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Checks for tile regions.
+--- Override. Checks for tile regions.
 local TroopManager_setPartyTiles = TroopManager.setPartyTiles
 function TroopManager:setPartyTiles()
   if merge then

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-SaveInfo
+@classmod SaveInfo
 ---------------------------------------------------------------------------------------------------
 A container for a battler's main information.
 
@@ -17,13 +17,14 @@ local Vector = require('core/math/Vector')
 -- Alias
 local findByName = util.array.findByName
 
+-- Class table.
 local SaveInfo = class(Component)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Component:createContent.
+--- Overrides Component:createContent.
 function SaveInfo:createContent(w, h)
   local margin = 4
   local x, y, z = 2, 0, -2
@@ -55,12 +56,12 @@ function SaveInfo:createContent(w, h)
   self.content:add(iconList)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Refresh
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Sets text and icons according to given save header.
--- @param(save : table) Save header. Nil if no save.
+--- Sets text and icons according to given save header.
+-- @tparam table save Save header. Nil if no save.
 function SaveInfo:refreshInfo(save)
   assert(self.content.size == 5, 'Save info content not initialized.')
   if not save then

@@ -1,21 +1,22 @@
 
 --[[===============================================================================================
 
-Scalable
+@classmod Scalable
 ---------------------------------------------------------------------------------------------------
 An object with scale properties.
 
 =================================================================================================]]
 
+-- Class table.
 local Scalable = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Initializes all data of the object's scale state and speed.
--- @param(sx : number) initial axis-x scale
--- @param(sy : number) initial axis-y scale
+--- Initializes all data of the object's scale state and speed.
+-- @tparam number sx Initial axis-x scale.
+-- @tparam number sy Initial axis-y scale.
 function Scalable:initScale(sx, sy)
   sx, sy = sx or 1, sy or 1
   self.scaleX = sx
@@ -30,19 +31,19 @@ function Scalable:initScale(sx, sy)
   self.cropScale = true
   self.interruptableScale = true
 end
--- Sets object's scale.
--- @param(sx : number) initial axis-x scale
--- @param(sy : number) initial axis-y scale
+--- Sets object's scale.
+-- @tparam number sx Initial axis-x scale.
+-- @tparam number sy Initial axis-y scale.
 function Scalable:setScale(sx, sy)
   self.scaleX = sx
   self.scaleY = sy
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Update
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Applies speed and updates scale.
+--- Applies speed and updates scale.
 function Scalable:updateScaling(dt)
   if self.scaleTime < 1 then
     self.scaleTime = self.scaleTime + self.scaleSpeed * dt
@@ -56,11 +57,11 @@ function Scalable:updateScaling(dt)
     end
   end
 end
--- [COROUTINE] Scales to (sx, sy).
--- @param(sx : number) initial axis-x scale
--- @param(sy : number) initial axis-y scale
--- @param(speed : number) the speed of the scaling (optional)
--- @param(wait : boolean) flag to wait until the scaling finishes (optional)
+--- [COROUTINE] Scales to (sx, sy).
+-- @tparam number sx Initial axis-x scale.
+-- @tparam number sy Initial axis-y scale.
+-- @tparam number speed The speed of the scaling (optional).
+-- @tparam boolean wait Flag to wait until the scaling finishes (optional).
 function Scalable:scaleTo(sx, sy, speed, wait)
   if speed then
     self:gradualScaleTo(sx, sy, speed, wait)
@@ -68,19 +69,19 @@ function Scalable:scaleTo(sx, sy, speed, wait)
     self:instantScaleTo(sx, sy)
   end
 end
--- Scale instantly to (sx, sy).
--- @param(sx : number) initial axis-x scale
--- @param(sy : number) initial axis-y scale
--- @ret(boolean) true if the scaling must be interrupted, nil or false otherwise
+--- Scale instantly to (sx, sy).
+-- @tparam number sx Initial axis-x scale.
+-- @tparam number sy Initial axis-y scale.
+-- @treturn boolean True if the scaling must be interrupted, nil or false otherwise.
 function Scalable:instantScaleTo(sx, sy)
   self:setScale(sx, sy)
   return nil
 end
--- [COROUTINE] Scales to (sx, sy).
--- @param(sx : number) initial axis-x scale
--- @param(sy : number) initial axis-y scale
--- @param(speed : number) the speed of the scaling (optional)
--- @param(wait : boolean) flag to wait until the scaling finishes
+--- [COROUTINE] Scales to (sx, sy).
+-- @tparam number sx Initial axis-x scale.
+-- @tparam number sy Initial axis-y scale.
+-- @tparam number speed the speed of the scaling (optional).
+-- @tparam boolean wait Flag to wait until the scaling finishes.
 function Scalable:gradualScaleTo(sx, sy, speed, wait)
   self.scaleOrigX, self.scaleOrigY = self.scaleX, self.scaleY
   self.scaleDestX, self.scaleDestY = sx, sy
@@ -90,7 +91,7 @@ function Scalable:gradualScaleTo(sx, sy, speed, wait)
     self:waitForScaling()
   end
 end
--- [COROUTINE] Waits until the scale time is 1.
+--- [COROUTINE] Waits until the scale time is 1.
 function Scalable:waitForScaling()
   local fiber = _G.Fiber
   if self.scaleFiber then

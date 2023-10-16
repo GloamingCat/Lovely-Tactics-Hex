@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-BatchMesh
+@script BatchMesh
 ---------------------------------------------------------------------------------------------------
 Uses a mesh to renderer sprites with different HSVs.
 
@@ -16,17 +16,17 @@ local lgraphics = love.graphics
 -- Constants
 local vertexFormat = { { 'vhsv', 'float', 3 } }
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Renderer
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Initializes mesh.
+--- Initializes mesh.
 local Renderer_init = Renderer.init
 function Renderer:init(...)
   Renderer_init(self, ...)
   self.mesh = lgraphics.newMesh(vertexFormat, self.batchSize * 4)
 end
--- Draws current batch and clears it.
+--- Draws current batch and clears it.
 function Renderer:clearBatch()
   if self.batch and self.toDraw.size > 0 then
     self.batch:setTexture(self.batchTexture)
@@ -37,8 +37,8 @@ function Renderer:clearBatch()
     self.toDraw.size = 0
   end
 end
--- Updates vertices in the mesh.
--- @param(list : List) List of sprites to draw.
+--- Updates vertices in the mesh.
+-- @tparam List list List of sprites to draw.
 function Renderer:setMeshAttributes(list)
   local n = list.size - 1
   for i = 0, n do
@@ -51,8 +51,8 @@ function Renderer:setMeshAttributes(list)
   end
   self.mesh:setDrawRange(1, list.size * 4)
 end
--- Checks if the sprite may be added to the batch.
--- @param(sprite : Sprite)
+--- Checks if the sprite may be added to the batch.
+-- @tparam Sprite sprite
 function Renderer:batchPossible(sprite)
   return sprite.texture == self.batchTexture
 end

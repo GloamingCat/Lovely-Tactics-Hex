@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-EquipSkills
+@script EquipSkills
 ---------------------------------------------------------------------------------------------------
 Add skills and change attack skill when item is equipped.
 
@@ -19,17 +19,17 @@ local EquipSet = require('core/battle/battler/EquipSet')
 local SkillAction = require('core/battle/action/SkillAction')
 local SkillList = require('core/battle/battler/SkillList')
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- EquipSet
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Creates the list of skills 
+--- Override. Creates the list of skills 
 local EquipSet_init = EquipSet.init
 function EquipSet:init(...)
   self.skills = {}
   EquipSet_init(self, ...)
 end
--- Override. Updates the skills for each slot.
+--- Override. Updates the skills for each slot.
 local EquipSet_updateSlotBonus = EquipSet.updateSlotBonus
 function EquipSet:updateSlotBonus(key)
   EquipSet_updateSlotBonus(self, key)
@@ -58,11 +58,11 @@ function EquipSet:updateSlotBonus(key)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Battler
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Adds equip skills.
+--- Override. Adds equip skills.
 local Battler_getSkillList = Battler.getSkillList
 function Battler:getSkillList()
   local list = Battler_getSkillList(self)
@@ -82,7 +82,7 @@ function Battler:getSkillList()
   end
   return list
 end
--- Override. Check if there's an equip attack skill.
+--- Override. Check if there's an equip attack skill.
 local Battler_getAttackSkill = Battler.getAttackSkill
 function Battler:getAttackSkill()
   for k, skills in pairs(self.equipSet.skills) do

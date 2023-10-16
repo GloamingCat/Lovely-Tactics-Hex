@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-LookAround
+@classmod LookAround
 ---------------------------------------------------------------------------------------------------
 An animation that randomly switches row.
 
@@ -18,13 +18,14 @@ local Animation = require('core/graphics/Animation')
 -- Alias
 local rand = love.math.random
 
+-- Class table.
 local LookAround = class(Animation)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Animation:init.
+--- Overrides Animation:init.
 function LookAround:init(...)
   Animation.init(self, ...)
   self.rows = {}
@@ -45,7 +46,7 @@ function LookAround:init(...)
   end
   self.lookTime = 0
 end
--- Overrides Animation:update.
+--- Overrides Animation:update.
 function LookAround:update(dt)
   Animation.update(self, dt)
   self.lookTime = self.lookTime + dt
@@ -54,7 +55,7 @@ function LookAround:update(dt)
     self:setRandomRow()
   end
 end
--- Selects a random row different from the current one.
+--- Selects a random row different from the current one.
 function LookAround:setRandomRow()
   local r = rand(#self.rows - 1)
   if self.rows[r] == self.row then

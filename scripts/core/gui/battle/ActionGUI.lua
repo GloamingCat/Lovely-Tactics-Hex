@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-ActionGUI
+@classmod ActionGUI
 ---------------------------------------------------------------------------------------------------
 The GUI that is open when player selects an action.
 It does not have windows, and instead it implements its own "waitForResult" 
@@ -18,13 +18,14 @@ local ConfirmButtonWindow = require('core/gui/common/window/interactable/Confirm
 local PropertyWindow = require('core/gui/battle/window/PropertyWindow')
 local TargetWindow = require('core/gui/battle/window/TargetWindow')
 
+-- Class table.
 local ActionGUI = class(GUI)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GUI:init.
+--- Overrides GUI:init.
 function ActionGUI:init(parent, input)
   self.name = 'Action GUI'
   self.slideMargin = 16
@@ -38,7 +39,7 @@ function ActionGUI:init(parent, input)
   input.GUI = self
   self:createScrollArrows()
 end
--- Creates the scroll arrows, one for each direction.
+--- Creates the scroll arrows, one for each direction.
 function ActionGUI:createScrollArrows()
   self.scrollArrows = {}
   local icon = {id = Config.animations.arrow}
@@ -54,8 +55,8 @@ function ActionGUI:createScrollArrows()
   self.scrollArrows[4]:setXYZ(-(ScreenManager.width - self.slideMargin) / 2, 0)
   self.scrollArrows[3]:setXYZ(0, -(ScreenManager.height - self.slideMargin) / 2)
 end
--- Overrides GUI:destroy.
--- Destroys scroll arrows.
+--- Overrides GUI:destroy.
+--- Destroys scroll arrows.
 function ActionGUI:destroy(...)
   GUI.destroy(self, ...)
   if self.scrollArrows then
@@ -65,11 +66,11 @@ function ActionGUI:destroy(...)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Auxiliary Windows
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates the GUI's windows and sets the first active window.
+--- Creates the GUI's windows and sets the first active window.
 function ActionGUI:createConfirmWindow()
   if not self.buttonWindow then
     local window = ConfirmButtonWindow(self, 'confirmTile', 'cancelTile')
@@ -85,7 +86,7 @@ function ActionGUI:createConfirmWindow()
   end
   return self.buttonWindow
 end
--- Creates the GUI's windows and sets the first active window.
+--- Creates the GUI's windows and sets the first active window.
 function ActionGUI:createCancelWindow()
   if not self.buttonWindow then
     local window = ButtonWindow(self, 'cancelTile')
@@ -98,8 +99,8 @@ function ActionGUI:createCancelWindow()
   end
   return self.buttonWindow
 end
--- Creates step window if not created yet.
--- @ret(PropertyWindow) This GUI's step window.
+--- Creates step window if not created yet.
+-- @treturn PropertyWindow This GUI's step window.
 function ActionGUI:createPropertyWindow(label, value)
   if not self.propertyWindow then
     local window = PropertyWindow(self)
@@ -109,8 +110,8 @@ function ActionGUI:createPropertyWindow(label, value)
   end
   return self.propertyWindow
 end
--- Creates target window if not created yet.
--- @ret(TargetWindow) This GUI's target window.
+--- Creates target window if not created yet.
+-- @treturn TargetWindow This GUI's target window.
 function ActionGUI:createTargetWindow()
   if not self.targetWindow then
     local window = TargetWindow(self)
@@ -119,18 +120,18 @@ function ActionGUI:createTargetWindow()
   end
   return self.targetWindow
 end
--- Updates the battler shown in the target window.
+--- Updates the battler shown in the target window.
 function ActionGUI:updateTargetWindow(char)
   self.targetWindow:setBattler(char.battler)
   self.targetWindow:setVisible(false)
   self.targetWindow:show()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Overrides GUI:waitForResult.
+--- [COROUTINE] Overrides GUI:waitForResult.
 function ActionGUI:waitForResult()
   self.result = self.input.action:onActionGUI(self.input)
   while self.result == nil do
@@ -151,7 +152,7 @@ function ActionGUI:waitForResult()
   end
   return self.result
 end
--- Verifies player's input. Stores result of action in self.result.
+--- Verifies player's input. Stores result of action in self.result.
 function ActionGUI:checkInput()
   if self.buttonWindow then
     self.buttonWindow:checkInput()
@@ -167,8 +168,8 @@ function ActionGUI:checkInput()
   end
   return self:mouseInput() or self:keyboardInput()
 end
--- Sets given tile as current target.
--- @param(target : ObjectTile)
+--- Sets given tile as current target.
+-- @tparam ObjectTile target
 function ActionGUI:selectTarget(target)
   target = target or self.input.target
   if self.cursor then
@@ -191,22 +192,22 @@ function ActionGUI:selectTarget(target)
     self.buttonWindow.matrix[1]:setEnabled(self.input.target.gui.selectable)
   end
 end
--- Executes the given input.
+--- Executes the given input.
 function ActionGUI:confirmAction()
   self.result = self.input:execute()
   Fiber:wait()
 end
--- Cancels the selected action.
+--- Cancels the selected action.
 function ActionGUI:cancelAction()
   self.result = self.input.action:onCancel(self.input)
   Fiber:wait()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Keyboard
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks the keyboard input.
+--- Checks the keyboard input.
 function ActionGUI:keyboardInput()
   if InputManager.keys['confirm']:isTriggered() then
     if self.input.target.gui.selectable then
@@ -248,11 +249,11 @@ function ActionGUI:keyboardInput()
   return true
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Mouse Input
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Check the mouse input.
+--- Check the mouse input.
 function ActionGUI:mouseInput()
   self:checkSlide()
   if InputManager.mouse.moved then
@@ -293,11 +294,11 @@ function ActionGUI:mouseInput()
   return true
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Screen Slide
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if the mouse pointer in the slide area.
+--- Checks if the mouse pointer in the slide area.
 function ActionGUI:checkSlide()
   if not self.buttonWindow or not self.buttonWindow.lastOpen or not self.scrollArrows then
     return
@@ -315,8 +316,8 @@ function ActionGUI:checkSlide()
     self:slideY(math.sign(y))
   end
 end
--- Slides the screen horizontally.
--- @param(d : number) Direction (1 or -1).
+--- Slides the screen horizontally.
+-- @tparam number d Direction (1 or -1).
 function ActionGUI:slideX(d)
   local camera = FieldManager.renderer
   local speed = self.slideSpeed * GUIManager.fieldScroll * 2 / 100
@@ -335,8 +336,8 @@ function ActionGUI:slideX(d)
   camera:setXYZ(x, nil)
   InputManager.mouse:show()
 end
--- Slides the screen vertically.
--- @param(d : number) Direction (1 or -1).
+--- Slides the screen vertically.
+-- @tparam number d Direction (1 or -1).
 function ActionGUI:slideY(d)
   local camera = FieldManager.renderer
   local speed = self.slideSpeed * GUIManager.fieldScroll * 2 / 100
@@ -356,11 +357,11 @@ function ActionGUI:slideY(d)
   InputManager.mouse:show()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Grid selecting
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows grid and cursor.
+--- Shows grid and cursor.
 function ActionGUI:startGridSelecting(target)
   if self.propertyWindow then
     GUIManager.fiberList:fork(self.propertyWindow.show, self.propertyWindow)
@@ -376,7 +377,7 @@ function ActionGUI:startGridSelecting(target)
   self:selectTarget(target)
   self.gridSelecting = true
 end
--- Hides grid and cursor.
+--- Hides grid and cursor.
 function ActionGUI:endGridSelecting()
   if self.buttonWindow then
     self.buttonWindow.active = false
@@ -405,29 +406,29 @@ function ActionGUI:endGridSelecting()
   self.gridSelecting = false
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Sound
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Confirm a tile.
+--- Confirm a tile.
 function ActionGUI:playConfirmSound()
   if self.confirmSound then
     AudioManager:playSFX(self.confirmSound)
   end
 end
--- Cancel action.
+--- Cancel action.
 function ActionGUI:playCancelSound()
   if self.cancelSound then
     AudioManager:playSFX(self.cancelSound)
   end
 end
--- Select a tile.
+--- Select a tile.
 function ActionGUI:playSelectSound()
   if self.selectSound then
     AudioManager:playSFX(self.selectSound)
   end
 end
--- Confirm a non-selectable tile.
+--- Confirm a non-selectable tile.
 function ActionGUI:playErrorSound()
   if self.errorSound then
     AudioManager:playSFX(self.errorSound)

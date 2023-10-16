@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Interactable
+@classmod Interactable
 ---------------------------------------------------------------------------------------------------
 Base methods for objects with start/collision/interaction scripts.
 It is created from a instance data table, which contains (x, y, h) coordinates, scripts, and 
@@ -15,14 +15,15 @@ local FiberList = require('core/fiber/FiberList')
 -- Alias
 local copyTable = util.table.deepCopy
 
+-- Class table.
 local Interactable = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(instData : table) Instance data from field file.
--- @param(save : table) Persistent data from save file (optional).
+-- @tparam table instData Instance data from field file.
+-- @tparam table save Persistent data from save file (optional).
 function Interactable:init(instData, save)
   self:initScripts(instData)
   self.key = instData.key
@@ -37,8 +38,8 @@ function Interactable:init(instData, save)
   self.tile.characterList:add(self)
   FieldManager.updateList:add(self)
 end
--- Creates listeners from instance data.
--- @param(instData : table) Instance data from field file.
+--- Creates listeners from instance data.
+-- @tparam table instData Instance data from field file.
 function Interactable:initScripts(instData, save)
   self.fiberList = FiberList(self)
   self.collider = save and save.collider
@@ -72,15 +73,15 @@ function Interactable:initScripts(instData, save)
   self.approachToInteract = true
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates fiber list.
+--- Updates fiber list.
 function Interactable:update()
   self.fiberList:update()
 end
--- Removes from FieldManager.
+--- Removes from FieldManager.
 function Interactable:destroy(permanent)
   if permanent then
     self.deleted = true
@@ -91,12 +92,12 @@ function Interactable:destroy(permanent)
     FieldManager:storeCharData(FieldManager.currentField.id, self)
   end
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function Interactable:__tostring()
   return 'Interactable: ' .. self.key
 end
--- Data with fiber list's state and local variables.
--- @ret(table) Interactable's state to be saved.
+--- Data with fiber list's state and local variables.
+-- @treturn table Interactable's state to be saved.
 function Interactable:getPersistentData()
   local function copyScripts(scripts)
     local copy = {}
@@ -122,12 +123,12 @@ function Interactable:getPersistentData()
     collided = self.collided }
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when a character interacts with this object.
--- @ret(boolean) Whether the interact script were executed or not.
+--- Called when a character interacts with this object.
+-- @treturn boolean Whether the interact script were executed or not.
 function Interactable:onInteract()
   if self.deleted or #self.interactScripts == 0 then
     return false
@@ -142,11 +143,11 @@ function Interactable:onInteract()
   self.interacting = nil
   return true
 end
--- Called when a character collides with this object.
--- @param(collided : string) Key of the character who was collided with.
--- @param(collider : string) Key of the character who started the collision.
--- @param(repeating : boolean) Whether the script collision scripts of this character are already running.
--- @ret(boolean) Whether the collision script were executed or not.
+--- Called when a character collides with this object.
+-- @tparam string collided Key of the character who was collided with.
+-- @tparam string collider Key of the character who started the collision.
+-- @tparam boolean repeating Whether the script collision scripts of this character are already running.
+-- @treturn boolean Whether the collision script were executed or not.
 function Interactable:onCollide(collided, collider, repeating)
   if self.deleted or #self.collideScripts == 0 or repeating and not self.repeatCollisions then
     return false
@@ -163,8 +164,8 @@ function Interactable:onCollide(collided, collider, repeating)
   self.collider = nil
   return true
 end
--- Called when this interactable is created.
--- @ret(boolean) Whether the load scripts were executed or not.
+--- Called when this interactable is created.
+-- @treturn boolean Whether the load scripts were executed or not.
 function Interactable:onLoad()
   if self.deleted or #self.loadScripts == 0 then
     return false
@@ -177,8 +178,8 @@ function Interactable:onLoad()
   end
   return true
 end
--- Creates a new event sheet from the given script data.
--- @param(script : table) Script initialization info.
+--- Creates a new event sheet from the given script data.
+-- @tparam table script Script initialization info.
 function Interactable:runScript(script)
   if script.running then
     return
@@ -189,7 +190,7 @@ function Interactable:runScript(script)
     fiber:waitForEnd()
   end
 end
--- Runs scripts according to object's state (colliding or interacting).
+--- Runs scripts according to object's state (colliding or interacting).
 function Interactable:resumeScripts()
   if self.collided then
     self:onCollide(self.collided, self.collider)

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-EmotionBalloon
+@script EmotionBalloon
 ---------------------------------------------------------------------------------------------------
 The balloon animation to show a battler's emotion. The "balloon" and "emotions" animations must be
 set in the project's config.
@@ -38,14 +38,14 @@ if args.emotions then
 end
 local balloonY = args.balloonY or 0
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- ResourceManager
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates an animation given the emotion identifier.
--- @param(emotion : number | string) Emotion's key or row number.
--- @param(renderer : Renderer)
--- @ret(Animation)
+--- Creates an animation given the emotion identifier.
+-- @tparam number|string emotion Emotion's key or row number.
+-- @tparam Renderer renderer
+-- @treturn Animation
 function ResourceManager:loadEmotionAnimation(emotion, renderer)
   -- Emotion animation
   local emotionsID = Config.animations.emotions
@@ -58,10 +58,10 @@ function ResourceManager:loadEmotionAnimation(emotion, renderer)
   anim:setRow(emotion)
   return anim
 end
--- Creates an icon animation for balloons.
--- @param(emotion : table | string) Icon data or name (from config).
--- @param(renderer : Renderer)
--- @ret(Animation)
+--- Creates an icon animation for balloons.
+-- @tparam table|string emotion Icon data or name (from config).
+-- @tparam Renderer renderer
+-- @treturn Animation
 function ResourceManager:loadBalloonIconAnimation(icon, renderer)
   if type(icon) == 'string' then
     icon = Config.icons[icon]
@@ -78,11 +78,11 @@ function ResourceManager:loadBalloonIconAnimation(icon, renderer)
   return anim
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- CharacterBase
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Updates balloon position when character moves.
+--- Override. Updates balloon position when character moves.
 local CharacterBase_setXYZ = CharacterBase.setXYZ
 function CharacterBase:setXYZ(x, y, z)
   CharacterBase_setXYZ(self, x, y, z)
@@ -94,7 +94,7 @@ function CharacterBase:setXYZ(x, y, z)
     --self.iconAnim:setXYZ(p.x, p.y - h - self.height / 2, p.z - 1)
   end
 end
--- Override. Updates balloon animation.
+--- Override. Updates balloon animation.
 local CharacterBase_update = CharacterBase.update
 function CharacterBase:update(dt)
   CharacterBase_update(self, dt)
@@ -106,7 +106,7 @@ function CharacterBase:update(dt)
     end
   end
 end
--- Override. Destroys balloon with characters is destroyed.
+--- Override. Destroys balloon with characters is destroyed.
 local CharacterBase_destroy = CharacterBase.destroy
 function CharacterBase:destroy(...)
   CharacterBase_destroy(self, ...)
@@ -115,10 +115,8 @@ function CharacterBase:destroy(...)
     self.balloon = nil
   end
 end
--- Creates a balloon animation, if there is none.
--- @param(icon : table | string | number) Row number or emotion name to show emotion animation,
---  or icon or icon name to show icon animation.
-function CharacterBase:createBalloon(anim)
+--- Creates a balloon animation, if there is none.
+function CharacterBase:createBalloon()
   if self.balloon then
     return
   end
@@ -129,13 +127,14 @@ function CharacterBase:createBalloon(anim)
   self.balloon.sprite:setTransformation(self.balloon.data.transform)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- CharacterEvents
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Show an emotion animation inside character's balloon.
--- @param(args.emotion : number | string) Emotion's row or key (from keyToRow custom table).
--- @param(args.loop : bool) If true, do not destroy balloon, and instead loops animation.
+--- Show an emotion animation inside character's balloon.
+-- @tparam table args
+--  args.emotion (number|string): Emotion's row or key (from keyToRow custom table).
+--  args.loop (boolean): If true, do not destroy balloon, and instead loops animation.
 function CharacterEvents:showEmotionBalloon(args)
   local character = self:findCharacter(args.key)
   character:createBalloon()
@@ -145,9 +144,10 @@ function CharacterEvents:showEmotionBalloon(args)
     AudioManager:playSFX(Config.sounds[args.emotion])
   end
 end
--- Show an emotion animation inside character's balloon.
--- @param(args.icon : table | string) Icon data or icon name (from config data).
--- @param(args.loop : bool) If true, do not destroy balloon, and instead loops animation.
+--- Show an emotion animation inside character's balloon.
+-- @tparam table args
+--  args.icon (table|string) Icon data or icon name (from config data).
+--  args.loop (boolean) If true, do not destroy balloon, and instead loops animation.
 function CharacterEvents:showIconBalloon(args)
   local character = self:findCharacter(args.key)
   character:createBalloon()

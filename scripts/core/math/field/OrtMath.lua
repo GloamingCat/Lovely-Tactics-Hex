@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-OrtMath
+@classmod OrtMath
 ---------------------------------------------------------------------------------------------------
 Implements FieldMath methods to hexagonal fields in which the tiles are connected vertically.
 
@@ -27,12 +27,12 @@ local dpy = Config.grid.depthPerY / tileH
 
 local OrtMath = require('core/math/field/FieldMath')
 
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 -- Initialization
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 
--- Creates an array with Vectors representing all neighbors of a tile.
--- @ret(table) Array of Vectors.
+--- Creates an array with Vectors representing all neighbors of a tile.
+-- @treturn table Array of Vectors.
 function OrtMath.createNeighborShift()
   local s = OrtMath.createFullNeighborShift()
   table.remove(s, 7)
@@ -41,8 +41,8 @@ function OrtMath.createNeighborShift()
   table.remove(s, 1)
   return s
 end
--- Creates an array with Vectors representing all Vertex by its distance from the center.
--- @ret(table) Array of Vectors.
+--- Creates an array with Vectors representing all Vertex by its distance from the center.
+-- @treturn table Array of Vectors.
 function OrtMath.createVertexShift()
   local v = {}
   local function put(x, y)
@@ -55,61 +55,62 @@ function OrtMath.createVertexShift()
   return v
 end
 
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 -- Direction
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 
--- Gets the character's direction at party rotation 0.
--- @ret(number) The character's direction.
+--- Gets the character's direction at party rotation 0.
+-- @treturn number The character's direction.
 function OrtMath.baseDirection()
   return 270
 end
 
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 -- Field bounds
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 
--- Gets the world width of the given field.
--- @param(sizeX : number) Field's maximum tile x.
--- @param(sizeY : number) Field's maximum tile y.
--- @ret(number) Width in world coordinates.
+--- Gets the world width of the given field.
+-- @tparam number sizeX Field's maximum tile x.
+-- @tparam number sizeY Field's maximum tile y.
+-- @treturn number Width in world coordinates.
 function OrtMath.pixelWidth(sizeX, sizeY)
   return sizeX * tileW
 end
--- Gets the world height of the given field.
--- @param(sizeX : number) Field's maximum tile x.
--- @param(sizeY : number) Field's maximum tile y.
--- @ret(number) Height in world coordinates.
+--- Gets the world height of the given field.
+-- @tparam number sizeX Field's maximum tile x.
+-- @tparam number sizeY Field's maximum tile y.
+-- @tparam number lastLayer The height of the highest layer.
+-- @treturn number Height in world coordinates.
 function OrtMath.pixelHeight(sizeX, sizeY, lastLayer)
   return sizeY * tileH + lastLayer * pph
 end
 
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 -- Field depth
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 
--- @param(sizeX : number) Field's maximum tile x.
--- @param(sizeY : number) Field's maximum tile y.
--- @param(height : number) Field's maximum height.
--- @ret(number) The maximum depth of the field's renderer.
+-- @tparam number sizeX Field's maximum tile x.
+-- @tparam number sizeY Field's maximum tile y.
+-- @tparam number height Field's maximum height.
+-- @treturn number The maximum depth of the field's renderer.
 function OrtMath.maxDepth(sizeX, sizeY, maxHeight)
   return ceil(pph + dph * (maxHeight + 1))
 end
--- @param(sizeX : number) Field's maximum tile x.
--- @param(sizeY : number) Field's maximum tile y.
--- @param(height : number) Field's maximum height.
--- @ret(number) The minimum depth of the field's renderer.
+-- @tparam number sizeX Field's maximum tile x.
+-- @tparam number sizeY Field's maximum tile y.
+-- @tparam number height Field's maximum height.
+-- @treturn number The minimum depth of the field's renderer.
 function OrtMath.minDepth(sizeX, sizeY, maxHeight)
   return -ceil(sizeY * tileH * dpy + pph* 2 + dph * (maxHeight - 1))
 end
 
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 -- Tile-Pixel
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 
--- @param(i : number) Tile x coordinate.
--- @param(j : number) Tile y coordinate.
--- @param(h : number) Tile height.
+-- @tparam number i Tile x coordinate.
+-- @tparam number j Tile y coordinate.
+-- @tparam number h Tile height.
 function OrtMath.tile2Pixel(i, j, h)
   i, j, h = i - 1, j - 1, h - 1
   local x = i * tileW
@@ -117,9 +118,9 @@ function OrtMath.tile2Pixel(i, j, h)
   local d = -dpy * y
   return x, y - h * pph, d - h * dph
 end
--- @param(x : number) Pixel x.
--- @param(y : number) Pixel y.
--- @param(d : number) Pixel depth.
+-- @tparam number x Pixel x.
+-- @tparam number y Pixel y.
+-- @tparam number d Pixel depth.
 function OrtMath.pixel2Tile(x, y, d)
   local h = (y * dpy + d) / (-dpy * pph - dph)
   local j = (y + h * pph) / tileH
@@ -127,18 +128,18 @@ function OrtMath.pixel2Tile(x, y, d)
   return i + 1, j + 1, h + 1
 end
 
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 -- Auto Tile
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 
--- Gets the row for each tile quarter.
--- @param(grid : table) The grid of tiles.
--- @param(i : number) The x coordinate of the tile.
--- @param(j : number) The y coordinate of the tile.
--- @param(sameType : funcion) A function that verifies if two tiles are from the same type.
+--- Gets the row for each tile quarter.
+-- @tparam table grid The grid of tiles.
+-- @tparam number i The x coordinate of the tile.
+-- @tparam number j The y coordinate of the tile.
+-- @tparam funcion sameType A function that verifies if two tiles are from the same type.
 --  This function must receive the grid, the x and y of the first tile and x and y of the 
---  second tile.
--- @ret(table) An array of 4 elements, one number for each quarter.
+---  second tile.
+-- @treturn table An array of 4 elements, one number for each quarter.
 function OrtMath.autoTileRows(grid, i, j, sameType)
   local rows = { 
     0, 0, 
@@ -182,70 +183,70 @@ function OrtMath.autoTileRows(grid, i, j, sameType)
   return rows
 end
 
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 -- Grid
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 
--- Calculates the minimum distance in tiles.
--- @param(x1 : number) The first tile's x.
--- @param(y1 : number) The first tile's y.
--- @param(x2 : number) The second tile's x.
--- @param(y2 : number) The second tile's y.
+--- Calculates the minimum distance in tiles.
+-- @tparam number x1 The first tile's x.
+-- @tparam number y1 The first tile's y.
+-- @tparam number x2 The second tile's x.
+-- @tparam number y2 The second tile's y.
 function OrtMath.tileDistance(x1, y1, x2, y2)
   local dx = abs(x2 - x1)
   local dy = abs(y2 - y1)
   return max(dx, dy)
 end
--- Checks if three given tiles are collinear.
--- @param(x1 : number) The x if the first tile.
--- @param(y1 : number) The y if the first tile.
--- @param(x2 : number) The x if the second tile.
--- @param(y2 : number) The y if the second tile.
--- @param(x3 : number) The x if the third tile.
--- @param(y3 : number) The y if the third tile.
--- @ret(boolean) True if they are collinear, false otherwise.
+--- Checks if three given tiles are collinear.
+-- @tparam number x1 The x if the first tile.
+-- @tparam number y1 The y if the first tile.
+-- @tparam number x2 The x if the second tile.
+-- @tparam number y2 The y if the second tile.
+-- @tparam number x3 The x if the third tile.
+-- @tparam number y3 The y if the third tile.
+-- @treturn boolean True if they are collinear, false otherwise.
 function OrtMath.isCollinear(x1, y1, x2, y2, x3, y3)
   return x1 == x2 and x2 == x3 or y1 == y2 and y2 == y3 or
     x1 + y1 == x2 + y2 and x2 + y2 == x3 + y3 or
     x1 - y1 == x2 - y2 and x2 - y2 == x3 - y3
 end
--- Iterates through the set of tiles inside the given radius.
--- The radius is the maximum distance to the center tile, so the center is always included.
--- @param(radius : number) The max distance.
--- @param(centerX : number) The starting tile's x.
--- @param(centerY : number) The starting tile's y.
--- @param(sizeX : number) The max value of x.
--- @param(sizeY : number) The max value of y.
--- @ret(function) The iterator function.
-function OrtMath.radiusIterator(r, centerX, centerY, sizeX, sizeY)
-  local i = max(1, centerX - r) - 1
-  local j = max(1, centerY - r)
+--- Iterates through the set of tiles inside the given radius.
+--- The radius is the maximum distance to the center tile, so the center is always included.
+-- @tparam number radius The max distance.
+-- @tparam number centerX The starting tile's x.
+-- @tparam number centerY The starting tile's y.
+-- @tparam number sizeX The max value of x.
+-- @tparam number sizeY The max value of y.
+-- @treturn function The iterator function.
+function OrtMath.radiusIterator(radius, centerX, centerY, sizeX, sizeY)
+  local i = max(1, centerX - radius) - 1
+  local j = max(1, centerY - radius)
   return function()
     i = i + 1
-    if i > min(centerX + r, sizeX) then
+    if i > min(centerX + radius, sizeX) then
       j = j + 1
-      if j > min(centerY + r, sizeY) then
+      if j > min(centerY + radius, sizeY) then
         return
       end
-      i = max(1, centerX - r)
+      i = max(1, centerX - radius)
     end
     return i, j
   end
 end
 
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 -- Next Coordinates
------------------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------
 
--- Gets the next tile coordinates given the current tile and an input.
--- @param(x : number) Current tile's x.
--- @param(y : number) Current tile's y.
--- @param(axisX : number) The input in x axis.
--- @param(axisY : number) The input in y axis.
--- @param(sizeX : number) The size of the field in axis X.
--- @param(sizeY : number) The size of the field in axis Y.
--- @ret(number) The next tile's x.
--- @ret(number) The next tile's y.
+--- Gets the next tile coordinates given the current tile and an input.
+-- @tparam number x Current tile's x.
+-- @tparam number y Current tile's y.
+-- @tparam number axisX The input in x axis.
+-- @tparam number axisY The input in y axis.
+-- @tparam number sizeX The size of the field in axis X.
+-- @tparam number sizeY The size of the field in axis Y.
+-- @treturn number The next tile's x.
+-- @treturn number The next tile's y.
 function OrtMath.nextCoord(x, y, axisX, axisY, sizeX, sizeY)
   local ts = OrtMath.diagThreshold
   axisX = math.abs(axisX) > ts and axisX or 0
@@ -265,19 +266,19 @@ function OrtMath.nextCoord(x, y, axisX, axisY, sizeX, sizeY)
   end
   return x, y
 end
--- Gets the next coordinates given a input direction.
--- @param(dx : number) The input's delta x in world coordinates.
--- @param(dy : number) The input's delta y in world coordinates.
--- @ret(number) The new x.
--- @ret(number) The new y.
+--- Gets the next coordinates given a input direction.
+-- @tparam number dx The input's delta x in world coordinates.
+-- @tparam number dy The input's delta y in world coordinates.
+-- @treturn number The new x.
+-- @treturn number The new y.
 function OrtMath.nextCoordAxis(dx, dy)
   return round(max(min(dx, 1), -1)), round(max(min(dy, 1), -1))
 end
--- Rotates the coordinates clock-wise around origin.
--- @param(x : number) Tile x.
--- @param(y : number) Tile y.
--- @ret(number) Rotated tile's x.
--- @ret(number) Rotated tile's y.
+--- Rotates the coordinates clock-wise around origin.
+-- @tparam number x Tile x.
+-- @tparam number y Tile y.
+-- @treturn number Rotated tile's x.
+-- @treturn number Rotated tile's y.
 function OrtMath.rotateCoord(x, y)
   return -y, x
 end

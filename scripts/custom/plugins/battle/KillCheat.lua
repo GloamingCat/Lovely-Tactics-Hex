@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-KillCheat
+@script KillCheat
 ---------------------------------------------------------------------------------------------------
 Adds a key to kill all enemies in the nuxt turn during battle.
 Used to skip battles during game test.
@@ -19,12 +19,12 @@ local TurnManager = require('core/battle/TurnManager')
 KeyMap.main['win'] = args.win
 KeyMap.main['lose'] = args.lose
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- TurnManager
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Kills all enemies of the given party.
--- @param(party : number)
+--- Kills all enemies of the given party.
+-- @tparam number party
 local function killAll(party)
   for char in TroopManager.characterList:iterator() do
     if char.party ~= party then
@@ -32,7 +32,7 @@ local function killAll(party)
     end
   end
 end
--- Override. Check lose and win keys.
+--- Override. Check lose and win keys.
 local TurnManager_runTurn = TurnManager.runTurn
 function TurnManager:runTurn(...)
   local enemyParty = #TroopManager.troops - TroopManager.playerParty

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-TimeWindow
+@classmod TimeWindow
 ---------------------------------------------------------------------------------------------------
 Small window that shows the play time of the player.
 
@@ -13,13 +13,14 @@ local SimpleText = require('core/gui/widget/SimpleText')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
+-- Class table.
 local TimeWindow = class(Window)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Window:createContent.
+--- Overrides Window:createContent.
 function TimeWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local icon = Config.icons.time
@@ -33,8 +34,8 @@ function TimeWindow:createContent(width, height)
   self.content:add(text)
   self.text = text
 end
--- Sets the time shown.
--- @param(time : number) The current play time in seconds.
+--- Sets the time shown.
+-- @tparam number time The current play time in seconds.
 function TimeWindow:setTime(time)
   time = math.floor(time)
   if not self.time or self.time ~= time then
@@ -43,7 +44,7 @@ function TimeWindow:setTime(time)
     self.text:redraw()
   end
 end
--- Updates play time.
+--- Updates play time.
 function TimeWindow:update(dt)
   Window.update(self, dt)
   if self.open then

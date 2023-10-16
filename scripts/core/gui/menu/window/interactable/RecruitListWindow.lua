@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-RecruitListWindow
+@classmod RecruitListWindow
 ---------------------------------------------------------------------------------------------------
 Window with the list of items available to hire.
 
@@ -11,17 +11,18 @@ Window with the list of items available to hire.
 local Button = require('core/gui/widget/control/Button')
 local ListWindow = require('core/gui/common/window/interactable/ListWindow')
 
+-- Class table.
 local RecruitListWindow = class(ListWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 function RecruitListWindow:init(gui)
   self.visibleRowCount = 4
   ListWindow.init(self, gui, {})
 end
--- Implements ListWindow:createListButton.
+--- Implements ListWindow:createListButton.
 function RecruitListWindow:createListButton(entry)
   local battler, price, char, member
   if self.hire then
@@ -57,26 +58,26 @@ function RecruitListWindow:createListButton(entry)
   return button
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Mode
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Use this window to hire items.
+--- Use this window to hire items.
 function RecruitListWindow:setHireMode()
   self.hire = true
   self:refreshButtons(self.GUI.chars)
 end
--- Use this window to sell items.
+--- Use this window to sell items.
 function RecruitListWindow:setDismissMode()
   self.hire = false
   self:refreshButtons(self.GUI.troop:visibleMembers())
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Enable Conditions
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(boolean) True if at least one item of this type can be bought.
+-- @treturn boolean True if at least one item of this type can be bought.
 function RecruitListWindow:buttonEnabled(button)
   if self.hire then
     return self.GUI.troop.money >= button.price
@@ -85,11 +86,11 @@ function RecruitListWindow:buttonEnabled(button)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Confirm Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows the window to select the quantity.
+--- Shows the window to select the quantity.
 function RecruitListWindow:onButtonConfirm(button)
   local w = self.GUI.countWindow
   local w2 = self.GUI.descriptionWindow
@@ -103,24 +104,24 @@ function RecruitListWindow:onButtonConfirm(button)
   end
   w:activate()
 end
--- Closes hire GUI.
+--- Closes hire GUI.
 function RecruitListWindow:onButtonCancel(button)
   self.GUI:hideRecruitGUI()
 end
--- Updates item description.
+--- Updates item description.
 function RecruitListWindow:onButtonSelect(button)
   self.GUI.descriptionWindow:updateTerm('data.battler.' .. button.battler.key .. '_desc', button.battler.description)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Confirm Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides ListWindow:cellWidth.
+--- Overrides ListWindow:cellWidth.
 function RecruitListWindow:cellWidth()
   return ListWindow.cellWidth(self) * 4 / 5
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function RecruitListWindow:__tostring()
   return 'Recruit List Window'
 end

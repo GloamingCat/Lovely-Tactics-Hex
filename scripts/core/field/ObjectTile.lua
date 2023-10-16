@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-ObjectTile
+@classmod ObjectTile
 ---------------------------------------------------------------------------------------------------
 An ObjectTile stores a list of static obstacles and a list of dynamic characters.
 There's only one ObjectTile for each (i, j, height) in the field.
@@ -12,16 +12,17 @@ There's only one ObjectTile for each (i, j, height) in the field.
 local List = require('core/datastruct/List')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local ObjectTile = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(layer : ObjectLayer) the layer that this tile is in
--- @param(x : number) the tile's x coordinate
--- @param(y : number) the tile's y coordinate
+--- Constructor.
+-- @tparam ObjectLayer layer The layer that this tile is in.
+-- @tparam number x The tile's x coordinate.
+-- @tparam number y The tile's y coordinate.
 function ObjectTile:init(layer, x, y)
   self.layer = layer
   self.x = x
@@ -35,7 +36,7 @@ function ObjectTile:init(layer, x, y)
   self.rampNeighbors = List()
   self.center = Vector(math.field.tile2Pixel(self:coordinates()))
 end
--- Stores the list of neighbor tiles.
+--- Stores the list of neighbor tiles.
 function ObjectTile:createNeighborList()
   self.neighborList = List()
   -- Create neighbors from the same layer.
@@ -49,33 +50,33 @@ function ObjectTile:createNeighborList()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Generates a unique character ID for a character in this tile.
--- @ret(string) New ID.
+--- Generates a unique character ID for a character in this tile.
+-- @treturn string New ID.
 function ObjectTile:generateCharacterID()
   local x, y, h = self:coordinates()
   return '' .. x .. '.' .. y .. '.' .. h .. '.' .. self.characterList.size
 end
--- Converts to string.
+--- Converts to string.
 function ObjectTile:__tostring()
   return 'ObjectTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ')' 
 end
--- Tile's coordinates.
--- @ret(number) Tile's grid x.
--- @ret(number) Tile's grid y.
--- @ret(number) Tile's height.
+--- Tile's coordinates.
+-- @treturn number Tile's grid x.
+-- @treturn number Tile's grid y.
+-- @treturn number Tile's height.
 function ObjectTile:coordinates()
   return self.x, self.y, self.layer.height
 end
--- Gets the terrain move cost in this tile.
--- @ret(number) The move cost.
+--- Gets the terrain move cost in this tile.
+-- @treturn number The move cost.
 function ObjectTile:getMoveCost(char)
   return FieldManager.currentField:getMoveCost(char, self:coordinates())
 end
--- Updates graphics animation.
+--- Updates graphics animation.
 function ObjectTile:update(dt)
   if self.gui then
     self.gui:update(dt)
@@ -86,7 +87,7 @@ function ObjectTile:update(dt)
     end
   end
 end
--- Destroy graphics and obstacles.
+--- Destroy graphics and obstacles.
 function ObjectTile:destroy()
   if self.gui then
     self.gui:destroy()
@@ -96,23 +97,23 @@ function ObjectTile:destroy()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Collision
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if this tile is passable from the given direction.
--- @param(dx : number) the x difference in tiles
--- @param(dy : number) the y difference in tiles
--- @param(object : Object) the object that is trying to access this tile (optional)
--- @ret(boolean) true if collides, false otherwise
+--- Checks if this tile is passable from the given direction.
+-- @tparam number dx The x difference in tiles.
+-- @tparam number dy The y difference in tiles.
+-- @tparam Object object The object that is trying to access this tile (optional).
+-- @treturn boolean True if collides, false otherwise.
 function ObjectTile:collides(dx, dy, object)
   return self:collidesObstacle(dx, dy, object) or self:collidesCharacter(object)
 end
--- Checks if this tile is passable from the given direction.
--- @param(dx : number) the x difference in tiles
--- @param(dy : number) the y difference in tiles
--- @param(object : Object) the object that is trying to access this tile (optional)
--- @ret(boolean) true if collides, false otherwise
+--- Checks if this tile is passable from the given direction.
+-- @tparam number dx The x difference in tiles.
+-- @tparam number dy The y difference in tiles.
+-- @tparam Object object The object that is trying to access this tile (optional).
+-- @treturn boolean True if collides, false otherwise.
 function ObjectTile:collidesObstacle(dx, dy, object)
   for obj in self.obstacleList:iterator() do
     if not obj:isPassable(dx, dy, object) or obj.ramp then
@@ -121,17 +122,18 @@ function ObjectTile:collidesObstacle(dx, dy, object)
   end
   return false
 end
--- Checks if this tile is passable from the given tile.
--- @param(obj : Object) The object that is trying to access this tile (optional).
--- @param(x : number) The x in tiles.
--- @param(y : number) The y in tiles.
--- @ret(boolean) True if collides, false otherwise.
+--- Checks if this tile is passable from the given tile.
+-- @tparam Object obj The object that is trying to access this tile (optional).
+-- @tparam number x The x in tiles.
+-- @tparam number y The y in tiles.
+-- @tparam number h The height in tiles.
+-- @treturn boolean True if collides, false otherwise.
 function ObjectTile:collidesObstacleFrom(obj, x, y, h)
   return self:collidesObstacle(self.x - x, self.y - y, obj)
 end
--- Checks collision with characters.
--- @param(char : Character) The character to check collision with (optional).
--- @ret(boolean) True if collides with any of the characters, false otherwise.
+--- Checks collision with characters.
+-- @tparam Character char The character to check collision with (optional).
+-- @treturn boolean True if collides with any of the characters, false otherwise.
 function ObjectTile:collidesCharacter(char)
   if char and char.battler then
     -- Battle characters.
@@ -152,10 +154,10 @@ function ObjectTile:collidesCharacter(char)
     return false
   end
 end
--- Checks if two characters in this tiles collide.
--- @param(char : Character) the character to walk to this tile
--- @param(other : Character) the character currently in this tile
--- @ret(boolean) true if collide, false otherwise
+--- Checks if two characters in this tiles collide.
+-- @tparam Character char The character to walk to this tile.
+-- @tparam Character other The character currently in this tile.
+-- @treturn boolean True if collide, false otherwise.
 function ObjectTile:collidesCharacters(char, other)
   if char == other then
     return false
@@ -171,12 +173,12 @@ function ObjectTile:collidesCharacters(char, other)
   end
   return not char.passable
 end
--- Checks if there is a bridge object that connects given tile to this tile.
--- @param(obj : Object) The object that is trying to access this tile (optional).
--- @param(x : number) The x in tiles.
--- @param(y : number) The y in tiles.
--- @param(h : number) The h in tiles.
--- @ret(boolean) True if connects, false otherwise.
+--- Checks if there is a bridge object that connects given tile to this tile.
+-- @tparam Object obj The object that is trying to access this tile (optional).
+-- @tparam number x The x in tiles.
+-- @tparam number y The y in tiles.
+-- @tparam number h The h in tiles.
+-- @treturn boolean True if connects, false otherwise.
 function ObjectTile:hasBridgeFrom(obj, x, y, h)
   local dx = self.x - x
   local dy = self.y - y
@@ -188,12 +190,12 @@ function ObjectTile:hasBridgeFrom(obj, x, y, h)
   return false
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Parties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the party of the current character in the tile.
--- @ret(number) the party number (nil if more than one character with different parties)
+--- Gets the party of the current character in the tile.
+-- @treturn number The party number (nil if more than one character with different parties).
 function ObjectTile:getCurrentParty()
   local party = nil
   for c in self.characterList:iterator() do
@@ -207,9 +209,9 @@ function ObjectTile:getCurrentParty()
   end
   return party
 end
--- Checks if there are any enemies in this tile (character with a different party number)
--- @param(yourPaty : number) the party number to check
--- @ret(boolean) true if there's at least one enemy, false otherwise
+-- Checks if there are any enemies in this tile (character with a different party number).
+-- @tparam number yourPaty The party number to check.
+-- @treturn boolean True if there's at least one enemy, false otherwise.
 function ObjectTile:hasEnemy(yourParty)
   for c in self.characterList:iterator() do
     if c.battler and c.party ~= yourParty then
@@ -217,9 +219,9 @@ function ObjectTile:hasEnemy(yourParty)
     end
   end
 end
--- Checks if there are any allies in this tile (character with the same party number)
--- @param(yourPaty : number) the party number to check
--- @ret(boolean) true if there's at least one ally, false otherwise
+-- Checks if there are any allies in this tile (character with the same party number).
+-- @tparam number yourPaty The party number to check.
+-- @treturn boolean True if there's at least one ally, false otherwise.
 function ObjectTile:hasAlly(yourParty)
   for c in self.characterList:iterator() do
     if c.party == yourParty then
@@ -227,8 +229,8 @@ function ObjectTile:hasAlly(yourParty)
     end
   end
 end
--- Gets the first character in the list that contains battler info.
--- @ret(Character) First battle character or nil if there is no battle character.
+--- Gets the first character in the list that contains battler info.
+-- @treturn Character First battle character or nil if there is no battle character.
 function ObjectTile:getFirstBattleCharacter()
   for c in self.characterList:iterator() do
     if c.battler then

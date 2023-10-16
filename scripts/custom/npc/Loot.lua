@@ -1,10 +1,10 @@
 --[[===============================================================================================
 
-Stalker
+@script Stalker
 ---------------------------------------------------------------------------------------------------
 NPC that walks towards the player.
 
--- Arguments:
+-- Parameters:
 <id> ID of the item to be received.
 <count> Quantity (1 by default).
 

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-FieldManager
+@classmod FieldManager
 ---------------------------------------------------------------------------------------------------
 Responsible for drawing and updating the current field, and also loading and storing fields from 
 game's data.
@@ -20,13 +20,14 @@ local Renderer = require('core/graphics/Renderer')
 -- Alias
 local mathf = math.field
 
+-- Class table.
 local FieldManager = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function FieldManager:init()
   self.renderer = nil
   self.currentField = nil
@@ -36,7 +37,7 @@ function FieldManager:init()
   self.fieldData = {}
   self.playerState = {}
 end
--- Calls all the update functions.
+--- Calls all the update functions.
 function FieldManager:update(dt)
   self.fiberList:update()
   if self.currentField then
@@ -51,12 +52,13 @@ function FieldManager:update(dt)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Field transition
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates field from ID.
--- @param(fieldID : number) The field's ID.
+--- Creates field from ID.
+-- @tparam number fieldID The field's ID.
+-- @tparam table save Field's save data (optional).
 function FieldManager:loadField(fieldID, save)
   if self.currentField then
     self.currentField:destroy()
@@ -76,25 +78,24 @@ function FieldManager:loadField(fieldID, save)
   collectgarbage('collect')
   return fieldData
 end
--- Loads a field from file data and replaces current. 
--- The information about the field must be stored in the transition data.
--- The loaded field will the treated as an exploration field.
--- Don't use this function if you just want to move the player to another tile in the same field.
--- @param(transition : table) The transition data.
--- @param(fieldSave : table) Field persistent state (if any).
---  position.
-function FieldManager:loadTransition(transition, fieldSave)
+--- Loads a field from file data and replaces current. 
+--- The information about the field must be stored in the transition data.
+--- The loaded field will the treated as an exploration field.
+--- Don't use this function if you just want to move the player to another tile in the same field.
+-- @tparam table transition The transition data.
+-- @tparam table save Field's save data (optional).
+function FieldManager:loadTransition(transition, save)
   if self.currentField then
     self:storeFieldData()
   end
-  local fieldData = self:loadField(transition.fieldID, fieldSave)
+  local fieldData = self:loadField(transition.fieldID, save)
   FieldLoader.createTransitions(self.currentField, fieldData.prefs.transitions)
   self.hud = self.hud or FieldHUD()
   self:playFieldBGM()
-  self:initializePlayer(transition, fieldSave)
+  self:initializePlayer(transition, save)
   self:runLoadScripts()
 end
--- Plays current field's BGM, if not already playing.
+--- Plays current field's BGM, if not already playing.
 function FieldManager:playFieldBGM()
   local bgm = self.currentField.bgm
   if bgm and bgm.name ~= '' then
@@ -103,7 +104,7 @@ function FieldManager:playFieldBGM()
     end
   end
 end
--- Execute current field's load script and characters' load scripts.
+--- Execute current field's load script and characters' load scripts.
 function FieldManager:runLoadScripts()
   self.playerInput = false
   for char in self.characterList:iterator() do
@@ -123,12 +124,12 @@ function FieldManager:runLoadScripts()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Field Creation (internal use only)
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(transition : table) The transition data.
--- @param(save : table) Current field state (optional).
+-- @tparam table transition The transition data.
+-- @tparam table save Current field state (optional).
 function FieldManager:initializePlayer(transition, save)
   local player = Player(transition, save and save.chars.player)
   self.renderer.focusObject = player
@@ -140,11 +141,11 @@ function FieldManager:initializePlayer(transition, save)
     end
   end
 end
--- Create new field camera.
--- @param(data : table) Field data.
--- @param(width : number) Screen width in pixels.
--- @param(height : number) Screen height in pixels.
--- @param(images : table) Table of background/foreground images.
+--- Create new field camera.
+-- @tparam table data Field data.
+-- @tparam number width Screen width in pixels.
+-- @tparam number height Screen height in pixels.
+-- @tparam table images Table of background/foreground images.
 function FieldManager:initializeCamera(data, width, height, images)
   local h = data.prefs.maxHeight
   local l = 4 * #data.layers.terrain + #data.layers.obstacle + #data.characters
@@ -163,13 +164,13 @@ function FieldManager:initializeCamera(data, width, height, images)
   self.renderer = camera
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- State
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the persistent data of a field.
--- @param(id : number) Field's ID.
--- @ret(table) The data table.
+--- Gets the persistent data of a field.
+-- @tparam number id Field's ID.
+-- @treturn table The data table.
 function FieldManager:getFieldSave(id)
   id = id .. ''
   local persistentData = self.fieldData[id]
@@ -179,8 +180,8 @@ function FieldManager:getFieldSave(id)
   end
   return persistentData
 end
--- Stores current field's information in the save data table.
--- @param(field : Field) Field to store (current field by default).
+--- Stores current field's information in the save data table.
+-- @tparam Field field Field to store (current field by default).
 function FieldManager:storeFieldData(field)
   field = field or self.currentField
   if field.persistent then
@@ -194,14 +195,14 @@ function FieldManager:storeFieldData(field)
     persistentData.prefs = field:getPersistentData()
   end
 end
--- Stores a character's information in the save data table.
--- @param(fieldID : number) The ID of the character's field.
--- @param(char : Character) Character to store.
+--- Stores a character's information in the save data table.
+-- @tparam number fieldID The ID of the character's field.
+-- @tparam Character char Character to store.
 function FieldManager:storeCharData(fieldID, char)
   local persistentData = self:getFieldSave(fieldID)
   persistentData.chars[char.key] = char:getPersistentData()
 end
--- Stores the state of player, if there is a player character in the current field.
+--- Stores the state of player, if there is a player character in the current field.
 function FieldManager:storePlayerState()
   if self.player == nil then
     return
@@ -217,13 +218,13 @@ function FieldManager:storePlayerState()
   self.playerState.field = fieldData
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Auxiliary Functions
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 -- Search for a character with the given key
--- @param(key : string) The key of the character.
--- @ret(Character) The first character found with the given key (nil if none was found).
+-- @tparam string key The key of the character.
+-- @treturn Character The first character found with the given key (nil if none was found).
 function FieldManager:search(key)
   for char in self.characterList:iterator() do
     if char.key == key then
@@ -232,8 +233,8 @@ function FieldManager:search(key)
   end
 end
 -- Searchs for characters with the given key
--- @param(key : string) The key of the character(s).
--- @ret(List) List of all characters with the given key.
+-- @tparam string key The key of the character(s).
+-- @treturn List List of all characters with the given key.
 function FieldManager:searchAll(key)
   local list = List()
   for char in self.characterList:iterator() do
@@ -243,19 +244,19 @@ function FieldManager:searchAll(key)
   end
   return list
 end
--- Shows field grid GUI.
+--- Shows field grid GUI.
 function FieldManager:showGrid()
   for tile in self.currentField:gridIterator() do
     tile.gui:show()
   end
 end
--- Hides field grid GUI.
+--- Hides field grid GUI.
 function FieldManager:hideGrid()
   for tile in self.currentField:gridIterator() do
     tile.gui:hide()
   end
 end
--- Tells if the field was loaded from save instead of from a field transition.
+--- Tells if the field was loaded from save instead of from a field transition.
 function FieldManager:loadedFromSave()
   if self.player then
     return self.player.saveData ~= nil

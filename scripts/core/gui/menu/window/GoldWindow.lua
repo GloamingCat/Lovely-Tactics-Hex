@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-GoldWindow
+@classmod GoldWindow
 ---------------------------------------------------------------------------------------------------
 Small window that shows the troop's money.
 
@@ -13,13 +13,14 @@ local SimpleText = require('core/gui/widget/SimpleText')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
+-- Class table.
 local GoldWindow = class(Window)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Implements Window:createContent.
+--- Implements Window:createContent.
 function GoldWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local icon = Config.icons.money
@@ -33,8 +34,8 @@ function GoldWindow:createContent(width, height)
   self.content:add(text)
   self.value = text
 end
--- Sets the money value shown.
--- @param(money : number) The current number of money.
+--- Sets the money value shown.
+-- @tparam number money The current number of money.
 function GoldWindow:setGold(money)
   self.value:setTerm(money .. ' {%g}', money .. '')
   self.value:redraw()

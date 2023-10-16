@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-InventoryWindow
+@classmod InventoryWindow
 ---------------------------------------------------------------------------------------------------
 The GUI that is open to choose an item from character's inventory.
 
@@ -15,22 +15,23 @@ local ListWindow = require('core/gui/common/window/interactable/ListWindow')
 local MenuTargetGUI = require('core/gui/common/MenuTargetGUI')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local InventoryWindow = class(ListWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(gui : GUI) Parent GUI.
--- @param(user : Battler) The user of the items.
--- @param(inventory : Inventory) Inventory with the list of items.
--- @param(itemList : table) Array with item slots that are going to be shown
+--- Constructor.
+-- @tparam GUI gui Parent GUI.
+-- @tparam Battler user The user of the items.
+-- @tparam Inventory inventory Inventory with the list of items.
+-- @tparam table itemList Array with item slots that are going to be shown
 --  (all inventory's items by default).
--- @param(w : number) Window's width (fits to col count by default).
--- @param(h : number) Window's height (fits to row count by default)
--- @param(pos : Vector) Position of the window's center (screen center by default).
--- @param(rowCount : number) The number of visible button rows
+-- @tparam number w Window's width (fits to col count by default).
+-- @tparam number h Window's height (fits to row count by default)
+-- @tparam Vector pos Position of the window's center (screen center by default).
+-- @tparam number rowCount The number of visible button rows
 --  (maximum possible rows by default - needs h to be non-nil).
 function InventoryWindow:init(GUI, user, inventory, itemList, w, h, pos, rowCount)
   self.member = user
@@ -40,9 +41,9 @@ function InventoryWindow:init(GUI, user, inventory, itemList, w, h, pos, rowCoun
   self.visibleRowCount = self.visibleRowCount or rowCount or self:computeRowCount(h)
   ListWindow.init(self, GUI, itemList or inventory, w, h, pos)
 end
--- Creates a button from an item ID.
--- @param(itemSlot : table) a slot from the inventory (with item's ID and count)
--- @ret(Button)
+--- Creates a button from an item ID.
+-- @tparam table itemSlot A slot from the inventory (with item's ID and count).
+-- @treturn Button
 function InventoryWindow:createListButton(itemSlot)
   local item = Database.items[itemSlot.id]
   local icon = item.icon.id >= 0 and 
@@ -57,18 +58,18 @@ function InventoryWindow:createListButton(itemSlot)
   end
   return button
 end
--- Updates buttons to match new state of the inventory.
+--- Updates buttons to match new state of the inventory.
 function InventoryWindow:refreshItems()
   self:refreshButtons(self.inventory)
   self:packWidgets()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input handlers
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Executes item's skill when player confirms an item.
--- @param(button : Button)
+--- Executes item's skill when player confirms an item.
+-- @tparam Button button
 function InventoryWindow:onButtonConfirm(button)
   local input = ActionInput(button.skill, self.member or self.leader)
   if input.action:isArea() then
@@ -79,8 +80,8 @@ function InventoryWindow:onButtonConfirm(button)
     self:userOnlyItem(input)
   end
 end
--- Updates description when button is selected.
--- @param(button : Button)
+--- Updates description when button is selected.
+-- @tparam Button button
 function InventoryWindow:onButtonSelect(button)
   if self.GUI.descriptionWindow then
     if button.item then
@@ -90,9 +91,9 @@ function InventoryWindow:onButtonSelect(button)
     end
   end
 end
--- Tells if an item can be used.
--- @param(button : Button)
--- @ret(boolean) Either item does not need a user, or the user can execute the item's skill.
+--- Tells if an item can be used.
+-- @tparam Button button
+-- @treturn boolean Either item does not need a user, or the user can execute the item's skill.
 function InventoryWindow:buttonEnabled(button)
   if not self.member and (not button.item or button.item.needsUser) then
     return false
@@ -100,12 +101,12 @@ function InventoryWindow:buttonEnabled(button)
   return button.skill and button.skill:canMenuUse(self.member or self.leader)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Item Skill
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Use item in a single member.
--- @param(input : ActionInput)
+--- Use item in a single member.
+-- @tparam ActionInput input
 function InventoryWindow:singleTargetItem(input)
   self.GUI:hide()
   local gui = MenuTargetGUI(self.GUI, input.user.troop, input)
@@ -114,38 +115,38 @@ function InventoryWindow:singleTargetItem(input)
   _G.Fiber:wait()
   self.GUI:show()
 end
--- Use item in a all members.
--- @param(input : ActionInput)
+--- Use item in a all members.
+-- @tparam ActionInput input
 function InventoryWindow:areaTargetItem(input)
   input.targets = input.user.troop:currentBattlers()
   input.action:menuUse(input)
   self:refreshItems()
 end
--- Use item on user themselves.
--- @param(input : ActionInput)
+--- Use item on user themselves.
+-- @tparam ActionInput input
 function InventoryWindow:userOnlyItem(input)
   input.target = input.user
   input.action:menuUse(input)
   self:refreshItems()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides ListWindow:cellWidth.
+--- Overrides ListWindow:cellWidth.
 function InventoryWindow:cellWidth()
   return 200
 end
--- Overrides GridWindow:colCount.
+--- Overrides GridWindow:colCount.
 function InventoryWindow:colCount()
   return 1
 end
--- New row count.
+--- New row count.
 function InventoryWindow:rowCount()
   return self.visibleRowCount
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function InventoryWindow:__tostring()
   return 'Inventory Window'
 end

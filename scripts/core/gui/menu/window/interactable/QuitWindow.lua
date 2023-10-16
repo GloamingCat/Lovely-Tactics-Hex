@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-QuitWindow
+@classmod QuitWindow
 ---------------------------------------------------------------------------------------------------
 Window with options to close / restart game.
 
@@ -11,13 +11,14 @@ Window with options to close / restart game.
 local Button = require('core/gui/widget/control/Button')
 local OptionsWindow = require('core/gui/menu/window/interactable/OptionsWindow')
 
+-- Class table.
 local QuitWindow = class(OptionsWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Implements GridWindow:createWidgets.
+--- Implements GridWindow:createWidgets.
 function QuitWindow:createWidgets()
   Button:fromKey(self, 'cancel')
   Button:fromKey(self, 'title')
@@ -25,24 +26,24 @@ function QuitWindow:createWidgets()
     Button:fromKey(self, 'close')
   end
 end
--- When player cancels the quit action.
+--- When player cancels the quit action.
 function QuitWindow:cancelConfirm()
   self.result = 0
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:colCount.
+--- Overrides GridWindow:colCount.
 function QuitWindow:colCount()
   return 1
 end
--- Overrides GridWindow:rowCount.
+--- Overrides GridWindow:rowCount.
 function QuitWindow:rowCount()
   return GameManager:isDesktop() and 3 or 2
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function QuitWindow:__tostring()
   return 'Quit Window'
 end

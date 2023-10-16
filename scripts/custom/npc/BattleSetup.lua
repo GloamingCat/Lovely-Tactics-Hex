@@ -1,9 +1,13 @@
 
 --[[===============================================================================================
 
-BattleSetup
+@script BattleSetup
 ---------------------------------------------------------------------------------------------------
 Checks whether the enemy was already defeated.
+
+-- Parameters:
+<resetPos> If true, the character returns to its original position if not defeated when the player
+reencounters it.
 
 =================================================================================================]]
 

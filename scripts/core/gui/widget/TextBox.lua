@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-TextBox
+@classmod TextBox
 ---------------------------------------------------------------------------------------------------
 Box to input a one-line string. 
 
@@ -13,14 +13,15 @@ local Sprite = require('core/graphics/Sprite')
 local SimpleText = require('core/gui/widget/SimpleText')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local TextBox = class(SimpleText)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(window : GridWindow) The window this text box belongs to.
+--- Constructor.
+-- @tparam GridWindow window The window this text box belongs to.
 function TextBox:init(window, initStr, position, width)
   self.input = initStr
   self.cursorPoint = #initStr + 1
@@ -32,8 +33,8 @@ function TextBox:init(window, initStr, position, width)
   self.window = window
   SimpleText.init(self, initStr .. '{u} {u}', position, width, 'left', Fonts.gui_button)
 end
--- Overrides SimpleText:createContent.
--- Creates highlight.
+--- Overrides SimpleText:createContent.
+--- Creates highlight.
 function TextBox:createContent(...)
   SimpleText.createContent(self, ...)
   local width = self.window.width - self.window:colMargin() / 2 - 4
@@ -42,12 +43,12 @@ function TextBox:createContent(...)
   self.content:add(self.highlight)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Operations
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Insert character in the position pointed by cursor.
--- @param(c : string) Character to be inserted.
+--- Insert character in the position pointed by cursor.
+-- @tparam string c Character to be inserted.
 function TextBox:insertCharacter(c)
   if #c > 1 then
     c = '?'
@@ -57,7 +58,7 @@ function TextBox:insertCharacter(c)
   self.input = part1 .. part2
   self:moveCursor(1)
 end
--- Erase character pointed by cursor.
+--- Erase character pointed by cursor.
 function TextBox:eraseCharacter()
   if #self.input == 0 then
     return
@@ -68,12 +69,12 @@ function TextBox:eraseCharacter()
   self:moveCursor(-1)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Cursor
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides SimpleText:updatePosition.
--- Updates highlight position.
+--- Overrides SimpleText:updatePosition.
+--- Updates highlight position.
 function TextBox:updatePosition(...)
   if self.highlight then
     local my = self.window:rowMargin() / 2 + 4
@@ -86,7 +87,7 @@ function TextBox:updatePosition(...)
     SimpleText.updatePosition(self, ...)
   end
 end
--- Hides or redraws cursor according to its position and visibility.
+--- Hides or redraws cursor according to its position and visibility.
 function TextBox:refreshCursor()
   if self.cursorVisible then
     local input = self.input .. ' '
@@ -100,8 +101,8 @@ function TextBox:refreshCursor()
   end
   self:redraw()
 end
--- Updates cursor point and redraws texts accordingly.
--- @param(pos : number) Index of the character the cursor is pointing.
+--- Updates cursor point and redraws texts accordingly.
+-- @tparam number dx The direction in which the cursor was moved (-1 is left, 1 is right).
 function TextBox:moveCursor(dx)
   local pos = self.cursorPoint + dx
   pos = math.min(pos, #self.input + 1)
@@ -111,8 +112,8 @@ function TextBox:moveCursor(dx)
     self:refreshCursor()
   end
 end
--- Sets cursor visibility.
--- @param(value : boolean)
+--- Sets cursor visibility.
+-- @tparam boolean value
 function TextBox:setCursorVisible(value)
   if self.cursorVisible ~= value then
     self.highlight:setVisible(value)

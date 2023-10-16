@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-CharacterBase
+@classmod CharacterBase
 ---------------------------------------------------------------------------------------------------
 A Character is a dynamic object stored in the tile. It may be passable or not, and have an image 
 or not. Player may also interact with this.
@@ -17,14 +17,15 @@ local Vector = require('core/math/Vector')
 -- Alias
 local tile2Pixel = math.field.tile2Pixel
 
+-- Class table.
 local CharacterBase = class(JumpingObject, Interactable)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Inititialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(instData : table) The character's instance data from field file.
+--- Constructor.
+-- @tparam table instData The character's instance data from field file.
 function CharacterBase:init(instData, save)
   assert(not (save and save.deleted), 'Deleted character.')
   -- Character data
@@ -60,10 +61,10 @@ function CharacterBase:init(instData, save)
   self:setPosition(pos)
   self:addToTiles()
 end
--- Sets generic properties.
--- @param(name : string) The name of the character.
--- @param(tiles : table) A list of collision tiles.
--- @param(colliderHeight : number) Collider's height in height units.
+--- Sets generic properties.
+-- @tparam string name The name of the character.
+-- @tparam table tiles A list of collision tiles.
+-- @tparam number colliderHeight Collider's height in height units.
 function CharacterBase:initProperties(instData, name, tiles, colliderHeight, save)
   self.name = name
   self.collisionTiles = tiles
@@ -76,7 +77,7 @@ function CharacterBase:initProperties(instData, name, tiles, colliderHeight, sav
     self.speed = save.speed or (save.defaultSpeed or 100) * Config.player.walkSpeed / 100
   end
 end
--- Override DirectedObject:initGraphics. Creates the animation sets.
+--- Override DirectedObject:initGraphics. Creates the animation sets.
 function CharacterBase:initGraphics(instData, animations, portraits, transform, shadowID, save)
   if shadowID and shadowID >= 0 then
     local shadowData = Database.animations[shadowID]
@@ -98,12 +99,12 @@ function CharacterBase:initGraphics(instData, animations, portraits, transform, 
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Shadow
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Object:setXYZ.
--- Updates shadow's position.
+--- Overrides Object:setXYZ.
+--- Updates shadow's position.
 function CharacterBase:setXYZ(x, y, z)
   z = z or self.position.z
   JumpingObject.setXYZ(self, x, y, z)
@@ -111,16 +112,16 @@ function CharacterBase:setXYZ(x, y, z)
     self.shadow:setXYZ(x, y, z + 1)
   end
 end
--- Overrides Object:setVisible.
--- Updates shadow's visibility.
+--- Overrides Object:setVisible.
+--- Updates shadow's visibility.
 function CharacterBase:setVisible(value)
   JumpingObject.setVisible(self, value)
   if self.shadow then
     self.shadow:setVisible(value)
   end
 end
--- Overrides Object:setRGBA.
--- Updates shadow's color.
+--- Overrides Object:setRGBA.
+--- Updates shadow's color.
 function CharacterBase:setRGBA(...)
   JumpingObject.setRGBA(self, ...)
   if self.sprite then
@@ -131,12 +132,12 @@ function CharacterBase:setRGBA(...)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides AnimatedObject:update. 
--- Updates fibers.
+--- Overrides AnimatedObject:update. 
+--- Updates fibers.
 function CharacterBase:update(dt)
   if self.paused then
     return
@@ -144,7 +145,7 @@ function CharacterBase:update(dt)
   JumpingObject.update(self, dt)
   Interactable.update(self, dt)
 end
--- Removes from draw and update list.
+--- Removes from draw and update list.
 function CharacterBase:destroy(permanent)
   if self.shadow then
     self.shadow:destroy()
@@ -154,24 +155,24 @@ function CharacterBase:destroy(permanent)
   JumpingObject.destroy(self)
   Interactable.destroy(self, permanent)
 end
--- Changes character's key.
--- @param(key : string) Ney key.
+--- Changes character's key.
+-- @tparam string key Ney key.
 function CharacterBase:setKey(key)
   FieldManager.characterList[self.key] = nil
   FieldManager.characterList[key] = self
   self.key = key
 end
--- Converting to string.
--- @ret(string) a string representation
+--- Converting to string.
+-- @treturn string A string representation.
 function CharacterBase:__tostring()
   return 'Character ' .. self.name .. ' (' .. self.key .. ')'
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Collision
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Object:getHeight.
+--- Overrides Object:getHeight.
 function CharacterBase:getHeight(dx, dy)
   dx, dy = dx or 0, dy or 0
   for i = 1, #self.collisionTiles do
@@ -182,9 +183,9 @@ function CharacterBase:getHeight(dx, dy)
   end
   return 0
 end
--- Looks for collisions with characters in the given tile.
--- @param(tile : ObjectTile) The tile that the player is in or is trying to go.
--- @ret(boolean) True if there was any blocking collision, false otherwise.
+--- Looks for collisions with characters in the given tile.
+-- @tparam ObjectTile tile The tile that the player is in or is trying to go.
+-- @treturn boolean True if there was any blocking collision, false otherwise.
 function CharacterBase:collideTile(tile)
   if not tile then
     return false
@@ -202,12 +203,12 @@ function CharacterBase:collideTile(tile)
   return blocking
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Tiles
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets all tiles this object is occuping.
--- @ret(table) The list of tiles.
+--- Gets all tiles this object is occuping.
+-- @treturn table The list of tiles.
 function CharacterBase:getAllTiles(i, j, h)
   if not (i and j and h) then
     i, j, h = self:tileCoordinates()
@@ -224,16 +225,16 @@ function CharacterBase:getAllTiles(i, j, h)
   end
   return tiles
 end
--- Adds this object from to tiles it's occuping.
--- @param(tiles : table) The list of occuped tiles (optional).
+--- Adds this object from to tiles it's occuping.
+-- @tparam table tiles The list of occuped tiles (optional).
 function CharacterBase:addToTiles(tiles)
   tiles = tiles or self:getAllTiles()
   for i = #tiles, 1, -1 do
     tiles[i].characterList:add(self)
   end
 end
--- Removes this object from the tiles it's occuping.
--- @param(tiles : table) The list of occuped tiles (optional).
+--- Removes this object from the tiles it's occuping.
+-- @tparam table tiles The list of occuped tiles (optional).
 function CharacterBase:removeFromTiles(tiles)
   tiles = tiles or self:getAllTiles()
   for i = #tiles, 1, -1 do
@@ -241,12 +242,12 @@ function CharacterBase:removeFromTiles(tiles)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Persistent Data
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Interactable:getPersistenData.
--- Included position, direction and animation.
+--- Overrides Interactable:getPersistenData.
+--- Included position, direction and animation.
 function CharacterBase:getPersistentData()
   local data = Interactable.getPersistentData(self)
   data.x = self.position.x

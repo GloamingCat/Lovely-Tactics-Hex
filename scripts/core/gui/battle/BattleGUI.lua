@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-BattleGUI
+@classmod BattleGUI
 ---------------------------------------------------------------------------------------------------
 The GUI that is openned in the start of a character turn.
 Its result is the action time that the character spent.
@@ -18,18 +18,19 @@ local QuitWindow = require('core/gui/menu/window/interactable/QuitWindow')
 local OptionsWindow = require('core/gui/menu/window/interactable/OptionsWindow')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local BattleGUI = class(GUI)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GUI:init.
+--- Overrides GUI:init.
 function BattleGUI:init(...)
   self.troop = TurnManager:currentTroop()
   GUI.init(self, ...)
 end
--- Implements GUI:createWindows.
+--- Implements GUI:createWindows.
 function BattleGUI:createWindows()
   self.name = 'Battle GUI'
   self:createTurnWindow()
@@ -41,14 +42,14 @@ function BattleGUI:createWindows()
   -- Initial state
   self:setActiveWindow(self.turnWindow)
 end
--- Creates window with main commands.
+--- Creates window with main commands.
 function BattleGUI:createTurnWindow()
   self.turnWindow = TurnWindow(self)
   local m = self:windowMargin()
   self.turnWindow:setPosition(Vector(-ScreenManager.width / 2 + self.turnWindow.width / 2 + m, 
       -ScreenManager.height / 2 + self.turnWindow.height / 2 + m))
 end
--- Creates window to use skill.
+--- Creates window to use skill.
 function BattleGUI:createSkillWindow(heightFraction)
   local character = TurnManager:currentCharacter()
   local skillList = character.battler:getSkillList()
@@ -58,7 +59,7 @@ function BattleGUI:createSkillWindow(heightFraction)
     self.skillWindow.lastOpen = false
   end
 end
--- Creates window to use item.
+--- Creates window to use item.
 function BattleGUI:createItemWindow(heightFraction)
   local inventory = TurnManager:currentTroop().inventory
   local itemList = inventory:getUsableItems(1)
@@ -68,7 +69,7 @@ function BattleGUI:createItemWindow(heightFraction)
     self.itemWindow.lastOpen = false
   end
 end
--- Creates window that shows item and skill descriptions.
+--- Creates window that shows item and skill descriptions.
 function BattleGUI:createDescriptionWindow(heightFraction)
   local mainWindow = self.skillWindow or self.itemWindow 
   if not mainWindow then
@@ -81,8 +82,8 @@ function BattleGUI:createDescriptionWindow(heightFraction)
   self.descriptionWindow = DescriptionWindow(self, w, h, pos)
   self.descriptionWindow.lastOpen = false
 end
--- Shows the description below the given window.
--- @param(window : Window) the window with the items with descriptions.
+--- Shows the description below the given window.
+-- @tparam Window window the window with the items with descriptions.
 function BattleGUI:showDescriptionWindow(window)
   if self.descriptionWindow then
     local button = window:currentWidget()
@@ -97,7 +98,7 @@ function BattleGUI:showDescriptionWindow(window)
     GUIManager.fiberList:fork(self.descriptionWindow.show, self.descriptionWindow)
   end
 end
--- Hides the description window.
+--- Hides the description window.
 function BattleGUI:hideDescriptionWindow()
   if self.descriptionWindow then
     GUIManager.fiberList:fork(function()
@@ -106,22 +107,22 @@ function BattleGUI:hideDescriptionWindow()
     end)
   end
 end
--- Creates the window the shows when player selects "Quit" button.
+--- Creates the window the shows when player selects "Quit" button.
 function BattleGUI:createQuitWindow()
   self.quitWindow = QuitWindow(self)
   self.quitWindow:setVisible(false)
 end
--- Creates the window the shows when player selects "Quit" button.
+--- Creates the window the shows when player selects "Quit" button.
 function BattleGUI:createOptionsWindow()
   self.optionsWindow = OptionsWindow(self)
   self.optionsWindow:setVisible(false)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Camera focus
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GUI:show.
+--- Overrides GUI:show.
 function BattleGUI:show(...)
   FieldManager.renderer:moveToObject(TurnManager:currentCharacter())
   GUI.show(self, ...)

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-SkillWindow
+@classmod SkillWindow
 ---------------------------------------------------------------------------------------------------
 The window that shows the list of skills to be used.
 
@@ -14,20 +14,21 @@ local ListWindow = require('core/gui/common/window/interactable/ListWindow')
 local MenuTargetGUI = require('core/gui/common/MenuTargetGUI')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local SkillWindow = class(ListWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(gui : GUI) Parent GUI.
+--- Constructor.
+-- @tparam GUI gui Parent GUI.
 function SkillWindow:init(gui)
   self.visibleRowCount = 4
   self.member = gui:currentMember()
   ListWindow.init(self, gui, self.member:getSkillList())
 end
--- Overrides ListWindow:createButtons.
+--- Overrides ListWindow:createButtons.
 function SkillWindow:createWidgets()
   if #self.list > 0 then
     ListWindow.createWidgets(self)
@@ -35,8 +36,8 @@ function SkillWindow:createWidgets()
     Button(self)
   end
 end
--- Creates a button from an item.
--- @param(id : number) The item's ID.
+--- Creates a button from an item.
+-- @tparam SkillAction skill The button's skill.
 function SkillWindow:createListButton(skill)
   local icon = skill.data.icon.id >= 0 and 
     ResourceManager:loadIconAnimation(skill.data.icon, GUIManager.renderer)
@@ -55,27 +56,27 @@ function SkillWindow:createListButton(skill)
   return button
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Changes current member.
--- @param(member : Battler)
+--- Changes current member.
+-- @tparam Battler battler The battler associated with the current/chosen character.
 function SkillWindow:setBattler(battler)
   self.member = battler
   self:refreshSkills()
 end
--- Updates buttons to match new state of the skill list.
+--- Updates buttons to match new state of the skill list.
 function SkillWindow:refreshSkills()
   self:refreshButtons(self.member and self.member:getSkillList() or {})
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input handlers
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Open target selector for the chosen skill.
--- @param(button : Button)
+--- Open target selector for the chosen skill.
+-- @tparam Button button
 function SkillWindow:onButtonConfirm(button)
   local input = ActionInput(button.skill, self.member)
   if button.skill:isArea() then
@@ -101,8 +102,8 @@ function SkillWindow:onButtonConfirm(button)
     self.matrix[i]:refreshState()
   end
 end
--- Updates description when button is selected.
--- @param(button : Button)
+--- Updates description when button is selected.
+-- @tparam Button button
 function SkillWindow:onButtonSelect(button)
   if self.GUI.descriptionWindow then
     if button.skill then
@@ -112,45 +113,45 @@ function SkillWindow:onButtonSelect(button)
     end
   end
 end
--- Changes current member to the next member in the party.
+--- Changes current member to the next member in the party.
 function SkillWindow:onNext()
   if self.GUI.nextMember then
     AudioManager:playSFX(Config.sounds.buttonSelect)
     self.GUI:nextMember()
   end
 end
--- Changes current member to the previous member in the party.
+--- Changes current member to the previous member in the party.
 function SkillWindow:onPrev()
   if self.GUI.nextMember then
     AudioManager:playSFX(Config.sounds.buttonSelect)
     self.GUI:prevMember()
   end
 end
--- Tells the selected skill can be used.
--- @param(button : Button)
--- @ret(boolean)
+--- Tells the selected skill can be used.
+-- @tparam Button button
+-- @treturn boolean
 function SkillWindow:buttonEnabled(button)
   return not self.member or self.member:isActive() and button.skill
     and button.skill:canMenuUse(self.member)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides ListWindow:cellWidth.
+--- Overrides ListWindow:cellWidth.
 function SkillWindow:cellWidth()
   return 200
 end
--- Overrides GridWindow:colCount.
+--- Overrides GridWindow:colCount.
 function SkillWindow:colCount()
   return 1
 end
--- Overrides GridWindow:rowCount.
+--- Overrides GridWindow:rowCount.
 function SkillWindow:rowCount()
   return self.visibleRowCount
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function SkillWindow:__tostring()
   return 'Menu Skill Window'
 end

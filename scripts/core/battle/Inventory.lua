@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Inventory
+@classmod Inventory
 ---------------------------------------------------------------------------------------------------
 A special kind of list that stores pairs (item ID, quantity).
 
@@ -13,14 +13,15 @@ local List = require('core/datastruct/List')
 -- Alias
 local rand = love.math.random
 
+-- Class table.
 local Inventory = class(List)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(list : table) an array from database (elements with fields id, rate and count).
+--- Constructor.
+-- @tparam table list An array from database (elements with fields id, rate and count).
 function Inventory:init(list)
   List.init(self)
   if list then
@@ -32,8 +33,8 @@ function Inventory:init(list)
     end
   end
 end
--- Gets all slots of this inventory in a simple table.
--- @ret(table)
+--- Gets all slots of this inventory in a simple table.
+-- @treturn table
 function Inventory:getState()
   local table = {}
   for i = 1, self.size do
@@ -43,16 +44,16 @@ function Inventory:getState()
   end
   return table
 end
--- Gets the number of items of given ID.
--- @param(id : number) item's ID in databse
--- @ret(number) the item's count
+--- Gets the number of items of given ID.
+-- @tparam number id Item's ID in databse.
+-- @treturn number The item's count.
 function Inventory:getCount(id)
   local slot = self:getSlot(id)
   return slot and slot.count or 0
 end
--- Gets the slot of the given item.
--- @param(id : number) item's ID in database
--- @ret(table) the item's slot
+--- Gets the slot of the given item.
+-- @tparam number id Item's ID in database.
+-- @treturn table The item's slot.
 function Inventory:getSlot(id)
   for i = 1, self.size do
     if self[i].id == id then
@@ -61,8 +62,8 @@ function Inventory:getSlot(id)
   end
   return nil
 end
--- Converting to string.
--- @ret(string) A string representation
+--- Converting to string.
+-- @treturn string A string representation.
 function Inventory:__tostring()
   if self.size == 0 then
     return 'Inventory {}'
@@ -74,14 +75,14 @@ function Inventory:__tostring()
   return string .. tostring(self[self.size]) .. '}'
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Add / Remove
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Adds new item to inventory.
--- @param(id : number) the item ID
--- @param(count : number) the quantity (optional, 1 by default)
--- @ret(boolean) true if new slot was created, false if item already existed in inventory
+--- Adds new item to inventory.
+-- @tparam number id The item ID.
+-- @tparam number count The quantity (optional, 1 by default).
+-- @treturn boolean True if new slot was created, false if item already existed in inventory.
 function Inventory:addItem(id, count)
   count = count or 1
   for i = 1, self.size do
@@ -93,9 +94,9 @@ function Inventory:addItem(id, count)
   self:add({id = id, count = count})
   return true
 end
--- Removes items from the bag.
--- @param(id : number) the ID of the item type in the database
--- @param(count : number) the number of items of that type to be removed (optional, 1 by default)
+--- Removes items from the bag.
+-- @tparam number id The ID of the item type in the database.
+-- @tparam number count The number of items of that type to be removed (optional, 1 by default).
 function Inventory:removeItem(id, count)
   count = count or 1
   for i = 1, self.size do
@@ -111,8 +112,8 @@ function Inventory:removeItem(id, count)
   end
   return false
 end
--- Adds all items from another inventory.
--- @param(inventory : Inventory)
+--- Adds all items from another inventory.
+-- @tparam Inventory inventory
 function Inventory:addAllItems(inventory)
   for i = 1, #inventory do
     local slot = inventory[i]
@@ -120,14 +121,14 @@ function Inventory:addAllItems(inventory)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Sub-inventories
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets an array of slots of items that are usable.
--- @param(restriction : number) the use restriction: 1 for battle, 2 for field, 0 for any
---  (optional, 0 by default)
--- @ret(table) array of item slots (ID and count)
+--- Gets an array of slots of items that are usable.
+-- @tparam number restriction The use restriction: 1 for battle, 2 for field, 0 for any
+--  (optional, 0 by default).
+-- @treturn table Array of item slots (ID and count).
 function Inventory:getUsableItems(restriction)
   restriction = restriction or 0
   local items = {}
@@ -142,8 +143,8 @@ function Inventory:getUsableItems(restriction)
   end
   return items
 end
--- Gets an array of slots of items that are sellable.
--- @ret(table) array of item slots (ID and count)
+--- Gets an array of slots of items that are sellable.
+-- @treturn table Array of item slots (ID and count).
 function Inventory:getSellableItems()
   local items = {}
   for itemSlot in self:iterator() do
@@ -154,9 +155,9 @@ function Inventory:getSellableItems()
   end
   return items
 end
--- Gets an array of slots of items that are equipment.
--- @param(key : string) the type of equipment (nil if all types)
--- @ret(table) array of item slots (ID and count)
+--- Gets an array of slots of items that are equipment.
+-- @tparam string key The type of equipment (nil if all types).
+-- @treturn table Array of item slots (ID and count).
 function Inventory:getEquipItems(key)
   local items = {}
   for itemSlot in self:iterator() do

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-AIRule
+@classmod AIRule
 ---------------------------------------------------------------------------------------------------
 A rule that defines a decision in the battle turn, storing only data that are independent from the 
 current battle state. Instead of storing state-dependent data, it generates in run time the
@@ -15,11 +15,12 @@ local ActionInput = require('core/battle/action/ActionInput')
 -- Alias
 local rand = love.math.random
 
+-- Class table.
 local AIRule = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 function AIRule:init(battler, condition, tags)
   self.battler = battler
@@ -27,9 +28,9 @@ function AIRule:init(battler, condition, tags)
   self.tags = Database.loadTags(tags)
   self.input = nil
 end
--- Creates an AIRule from the given rule data.
--- @param(data : table) Rule data with path, param and condition fields.
--- @ret(AIRule)
+--- Creates an AIRule from the given rule data.
+-- @tparam table data Rule data with path, param and condition fields.
+-- @treturn AIRule
 function AIRule:fromData(data, battler)
   local class = self
   if data.name and data.name ~= '' then
@@ -38,41 +39,41 @@ function AIRule:fromData(data, battler)
   return class(battler, data.condition, data.tags)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if a rule can be executed.
--- @ret(boolean) 
+--- Checks if a rule can be executed.
+-- @treturn boolean
 function AIRule:canExecute()
   return self.input and self.input:canExecute()
 end
--- Executes the rule.
--- @ret(table) The action result table.
+--- Executes the rule.
+-- @treturn table The action result table.
 function AIRule:execute()
   return self.input and self.input:execute()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Auxiliary
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Randomly returns true with a given chance.
--- @param(percent : number) Chance from 0 to 100.
--- @ret(boolean)
+--- Randomly returns true with a given chance.
+-- @tparam number percent Chance from 0 to 100.
+-- @treturn boolean
 function AIRule:chance(percent)
   return rand() * 100 < percent 
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Prepares the rule to be executed (or not, if it's not possible).
--- @param(user : Character)
+--- Prepares the rule to be executed (or not, if it's not possible).
+-- @tparam Character user
 function AIRule:onSelect(user)
 end
--- @ret(string) String identifier.
+-- @treturn string String identifier.
 function AIRule:__tostring()
   return 'AIRule: ' .. self.battler.key
 end

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-PriorityQueue
+@classmod PriorityQueue
 ---------------------------------------------------------------------------------------------------
 A priority queue with numeric keys. Be default, the element in the front will be the one with the 
 lowest key. See more in: https://en.wikipedia.org/wiki/Priority_queue
@@ -15,38 +15,39 @@ local List = require('core/datastruct/List')
 local sort = table.sort
 local floor = math.floor
 
+-- Class table.
 local PriorityQueue = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(comp : function) The function that compares two pairs (optional).
+-- @tparam function comp The function that compares two pairs (optional).
 function PriorityQueue:init(comp)
   self.comp = comp or self.ascending
   self.size = 0
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Comparison
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Default compare function for ascending orders (lower value first).
+--- Default compare function for ascending orders (lower value first).
 function PriorityQueue.ascending(a, b)
   return a[2] < b[2]
 end
--- Default compare function for descending orders (higher value first).
+--- Default compare function for descending orders (higher value first).
 function PriorityQueue.descending(a, b)
   return a[2] > b[2]
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Operators
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Adds new pair to the queue.
--- @param(element : unknown) The new element to add.
--- @param(v : number) The priority of the element.
+--- Adds new pair to the queue.
+-- @tparam unknown element The new element to add.
+-- @tparam number v The priority of the element.
 function PriorityQueue:enqueue(element, v)
   local new = {element, v}
   self.size = self.size + 1
@@ -59,9 +60,9 @@ function PriorityQueue:enqueue(element, v)
     p = (n - n % 2) / 2
   end
 end
--- Removes the front pair.
--- @ret(unknown) The element removed.
--- @ret(number) The key/priority of the element removed.
+--- Removes the front pair.
+-- @treturn unknown The element removed.
+-- @treturn number The key/priority of the element removed.
 function PriorityQueue:dequeue()
   assert(self.size > 0, 'Priority queue is empty!')
   local pair = self[1]
@@ -98,26 +99,26 @@ function PriorityQueue:dequeue()
   end
   return pair[1], pair[2]
 end
--- Gets the element with the highest priority.
--- @ret(unknown) The front element.
--- @ret(number) The key/priority of the front element.
+--- Gets the element with the highest priority.
+-- @treturn unknown The front element.
+-- @treturn number The key/priority of the front element.
 function PriorityQueue:front()
   assert(self.size > 0, 'Priority queue is empty!')
   local pair = self[1]
   return pair[1], pair[2]
 end
--- Checks if empty.
+--- Checks if empty.
 function PriorityQueue:isEmpty()
   return self.size == 0
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Convertion
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Transform this queue into a list of elements (does not include keys).
--- Empties the queue during the proccess.
--- @ret(List) List of arbitrary elements.
+--- Transform this queue into a list of elements (does not include keys).
+--- Empties the queue during the proccess.
+-- @treturn List List of arbitrary elements.
 function PriorityQueue:toList()
   local list = List()
   while self.size > 0 do
@@ -126,8 +127,8 @@ function PriorityQueue:toList()
   end
   return list
 end
--- Transform this queue into a list of elements (does not include keys).
--- @ret(List) List of arbitrary elements.
+--- Transform this queue into a list of elements (does not include keys).
+-- @treturn List List of arbitrary elements.
 function PriorityQueue:asList()
   local list = List()
   while self.size > 0 do
@@ -140,8 +141,8 @@ function PriorityQueue:asList()
   end
   return list
 end
--- Converting to string.
--- @ret(string) A string representation.
+--- Converting to string.
+-- @treturn string A string representation.
 function PriorityQueue:__tostring()
   local list = self:asList()
   return tostring(list)

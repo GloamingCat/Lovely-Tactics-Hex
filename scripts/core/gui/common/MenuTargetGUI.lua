@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-MenuTargetGUI
+@classmod MenuTargetGUI
 ---------------------------------------------------------------------------------------------------
 A GUI to selected a target character for an action (usually skill or item).
 
@@ -12,20 +12,21 @@ local GUI = require('core/gui/GUI')
 local MenuTargetWindow = require('core/gui/common/window/interactable/MenuTargetWindow')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local MenuTargetGUI = class(GUI)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GUI:init.
+--- Overrides GUI:init.
 function MenuTargetGUI:init(parent, troop, input)
   self.name = 'Menu Target GUI'
   self.troop = troop
   self.input = input
   GUI.init(self, parent)
 end
--- Overrides GUI:createWindow.
+--- Overrides GUI:createWindow.
 function MenuTargetGUI:createWindows()
   self.partyWindow = MenuTargetWindow(self, self.troop)
   if self.position then
@@ -35,12 +36,12 @@ function MenuTargetGUI:createWindows()
   self:setActiveWindow(self.partyWindow)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Member Input
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Sets the button as enabled according to the skill.
--- @param(input : ActionInput)
+--- Sets the button as enabled according to the skill.
+-- @tparam ActionInput input
 function MenuTargetGUI:refreshEnabled()
   local action = self.input.action
   local enabled = action:canMenuUse(self.input.user)

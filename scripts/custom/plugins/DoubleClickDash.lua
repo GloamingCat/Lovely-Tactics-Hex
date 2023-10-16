@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-DoubleClickDash
+@script DoubleClickDash
 ---------------------------------------------------------------------------------------------------
 Makes player dash when double-clicking to a destination tile.
 
@@ -21,15 +21,15 @@ local VSpinner = require('core/gui/widget/control/VSpinner')
 local fasterPlayer = args.player
 local fasterSpinner = args.spinner
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- GameKey
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 -- Constants
 local defaultDoubleClickGap = 0.2
 
--- Checks if button was triggered (just pressed).
--- @ret(boolean) True if was triggered in the current frame, false otherwise.
+--- Checks if button was triggered (just pressed).
+-- @treturn boolean True if was triggered in the current frame, false otherwise.
 function GameKey:isDoubleTriggered(gap)
   if self.pressState ~= 2 then
     return false
@@ -38,9 +38,9 @@ function GameKey:isDoubleTriggered(gap)
   return self.pressTime <= self.previousPressTime + gap
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Player
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 if fasterPlayer then
   -- Sets the speed according to dash input.
@@ -69,9 +69,9 @@ if fasterPlayer then
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Spinners
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 if fasterSpinner then
   -- Uses big increment if double clicked.

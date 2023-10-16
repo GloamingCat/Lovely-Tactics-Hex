@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-EventSheet
+@classmod EventSheet
 ---------------------------------------------------------------------------------------------------
 A fiber that processes a list of sequential commands.
 
@@ -11,16 +11,17 @@ A fiber that processes a list of sequential commands.
 local EventUtil = require('core/event/EventUtil')
 local Fiber = require('core/fiber/Fiber')
 
+-- Class table.
 local EventSheet = class(Fiber, EventUtil)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(root : FiberList) The FiberList that originated this fiber.
--- @param(script : table) Table with name (or func) and tags. 
--- @param(char : Character) Character associated with this fiber (optional).
+--- Constructor.
+-- @tparam FiberList root The FiberList that originated this fiber.
+-- @tparam table script Table with name (or func) and tags.
+-- @tparam Character char Character associated with this fiber (optional).
 function EventSheet:init(root, data, char)
   if data.func then
     self.commands = data.func
@@ -40,24 +41,24 @@ function EventSheet:init(root, data, char)
   self.labels = {}
   Fiber.init(self, root, nil)
 end
--- @ret(string) String identification.
+-- @treturn string String identification.
 function EventSheet:__tostring()
   local name = self.data and self.data.name
   name = name and (' ' .. name) or ''
   return 'EventSheet' .. name ..  ' from ' .. tostring(self.origin.name)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Events
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Adds an event to the execution list.
--- @param(func : functtion | string) The function to be executed, the name of the event, or the
+--- Adds an event to the execution list.
+-- @tparam functtion|string func The function to be executed, the name of the event, or the
 --  the function's code.
--- @param(condition : function | unknown) A condition to execute the command, either a function or
+-- @tparam function|unknown condition A condition to execute the command, either a function or
 --  a constant value.
 --  Can be either a constant or a function to be computed before the event executes.
--- @param(...) Any aditional argumentes to the event's function.
+-- @tparam(...) Any aditional argumentes to the event's function.
 function EventSheet:addEvent(func, condition, ...)
   if condition ~= nil and type(condition) ~= 'function' then
     local value = condition
@@ -76,35 +77,35 @@ function EventSheet:addEvent(func, condition, ...)
     condition = condition
   }
 end
--- Changes the running index to skip a number of events.
--- @param(n : number) Number of events to skip.
+--- Changes the running index to skip a number of events.
+-- @tparam number n Number of events to skip.
 function EventSheet:skipEvents(n)
   self.vars.runningIndex = self.vars.runningIndex + n
 end
--- Directly sets the running index.
--- @param(n : number) Index of the next event.
+--- Directly sets the running index.
+-- @tparam number i Index of the next event.
 function EventSheet:setEvent(i)
   self.vars.runningIndex = i - 1
 end
--- Stores a label name.
--- @param(name : string) Name of the label.
--- @param(i : number) The index that the label points to (optional, last event by default).
+--- Stores a label name.
+-- @tparam string name Name of the label.
+-- @tparam number i The index that the label points to (optional, last event by default).
 function EventSheet:setLabel(name, i)
   i = i or #self.events + 1
   self.labels[name] = i
 end
--- Sets the next event to the one pointed by the given label.
--- @param(name : string) Name of the label.
+--- Sets the next event to the one pointed by the given label.
+-- @tparam string name Name of the label.
 function EventSheet:jumpTo(name)
   assert(self.labels[name], 'Label not defined: ' .. name)
   self:setEvent(self.labels[name])
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Runs the script commands.
+--- Runs the script commands.
 function EventSheet:execute()
   self:setUp()
   self:commands()
@@ -112,7 +113,7 @@ function EventSheet:execute()
     self:runEvents()
   end
 end
--- Runs the event created from the command execution.
+--- Runs the event created from the command execution.
 function EventSheet:runEvents()
   self.vars.runningIndex = self.vars.runningIndex or 0
   while self.vars.runningIndex < #self.events do
@@ -124,14 +125,14 @@ function EventSheet:runEvents()
   end
   self.vars.runningIndex = nil
 end
--- Executes the event indicated by the current running index.
+--- Executes the event indicated by the current running index.
 function EventSheet:runCurrentEvent()
   local event = self.events[self.vars.runningIndex]
   if not event.condition or event.condition(self) then
     event.execute(self, unpack(event.args))
   end
 end
--- Sets any variable needed to indicate that this script is running.
+--- Sets any variable needed to indicate that this script is running.
 function EventSheet:setUp()
   if self.data then
     if self.data.block then
@@ -139,7 +140,7 @@ function EventSheet:setUp()
     end
   end
 end
--- Resets any variable that indicates that this script is running.
+--- Resets any variable that indicates that this script is running.
 function EventSheet:clear()
   if self.gui then
     GUIManager:removeGUI(self.gui)
@@ -152,14 +153,14 @@ function EventSheet:clear()
     self.data.running = nil
   end
 end
--- Overrides Fiber:finish.
+--- Overrides Fiber:finish.
 function EventSheet:finish()
   Fiber.finish(self)
   self:clear()
 end
--- Creates a new fiber in from the same root that executes given script.
--- @param(script : table) Table with name (or func) and tags. 
--- @ret(Fiber) Newly created Fiber.
+--- Creates a new fiber in from the same root that executes given script.
+-- @tparam table script Table with name (or func) and tags.
+-- @treturn Fiber Newly created Fiber.
 function EventSheet:forkFromScript(script, ...)
   return self.root:forkFromScript(script, self.char, ...)
 end

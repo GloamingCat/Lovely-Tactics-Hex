@@ -1,38 +1,40 @@
 
 --[[===============================================================================================
 
-Music
+@classmod Music
 ---------------------------------------------------------------------------------------------------
-A type of sounds that loops and may have a non-looping intro.
+A type of sound that loops and may have a non-looping intro.
+multiline
 
 =================================================================================================]]
 
 -- Imports
 local Sound = require('core/audio/Sound')
 
+-- Class table.
 local Music = class(Sound)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(name : string) Name of the file from the audio folder.
--- @param(volume : number) Initial volume (from 0 to 100).
--- @param(pitch : number) Initial pitch (from 0 to 100).
--- @param(intro : Source) Intro source (optional).
--- @param(loop : Source) Loop source (optional).
+--- Constructor.
+-- @tparam string name Name of the file from the audio folder.
+-- @tparam number volume Initial volume (from 0 to 100).
+-- @tparam number pitch Initial pitch (from 0 to 100).
+-- @tparam Source intro Intro source (optional).
+-- @tparam Source loop Loop source (optional).
 function Music:init(name, volume, pitch, intro, loop)
   self.name = name
   self.intro, self.loop = ResourceManager:loadBGM(name, intro, loop)
   self:initSource(self.intro or self.loop, volume, pitch)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Looping
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks looping.
+--- Checks looping.
 function Music:update()
   if self.source == self.intro and self:isFinished() then
     self.intro:stop()
@@ -42,16 +44,16 @@ function Music:update()
     self.source:play()
   end
 end
--- Overrides Sound:getDuration.
+--- Overrides Sound:getDuration.
 function Music:getDuration(unit)
   return (self.intro and self.intro:getDuration(unit) or 0) + self.loop:getDuration(unit)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Playing
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Sound:stop.
+--- Overrides Sound:stop.
 function Music:stop()
   if self.intro then
     self.intro:stop()
@@ -62,15 +64,15 @@ function Music:stop()
   self.source = self.intro or self.loop
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Volume & Pitch
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Sound:refreshVolume.
+--- Overrides Sound:refreshVolume.
 function Music:refreshVolume()
   self.source:setVolume((self.volume / 100) * (AudioManager.volumeBGM / 100) * AudioManager.fading)
 end
--- Overrides Sound:refreshPitch.
+--- Overrides Sound:refreshPitch.
 function Music:refreshPitch()
   self.source:setPitch((self.pitch / 100) * (AudioManager.pitchBGM / 100) * GameManager.speed)
 end

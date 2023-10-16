@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-IconList
+@classmod IconList
 ---------------------------------------------------------------------------------------------------
 A list of icons to the drawn in a given rectangle.
 Commonly used to show status icons in windows.
@@ -14,18 +14,19 @@ local SimpleImage = require('core/gui/widget/SimpleImage')
 local SpriteGrid = require('core/graphics/SpriteGrid')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local IconList = class(Component)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(topLeft : Vector) Position of the top left corner.
--- @param(width : number) The max width.
--- @param(height : number) The max height.
--- @param(frameWidth : number) The width of each icon (optional, 16 by default).
--- @param(frameHeight : number) The height of each icon (optional, 16 by default).
+--- Constructor.
+-- @tparam Vector topLeft Position of the top left corner.
+-- @tparam number width The max width.
+-- @tparam number height The max height.
+-- @tparam number frameWidth The width of each icon (optional, 16 by default).
+-- @tparam number frameHeight The height of each icon (optional, 16 by default).
 function IconList:init(topLeft, width, height, frameWidth, frameHeight)
   Component.init(self, topLeft)
   self.icons = {}
@@ -39,8 +40,8 @@ function IconList:init(topLeft, width, height, frameWidth, frameHeight)
   self.frameID = Config.animations.frame
   self.visible = true
 end
--- Sets the content of this list.
--- @param(icons : table) Array of sprites.
+--- Sets the content of this list.
+-- @tparam table icons Array of sprites.
 function IconList:setSprites(icons)
   self:destroy()
   local frameSkin = self.frameID >= 0 and Database.animations[self.frameID]
@@ -80,8 +81,8 @@ function IconList:setSprites(icons)
     x = x + self.frameWidth - 1
   end
 end
--- Sets the content of this list.
--- @param(icons : table) Array of icon tables (id, col and row).
+--- Sets the content of this list.
+-- @tparam table icons Array of icon tables (id, col and row).
 function IconList:setIcons(icons)
   local sprites = {}
   for i = 1, #icons do

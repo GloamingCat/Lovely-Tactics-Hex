@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Dialogue
+@classmod Dialogue
 ---------------------------------------------------------------------------------------------------
 A GUI text that is written character by character and interacts with text events and player input.
 
@@ -15,13 +15,14 @@ Event codes:
 -- Imports
 local SimpleText = require('core/gui/widget/SimpleText')
 
+-- Class table.
 local Dialogue = class(SimpleText)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides SimpleText:init.
+--- Overrides SimpleText:init.
 function Dialogue:init(...)
   SimpleText.init(self, ...)
   self.sprite.wrap = true
@@ -30,18 +31,18 @@ function Dialogue:init(...)
   self.textSound = Config.sounds.text
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(boolean) True if player pressed the button to pass the dialogue.
+-- @treturn boolean True if player pressed the button to pass the dialogue.
 function Dialogue:buttonPressed()
   return InputManager.keys['confirm']:isTriggered() or InputManager.keys['cancel']:isTriggered() 
     or InputManager.keys['mouse1']:isTriggered() or InputManager.keys['mouse2']:isTriggered()
     or InputManager.keys['touch']:isTriggered()
 end
--- Shows text interactively, character by character.
--- @param(text : string) Raw text string.
+--- Shows text interactively, character by character.
+-- @tparam string text Raw text string.
 function Dialogue:rollText(text)
   self.sprite:setText(text)
   local time = 0
@@ -85,9 +86,9 @@ function Dialogue:rollText(text)
   end
   self.sprite:setCutPoint(nil)
 end
--- Triggers events in the given character (cut point) interval.
--- @param(min : number) Interval's minimum (inclusive).
--- @param(max : number) Interval's maximum (exclusive).
+--- Triggers events in the given character (cut point) interval.
+-- @tparam number min Interval's minimum (inclusive).
+-- @tparam number max Interval's maximum (exclusive).
 function Dialogue:triggerEvents(min, max)
 	for _, event in ipairs(self.sprite.events) do
 		if event.point >= min and event.point < max then
@@ -104,9 +105,9 @@ function Dialogue:triggerEvents(min, max)
     end
   end
 end
--- Searchs for the next point in the text after player skips.
--- @param(min : number) Current text character.
--- @ret(number) Next skip point or nil if reached the end of text.
+--- Searchs for the next point in the text after player skips.
+-- @tparam number min Current text character.
+-- @treturn number Next skip point or nil if reached the end of text.
 function Dialogue:findSkipPoint(min)
   for _, event in ipairs(self.sprite.events) do
     if event.point >= min and event.type == 'input' then

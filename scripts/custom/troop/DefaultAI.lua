@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-DefaultAI
+@script DefaultAI
 ---------------------------------------------------------------------------------------------------
 Default troop AI. Manages the action for each member in order.
 If a battler does not have an AI, it is ignored and does nothing.

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Job
+@classmod Job
 ---------------------------------------------------------------------------------------------------
 Represents a battler's job.
 
@@ -12,15 +12,16 @@ local List = require('core/datastruct/List')
 local SkillAction = require('core/battle/action/SkillAction')
 local SkillList = require('core/battle/battler/SkillList')
 
+-- Class table.
 local Job = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(battler : Battler) The battler with this class.
--- @param(save : table) Persitent data from save.
+--- Constructor.
+-- @tparam Battler battler The battler with this class.
+-- @tparam table save Persitent data from save.
 function Job:init(battler, save)
   self.id = save and save.id or battler.data.jobID
   self.battler = battler
@@ -46,12 +47,12 @@ function Job:init(battler, save)
   self:learnSkills()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Level-up
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Increments experience and learns skill if leveled up.
--- @param(exp : number) The quantity of EXP to be added.
+--- Increments experience and learns skill if leveled up.
+-- @tparam number exp The quantity of EXP to be added.
 function Job:addExperience(exp)
   if self.level == Config.battle.maxLevel then
     return
@@ -66,7 +67,7 @@ function Job:addExperience(exp)
     end
   end
 end
--- Learn all skills up to current level.
+--- Learn all skills up to current level.
 function Job:learnSkills()
   for i = 1, #self.allSkills do
     local skill = self.allSkills[i]
@@ -75,9 +76,9 @@ function Job:learnSkills()
     end
   end
 end
--- Checks if the class levels up with the given EXP.
--- @param(exp : number) The quantity of EXP to be added.
--- @ret(number) The new level, or nil if did not level up.
+--- Checks if the class levels up with the given EXP.
+-- @tparam number exp The quantity of EXP to be added.
+-- @treturn number The new level, or nil if did not level up.
 function Job:levelsup(exp)
   local level = self.level
   exp = exp + self.exp
@@ -90,9 +91,9 @@ function Job:levelsup(exp)
     return nil
   end
 end
--- Computes the EXP progress to towards the next level.
--- @ret(number) Current EXP progress.
--- @ret(number) The total EXP needed from the current level to the next.
+--- Computes the EXP progress to towards the next level.
+-- @treturn number Current EXP progress.
+-- @treturn number The total EXP needed from the current level to the next.
 function Job:nextLevelEXP()
   if self.level == Config.battle.maxLevel then
     local expMax = self.expCurve(self.level) - self.expCurve(self.level - 1)
@@ -105,16 +106,16 @@ function Job:nextLevelEXP()
   return exp, expMax
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Converting to string.
--- @ret(string) A string representation.
+--- Converting to string.
+-- @treturn string A string representation.
 function Job:__tostring()
   return 'Job: ' .. tostring(self.battler)
 end
--- @ret(table) Persistent data table.
+-- @treturn table Persistent data table.
 function Job:getState()
   local state = {}
   state.id = self.id

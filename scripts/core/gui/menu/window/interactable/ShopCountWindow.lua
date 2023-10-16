@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-ShopCountWindow
+@classmod ShopCountWindow
 ---------------------------------------------------------------------------------------------------
 Window that shows the total price to be paidin the Shop GUI.
 
@@ -14,13 +14,14 @@ local SimpleImage = require('core/gui/widget/SimpleImage')
 local SimpleText = require('core/gui/widget/SimpleText')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local ShopCountWindow = class(CountWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:createContent. Creates the text with the price values.
+--- Overrides GridWindow:createContent. Creates the text with the price values.
 function ShopCountWindow:createContent(...)
   CountWindow.createContent(self, ...)
   self:createValues()
@@ -29,7 +30,7 @@ function ShopCountWindow:createContent(...)
   self.spinner.confirmSound = Config.sounds.buy or self.spinner.confirmSound
   self.spinner.bigIncrement = 5
 end
--- Overrides CountWindow:createWidgets. Adds "buy" button.
+--- Overrides CountWindow:createWidgets. Adds "buy" button.
 function ShopCountWindow:createWidgets(...)
   CountWindow.createWidgets(self, ...)
   local button = Button:fromKey(self, "buy")
@@ -37,7 +38,7 @@ function ShopCountWindow:createWidgets(...)
   button.clickSound = Config.sounds.buy or button.clickSound
   button.text:setAlign('center', 'center')
 end
--- Creates the texts of each money value.
+--- Creates the texts of each money value.
 function ShopCountWindow:createValues()
   local p = self.spinner:relativePosition()
   local x, y = p.x, p.y + self:cellHeight()
@@ -52,7 +53,7 @@ function ShopCountWindow:createValues()
   self.content:add(self.decrease)
   self.content:add(self.current)
 end
--- Create the component for the item icon.
+--- Create the component for the item icon.
 function ShopCountWindow:createIcon()
   local w = self.width - self:paddingX() * 2 - self:cellWidth()
   local h = self:cellHeight()
@@ -61,7 +62,7 @@ function ShopCountWindow:createIcon()
   self.icon = SimpleImage(nil, x, y, -1, w, h)
   self.content:add(self.icon)
 end
--- Creates the texts for the inventory stats (owned and equipped).
+--- Creates the texts for the inventory stats (owned and equipped).
 function ShopCountWindow:createStats()
   local font = Fonts.gui_medium
   local x = -self.width / 2 + self.paddingY()
@@ -73,13 +74,13 @@ function ShopCountWindow:createStats()
   self.content:add(self.equipped)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Item
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Sets the current item type to buy.
--- @param(item : table) The item's data from database.
--- @param(price : number) The price for each unit.
+--- Sets the current item type to buy.
+-- @tparam table item The item's data from database.
+-- @tparam number price The price for each unit.
 function ShopCountWindow:setItem(item, price)
   local money = self.GUI.troop.money
   self.item = item
@@ -102,9 +103,9 @@ function ShopCountWindow:setItem(item, price)
   self:setPrice(money, price)
   self:updateStats(item.id)
 end
--- Updates the item price.
--- @param(money : number) Troop's current money.
--- @param(price : number) The price for each unit.
+--- Updates the item price.
+-- @tparam number money Troop's current money.
+-- @tparam number price The price for each unit.
 function ShopCountWindow:setPrice(money, price)
   self.current:setText(money .. '')
   self.current:redraw()
@@ -117,7 +118,7 @@ function ShopCountWindow:setPrice(money, price)
   self.total:setText((money - price) .. '')
   self.total:redraw()
 end
--- Updates "owned" and "equipped" values.
+--- Updates "owned" and "equipped" values.
 function ShopCountWindow:updateStats(id)
   local troop = self.GUI.troop
   local owned = troop.inventory:getCount(id)
@@ -131,36 +132,36 @@ function ShopCountWindow:updateStats(id)
   self.equipped:redraw()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Confirm Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 function ShopCountWindow:onButtonConfirm(button)
   self:apply()
 end
--- Cancels the buy action.
+--- Cancels the buy action.
 function ShopCountWindow:onButtonCancel(button)
   self.currentRow = 1
   self:returnWindow()
 end
--- Confirms the buy action.
+--- Confirms the buy action.
 function ShopCountWindow:onSpinnerConfirm(spinner)
   self:apply()
 end
--- Cancels the buy action.
+--- Cancels the buy action.
 function ShopCountWindow:onSpinnerCancel(spinner)
   self:returnWindow()
 end
--- Increments / decrements the quantity of items to buy.
+--- Increments / decrements the quantity of items to buy.
 function ShopCountWindow:onSpinnerChange(spinner)
   self:setPrice(self.GUI.troop.money, spinner.value * self.price)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Finish
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Buys / sells the selected quantity.
+--- Buys / sells the selected quantity.
 function ShopCountWindow:apply()
   local troop = self.GUI.troop
   troop.money = troop.money - self.spinner.value * self.price
@@ -173,7 +174,7 @@ function ShopCountWindow:apply()
   self.GUI.goldWindow:setGold(troop.money)
   self:returnWindow()
 end
--- Hides this window and returns to the window with the item list.
+--- Hides this window and returns to the window with the item list.
 function ShopCountWindow:returnWindow()
   local w = self.GUI.listWindow
   self:hide()
@@ -182,34 +183,34 @@ function ShopCountWindow:returnWindow()
   w:activate()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Mode
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Use this window to buy items.
+--- Use this window to buy items.
 function ShopCountWindow:setBuyMode()
   self.buy = true
   self.matrix[2]:setTerm('buy', '')
 end
--- Use this window to sell items.
+--- Use this window to sell items.
 function ShopCountWindow:setSellMode()
   self.buy = false
   self.matrix[2]:setTerm('sell', '')
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:rowCount.
+--- Overrides GridWindow:rowCount.
 function ShopCountWindow:rowCount()
   return 2
 end
--- Overrides GridWindow:cellWidth.
+--- Overrides GridWindow:cellWidth.
 function ShopCountWindow:cellWidth()
   return 100
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function ShopCountWindow:__tostring()
   return 'Shop Count Window'
 end

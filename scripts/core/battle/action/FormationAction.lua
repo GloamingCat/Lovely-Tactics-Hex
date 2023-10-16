@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-FormationAction
+@classmod FormationAction
 ---------------------------------------------------------------------------------------------------
 The BattleAction that is executed when players chooses "Formation" in the intro GUI.
 
@@ -11,19 +11,20 @@ The BattleAction that is executed when players chooses "Formation" in the intro 
 local CallAction = require('core/battle/action/CallAction')
 local CallGUI = require('core/gui/battle/CallGUI')
 
+-- Class table.
 local FormationAction = class(CallAction)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input callback
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:onSelect.
+--- Overrides BattleAction:onSelect.
 function FormationAction:onSelect(input)
   self.party = input.party or TurnManager.party
   self.troop = TroopManager.troops[self.party]
   CallAction.onSelect(self, input)
 end
--- Overrides BattleAction:onConfirm.
+--- Overrides BattleAction:onConfirm.
 function FormationAction:onConfirm(input)
   local result = GUIManager:showGUIForResult(CallGUI(input.GUI, self.troop, input.user == nil))
   if result ~= 0 then
@@ -54,21 +55,21 @@ function FormationAction:onConfirm(input)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Selectable Tiles
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:isSelectable.
+--- Overrides BattleAction:isSelectable.
 function FormationAction:isSelectable(input, tile)
   return tile.party == self.party and tile.obstacleList:isEmpty() and
     not FieldManager.currentField:collidesTerrain(tile:coordinates())
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Target
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:firstTarget.
+--- Overrides BattleAction:firstTarget.
 function FormationAction:firstTarget(input)
   local leader = self.troop:currentMembers()[1]
   local char = FieldManager:search(leader.key)

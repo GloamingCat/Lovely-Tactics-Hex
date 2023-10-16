@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-VisiblePartyWindow
+@script VisiblePartyWindow
 ---------------------------------------------------------------------------------------------------
 Makes the PartyWindow in the FieldGUI visible alongside the FieldCommandWindow.
 
@@ -14,11 +14,11 @@ local FieldGUI = require('core/gui/menu/FieldGUI')
 local FieldCommandWindow = require('core/gui/menu/window/interactable/FieldCommandWindow')
 local PartyWindow = require('core/gui/members/window/interactable/PartyWindow')
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- FieldGUI
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Changes the position of the info windows.
+--- Changes the position of the info windows.
 local FieldGUI_createWindows = FieldGUI.createWindows
 function FieldGUI:createWindows(...)
   FieldGUI_createWindows(self, ...)
@@ -27,7 +27,7 @@ function FieldGUI:createWindows(...)
   self.locationWindow:setXYZ(nil, y)
   self.timeWindow:setXYZ(nil, y)
 end
--- Changes the position of the main window.
+--- Changes the position of the main window.
 local FieldGUI_createMainWindow = FieldGUI.createMainWindow
 function FieldGUI:createMainWindow()
   FieldGUI_createMainWindow(self)
@@ -37,7 +37,7 @@ function FieldGUI:createMainWindow()
   self.goldWindowWidth = self.mainWindow.width
   self.mainWindow:setXYZ(x, y)
 end
--- Changes the position of the members window and hides highlight.
+--- Changes the position of the members window and hides highlight.
 local FieldGUI_createMembersWindow = FieldGUI.createMembersWindow
 function FieldGUI:createMembersWindow()
   FieldGUI_createMembersWindow(self)
@@ -50,17 +50,17 @@ function FieldGUI:createMembersWindow()
   self.partyWindow.lastOpen = true
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- FieldCommandWindow
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Changes the alignment of the button.
+--- Changes the alignment of the button.
 local FieldCommandWindow_setProperties = FieldCommandWindow.setProperties
 function FieldCommandWindow:setProperties(...)
   FieldCommandWindow_setProperties(self, ...)
   self.buttonAlign = 'left'
 end
--- Do not open/close GUI when changing focus to/from the PartyWindow.
+--- Do not open/close GUI when changing focus to/from the PartyWindow.
 function FieldCommandWindow:openPartyWindow(GUI, tooltip)
   if self.GUI.partyWindow.troop:visibleMembers().size <= 1 then
     self.GUI:hide()
@@ -82,22 +82,22 @@ function FieldCommandWindow:openPartyWindow(GUI, tooltip)
   self:activate()
   self.GUI.partyWindow.highlight:hide()
 end
--- To make the window thinner to fit the party window.
+--- To make the window thinner to fit the party window.
 local FieldCommandWindow_colCount = FieldCommandWindow.colCount
 function FieldCommandWindow:colCount()
   return 1
 end
 local FieldCommandWindow_rowCount = FieldCommandWindow.rowCount
--- To make the window longer to fit the other buttons.
+--- To make the window longer to fit the other buttons.
 function FieldCommandWindow:rowCount()
   return FieldCommandWindow_rowCount(self) * FieldCommandWindow_colCount(self)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- PartyWindow
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides ListWindow:cellWidth.
+--- Overrides ListWindow:cellWidth.
 local PartyWindow_cellWidth = PartyWindow.cellWidth
 function PartyWindow:cellWidth()
   if self.GUI and self.GUI.mainWindow then
@@ -106,7 +106,7 @@ function PartyWindow:cellWidth()
   end
   return PartyWindow_cellWidth(self)
 end
--- Overrides ListWindow:cellWidth.
+--- Overrides ListWindow:cellWidth.
 local PartyWindow_cellHeight = PartyWindow.cellHeight
 function PartyWindow:cellHeight()
   if self.GUI and self.GUI.goldWindow then

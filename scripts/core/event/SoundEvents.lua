@@ -1,40 +1,40 @@
 
 --[[===============================================================================================
 
-Sound Events
+@module SoundEvents
 ---------------------------------------------------------------------------------------------------
-Functions that are loaded from the EventSheet.
+Audio-related functions that are loaded from the EventSheet.
 
 =================================================================================================]]
 
-local EventSheet = {}
+local SoundEvents = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Sound
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 -- General parameters:
--- @param(args.name : string) The path to the sound from audio/bgm (BGMs) or audio/sfx (SFX).
--- @param(args.volume : number) Volume in percentage.
--- @param(args.pitch : number) Pitch in percentage.
--- @param(args.time : number) The duration of the BGM fading transition.
--- @param(args.wait : boolean) Wait for the BGM fading transition or until SFX finishes.
+-- @tparam args.name string The path to the sound from audio/bgm (BGMs) or audio/sfx (SFX).
+-- @tparam args.volume number Volume in percentage.
+-- @tparam args.pitch number Pitch in percentage.
+-- @tparam args.time number The duration of the BGM fading transition.
+-- @tparam args.wait boolean Wait for the BGM fading transition or until SFX finishes.
 
--- Changes the current BGM.
-function EventSheet:playBGM(sheet, args)
+--- Changes the current BGM.
+function SoundEvents:playBGM(sheet, args)
   AudioManager:playBGM(args, args.time, args.wait)
 end
--- Pauses current BGM.
-function EventSheet:pauseBGM(sheet, args)
+--- Pauses current BGM.
+function SoundEvents:pauseBGM(sheet, args)
   AudioManager:pauseBGM(args, args.time, args.wait)
 end
--- Resumes current BGM.
-function EventSheet:resumeBGM(sheet, args)
+--- Resumes current BGM.
+function SoundEvents:resumeBGM(sheet, args)
   AudioManager:resumeBGM(args, args.time, args.wait)
 end
--- Play a sound effect.
-function EventSheet:playSFX(sheet, args)
+--- Play a sound effect.
+function SoundEvents:playSFX(sheet, args)
   AudioManager:playSFX(args)
 end
 
-return EventSheet
+return SoundEvents

@@ -1,21 +1,23 @@
 
 --[[===============================================================================================
 
-Screen Events
+@module ScreenEvents
 ---------------------------------------------------------------------------------------------------
-Functions that are loaded from the EventSheet.
+Screen-related functions that are loaded from the EventSheet.
 
 =================================================================================================]]
 
-local EventSheet = {}
+local ScreenEvents = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Shader Effect
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows the effect of a shader.
--- @param(args.name : string)
-function EventSheet:shaderin(args)
+--- Shows the effect of a shader.
+-- @tparam table args
+--  args.name (string): Shader's file name.
+--  args.speed (number): Speed of the transition, in a fraction (0 to 1) per second (optional, 1 by default).
+function ScreenEvents:shaderin(args)
   ScreenManager.shader = ResourceManager:loadShader(args.name)
   ScreenManager.shader:send('time', 0)
   local time = GameManager:frameTime()
@@ -26,9 +28,10 @@ function EventSheet:shaderin(args)
   end
   ScreenManager.shader:send('time', 1)
 end
--- Hides the effect of a shader.
--- @param(args.name : string)
-function EventSheet:shaderout(args)
+--- Hides the effect of a shader.
+-- @tparam table args
+--  args.speed (number): Speed of the transition, in a fraction (0 to 1) per second (optional, 1 by default).
+function ScreenEvents:shaderout(args)
   ScreenManager.shader:send('time', 1)
   local time = GameManager:frameTime()
   while time > 0 do
@@ -39,43 +42,47 @@ function EventSheet:shaderout(args)
   ScreenManager.shader:send('time', 0)
   ScreenManager.shader = nil
 end
--- Lightens the screen.
--- @param(args.time : number) Duration of effect in frames.
--- @param(args.wait : boolean) True to wait until effect is finished.
-function EventSheet:fadein(args)
+--- Lightens the screen.
+-- @tparam table args
+--  args.time (number): Duration of effect in frames.
+--  args.wait (boolean): True to wait until effect is finished.
+function ScreenEvents:fadein(args)
   FieldManager.renderer:fadein(args.time, args.wait)
 end
--- Darkens the screen.
--- @param(args.time : number) Duration of effect in frames.
--- @param(args.wait : boolean) True to wait until effect is finished.
-function EventSheet:fadeout(args)
+--- Darkens the screen.
+-- @tparam table args
+--  args.time (number): Duration of effect in frames.
+--  args.wait (boolean): True to wait until effect is finished.
+function ScreenEvents:fadeout(args)
   FieldManager.renderer:fadeout(args.time, args.wait)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Camera
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Makes camera start following given character.
--- @param(args.key : string) Character's key.
--- @param(args.speed : number) Camera movement speed (optional).
--- @param(args.wait : bool) Wait until movement is complete (optional).
-function EventSheet:focusCharacter(args)
-  local character = self:findCharacter(args.key)
+--- Makes camera start following given character.
+-- @tparam table args
+--  args.key (string): Character's key.
+--  args.speed (number): Camera movement speed (optional).
+--  args.wait (boolean): Wait until movement is complete (optional).
+function ScreenEvents:focusCharacter(args)
+  local char = self:findCharacter(args.key)
   FieldManager.renderer.focusObject = nil
-  FieldManager.renderer:moveToObject(character, args.speed, args.wait)
-  FieldManager.renderer.focusObject = character
+  FieldManager.renderer:moveToObject(char, args.speed, args.wait)
+  FieldManager.renderer.focusObject = char
 end
--- Makes focus on given tile.
--- @param(args.x : number) Tile grid x.
--- @param(args.y : number) Tile grid y.
--- @param(args.h : number) Tile's height (optional).
--- @param(args.speed : number) Camera movement speed (optional).
--- @param(args.wait : bool) Wait until movement is complete (optional).
-function EventSheet:focusTile(args)
+--- Makes focus on given tile.
+-- @tparam table args
+--  args.x (number): Tile grid x.
+--  args.y (number): Tile grid y.
+--  args.h (number): Tile's height (optional, 1 by default).
+--  args.speed (number): Camera movement speed (optional).
+--  args.wait (boolean): Wait until movement is complete (optional).
+function ScreenEvents:focusTile(args)
   local tile = FieldManager.currentField:getObjectTile(args.x, args.y, args.h or 1)
   FieldManager.renderer.focusObject = nil
   FieldManager.renderer:moveToTile(tile, args.speed, args.wait)
 end
 
-return EventSheet
+return ScreenEvents

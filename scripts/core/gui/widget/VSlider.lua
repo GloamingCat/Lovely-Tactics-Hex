@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-VSlider
+@classmod VSlider
 ---------------------------------------------------------------------------------------------------
 A side bar to scroll through windows.
 It's a type of window content.
@@ -15,22 +15,23 @@ local Sprite = require('core/graphics/Sprite')
 -- Alias
 local Image = love.graphics.newImage
 
+-- Class table.
 local VSlider = class(Component)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(window : Window) Parent window.
--- @param(position : Vector) Position relative to its parent window's position.
--- @param(length : number) Length of slider.
+--- Constructor.
+-- @tparam Window window Parent window.
+-- @tparam Vector position Position relative to its parent window's position.
+-- @tparam number length Length of slider.
 function VSlider:init(window, position, length)
   Component.init(self, position, length)
   self.window = window
   window.content:add(self)
 end
--- Overrides Component:createContent.
+--- Overrides Component:createContent.
 function VSlider:createContent(length)
   self.length = length
   local bar = Image(Project.imagePath .. 'GUI/VSlider/bar.png')
@@ -55,11 +56,11 @@ function VSlider:createContent(length)
   self.content:add(self.cursor)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Position
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Component:updatePosition.
+--- Overrides Component:updatePosition.
 function VSlider:updatePosition(pos)
   pos = pos + self.position
   self.bar:setXYZ(pos.x, pos.y)
@@ -67,7 +68,7 @@ function VSlider:updatePosition(pos)
   self.downArrow:setXYZ(pos.x, pos.y + self.length / 2)
   self:updateCursorPosition(pos)
 end
--- @param(pos : Vector) Center position.
+-- @tparam Vector pos Center position.
 function VSlider:updateCursorPosition(pos)
   local length = self.length - self.upArrow.offsetY - self.downArrow.offsetY
   local t = self.window.offsetRow / (self.window:actualRowCount() - self.window:rowCount())

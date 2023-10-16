@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-TitleCommandWindow
+@classmod TitleCommandWindow
 ---------------------------------------------------------------------------------------------------
 The small windows with the commands for character management.
 
@@ -12,20 +12,21 @@ local Button = require('core/gui/widget/control/Button')
 local GridWindow = require('core/gui/GridWindow')
 local SettingsGUI = require('core/gui/menu/SettingsGUI')
 
+-- Class table.
 local TitleCommandWindow = class(GridWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Buttons
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function TitleCommandWindow:init(...)
   self.speed = math.huge
   GridWindow.init(self, ...)
   self.currentCol = 1
   self.currentRow = self:loadGameEnabled() and 2 or 1
 end
--- Implements GridWindow:createWidgets.
+--- Implements GridWindow:createWidgets.
 function TitleCommandWindow:createWidgets()
   Button:fromKey(self, 'newGame')
   Button:fromKey(self, 'loadGame')
@@ -35,11 +36,11 @@ function TitleCommandWindow:createWidgets()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Confirm Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- New Game button.
+--- New Game button.
 function TitleCommandWindow:newGameConfirm()
   self.GUI:pauseBGM()
   self.GUI:hide()
@@ -49,7 +50,7 @@ function TitleCommandWindow:newGameConfirm()
   local save = SaveManager:loadSave()
   GameManager:setSave(save)
 end
--- Load Game button.
+--- Load Game button.
 function TitleCommandWindow:loadGameConfirm()
   self.GUI.topText:setVisible(false)
   self:hide()
@@ -66,7 +67,7 @@ function TitleCommandWindow:loadGameConfirm()
     self:show()
   end
 end
--- Settings button.
+--- Settings button.
 function TitleCommandWindow:configConfirm()
   self.GUI.topText:setVisible(false)
   self:hide()
@@ -74,37 +75,37 @@ function TitleCommandWindow:configConfirm()
   self.GUI.topText:setVisible(true)
   self:show()
 end
--- Quit button.
+--- Quit button.
 function TitleCommandWindow:quitConfirm()
   self.GUI:hide()
   GameManager:quit()
 end
--- Cancel button.
+--- Cancel button.
 function TitleCommandWindow:onButtonCancel()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Enabled Conditions
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(boolean) True if Item GUI may be open, false otherwise.
+-- @treturn boolean True if Item GUI may be open, false otherwise.
 function TitleCommandWindow:loadGameEnabled()
   return self.GUI.loadWindow
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:colCount.
+--- Overrides GridWindow:colCount.
 function TitleCommandWindow:colCount()
   return 1
 end
--- Overrides GridWindow:rowCount.
+--- Overrides GridWindow:rowCount.
 function TitleCommandWindow:rowCount()
   return GameManager:isDesktop() and 4 or 3
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function TitleCommandWindow:__tostring()
   return 'Title Command Window'
 end

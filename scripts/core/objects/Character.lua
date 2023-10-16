@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Character
+@classmod Character
 ---------------------------------------------------------------------------------------------------
 This class provides general functions to be called by fibers. 
 The [COUROUTINE] functions must ONLY be called from a fiber.
@@ -18,14 +18,15 @@ local MoveAction = require('core/battle/action/MoveAction')
 local mathf = math.field
 local max = math.max
 
+-- Class table.
 local Character = class(CharacterBase)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Animation
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Plays animation for when character is knocked out.
--- @ret(Animation) The animation that started playing.
+--- Plays animation for when character is knocked out.
+-- @treturn Animation The animation that started playing.
 function Character:playKOAnimation()
   if self.party == TroopManager.playerParty then
     if Config.sounds.allyKO then
@@ -39,14 +40,14 @@ function Character:playKOAnimation()
   return self:playAnimation(self.koAnim)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Movement
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Tries to move in a given angle.
--- @param(angle : number) The angle in degrees to move.
--- @ret(boolean) Returns false if the next angle must be tried, a number to stop trying.
---  If 0, then the path was free. If 1, there was a character in this tile.
+--- [COROUTINE] Tries to move in a given angle.
+-- @tparam number angle The angle in degrees to move.
+-- @treturn boolean Returns false if the next angle must be tried, a number to stop trying.
+---  If 0, then the path was free. If 1, there was a character in this tile.
 function Character:tryAngleMovement(angle)  
   local frontTiles = self:getFrontTiles(angle)
   if #frontTiles == 0 then
@@ -60,10 +61,10 @@ function Character:tryAngleMovement(angle)
   end
   return false
 end
--- [COROUTINE] Tries to move to the given tile.
--- @param(tile : ObjectTile) The destination tile.
--- @ret(number) Returns false if the next angle must be tried, a number to stop trying.
---  If 0, then the path was free. If 1, there was a character in this tile.
+--- [COROUTINE] Tries to move to the given tile.
+-- @tparam ObjectTile tile The destination tile.
+-- @treturn number Returns false if the next angle must be tried, a number to stop trying.
+---  If 0, then the path was free. If 1, there was a character in this tile.
 function Character:tryTileMovement(tile)
   local ox, oy, oh = self:tileCoordinates()
   local dx, dy, dh = tile:coordinates()
@@ -92,10 +93,10 @@ function Character:tryTileMovement(tile)
   end
   return false
 end
--- [COROUTINE] Tries to walk a path to the given tile.
--- @param(tile : ObjectTile) Destination tile.
--- @param(pathLength : number) Maximum length of path.
--- @ret(boolean) True if the character walked the full path.
+--- [COROUTINE] Tries to walk a path to the given tile.
+-- @tparam ObjectTile tile Destination tile.
+-- @tparam number pathLength Maximum length of path.
+-- @treturn boolean True if the character walked the full path.
 function Character:tryPathMovement(tile, pathLength)
   local input = ActionInput(MoveAction(mathf.neighborMask, pathLength), self, tile)
   local path = input.action:calculatePath(input)
@@ -105,9 +106,9 @@ function Character:tryPathMovement(tile, pathLength)
   self.path = path:addStep(tile, 1):toStack()
   return true
 end
--- [COROUTINE] Moves to the given tile.
--- @param(tile : ObjectTile) The destination tile.
--- @ret(number) Returns false if path was blocked, true otherwise.
+--- [COROUTINE] Moves to the given tile.
+-- @tparam ObjectTile tile The destination tile.
+-- @treturn number Returns false if path was blocked, true otherwise.
 function Character:applyTileMovement(tile)
   local input = ActionInput(MoveAction(mathf.centerMask, 2), self, tile)
   local path = input.action:calculatePath(input)
@@ -131,12 +132,12 @@ function Character:applyTileMovement(tile)
   end
   return false
 end
--- [COROUTINE] Walks the next tile of the path.
--- @ret(boolean) True if character walked to the next tile, false if collided.
--- @ret(ObjectTile) The next tile in the path:
+--- [COROUTINE] Walks the next tile of the path.
+-- @treturn boolean True if character walked to the next tile, false if collided.
+-- @treturn ObjectTile The next tile in the path:
 --  If passable, it's the current tile;
 --  If not, it's the front tile;
---  If path was empty, then nil.
+---  If path was empty, then nil.
 function Character:consumePath()
   local tile = nil
   if not self.path:isEmpty() then
@@ -149,13 +150,13 @@ function Character:consumePath()
   return false, tile
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Skill (user)
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Play load animation.
--- @param(skill : table) Skill data from database.
--- @ret(number) The duration of the animation.
+--- [COROUTINE] Play load animation.
+-- @tparam table skill Skill data from database.
+-- @treturn number The duration of the animation.
 function Character:loadSkill(skill)
   -- Load animation (user)
   local minTime = 0
@@ -170,11 +171,11 @@ function Character:loadSkill(skill)
   end
   return 0
 end
--- [COROUTINE] Plays cast animation.
--- @param(skill : table) Skill's data.
--- @param(dir : number) The direction of the cast.
--- @param(tile : ObjectTile) Target of the skill.
--- @ret(number) The duration of the animation.
+--- [COROUTINE] Plays cast animation.
+-- @tparam table skill Skill's data.
+-- @tparam number dir The direction of the cast.
+-- @tparam ObjectTile target Target of the skill.
+-- @treturn number The duration of the animation.
 function Character:castSkill(skill, dir, target)
   -- Forward step
   if skill.stepOnCast then
@@ -195,9 +196,9 @@ function Character:castSkill(skill, dir, target)
   end
   return minTime
 end
--- [COROUTINE] Returns to original tile and stays idle.
--- @param(origin : ObjectTile) The original tile of the character.
--- @param(skill : table) Skill data from database.
+--- [COROUTINE] Returns to original tile and stays idle.
+-- @tparam ObjectTile origin The original tile of the character.
+-- @tparam table skill Skill data from database.
 function Character:finishSkill(origin, skill)
   if skill.stepOnCast then
     local x, y, z = origin.center:coordinates()
@@ -215,14 +216,14 @@ function Character:finishSkill(origin, skill)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Skill (target)
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Plays damage and KO (if died) animation.
--- @param(skill : Skill) The skill used.
--- @param(origin : ObjectTile) The tile of the skill user.
--- @param(results : table) Results of the skill.
+--- [COROUTINE] Plays damage and KO (if died) animation.
+-- @tparam Skill skill The skill used.
+-- @tparam ObjectTile origin The tile of the skill user.
+-- @tparam table results Results of the skill.
 function Character:damage(skill, origin, results)
   local currentTile = self:getTile()
   if currentTile ~= origin then

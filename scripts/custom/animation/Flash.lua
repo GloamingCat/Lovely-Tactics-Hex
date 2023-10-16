@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Flash
+@classmod Flash
 ---------------------------------------------------------------------------------------------------
 Flash screen.
 
@@ -10,6 +10,7 @@ Flash screen.
 -- Imports
 local Animation = require('core/graphics/Animation')
 
+-- Class table.
 local Flash = class(Animation)
 
 function Flash:update(dt)

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-SwitchButton
+@classmod SwitchButton
 ---------------------------------------------------------------------------------------------------
 A button two options.
 
@@ -10,17 +10,18 @@ A button two options.
 -- Imports
 local Button = require('core/gui/widget/control/Button')
 
+-- Class table.
 local SwitchButton = class(Button)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(window  : GridWindow) The window this spinner belongs to.
--- @param(initValue : boolean) Initial value.
--- @param(x : number) Position x of the switch text relative to the button width (from 0 to 1).
--- @param(values : table) List of possible values (optional, boolean by default).
+--- Constructor.
+-- @tparam window  GridWindow The window this spinner belongs to.
+-- @tparam boolean initValue Initial value.
+-- @tparam number x Position x of the switch text relative to the button width (from 0 to 1).
+-- @tparam table values List of possible values (optional, boolean by default).
 function SwitchButton:init(window, initValue, x, values)
   Button.init(self, window)
   self.clickSound = nil
@@ -29,10 +30,10 @@ function SwitchButton:init(window, initValue, x, values)
   local w = self.window:cellWidth()
   self:initContent(initValue or false, w * x, self.window:cellHeight() / 2, w * (1 - x))
 end
--- Creates a button for the action represented by the given key.
--- @param(window : GridWindow) The window that this button is component of.
--- @param(key : string) Action's key.
--- @ret(SwitchButton)
+--- Creates a button for the action represented by the given key.
+-- @tparam GridWindow window The window that this button is component of.
+-- @tparam string key Action's key.
+-- @treturn SwitchButton
 function SwitchButton:fromKey(window, key, ...)
   local button = self(window, ...)
   local icon = Config.icons[key]
@@ -51,8 +52,8 @@ function SwitchButton:fromKey(window, key, ...)
   button.key = key
   return button
 end
--- Creates on/off text.
--- @param(initValue : boolean) Initial value.
+--- Creates on/off text.
+-- @tparam boolean initValue Initial value.
 function SwitchButton:initContent(initValue)
   self.value = initValue
   if self.values then
@@ -62,11 +63,11 @@ function SwitchButton:initContent(initValue)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Switches value.
+--- Switches value.
 function SwitchButton.onConfirm(window, self)
   if self.values then
     self:changeValue(math.mod1(self.value + 1, #self.values))
@@ -74,7 +75,7 @@ function SwitchButton.onConfirm(window, self)
     self:changeValue(not self.value)
   end
 end
--- Sets value by arrows.
+--- Sets value by arrows.
 function SwitchButton.onMove(window, self, dx, dy)
   if dx == 0 then
     return
@@ -85,7 +86,7 @@ function SwitchButton.onMove(window, self, dx, dy)
     self:changeValue(dx > 0)
   end
 end
--- Changes current value.
+--- Changes current value.
 function SwitchButton:changeValue(value)
   if self.enabled and self.value ~= value then
     self:setValue(value)
@@ -98,12 +99,12 @@ function SwitchButton:changeValue(value)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Value
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Changes the current value.
--- @param(value : boolean) New value.
+--- Changes the current value.
+-- @tparam boolean value New value.
 function SwitchButton:setValue(value)
   self.value = value
   if self.values then

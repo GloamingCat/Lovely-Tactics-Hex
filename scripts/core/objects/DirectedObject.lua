@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-DirectedObject
+@classmod DirectedObject
 ---------------------------------------------------------------------------------------------------
 An object with a direction. It uses the animation's rows to set the direction of the sprite.
 The animation must contain 8 rows, each row representing a direction. The direction of a row r - a
@@ -19,43 +19,44 @@ local nextCoordDir = math.field.nextCoordDir
 local tile2Pixel = math.field.tile2Pixel
 local abs = math.abs
 
+-- Class table.
 local DirectedObject = class(AnimatedObject)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides AnimatedObject:initGraphics.
--- @param(direction : number) The initial direction.
+--- Overrides AnimatedObject:initGraphics.
+-- @tparam number direction The initial direction.
 function DirectedObject:initGraphics(direction, ...)
   self.direction = direction
   AnimatedObject.initGraphics(self, ...)
   self:setDirection(direction)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Direction
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides AnimatedObject:replayAnimation.
+--- Overrides AnimatedObject:replayAnimation.
 function DirectedObject:replayAnimation(name, row)
   row = row or angle2Row(self.direction)
   return AnimatedObject.replayAnimation(self, name, row)
 end
--- Set's character direction.
--- @param(angle : number) Angle in degrees.
+--- Set's character direction.
+-- @tparam number angle Angle in degrees.
 function DirectedObject:setDirection(angle)
   self.direction = angle
   self.animation:setRow(angle2Row(angle))
 end
--- Gets the direction rounded to one of the canon angles.
--- @ret(number) Direction in degrees.
+--- Gets the direction rounded to one of the canon angles.
+-- @treturn number Direction in degrees.
 function DirectedObject:getRoundedDirection()
   local row = angle2Row(self.direction)
   return row * 45
 end
--- Gets the tile on front of the character, considering character's direction.
--- @ret(ObjectTile) The front tile (nil if exceeds field border).
+--- Gets the tile on front of the character, considering character's direction.
+-- @treturn ObjectTile The front tile (nil if exceeds field border).
 function DirectedObject:getFrontTile(angle)
   angle = angle or self:getRoundedDirection()
   local tile = self:getTile()
@@ -65,9 +66,9 @@ function DirectedObject:getFrontTile(angle)
   end
   return tile.layer.grid[tile.x + dx][tile.y + dy]
 end
--- Gets the tiles on front of the character, considering character's direction.
--- It includes tiles in other layers that are accessible from ramps.
--- @ret(table) Array of ObjectTiles.
+--- Gets the tiles on front of the character, considering character's direction.
+--- It includes tiles in other layers that are accessible from ramps.
+-- @treturn table Array of ObjectTiles.
 function DirectedObject:getFrontTiles(angle)
   local tile = self:getTile()
   local neighbor = self:getFrontTile(angle)
@@ -84,46 +85,46 @@ function DirectedObject:getFrontTiles(angle)
   return tiles
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Rotate
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Turns on a vector's direction (in pixel coordinates).
--- @param(x : number) Vector's x.
--- @param(y : number) Vector's y.
--- @ret(number) The angle to the given vector.
+--- Turns on a vector's direction (in pixel coordinates).
+-- @tparam number x Vector's x.
+-- @tparam number y Vector's y.
+-- @treturn number The angle to the given vector.
 function DirectedObject:turnToVector(x, y)
   local angle = self:vectorToAngle(x, y)
   self:setDirection(angle)
   return angle
 end
--- Turns to a pixel point.
--- @param(x : number) The pixel x.
--- @param(y : number) The pixel y.
--- @ret(number) The angle to the given point.
+--- Turns to a pixel point.
+-- @tparam number x The pixel x.
+-- @tparam number y The pixel y.
+-- @treturn number The angle to the given point.
 function DirectedObject:turnToPoint(x, y)
   local angle = self:pointToAngle(x, y)
   self:setDirection(angle)
   return angle
 end
--- Turns to a grid point.
--- @param(x : number) The tile x.
--- @param(y : number) The tile y.
--- @ret(number) The angle to the given tile.
+--- Turns to a grid point.
+-- @tparam number x The tile x.
+-- @tparam number y The tile y.
+-- @treturn number The angle to the given tile.
 function DirectedObject:turnToTile(x, y)
   local angle = self:tileToAngle(x, y)
   self:setDirection(angle)
   return angle
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Get angle
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the angle in the direction given by the vector.
--- @param(x : number) Vector's x.
--- @param(y : number) Vector's y.
--- @ret(number) The angle to the given vector.
+--- Gets the angle in the direction given by the vector.
+-- @tparam number x Vector's x.
+-- @tparam number y Vector's y.
+-- @treturn number The angle to the given vector.
 function DirectedObject:vectorToAngle(x, y)
   if abs(x) > 0.01 or abs(y) > 0.01 then
     return coord2Angle(x, y)
@@ -131,37 +132,37 @@ function DirectedObject:vectorToAngle(x, y)
     return self.direction
   end
 end
--- Gets the angle to a given pixel point.
--- @param(x : number) The pixel x.
--- @param(y : number) The pixel depth.
--- @ret(number) The angle to the given point.
+--- Gets the angle to a given pixel point.
+-- @tparam number x The pixel x.
+-- @tparam number z The pixel depth.
+-- @treturn number The angle to the given point.
 function DirectedObject:pointToAngle(x, z)
   local dx = x - self.position.x
   local dz = self.position.z - z
   return self:vectorToAngle(dx, dz)
 end
--- Gets the angle to a given grid point.
--- @param(x : number) The tile x.
--- @param(y : number) The tile y.
--- @ret(number) The angle to the given tile.
+--- Gets the angle to a given grid point.
+-- @tparam number x The tile x.
+-- @tparam number y The tile y.
+-- @treturn number The angle to the given tile.
 function DirectedObject:tileToAngle(x, y)
   local tx, ty = self:tileCoordinates()
   local ox, oy, oz = tile2Pixel(tx, ty, 0)
   local dx, dy, dz = tile2Pixel(x, y, 0)
   return self:vectorToAngle(dx - ox, oz - dz)
 end
--- Gets the angle to a given grid point.
--- @param(dx : number) The grid x difference.
--- @param(dy : number) The grid y difference.
--- @ret(number) The angle to the given tile.
+--- Gets the angle to a given grid point.
+-- @tparam number dx The grid x difference.
+-- @tparam number dy The grid y difference.
+-- @treturn number The angle to the given tile.
 function DirectedObject:shiftToAngle(dx, dy)
   local tx, ty = self:tileCoordinates()
   return self:tileToAngle(tx + dx, ty + dy)
 end
--- Gets the angle given a difference in tiles.
--- @param(dx : number) The grid x difference.
--- @param(dy : number) The grid y difference.
--- @ret(number) The row direction to look to the given tile (0-7).
+--- Gets the angle given a difference in tiles.
+-- @tparam number dx The grid x difference.
+-- @tparam number dy The grid y difference.
+-- @treturn number The row direction to look to the given tile (0-7).
 function DirectedObject:shiftToRow(dx, dy)
   return angle2Row(self:shiftToAngle(dx, dy))
 end

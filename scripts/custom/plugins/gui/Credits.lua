@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Credits
+@script Credits
 ---------------------------------------------------------------------------------------------------
 Adds a new command to show credits.
 
@@ -21,12 +21,12 @@ local speed = args.speed or 2
 local pause = args.pause or 60
 local font = args.font or Fonts.gui_big
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Auxiliary.
--- @param(y : number) Space from the top of the screen, in pixels.
+--- Auxiliary.
+-- @tparam number y Space from the top of the screen, in pixels.
 local function createText(y)
   local prop = { ScreenManager.width, 'center', font }
   local titleText = Text('', prop, GUIManager.renderer)
@@ -38,13 +38,13 @@ local function createText(y)
   return titleText
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Credits animation.
--- @param(titleText : Text)
--- @param(bodyText : Text)
+--- Credits animation.
+-- @tparam Text titleText
+-- @tparam Text bodyText
 local function showCredits(titleText, bodyText)
   local previousPage = nil
   local time = 0
@@ -79,7 +79,7 @@ local function showCredits(titleText, bodyText)
     previousPage = page.name
   end
 end
--- Shows credits animation and listens to player input.
+--- Shows credits animation and listens to player input.
 function GUIEvents:showCredits(args)
   self:createGUI()
   local titleText = createText(self.gui:windowMargin() * 2)

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-SimpleImage
+@classmod SimpleImage
 ---------------------------------------------------------------------------------------------------
 A generic window content that stores a sprite with a given viewport.
 
@@ -15,18 +15,19 @@ local Sprite = require('core/graphics/Sprite')
 local max = math.max
 local min = math.min
 
+-- Class table.
 local SimpleImage = class(Component)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(sprite : Sprite) Image's sprite.
--- @param(x : number) The x position of the top-left corner inside parent.
--- @param(y : number) The y position of the top-left corner inside parent.
--- @param(depth : number) The depth of the image relative to parent.
--- @param(w : number) Maximun width of the image.
--- @param(h : number) Maximun height of the image.
+-- @tparam Sprite sprite Image's sprite.
+-- @tparam number x The x position of the top-left corner inside parent.
+-- @tparam number y The y position of the top-left corner inside parent.
+-- @tparam number depth The depth of the image relative to parent.
+-- @tparam number w Maximun width of the image.
+-- @tparam number h Maximun height of the image.
 function SimpleImage:init(sprite, x, y, depth, w, h)
   Component.init(self)
   self.position.z = depth or -1
@@ -36,7 +37,7 @@ function SimpleImage:init(sprite, x, y, depth, w, h)
   self.y = y
   self:setSprite(sprite)
 end
--- Changes the sprite in the component.
+--- Changes the sprite in the component.
 function SimpleImage:setSprite(sprite)
   if self.sprite then
     self.sprite:destroy()
@@ -48,7 +49,7 @@ function SimpleImage:setSprite(sprite)
     self.content:add(sprite)
   end
 end
--- Centers sprite inside the given rectangle.
+--- Centers sprite inside the given rectangle.
 function SimpleImage:centerSpriteQuad()
   local px, py, pw, ph = self.sprite.quad:getViewport()
   pw, ph = pw * self.sprite.scaleX, ph * self.sprite.scaleY
@@ -62,11 +63,11 @@ function SimpleImage:centerSpriteQuad()
   self.position.y = y + h / 2
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Window Content methods
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Component:updatePosition.
+--- Overrides Component:updatePosition.
 function SimpleImage:updatePosition(pos)
   if self.sprite then
     local rpos = self.position

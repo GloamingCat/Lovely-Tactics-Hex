@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-ActionWindow
+@classmod ActionWindow
 ---------------------------------------------------------------------------------------------------
 A window that implements common methods for battle windows that start an action execution 
 (TurnWindow, ActionSkillWindow, ActionItemWindow and IntroWindow).
@@ -18,14 +18,15 @@ local SkillAction = require('core/battle/action/SkillAction')
 -- Alias
 local radiusIterator = math.field.radiusIterator
 
+-- Class table.
 local ActionWindow = class(GridWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Confirm Action
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Select an action.
--- @param(actionType : class) the class of the action
+--- Select an action.
+-- @tparam class actionType The class of the action.
 --  (must inherit from BattleAction) 
 function ActionWindow:selectAction(action, input)
   -- Executes action grid selecting.
@@ -44,7 +45,7 @@ function ActionWindow:selectAction(action, input)
     self.GUI:show()
   end
 end
--- Checks if a given skill action is enabled to use.
+--- Checks if a given skill action is enabled to use.
 function ActionWindow:skillActionEnabled(skill)
   if skill.freeNavigation then
     return true
@@ -69,7 +70,7 @@ function ActionWindow:skillActionEnabled(skill)
   end
   return false
 end
--- Move condition. Enabled if there are any tiles for the character to move to.
+--- Move condition. Enabled if there are any tiles for the character to move to.
 function ActionWindow:moveEnabled()
   local user = TurnManager:currentCharacter()
   if user.battler.steps < 1 then
@@ -84,12 +85,13 @@ function ActionWindow:moveEnabled()
   return false
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Cancel Action
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Closes this window to be replaced by another one.
--- @param(window : GridWindow) The new active window.
+--- Closes this window to be replaced by another one.
+-- @tparam GridWindow window The new active window.
+-- @tparam boolean showDescription Flag to open the GUI's DescriptionWindow.
 function ActionWindow:changeWindow(window, showDescription)
   self:hide()
   self:removeSelf()

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-VisualizeAction
+@classmod VisualizeAction
 ---------------------------------------------------------------------------------------------------
 The BattleAction that is executed when players cancels in the Turn Window.
 
@@ -11,13 +11,14 @@ The BattleAction that is executed when players cancels in the Turn Window.
 local BattleAction = require('core/battle/action/BattleAction')
 local VisualizeGUI = require('core/gui/battle/VisualizeGUI')
 
+-- Class table.
 local VisualizeAction = class(BattleAction)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function VisualizeAction:init()
   BattleAction.init(self, '')
   self.freeNavigation = true
@@ -27,11 +28,11 @@ function VisualizeAction:init()
   self.allParties = true
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Event handlers
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:execute.
+--- Overrides BattleAction:execute.
 function VisualizeAction:execute(input)
   local character = input.target:getFirstBattleCharacter()
   FieldManager.renderer:moveToTile(input.target)
@@ -41,22 +42,22 @@ function VisualizeAction:execute(input)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Tile Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:resetTileColors.
+--- Overrides BattleAction:resetTileColors.
 function VisualizeAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
     tile.gui:setColor('')
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Selectable Tiles
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:isSelectable.
+--- Overrides BattleAction:isSelectable.
 function VisualizeAction:isSelectable(input, tile)
   return tile:getFirstBattleCharacter() ~= nil
 end

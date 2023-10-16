@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-FocusPause
+@script FocusPause
 ---------------------------------------------------------------------------------------------------
 Pauses game when window loses focus.
 
@@ -18,11 +18,11 @@ local ScreenManager = require('core/graphics/ScreenManager')
 local pauseAudio = args.pauseAudio
 local fullscreen = args.fullscreen
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- ScreenManager
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Pause when window loses focus.
+--- Pause when window loses focus.
 local ScreenManager_onFocus = ScreenManager.onFocus
 function ScreenManager:onFocus(f)
   ScreenManager_onFocus(self, f)
@@ -32,7 +32,7 @@ function ScreenManager:onFocus(f)
   end
   GameManager:setPaused(not f, pauseAudio, true)
 end
--- Pause if on mobile and minimized.
+--- Pause if on mobile and minimized.
 local ScreenManager_onResize = ScreenManager.onResize
 function ScreenManager:onResize(...)
   ScreenManager_onResize(self, ...)

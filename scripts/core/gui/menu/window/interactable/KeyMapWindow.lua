@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-KeyMapWindow
+@classmod KeyMapWindow
 ---------------------------------------------------------------------------------------------------
 Window with resolution options.
 
@@ -14,20 +14,21 @@ local GridWindow = require('core/gui/GridWindow')
 -- Alias
 local copyTable = util.table.deepCopy
 
+-- Class table.
 local KeyMapWindow = class(GridWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:setProperties.
--- Sets tooltip.
+--- Overrides GridWindow:setProperties.
+--- Sets tooltip.
 function KeyMapWindow:setProperties()
   self.keys = { 'confirm', 'cancel', 'dash', 'pause', 'prev', 'next' }
   GridWindow.setProperties(self)
   self.tooltipTerm = 'buttonChange'
 end
--- Implements GridWindow:createWidgets.
+--- Implements GridWindow:createWidgets.
 function KeyMapWindow:createWidgets()
   for i = 1, #self.keys do
     self:createKeyButtons(self.keys[i])
@@ -35,8 +36,8 @@ function KeyMapWindow:createWidgets()
   Button:fromKey(self, 'apply').text:setAlign('center')
   Button:fromKey(self, 'default').text:setAlign('center')
 end
--- Creates main and alt buttons for the given key.
--- @param(key : string) Key type code.
+--- Creates main and alt buttons for the given key.
+-- @tparam string key Key type code.
 function KeyMapWindow:createKeyButtons(key)
   local button1 = Button(self)
   button1:createText(key, key)
@@ -52,11 +53,11 @@ function KeyMapWindow:createKeyButtons(key)
   button2.tooltipTerm = self.tooltipTerm
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Keys
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Window:show.
+--- Overrides Window:show.
 function KeyMapWindow:show(...)
   if not self.open then
     self.map = { main = copyTable(InputManager.mainMap),
@@ -67,7 +68,7 @@ function KeyMapWindow:show(...)
     GridWindow.show(self, ...)
   end
 end
--- Refreshes key codes.
+--- Refreshes key codes.
 function KeyMapWindow:refreshKeys()
   for i = 1, #self.matrix do
     local b = self.matrix[i]
@@ -79,11 +80,11 @@ function KeyMapWindow:refreshKeys()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Chooses new resolution.
+--- Chooses new resolution.
 function KeyMapWindow:onButtonConfirm(button)
   self:setWidgetTooltip('pressKey')
   self.cursor.paused = true
@@ -104,26 +105,26 @@ function KeyMapWindow:onButtonConfirm(button)
   self.cursor.paused = false
   self:setWidgetTooltip(button)
 end
--- Applies changes.
+--- Applies changes.
 function KeyMapWindow:applyConfirm()
   InputManager:setKeyMap(copyTable(self.map))
   self.result = 1
 end
--- Sets default key map.
+--- Sets default key map.
 function KeyMapWindow:defaultConfirm()
   self.map = copyTable(KeyMap)
   self:refreshKeys()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:colCount.
+--- Overrides GridWindow:colCount.
 function KeyMapWindow:colCount()
   return 2
 end
--- Overrides GridWindow:rowCount.
+--- Overrides GridWindow:rowCount.
 function KeyMapWindow:rowCount()
   return 7
 end
@@ -131,7 +132,7 @@ end
 function KeyMapWindow:cellWidth()
   return 140
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function KeyMapWindow:__tostring()
   return 'Resolution Window'
 end

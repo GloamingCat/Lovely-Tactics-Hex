@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-OptionsWindow
+@classmod OptionsWindow
 ---------------------------------------------------------------------------------------------------
 Window with general options: settings, save, quit.
 
@@ -13,19 +13,20 @@ local GridWindow = require('core/gui/GridWindow')
 local SaveGUI = require('core/gui/menu/SaveGUI')
 local SettingsGUI = require('core/gui/menu/SettingsGUI')
 
+-- Class table.
 local OptionsWindow = class(GridWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:setProperties.
+--- Overrides GridWindow:setProperties.
 function OptionsWindow:setProperties(...)
   GridWindow.setProperties(self, ...)
   self.tooltipTerm = ''
   self.buttonAlign = 'center'
 end
--- Implements GridWindow:createWidgets.
+--- Implements GridWindow:createWidgets.
 function OptionsWindow:createWidgets()
   Button:fromKey(self, 'return')
   Button:fromKey(self, 'config')
@@ -40,21 +41,21 @@ function OptionsWindow:createWidgets()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Buttons
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- When player cancels the quit action.
+--- When player cancels the quit action.
 function OptionsWindow:returnConfirm()
   self.result = 0
 end
--- "Settings" button callback. Open settings menu.
+--- "Settings" button callback. Open settings menu.
 function OptionsWindow:configConfirm()
   self.GUI:hide()
   GUIManager:showGUIForResult(SettingsGUI(self.GUI))
   self.GUI:show()
 end
--- "Save" button callback. Opens save window.
+--- "Save" button callback. Opens save window.
 function OptionsWindow:saveConfirm(button)
   self.GUI:hide()
   if not BattleManager.onBattle then
@@ -63,33 +64,33 @@ function OptionsWindow:saveConfirm(button)
   GUIManager:showGUIForResult(SaveGUI(self.GUI))
   self.GUI:show()
 end
--- Opens the exit screen.
+--- Opens the exit screen.
 function OptionsWindow:quitConfirm()
   self:hide()
   self.GUI:showWindowForResult(self.GUI.quitWindow)
   self:show()
 end
--- When players chooses to return to TitleGUI.
+--- When players chooses to return to TitleGUI.
 function OptionsWindow:titleConfirm()
   self.GUI:hide()
   FieldManager.renderer:fadeout(nil, true)
   GameManager.restartRequested = true
 end
--- When player chooses to shut the game down.
+--- When player chooses to shut the game down.
 function OptionsWindow:closeConfirm()
   self.GUI:hide()
   GameManager:quit()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:colCount.
+--- Overrides GridWindow:colCount.
 function OptionsWindow:colCount()
   return 1
 end
--- Overrides GridWindow:rowCount.
+--- Overrides GridWindow:rowCount.
 function OptionsWindow:rowCount()
   if self.GUI.quitWindow then
     return 4
@@ -97,7 +98,7 @@ function OptionsWindow:rowCount()
     return GameManager:isDesktop() and 5 or 4
   end
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function OptionsWindow:__tostring()
   return 'Options Window'
 end

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-LocationWindow
+@classmod LocationWindow
 ---------------------------------------------------------------------------------------------------
 Small window that shows the location of the player.
 
@@ -13,13 +13,14 @@ local SimpleText = require('core/gui/widget/SimpleText')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
+-- Class table.
 local LocationWindow = class(Window)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Window:createContent.
+--- Overrides Window:createContent.
 function LocationWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local icon = Config.icons.location
@@ -36,8 +37,8 @@ function LocationWindow:createContent(width, height)
   self.content:add(text)
   self.name = text
 end
--- Sets the name shown.
--- @param(text : string) The name of the location.
+--- Sets the name shown.
+-- @tparam Field field Current field.
 function LocationWindow:setLocal(field)
   self.name:setTerm('data.field.' .. field.key, field.name)
   self.name:redraw()

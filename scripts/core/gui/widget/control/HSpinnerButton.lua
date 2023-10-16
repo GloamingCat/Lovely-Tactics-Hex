@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-HSpinnerButton
+@classmod HSpinnerButton
 ---------------------------------------------------------------------------------------------------
 A spinner with button properties (cancel and confirm actions).
 
@@ -11,18 +11,19 @@ A spinner with button properties (cancel and confirm actions).
 local Button = require('core/gui/widget/control/Button')
 local HSpinner = require('core/gui/widget/control/HSpinner')
 
+-- Class table.
 local HSpinnerButton = class(HSpinner, Button)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(window  : GridWindow) the window this spinner belongs to.
--- @param(minValue : number) Minimum value.
--- @param(maxValue : number) Maximum value.
--- @param(initValue : number) Initial value.
--- @param(x : number) Position x of the spinner relative to the button width (from 0 to 1).
+--- Constructor.
+-- @tparam window  GridWindow the window this spinner belongs to.
+-- @tparam number minValue Minimum value.
+-- @tparam number maxValue Maximum value.
+-- @tparam number initValue Initial value.
+-- @tparam number x Position x of the spinner relative to the button width (from 0 to 1).
 function HSpinnerButton:init(window, minValue, maxValue, initValue, x)
   Button.init(self, window)
   self.minValue = minValue or -math.huge
@@ -32,11 +33,14 @@ function HSpinnerButton:init(window, minValue, maxValue, initValue, x)
   local w = self.window:cellWidth()
   self:initContent(initValue or 0, w * x, self.window:cellHeight(), w * (1 - x))
 end
--- Creates a button for the action represented by the given key.
--- @param(window : GridWindow) The window that this button is component of.
--- @param(key : string) Action's key.
--- @ret(HSpinnerButton)
-function HSpinnerButton:fromKey(window, key, maxValue, minValue, initValue)
+--- Creates a button for the action represented by the given key.
+-- @tparam GridWindow window The window that this button is component of.
+-- @tparam string key Action's key.
+-- @tparam number minValue Minimum value.
+-- @tparam number maxValue Maximum value.
+-- @tparam number initValue Initial value.
+-- @treturn HSpinnerButton
+function HSpinnerButton:fromKey(window, key, minValue, maxValue, initValue)
   local button = self(window, maxValue, minValue, initValue)
   local icon = Config.icons[key]
   if icon then

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-CallRule
+@classmod CallRule
 ---------------------------------------------------------------------------------------------------
 The rule for an AI that removes character from battle field.
 
@@ -16,21 +16,22 @@ local ActionInput = require('core/battle/action/ActionInput')
 local AIRule = require('core/battle/ai/AIRule')
 local CallAction = require('core/battle/action/CallAction')
 
+-- Class table.
 local CallRule = class(AIRule)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(...) AIRule constructor arguments.
+--- Constructor.
+-- @tparam(...) AIRule constructor arguments.
 function CallRule:init(...)
   AIRule.init(self, ...)
   if self.tags and self.tags.member then
     self.memberCondition = loadformula('not (' .. self.tags.member .. ')', 'member')
   end
 end
--- Overrides AIRule:onSelect.
+--- Overrides AIRule:onSelect.
 function CallRule:onSelect(user)
   local troop = TroopManager.troops[user.party]
   local backup = troop:backupBattlers()
@@ -57,7 +58,7 @@ function CallRule:onSelect(user)
     end
   end
 end
--- @ret(string) String identifier.
+-- @treturn string String identifier.
 function CallRule:__tostring()
   return 'CallRule: ' .. self.battler.key
 end

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-MemberInfo
+@classmod MemberInfo
 ---------------------------------------------------------------------------------------------------
 A container for a battler's main information.
 
@@ -18,21 +18,22 @@ local Vector = require('core/math/Vector')
 -- Alias
 local findByName = util.array.findByName
 
+-- Class table.
 local MemberInfo = class(Component)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(battler : table) Battler's data.
--- @param(width : number) Width of the container.
--- @param(height : number) Height of the container.
--- @param(topLeft : Vector) The position of the top left corner of the container.
+-- @tparam table battler Battler's data.
+-- @tparam number width Width of the container.
+-- @tparam number height Height of the container.
+-- @tparam Vector topLeft The position of the top left corner of the container.
 function MemberInfo:init(battler, width, height, topLeft)
   Component.init(self, topLeft, width, height, battler)
   self.battler = battler
 end
--- Overrides Component:createContent.
+--- Overrides Component:createContent.
 function MemberInfo:createContent(w, h, battler)
   local topLeft = Vector(0, 1, -2)
   local margin = 4

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Child Animation
+@script Child Animation
 ---------------------------------------------------------------------------------------------------
 Child that synchronizes with the parent animation.
 
@@ -11,11 +11,11 @@ Child that synchronizes with the parent animation.
 local Animation = require('core/graphics/Animation')
 local List = require('core/datastruct/List')
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Gets child animations from tags.
+--- Override. Gets child animations from tags.
 local Animation_init = Animation.init
 function Animation:init(...)
   Animation_init(self, ...)
@@ -30,8 +30,8 @@ function Animation:init(...)
     end
   end
 end
--- Shortcut function.
--- @param(anim : number : Animation)
+--- Shortcut function.
+-- @tparam number anim : Animation
 function Animation:addChild(anim)
   self.children = self.children or List()
   if type(anim) == 'number' or type(anim) == 'string' then
@@ -40,7 +40,7 @@ function Animation:addChild(anim)
   anim:setXYZ(self.sprite.position:coordinates())
   self.children:add(anim)
 end
--- Override. Instantiate delayed children.
+--- Override. Instantiate delayed children.
 local Animation_callEvents = Animation.callEvents
 function Animation:callEvents()
   if self.childQueue then
@@ -53,11 +53,11 @@ function Animation:callEvents()
   Animation_callEvents(self)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Update
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Updates children.
+--- Override. Updates children.
 local Animation_update = Animation.update
 function Animation:update(dt)
   Animation_update(self, dt)
@@ -71,11 +71,11 @@ function Animation:update(dt)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Finish
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Destroys children.
+--- Override. Destroys children.
 local Animation_destroy = Animation.destroy
 function Animation:destroy()
   Animation_destroy(self)
@@ -85,7 +85,7 @@ function Animation:destroy()
     end
   end
 end
--- Override. Resets children.
+--- Override. Resets children.
 local Animation_reset = Animation.reset
 function Animation:reset()
   Animation_reset(self)
@@ -95,7 +95,7 @@ function Animation:reset()
     end
   end
 end
--- Override. Sets children as oneshot.
+--- Override. Sets children as oneshot.
 local Animation_setOneshot = Animation.setOneshot
 function Animation:setOneshot(value)
   Animation_setOneshot(self, value)
@@ -106,11 +106,11 @@ function Animation:setOneshot(value)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Position
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Sets children's position.
+--- Override. Sets children's position.
 local Animation_setXYZ = Animation.setXYZ
 function Animation:setXYZ(...)
   Animation_setXYZ(self, ...)

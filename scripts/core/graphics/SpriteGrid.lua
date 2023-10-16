@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-SpriteGrid
+@classmod SpriteGrid
 ---------------------------------------------------------------------------------------------------
 A group of sprites created from a 9-sliced skin.
 Each animation frame should contain within itself all 9 slices.
@@ -16,22 +16,23 @@ local Vector = require('core/math/Vector')
 local Quad = love.graphics.newQuad
 local floor = math.floor
 
+-- Class table.
 local SpriteGrid = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(skin : table) Skin's animation data.
+--- Constructor.
+-- @tparam table skin Skin's animation data.
 function SpriteGrid:init(skin, relativePos)
   self.skin = skin
   self.position = relativePos or Vector(0, 0)
 end
--- Creates sprites and skinData.
--- @param(renderer : Renderer) The renderer of the sprites.
--- @param(width : number) The width of the final image.
--- @param(height : number) The height of the final image.
+--- Creates sprites and skinData.
+-- @tparam Renderer renderer The renderer of the sprites.
+-- @tparam number width The width of the final image.
+-- @tparam number height The height of the final image.
 function SpriteGrid:createGrid(renderer, width, height)
   local skin = self.skin.quad
   local w = skin.width / 3
@@ -90,18 +91,18 @@ function SpriteGrid:createGrid(renderer, width, height)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates each slice animation.
+--- Updates each slice animation.
 function SpriteGrid:update(dt)
   for i = 1, 9 do
     self.slices[i]:update(dt)
   end
 end
--- Updates position and scale according to the given parent transformable.
--- @param(t : Transformable)
+--- Updates position and scale according to the given parent transformable.
+-- @tparam Transformable t
 function SpriteGrid:updateTransform(t)
   local pos = t.position + self.position
   for i = 1, 9 do
@@ -111,49 +112,49 @@ function SpriteGrid:updateTransform(t)
     sprite:setScale(self.skinData[i].sx * t.scaleX, self.skinData[i].sy * t.scaleY)
   end
 end
--- Sets the RGBA values of each slice.
--- @param(r : number) Red component (optional, current by default).
--- @param(g : number) Green component (optional, current by default).
--- @param(b : number) Blue component (optional, current by default).
--- @param(a : number) Blpha component (optional, current by default).
+--- Sets the RGBA values of each slice.
+-- @tparam number r Red component (optional, current by default).
+-- @tparam number g Green component (optional, current by default).
+-- @tparam number b Blue component (optional, current by default).
+-- @tparam number a Blpha component (optional, current by default).
 function SpriteGrid:setRGBA(r, g, b, a)
   for i = 1, 9 do
     self.slices[i].sprite:setRGBA(r, g, b, a)
   end
 end
--- Sets the HSV values of each slice.
--- @param(h : number) Hue component (optional, current by default).
--- @param(s : number) Saturation component (optional, current by default).
--- @param(v : number) Value/brightness component (optional, current by default).
+--- Sets the HSV values of each slice.
+-- @tparam number h Hue component (optional, current by default).
+-- @tparam number s Saturation component (optional, current by default).
+-- @tparam number v Value/brightness component (optional, current by default).
 function SpriteGrid:setHSV(h, s, v)
   for i = 1, 9 do
     self.slices[i].sprite:setHSV(h, s, v)
   end
 end
--- Destroys all slices.
+--- Destroys all slices.
 function SpriteGrid:destroy()
   for i = 1, 9 do
     self.slices[i]:destroy()
   end
 end
--- Sets each slice visibility.
--- @param(value : boolean) True to show, false to hide.
+--- Sets each slice visibility.
+-- @tparam boolean value True to show, false to hide.
 function SpriteGrid:setVisible(value)
   self.visible = value
   for i = 1, 9 do
     self.slices[i]:setVisible(value)
   end
 end
--- Makes visible.
+--- Makes visible.
 function SpriteGrid:show()
   self:setVisible(true)
 end
--- Makes invisible.
+--- Makes invisible.
 function SpriteGrid:hide()
   self:setVisible(false)
 end
--- Updates each slice position.
--- @param(pos : Vector) Parent position.
+--- Updates each slice position.
+-- @tparam Vector pos Parent position.
 function SpriteGrid:updatePosition(pos)
   pos = pos + self.position
   for i = 1, 9 do

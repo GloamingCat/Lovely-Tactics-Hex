@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-PrintStats
+@script PrintStats
 ---------------------------------------------------------------------------------------------------
 Print game statistics for debugging.
 
@@ -15,11 +15,11 @@ local countdown = args.countdown
 -- Imports
 local GameManager = require('core/base/GameManager')
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Initializes stats tables.
+--- Override. Initializes stats tables.
 local GameManager_init = GameManager.init
 function GameManager:init()
   GameManager_init(self)
@@ -29,7 +29,7 @@ function GameManager:init()
   self.avgStats = {}
   self.stats = { 0, 0, 0, 0, 0, 0 }
 end
--- Override. Checks for stats toggle input.
+--- Override. Checks for stats toggle input.
 local GameManager_updateManagers = GameManager.updateManagers
 function GameManager:updateManagers(dt)
   if InputManager.keys['stats']:isTriggered() then
@@ -45,7 +45,7 @@ function GameManager:updateManagers(dt)
   end
   GameManager_updateManagers(self, dt)
 end
--- Override. Prints stats.
+--- Override. Prints stats.
 local GameManager_draw = GameManager.draw
 function GameManager:draw()
   GameManager_draw(self)
@@ -65,18 +65,18 @@ function GameManager:draw()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Stats
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Pauses default ProFi behavior if it was activated by button.
+--- Pauses default ProFi behavior if it was activated by button.
 local GameManager_updateProfi = GameManager.updateProfi
 function GameManager:updateProfi()
   if not self.profiPaused and self.keepProfi then
     GameManager_updateProfi(self)
   end
 end
--- Activate/deactivate ProFi by button.
+--- Activate/deactivate ProFi by button.
 function GameManager:toggleProfi()
   if not PROFI then
     self.keepProfi = false
@@ -93,11 +93,11 @@ function GameManager:toggleProfi()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Stats
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Prints FPS and draw call counts on the screen.
+--- Prints FPS and draw call counts on the screen.
 function GameManager:printStats()
   local tab = 60 * ScreenManager.scaleX
   local line = 6 * ScreenManager.scaleY
@@ -118,7 +118,7 @@ function GameManager:printStats()
   local tx, ty, th = InputManager.mouse:fieldCoord()
   love.graphics.print('(' .. tx .. ',' .. ty .. ',' .. th .. ')', 0, y - line)
 end
--- Updates the average graphic stats per second.
+--- Updates the average graphic stats per second.
 function GameManager:updateGStats()
   local gstats = love.graphics.getStats()
   local fps = love.timer.getFPS()

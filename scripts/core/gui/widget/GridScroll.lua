@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-GridScroll
+@classmod GridScroll
 ---------------------------------------------------------------------------------------------------
 Four arrows to navigate a GridWindow.
 
@@ -10,14 +10,15 @@ Four arrows to navigate a GridWindow.
 -- Imports
 local Component = require('core/gui/Component')
 
+-- Class table.
 local GridScroll = class(Component)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(window : GridWindow) Parent window.
+--- Constructor.
+-- @tparam GridWindow window Parent window.
 function GridScroll:init(window)
   Component.init(self)
   window.content:add(self)
@@ -26,7 +27,7 @@ function GridScroll:init(window)
   self.window = window
   self:createArrows()
 end
--- Creates the scroll arrows, one for each direction.
+--- Creates the scroll arrows, one for each direction.
 function GridScroll:createArrows()
   self.arrows = {}
   local icon = {id = Config.animations.arrow}
@@ -50,12 +51,12 @@ function GridScroll:createArrows()
   self.up.dy = -1
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Position
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Component:updatePosition.
--- @param(pos : Vector) The position of the window.
+--- Overrides Component:updatePosition.
+-- @tparam Vector pos The position of the window.
 function GridScroll:updatePosition(pos)
   local w = self.window.width / 2 + self.margin
   local h = self.window.height / 2 - self.window:paddingY()
@@ -66,12 +67,12 @@ function GridScroll:updatePosition(pos)
   self:setVisible(self.visible)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Position
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Component:update.
--- Updates scroll count.
+--- Overrides Component:update.
+--- Updates scroll count.
 function GridScroll:update(dt)
   if self.horizontal then
     if InputManager.usingKeyboard then
@@ -107,9 +108,9 @@ function GridScroll:update(dt)
     end
   end
 end
--- Called when player moves the mouse.
--- @param(x : number) Position x relative to the center of the window.
--- @param(y : number) Position y relative to the center of the window.
+--- Called when player moves the mouse.
+-- @tparam number x Position x relative to the center of the window.
+-- @tparam number y Position y relative to the center of the window.
 function GridScroll:onMouseMove(x, y)
   local w = self.window
   local dy = 0
@@ -125,9 +126,10 @@ function GridScroll:onMouseMove(x, y)
     self.count = nil
   end
 end
--- Check if clicked on any of the arrows.
--- @param(px : number) Pointer's x position
--- @param(py : number) Pointer's y position
+--- Check if clicked on any of the arrows.
+-- @tparam number px Pointer's x position.
+-- @tparam number py Pointer's y position.
+-- @treturn boolean Whether it advanced to the next page or not.
 function GridScroll:onClick(px, py)
   px = px + self.window.position.x
   py = py + self.window.position.y
@@ -143,11 +145,11 @@ function GridScroll:onClick(px, py)
   return false
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Content methods
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Component:setVisible.
+--- Overrides Component:setVisible.
 function GridScroll:setVisible(value)
   Component.setVisible(self, value)
   if value then

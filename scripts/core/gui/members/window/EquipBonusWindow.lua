@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-EquipBonusWindow
+@classmod EquipBonusWindow
 ---------------------------------------------------------------------------------------------------
 A window that shows the attribute and element bonus of the equip item.
 
@@ -18,21 +18,22 @@ local Window = require('core/gui/Window')
 -- Alias
 local round = math.round
 
+-- Class table.
 local EquipBonusWindow = class(Window)
 
-----------------------------------------------------------------------------------------------------
+-- -------------------------------------------------------------------------------------------------
 -- Initialization
-----------------------------------------------------------------------------------------------------
+-- -------------------------------------------------------------------------------------------------
 
--- Overrides Window:init.
--- @param(member : table) Troop unit data.
+--- Overrides Window:init.
+-- @tparam table member Troop unit data.
 function EquipBonusWindow:init(gui, w, h, pos, member)
   self.member = member or gui:currentMember()
   self.bonus = List()
   Window.init(self, gui, w, h, pos)
 end
--- Prints a list of attributes to receive a bonus.
--- @param(att : table) Array of attributes bonus (with key, oldValue and newValue).
+--- Prints a list of attributes to receive a bonus.
+-- @tparam table att Array of attributes bonus (with key, oldValue and newValue).
 function EquipBonusWindow:updateBonus(att)
   for i = 1, #self.bonus do
     self.bonus[i]:destroy()
@@ -47,11 +48,11 @@ function EquipBonusWindow:updateBonus(att)
     self.bonus[i]:updatePosition(self.position)
   end
 end
--- Creates the list of text components for each attribute bonus.
--- @param(att : table) Array of attributes bonus (with key, oldValue and newValue).
--- @param(x : number) Position x of the list.
--- @param(y : number) Position y of the list.
--- @param(width : number) Width of the list.
+--- Creates the list of text components for each attribute bonus.
+-- @tparam table att Array of attributes bonus (with key, oldValue and newValue).
+-- @tparam number x Position x of the list.
+-- @tparam number y Position y of the list.
+-- @tparam number w Width of the list.
 function EquipBonusWindow:createBonusText(att, x, y, w)
   local font = Fonts.gui_small
   for i = 1, #att do
@@ -86,9 +87,9 @@ function EquipBonusWindow:createBonusText(att, x, y, w)
     y = y + 10
   end
 end
--- Shows the bonus for this item when equipped in the given slot.
--- @param(slotKey : string) Key of the slot to be changed.
--- @param(newEquip : table) Item's data from Database (nil to unequip).
+--- Shows the bonus for this item when equipped in the given slot.
+-- @tparam string slotKey Key of the slot to be changed.
+-- @tparam table newEquip Item's data from Database (nil to unequip).
 function EquipBonusWindow:setEquip(slotKey, newEquip)
   self.equip = newEquip
   self.slotKey = slotKey
@@ -112,18 +113,18 @@ function EquipBonusWindow:setEquip(slotKey, newEquip)
   end
   self:updateBonus(bonusList)
 end
--- @param(member : Battler) The owner of the current equipment set.
---  It is necessary so the attribute to calculate the attribute bonus.
+-- @tparam Battler member The owner of the current equipment set.
+---  It is necessary so the attribute to calculate the attribute bonus.
 function EquipBonusWindow:setBattler(battler)
   self.member = battler
   self:setEquip(self.slotKey, battler.equipSet:getEquip(self.slotKey))
 end
 
-----------------------------------------------------------------------------------------------------
+-- -------------------------------------------------------------------------------------------------
 -- Properties
-----------------------------------------------------------------------------------------------------
+-- -------------------------------------------------------------------------------------------------
 
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function EquipBonusWindow:__tostring()
   return 'Equip Bonus Window'
 end

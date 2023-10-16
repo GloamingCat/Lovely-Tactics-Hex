@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-GameKey
+@classmod GameKey
 ---------------------------------------------------------------------------------------------------
 Entity that represents an input key.
 Key states:
@@ -19,11 +19,12 @@ local now = love.timer.getTime
 local defaultStartGap = 0.5
 local defaultRepreatGap = 0.05
 
+-- Class table.
 local GameKey = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 function GameKey:init()
   self.previousPressTime = 0
@@ -32,7 +33,7 @@ function GameKey:init()
   self.releaseTime = 0
   self.blocked = false
 end
--- Updates state.
+--- Updates state.
 function GameKey:update()
   if self.pressState == 2 then
     self.pressState = 1
@@ -41,32 +42,32 @@ function GameKey:update()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Check state
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if button was triggered (just pressed).
--- @ret(boolean) True if was triggered in the current frame, false otherwise.
+--- Checks if button was triggered (just pressed).
+-- @treturn boolean True if was triggered in the current frame, false otherwise.
 function GameKey:isTriggered(gap)
   return self.pressState == 2
 end
--- Checks if player is pressing the key.
--- @ret(boolean) True if pressing, false otherwise.
+--- Checks if player is pressing the key.
+-- @treturn boolean True if pressing, false otherwise.
 function GameKey:isPressing()
   return self.pressState >= 1
 end
--- Checks if player just released a key.
--- @ret(boolean) True if was released in the current frame, false otherwise.
+--- Checks if player just released a key.
+-- @treturn boolean True if was released in the current frame, false otherwise.
 function GameKey:isReleased(maxTime)
   if maxTime and now() - self.pressTime > maxTime then
     return false
   end
   return self.pressState == -1
 end
--- Checks if player is pressing the key, considering a delay.
--- @param(startGap : number) The time in seconds between first true value and the second. 
--- @param(repeatGap : number) The time in seconds between two true values starting from the second one.
--- @ret(boolean) True if triggering, false otherwise.
+--- Checks if player is pressing the key, considering a delay.
+-- @tparam number startGap The time in seconds between first true value and the second.
+-- @tparam number repeatGap The time in seconds between two true values starting from the second one.
+-- @treturn boolean True if triggering, false otherwise.
 function GameKey:isPressingGap(startGap, repeatGap)
   if self.pressState <= 0 then
     return false
@@ -85,8 +86,8 @@ function GameKey:isPressingGap(startGap, repeatGap)
     return false
   end
 end
--- The time the player spent holding this key before releasing.
--- @ret(number) Hold time. 0 if the key was never pressed or released.
+--- The time the player spent holding this key before releasing.
+-- @treturn number Hold time. 0 if the key was never pressed or released.
 function GameKey:getHoldTime()
   if not self.pressTime or not self.releaseTime then
     return 0
@@ -94,11 +95,11 @@ function GameKey:getHoldTime()
   return self.releaseTime - self.pressTime
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input handlers
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when this key is pressed.
+--- Called when this key is pressed.
 function GameKey:onPress()
   if not self.blocked then
     self.previousPressTime = self.pressTime
@@ -106,22 +107,22 @@ function GameKey:onPress()
     self.pressState = 2
   end
 end
--- Called when this kay is released.
+--- Called when this kay is released.
 function GameKey:onRelease()
   self.releaseTime = now()
   self.pressState = -1
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Block
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Blocks input for this key.
+--- Blocks input for this key.
 function GameKey:block()
   self:onRelease()
   self.blocked = true
 end
--- Unblocks input for this key.
+--- Unblocks input for this key.
 function GameKey:unblock()
   self.blocked = false
 end

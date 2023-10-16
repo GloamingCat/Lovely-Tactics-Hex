@@ -1,9 +1,9 @@
 
 --[[===============================================================================================
 
-Character Events
+@module CharacterEvents
 ---------------------------------------------------------------------------------------------------
-Functions that are loaded from the EventSheet.
+Character-related functions that are loaded from the EventSheet.
 
 =================================================================================================]]
 
@@ -11,26 +11,32 @@ Functions that are loaded from the EventSheet.
 local ActionInput = require('core/battle/action/ActionInput')
 local MoveAction = require('core/battle/action/MoveAction')
 
-local EventSheet = {}
+local CharacterEvents = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Removes a character from the field.
--- @param(args.permanent : boolean) If false, character shows up again when field if reloaded.
-function EventSheet:deleteChar(args)
+--- Removes a character from the field.
+-- @tparam table args
+--  args.key (string): The key of the character.
+--  args.permanent (boolean): If false, character shows up again when field if reloaded.
+--  args.optional (boolean): If false, raises an error when the character is not found.
+function CharacterEvents:deleteChar(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
     return
   end
   char:destroy(args.permanent)
 end
--- Hides a character.
--- @param(args.fade : number) Duration of fading animation.
--- @param(args.deactive : boolean) Erase the character's scripts.
--- @param(args.passable : booean) Make the character passable during the fading animation.
-function EventSheet:hideChar(args)
+--- Hides a character.
+-- @tparam table args
+--  args.key (string): The key of the character.
+--  args.fade (number): Duration of fading animation.
+--  args.deactive (boolean): Erase the character's scripts.
+--  args.passable (boolean): Make the character passable during the fading animation.
+--  args.optional (boolean): If false, raises an error when the character is not found.
+function CharacterEvents:hideChar(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
     return
@@ -53,20 +59,21 @@ function EventSheet:hideChar(args)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Movement
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 -- General parameters:
--- @param(args.key : string) The key of the character.
 --  "origin" or "dest" to refer to event's characters, or any other key to refer to any other
 --  character in the current field.
 
--- Moves straight to the given tile.
--- @param(args.x : number) Tile x difference (0 by default).
--- @param(args.y : number) Tile y difference (0 by default).
--- @param(args.h : number) Tile height difference (0 by default).
-function EventSheet:moveCharTile(args)
+--- Moves straight to the given tile.
+-- @tparam table args
+--  args.key (string): The key of the character.
+--  args.x (number): Tile x difference (0 by default).
+--  args.y (number): Tile y difference (0 by default).
+--  args.h (number): Tile height difference (0 by default).
+function CharacterEvents:moveCharTile(args)
   local char = self:findCharacter(args.key)
   if char.autoTurn then
     local charTile = char:getTile()
@@ -82,10 +89,12 @@ function EventSheet:moveCharTile(args)
     char:playIdleAnimation()
   end
 end
--- Moves in the given direction.
--- @param(args.angle : number) The direction in degrees.
--- @param(args.distance : number) The distance to move (in tiles).
-function EventSheet:moveCharDir(args)
+--- Moves in the given direction.
+-- @tparam table args
+--  args.key (string): The key of the character.
+--  args.angle (number): The direction in degrees.
+--  args.distance (number): The distance to move (in tiles).
+function CharacterEvents:moveCharDir(args)
   local char = self:findCharacter(args.key)
   local nextTile = char:getFrontTiles(args.angle)[1]
   if nextTile then
@@ -107,12 +116,14 @@ function EventSheet:moveCharDir(args)
     end
   end
 end
--- Moves a path to the given tile.
--- @param(args.x : number) Tile destination x.
--- @param(args.y : number) Tile destination y.
--- @param(args.h : number) Tile destination height.
--- @param(args.limit : number) The maxium length of the path to be calculated.
-function EventSheet:moveCharPath(args)
+--- Moves a path to the given tile.
+-- @tparam table args
+--  args.key (string): The key of the character.
+--  args.x (number): Destination tile's x.
+--  args.y (number): Destination tile's y.
+--  args.h (number): Destination tile's height.
+--  args.limit (number): The maxium length of the path to be calculated.
+function CharacterEvents:moveCharPath(args)
   local char = self:findCharacter(args.key)
   local tile = FieldManager.currentField:getObjectTile(args.x, args.y, args.h)
   assert(tile, 'Tile not reachable: ', args.x, args.y, args.h)
@@ -122,15 +133,17 @@ function EventSheet:moveCharPath(args)
   input.action:execute(input)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Direction
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Turns character to the given tile.
--- @param(args.other : string) Key of a character in the destination tile (optional).
--- @param(args.x : number) Tile destination x.
--- @param(args.y : number) Tile destination y.
-function EventSheet:turnCharTile(args)
+--- Turns character to the given tile.
+-- @tparam table args
+--  args.key (string): The key of the character.
+--  args.other (string): Key of a character in the target tile (optional, uses args.x and args.y if nil).
+--  args.x (number): The target tile's x (optional, uses target character's x position if nil).
+--  args.y (number): The target tile's y (optional, uses target character's y position if nil).
+function CharacterEvents:turnCharTile(args)
   local char = self:findCharacter(args.key)
   if args.other then
     local other = self:findCharacter(args.other)
@@ -140,23 +153,31 @@ function EventSheet:turnCharTile(args)
     char:turnToTile(args.x, args.y)
   end
 end
--- Turn character to the given direction.
--- @param(args.angle : number) The direction angle in degrees.
-function EventSheet:turnCharDir(args)
+--- Turn character to the given direction.
+-- @tparam table args
+--  args.key (string): The key of the character.
+--  args.angle (number): The direction angle in degrees.
+function CharacterEvents:turnCharDir(args)
   local char = self:findCharacter(args.key)
   char:setDirection(args.angle)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Animations
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
-function EventSheet:stopChar(args)
+--- Plays the idle animation.
+-- @tparam table args
+--  args.key (string): The key of the character.
+function CharacterEvents:stopChar(args)
   local char = self:findCharacter(args.key)
   char:playIdleAnimation()
 end
--- @param(args.name : string) Name of specific animation of a default animation for the character.
-function EventSheet:playCharAnim(args)
+--- Plays the specified animation.
+-- @tparam table args
+--  args.key (string): The key of the character.
+--  args.name (string): Name of specific animation of a default animation for the character.
+function CharacterEvents:playCharAnim(args)
   local char = self:findCharacter(args.key)
   if args.name:find('Anim') then
     char:playAnimation(char[args.name])
@@ -165,4 +186,4 @@ function EventSheet:playCharAnim(args)
   end
 end
 
-return EventSheet
+return CharacterEvents

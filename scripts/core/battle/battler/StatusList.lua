@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-StatusList
+@classmod StatusList
 ---------------------------------------------------------------------------------------------------
 A special kind of list that provides functions to manage battler's list of status effects.
 
@@ -16,15 +16,16 @@ local Status = require('core/battle/battler/Status')
 local copyTable = util.copyTable
 local rand = love.math.random
 
+-- Class table.
 local StatusList = class(List)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(battler : Battler) The battler whose this list belongs to.
--- @param(initialStatus : table) The array with the battler's initiat status (optional).
+--- Constructor.
+-- @tparam Battler battler The battler whose this list belongs to.
+-- @tparam table initialStatus The array with the battler's initiat status (optional).
 function StatusList:init(battler, save)
   List.init(self)
   self.battler = battler
@@ -44,18 +45,18 @@ function StatusList:init(battler, save)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Converting to string.
--- @ret(string) A string representation.
+--- Converting to string.
+-- @treturn string A string representation.
 function StatusList:__tostring()
   return 'Status' .. getmetatable(List).__tostring(self)
 end
--- Gets the status with the given ID (the first created).
--- @param(id : number | string) The status' ID or key in the database.
--- @ret(Status)
+--- Gets the status with the given ID (the first created).
+-- @tparam number|string id The status' ID or key in the database.
+-- @treturn Status
 function StatusList:findStatus(id)
   local data = Database.status[id]
   for status in self:iterator() do
@@ -65,9 +66,9 @@ function StatusList:findStatus(id)
   end
   return nil
 end
--- Finds a position in the list for a status with the given priority.
--- @param(priority : number)
--- @ret(number)
+--- Finds a position in the list for a status with the given priority.
+-- @tparam number priority
+-- @treturn number
 function StatusList:findPosition(priority)
   for i = #self, 1, -1 do
     if priority >= self[i].data.priority then
@@ -76,8 +77,8 @@ function StatusList:findPosition(priority)
   end
   return 1
 end
--- Creates an array with the status icons, sorted by priority, with no repetition.
--- @ret(table)
+--- Creates an array with the status icons, sorted by priority, with no repetition.
+-- @treturn table
 function StatusList:getIcons()
   local addedIcons = {}
   local icons = {}
@@ -101,18 +102,18 @@ function StatusList:getIcons()
   return icons
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Add / Remove
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Add a new status.
--- @param(id : number | string) The status' ID or key.
--- @param(state : table) The status persistent data.
--- @param(character : Character) The character with this status.
--- @param(caster : string) Key of the character who casted this status 
+--- Add a new status.
+-- @tparam number|string id The status' ID or key.
+-- @tparam table state The status persistent data.
+-- @tparam Character char The Character associated with this StatusList (optional).
+-- @tparam string caster Key of the character who casted this status 
 --  (null if it did not come from a character). 
--- @ret(Status) Newly added status (or old one, if non-cumulative).
-function StatusList:addStatus(id, state, character, caster)
+-- @treturn Status Newly added status (or old one, if non-cumulative).
+function StatusList:addStatus(id, state, char, caster)
   local data = Database.status[id]
   assert(data, "Status does not exist: " .. tostring(id))
   local status = self:findStatus(id)
@@ -123,55 +124,57 @@ function StatusList:addStatus(id, state, character, caster)
     status = Status:fromData(data, self, caster, state)
     self:add(status, i)
     if status.onAdd then
-      status:onAdd(self.battler, character)
+      status:onAdd(self.battler, char)
     end
     for _, id in ipairs(status.cancel) do
-      self:removeStatusAll(id, character)
+      self:removeStatusAll(id, char)
     end
-    if character then
-      self:updateGraphics(character)
+    if char then
+      self:updateGraphics(char)
     end
   end
   return status
 end
--- Removes a status from the list.
--- @param(status : Status | number) The status to be removed or its ID.
--- @ret(Status) The removed status.
-function StatusList:removeStatus(status, character)
+--- Removes a status from the list.
+-- @tparam Status|number status The status to be removed or its ID.
+-- @tparam Character char The Character associated with this StatusList (optional).
+-- @treturn Status The removed status.
+function StatusList:removeStatus(status, char)
   if type(status) == 'number' then
     status = self:findStatus(status)
   end
   if status then
     self:removeElement(status)
     if status.onRemove then
-      status:onRemove(self.battler, character)
+      status:onRemove(self.battler, char)
     end
-    if character then
-      self:updateGraphics(character)
+    if char then
+      self:updateGraphics(char)
     end
     return status
   end
 end
--- Removes all status instances of the given ID.
--- @param(id : number | string) Status' ID or key in the database.
-function StatusList:removeStatusAll(id, character)
+--- Removes all status instances of the given ID.
+-- @tparam number|string id Status' ID or key in the database.
+-- @tparam Character char The Character associated with this StatusList (optional).
+function StatusList:removeStatusAll(id, char)
   local all = {}
   local status = self:findStatus(id)
   while status do
-    self:removeStatus(status, character)
+    self:removeStatus(status, char)
     all[#all + 1] = status
     status = self:findStatus(id)
   end
   return all
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Graphics
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates the character's graphics (transform and animation) according to the current status.
--- @param(character : Character)
-function StatusList:updateGraphics(character)
+--- Updates the character's graphics (transform and animation) according to the current status.
+-- @tparam Character char The Character associated with this StatusList (optional).
+function StatusList:updateGraphics(char)
   local transform = nil
   for i = 1, #self do
     local data = self[i].data
@@ -179,26 +182,26 @@ function StatusList:updateGraphics(character)
       transform = Affine.createTransform(transform, data.transformations)
     end
   end
-  character.statusTransform = transform
-  character:setAnimations('Default')
-  character:setAnimations('Battle')
+  char.statusTransform = transform
+  char:setAnimations('Default')
+  char:setAnimations('Battle')
   for i = 1, #self do
     local data = self[i].data
     if data.charAnim ~= '' then
-      character:setAnimations(data.charAnim)
+      char:setAnimations(data.charAnim)
     end
   end
-  character:replayAnimation()
+  char:replayAnimation()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Status effects
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the total attribute bonus given by the current status effects.
--- @param(name : string) The attribute's key.
--- @ret(number) Additive bonus.
--- @ret(number) Multiplicative bonus.
+--- Gets the total attribute bonus given by the current status effects.
+-- @tparam string name The attribute's key.
+-- @treturn number Additive bonus.
+-- @treturn number Multiplicative bonus.
 function StatusList:attBonus(name)
   local mul = 0
   local add = 0
@@ -208,9 +211,9 @@ function StatusList:attBonus(name)
   end
   return add, mul
 end
--- Gets the total attack elements given by the current status effects.
--- @param(id : number) The element's ID (position in the elements database).
--- @ret(number) Element bonus.
+--- Gets the total attack elements given by the current status effects.
+-- @tparam number id The element's ID (position in the elements database).
+-- @treturn number Element bonus.
 function StatusList:elementAtk(id)
   local e = 0
   for i = 1, #self do
@@ -218,9 +221,9 @@ function StatusList:elementAtk(id)
   end
   return e
 end
--- Gets the total element immunity given by the current status effects.
--- @param(id : number) The element's ID (position in the elements database).
--- @ret(number) Element bonus.
+--- Gets the total element immunity given by the current status effects.
+-- @tparam number id The element's ID (position in the elements database).
+-- @treturn number Element bonus.
 function StatusList:elementDef(id)
   local e = 0
   for i = 1, #self do
@@ -228,9 +231,9 @@ function StatusList:elementDef(id)
   end
   return e
 end
--- Gets the total element damage bonus given by the current status effects.
--- @param(id : number) The element's ID (position in the elements database).
--- @ret(number) Element bonus.
+--- Gets the total element damage bonus given by the current status effects.
+-- @tparam number id The element's ID (position in the elements database).
+-- @treturn number Element bonus.
 function StatusList:elementBuff(id)
   local e = 0
   for i = 1, #self do
@@ -238,9 +241,9 @@ function StatusList:elementBuff(id)
   end
   return e
 end
--- Gets the total status immunity given by the current status effects.
--- @param(id : number) The status ID.
--- @ret(number) Status immunity.
+--- Gets the total status immunity given by the current status effects.
+-- @tparam number id The status ID.
+-- @treturn number Status immunity.
 function StatusList:statusDef(id)
   local e = 1
   for i = 1, #self do
@@ -248,9 +251,9 @@ function StatusList:statusDef(id)
   end
   return e
 end
--- Gets the total element damage bonus given by the current status effects.
--- @param(id : number) The element's ID (position in the elements database).
--- @ret(number) Element bonus.
+--- Gets the total element damage bonus given by the current status effects.
+-- @tparam number id The element's ID (position in the elements database).
+-- @treturn number Element bonus.
 function StatusList:statusBuff(id)
   local e = 1
   for i = 1, #self do
@@ -258,8 +261,8 @@ function StatusList:statusBuff(id)
   end
   return e
 end
--- Checks if there's a deactivating status (like sleep or paralizis).
--- @ret(boolean)
+--- Checks if there's a deactivating status (like sleep or paralizis).
+-- @treturn boolean
 function StatusList:isDeactive()
   for i = 1, #self do
     if self[i].data.deactivate then
@@ -268,7 +271,7 @@ function StatusList:isDeactive()
   end
   return false
 end
--- Checks if there's a status that is equivalent to KO.
+--- Checks if there's a status that is equivalent to KO.
 function StatusList:isDead()
   for i = 1, #self do
     if self[i].data.ko then
@@ -277,8 +280,8 @@ function StatusList:isDead()
   end
   return false
 end
--- Gets predominant status behavior.
--- @ret(BattlerAI)
+--- Gets predominant status behavior.
+-- @treturn BattlerAI
 function StatusList:getAI()
   for i = #self, 1, -1 do
     if self[i].AI then
@@ -287,11 +290,13 @@ function StatusList:getAI()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Turn Callback
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when the turn of the character starts.
+--- Called when the turn of the character starts.
+-- @tparam Character char The Character associated with this StatusList (optional).
+-- @tparam(...) Other parameters to the callback.
 function StatusList:onTurnStart(char, ...)
   local i = 1
   while i <= self.size do
@@ -305,13 +310,13 @@ function StatusList:onTurnStart(char, ...)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Other Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Calls a certain function in all status in the list.
--- @param(name : string) The name of the event.
--- @param(...) Other parameters to the callback.
+--- Calls a certain function in all status in the list.
+-- @tparam string name The name of the event.
+-- @tparam(...) Other parameters to the callback.
 function StatusList:callback(name, ...)
   local i = 1
   name = 'on' .. name
@@ -323,17 +328,17 @@ function StatusList:callback(name, ...)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Converting to string.
--- @ret(string) A string representation.
+--- Converting to string.
+-- @treturn string A string representation.
 function StatusList:__tostring()
   return 'StatusList: ' .. tostring(self.battler)
 end
--- Gets all the status states.
--- @ret(table) An array with the state tables.
+--- Gets all the status states.
+-- @treturn table An array with the state tables.
 function StatusList:getState()
   local status = {}
   for i = 1, #self do

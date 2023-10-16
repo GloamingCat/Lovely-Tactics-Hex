@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-EquipSlotWindow
+@classmod EquipSlotWindow
 ---------------------------------------------------------------------------------------------------
 The window that shows each equipment slot.
 
@@ -17,14 +17,15 @@ local ListWindow = require('core/gui/common/window/interactable/ListWindow')
 local max = math.max
 local min = math.min
 
+-- Class table.
 local EquipSlotWindow = class(ListWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(gui : EquipGUI) The parent GUI.
+--- Constructor.
+-- @tparam EquipGUI gui The parent GUI.
 function EquipSlotWindow:init(gui)
   self.member = gui:currentMember()
   self.visibleRowCount = 0
@@ -34,8 +35,8 @@ function EquipSlotWindow:init(gui)
   self.visibleRowCount = min(6, max(self.visibleRowCount, 4))
   ListWindow.init(self, gui, Config.equipTypes)
 end
--- Overrides ListWindow:createListButton.
--- @param(slot : table) The table with the equip slot info (name, key, state, id).
+--- Overrides ListWindow:createListButton.
+-- @tparam table slot The table with the equip slot info (name, key, state, id).
 function EquipSlotWindow:createListButton(slot)
   for i = 1, slot.count do
     local button = Button(self)
@@ -48,12 +49,12 @@ function EquipSlotWindow:createListButton(slot)
     button.slot = slot
   end
 end
--- @param(member : Battler) The battler which the current equipment belongs to.
+-- @tparam Battler member The battler which the current equipment belongs to.
 function EquipSlotWindow:setBattler(battler)
   self.member = battler
   self:refreshSlots()
 end
--- Refresh slot buttons, in case the member chaged.
+--- Refresh slot buttons, in case the member chaged.
 function EquipSlotWindow:refreshSlots()
   for i = 1, #self.matrix do
     local button = self.matrix[i]
@@ -81,12 +82,12 @@ function EquipSlotWindow:refreshSlots()
   end
 end
 
-----------------------------------------------------------------------------------------------------
+-- -------------------------------------------------------------------------------------------------
 -- Button callbacks
-----------------------------------------------------------------------------------------------------
+-- -------------------------------------------------------------------------------------------------
 
--- Called when player selects an item button.
--- @param(button : Button)
+--- Called when player selects an item button.
+-- @tparam Button button
 function EquipSlotWindow:onButtonSelect(button)
   if button.item then
     self.GUI.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
@@ -95,42 +96,42 @@ function EquipSlotWindow:onButtonSelect(button)
   end
   self.GUI.bonusWindow:setEquip(button.key, button.item)
 end
--- Called when player presses "confirm".
--- Open item window to choose the new equip.
--- @param(button : Button)
+--- Called when player presses "confirm".
+--- Open item window to choose the new equip.
+-- @tparam Button button
 function EquipSlotWindow:onButtonConfirm(button)
   self:hide()
   self.GUI.itemWindow:setSlot(button.key, button.slot)
   self.GUI.itemWindow:show()
   self.GUI.itemWindow:activate()
 end
--- Called when player presses "cancel".
--- Closes GUI.
+--- Called when player presses "cancel".
+--- Closes GUI.
 function EquipSlotWindow:onButtonCancel()
   self.result = 0
 end
--- Called when player presses "next" key.
+--- Called when player presses "next" key.
 function EquipSlotWindow:onNext()
   self.GUI:nextMember()
 end
--- Called when player presses "prev" key.
+--- Called when player presses "prev" key.
 function EquipSlotWindow:onPrev()
   self.GUI:prevMember()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:colCount.
+--- Overrides GridWindow:colCount.
 function EquipSlotWindow:colCount()
   return 1
 end
--- Overrides ListWindow:computeWidth.
+--- Overrides ListWindow:computeWidth.
 function EquipSlotWindow:cellWidth(width)
   return 200
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function EquipSlotWindow:__tostring()
   return 'Equip Slot Window'
 end

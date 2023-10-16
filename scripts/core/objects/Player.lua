@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Player
+@classmod Player
 ---------------------------------------------------------------------------------------------------
 This is a special character that can me controlled by the player with keyboard or mouse.
 It only exists in exploration fields, not in battle fields.
@@ -20,13 +20,14 @@ local indexOf = util.array.indexOf
 local rand = love.math.random
 local now = love.timer.getTime
 
+-- Class table.
 local Player = class(Character)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides CharacterBase:init.
+--- Overrides CharacterBase:init.
 function Player:init(transition, save)
   local troopData = Database.troops[TroopManager.playerTroopID]
   local leader = troopData.members[1]
@@ -46,7 +47,7 @@ function Player:init(transition, save)
   Character.init(self, data, save)
   self.waitList = List()
 end
--- Overrides CharacterBase:initProperties.
+--- Overrides CharacterBase:initProperties.
 function Player:initProperties(instData, name, collisionTiles, colliderHeight)
   Character.initProperties(self, instData, name, collisionTiles, colliderHeight)
   self.inputDelay = 6 / 60
@@ -60,11 +61,11 @@ function Player:initProperties(instData, name, collisionTiles, colliderHeight)
   self.varVolume = 0.2
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides CharacterBase:update.
+--- Overrides CharacterBase:update.
 function Player:update(dt)
   if FieldManager.playerInput then
     self:refreshSpeed()
@@ -74,7 +75,7 @@ function Player:update(dt)
     self:updateStepCount(dt)
   end
 end
--- Coroutine that runs in non-battle fields.
+--- Coroutine that runs in non-battle fields.
 function Player:resumeScripts()
   Character.resumeScripts(self)
   while true do
@@ -87,7 +88,7 @@ function Player:resumeScripts()
     end
   end
 end
--- Checks movement and interaction inputs.
+--- Checks movement and interaction inputs.
 function Player:checkFieldInput()
   if InputManager.keys['cancel']:isTriggered() or InputManager.keys['mouse2']:isTriggered() or FieldManager.hud:checkInput() then
     self:openGUI()
@@ -103,18 +104,18 @@ function Player:checkFieldInput()
   end
 end
 -- Checks if player is waiting for an action to finish, like a movement animation, 
---  GUI input, battle, or a blocking event.
--- @ret(boolean) True if some action is running.
+---  GUI input, battle, or a blocking event.
+-- @treturn boolean True if some action is running.
 function Player:isBusy()
   return self.collided or self.interacting
     or BattleManager.onBattle or GUIManager:isWaitingInput()
     or not self.waitList:isEmpty()
 end
--- Gets the keyboard move/turn input. 
--- @ret(number) The x-axis input.
--- @ret(number) The y-axis input.
--- @ret(boolean) True if it was pressed for long enough to move. 
---  If false, the character just turns to the input direction, but does not move.
+--- Gets the keyboard move/turn input. 
+-- @treturn number The x-axis input.
+-- @treturn number The y-axis input.
+-- @treturn boolean True if it was pressed for long enough to move. 
+---  If false, the character just turns to the input direction, but does not move.
 function Player:inputAxis()
   local dx = InputManager:axisX(0, 0)
   local dy = InputManager:axisY(0, 0)
@@ -143,7 +144,7 @@ function Player:inputAxis()
     return dx, dy, false
   end
 end
--- Sets the speed according to dash input.
+--- Sets the speed according to dash input.
 function Player:refreshSpeed()
   local dash = InputManager.keys['dash']:isPressing()
   local auto = InputManager.autoDash or false
@@ -154,12 +155,12 @@ function Player:refreshSpeed()
   end
 end
   
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Mouse Movement
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Moves player to the mouse coordinate.
--- @param(button : string) Key of the button used to move (mouse1 or touch).
+--- [COROUTINE] Moves player to the mouse coordinate.
+-- @tparam string button Key of the button used to move (mouse1 or touch).
 function Player:moveByMouse(button)
   local tile = FieldManager.currentField:getHoveredTile()
   if tile then
@@ -173,9 +174,9 @@ function Player:moveByMouse(button)
     self:playIdleAnimation()
   end
 end
--- Checks if the tile is within reach to interact then interacts.
--- @param(tile : ObjectTile) Selected tile.
--- @ret(boolean) Whether of not the player interacted with this tile.
+--- Checks if the tile is within reach to interact then interacts.
+-- @tparam ObjectTile tile Selected tile.
+-- @treturn boolean Whether of not the player interacted with this tile.
 function Player:tryInteract(tile)
   local currentTile = self:getTile()
   if math.field.tileDistance(tile.x, tile.y, currentTile.x, currentTile.y) > 1 then
@@ -184,14 +185,14 @@ function Player:tryInteract(tile)
   return self:interactTile(tile)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Keyboard Movement
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Moves player depending on input.
--- @param(dx : number) The x-axis input.
--- @param(dy : number) The x-axis input.
--- @param(move : boolean) False if character is just turning to the given direction, true if it
+--- [COROUTINE] Moves player depending on input.
+-- @tparam number dx The x-axis input.
+-- @tparam number dy The x-axis input.
+-- @tparam boolean move False if character is just turning to the given direction, true if it
 --  must move.
 function Player:moveByKeyboard(dx, dy, move)
   if dx ~= 0 or dy ~= 0 then
@@ -208,8 +209,8 @@ function Player:moveByKeyboard(dx, dy, move)
     self:playIdleAnimation()
   end
 end
--- Follow the current path, if any.
--- @ret(boolean) Whether the character moved or not.
+--- Follow the current path, if any.
+-- @treturn boolean Whether the character moved or not.
 function Player:moveFromPath()
   if not self.path then
     return false
@@ -222,11 +223,11 @@ function Player:moveFromPath()
   return walked
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Terrain
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Plays terrain step sound.
+--- Plays terrain step sound.
 function Player:updateStepCount(dt)
   self.stepCount = self.stepCount + self.speed / Config.player.walkSpeed * 60 * dt
   if self.stepCount > self.freq then
@@ -243,11 +244,11 @@ function Player:updateStepCount(dt)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- GUI
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Opens game's main GUI.
+--- Opens game's main GUI.
 function Player:openGUI()
   self:playIdleAnimation()
   FieldManager.playerInput = false
@@ -260,12 +261,12 @@ function Player:openGUI()
   FieldManager.playerInput = true
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Interaction
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Interacts with whoever is the player looking at (if any).
--- @ret(boolean) True if the character interacted with someone, false otherwise.
+--- [COROUTINE] Interacts with whoever is the player looking at (if any).
+-- @treturn boolean True if the character interacted with someone, false otherwise.
 function Player:interact()
   self:playIdleAnimation()
   local angle = self:getRoundedDirection()
@@ -273,9 +274,10 @@ function Player:interact()
     or self:interactAngle(angle - 45) or self:interactAngle(angle + 45)
   return interacted
 end
--- Tries to interact with any character in the given tile.
--- @param(tile : ObjectTile) The tile where the interactable is.
--- @ret(boolean) True if the character interacted with someone, false otherwise.
+--- Tries to interact with any character in the given tile.
+-- @tparam ObjectTile tile The tile where the interactable is.
+-- @tparam boolean fromPath Flag to tell whether the interaction ocurred while following a Path.
+-- @treturn boolean True if the character interacted with something, false otherwise.
 function Player:interactTile(tile, fromPath)
   if not tile then
     return false
@@ -300,8 +302,8 @@ function Player:interactTile(tile, fromPath)
   end
   return interacted
 end
--- Tries to interact with any character in the tile looked by the given direction.
--- @ret(boolean) True if the character interacted with someone, false otherwise.
+--- Tries to interact with any character in the tile looked by the given direction.
+-- @treturn boolean True if the character interacted with someone, false otherwise.
 function Player:interactAngle(angle)
   local frontTiles = self:getFrontTiles(angle)
   for i = 1, #frontTiles do

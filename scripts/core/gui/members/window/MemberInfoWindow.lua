@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-MemberInfoWindow
+@classmod MemberInfoWindow
 ---------------------------------------------------------------------------------------------------
 A window that shows HP and MP of a troop member.
 
@@ -14,21 +14,22 @@ local SimpleText = require('core/gui/widget/SimpleText')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
+-- Class table.
 local MemberInfoWindow = class(Window)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(member : Battler) The initial member.
--- @param(...) Other default parameters from Window:init.
+--- Constructor.
+-- @tparam Battler member The initial member.
+-- @tparam(...) Other default parameters from Window:init.
 function MemberInfoWindow:init(member, ...)
   self.member = member
   Window.init(self, ...)
 end
--- Overrides Window:createContent.
--- Creates the content of the initial member.
+--- Overrides Window:createContent.
+--- Creates the content of the initial member.
 function MemberInfoWindow:createContent(...)
   Window.createContent(self, ...)
   self.page = Pagination(self)
@@ -36,11 +37,11 @@ function MemberInfoWindow:createContent(...)
   self:setBattler(self.member)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Member
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(member : Battler) Changes the member info to another member's.
+-- @tparam Battler member Changes the member info to another member's.
 function MemberInfoWindow:setBattler(battler)
   self.member = battler
   if self.info then
@@ -57,11 +58,11 @@ function MemberInfoWindow:setBattler(battler)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function MemberInfoWindow:__tostring()
   return 'Member Info Window'
 end

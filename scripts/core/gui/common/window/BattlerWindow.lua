@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-BattlerWindow
+@classmod BattlerWindow
 ---------------------------------------------------------------------------------------------------
 Window that shows on each character in the VisualizeAction.
 
@@ -19,22 +19,23 @@ local max = math.max
 local round = math.round
 local findByName = util.array.findByName
 
+-- Class table.
 local BattlerWindow = class(Window)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(character : Character) the character of the battler to be shown
+--- Constructor.
+-- @tparam Character character The character of the battler to be shown.
 function BattlerWindow:init(GUI)
   self.font = Fonts.gui_small
   self.nameFont = Fonts.gui_medium
   local cw, ch = self:preprocess()
   Window.init(self, GUI, cw +  2 * self:paddingX(), ch + 2 * self:paddingY())
 end
--- Pre-processes the content that need to be shown and calculates the space needed.
--- @ret(number) 
+--- Pre-processes the content that need to be shown and calculates the space needed.
+-- @treturn number
 function BattlerWindow:preprocess()
   local primary = {}
   local secondary = {}
@@ -60,7 +61,7 @@ function BattlerWindow:preprocess()
   local hsh = 15 + max(10 * max(#primary, #secondary), eHeight)
   return hsw, hsh
 end
--- Overrides Window:createContent.
+--- Overrides Window:createContent.
 function BattlerWindow:createContent(width, height)
   Window.createContent(self, width, height)
   -- Portrait
@@ -82,11 +83,11 @@ function BattlerWindow:createContent(width, height)
   self.elementValues = {}
   self:createElements(self.elements, x + w * 2, y + 5, w - self:paddingX())
 end
--- Creates the text content from a list of attributes.
--- @param(list : table) Array of attribute data.
--- @param(x : number) Pixel x of the texts.
--- @param(y : number) Initial pixel y of the texts.
--- @param(w : number) Pixel width of the text box.
+--- Creates the text content from a list of attributes.
+-- @tparam table list Array of attribute data.
+-- @tparam number x Pixel x of the texts.
+-- @tparam number y Initial pixel y of the texts.
+-- @tparam number w Pixel width of the text box.
 function BattlerWindow:createAtts(list, x, y, w)
   for i, att in ipairs(list) do
     -- Attribute name
@@ -103,11 +104,11 @@ function BattlerWindow:createAtts(list, x, y, w)
     self.attValues[att.key] = textValue
   end
 end
--- Creates the text content from the list of elements.
--- @param(list : table) Array of (element id, icon) pairs. 
--- @param(x : number) Pixel x of the texts.
--- @param(y : number) Initial pixel y of the texts.
--- @param(w : number) Pixel width of the text box.
+--- Creates the text content from the list of elements.
+-- @tparam table list Array of (element id, icon) pairs.
+-- @tparam number x Pixel x of the texts.
+-- @tparam number y Initial pixel y of the texts.
+-- @tparam number w Pixel width of the text box.
 function BattlerWindow:createElements(list, x, y, w)
   local h = 0
   for i, e in ipairs(list) do
@@ -126,12 +127,12 @@ function BattlerWindow:createElements(list, x, y, w)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Member
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows the given battler stats.
--- @param(battler : Battler) The battler shown in the window.
+--- Shows the given battler stats.
+-- @tparam Battler battler The battler shown in the window.
 function BattlerWindow:setBattler(battler)
   self:setPortrait(battler)
   self.textName:setTerm('data.battler.' .. battler.key, battler.name)
@@ -174,9 +175,9 @@ function BattlerWindow:setBattler(battler)
     self:hideContent()
   end
 end
--- Shows the graphics of the given battler.
--- If they have a full body image, it is used. Otherwise, it uses the idle animation.
--- @param(battler : Battler) The battler shown in the window.
+--- Shows the graphics of the given battler.
+--- If they have a full body image, it is used. Otherwise, it uses the idle animation.
+-- @tparam Battler battler The battler shown in the window.
 function BattlerWindow:setPortrait(battler)
   local charData = Database.characters[battler.charID]
   local icon = findByName(charData.portraits, "BigIcon")
@@ -197,27 +198,27 @@ function BattlerWindow:setPortrait(battler)
   self.portrait:updatePosition(self.position)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Window:onConfirm.
+--- Overrides Window:onConfirm.
 function BattlerWindow:onConfirm()
   self:onCancel()
 end
--- Overrides Window:onCancel.
+--- Overrides Window:onCancel.
 function BattlerWindow:onCancel()
   AudioManager:playSFX(Config.sounds.buttonCancel)
   self.result = 0
 end
--- Called when player presses "next" key.
+--- Called when player presses "next" key.
 function BattlerWindow:onNext()
   if self.GUI.nextMember then
     AudioManager:playSFX(Config.sounds.buttonSelect)
     self.GUI:nextMember()
   end
 end
--- Called when player presses "prev" key.
+--- Called when player presses "prev" key.
 function BattlerWindow:onPrev()
   if self.GUI.prevMember then
     AudioManager:playSFX(Config.sounds.buttonSelect)
@@ -225,11 +226,11 @@ function BattlerWindow:onPrev()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function BattlerWindow:__tostring()
   return 'Battler Description Window'
 end

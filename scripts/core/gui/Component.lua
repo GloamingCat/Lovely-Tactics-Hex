@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Component
+@classmod Component
 ---------------------------------------------------------------------------------------------------
 Base for a generic GUI component node.
 
@@ -11,31 +11,32 @@ Base for a generic GUI component node.
 local List = require('core/datastruct/List')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local Component = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialize
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(position : Vector) The component's position relative to its parent.
--- @param(...) Aditional arguments passed to Component:createContent.
+--- Constructor.
+-- @tparam Vector position The component's position relative to its parent.
+-- @tparam(...) Aditional arguments passed to Component:createContent.
 function Component:init(position, ...)
   self.visible = true
   self.content = List()
   self.position = position or Vector(0, 0, 0)
   self:createContent(...)
 end
--- Creates child content.
+--- Creates child content.
 function Component:createContent(...)
   -- Abstract.
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates child content.
+--- Updates child content.
 function Component:update(...)
   for child in self.content:iterator() do
     if child.update then
@@ -43,7 +44,7 @@ function Component:update(...)
     end
   end
 end
--- Destroys child content.
+--- Destroys child content.
 function Component:destroy(...)
   for child in self.content:iterator() do
     if child.destroy then
@@ -53,12 +54,12 @@ function Component:destroy(...)
   self.content:clear()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Visibility
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Changes child content's visibility.
--- @param(value : boolean)
+--- Changes child content's visibility.
+-- @tparam boolean value
 function Component:setVisible(value, ...)
   for child in self.content:iterator() do
     if child.setVisible then
@@ -67,15 +68,15 @@ function Component:setVisible(value, ...)
   end
   self.visible = value
 end
--- Shows child content.
+--- Shows child content.
 function Component:show(...)
   self:setVisible(true, ...)
 end
--- Hides child content.
+--- Hides child content.
 function Component:hide(...)
   self:setVisible(false, ...)
 end
--- Refreshes content.
+--- Refreshes content.
 function Component:refresh()
   for child in self.content:iterator() do
     if child.refresh then
@@ -83,7 +84,7 @@ function Component:refresh()
     end
   end
 end
--- Updates child content position.
+--- Updates child content position.
 function Component:updatePosition(parentPosition, ...)
   if parentPosition then
     parentPosition = parentPosition + self.position

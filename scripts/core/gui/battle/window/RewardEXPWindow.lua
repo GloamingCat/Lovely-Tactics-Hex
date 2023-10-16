@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-RewardEXPWindow
+@classmod RewardEXPWindow
 ---------------------------------------------------------------------------------------------------
 The window that shows the gained experience.
 
@@ -13,13 +13,14 @@ local SimpleText = require('core/gui/widget/SimpleText')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
+-- Class table.
 local RewardEXPWindow = class(Window)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Window:createContent.
+--- Overrides Window:createContent.
 function RewardEXPWindow:createContent(...)
   Window.createContent(self, ...)
   self.done = false
@@ -68,11 +69,11 @@ function RewardEXPWindow:createContent(...)
   self.levelupSound = Config.sounds.levelup
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- EXP Gain
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Show EXP gain.
+--- [COROUTINE] Show EXP gain.
 function RewardEXPWindow:addEXP()
   local done, levelup, changed
   local soundTime = self.soundPeriod
@@ -120,7 +121,7 @@ function RewardEXPWindow:addEXP()
     Fiber:wait()
   until done
 end
--- Overrides Window:onConfirm.
+--- Overrides Window:onConfirm.
 function RewardEXPWindow:onConfirm()
   AudioManager:playSFX(Config.sounds.buttonConfirm)
   if self.done then
@@ -131,16 +132,16 @@ function RewardEXPWindow:onConfirm()
   self.done = true
   self.fiber = GUIManager.fiberList:fork(self.addEXP, self)
 end
--- Overrides Window:onCancel.
+--- Overrides Window:onCancel.
 function RewardEXPWindow:onCancel()
   self:onConfirm()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function RewardEXPWindow:__tostring()
   return 'EXP Reward Window'
 end

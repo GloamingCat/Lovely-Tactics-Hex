@@ -1,14 +1,14 @@
 
 --[[===============================================================================================
 
-BattleManager
+@classmod BattleManager
 ---------------------------------------------------------------------------------------------------
 Controls battle flow (initializes troops, runs loop, checks victory and game over).
-Parameters:
-  gameOverCondition: 0 => no gameover, 1 => only when lost, 2 => lost or draw
-  skipAnimations: for debugging purposes (skips battle/character animations)
-  escapeEnabled: enable Escape action
-Results: 1 => win, 0 => draw, -1 => lost
+-- Parameters:
+--  gameOverCondition: 0 => no gameover, 1 => only when lost, 2 => lost or draw
+--  skipAnimations: for debugging purposes (skips battle/character animations)
+--  escapeEnabled: enable Escape action
+-- Results: 1 => win, 0 => draw, -1 => lost
 
 =================================================================================================]]
 
@@ -27,19 +27,20 @@ local defaultParams = {
   gameOverCondition = 0, 
   escapeEnabled = true }
 
+-- Class table.
 local BattleManager = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function BattleManager:init()
   self.onBattle = false
   self.params = defaultParams
 end
--- Creates battle elements (GUI, characters, party tiles).
--- @param(state : table) Data about battle state for when the game is loaded mid-battle (optional).
+--- Creates battle elements (GUI, characters, party tiles).
+-- @tparam table state Data about battle state for when the game is loaded mid-battle (optional).
 function BattleManager:setUp(state)
   TroopManager:setPartyTiles(self.currentField)
   for tile in FieldManager.currentField:gridIterator() do
@@ -48,8 +49,8 @@ function BattleManager:setUp(state)
   TroopManager:createTroops(state and state.troops)
   TurnManager:setUp(state and state.turn)
 end
--- Gets the current battle state to save the game mid-battle.
--- @ret(table) Battle state data.
+--- Gets the current battle state to save the game mid-battle.
+-- @treturn table Battle state data.
 function BattleManager:getState()
   return {
     params = self.params,
@@ -58,14 +59,14 @@ function BattleManager:getState()
   }
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Battle Loop
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Loads a battle field and waits for the battle to finish.
+--- Loads a battle field and waits for the battle to finish.
 -- It MUST be called from a fiber in FieldManager's fiber list, or else the fiber will be 
--- lost in the field transition. At the end of the battle, it reloads the previous field.
--- @param(state : table) Data about battle state for when the game is loaded mid-battle (optional).
+--- lost in the field transition. At the end of the battle, it reloads the previous field.
+-- @tparam table state Data about battle state for when the game is loaded mid-battle (optional).
 function BattleManager:loadBattle(state)
   self.saveData = state
   TroopManager:reset()
@@ -89,8 +90,8 @@ function BattleManager:loadBattle(state)
   self.saveData = nil
   FieldManager:loadTransition(FieldManager.playerState.transition, FieldManager.playerState.field)
 end
--- Runs until battle finishes.
--- @ret(number) The result of the end GUI.
+--- Runs until battle finishes.
+-- @treturn number The result of the end GUI.
 function BattleManager:runBattle(skipIntro)
   self.result = nil
   self.winner = nil
@@ -105,7 +106,7 @@ function BattleManager:runBattle(skipIntro)
   until self.result
   return self:battleEnd()
 end
--- Runs before battle loop.
+--- Runs before battle loop.
 function BattleManager:battleStart(skipIntro)
   self.onBattle = true
   if self.params.fade then
@@ -120,7 +121,7 @@ function BattleManager:battleStart(skipIntro)
   end
   FieldManager:runLoadScripts()
 end
--- Player intro animation, to show each party.
+--- Player intro animation, to show each party.
 function BattleManager:battleIntro()
   local speed = 50
   for i = 1, #TroopManager.centers do
@@ -134,8 +135,8 @@ function BattleManager:battleIntro()
   FieldManager.renderer:moveToPoint(p.x, p.y, speed, true)
   _G.Fiber:wait(15)
 end
--- Runs after winner was determined and battle loop ends.
--- @ret(number) The result code: 1 -> continue; 2 -> retry; 3 -> title screen.
+--- Runs after winner was determined and battle loop ends.
+-- @treturn number The result code: 1 -> continue; 2 -> retry; 3 -> title screen.
 function BattleManager:battleEnd()
   local result = 1
   if self:playerWon() then
@@ -153,7 +154,7 @@ function BattleManager:battleEnd()
   self.onBattle = false
   return result
 end
--- Clears batte information from characters and field.
+--- Clears batte information from characters and field.
 function BattleManager:clear()
   for tile in FieldManager.currentField:gridIterator() do
     tile.gui:destroy()
@@ -165,31 +166,31 @@ function BattleManager:clear()
   TroopManager:clear()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Battle results
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(boolean) Whether the player party won the battle.
+-- @treturn boolean Whether the player party won the battle.
 function BattleManager:playerWon()
   return self.result > 0
 end
--- @ret(boolean) Whether the player party escaped.
+-- @treturn boolean Whether the player party escaped.
 function BattleManager:playerEscaped()
   return self.result == -2
 end
--- @ret(boolean) Whether the enemy party won battle.
+-- @treturn boolean Whether the enemy party won battle.
 function BattleManager:enemyWon()
   return self.result == -1
 end
--- @ret(boolean) Whether the enemy party escaped.
+-- @treturn boolean Whether the enemy party escaped.
 function BattleManager:enemyEscaped()
   return self.result == 2
 end
--- @ret(boolean) Whether both parties lost.
+-- @treturn boolean Whether both parties lost.
 function BattleManager:drawed()
   return self.result == 0
 end
--- Checks if the player received a game over.
+--- Checks if the player received a game over.
 function BattleManager:isGameOver()
   if self:drawed() then
     return self.params.gameOverCondition >= 2
@@ -200,12 +201,12 @@ function BattleManager:isGameOver()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Rewards
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates a table of reward from the current state of the battle field.
--- @ret(table) Table with exp per battler, items and money.
+--- Creates a table of reward from the current state of the battle field.
+-- @treturn table Table with exp per battler, items and money.
 function BattleManager:getBattleRewards(winnerParty)
   local r = { exp = {},
     items = Inventory(),

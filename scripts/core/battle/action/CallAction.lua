@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-CallAction
+@classmod CallAction
 ---------------------------------------------------------------------------------------------------
 The BattleAction that is executed when players chooses the "Call Ally" button.
 
@@ -11,13 +11,14 @@ The BattleAction that is executed when players chooses the "Call Ally" button.
 local BattleAction = require('core/battle/action/BattleAction')
 local CallGUI = require('core/gui/battle/CallGUI')
 
+-- Class table.
 local CallAction = class(BattleAction)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function CallAction:init()
   BattleAction.init(self, 'general')
   self.showTargetWindow = false
@@ -26,11 +27,11 @@ function CallAction:init()
   self.resetBattler = false
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input callback
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:onConfirm.
+--- Overrides BattleAction:onConfirm.
 function CallAction:onConfirm(input)
   self.troop = TroopManager.troops[(input.party or input.user.party)]
   if input.GUI then
@@ -43,21 +44,21 @@ function CallAction:onConfirm(input)
   end
   return self:execute(input)
 end
--- Overrides BattleAction:execute.
+--- Overrides BattleAction:execute.
 function CallAction:execute(input)
   self:callMember(input.member, input.target, true)
   return BattleAction.execute(self, input)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Tile Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:resetTileProperties.
+--- Overrides BattleAction:resetTileProperties.
 function CallAction:resetTileProperties(input)
   self:resetSelectableTiles(input)
 end
--- Overrides BattleAction:resetTileColors.
+--- Overrides BattleAction:resetTileColors.
 function CallAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
     if tile.gui.selectable then
@@ -68,25 +69,25 @@ function CallAction:resetTileColors(input)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Selectable Tiles
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:isSelectable.
+--- Overrides BattleAction:isSelectable.
 function CallAction:isSelectable(input, tile)
   return tile.party == (input.party or input.user.party) and not tile:collides(0, 0) 
     and not self.field:collidesTerrain(tile:coordinates())
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Troop
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Adds a character to the field that represents the member with the given key.
--- @param(key : string) Member's key.
--- @param(tile : ObjectTile) The tile the character will be put in.
--- @param(fade : boolean) Flag to show character fading in.
--- @ret(Character) The newly created character for the member.
+--- Adds a character to the field that represents the member with the given key.
+-- @tparam string key Member's key.
+-- @tparam ObjectTile tile The tile the character will be put in.
+-- @tparam boolean fade Flag to show character fading in.
+-- @treturn Character The newly created character for the member.
 function CallAction:callMember(key, tile, fade)
   assert(key, 'No character was chosen!')
   assert(tile, 'No tile was chosen!')
@@ -106,12 +107,12 @@ function CallAction:callMember(key, tile, fade)
   TroopManager:createBattler(character)
   return character
 end
--- Removes a member character.
--- @param(char : Character) The characters representing the member to be removed.
--- @ret(table) Removed member's data.
-function CallAction:removeMember(character)
-  local member = self.troop:moveMember(character.key, 1)
-  TroopManager:deleteCharacter(character)
+--- Removes a member character.
+-- @tparam Character char The characters representing the member to be removed.
+-- @treturn table Removed member's data.
+function CallAction:removeMember(char)
+  local member = self.troop:moveMember(char.key, 1)
+  TroopManager:deletechar(character)
   return member
 end
 

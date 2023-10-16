@@ -22,9 +22,9 @@
 		ProFi:setInspect( string/methodName, number/levels/1 )
 ]]
 
------------------------
+-- --------------------
 -- Locals:
------------------------
+-- --------------------
 
 local ProFi = {}
 local onDebugHook, sortByDurationDesc, sortByCallCount, getTime
@@ -55,9 +55,9 @@ local FORMAT_BANNER 		   = [[
 
 ]]
 
------------------------
+-- --------------------
 -- Public Methods:
------------------------
+-- --------------------
 
 --[[
 	Starts profiling any method that is called between this and ProFi:stop().
@@ -193,9 +193,9 @@ function ProFi:setInspect( methodName, levels )
 	end
 end
 
------------------------
+-- --------------------
 -- Implementations methods:
------------------------
+-- --------------------
 
 function ProFi:shouldReturn( )
 	return self.should_run_once and self.has_finished
@@ -443,9 +443,9 @@ function ProFi:setLowestMemoryReport( memoryReport )
 	end
 end
 
------------------------
+-- --------------------
 -- Local Functions:
------------------------
+-- --------------------
 
 getTime = os.clock
 
@@ -466,9 +466,9 @@ sortByCallCount = function( a, b )
 	return a.count > b.count
 end
 
------------------------
+-- --------------------
 -- Return Module:
------------------------
+-- --------------------
 
 ProFi:reset()
 return ProFi

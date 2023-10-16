@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-TitleGUI
+@classmod TitleGUI
 ---------------------------------------------------------------------------------------------------
 The GUI that is shown in the end of the battle.
 
@@ -14,13 +14,14 @@ local Sprite = require('core/graphics/Sprite')
 local Text = require('core/graphics/Text')
 local TitleCommandWindow = require('core/gui/menu/window/interactable/TitleCommandWindow')
 
+-- Class table.
 local TitleGUI = class(GUI)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialize
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Implements GUI:createWindows.
+--- Implements GUI:createWindows.
 function TitleGUI:createWindows()
   self.name = 'Title GUI'
   self.coverSpeed = 2
@@ -30,7 +31,7 @@ function TitleGUI:createWindows()
   self:createCommandWindow()
   self:setActiveWindow(self.commandWindow)
 end
--- Creates cover sprite.
+--- Creates cover sprite.
 function TitleGUI:createCover()
   local id = Config.coverID
   if id and id >= 0 then
@@ -40,7 +41,7 @@ function TitleGUI:createCover()
     self.cover:setRGBA(nil, nil, nil, 0)
   end
 end
--- Creates the text at the top of the screen to show that the player won.
+--- Creates the text at the top of the screen to show that the player won.
 function TitleGUI:createTopText()
   local id = Config.logoID
   if id and id >= 0 then
@@ -59,14 +60,14 @@ function TitleGUI:createTopText()
   end
   self.topText:setRGBA(nil, nil, nil, 0)
 end
--- Creates the main window with New / Load / etc.
+--- Creates the main window with New / Load / etc.
 function TitleGUI:createCommandWindow()
   local window = TitleCommandWindow(self)
   window:setXYZ((window.width - ScreenManager.width) / 2 + self:windowMargin(),
     (ScreenManager.height - window.height) / 2 - self:windowMargin())
   self.commandWindow = window
 end
--- Creates the window with the save files to load.
+--- Creates the window with the save files to load.
 function TitleGUI:createLoadWindow()
   if SaveManager:hasSaves() then
     local window = LoadWindow(self)
@@ -75,11 +76,11 @@ function TitleGUI:createLoadWindow()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Cover
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GUI:show to show cover before windows.
+--- Overrides GUI:show to show cover before windows.
 function TitleGUI:show(...)
   if not self.cover or self.cover.color.alpha == 0 then
     self:playBGM()
@@ -88,7 +89,7 @@ function TitleGUI:show(...)
   end
   GUI.show(self, ...)
 end
--- Fades in cover and title.
+--- Fades in cover and title.
 function TitleGUI:showCover(title, cover)
   if not title and not (self.cover and cover) then
     return
@@ -105,7 +106,7 @@ function TitleGUI:showCover(title, cover)
     Fiber:wait()
   end
 end
--- Faces out cover and title.
+--- Faces out cover and title.
 function TitleGUI:hideCover(title, cover)
   if not title and not (self.cover and cover) then
     return
@@ -122,31 +123,31 @@ function TitleGUI:hideCover(title, cover)
     Fiber:wait()
   end
 end
--- Starts playing the title theme, if any.
+--- Starts playing the title theme, if any.
 function TitleGUI:playBGM()
   if AudioManager.titleTheme then
     AudioManager:playBGM(AudioManager.titleTheme, 60 / self.coverSpeed)
   end
 end
--- Stops playing the title theme, if any.
+--- Stops playing the title theme, if any.
 function TitleGUI:pauseBGM()
   if Config.sounds.titleTheme then
     AudioManager:pauseBGM(60 / self.coverSpeed)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GUI:refresh. Refreshes title.
+--- Overrides GUI:refresh. Refreshes title.
 function TitleGUI:refresh()
   GUI.refresh(self)
   if self.topText and self.topText.text then
     self.topText:setText(Vocab.data.conf.title or Config.name)
   end
 end
--- Overrides GUI:destroy to destroy top text.
+--- Overrides GUI:destroy to destroy top text.
 function TitleGUI:destroy(...)
   GUI.destroy(self, ...)
   self.topText:destroy()
@@ -154,7 +155,7 @@ function TitleGUI:destroy(...)
     self.cover:destroy()
   end
 end
--- Overrides GUI:windowMargin.
+--- Overrides GUI:windowMargin.
 function TitleGUI:windowMargin()
   return 10
 end

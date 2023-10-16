@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-ObjectLayer
+@classmod ObjectLayer
 ---------------------------------------------------------------------------------------------------
 An ObjectLayer is a matrix of ObjectTiles.
 There's only one ObjectLayer in the field per height.
@@ -19,15 +19,16 @@ local floor = math.floor
 local newQuad = love.graphics.newQuad
 local tile2Pixel = math.field.tile2Pixel
 
+-- Class table.
 local ObjectLayer = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(sizeX : number) the field's width
--- @param(sizeY : number) the field's length
--- @param(height : number) the layer's height
+-- @tparam number sizeX The field's width.
+-- @tparam number sizeY The field's length.
+-- @tparam number height The layer's height.
 function ObjectLayer:init(sizeX, sizeY, height)
   self.sizeX = sizeX
   self.sizeY = sizeY
@@ -41,12 +42,12 @@ function ObjectLayer:init(sizeX, sizeY, height)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Merge
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates all obstacles in data and adds them to the tiles.
--- @param(layerData : table) the layer's data from field's file
+--- Creates all obstacles in data and adds them to the tiles.
+-- @tparam table layerData The layer's data from field's file.
 function ObjectLayer:mergeObstacles(layerData)
   for i = 1, self.sizeX do
     for j = 1, self.sizeY do
@@ -84,8 +85,8 @@ function ObjectLayer:mergeObstacles(layerData)
     end
   end
 end
--- Add all regions IDs to the tiles.
--- @param(layerData : table) the layer's data from field's file
+--- Add all regions IDs to the tiles.
+-- @tparam table layerData The layer's data from field's file.
 function ObjectLayer:mergeRegions(layerData)
   for i = 1, self.sizeX do
     for j = 1, self.sizeY do
@@ -96,7 +97,8 @@ function ObjectLayer:mergeRegions(layerData)
     end
   end
 end
--- Sets/overwrites tiles' party IDs. 
+--- Sets/overwrites tiles' party IDs. 
+-- @tparam table layerData The layer's data from field's file.
 function ObjectLayer:setParties(layerData)
   for i = 1, self.sizeX do
     for j = 1, self.sizeY do

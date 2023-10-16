@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-GUI
+@classmod GUI
 ---------------------------------------------------------------------------------------------------
 Manages a set of GUI elements (generally, a set of windows).
 
@@ -10,13 +10,14 @@ Manages a set of GUI elements (generally, a set of windows).
 -- Imports
 local List = require('core/datastruct/List')
 
+-- Class table.
 local GUI = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function GUI:init(parent)
   self.parent = parent
   self.windowList = List()
@@ -26,49 +27,49 @@ function GUI:init(parent)
   self.visible = false
   self.animationFibers = {}
 end
--- Creates the GUI's windows and sets the first active window.
+--- Creates the GUI's windows and sets the first active window.
 function GUI:createWindows()
  -- Abstract.
 end
--- @ret(number) Distance between windows
+-- @treturn number Distance between windows.
 function GUI:windowMargin()
   return 4
 end
   
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates all windows.
+--- Updates all windows.
 function GUI:update(dt)
   for window in self.windowList:iterator() do
     window:update(dt)
   end
 end
--- Refreshes all windows.
+--- Refreshes all windows.
 function GUI:refresh()
   for w in self.windowList:iterator() do
     w:refresh()
   end
 end
--- Destroys all windows.
+--- Destroys all windows.
 function GUI:destroy()
   for window in self.windowList:iterator() do
     window:destroy()
   end
   collectgarbage('collect')
 end
--- String representation.
+--- String representation.
 function GUI:__tostring()
   local name = self.name or 'Nameless'
   return 'GUI: ' .. name
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Active Window
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Changes GUI's active window.
+--- Changes GUI's active window.
 function GUI:setActiveWindow(window)
   if self.activeWindow then
     self.activeWindow:setActive(false)
@@ -78,8 +79,8 @@ function GUI:setActiveWindow(window)
     window:setActive(true)
   end
 end
--- [COROUTINE] Waits until GUI closes and returns a result.
--- @ret The result of GUI (will never be nil).
+--- [COROUTINE] Waits until GUI closes and returns a result.
+-- @treturn The result of GUI (will never be nil).
 function GUI:waitForResult()
   if self.activeWindow then
     self.activeWindow:checkInput()
@@ -94,9 +95,9 @@ function GUI:waitForResult()
   self.activeWindow.result = nil
   return result
 end
--- [COROUTINE] Waits until window closes and returns a result.
--- @param(window : Window) The new active window.
--- @ret The result of window (will never be nil).
+--- [COROUTINE] Waits until window closes and returns a result.
+-- @tparam Window window The new active window.
+-- @treturn The result of window (will never be nil).
 function GUI:showWindowForResult(window)
   assert(window.GUI == self, "Can't show window from another GUI!")
   local previous = self.activeWindow
@@ -114,11 +115,11 @@ function GUI:showWindowForResult(window)
   return result
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Coroutine calls
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Shows all windows.
+--- [COROUTINE] Shows all windows.
 function GUI:show()
   if self.open then
     return
@@ -147,7 +148,7 @@ function GUI:show()
   self.animationFibers = {}
   self.open = true
 end
--- [COROUTINE] Hides all windows.
+--- [COROUTINE] Hides all windows.
 function GUI:hide()
   if self.closed then
     return

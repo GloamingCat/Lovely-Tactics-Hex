@@ -1,14 +1,13 @@
 
 --[[===============================================================================================
 
-BattleAction
+@classmod BattleAction
 ---------------------------------------------------------------------------------------------------
 A class that holds the behavior of a battle action: what happens when the players first chooses 
-the action, or if that action need grid selecting, if so, what tiles are selectable, etc.
-
-Examples of battle actions: Move Action (needs grid and only blue tiles are selectables), Escape 
-Action (doesn't need grid, and instead opens a confirm window), Call Action (only team tiles), 
-etc. 
+-- the action, or if that action need grid selecting, if so, what tiles are selectable, etc.
+-- Examples of battle actions: Move Action (needs grid and only blue tiles are selectables), Escape 
+-- Action (doesn't need grid, and instead opens a confirm window), Call Action (only team tiles), 
+-- etc. 
 
 =================================================================================================]]
 
@@ -21,17 +20,18 @@ local PriorityQueue = require('core/datastruct/PriorityQueue')
 local mod1 = math.mod1
 local mathf = math.field
 
+-- Class table.
 local BattleAction = class(FieldAction)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(colorName : string) The color of the selectable tiles.
--- @param(range : table) The layers of tiles relative to the user's tile, containing the possible
+--- Constructor.
+-- @tparam string colorName The color of the selectable tiles.
+-- @tparam table range The layers of tiles relative to the user's tile, containing the possible
 --  targets for this action.
--- @param(area : table) The layers of tiles relative to the target tile containing the tiles that
+-- @tparam table area The layers of tiles relative to the target tile containing the tiles that
 --  are affected by this action.
 function BattleAction:init(colorName, range, area)
   FieldAction.init(self, area)
@@ -44,8 +44,8 @@ function BattleAction:init(colorName, range, area)
   self.reachableOnly = false
   self.rotateEffect = false
 end
--- Sets color according to action's type (general, attack or support).
--- @param(t : number) Type code, from 0 to 2.
+--- Sets color according to action's type (general, attack or support).
+-- @tparam number t Type code, from 0 to 2.
 function BattleAction:setType(t)
   self.offensive, self.support = false, false
   if t == 0 then
@@ -59,11 +59,12 @@ function BattleAction:setType(t)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Event handlers
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when this action has been chosen.
+--- Called when this action has been chosen.
+-- @tparam ActionInput input
 function BattleAction:onSelect(input)
   FieldAction.onSelect(self, input)
   if input.GUI and not self.freeNavigation then
@@ -81,8 +82,9 @@ function BattleAction:onSelect(input)
   end
   input.moveAction = self.moveAction
 end
--- Called when the ActionGUI is open.
--- By default, just updates the "selectable" field in all tiles for grid selecting.
+--- Called when the ActionGUI is open.
+--- By default, just updates the "selectable" field in all tiles for grid selecting.
+-- @tparam ActionInput input
 function BattleAction:onActionGUI(input)
   self:resetTileColors()
   if self.showTargetWindow then
@@ -99,11 +101,12 @@ function BattleAction:onActionGUI(input)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Tiles Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Sets tile colors according to its properties (movable, reachable and selectable).
+--- Sets tile colors according to its properties (movable, reachable and selectable).
+-- @tparam ActionInput input
 function BattleAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
     if tile.gui.movable then
@@ -115,13 +118,14 @@ function BattleAction:resetTileColors(input)
     end
   end
 end
--- Overrides FieldAction:resetTileProperties.
+--- Overrides FieldAction:resetTileProperties.
 function BattleAction:resetTileProperties(input)
   self:resetMovableTiles(input)
   self:resetReachableTiles(input)
   FieldAction.resetTileProperties(self, input)
 end
--- Sets all movable tiles as selectable or not and resets color to default.
+--- Sets all movable tiles as selectable or not and resets color to default.
+-- @tparam ActionInput input
 function BattleAction:resetMovableTiles(input)
   if self.autoPath then
     local matrix = TurnManager:pathMatrix()
@@ -138,9 +142,10 @@ function BattleAction:resetMovableTiles(input)
     end
   end
 end
--- Paints and resets properties for the target tiles.
--- By default, paints all movable tile with movable color, and non-movable but reachable (within
---  skill's range) tiles with the skill's type color.
+--- Paints and resets properties for the target tiles.
+--- By default, paints all movable tile with movable color, and non-movable but reachable (within
+--- skill's range) tiles with the skill's type color.
+-- @tparam ActionInput input
 function BattleAction:resetReachableTiles(input)
   local matrix = TurnManager:pathMatrix()
   local borderTiles = List()
@@ -174,11 +179,11 @@ function BattleAction:resetReachableTiles(input)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Affected Tiles
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides FieldAction:isTileAffected.
+--- Overrides FieldAction:isTileAffected.
 function BattleAction:isTileAffected(input, tile)
   for char in tile.characterList:iterator() do
     if self:isCharacterAffected(input, char) then
@@ -187,8 +192,10 @@ function BattleAction:isTileAffected(input, tile)
   end
   return false
 end
--- Verifies if the given character receives any effect by the action.
--- @ret(boolean) True if character is affected, false otherwise.
+--- Verifies if the given character receives any effect by the action.
+-- @tparam ActionInput input
+-- @tparam Character char The target character.
+-- @treturn boolean True if character is affected, false otherwise.
 function BattleAction:isCharacterAffected(input, char)
   if not char.battler then
     return false
@@ -200,11 +207,11 @@ function BattleAction:isCharacterAffected(input, char)
   return ally == self.support or (not ally) == self.offensive
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Grid navigation
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides FieldAction:isSelectable.
+--- Overrides FieldAction:isSelectable.
 function BattleAction:isSelectable(input, tile)
   if not FieldAction.isSelectable(self, input, tile) then
     return false
@@ -214,19 +221,19 @@ function BattleAction:isSelectable(input, tile)
   end
   return tile.gui.reachable or self.autoPath and not self.reachableOnly
 end
--- Checks if the range mask contains any tiles besides the center tile.
--- @ret(boolean) True if it's a ranged action, false otherwise.
+--- Checks if the range mask contains any tiles besides the center tile.
+-- @treturn boolean True if it's a ranged action, false otherwise.
 function BattleAction:isRanged()
   local grid = self.range.grid
   return #grid > 1 or #grid > 0 and #grid[1] > 1 or #grid[1][1] > 1
 end
--- Checks if the range mask contains any tiles besides the center tile and its neighbors.
--- @ret(boolean) True if it's a long-ranged action, false otherwise.
+--- Checks if the range mask contains any tiles besides the center tile and its neighbors.
+-- @treturn boolean True if it's a long-ranged action, false otherwise.
 function BattleAction:isLongRanged()
   local grid = self.range.grid
   return #grid > 3 or #grid > 0 and #grid[1] > 3 or #grid[1][1] > 3
 end
--- Overrides FieldAction:firstTarget.
+--- Overrides FieldAction:firstTarget.
 function BattleAction:firstTarget(input)
   if self.selectionTiles then
     return self.selectionTiles[self.index]
@@ -234,7 +241,7 @@ function BattleAction:firstTarget(input)
     return input.target or input.user:getTile()
   end
 end
--- Overrides FieldAction:nextTarget.
+--- Overrides FieldAction:nextTarget.
 function BattleAction:nextTarget(input, axisX, axisY)
   if self.selectionTiles then
     if axisX > 0 or axisY > 0 then
@@ -246,15 +253,14 @@ function BattleAction:nextTarget(input, axisX, axisY)
   end
   return FieldAction.nextTarget(self, input, axisX, axisY)
 end
--- Overrides FieldAction:nextLayer.
+--- Overrides FieldAction:nextLayer.
 function BattleAction:nextLayer(input, axis)
   if self.selectionTiles then
     return self:nextTarget(input, axis, axis)
   end
   return FieldAction.nextLayer(self, input, axis)
 end
--- Overrides FieldAction:getAreaTiles. Rotates area mask if necessary.
--- @param(centerTile : ObjectTile)
+--- Overrides FieldAction:getAreaTiles. Rotates area mask if necessary.
 function BattleAction:getAreaTiles(input, centerTile, mask)
   if not self.rotateEffect or self.autoPath or not self:isArea() then
     return FieldAction.getAreaTiles(self, input, centerTile, mask)
@@ -279,22 +285,22 @@ function BattleAction:getAreaTiles(input, centerTile, mask)
   return tiles
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides FieldAction:execute. By default, just ends turn.
--- @ret(table) The turn result.
+--- Overrides FieldAction:execute. By default, just ends turn.
 function BattleAction:execute(input)
   return { executed = true, endCharacterTurn = true }
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- AI
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates a queue of the closest selectable tiles.
--- @ret(PriorityQueue) A list of {tile, path} tuples sorted by cost.
+--- Creates a queue of the closest selectable tiles.
+-- @tparam ActionInput input
+-- @treturn PriorityQueue A list of {tile, path} tuples sorted by cost.
 function BattleAction:closestSelectableTiles(input)
   local pathMatrix = TurnManager:pathMatrix()
   local tempQueue = PriorityQueue()
@@ -322,8 +328,10 @@ function BattleAction:closestSelectableTiles(input)
   input.target = target
   return tempQueue
 end
--- Used for AI. Gets all tiles that may be a target from the target tile in the input.
--- @ret(table) An array of tiles.
+--- Used for AI. Gets all tiles that may be a target from the target tile in the input.
+-- @tparam ActionInput input
+-- @tparam ObjectTile tile Target tile.
+-- @treturn table An array of tiles.
 function BattleAction:getAllAccessedTiles(input, tile)
   tile = tile or input.target
   local sizeX, sizeY = self.field.sizeX, self.field.sizeY
@@ -337,9 +345,10 @@ function BattleAction:getAllAccessedTiles(input, tile)
   end
   return tiles
 end
--- Checks if a certain tile is with given input target's range.
--- @param(ObjectTile : tile)
--- @ret(boolean)
+--- Checks if a certain tile is with given input target's range.
+-- @tparam ActionInput input
+-- @tparam ObjectTile tile Target tile.
+-- @treturn boolean
 function BattleAction:isWithinRange(input, tile)
   for x, y, h in mathf.maskIterator(self.range, input.target:coordinates()) do
     if tile.x == x and tile.y == y and tile.h == h then
@@ -348,9 +357,10 @@ function BattleAction:isWithinRange(input, tile)
   end
   return false
 end
--- Checks if a certain tile is with given input target's effect area.
--- @param(ObjectTile : tile)
--- @ret(boolean)
+--- Checks if a certain tile is with given input target's effect area.
+-- @tparam ActionInput input
+-- @tparam ObjectTile tile Target tile.
+-- @treturn boolean
 function BattleAction:isWithinArea(input, tile)
   for x, y, h in mathf.maskIterator(self.area, input.target:coordinates()) do
     if tile.x == x and tile.y == y and tile.h == h then
@@ -359,8 +369,9 @@ function BattleAction:isWithinArea(input, tile)
   end
   return false
 end
--- Rotation targets, in clockwise order, starting from user's current direction.
--- @ret(List) List of ObjectTiles.
+--- Rotation targets, in clockwise order, starting from user's current direction.
+-- @tparam ActionInput input
+-- @treturn List A List of ObjectTiles.
 function BattleAction:rotationTiles(input)
   local list = List()
   local field = FieldManager.currentField

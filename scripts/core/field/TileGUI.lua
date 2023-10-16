@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-TileGUI
+@classmod TileGUI
 ---------------------------------------------------------------------------------------------------
 ObjectTile graphics for battle interface.
 
@@ -13,14 +13,15 @@ local TileGraphic = require('core/field/TileGraphic')
 -- Alias
 local min = math.min
 
+-- Class table.
 local TileGUI = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(tile : ObjectTile) The tile this object belongs to.
+--- Constructor.
+-- @tparam ObjectTile tile The tile this object belongs to.
 function TileGUI:init(tile, baseAnim, highlightAnim)
   local x, y, z = tile.center:coordinates()
   if baseAnim and Config.animations.tile >= 0 then
@@ -35,11 +36,11 @@ function TileGUI:init(tile, baseAnim, highlightAnim)
   self:hide()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates graphics.
+--- Updates graphics.
 function TileGUI:update(dt)
   if self.highlightAnim then
     self.highlightAnim:update(dt)
@@ -48,7 +49,7 @@ function TileGUI:update(dt)
     self.baseAnim:update(dt)
   end
 end
--- Erases any sprites.
+--- Erases any sprites.
 function TileGUI:destroy()
   if self.baseAnim then
     self.baseAnim:destroy()
@@ -58,11 +59,11 @@ function TileGUI:destroy()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Graphics
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates graphics pixel depth according to the terrains' depth in this tile's coordinates.
+--- Updates graphics pixel depth according to the terrains' depth in this tile's coordinates.
 function TileGUI:updateDepth()
   if not self.grounded then
     return
@@ -74,15 +75,15 @@ function TileGUI:updateDepth()
     self.highlightAnim:setDepth(1)
   end
 end
--- Selects / deselects this tile.
--- @param(value : boolean) True to select, false to deselect.
+--- Selects / deselects this tile.
+-- @tparam boolean value True to select, false to deselect.
 function TileGUI:setSelected(value)
   if self.highlightAnim then
     self.highlightAnim:setVisible(value)
   end
 end
--- Sets color to the color with the given label.
--- @param(name : string) Color label.
+--- Sets color to the color with the given label.
+-- @tparam string name Color label.
 function TileGUI:setColor(name)
   self.colorName = name
   if name == nil or name == '' then
@@ -96,17 +97,17 @@ function TileGUI:setColor(name)
   self.baseAnim:setColor(c)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Show / Hide
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows tile edges.
+--- Shows tile edges.
 function TileGUI:show()
   if self.baseAnim then
     self.baseAnim:setVisible(self.grounded)
   end
 end
--- Hides tile edges.
+--- Hides tile edges.
 function TileGUI:hide()
   if self.baseAnim then
     self.baseAnim:setVisible(false)

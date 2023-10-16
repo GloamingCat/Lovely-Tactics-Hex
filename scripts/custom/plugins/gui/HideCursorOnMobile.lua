@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-HideCursorOnMobile
+@script HideCursorOnMobile
 ---------------------------------------------------------------------------------------------------
 Hides window cursor and button highlight when on mobile.
 
@@ -20,11 +20,11 @@ local WindowCursor = require('core/gui/widget/WindowCursor')
 local cursor = args.cursor or 'list'
 local hl = args.highlight or 'hide'
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- WindowCursor
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Hide window cursor.
+--- Hide window cursor.
 local WindowCursor_setVisible = WindowCursor.setVisible
 function WindowCursor:setVisible(value)
   if cursor == 'hide' then
@@ -37,11 +37,11 @@ function WindowCursor:setVisible(value)
   WindowCursor_setVisible(self, value)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Highlight
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Hide button highlight.
+--- Hide button highlight.
 local Highlight_setVisible = Highlight.setVisible
 function Highlight:setVisible(value)
   if hl == 'hide' then

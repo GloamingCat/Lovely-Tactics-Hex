@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-DefendRule
+@classmod DefendRule
 ---------------------------------------------------------------------------------------------------
 The rule for an AI that moves to the safest tile that still has a reachable target.
 
@@ -12,13 +12,14 @@ local BattleMoveAction = require('core/battle/action/BattleMoveAction')
 local BattleTactics = require('core/battle/ai/BattleTactics')
 local SkillRule = require('core/battle/ai/SkillRule')
 
+-- Class table.
 local DefendRule = class(SkillRule)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides SkillRule:onSelect.
+--- Overrides SkillRule:onSelect.
 function DefendRule:onSelect(user)
   SkillRule.onSelect(self, user)
   -- Find tile to move
@@ -30,7 +31,7 @@ function DefendRule:onSelect(user)
   self.input.action = BattleMoveAction()
   self.input.target = queue:front()
 end
--- @ret(string) String identifier.
+-- @treturn string String identifier.
 function DefendRule:__tostring()
   return 'DefendRule: ' .. self.battler.key
 end

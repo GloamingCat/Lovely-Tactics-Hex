@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-TerrainLayer
+@classmod TerrainLayer
 ---------------------------------------------------------------------------------------------------
 A TerrainLayer is a matrix of TerrainTiles.
 There may be more then one TerrainLayer in the field per height.
@@ -11,17 +11,18 @@ There may be more then one TerrainLayer in the field per height.
 -- Imports
 local TerrainTile = require('core/field/TerrainTile')
 
+-- Class table.
 local TerrainLayer = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(data : table) The layer's data from field's file.
--- @param(sizeX : number) The field's grid width.
--- @param(sizeY : number) The field's grid height.
--- @param(order : number) The rendering order for the layer
+--- Constructor.
+-- @tparam table data The layer's data from field's file.
+-- @tparam number sizeX The field's grid width.
+-- @tparam number sizeY The field's grid height.
+-- @tparam number order The rendering order for the layer
 --  (used for correct depth when there are more than one layer with same height).
 function TerrainLayer:init(data, sizeX, sizeY, order)
   self.grid = {}
@@ -48,16 +49,16 @@ function TerrainLayer:init(data, sizeX, sizeY, order)
   end
 end
 
----------------------------------------------------------------------------
+-- ------------------------------------------------------------------------
 -- Auto Tile
----------------------------------------------------------------------------
+-- ------------------------------------------------------------------------
 
--- Checks if two grid cells have the same terrain type (for auto tiling).
--- @param(i1 : number) Grid x of first cell.
--- @param(j1 : number) Grid y of first cell.
--- @param(i2 : number) Grid x of second cell.
--- @param(j2 : number) Grid y of second cell.
--- @ret(boolean) True if two tiles must be connected with auto tiling.
+--- Checks if two grid cells have the same terrain type (for auto tiling).
+-- @tparam number i1 Grid x of first cell.
+-- @tparam number j1 Grid y of first cell.
+-- @tparam number i2 Grid x of second cell.
+-- @tparam number j2 Grid y of second cell.
+-- @treturn boolean True if two tiles must be connected with auto tiling.
 function TerrainLayer:sameType(i1, j1, i2, j2)
   if self.noAuto then
     return true

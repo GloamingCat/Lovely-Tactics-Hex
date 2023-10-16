@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-FieldCamera
+@classmod FieldCamera
 ---------------------------------------------------------------------------------------------------
 The FieldCamera is a renderer with transform properties.
 
@@ -14,13 +14,14 @@ local Renderer = require('core/graphics/Renderer')
 local pixelCenter = math.field.pixelCenter
 local sqrt = math.sqrt
 
+-- Class table.
 local FieldCamera = class(Renderer)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function FieldCamera:init(...)
   self.images = {}
   Renderer.init(self, ...)
@@ -28,20 +29,19 @@ function FieldCamera:init(...)
   self.cameraSpeed = 75
   self.cropMovement = true
 end
--- Initializes field's foreground and background images.
--- @param(field : Field) Current field.
--- @param(images : table) Array of field's images.
+--- Initializes field's foreground and background images.
+-- @tparam table images Array of field's images.
 function FieldCamera:initializeImages(images)
   for _, data in ipairs(images) do
     self:addImage(data.name, data, data.foreground, data.visible, data.glued)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Movable:updateMovement.
+--- Overrides Movable:updateMovement.
 function FieldCamera:updateMovement(dt)
   if self.focusObject then
     self:setXYZ(self.focusObject.position.x, self.focusObject.position.y)
@@ -50,11 +50,11 @@ function FieldCamera:updateMovement(dt)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Images
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Movable:setXYZ.
+--- Overrides Movable:setXYZ.
 function FieldCamera:setXYZ(x, y, ...)
   Renderer.setXYZ(self, x, y, ...)
   for _, img in pairs(self.images) do
@@ -63,13 +63,13 @@ function FieldCamera:setXYZ(x, y, ...)
     end
   end
 end
--- Add a background or foreground image.
--- @param(name : string) Image's identifier.
--- @param(icon : data) Image's animation ID, column and row.
--- @param(foreground : boolean) True if image appears above field, false if behind.
--- @param(visible : boolean) True if initialize visible.
--- @param(glued : boolean) True if image follows camera.
--- @ret(Sprite) Sprite of new image.
+--- Add a background or foreground image.
+-- @tparam string name Image's identifier.
+-- @tparam data icon Image's animation ID, column and row.
+-- @tparam boolean foreground True if image appears above field, false if behind..
+-- @tparam boolean visible True if initialize visible..
+-- @tparam boolean glued True if image follows camera..
+-- @treturn Sprite Sprite of new image.
 function FieldCamera:addImage(name, icon, foreground, visible, glued)
   local sprite = ResourceManager:loadIcon(icon, self)
   sprite.texture:setFilter('linear', 'linear')
@@ -85,8 +85,8 @@ function FieldCamera:addImage(name, icon, foreground, visible, glued)
   sprite.id, sprite.col, sprite.row = icon.id, icon.col, icon.row
   return sprite
 end
--- Gets the persistent data of each image.
--- @ret(table) Array of data tables.
+--- Gets the persistent data of each image.
+-- @treturn table Array of data tables.
 function FieldCamera:getImageData()
   local arr = {}
   for k, v in pairs(self.images) do
@@ -101,31 +101,30 @@ function FieldCamera:getImageData()
   return arr
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Camera Movement
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Moves camera to the given tile.
--- @param(tile : ObjectTile) the destionation tile
--- @param(speed : number) the speed of the movement (optional, uses default speed)
--- @param(wait : boolean) flag to wait until the move finishes (optional, false by default)
+--- [COROUTINE] Moves camera to the given tile.
+-- @tparam ObjectTile tile The destionation tile.
+-- @tparam number speed The speed of the movement (optional, uses default speed).
+-- @tparam boolean wait Flag to wait until the move finishes (optional, false by default).
 function FieldCamera:moveToTile(tile, speed, wait)
   local x, y = tile.center:coordinates()
   self:moveToPoint(x, y, speed, wait)
 end
--- [COROUTINE] Movec camera to the given object.
--- @param(obj : Object) the destination object
--- @param(speed : number) the speed of the movement (optional, uses default speed)
--- @param(wait : boolean) flag to wait until the move finishes (optional, false by default)
+--- [COROUTINE] Movec camera to the given object.
+-- @tparam Object obj The destination object.
+-- @tparam number speed The speed of the movement (optional, uses default speed).
+-- @tparam boolean wait Flag to wait until the move finishes (optional, false by default).
 function FieldCamera:moveToObject(obj, speed, wait)
   self:moveToPoint(obj.position.x, obj.position.y, speed, wait)
 end
--- Moves camera to the given pixel point.
--- @param(x : number) the pixel x
--- @param(y : nubmer) the pixel y
--- @param(obj : Object) the destination object
--- @param(speed : number) the speed of the movement (optional, uses default speed)
--- @param(wait : boolean) flag to wait until the move finishes (optional, false by default)
+--- Moves camera to the given pixel point.
+-- @tparam number x The pixel x.
+-- @tparam nubmer y The pixel y.
+-- @tparam number speed The speed of the movement (optional, uses default speed).
+-- @tparam boolean wait Flag to wait until the move finishes (optional, false by default).
 function FieldCamera:moveToPoint(x, y, speed, wait)
   self.focusObject = nil
   if speed == 0 then
@@ -139,13 +138,13 @@ function FieldCamera:moveToPoint(x, y, speed, wait)
   self:moveTo(x, y, 0, speed, wait)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Camera Color
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Fades the screen out (changes color multiplier to black). 
--- @param(time : number) The duration of the fading in frames.
--- @param(wait : boolean) Flag to wait until the fading finishes (optional, false by default).
+--- Fades the screen out (changes color multiplier to black). 
+-- @tparam number time The duration of the fading in frames.
+-- @tparam boolean wait Flag to wait until the fading finishes (optional, false by default).
 function FieldCamera:fadeout(time, wait)
   local speed = self.fadeSpeed
   if time then
@@ -153,9 +152,9 @@ function FieldCamera:fadeout(time, wait)
   end
   self:colorizeTo(0, 0, 0, 0, speed, wait)
 end
--- Fades the screen in (changes color multiplier to white). 
--- @param(time : number) The duration of the fading in frames.
--- @param(wait : boolean) Flag to wait until the fading finishes (optional, false by default).
+--- Fades the screen in (changes color multiplier to white). 
+-- @tparam number time The duration of the fading in frames.
+-- @tparam boolean wait Flag to wait until the fading finishes (optional, false by default).
 function FieldCamera:fadein(time, wait)
   local speed = self.fadeSpeed
   if time then
@@ -164,15 +163,15 @@ function FieldCamera:fadein(time, wait)
   self:colorizeTo(1, 1, 1, 1, speed, wait)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Camera State
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(table) Current camera state.
+-- @treturn table Current camera state.
 function FieldCamera:getState()
   return self.color
 end
--- @param(state : table) Saved camera state.
+-- @tparam table state Saved camera state.
 function FieldCamera:setState(state)
   self:setColor(state)
 end

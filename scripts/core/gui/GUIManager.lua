@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-GUIManager
+@classmod GUIManager
 ---------------------------------------------------------------------------------------------------
 This class manages all GUI objects.
 
@@ -13,13 +13,14 @@ local List = require('core/datastruct/List')
 local Renderer = require('core/graphics/Renderer')
 local Stack = require('core/datastruct/Stack')
 
+-- Class table.
 local GUIManager = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function GUIManager:init()
   self.renderer = Renderer(-100, 100, 200)
   self.stack = Stack()
@@ -32,7 +33,7 @@ function GUIManager:init()
   self.updateList = List()
   ScreenManager:setRenderer(self.renderer, 2)
 end
--- Calls all the update functions.
+--- Calls all the update functions.
 function GUIManager:update(dt)
   for i = 1, #self.stack do
     self.stack[i]:update(dt)
@@ -45,7 +46,7 @@ function GUIManager:update(dt)
   end
   self.fiberList:update()
 end
--- Refresh GUI content.
+--- Refresh GUI content.
 function GUIManager:refresh()
   for i = 1, #self.stack do
     self.stack[i]:refresh()
@@ -55,40 +56,41 @@ function GUIManager:refresh()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- GUI calls
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Tells if there's any GUI waiting for player's input.
+--- Tells if there's any GUI waiting for player's input.
 function GUIManager:isWaitingInput()
   return self.current and self.current.activeWindow ~= nil
 end
--- [COROUTINE] Shows GUI and waits until returns a result.
-function GUIManager:showGUIForResult(...)
-  local gui = self:showGUI(...)
-  local result = gui:waitForResult()
+--- [COROUTINE] Shows GUI and waits until returns a result.
+-- @tparam GUI newGUI The GUI object to be added and shown.
+-- @treturn unknown Any result returned by the GUI after it's closed.
+function GUIManager:showGUIForResult(newGUI)
+  self:showGUI(newGUI)
+  local result = newGUI:waitForResult()
   self:returnGUI()
   return result
 end
--- [COROUTINE] Shows GUI and adds to the stack.
--- @param(path : GUI)
+--- [COROUTINE] Shows GUI and adds to the stack.
+-- @tparam GUI newGUI The GUI object to be added and shown.
 function GUIManager:showGUI(newGUI)
   if self.current then
     self.stack:push(self.current)
   end
   self.current = newGUI
   newGUI:show()
-  return newGUI
 end
--- [COROUTINE] Closes current GUI and returns to the previous.
+--- [COROUTINE] Closes current GUI and returns to the previous.
 function GUIManager:returnGUI()
   local lastGUI = self.current
   lastGUI:hide()
   self:removeGUI(lastGUI)
 end
--- Remove a specific GUI, not necessarily from the top of the stack.
--- Hide animations must be called before this.
--- @param(gui : GUI)
+--- Remove a specific GUI, not necessarily from the top of the stack.
+--- Hide animations must be called before this.
+-- @tparam GUI gui
 function GUIManager:removeGUI(gui)
   gui:destroy()
   if self.current == gui then

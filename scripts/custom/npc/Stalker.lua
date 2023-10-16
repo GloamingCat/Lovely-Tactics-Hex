@@ -1,10 +1,10 @@
 --[[===============================================================================================
 
-Stalker
+@script Stalker
 ---------------------------------------------------------------------------------------------------
 NPC that walks towards the player.
 
--- Arguments:
+-- Parameters:
 <pause> Pause in frames between each step.
 <pauseVar> Variation of the pause in frames.
 <vision> Maximum distance in tiles.

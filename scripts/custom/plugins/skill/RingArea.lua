@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-RingArea
+@script RingArea
 ---------------------------------------------------------------------------------------------------
 Allows a battle action to use a ring area instead of a grid mask. A ring is defined by the minimum 
 distance, or the radius of the smallest circle - <near> value -, and the maximum distance, or the 
@@ -30,12 +30,12 @@ local ActionGUI = require('core/gui/battle/ActionGUI')
 -- Alias
 local mathf = math.field
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- SkillAction
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- Creates ring masks if parameters are set in the tags.
+--- Constructor.
+--- Creates ring masks if parameters are set in the tags.
 local SkillAction_init = SkillAction.init
 function SkillAction:init(...)
   SkillAction_init(self, ...)
@@ -53,7 +53,7 @@ function SkillAction:init(...)
     self.moveAction.range = self.range
   end
 end
--- Overrides to create Range window.
+--- Overrides to create Range window.
 local SkillAction_onActionGUI = SkillAction.onActionGUI
 function SkillAction:onActionGUI(input)
   SkillAction_onActionGUI(self, input)
@@ -65,11 +65,11 @@ function SkillAction:onActionGUI(input)
     input.GUI:createPropertyWindow('range', near > 1 and (near .. '-' .. far) or far):show()
   end
 end
--- Creates a mask for the ring format.
--- @param(far : number) The radius of the largest circle (maximum distance).
--- @param(near : number) The radius of the smallest circle (minimum distance).
--- @param(minh : number) Minimum height difference (usually negative).
--- @param(minh : number) Minimum height difference (usually positive).
+--- Creates a mask for the ring format.
+-- @tparam number far The radius of the largest circle (maximum distance).
+-- @tparam number near The radius of the smallest circle (minimum distance).
+-- @tparam number minh Minimum height difference (usually negative).
+-- @tparam number maxh Minimum height difference (usually positive).
 function SkillAction:createRingMask(far, near, minh, maxh)
   far = far or 0
   near = near or 0
@@ -88,15 +88,15 @@ function SkillAction:createRingMask(far, near, minh, maxh)
     centerY = far + 1 }
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- FieldAction
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(boolean) True if skill's area represents whole field.
+-- @treturn boolean True if skill's area represents whole field.
 function FieldAction:wholeField()
   return self.area == nil
 end
--- Override. All tiles are affected if marked as whole field.
+--- Override. All tiles are affected if marked as whole field.
 local FieldAction_resetAffectedTiles = FieldAction.resetAffectedTiles
 function FieldAction:resetAffectedTiles(input)
   if self:wholeField() then
@@ -108,8 +108,8 @@ function FieldAction:resetAffectedTiles(input)
     return FieldAction_resetAffectedTiles(self, input)
   end
 end
--- Override.
--- Only one tile (user's tile) is selectable if the skill affects the whole field.
+--- Override.
+--- Only one tile (user's tile) is selectable if the skill affects the whole field.
 local FieldAction_isSelectable = FieldAction.isSelectable
 function FieldAction:isSelectable(input, tile)
   if self:wholeField() then
@@ -119,7 +119,7 @@ function FieldAction:isSelectable(input, tile)
     return FieldAction_isSelectable(self, input, tile)
   end
 end
--- Override. Returns true if marked as whole field.
+--- Override. Returns true if marked as whole field.
 local FieldAction_isArea = FieldAction.isArea
 function FieldAction:isArea()
   if self:wholeField() then
@@ -127,8 +127,8 @@ function FieldAction:isArea()
   end
   return FieldAction_isArea(self)
 end
--- Override.
--- Returns all field tiles if area is nil.
+--- Override.
+--- Returns all field tiles if area is nil.
 local FieldAction_getAreaTiles = FieldAction.getAreaTiles
 function FieldAction:getAreaTiles(input, centerTile)
   if self:wholeField() then

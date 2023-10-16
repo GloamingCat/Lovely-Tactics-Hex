@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Critical
+@script Critical
 ---------------------------------------------------------------------------------------------------
 Doubles damage for critical hits.
 
@@ -25,11 +25,11 @@ local SkillAction = require('core/battle/action/SkillAction')
 local attName = args.attName
 local ratio = args.ratio or 2
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Rate
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Calculates critical hit rate.
+--- Calculates critical hit rate.
 local SkillAction_calculateEffectResults = SkillAction.calculateEffectResults
 function SkillAction:calculateEffectResults(user, target)
   local results = SkillAction_calculateEffectResults(self, user, target)
@@ -47,11 +47,11 @@ function SkillAction:calculateEffectResults(user, target)
   return results
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Pop-up
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Changes font and show text when critical.
+--- Changes font and show text when critical.
 local PopText_addDamage = PopText.addDamage
 function PopText:addDamage(points)  
   local crit = points.critical and '_crit' or ''
@@ -61,7 +61,7 @@ function PopText:addDamage(points)
   end
   self:addLine(points.value, popupName, popupName .. crit)
 end
--- Changes font and show text when critical.
+--- Changes font and show text when critical.
 local PopText_addHeal = PopText.addHeal
 function PopText:addHeal(points)
   local crit = points.critical and '_crit' or ''
@@ -72,11 +72,11 @@ function PopText:addHeal(points)
   self:addLine(points.value, popupName, popupName .. crit)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Sound
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Plays sound before pop-up.
+--- Plays sound before pop-up.
 local Battler_popResults = Battler.popResults
 function Battler:popResults(popText, results, character)
   if Config.sounds.critical and results.critical then

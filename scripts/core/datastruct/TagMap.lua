@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-TagMap
+@classmod TagMap
 ---------------------------------------------------------------------------------------------------
 Transforms an array of tags into a map.
 
@@ -10,14 +10,15 @@ Transforms an array of tags into a map.
 -- Imports
 local Serializer = require('core/save/Serializer')
 
+-- Class table.
 local TagMap = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(tags : table) Array with (name, value) tags.
+--- Constructor.
+-- @tparam table tags Array with (name, value) tags.
 function TagMap:init(tags)
   self.tags = {}
   if tags then
@@ -25,13 +26,13 @@ function TagMap:init(tags)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Access
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the tag value from name.
--- @param(name : string) Tag name.
--- @ret(string) Tag value.
+--- Gets the tag value from name.
+-- @tparam string name Tag name.
+-- @treturn string Tag value.
 function TagMap:get(name)
   local arr = self.tags[name]
   if arr then
@@ -40,20 +41,20 @@ function TagMap:get(name)
     return nil
   end
 end
--- Gets all tag values from name.
--- @param(name : string) Tag name.
--- @ret(table) Array of tag values (strings).
+--- Gets all tag values from name.
+-- @tparam string name Tag name.
+-- @treturn table Array of tag values (strings).
 function TagMap:getAll(name)
   return self.tags[name]
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Insertion
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Inserts a new tag pair.
--- @param(name : string) Tag name.
--- @param(str : string) Tag value.
+--- Inserts a new tag pair.
+-- @tparam string name Tag name.
+-- @tparam string str Tag value.
 function TagMap:add(name, str)
   local arr = self.tags[name]
   if not arr then
@@ -67,8 +68,8 @@ function TagMap:add(name, str)
   arr[#arr + 1] = value
   self[name] = self[name] or value
 end
--- Inserts a set of tag pairs.
--- @param(tags : table) Array with (name, value) tags.
+--- Inserts a set of tag pairs.
+-- @tparam table tags Array with (name, value) tags.
 function TagMap:addAll(tags)
   for i = 1, #tags do
     local name = tags[i].key
@@ -87,11 +88,11 @@ function TagMap:addAll(tags)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Conversion
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(table) A table with unique keys. It will include only the first value of each key.
+-- @treturn table A table with unique keys. It will include only the first value of each key.
 function TagMap:toTable()
   local t = {}
   for k, v in pairs(self.tags) do
@@ -99,7 +100,7 @@ function TagMap:toTable()
   end
   return t
 end
--- @ret(table) Array of {key, value} entries.
+-- @treturn table Array of {key, value} entries.
 function TagMap:toList()
   local list = {}
   for k, v in pairs(self.tags) do
@@ -109,7 +110,7 @@ function TagMap:toList()
   end
   return list
 end
--- @ret(string) String identifier.
+-- @treturn string String identifier.
 function TagMap:__tostring()
   local s = '{'
   for k, v in pairs(self.tags) do

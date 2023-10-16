@@ -1,27 +1,28 @@
 
 --[[===============================================================================================
 
-GameManager
+@classmod GameManager
 ---------------------------------------------------------------------------------------------------
 Handles basic game flow.
 
 =================================================================================================]]
 
 -- Imports
-local TitleGUI = require('core/gui/menu/TitleGUI')
+local TitleGUI = require ('core/gui/menu/TitleGUI')
 
 -- Alias
 local deltaTime = love.timer.getDelta
 local copyTable = util.table.deepCopy
 local now = love.timer.getTime
 
+-- Class table.
 local GameManager = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function GameManager:init()
   local maxWidth = 0
   local modes = love.window.getFullscreenModes(1)
@@ -42,8 +43,8 @@ function GameManager:init()
   self.speed = 1
   self.debugMessages = {}
 end
--- Reads flags from arguments.
--- @param(arg : table) A sequence strings which are command line arguments given to the game.
+--- Reads flags from arguments.
+-- @tparam table args A sequence strings which are command line arguments given to the game.
 function GameManager:readArguments(args)
   for _, arg in ipairs(args) do
     if arg == '-editor' then
@@ -61,7 +62,7 @@ function GameManager:readArguments(args)
     end
   end
 end
--- Starts the game.
+--- Starts the game.
 function GameManager:start()
   print('Mobile: ' .. tostring(self:isMobile()))
   print('Web: ' .. tostring(self:isWeb()))
@@ -73,8 +74,8 @@ function GameManager:start()
   end
   print('Game started.')
 end
--- Sets current save.
--- @param(save : table) A save table loaded by SaveManager.
+--- Sets current save.
+-- @tparam table save A save table loaded by SaveManager.
 function GameManager:setSave(save)
   self.playTime = save.playTime
   self.vars = copyTable(save.vars)
@@ -90,8 +91,8 @@ function GameManager:setSave(save)
     FieldManager.fiberList:fork(FieldManager.loadTransition, FieldManager, save.playerState.transition, save.playerState.field)
   end
 end
--- Sets the system config.
--- @param(config : table) A config table loaded by SaveManager.
+--- Sets the system config.
+-- @tparam table config A config table loaded by SaveManager.
 function GameManager:setConfig(config)
   AudioManager:setBGMVolume(config.volumeBGM or 100)
   AudioManager:setSFXVolume(config.volumeSFX or 100)
@@ -111,32 +112,32 @@ function GameManager:setConfig(config)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Platform
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if game is running on a standalone desktop version.
--- @ret(boolean)
+--- Checks if game is running on a standalone desktop version.
+-- @treturn boolean
 function GameManager:isDesktop()
   return Config.platform == 0 and not self.webMode and not self.mobileMode
 end
--- Checks if game is running on a mobile device (browser or not).
--- @ret(boolean)
+--- Checks if game is running on a mobile device (browser or not).
+-- @treturn boolean
 function GameManager:isMobile()
   return Config.platform % 2 == 1 or self.mobileMode
 end
--- Checks if game is running on a web browser (mobile or not).
--- @ret(boolean)
+--- Checks if game is running on a web browser (mobile or not).
+-- @treturn boolean
 function GameManager:isWeb()
   return Config.platform >= 2 or self.webMode
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Update
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Game loop.
--- @param(dt : number) The duration of the previous frame.
+--- Game loop.
+-- @tparam number dt The duration of the previous frame.
 function GameManager:update(dt)
   local t = os.clock()  
   -- Update game logic.
@@ -160,7 +161,7 @@ function GameManager:update(dt)
     end
   end
 end
--- Checks for resquests of game state changes, like restarting the game.
+--- Checks for resquests of game state changes, like restarting the game.
 function GameManager:checkRequests()
   if self.restartRequested or self.loadRequested then
     self:restart(self.loadRequested)
@@ -168,7 +169,7 @@ function GameManager:checkRequests()
     self.loadRequested = nil
   end
 end
--- Updates GUIManager, FieldManager, AudioManager and InputManager.
+--- Updates GUIManager, FieldManager, AudioManager and InputManager.
 function GameManager:updateManagers(dt)
   if not self.paused then
     if not GUIManager.paused then 
@@ -191,7 +192,7 @@ function GameManager:updateManagers(dt)
     InputManager:update()
   end
 end
--- Updates profiler state.
+--- Updates profiler state.
 function GameManager:updateProfi()
   if self.startedProfi then
     PROFI:stop()
@@ -203,11 +204,11 @@ function GameManager:updateProfi()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Draw
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Draws game.
+--- Draws game.
 function GameManager:draw()
   if ScreenManager.closed then
     return
@@ -222,8 +223,8 @@ function GameManager:draw()
     love.graphics.printf('PAUSED', 0, 0, ScreenManager:totalWidth(), 'right')
   end
 end
--- Logs a string on screen on mobile mode. No more than 30 strings are shown at once.
--- @param(str : string) Log message.
+--- Logs a string on screen on mobile mode. No more than 30 strings are shown at once.
+-- @tparam string str Log message.
 function GameManager:log(str)
   print(str)
   if not self:isMobile() then
@@ -235,14 +236,14 @@ function GameManager:log(str)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Pause
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Pauses entire game.
--- @param(paused : boolean) Pause value.
--- @param(audio : boolean) Also affect audio.
--- @param(input : boolean) Also affect input.
+--- Pauses entire game.
+-- @tparam boolean paused Pause value.
+-- @tparam boolean audio Also affect audio.
+-- @tparam boolean input Also affect input.
 function GameManager:setPaused(paused, audio, input)
   paused = paused or self.userPaused
   self.paused = paused
@@ -259,12 +260,12 @@ function GameManager:setPaused(paused, audio, input)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Time
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the current total play time.
--- @ret(number) The time in seconds.
+--- Gets the current total play time.
+-- @treturn number The time in seconds.
 function GameManager:currentPlayTime()
   if not SaveManager.loadTime then
     return 0
@@ -274,8 +275,8 @@ function GameManager:currentPlayTime()
   end
   return self.playTime + (now() - SaveManager.loadTime)
 end
--- Duration of the last frame.
--- @ret(number) Duration in seconds.
+--- Duration of the last frame.
+-- @treturn number Duration in seconds.
 function GameManager:frameTime()
   local dt = deltaTime()
   if Config.fpsMin then
@@ -283,19 +284,19 @@ function GameManager:frameTime()
   end
   return dt * self.speed
 end
--- Sets game speed. Does not affect input, only sound and graphics.
--- @parem(speed : number) Speed multiplier.
+--- Sets game speed. Does not affect input, only sound and graphics.
+-- @tparam number speed Speed multiplier.
 function GameManager:setSpeed(speed)
   self.speed = speed
   AudioManager:refreshPitch()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Quit
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Restarts the game from the TitleGUI.
--- @param(save : table) Save data to be loaded (optional, starts from title menu if nil).
+--- Restarts the game from the TitleGUI.
+-- @tparam table save Save data to be loaded (optional, starts from title menu if nil).
 function GameManager:restart(save)
   ScreenManager:clear()
   FieldManager = require('core/field/FieldManager')()
@@ -309,15 +310,15 @@ function GameManager:restart(save)
     self:start()
   end
 end
--- Closes game from internal game functions.
+--- Closes game from internal game functions.
 function GameManager:quit()
   if _G.Fiber then
     _G.Fiber:wait(15)
   end
   love.event.quit()
 end
--- Called when player closes the window.
--- @ret(boolean) False to close the window, true to keep running.
+--- Called when player closes the window.
+-- @treturn boolean False to close the window, true to keep running.
 function GameManager:onClose()
   return false
 end

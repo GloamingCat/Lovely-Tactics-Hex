@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Stats
+@module Stats
 ---------------------------------------------------------------------------------------------------
 Module that reads and counts the files and lines from the projects.
 
@@ -14,11 +14,11 @@ local fileInfo = love.filesystem.getInfo
 
 local stats = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Stats
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Prints number of files and lines of code and data.
+--- Prints number of files and lines of code and data.
 function stats.printStats()
   local codefiles, codelines = stats.count('scripts', stats.countCodeLines)
   print('Number of code files:', codefiles)
@@ -27,10 +27,11 @@ function stats.printStats()
   print('Number of data files:', datafiles)
   print('Number of data lines:', datalines)
 end
--- Counts number of files and lines of code.
--- @param(path : string) Code files folder.
--- @ret(number) Number of code files.
--- @ret(number) Number of code lines.
+--- Counts number of files and lines of code.
+-- @tparam string path Code files folder.
+-- @tparam boolean countLines Also count the total number of lines.
+-- @treturn number Number of code files.
+-- @treturn number Number of code lines.
 function stats.count(path, countLines)
   local files, lines = 0, 0
   local fileList = listItems(path)
@@ -49,13 +50,13 @@ function stats.count(path, countLines)
   return files, lines
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Lines
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Counts the number of code lines in a file, ignoring comments.
--- The file is assumed to be a compilable Lua file.
--- @ret(number) Number of code lines.
+--- Counts the number of code lines in a file, ignoring comments.
+--- The file is assumed to be a compilable Lua file.
+-- @treturn number Number of code lines.
 function stats.countCodeLines(path)
   local content = readFile(path)
   local blockComments = "(%-%-%[%[)(.-)*?(%]%])"
@@ -66,9 +67,9 @@ function stats.countCodeLines(path)
   local _, count = content:gsub('\n', '\n')
   return count
 end
--- Counts the number of data lines in a (assumed valid) file, ignoring comment.
--- The file is assumed to be a parsable JSON file.
--- @ret(number) Number of data lines.
+--- Counts the number of data lines in a (assumed valid) file, ignoring comment.
+--- The file is assumed to be a parsable JSON file.
+-- @treturn number Number of data lines.
 function stats.countDataLines(path)
   local content = readFile(path)
   local comments = "//.*?\n"

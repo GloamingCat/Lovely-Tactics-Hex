@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-CallGUI
+@classmod CallGUI
 ---------------------------------------------------------------------------------------------------
 The GUI that is openned when player chooses a target for the call action.
 
@@ -12,22 +12,23 @@ local GUI = require('core/gui/GUI')
 local CallWindow = require('core/gui/battle/window/interactable/CallWindow')
 local TargetWindow = require('core/gui/battle/window/TargetWindow')
 
+-- Class table.
 local CallGUI = class(GUI)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GUI:init.
--- @param(troop : Troop) Current troop.
--- @param(allMembers : boolean) If false will include only backup members.
+--- Overrides GUI:init.
+-- @tparam Troop troop Current troop.
+-- @tparam boolean allMembers If false will include only backup members.
 function CallGUI:init(parent, troop, allMembers)
   self.troop = troop
   self.allMembers = allMembers
   GUI.init(self, parent)
 end
--- Implements GUI:createWindows.
--- Creates the CallWindow with the list of members, and TargetWindow with selected member's info. 
+--- Implements GUI:createWindows.
+--- Creates the CallWindow with the list of members, and TargetWindow with selected member's info. 
 function CallGUI:createWindows()
   self.name = 'Call GUI'
   -- Info window

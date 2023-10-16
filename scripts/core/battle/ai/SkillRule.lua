@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-SkillRule
+@classmod SkillRule
 ---------------------------------------------------------------------------------------------------
 An AIRule that executes a skill defined by the tag field "id", which means the id-th skill of the
 battler. If there's no such field, it will use battler's attack skill.
@@ -12,14 +12,15 @@ battler. If there's no such field, it will use battler's attack skill.
 local ActionInput = require('core/battle/action/ActionInput')
 local AIRule = require('core/battle/ai/AIRule')
 
+-- Class table.
 local SkillRule = class(AIRule)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(...) AIRule constructor arguments.
+--- Constructor.
+-- @tparam(...) AIRule constructor arguments.
 function SkillRule:init(...)
   AIRule.init(self, ...)
   local id = self.tags and tonumber(self.tags.id)
@@ -29,22 +30,21 @@ function SkillRule:init(...)
   end
   assert(self.skill, tostring(self.battler) .. ' does not have a skill!')
 end
--- Prepares the rule to be executed (or not, if it1s not possible).
--- @param(user : Character)
+--- Prepares the rule to be executed (or not, if it1s not possible).
+-- @tparam Character user
 function SkillRule:onSelect(user)
   self.input = ActionInput(self.skill, user or TurnManager:currentCharacter())
   self.skill:onSelect(self.input)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Target Selection
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Character if user is a valid target.
--- @param(user : Character) Current user.
--- @param(char : Character) Target candidate.
--- @param(eff : table) Effect to check validity (optional, first effect by default).
--- @ret(boolean)
+--- Character if user is a valid target.
+-- @tparam Character char Target candidate.
+-- @tparam table eff Effect to check validity (optional, first effect by default).
+-- @treturn boolean
 function SkillRule:isValidTarget(char, eff)
   local support = eff and eff.heal or self.skill.support
   eff = eff or self.skill.effects[1]
@@ -59,8 +59,8 @@ function SkillRule:isValidTarget(char, eff)
   end
   return true
 end
--- Selects the closest valid character target.
--- @param(eff : table) Effect to check validity (optional, first effect by default).
+--- Selects the closest valid character target.
+-- @tparam table eff Effect to check validity (optional, first effect by default).
 function SkillRule:selectClosestTarget(eff)
   local queue = self.skill:closestSelectableTiles(self.input)
   while not queue:isEmpty() do
@@ -73,8 +73,8 @@ function SkillRule:selectClosestTarget(eff)
     end
   end
 end
--- Selects the reachable tile with better effect.
--- @param(eff : table) Effect to check validity (optional, first effect by default).
+--- Selects the reachable tile with better effect.
+-- @tparam table eff Effect to check validity (optional, first effect by default).
 function SkillRule:selectMostEffectiveTarget(eff)
   local map = {}
   for char in TroopManager.characterList:iterator() do

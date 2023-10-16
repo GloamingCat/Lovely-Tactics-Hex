@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-FieldLoader
+@module FieldLoader
 ---------------------------------------------------------------------------------------------------
 Loads and prepares field from file data.
 
@@ -17,14 +17,14 @@ local TerrainLayer = require('core/field/TerrainLayer')
 
 local FieldLoader = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- File
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Loads the field of the given ID.
--- @param(id : number) Field's ID.
--- @ret(Field) New empty field.
--- @ret(table) Field file data.
+--- Loads the field of the given ID.
+-- @tparam number id Field's ID.
+-- @treturn Field New empty field.
+-- @treturn table Field file data.
 function FieldLoader.loadField(id, save)
   local data = Serializer.load(Project.dataPath .. 'fields/' .. id .. '.json')
   local prefs = save and save.prefs or data.prefs.persistent and FieldManager:getFieldSave(id).prefs or data.prefs
@@ -54,13 +54,13 @@ function FieldLoader.loadField(id, save)
   return field, data
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Layers
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Merges layers' data.
--- @param(field : Field) Current field.
--- @param(layers : table) Terrain, obstacle and region layer sets.
+--- Merges layers' data.
+-- @tparam Field field Current field.
+-- @tparam table layers Terrain, obstacle and region layer sets.
 function FieldLoader.mergeLayers(field, layers)
   for i, layerData in ipairs(layers.terrain) do
     local list = field.terrainLayers[layerData.info.height]
@@ -80,13 +80,14 @@ function FieldLoader.mergeLayers(field, layers)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Character
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates field's characters.
--- @param(field : Field) Current field.
--- @param(characters : table) Array of character instances.
+--- Creates field's characters.
+-- @tparam Field field Current field.
+-- @tparam table characters Array of character instances.
+-- @tparam table save Field's save data.
 function FieldLoader.loadCharacters(field, characters, save)
   local persistentData = save or FieldManager:getFieldSave(field.id)
   for i, char in ipairs(characters) do
@@ -102,13 +103,13 @@ function FieldLoader.loadCharacters(field, characters, save)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Field Transitions
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates interactables for field's transitions.
--- @param(field : Field) Current field.
--- @param(transitions : table) Array of field's transitions.
+--- Creates interactables for field's transitions.
+-- @tparam Field field Current field.
+-- @tparam table transitions Array of field's transitions.
 function FieldLoader.createTransitions(field, transitions)
   field.transitions = {}
   for i, t in ipairs(transitions) do

@@ -1,18 +1,18 @@
 
 --[[===============================================================================================
 
-TurnManager
+@classmod TurnManager
 ---------------------------------------------------------------------------------------------------
 Provides methods for battle's turn management.
-At the end of each turn, a "battle result" table must be returned by either the GUI (player) or
-the AI (enemies). 
-This table must include the following entries:
-* <endTurn> tells turn manager to pass turn to next party.
-* <endCharacterTurn> tells the turn window to close and pass turn to the next character.
-* <characterIndex> indicates the next turn's character (from same party).
-* <executed> is true if the chosen action was entirely executed (usually true, unless it was a move
-action to an unreachable tile, or the action could not be executed for some reason).
-* <escaped> is true if all members of the current party have escaped.
+-- At the end of each turn, a "battle result" table must be returned by either the GUI (player) or
+-- the AI (enemies). 
+-- This table must include the following entries:
+-- * <endTurn> tells turn manager to pass turn to next party.
+-- * <endCharacterTurn> tells the turn window to close and pass turn to the next character.
+-- * <characterIndex> indicates the next turn's character (from same party).
+-- * <executed> is true if the chosen action was entirely executed (usually true, unless it was a
+-- move action to an unreachable tile, or the action could not be executed for some reason).
+-- * <escaped> is true if all members of the current party have escaped.
 
 =================================================================================================]]
 
@@ -24,13 +24,14 @@ local BattleGUI = require('core/gui/battle/BattleGUI')
 -- Alias
 local indexOf = util.arrayIndexOf
 
+-- Class table.
 local TurnManager = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function TurnManager:init()
   self.turnCharacters = nil
   self.initialTurnCharacters = nil
@@ -39,8 +40,8 @@ function TurnManager:init()
   self.party = nil
   self.finishTime = 20
 end
--- Sets starting party.
--- @param(state : table) Data about turn state for when the game is loaded mid-battle (optional).
+--- Sets starting party.
+-- @tparam table state Data about turn state for when the game is loaded mid-battle (optional).
 function TurnManager:setUp(state)
   if state then
     self.party = state.party
@@ -57,30 +58,30 @@ function TurnManager:setUp(state)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Turn Info
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the current selected character.
+--- Gets the current selected character.
 function TurnManager:currentCharacter()
   return self.turnCharacters and self.turnCharacters[self.characterIndex]
 end
--- Gets the current turn's troop.
+--- Gets the current turn's troop.
 function TurnManager:currentTroop()
   return TroopManager.troops and TroopManager.troops[self.party]
 end
--- Gets the path matrix of the current character.
+--- Gets the path matrix of the current character.
 function TurnManager:pathMatrix()
   return self.pathMatrixes and self.pathMatrixes[self.characterIndex]
 end
--- Recalculates the distance matrix.
+--- Recalculates the distance matrix.
 function TurnManager:updatePathMatrix()
   local moveAction = BattleMoveAction()
   local path = PathFinder.dijkstra(moveAction, self:currentCharacter())
   self.pathMatrixes[self.characterIndex] = path
 end
--- Gets the current battle state to save the game mid-battle.
--- @ret(table) Turn state data.
+--- Gets the current battle state to save the game mid-battle.
+-- @treturn table Turn state data.
 function TurnManager:getState()
   if not self.initialTurnCharacters then
     return nil
@@ -96,13 +97,13 @@ function TurnManager:getState()
     initialCharacters = initialCharacters }
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Executes turn and returns when the turn finishes.
--- @ret(number) Result code (nil if battle is still running).
--- @ret(number) The party that won or escaped (nil if battle is still running).
+--- [COROUTINE] Executes turn and returns when the turn finishes.
+-- @treturn number Result code (nil if battle is still running).
+-- @treturn number The party that won or escaped (nil if battle is still running).
 function TurnManager:runTurn(skipStart)
   local winner = TroopManager:winnerParty()
   if winner then
@@ -137,8 +138,8 @@ function TurnManager:runTurn(skipStart)
   self:endTurn(result)
   self.turns = self.turns + 1
 end
--- [COROUTINE] Runs the player's turn.
--- @ret(table) The action result table of the turn.
+--- [COROUTINE] Runs the player's turn.
+-- @treturn table The action result table of the turn.
 function TurnManager:runPlayerTurn()
   while true do
     if #self.turnCharacters == 0 then
@@ -167,10 +168,10 @@ function TurnManager:runPlayerTurn()
     end
   end
 end
--- Gets the next active character in the current party.
--- @param(i : number) 1 or -1 to indicate direction.
--- @param(controllable : boolean) True to exclude NPC, false to ONLY include NPC (nil by default).
--- @ret(number) Next character index, or nil if there's no active character.
+--- Gets the next active character in the current party.
+-- @tparam number i 1 or -1 to indicate direction.
+-- @tparam boolean controllable True to exclude NPC, false to ONLY include NPC (nil by default).
+-- @treturn number Next character index, or nil if there's no active character.
 function TurnManager:nextCharacterIndex(i, controllable)
   i = i or 1
   local count = #self.turnCharacters
@@ -188,7 +189,7 @@ function TurnManager:nextCharacterIndex(i, controllable)
   end
   return index
 end
--- @ret(boolean) Whether there are characters on battle that can act, either by input or AI.
+-- @treturn boolean Whether there are characters on battle that can act, either by input or AI.
 function TurnManager:hasActiveCharacters()
   for i = 1, #self.turnCharacters do
     if self.turnCharacters[i].battler:isActive() then
@@ -198,11 +199,11 @@ function TurnManager:hasActiveCharacters()
   return false
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Party Turn
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Prepares for turn.
+--- Prepares for turn.
 function TurnManager:startTurn(skipStart)
   while #self.turnCharacters == 0 do
     self:nextParty()
@@ -222,14 +223,14 @@ function TurnManager:startTurn(skipStart)
     end
   end
 end
--- Closes turn.
--- @param(char : Character) The character of the turn.
+--- Closes turn.
+-- @tparam table result Result info for the current turn.
 function TurnManager:endTurn(result)
   for char in TroopManager.characterList:iterator() do
     char.battler:onTurnEnd(char)
   end
 end
--- Gets the next party.
+--- Gets the next party.
 function TurnManager:nextParty()
   self.party = math.mod(self.party + 1, TroopManager.partyCount)
   self.turnCharacters = {}
@@ -241,11 +242,11 @@ function TurnManager:nextParty()
   self.characterIndex = self:nextCharacterIndex(nil, false) or self:nextCharacterIndex(nil, true)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Character Turn
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when a character is selected so it's their turn.
+--- Called when a character is selected so it's their turn.
 function TurnManager:characterTurnStart()
   local char = self:currentCharacter()
   char.battler:onSelfTurnStart(char)
@@ -253,7 +254,7 @@ function TurnManager:characterTurnStart()
   FieldManager.renderer:moveToObject(char, nil, true)
 end
 -- Called the character's turn ended
--- @param(result : table) The action result returned by the BattleAction (or wait action).
+-- @tparam table result The action result returned by the BattleAction (or wait action).
 function TurnManager:characterTurnEnd(result)
   local char = self:currentCharacter()
   char.battler:onSelfTurnEnd(char, result)

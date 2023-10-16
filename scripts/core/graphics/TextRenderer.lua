@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-TextRenderer
+@module TextRenderer
 ---------------------------------------------------------------------------------------------------
 Module to create each rendered line of text.
 
@@ -13,14 +13,17 @@ local Quad = lgraphics.newQuad
 
 local TextRenderer = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Individual buffers
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Draws a line of text in the current graphics context.
--- The size of the buffer image is Fonts.scale * size of the text in-game.
--- @param(line : table) A list of text fragments.
--- @ret(number) Number of draw calls (for profiling).
+--- Draws a line of text in the current graphics context.
+--- The size of the buffer image is Fonts.scale * size of the text in-game.
+-- @tparam table line A list of text fragments.
+-- @tparam number x The x position of the top left corner of the line.
+-- @tparam number y The y position of the top left corner of the line.
+-- @tparam table color The RGBA multiplier for this line.
+-- @treturn number Number of draw calls (for profiling).
 function TextRenderer.drawLine(line, x, y, color)
   local drawCalls = 0
   for j = 1, #line do
@@ -55,11 +58,11 @@ function TextRenderer.drawLine(line, x, y, color)
   end
   return drawCalls
 end
--- Prints a text fragment in the current graphic context.
--- @param(fragment : table)
--- @param(x : number)
--- @param(y : number)
--- @ret(number) Number of draw calls (for profiling).
+--- Prints a text fragment in the current graphic context.
+-- @tparam table fragment
+-- @tparam number x The x position of the top left corner of the line.
+-- @tparam number y The y position of the top left corner of the line.
+-- @treturn number Number of draw calls (for profiling).
 function TextRenderer.drawText(fragment, x, y)
   if fragment.content ~= '' then
     lgraphics.print(fragment.content, x, y - fragment.height)
@@ -72,11 +75,11 @@ function TextRenderer.drawText(fragment, x, y)
   end
   return 0
 end
--- Prints a sprite fragment in the current graphic context.
--- @param(fragment : table)
--- @param(x : number)
--- @param(y : number)
--- @ret(number) Number of draw calls (for profiling).
+--- Prints a sprite fragment in the current graphic context.
+-- @tparam table fragment
+-- @tparam number x The x position of the top left corner of the line.
+-- @tparam number y The y position of the top left corner of the line.
+-- @treturn number Number of draw calls (for profiling).
 function TextRenderer.drawSprite(fragment, x, y)
   local _, _, w, h = fragment.quad:getViewport()
   lgraphics.draw(fragment.content, fragment.quad, x, y - fragment.height, 0, fragment.width / w, fragment.height / h)

@@ -1,7 +1,7 @@
 
 --[[===========================================================================
 
-Path
+@classmod Path
 -------------------------------------------------------------------------------
 A generic path of nodes (steps).
 
@@ -11,15 +11,16 @@ A generic path of nodes (steps).
 local List = require('core/datastruct/List')
 local Stack = require('core/datastruct/Stack')
 
+-- Class table.
 local Path = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(lastStep : unknown) the last node of the path
--- @param(previousPath : Path) The path to the last node (optional for initial).
--- @param(totalCost : number) The total cost of the path (optional for initial).
+-- @tparam unknown lastStep The last node of the path.
+-- @tparam Path previousPath The path to the last node (optional for initial).
+-- @tparam number totalCost The total cost of the path (optional for initial).
 function Path:init(lastStep, previousPath, totalCost)
   totalCost = totalCost or 0
   self.lastStep = lastStep
@@ -27,20 +28,20 @@ function Path:init(lastStep, previousPath, totalCost)
   self.totalCost = totalCost
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Operators
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates a new path with a new last node.
--- @param(step : unknown) The new step.
--- @param(cost : number) The cost of the movement to this node.
--- @ret(Path) The new path.
+--- Creates a new path with a new last node.
+-- @tparam unknown step The new step.
+-- @tparam number cost The cost of the movement to this node.
+-- @treturn Path The new path.
 function Path:addStep(step, cost)
   return Path(step, self, self.totalCost + cost)
 end
--- Reduces path until the total cost is less than or equal the maximum cost.
--- @param(maxCost : number) The maximum cost.
--- @ret(Path) The path to the furthest tile within reach.
+--- Reduces path until the total cost is less than or equal the maximum cost.
+-- @tparam number maxCost The maximum cost.
+-- @treturn Path The path to the furthest tile within reach.
 function Path:getFurthestPath(maxCost)
   local path = self
   while path and path.totalCost > maxCost do
@@ -48,8 +49,8 @@ function Path:getFurthestPath(maxCost)
   end
   return path
 end
--- Iterates through the tiles, from the final tile to the first.
--- @ret(function) The iterator function.
+--- Iterates through the tiles, from the final tile to the first.
+-- @treturn function The iterator function.
 function Path:iterator()
   local p = self
   return function()
@@ -61,12 +62,12 @@ function Path:iterator()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Convertion
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates a list with all steps of this path, from the initial until the last.
--- @ret(List) The list of steps.
+--- Creates a list with all steps of this path, from the initial until the last.
+-- @treturn List The list of steps.
 function Path:toList()
   local list = List()
   local path = self
@@ -76,8 +77,8 @@ function Path:toList()
   until path == nil
   return list
 end
--- Converts to a stack of tiles.
--- @ret(Stack) A stack with the first tile of the path at the top.
+--- Converts to a stack of tiles.
+-- @treturn Stack A stack with the first tile of the path at the top.
 function Path:toStack()
   local stack = Stack()
   for step in self:iterator() do
@@ -86,8 +87,8 @@ function Path:toStack()
   stack:pop()
   return stack
 end
--- Converting to string.
--- @ret(string) A string representation.
+--- Converting to string.
+-- @treturn string A string representation.
 function Path:__tostring()
   local list = self:toList()
   if list.size == 0 then

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-TextInputGUI
+@classmod TextInputGUI
 ---------------------------------------------------------------------------------------------------
 The GUI that contains only a text input window.
 
@@ -13,20 +13,21 @@ local GUI = require('core/gui/GUI')
 local TextInputWindow = require('core/gui/common/window/interactable/TextInputWindow')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local TextInputGUI = class(GUI)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GUI:init.
+--- Overrides GUI:init.
 function TextInputGUI:init(parent, description, emptyAllowed, cancelAllowed)
   self.description = description
   self.emptyAllowed = emptyAllowed
   self.cancelAllowed = cancelAllowed
   GUI.init(self, parent)
 end
--- Overrides GUI:createWindow.
+--- Overrides GUI:createWindow.
 function TextInputGUI:createWindows()
   self.name = 'TextInput GUI'
   local textWindow = TextInputWindow(self, self.emptyAllowed, self.cancelAllowed)

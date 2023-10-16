@@ -1,11 +1,12 @@
 
 --[[===============================================================================================
 
-TroopManager
+@classmod TroopManager
 ---------------------------------------------------------------------------------------------------
 Creates and manages battle troops.
-Parties are troop slots in the field, and they are identified by a number from 0 to the total
-number of parties minus 1. A troop contains member information and can be instantied in any party.
+-- Parties are troop slots in the field, and they are identified by a number from 0 to the total
+-- number of parties minus 1.
+-- A troop contains member information and can be instantied in any party.
 
 =================================================================================================]]
 
@@ -20,13 +21,14 @@ local Troop = require('core/battle/Troop')
 local rand = love.math.random
 local mathf = math.field
 
+-- Class table.
 local TroopManager = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function TroopManager:init()
   self.troopData = {}
   self.characterList = nil
@@ -35,17 +37,17 @@ function TroopManager:init()
   self.centers = nil
   self:reset()
 end
--- Reset party configuration.
+--- Reset party configuration.
 function TroopManager:reset()
   self.chosenTroops = {}
   self.playerParty = nil
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Troop creation
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates all battle characters based on field's tile data.
+--- Creates all battle characters based on field's tile data.
 function TroopManager:createTroops(save)
   self.characterList = List()
   self.troops = {}
@@ -83,10 +85,10 @@ function TroopManager:createTroops(save)
   end
   self.centers = self:getPartyCenters()
 end
--- Gets a valid troop ID given the list of candidate troops.
--- @param(troops : table) Array of troop spawn.
--- @param(playerTroop : Troop) Player's troop data.
--- @ret(number) Chosen troop's ID.
+--- Gets a valid troop ID given the list of candidate troops.
+-- @tparam table troops Array of troop spawn.
+-- @tparam Troop playerTroop Player's troop data.
+-- @treturn number Chosen troop's ID.
 function TroopManager:getRandomTroop(troops, playerTroop)
   local n = 0
   local id = -1
@@ -101,10 +103,11 @@ function TroopManager:getRandomTroop(troops, playerTroop)
   end
   return id
 end
--- Creates the troop's characters.
--- @param(troopID : number) Troop's ID.
--- @param(partyInfo : table) Table with party's members.
--- @param(party : number) Party's ID.
+--- Creates the troop's characters.
+-- @tparam number troopID Troop's ID.
+-- @tparam table partyInfo Table with party's members.
+-- @tparam number party Party's ID.
+-- @tparam table save Save data (optional).
 function TroopManager:createTroop(troopID, partyInfo, party, save)
   local troop = Troop(Database.troops[troopID], party, save)
   local field = FieldManager.currentField
@@ -144,13 +147,12 @@ function TroopManager:createTroop(troopID, partyInfo, party, save)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Battle characters
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates the battler of the character and add the character to the battle character list.
--- @param(character : Character) Battler's character.
--- @param(partyID : number) Battler's party.
+--- Creates the battler of the character and add the character to the battle character list.
+-- @tparam Character character Battler's character.
 function TroopManager:createBattler(character)
   local troop = self.troops[character.party]
   assert(troop, 'Party not set: ' .. tostring(character.party))
@@ -163,12 +165,12 @@ function TroopManager:createBattler(character)
     character:playAnimation(character.koAnim)
   end
 end
--- Creates a new battle character.
--- @param(tile : ObjectTile) The initial tile of the character.
--- @param(dir : number) The initial direction of the character.
--- @param(member : table) The troop member that this character represents.
--- @param(party : number) The number of the field's party spot this character belongs to.
--- @ret(BattleCharacter) The newly created character.
+--- Creates a new battle character.
+-- @tparam ObjectTile tile The initial tile of the character.
+-- @tparam number dir The initial direction of the character.
+-- @tparam table member The troop member that this character represents.
+-- @tparam number party The number of the field's party spot this character belongs to.
+-- @treturn BattleCharacter The newly created character.
 function TroopManager:createCharacter(tile, dir, member, party)
   local charData = {
     key = member.key,
@@ -183,20 +185,20 @@ function TroopManager:createCharacter(tile, dir, member, party)
   charData.x, charData.y, charData.h = tile:coordinates()
   return Character(charData)
 end
--- Removes the given character.
+--- Removes the given character.
 function TroopManager:deleteCharacter(char)
   self.characterList:removeElement(char)
   self.characterList[char.key] = nil
   char:destroy()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Search Functions
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Searches for the Character with the given Battler.
--- @param(battler : Battler) The battler to search for.
--- @ret(Character) The character with the battler (nil of not found).
+--- Searches for the Character with the given Battler.
+-- @tparam Battler battler The battler to search for.
+-- @treturn Character The character with the battler (nil of not found).
 function TroopManager:getBattlerCharacter(battler)
   if not self.characterList then
     return nil
@@ -207,9 +209,9 @@ function TroopManager:getBattlerCharacter(battler)
     end
   end
 end
--- Searches for the Characters with the battlers of the given ID.
--- @param(id : number) The ID of the battler to search for.
--- @ret(table) An array with all the characters with the given battler.
+--- Searches for the Characters with the battlers of the given ID.
+-- @tparam number id The ID of the battler to search for.
+-- @treturn table An array with all the characters with the given battler.
 function TroopManager:getBattlerCharacters(id)
   local c = {}
   if not self.characterList then
@@ -222,9 +224,9 @@ function TroopManager:getBattlerCharacters(id)
   end
   return c
 end
--- Counts the number of characters that have the given battler.
--- @param(battler : table) The data of the battler.
--- @ret(number) The number of characters.
+--- Counts the number of characters that have the given battler.
+-- @tparam table battler The data of the battler.
+-- @treturn number The number of characters.
 function TroopManager:getBattlerCount(battler)
   local c = 0
   for char in self.characterList:iterator() do
@@ -234,9 +236,9 @@ function TroopManager:getBattlerCount(battler)
   end
   return c
 end
--- Gets the number of characters in the given party.
--- @param(party : number) Party of the character (optional, player's party by default).
--- @ret(number) The number of battler in the party.
+--- Gets the number of characters in the given party.
+-- @tparam number party Party of the character (optional, player's party by default).
+-- @treturn number The number of battler in the party.
 function TroopManager:getMemberCount(party)
   party = party or self.playerParty
   local count = 0
@@ -247,9 +249,10 @@ function TroopManager:getMemberCount(party)
   end
   return count
 end
--- Gets the characters in the field that are in this troop.
--- @param(alive) True to include only living characters, false to only dead, nil to both.
--- @ret(List) List of characters.
+--- Gets the characters in the field that are in this troop.
+-- @tparam number party The party number of the troop.
+-- @tparam boolean alive True to include only living characters, false to only dead, nil to both.
+-- @treturn List List of characters.
 function TroopManager:currentCharacters(party, alive)
   local characters = List(self.characterList)
   characters:conditionalRemove(
@@ -258,9 +261,10 @@ function TroopManager:currentCharacters(party, alive)
     end)
   return characters
 end
--- Gets all battlers that are not in this troop.
--- @param(alive) True to include only living battlers, false to only dead, nil to both.
--- @ret(List) List of battlers.
+--- Gets all battlers that are enemies to the given party.
+-- @tparam number yourParty The party number of the troop.
+-- @tparam boolean alive True to include only living battlers, false to only dead, nil to both.
+-- @treturn List List of battlers.
 function TroopManager:enemyBattlers(yourParty, alive)
   local battlers = List()
   for party, troop in pairs(self.troops) do
@@ -275,12 +279,12 @@ function TroopManager:enemyBattlers(yourParty, alive)
   return battlers
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Parties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Setup party tiles by position of each party.
--- With two parties, each party gets a third of the map.
+--- Setup party tiles by position of each party.
+--- With two parties, each party gets a third of the map.
 function TroopManager:setPartyTiles()
   local field = FieldManager.currentField
   for i, partyInfo in ipairs(field.parties) do
@@ -312,13 +316,13 @@ function TroopManager:setPartyTiles()
   end
 end
 -- Gets player party's troop in the current battle if on battle, 
---  or player's troop from current save's data otherwise.
--- @ret(Troop) The troop controlled by the player.
+---  or player's troop from current save's data otherwise.
+-- @treturn Troop The troop controlled by the player.
 function TroopManager:getPlayerTroop()
   return self.troops and self.troops[self.playerParty] or Troop()
 end
--- Searchs for a winner party (when all alive characters belong to the same party).
--- @ret(number) The number of the party (returns nil if no one won yet, -1 if there's a draw).
+--- Searchs for a winner party (when all alive characters belong to the same party).
+-- @treturn number The number of the party (returns nil if no one won yet, -1 if there's a draw).
 function TroopManager:winnerParty()
   local currentParty = -1
   for bc in self.characterList:iterator() do
@@ -335,8 +339,8 @@ function TroopManager:winnerParty()
   end
   return currentParty
 end
--- Gets the pixel center of each party.
--- @ret(table) Array of vectors, indexed by party ID.
+--- Gets the pixel center of each party.
+-- @treturn table Array of vectors, indexed by party ID.
 function TroopManager:getPartyCenters()
   local centers = {}
   for bc in self.characterList:iterator() do
@@ -357,8 +361,8 @@ function TroopManager:getPartyCenters()
   end
   return centers
 end
--- Gets the current in-battle state of all parties.
--- @ret(table) Table containing the player's party and the troop data by party ID.
+--- Gets the current in-battle state of all parties.
+-- @treturn table Table containing the player's party and the troop data by party ID.
 function TroopManager:getAllPartyData()
   local data = { playerParty = self.playerParty }
   for i = 0, self.partyCount - 1 do
@@ -381,11 +385,11 @@ function TroopManager:getAllPartyData()
   return data
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Battle
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Calls the onBattleStart callback on each troop member.
+--- Calls the onBattleStart callback on each troop member.
 function TroopManager:onBattleStart()
   for _, troop in pairs(self.troops) do
     for battler in troop:visibleBattlers():iterator() do
@@ -394,7 +398,7 @@ function TroopManager:onBattleStart()
     end
   end
 end
--- Calls the onBattleEnd callback on each troop member.
+--- Calls the onBattleEnd callback on each troop member.
 function TroopManager:onBattleEnd()
   for _, troop in pairs(self.troops) do
     for battler in troop:visibleBattlers():iterator() do
@@ -404,11 +408,11 @@ function TroopManager:onBattleEnd()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Clear
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Erases battlers and clears list.
+--- Erases battlers and clears list.
 function TroopManager:clear()
   for bc in self.characterList:iterator() do
     bc.battler = nil
@@ -419,12 +423,13 @@ function TroopManager:clear()
   self.troopDirections = nil
   self.centers = nil
 end
--- Store troop data in save.
--- @param(saveFormation : boolean) True to save modified grid formation (optional).
+--- Store troop data in save.
+-- @tparam Troop troop True to save modified grid formation (optional).
+-- @tparam boolean saveFormation True to save modified grid formation (optional).
 function TroopManager:saveTroop(troop, saveFormation)
   self.troopData[troop.data.id .. ''] = troop:getState(saveFormation)
 end
--- Store data of all current troops.
+--- Store data of all current troops.
 function TroopManager:saveTroops()
   for i, troop in pairs(self.troops) do
     if troop.data.persistent then

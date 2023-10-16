@@ -1,22 +1,23 @@
 
 --[[===============================================================================================
 
-Matrix2
+@classmod Matrix2
 ---------------------------------------------------------------------------------------------------
 A 2D matrix of fixed size.
 
 =================================================================================================]]
 
+-- Class table.
 local Matrix2 = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(width : number) The number of columns.
--- @param(height : number) The number of lines.
--- @param(startValue : unknown) The initial value of every element (optional).
+--- Constructor.
+-- @tparam number width The number of columns.
+-- @tparam number height The number of lines.
+-- @tparam unknown startValue The initial value of every element (optional).
 function Matrix2:init(width, height, startValue)
   self.width = width
   self.height = height
@@ -26,8 +27,8 @@ function Matrix2:init(width, height, startValue)
     end
   end
 end
--- Creates a shallow copy of this matrix.
--- @ret(Matrix2)
+--- Creates a shallow copy of this matrix.
+-- @treturn Matrix2
 function Matrix2:clone()
   local copy = Matrix2(self.width, self.height)
   local size = self.width * self.height
@@ -37,30 +38,30 @@ function Matrix2:clone()
   return copy
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Get / Set
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the element at line i and column j.
--- @param(i : number) Column number.
--- @param(j : number) Line number.
--- @ret(unknown) The current value at that position.
+--- Gets the element at line i and column j.
+-- @tparam number i Column number.
+-- @tparam number j Line number.
+-- @treturn unknown The current value at that position.
 function Matrix2:get(i, j)
   if i >= 1 and i <= self.width and j >= 1 and j <= self.height then
     return self[(j - 1) * self.width + i]
   end
 end
--- Sets the element at line i and column j.
--- @param(value : unknown) The new value at that position.
--- @param(i : number) Column number.
--- @param(j : number) Line number.
+--- Sets the element at line i and column j.
+-- @tparam unknown value The new value at that position.
+-- @tparam number i Column number.
+-- @tparam number j Line number.
 function Matrix2:set(value, i, j)
   if i >= 1 and i <= self.width and j >= 1 and j <= self.height then
     self[(j - 1) * self.width + i] = value
   end
 end
--- Iterator function that returns each element.
--- @ret(function)
+--- Iterator function that returns each element.
+-- @treturn function
 function Matrix2:iterator()
   local i = 0
   local size = self.width * self.height
@@ -73,12 +74,12 @@ function Matrix2:iterator()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Numeric Operations
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Matrixes multiplication.
--- @param(other : Matrix2 | table) The right operand.
+--- Matrixes multiplication.
+-- @tparam Matrix2|table other The right operand.
 function Matrix2:__mul(other)
   if other.height and other.width then
     return self:mulMatrix(other)
@@ -86,8 +87,8 @@ function Matrix2:__mul(other)
     return self:mulVector(other)
   end
 end
--- Matrix multiplication.
--- @param(other : Matrix2) The right operand.
+--- Matrix multiplication.
+-- @tparam Matrix2 other The right operand.
 function Matrix2:mulMatrix(other)
   assert(self.height == other.width, 'Cannot multiply matrixes: ' .. self.height .. ' ' .. other.width)
   local m = Matrix2(self.width, other.height, 0)
@@ -102,8 +103,8 @@ function Matrix2:mulMatrix(other)
   end
   return m
 end
--- Matrix x vector multiplication.
--- @param(vector : table) The right vector (numeric array).
+--- Matrix x vector multiplication.
+-- @tparam table vector The right vector (numeric array).
 function Matrix2:mulVector(vector)
   assert(self.height == #vector, 'Cannot multiply with vector: ' .. self.height .. ' ' .. #vector)
   local m = {}
@@ -117,13 +118,13 @@ function Matrix2:mulVector(vector)
   return m
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Finds the coordinates of given element.
--- @ret(number) Column number (nil if not found).
--- @ret(number) Line number (nil if not found).
+--- Finds the coordinates of given element.
+-- @treturn number Column number (nil if not found).
+-- @treturn number Line number (nil if not found).
 function Matrix2:positionOf(element)
   local size = self.width * self.height
   for i = 1, size do
@@ -133,7 +134,7 @@ function Matrix2:positionOf(element)
     end
   end
 end
--- @ret(string) The string representation (for debugging).
+-- @treturn string The string representation (for debugging).
 function Matrix2:__tostring()
   local s = '{ '
   for i = 1, self.width do

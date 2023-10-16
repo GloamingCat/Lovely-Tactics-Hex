@@ -1,9 +1,9 @@
 
 --[[===============================================================================================
 
-GUI Events
+@module GUIEvents
 ---------------------------------------------------------------------------------------------------
-Functions that are loaded from the EventSheet.
+GUI-related functions that are loaded from the EventSheet.
 
 =================================================================================================]]
 
@@ -18,24 +18,27 @@ local RecruitGUI = require('core/gui/menu/RecruitGUI')
 local TextInputWindow = require('core/gui/common/window/interactable/TextInputWindow')
 local Vector = require('core/math/Vector')
 
-local EventSheet = {}
+local GUIEvents = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Menu
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Opens the FieldGUI.
-function EventSheet:openFieldMenu(args)
+--- Opens the FieldGUI.
+-- @tparam table args
+function GUIEvents:openFieldMenu(args)
   GUIManager:showGUIForResult(FieldGUI(nil))
 end
--- Opens the SaveGUI.
-function EventSheet:openSaveMenu(args)
+--- Opens the SaveGUI.
+-- @tparam table args
+function GUIEvents:openSaveMenu(args)
   GUIManager:showGUIForResult(SaveGUI(nil))
 end
--- Opens the ShopGUI.
--- @param(args.items : table) Array of items.
--- @param(args.sell : boolean) Sell enabling.
-function EventSheet:openShopMenu(args)
+--- Opens the ShopGUI.
+-- @tparam table args
+--  args.items (table): Array of items.
+--  args.sell (boolean): Sell enabling.
+function GUIEvents:openShopMenu(args)
   self.vars.hudOpen = FieldManager.hud.visible
   FieldManager.hud:hide()
   GUIManager:showGUIForResult(ShopGUI(nil, args.items, args.sell))
@@ -43,10 +46,11 @@ function EventSheet:openShopMenu(args)
     FieldManager.hud:show()
   end
 end
--- Opens the ShopGUI.
--- @param(args.items : table) Array of items.
--- @param(args.sell : boolean) Sell enabling.
-function EventSheet:openRecruitMenu(args)
+--- Opens the ShopGUI.
+-- @tparam table args
+--  args.items (table): Array of items.
+--  args.sell (boolean): Sell enabling.
+function GUIEvents:openRecruitMenu(args)
   self.vars.hudOpen = FieldManager.hud.visible
   FieldManager.hud:hide()
   GUIManager:showGUIForResult(RecruitGUI(nil, args.chars, args.dismiss))
@@ -55,17 +59,18 @@ function EventSheet:openRecruitMenu(args)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Title Window
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Opens a basic window with the given text. By default, it's a single-line window.
--- @param(args.text : number) Text inside window.
--- @param(args.width : number) Width of the window (optional).
--- @param(args.height : number) Height of the window (optional).
--- @param(args.x : number) Pixel x of the window (optional).
--- @param(args.y : number) Pixel y of the window (optional).
-function EventSheet:openTitleWindow(args)
+--- Opens a basic window with the given text. By default, it's a single-line window.
+-- @tparam table args
+--  args.text (number): Text inside window.
+--  args.width (number): Width of the window (optional).
+--  args.height (number): Height of the window (optional).
+--  args.x (number): Pixel x of the window (optional).
+--  args.y (number): Pixel y of the window (optional).
+function GUIEvents:openTitleWindow(args)
   self:createGUI()
   local w = args.width or ScreenManager.width / 4
   local h = args.height or 24
@@ -86,27 +91,30 @@ function EventSheet:openTitleWindow(args)
     self.gui.titleWindow:updateText(args.text)
   end
 end
--- Closes and destroys title window.
-function EventSheet:closeTitleWindow(args)
+--- Closes and destroys title window.
+-- @tparam table args
+function GUIEvents:closeTitleWindow(args)
   assert(self.gui.titleWindow, 'Title windows is not open.')
   self.gui.titleWindow:hide()
   self.gui.titleWindow:destroy()
   self.gui.titleWindow:removeSelf()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Dialogue
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 -- General parameters:
--- @param(args.id : number) ID of the dialogue window.
 
--- Shows a dialogue in the given window.
--- @param(args.message : string) Dialogue text.
--- @param(args.name : string) Speaker name (optional).
--- @param(args.nameX : string) Speaker name X, from -1 to 1 (optional).
--- @param(args.nameY : string) Speaker name Y, from -1 to 1 (optional).
-function EventSheet:showDialogue(args)
+
+--- Shows a dialogue in the given window.
+-- @tparam table args
+--  args.id (number): ID of the dialogue window.
+--  args.message (string): Dialogue text.
+--  args.name (string): Speaker name (optional).
+--  args.nameX (string): Speaker name X, from -1 to 1 (optional).
+--  args.nameY (string): Speaker name Y, from -1 to 1 (optional).
+function GUIEvents:showDialogue(args)
   self:openDialogueWindow(args)
   local window = self.gui.dialogues[args.id]
   self.gui:setActiveWindow(window)
@@ -114,8 +122,10 @@ function EventSheet:showDialogue(args)
     x = args.nameX, y = args.nameY }
   window:showDialogue(args.message, args.align, speaker)
 end
--- Closes and deletes a dialogue window.
-function EventSheet:closeDialogueWindow(args)
+--- Closes and deletes a dialogue window.
+-- @tparam table args
+--  args.id (number): ID of the dialogue window.
+function GUIEvents:closeDialogueWindow(args)
   if self.gui and self.gui.dialogues then
     local window = self.gui.dialogues[args.id]
     if window then
@@ -130,17 +140,16 @@ function EventSheet:closeDialogueWindow(args)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Message
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- General parameters:
--- @param(args.id : number) ID of the message window.
-
--- Shows a message in the given window.
--- @param(args.message : string) Message text.
--- @param(args.wait : boolean) True to wait for player input.
-function EventSheet:showMessage(args)
+--- Shows a message in the given window.
+-- @tparam table args
+--  args.id (number): ID of the message window.
+--  args.message (string): Message text.
+--  args.wait (boolean): True to wait for player input.
+function GUIEvents:showMessage(args)
   self:openMessageWindow(args)
   local window = self.gui.messages[args.id]
   window:updateText(args.message)
@@ -149,8 +158,10 @@ function EventSheet:showMessage(args)
     self.gui:waitForResult()
   end
 end
--- Closes and deletes a message window.
-function EventSheet:closeMessageWindow(args)
+--- Closes and deletes a message window.
+-- @tparam table args
+--  args.id (number): ID of the message window.
+function GUIEvents:closeMessageWindow(args)
   if self.gui and self.gui.messages then
     local window = self.gui.messages[args.id]
     if window then
@@ -165,13 +176,14 @@ function EventSheet:closeMessageWindow(args)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Opens a choice window and waits for player choice before closing and deleting.
--- @param(args.choices : table) Array with the name of each choice.
-function EventSheet:openChoiceWindow(args)
+--- Opens a choice window and waits for player choice before closing and deleting.
+-- @tparam table args
+--  args.choices (table): Array with the name of each choice.
+function GUIEvents:openChoiceWindow(args)
   self:createGUI()
   local window = ChoiceWindow(self.gui, args)
   window:setXYZ(args.x, args.y, -5)
@@ -187,12 +199,13 @@ function EventSheet:openChoiceWindow(args)
     self.char.vars.choiceInput = result
   end
 end
--- Opens a password window and waits for player choice before closing and deleting.
--- @param(args.length : number) Number of digits.
--- @param(args.width : number) Window width.
--- @param(args.pos : Vector) Window center's position.
--- @param(args.cancelValue : number) Index returned when player presses a cancel button.
-function EventSheet:openNumberWindow(args)
+--- Opens a password window and waits for player choice before closing and deleting.
+-- @tparam table args
+--  args.length (number): Number of digits.
+--  args.width (number): Window width.
+--  args.pos Vector Window center's position.
+--  args.cancelValue (number): Index returned when player presses a cancel button.
+function GUIEvents:openNumberWindow(args)
   self:createGUI()
   local window = NumberWindow(self.gui, args)
   window:show()
@@ -206,8 +219,9 @@ function EventSheet:openNumberWindow(args)
     self.char.vars.numberInput = result
   end
 end
--- Opens a text window and waits for player choice before closing and deleting.
-function EventSheet:openStringWindow(args)
+--- Opens a text window and waits for player choice before closing and deleting.
+-- @tparam table args
+function GUIEvents:openStringWindow(args)
   self:createGUI()
   local window = TextInputWindow(self.gui, args.emptyAllowed, args.cancelAllowed)
   window:show()
@@ -222,4 +236,4 @@ function EventSheet:openStringWindow(args)
   end
 end
 
-return EventSheet
+return GUIEvents

@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-ResolutionWindow
+@classmod ResolutionWindow
 ---------------------------------------------------------------------------------------------------
 Window with resolution options.
 
@@ -11,13 +11,14 @@ Window with resolution options.
 local Button = require('core/gui/widget/control/Button')
 local GridWindow = require('core/gui/GridWindow')
 
+-- Class table.
 local ResolutionWindow = class(GridWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Implements GridWindow:createWidgets.
+--- Implements GridWindow:createWidgets.
 function ResolutionWindow:createWidgets()
   Button:fromKey(self, 'resolution1')
   Button:fromKey(self, 'resolution2')
@@ -25,28 +26,28 @@ function ResolutionWindow:createWidgets()
   Button:fromKey(self, 'fullScreen')
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Chooses new resolution.
+--- Chooses new resolution.
 function ResolutionWindow:onButtonConfirm(button)
   ScreenManager:setMode(button.index % self:rowCount())
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:colCount.
+--- Overrides GridWindow:colCount.
 function ResolutionWindow:colCount()
   return 1
 end
--- Overrides GridWindow:rowCount.
+--- Overrides GridWindow:rowCount.
 function ResolutionWindow:rowCount()
   return 4
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function ResolutionWindow:__tostring()
   return 'Resolution Window'
 end

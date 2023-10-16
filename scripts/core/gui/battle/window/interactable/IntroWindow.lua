@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-IntroWindow
+@classmod IntroWindow
 ---------------------------------------------------------------------------------------------------
 Window that is shown in the beginning of the battle.
 
@@ -17,20 +17,21 @@ local FormationAction = require('core/battle/action/FormationAction')
 local MemberGUI = require('core/gui/members/MemberGUI')
 local VisualizeAction = require('core/battle/action/VisualizeAction')
 
+-- Class table.
 local IntroWindow = class(FieldCommandWindow, ActionWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Changes the alignment of the button.
+--- Changes the alignment of the button.
 function IntroWindow:setProperties(...)
   FieldCommandWindow.setProperties(self, ...)
   self.buttonAlign = 'center'
   self.visualizeAction = VisualizeAction()
   self.formationAction = FormationAction()
 end
--- Creates a button for each backup member.
+--- Creates a button for each backup member.
 function IntroWindow:createWidgets()
   Button:fromKey(self, 'start')
   Button:fromKey(self, 'formation')
@@ -40,15 +41,15 @@ function IntroWindow:createWidgets()
   Button:fromKey(self, 'inspect')
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- When player chooses Start button.
+--- When player chooses Start button.
 function IntroWindow:startConfirm(button)
   self.result = 1
 end
--- When player chooses Party button.
+--- When player chooses Party button.
 function IntroWindow:formationConfirm(button)
   -- Executes action grid selecting.
   local center = TroopManager.centers[TroopManager.playerParty]
@@ -61,7 +62,7 @@ function IntroWindow:formationConfirm(button)
   FieldManager.renderer:moveToPoint(center.x, center.y)
   self.result = nil
 end
--- Overrides GridWindow:onCancel.
+--- Overrides GridWindow:onCancel.
 function IntroWindow:inspectConfirm()
   local center = TroopManager.centers[TroopManager.playerParty]
   local x, y, z = math.field.pixel2Tile(center.x, center.y, center.z)
@@ -72,32 +73,32 @@ function IntroWindow:inspectConfirm()
   FieldManager.renderer:moveToPoint(center.x, center.y)
   self.result = nil
 end
--- "Options" button callback. Opens save window.
+--- "Options" button callback. Opens save window.
 function IntroWindow:optionsConfirm(button)
   self:hide()
   self.GUI:showWindowForResult(self.GUI.optionsWindow)
   self:show()
 end
--- Overrides GridWindow:onCancel.
+--- Overrides GridWindow:onCancel.
 function IntroWindow:onCancel()
   AudioManager:playSFX(Config.sounds.buttonCancel)
   self:optionsConfirm()
   self.result = nil
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:colCount.
+--- Overrides GridWindow:colCount.
 function IntroWindow:colCount()
   return 1
 end
--- Overrides GridWindow:rowCount.
+--- Overrides GridWindow:rowCount.
 function IntroWindow:rowCount()
   return 6
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function IntroWindow:__tostring()
   return 'Battle Intro Window'
 end

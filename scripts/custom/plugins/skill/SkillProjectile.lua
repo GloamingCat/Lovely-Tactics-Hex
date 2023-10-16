@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-SkillProjectile
+@script SkillProjectile
 ---------------------------------------------------------------------------------------------------
 Abstraction of a projectile thrown during the use of a skill.
 
@@ -24,12 +24,12 @@ local nextCoordDir = math.field.nextCoordDir
 local pixel2Tile = math.field.pixel2Tile
 local tile2Pixel = math.field.tile2Pixel
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Animation
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Sets origin position.
--- @param(user : Character)
+--- Sets origin position.
+-- @tparam Character user
 function Animation:setUser(user)
   self.userHeight = user:getHeight(0, 0) / 2
   local di, dj = nextCoordDir(user:getRoundedDirection())
@@ -40,21 +40,21 @@ function Animation:setUser(user)
   self.origin = Vector(x, y, z)
   self:setRow(row)
 end
--- Sets target position.
--- @param(target : ObjectTile)
--- @ret(number) The distance from the current position to the target position.
+--- Sets target position.
+-- @tparam ObjectTile target
+-- @treturn number The distance from the current position to the target position.
 function Animation:setTarget(target)
   local i, j, h = target:coordinates()
   self.target = Vector(tile2Pixel(i, j, h + (self.userHeight or 0)))
   self.moveTime = 0
   return self.sprite.position:distance2DTo(self.target:coordinates())
 end
--- [COROUTINE] Starts the movement towards the target tile.
--- @param(user : Character)
--- @param(target : ObjectTile) The target tile.
--- @param(speed : number) Speed in pixels per second (optional if speed is set in tags).
--- @param(wait : boolean) True to wait until the end of movement (false by default).
--- @ret(number) Duration of the movement in frames.
+--- [COROUTINE] Starts the movement towards the target tile.
+-- @tparam Character user
+-- @tparam ObjectTile target The target tile.
+-- @tparam number speed Speed in pixels per second (optional if speed is set in tags).
+-- @tparam boolean wait True to wait until the end of movement (false by default).
+-- @treturn number Duration of the movement in frames.
 function Animation:throw(user, target, speed, wait)
   self:setUser(user)
   local d = self:setTarget(target)
@@ -72,8 +72,8 @@ function Animation:throw(user, target, speed, wait)
   end
   return time
 end
--- Overrides Animation:update.
--- Updates sprite position.
+--- Overrides Animation:update.
+--- Updates sprite position.
 local Animation_update = Animation.update
 function Animation:update(dt)
   Animation_update(self, dt)
@@ -83,11 +83,11 @@ function Animation:update(dt)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Character
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides. Change throw projectile after cast animation.
+--- Overrides. Change throw projectile after cast animation.
 local Character_castSkill = Character.castSkill
 function Character:castSkill(skill, dir, target)
   local minTime = Character_castSkill(self, skill, dir, target)

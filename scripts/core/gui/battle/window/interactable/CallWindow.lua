@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-CallWindow
+@classmod CallWindow
 ---------------------------------------------------------------------------------------------------
 Window with the list of battles in the party backup.
 
@@ -14,19 +14,20 @@ local GridWindow = require('core/gui/GridWindow')
 -- Alias
 local max = math.max
 
+-- Class table.
 local CallWindow = class(GridWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function CallWindow:init(GUI, troop, allMembers)
   self.troop = troop
   self.allMembers = allMembers
   GridWindow.init(self, GUI)
 end
--- Creates a button for each backup member.
+--- Creates a button for each backup member.
 function CallWindow:createWidgets()
   local current = self.troop:currentBattlers()
   local backup = self.troop:backupBattlers()
@@ -42,8 +43,8 @@ function CallWindow:createWidgets()
     self:createNoneButton()
   end
 end
--- @param(battler : Battler) Battler associated with this button.
--- @ret(Button)
+-- @tparam Battler battler Battler associated with this button.
+-- @treturn Button
 function CallWindow:createBattlerButton(battler)
   local button = Button(self)
   button:createText('data.battler.' .. battler.key, battler.name)
@@ -51,7 +52,7 @@ function CallWindow:createBattlerButton(battler)
   button.memberKey = battler.key
   return button
 end
--- @ret(Button)
+-- @treturn Button
 function CallWindow:createNoneButton()
   local button = Button(self)
   button:createText('none', '')
@@ -62,15 +63,15 @@ function CallWindow:createNoneButton()
   return button
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Confirm callback for each button, returns the chosen battle.
+--- Confirm callback for each button, returns the chosen battle.
 function CallWindow:onButtonConfirm(button)
   self.result = button.memberKey
 end
--- Select callback for each button, show the battler's info.
+--- Select callback for each button, show the battler's info.
 function CallWindow:onButtonSelect(button)
   if self.GUI.targetWindow then
     if button.battler then 
@@ -84,19 +85,19 @@ function CallWindow:onButtonSelect(button)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:cellWidth.
+--- Overrides GridWindow:cellWidth.
 function CallWindow:cellWidth()
   return 70
 end
--- Overrides GridWindow:colCount.
+--- Overrides GridWindow:colCount.
 function CallWindow:colCount()
   return 1
 end
--- Overrides GridWindow:rowCount.
+--- Overrides GridWindow:rowCount.
 function CallWindow:rowCount()
   return 4
 end

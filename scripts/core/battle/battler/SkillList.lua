@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-SkillList
+@classmod SkillList
 ---------------------------------------------------------------------------------------------------
 A special kind of list that provides functions to manage battler's list of skills.
 
@@ -15,15 +15,16 @@ local List = require('core/datastruct/List')
 local copyTable = util.copyTable
 local rand = love.math.random
 
+-- Class table.
 local SkillList = class(List)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides List:init.
--- @param(battler : Battler)
--- @param(save : table)
+--- Overrides List:init.
+-- @tparam Battler battler
+-- @tparam table save
 function SkillList:init(battler, save)
   List.init(self)
   self.battler = battler
@@ -37,12 +38,12 @@ function SkillList:init(battler, save)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Check / Change
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(id : number | string) Skill's ID or key.
--- @ret(number) The position of the skill if found, nil if not found.
+-- @tparam number|string id Skill's ID or key.
+-- @treturn number The position of the skill if found, nil if not found.
 function SkillList:containsSkill(id)
   local data = Database.skills[id]
   for i = 1, self.size do
@@ -52,7 +53,7 @@ function SkillList:containsSkill(id)
   end
   return nil
 end
--- @param(skill : number | string | SkillAction) The skill or the skill's ID or key.
+-- @tparam number|string|SkillAction skill The skill or the skill's ID or key.
 function SkillList:learn(skill)
   local id = skill
   if type(skill) == 'number' or type(skill) == 'string' then
@@ -66,23 +67,23 @@ function SkillList:learn(skill)
     return skill
   end
 end
--- @param(list : table) Array of skill IDs. 
+-- @tparam table list Array of skill IDs.
 function SkillList:learnAll(list)
   for i = 1, #list do
     self:learn(list[i])
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Converting to string.
--- @ret(string) A string representation.
+--- Converting to string.
+-- @treturn string A string representation.
 function SkillList:__tostring()
   return 'SkillList: ' .. tostring(self.battler)
 end
--- @ret(table) Array with skills' IDs.
+-- @treturn table Array with skills' IDs.
 function SkillList:getState()
   local state = {}
   for i = 1, self.size do
@@ -90,11 +91,11 @@ function SkillList:getState()
   end
   return state
 end
--- @ret(SkillList)
+-- @treturn SkillList
 function SkillList:clone()
   return SkillList(self.battler, self)
 end
--- @ret(List)
+-- @treturn List
 function SkillList:toList()
   return List(self)
 end

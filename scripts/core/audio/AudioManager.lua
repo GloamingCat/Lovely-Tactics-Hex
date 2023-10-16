@@ -1,29 +1,29 @@
-
 --[[===============================================================================================
 
-AudioManager
+@classmod AudioManager
 ---------------------------------------------------------------------------------------------------
 Stores and manages all sound objects in the game. 
 
 =================================================================================================]]
 
--- Imports
+-- Imports.
 local List = require('core/datastruct/List')
 local Music = require('core/audio/Music')
 local Sound = require('core/audio/Sound')
 
--- Alias
+-- Alias.
 local max = math.max
 local min = math.min
 local fileInfo = love.filesystem.getInfo
 
+-- Class table.
 local AudioManager = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Initializes with no sound.
+--- Initializes with no sound.
 function AudioManager:init()
   -- BGM
   self.BGM = nil
@@ -44,17 +44,17 @@ function AudioManager:init()
   self.gameoverTheme = Config.sounds.gameoverTheme
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates BGM and SFX audio.
+--- Updates BGM and SFX audio.
 function AudioManager:update()
   self:updateBGM()
   self:updateSFX()
 end
--- Pauses/resumes all Config.sounds.
--- @param(paused : boolean) True to paused, false to resume.
+--- Pauses/resumes all Config.sounds.
+-- @tparam boolean paused True to paused, false to resume.
 function AudioManager:setPaused(paused)
   self.paused = paused
   if self.BGM then
@@ -64,7 +64,7 @@ function AudioManager:setPaused(paused)
     self.sfx[i]:setPaused(paused)
   end
 end
--- Stops all SFX and tries to resume BGM.
+--- Stops all SFX and tries to resume BGM.
 function AudioManager:resetAudio()
   print("Couldn't play sound. Active sounds: " .. love.audio.getActiveSourceCount())
   love.audio.stop()
@@ -75,33 +75,33 @@ function AudioManager:resetAudio()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Volume
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(number) Volume multiplier for current BGM.
+-- @treturn number Volume multiplier for current BGM.
 function AudioManager:getBGMVolume()
   return self.volumeBGM
 end
--- @param(v : number) Volume multiplier for current BGM.
+-- @tparam number v Volume multiplier for current BGM.
 function AudioManager:setBGMVolume(v)
   self.volumeBGM = v
   if self.BGM then
     self.BGM:refreshVolume()
   end
 end
--- @ret(number) Volume multiplier for current SFX.
+-- @treturn number Volume multiplier for current SFX.
 function AudioManager:getSFXVolume()
   return self.volumeSFX
 end
--- @param(v : number) Volume multiplier for current SFX.
+-- @tparam number v Volume multiplier for current SFX.
 function AudioManager:setSFXVolume(v)
   self.volumeSFX = v
   for i = 1, #self.sfx do
     self.sfx[i]:refreshVolume()
   end
 end
--- Refreshes BGM and SFX pitch.
+--- Refreshes BGM and SFX pitch.
 function AudioManager:refreshVolume()
   if self.BGM then 
     self.BGM:refreshVolume()
@@ -111,33 +111,33 @@ function AudioManager:refreshVolume()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Pitch
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(number) Pitch multiplier for current BGM.
+-- @treturn number Pitch multiplier for current BGM.
 function AudioManager:getBGMPitch()
   return self.pitchBGM
 end
--- @param(p : number) Pitch multiplier for current BGM.
+-- @tparam number p Pitch multiplier for current BGM.
 function AudioManager:setBGMPitch(p)
   self.pitchBGM = p
   if self.BGM then 
     self.BGM:refreshPitch()
   end
 end
--- @ret(number) Pitch multiplier for current SFX.
+-- @treturn number Pitch multiplier for current SFX.
 function AudioManager:getSFXPitch()
   return self.pitchSFX
 end
--- @param(p : number) Pitch multiplier for current SFX.
+-- @tparam number p Pitch multiplier for current SFX.
 function AudioManager:setSFXPitch(p)
   self.pitchSFX = p
   for i = 1, #self.sfx do
     self.sfx[i]:refreshPitch()
   end
 end
--- Refreshes BGM and SFX pitch.
+--- Refreshes BGM and SFX pitch.
 function AudioManager:refreshPitch()
   if self.BGM then 
     self.BGM:refreshPitch()
@@ -147,12 +147,12 @@ function AudioManager:refreshPitch()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- SFX
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Insert a new SFX in the list and plays it.
--- @param(sfx : table | string) Table with file's name (from audio/sfx folder), volume and pitch,
+--- Insert a new SFX in the list and plays it.
+-- @tparam table|string sfx Table with file's name (from audio/sfx folder), volume and pitch,
 --  or the name of the sound type in the Config.sounds table.
 function AudioManager:playSFX(sfx)
   local volume = sfx.volume or 100
@@ -172,21 +172,21 @@ function AudioManager:playSFX(sfx)
     print("Missing SFX: " ..  Project.audioPath .. sfx.name)
   end
 end
--- Updates SFX list (remove all finished SFX).
+--- Updates SFX list (remove all finished SFX).
 function AudioManager:updateSFX()
   if self.sfx[1] then
     self.sfx:conditionalRemove(self.sfx[1].isFinished)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- BGM - General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Stops current playing BGM (if any) and starts a new one.
--- @param(bgm : table) Table with file's name (from audio/bgm folder), volume and pitch.
--- @param(time : number) The duration of the fading transition (optinal, 0 by default).
--- @param(wait : boolean) Yields until the fading animation concludes (optional, false by defaul).
+--- [COROUTINE] Stops current playing BGM (if any) and starts a new one.
+-- @tparam table bgm Table with file's name (from audio/bgm folder), volume and pitch.
+-- @tparam number time The duration of the fading transition (optinal, 0 by default).
+-- @tparam boolean wait Yields until the fading animation concludes (optional, false by defaul).
 function AudioManager:playBGM(bgm, time, wait)
   local volume = bgm.volume or 100
   local pitch = bgm.pitch or 100
@@ -214,8 +214,8 @@ function AudioManager:playBGM(bgm, time, wait)
     print("Missing BGM: " ..  Project.audioPath .. bgm.name)
   end
 end
--- @param(time : number) The duration of the fading transition.
--- @param(wait : boolean) Yields until the fading animation concludes.
+-- @tparam number time The duration of the fading transition.
+-- @tparam boolean wait Yields until the fading animation concludes.
 function AudioManager:resumeBGM(time, wait)
   if self.pausedBGM then
     if self.BGM then
@@ -225,10 +225,10 @@ function AudioManager:resumeBGM(time, wait)
     self:fadein(time, wait)
   end
 end
--- [COROUTINE] Paused current BGM.
--- @param(time : number) Fade-out time.
--- @param(wait : boolean) Wait until the end of the fading.
--- @ret(Music) Current playing BGM (if any).
+--- [COROUTINE] Paused current BGM.
+-- @tparam number time Fade-out time.
+-- @tparam boolean wait Wait until the end of the fading.
+-- @treturn Music Current playing BGM (if any).
 function AudioManager:pauseBGM(time, wait)
   if self.BGM then
     self.pausedBGM = true
@@ -237,11 +237,11 @@ function AudioManager:pauseBGM(time, wait)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- BGM - Update
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates fading and BGMs.
+--- Updates fading and BGMs.
 function AudioManager:updateBGM()
   if self.BGM then
     self.BGM:update()
@@ -254,13 +254,13 @@ function AudioManager:updateBGM()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Fading
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Decreases the BGM volume slowly.
--- @param(time : number) The duration of the fading.
--- @param(wait : boolean) True to only return when the fading finishes.
+--- [COROUTINE] Decreases the BGM volume slowly.
+-- @tparam number time The duration of the fading.
+-- @tparam boolean wait True to only return when the fading finishes.
 function AudioManager:fadeout(time, wait)
   if time and time > 0 then
     self.fading = 1
@@ -276,9 +276,9 @@ function AudioManager:fadeout(time, wait)
     end
   end
 end
--- [COROUTINE] Increases the BGM volume slowly.
--- @param(time : number) The duration of the fading.
--- @param(wait : boolean) True to only return when the fading finishes.
+--- [COROUTINE] Increases the BGM volume slowly.
+-- @tparam number time The duration of the fading.
+-- @tparam boolean wait True to only return when the fading finishes.
 function AudioManager:fadein(time, wait)
   if time and time > 0 then
     self.fading = 0
@@ -294,7 +294,7 @@ function AudioManager:fadein(time, wait)
     end
   end
 end
--- [COROUTINE] Waits until the fading value is 1.
+--- [COROUTINE] Waits until the fading value is 1.
 function AudioManager:waitForBGMFading()
   local fiber = _G.Fiber
   if self.fadingFiber then

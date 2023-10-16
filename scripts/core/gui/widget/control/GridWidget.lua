@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-GridWidget
+@classmod GridWidget
 ---------------------------------------------------------------------------------------------------
 Generic widget for windows (like button or spinner).
 
@@ -15,15 +15,16 @@ local Vector = require('core/math/Vector')
 -- Alias
 local ceil = math.ceil
 
+-- Class table.
 local GridWidget = class(Component)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(window : GridWindow) the window this widget belongs to
--- @param(index : number) the child index of this widget
+--- Constructor.
+-- @tparam GridWindow window The window this widget belongs to.
+-- @tparam number index The child index of this widget.
 function GridWidget:init(window)
   Component.init(self)
   local index = #window.matrix + 1
@@ -39,13 +40,13 @@ function GridWidget:init(window)
   self.errorSound = Config.sounds.buttonError
   self.clickSound = self.confirmSound
 end
--- Changes the index.
+--- Changes the index.
 function GridWidget:setIndex(i)
   self.index = i
   self.row = ceil(i / self.window:colCount())
   self.col = i - (self.row - 1) * self.window:colCount()
 end
--- @ret(Vector) The offset of the widget's top left corner from the window's center.
+-- @treturn Vector The offset of the widget's top left corner from the window's center.
 function GridWidget:relativePosition()
   local w = self.window
   local col, row = self.col - w.offsetCol, self.row - w.offsetRow
@@ -56,19 +57,19 @@ function GridWidget:relativePosition()
   return Vector(x, y, -1)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Content
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Enables/disables this button.
--- @param(value : boolean) True to enable, false to disable.
+--- Enables/disables this button.
+-- @tparam boolean value True to enable, false to disable.
 function GridWidget:setEnabled(value)
 end
--- Selects/deselects this button.
--- @param(value : boolean) True to select, false to deselect.
+--- Selects/deselects this button.
+-- @tparam boolean value True to select, false to deselect.
 function GridWidget:setSelected(value)
 end
--- Updates each content widget's position.
+--- Updates each content widget's position.
 function GridWidget:updatePosition(windowPos)
   local pos = self:relativePosition()
   pos:add(windowPos)
@@ -78,7 +79,7 @@ function GridWidget:updatePosition(windowPos)
     end
   end
 end
--- Updates each content widget (called once per frame).
+--- Updates each content widget (called once per frame).
 function GridWidget:update(dt)
   for i = 1, #self.content do
     if self.content[i].udpate then
@@ -86,7 +87,7 @@ function GridWidget:update(dt)
     end
   end
 end
--- Destroys each content widget.
+--- Destroys each content widget.
 function GridWidget:destroy()
   for i = 1, #self.content do
     if self.content[i].destroy then
@@ -95,7 +96,7 @@ function GridWidget:destroy()
   end
   self.window.content:removeElement(self)
 end
--- Shows each content widget.
+--- Shows each content widget.
 function GridWidget:show()
   for i = 1, #self.content do
     if self.content[i].show then
@@ -103,7 +104,7 @@ function GridWidget:show()
     end
   end
 end
--- Hides each content widget.
+--- Hides each content widget.
 function GridWidget:hide()
   for i = 1, #self.content do
     if self.content[i].hide then

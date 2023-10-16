@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Array Utilities
+@module Array Utilities
 ---------------------------------------------------------------------------------------------------
 General utilities for arrays.
 
@@ -9,14 +9,14 @@ General utilities for arrays.
 
 local util = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates a new array of given size with all elements starting with the given value.
--- @param(size : number) Size of the array.
--- @param(value : unknown) Initial value of all elements.
--- @ret(table) The newly created array.
+--- Creates a new array of given size with all elements starting with the given value.
+-- @tparam number size Size of the array.
+-- @tparam unknown value Initial value of all elements.
+-- @treturn table The newly created array.
 function util.new(size, value)
   local a = {}
   for i = 1, size do
@@ -24,17 +24,17 @@ function util.new(size, value)
   end
   return a
 end
--- Creates a shallow copy (only object references) of the given array.
--- @param(array : table) The array with the object references to be copied.
--- @ret(table) The shallow copy of the array.
+--- Creates a shallow copy (only object references) of the given array.
+-- @tparam table array The array with the object references to be copied.
+-- @treturn table The shallow copy of the array.
 function util.shallowCopy(array)
   local copy = {}
   util.addAll(copy, array)
   return copy
 end
--- Combines an array of arrays into a single array.
--- @param(arrays : table) Array of arrays.
--- @ret(table) The joined arrays.
+--- Combines an array of arrays into a single array.
+-- @tparam table arrays Array of arrays.
+-- @treturn table The joined arrays.
 function util.join(arrays)
   local new = {}
   for i = 1, #arrays do
@@ -43,28 +43,28 @@ function util.join(arrays)
   end
   return new
 end
--- Inserts all the elements from the second array in the first one.
--- @param(array : table) Array to be modified.
--- @param(elements : table) Array containing the elements to be inserted.
+--- Inserts all the elements from the second array in the first one.
+-- @tparam table array Array to be modified.
+-- @tparam table elements Array containing the elements to be inserted.
 function util.addAll(array, elements)
   for i = 1, #elements do
     array[#array + 1] = elements[i]
   end
 end
--- Inserts an element at the given position. Shifts remaining elements accordingly.
--- @param(array : table) Array to be modified.
--- @param(index : number) Position of the inserted element.
--- @param(element : unknown) Element to be added.
+--- Inserts an element at the given position. Shifts remaining elements accordingly.
+-- @tparam table array Array to be modified.
+-- @tparam number index Position of the inserted element.
+-- @tparam unknown element Element to be added.
 function util.insert(array, index, element)
   for i = #array, index, -1 do
     array[i + 1] = array[i]
   end
   array[index] = element
 end
--- Removes the element. Shifts remaining elements accordingly.
--- @param(array : table) Array to be modified.
--- @param(element : unknown) Element to be removed.
--- @ret(number) Index of the removed element (nil if not found).
+--- Removes the element. Shifts remaining elements accordingly.
+-- @tparam table array Array to be modified.
+-- @tparam unknown element Element to be removed.
+-- @treturn number Index of the removed element (nil if not found).
 function util.remove(array, element)
   local i = util.indexOf(array, element)
   if i then
@@ -72,9 +72,9 @@ function util.remove(array, element)
   end
   return i
 end
--- Puts the element into an array if it's not already an array.
--- @param(element : unknown)
--- @ret(table)
+--- Puts the element into an array if it's not already an array.
+-- @tparam unknown element
+-- @treturn table
 function util.toArray(element)
   if element == nil then
     return nil
@@ -85,14 +85,14 @@ function util.toArray(element)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Search
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the index of the given element in the given array.
--- @param(array : table) The array potencionally with the given element.
--- @param(el : unknown) The element to be searched.
--- @ret(number) The index of the element if found (nil if not found).
+--- Gets the index of the given element in the given array.
+-- @tparam table array The array potencionally with the given element.
+-- @tparam unknown el The element to be searched.
+-- @treturn number The index of the element if found (nil if not found).
 function util.indexOf(array, el)
   for i = 1, #array do
     if array[i] == el then
@@ -101,10 +101,10 @@ function util.indexOf(array, el)
   end
   return nil
 end
--- Searches for an element with the given key.
--- @param(array : table) Array of table elements.
--- @param(key : string) Key of the element.
--- @ret(table) Elements of the array with the given key (nil if not found).
+--- Searches for an element with the given key.
+-- @tparam table array Array of table elements.
+-- @tparam string key Key of the element.
+-- @treturn table Elements of the array with the given key (nil if not found).
 function util.findByKey(array, key)
   for i = 1, #array do
     if array[i].key == key then
@@ -112,10 +112,10 @@ function util.findByKey(array, key)
     end
   end
 end
--- Searches for an element with the given key.
--- @param(arr : table) Array of table elements.
--- @param(name : string) Name of the element.
--- @ret(table) Elements of the array with the given name (nil if not found).
+--- Searches for an element with the given key.
+-- @tparam table array Array of table elements.
+-- @tparam string name Name of the element.
+-- @treturn table Elements of the array with the given name (nil if not found).
 function util.findByName(array, name)
   for i = 1, #array do
     if array[i].name == name then
@@ -124,13 +124,13 @@ function util.findByName(array, name)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Array Stats
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Sums all the elements in a array of numbers (or objects with the + operator).
--- @param(array : table) Array containing the population.
--- @ret(unknown) The sum of all elements.
+--- Sums all the elements in a array of numbers (or objects with the + operator).
+-- @tparam table array Array containing the population.
+-- @treturn unknown The sum of all elements.
 function util.sum(array)
   local s = 0
   for i = 1, #array do
@@ -138,9 +138,9 @@ function util.sum(array)
   end
   return s
 end
--- Multiples all the elements in a array of numbers (or objects with the * operator).
--- @param(array : table) Array containing the population.
--- @ret(unknown) The product of all elements.
+--- Multiples all the elements in a array of numbers (or objects with the * operator).
+-- @tparam table array Array containing the population.
+-- @treturn unknown The product of all elements.
 function util.mul(array)
   local m = 1
   for i = 1, #array do
@@ -148,9 +148,9 @@ function util.mul(array)
   end
   return m
 end
--- Gets the maximum element from an array of numbers (or objects with the > operator).
--- @param(array : table) Array containing the population.
--- @ret(unknown) The maximum element.
+--- Gets the maximum element from an array of numbers (or objects with the > operator).
+-- @tparam table array Array containing the population.
+-- @treturn unknown The maximum element.
 function util.max(array)
   if #array == 0 then
     return nil
@@ -163,9 +163,9 @@ function util.max(array)
   end
   return array[m], m
 end
--- Gets the mean value from an array of numbers (or objects with + and / operators).
--- @param(array : table) Array containing the population.
--- @ret(unknown) The average element.
+--- Gets the mean value from an array of numbers (or objects with + and / operators).
+-- @tparam table array Array containing the population.
+-- @treturn unknown The average element.
 function util.mean(array)
   return util.sum(array) / #array
 end

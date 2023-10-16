@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-TargetWindow
+@classmod TargetWindow
 ---------------------------------------------------------------------------------------------------
 Window that shows when the battle cursor is over a character.
 
@@ -15,13 +15,14 @@ local Sprite = require('core/graphics/Sprite')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
+-- Class table.
 local TargetWindow = class(Window)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Window:init.
+--- Overrides Window:init.
 function TargetWindow:init(GUI)
   local w = 120
   local h = self:computeHeight()
@@ -29,7 +30,7 @@ function TargetWindow:init(GUI)
   Window.init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - margin, 
       -ScreenManager.height / 2 + h / 2 + margin))
 end
--- Initializes name and status texts.
+--- Initializes name and status texts.
 function TargetWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local font = Fonts.gui_small
@@ -59,10 +60,11 @@ function TargetWindow:createContent(width, height)
   self.content:add(self.iconList)
   collectgarbage('collect')
 end
--- Creates texts for the given state variable.
--- @param(name : string) the name of the variable
--- @param(pos : Vector) the position of the text
--- @param(w : width) the max width of the text
+--- Creates texts for the given state variable.
+-- @tparam string name The name of the variable.
+-- @tparam Vector pos The position of the text.
+-- @tparam width w The max width of the text.
+-- @tparam table barColor The RGBA table for the bar color.
 function TargetWindow:addStateVariable(name, pos, w, barColor)
   local textName = SimpleText('', pos, w, 'left', Fonts.gui_small)
   textName:setTerm(name, name)
@@ -73,12 +75,12 @@ function TargetWindow:addStateVariable(name, pos, w, barColor)
   return gauge
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Content
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Changes the window's content to show the given battler's stats.
--- @param(battler : Battler)
+--- Changes the window's content to show the given battler's stats.
+-- @tparam Battler battler
 function TargetWindow:setBattler(battler)
   local icons = battler.statusList:getIcons()
   local height = self:computeHeight(#icons > 0)
@@ -109,17 +111,17 @@ function TargetWindow:setBattler(battler)
   collectgarbage('collect')
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Calculates the height given the shown variables.
+--- Calculates the height given the shown variables.
 function TargetWindow:computeHeight(showStatus)
   -- Margin + name + job/level + HP + SP
   local h = self:paddingY() * 2 + 15 + 10 + 10 + 10
   return showStatus and h + 16 or h
 end
--- String representation.
+--- String representation.
 function TargetWindow:__tostring()
   return 'Battle Target Window'
 end

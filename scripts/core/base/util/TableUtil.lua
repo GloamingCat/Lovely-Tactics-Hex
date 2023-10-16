@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Table Utilities
+@module Table Utilities
 ---------------------------------------------------------------------------------------------------
 General utilities for tables.
 
@@ -9,37 +9,37 @@ General utilities for tables.
 
 local util = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates a copy of the given table.
--- @param(table : table) The table with the (key, value) entries to be copied.
--- @ret(table) The copy of the table.
+--- Creates a copy of the given table.
+-- @tparam table table The table with the (key, value) entries to be copied.
+-- @treturn table The copy of the table.
 function util.shallowCopy(table)
   local copy = {}
   util.shallowAdd(copy, table)
   return copy
 end
--- Adds the seconde table's key and values to the first one.
--- @param(table : table) The table to be modified.
--- @param(entries : table) A table of (key, value) entries to be added.
+--- Adds the seconde table's key and values to the first one.
+-- @tparam table table The table to be modified.
+-- @tparam table entries A table of (key, value) entries to be added.
 function util.shallowAdd(table, entries)
   for k, v in pairs(entries) do
     table[k] = v
   end
 end
--- Creates a copy of the given table.
--- @param(table : table) The table with the (key, value) entries to be copied.
--- @ret(table) The copy of the table.
+--- Creates a copy of the given table.
+-- @tparam table table The table with the (key, value) entries to be copied.
+-- @treturn table The copy of the table.
 function util.deepCopy(table)
   local copy = {}
   util.deepAdd(copy, table)
   return copy
 end
--- Adds the seconde table's key and values to the first one.
--- @param(table : table) The table to be modified.
--- @param(entries : table) A table of (key, value) entries to be added.
+--- Adds the seconde table's key and values to the first one.
+-- @tparam table table The table to be modified.
+-- @tparam table entries A table of (key, value) entries to be added.
 function util.deepAdd(table, entries)
   for k, v in pairs(entries) do
     local typ = type(v)
@@ -50,9 +50,9 @@ function util.deepAdd(table, entries)
     end
   end
 end
--- Combines multiple tables' keys and values into a single one.
--- @param(tables : table) A table of tables.
--- @ret(table) The joined tables.
+--- Combines multiple tables' keys and values into a single one.
+-- @tparam table tables A table of tables.
+-- @treturn table The joined tables.
 function util.join(tables)
   local new = {}
   for i = 1, #tables do
@@ -61,9 +61,9 @@ function util.join(tables)
   end
   return new
 end
--- Iterates a numeric table in order.
--- @param(t : table) A table with numeric keys.
--- @ret(func) Iterator of <key, value, position of key>.
+--- Iterates a numeric table in order.
+-- @tparam table t A table with numeric keys.
+-- @treturn func Iterator of <key, value, position of key>.
 function util.sortedIterator(t)
   local keys = {}
   for k, v in pairs(t) do
@@ -79,17 +79,17 @@ function util.sortedIterator(t)
     return keys[i], t[keys[i]], i
   end
 end
--- Prints each (key, value) entry on the table.
--- @param(t : table)
+--- Prints each (key, value) entry on the table.
+-- @tparam table t
 function util.printEntries(t)
   for k, v in pairs(t) do
     print(k, v)
   end
 end
--- Accesses a deep-located value in a path.
--- @param(root : table) Root path when path is empty.
--- @param(path : string) Fields to be accessed, separated by dots.
--- @ret(unknown) The value if found, nil otherwise.
+--- Accesses a deep-located value in a path.
+-- @tparam table root Root path when path is empty.
+-- @tparam string path Fields to be accessed, separated by dots.
+-- @treturn unknown The value if found, nil otherwise.
 function util.access(root, path)
   if path == '' or path:endswith('.') then
     return nil

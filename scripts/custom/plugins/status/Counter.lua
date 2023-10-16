@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Counter
+@script Counter
 ---------------------------------------------------------------------------------------------------
 Makes a character attack back if hit.
 
@@ -20,11 +20,11 @@ local BattleMoveAction = require('core/battle/action/BattleMoveAction')
 -- Parameters
 local maxCounters = args.maxCounters or 1
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Skill Action
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides. Initializes counter attack skill.
+--- Overrides. Initializes counter attack skill.
 local Battler_initState = Battler.initState
 function Battler:initState(data, save)
   Battler_initState(self, data, save)
@@ -35,11 +35,11 @@ function Battler:initState(data, save)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Skill Action
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Checks for characters that counter attack.
+--- Override. Checks for characters that counter attack.
 local SkillAction_allTargetsEffect = SkillAction.allTargetsEffect
 function SkillAction:allTargetsEffect(input, originTile)
   local allTargets = SkillAction_allTargetsEffect(self, input, originTile)
@@ -58,11 +58,11 @@ function SkillAction:allTargetsEffect(input, originTile)
   return allTargets
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Battler
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if this character counter-attacks.
+--- Checks if this character counter-attacks.
 function Battler:counters()
   for status in self.statusList:iterator() do
     if status.tags.counter then
@@ -71,7 +71,7 @@ function Battler:counters()
   end
   return nil
 end
--- Attacks the given character.
+--- Attacks the given character.
 function Battler:counterAttack(user, target, counter)
   local skill = self.counterSkill or self:getAttackSkill()
   if self.tags.counter then

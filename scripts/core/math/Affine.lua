@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Affine
+@module Affine
 ---------------------------------------------------------------------------------------------------
 This module implements some functions to calculate affine transformations.
 
@@ -14,15 +14,15 @@ local rotate = math.rotate
 
 local Affine = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Image Bounds
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Transforms the bounding vertexes of the given transformable.
--- @param(t : Transformable)
--- @param(w : number) the width of the original rectangle
--- @param(h : number) the height of the original rectangle
--- @ret(table) an array of points (x in odd positions, y in even positions)
+--- Transforms the bounding vertexes of the given transformable.
+-- @tparam Transformable t
+-- @tparam number w The width of the original rectangle.
+-- @tparam number h The height of the original rectangle.
+-- @treturn table An array of points (x in odd positions, y in even positions).
 function Affine.getTransformedPoints(t, w, h)
   local p = {0, 0, w, 0, 0, h, w, h}
   for i = 1, #p, 2 do
@@ -40,14 +40,14 @@ function Affine.getTransformedPoints(t, w, h)
   end
   return p
 end
--- Gets the rectangle the represents the final bounding box of the given transformable.
--- @param(t : Transformable)
--- @param(w : number) The width of the original rectangle.
--- @param(h : number) The height of the original rectangle.
--- @ret(number) The x of the new rectangle.
--- @ret(number) The y of the new rectangle.
--- @ret(number) The width of the new rectangle.
--- @ret(number) The height of the new rectangle.
+--- Gets the rectangle the represents the final bounding box of the given transformable.
+-- @tparam Transformable t
+-- @tparam number w The width of the original rectangle.
+-- @tparam number h The height of the original rectangle.
+-- @treturn number The x of the new rectangle.
+-- @treturn number The y of the new rectangle.
+-- @treturn number The width of the new rectangle.
+-- @treturn number The height of the new rectangle.
 function Affine.getBoundingBox(t, w, h)
   local p = Affine.getTransformedPoints(t, w, h)
   local minx, maxx, miny, maxy = p[1], p[1], p[2], p[2]
@@ -60,13 +60,13 @@ function Affine.getBoundingBox(t, w, h)
   return minx, miny, maxx - minx, maxy - miny
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Transform
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates a neutral transform. Optionally, applies a list of transformations.
--- @param(t : table) Initial transform table. If nil, a neutral transform is used (optinal).
--- @param(transformations : array) Array of transformations with type and value (optinal).
+--- Creates a neutral transform. Optionally, applies a list of transformations.
+-- @tparam table t Initial transform table. If nil, a neutral transform is used (optional).
+-- @tparam array transformations Array of transformations with type and value (optional).
 function Affine.createTransform(t, transformations)
   t = t or {
     -- Space
@@ -104,10 +104,10 @@ function Affine.createTransform(t, transformations)
   end
   return t
 end
--- Combines two transform tables (order does not matter).
--- @param(t1 : table) First transform table.
--- @param(t1 : table) Second transform table.
--- @ret(table) New transform table.
+--- Combines two transform tables (order does not matter).
+-- @tparam table t1 First transform table.
+-- @tparam table t2 Second transform table.
+-- @treturn table New transform table.
 function Affine.combineTransforms(t1, t2)
   local t = {
     -- Space

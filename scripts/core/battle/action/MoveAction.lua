@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-MoveAction
+@classmod MoveAction
 ---------------------------------------------------------------------------------------------------
 The BattleAction that is executed when players chooses the "Move" button.
 Any action used in PathFinder must inherit from this.
@@ -15,13 +15,14 @@ local BattleTactics = require('core/battle/ai/BattleTactics')
 -- Alias
 local mathf = math.field
 
+-- Class table.
 local MoveAction = class(BattleAction)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initalization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:init.
+--- Overrides BattleAction:init.
 function MoveAction:init(range, limit)
   self.pathLimit = limit or math.huge
   BattleAction.init(self, '', range)
@@ -30,22 +31,22 @@ function MoveAction:init(range, limit)
   self.reachableOnly = true
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Reachable Tiles
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:resetReachableTiles.
+--- Overrides BattleAction:resetReachableTiles.
 function MoveAction:resetReachableTiles(input)
   for tile in self.field:gridIterator() do
     tile.gui.reachable = tile.gui.movable
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:execute.
+--- Overrides BattleAction:execute.
 function MoveAction:execute(input)
   local path = self:calculatePath(input)
   if path then
@@ -67,24 +68,29 @@ function MoveAction:execute(input)
   end
   return { executed = path and path.full, path = path }
 end
--- @param(nextTile : ObjectTile) Next tile in the path sequence.
+--- Moves the user to the next tile in the path.
+-- @tparam ActionInput input
+-- @tparam ObjectTile nextTile Next tile in the path sequence.
 function MoveAction:moveToTile(input, nextTile)
   local x, y, h = nextTile:coordinates()
   input.user:turnToTile(x, y)
   input.user:walkToTile(x, y, h)
 end
--- @ret(Path) Path to input target, if any.
+--- Searches for the best path given the target input.
+-- @tparam ActionInput input
+-- @treturn Path Path to input target, if any.
 function MoveAction:calculatePath(input)
   return input.path or BattleTactics.optimalPath(self, input.user, input.target, nil) 
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Path Finder
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if a character can stay in this tile.
--- @param(tile : ObjectTile) Tile to check.
--- @ret(boolean) True if it can stay, false otherwise.
+--- Checks if a character can stay in this tile.
+-- @tparam ObjectTile tile Tile to check.
+-- @tparam Character user The character in the tile.
+-- @treturn boolean True if it can stay, false otherwise.
 function MoveAction:isStandable(tile, user)
   for c in tile.characterList:iterator() do
     if c ~= user and not c.passable then
@@ -93,10 +99,11 @@ function MoveAction:isStandable(tile, user)
   end
   return true
 end
--- Tells if a tile is last of the movement.
--- @param(tile : ObjectTile) Tile to check.
--- @param(target : ObjectTile) Movement target.
--- @ret(boolean) True if it's final, false otherwise.
+--- Tells if a tile is last of the movement.
+-- @tparam ObjectTile tile Tile to check.
+-- @tparam ObjectTile target Movement target.
+-- @tparam Character user The character in the tile.
+-- @treturn boolean True if it's final, false otherwise.
 function MoveAction:isFinal(tile, target, user)
   local dh = target.layer.height - tile.layer.height + self.range.centerH
   if not self.range.grid[dh] then
@@ -112,10 +119,11 @@ function MoveAction:isFinal(tile, target, user)
   end
   return self:isStandable(tile, user)
 end
--- Checks passability between two tiles.
--- @param(initial : ObjectTile) Origin tile.
--- @param(final : ObjectTile) Destination tile.
--- @ret(boolean) True if it's passable, false otherwise.
+--- Checks passability between two tiles.
+-- @tparam ObjectTile initial Origin tile.
+-- @tparam ObjectTile final Destination tile.
+-- @tparam Character user The character moving between tiles.
+-- @treturn boolean True if it's passable, false otherwise.
 function MoveAction:isPassableBetween(initial, final, user)
   local x, y, h = initial:coordinates()
   local c = self.field:collisionXYZ(user, x, y, h, final:coordinates())
@@ -124,17 +132,19 @@ function MoveAction:isPassableBetween(initial, final, user)
   end
   return true
 end
--- Gets the move cost between the two tiles.
--- @param(initial : ObjectTile) The initial tile.
--- @param(final : ObjectTile) The destination tile.
--- @ret(number) The move cost.
+--- Gets the move cost between the two tiles.
+-- @tparam ObjectTile initial The initial tile.
+-- @tparam ObjectTile final The destination tile.
+-- @tparam Character user The character moving between tiles.
+-- @treturn number The move cost.
 function MoveAction:getDistanceBetween(initial, final, user)
   return 1
 end
--- Calculates a minimum cost between two tiles.
--- @param(initial : ObjectTile) The initial tile.
--- @param(final : ObjectTile) The destination tile.
--- @ret(number) The estimated move cost.
+--- Calculates a minimum cost between two tiles.
+-- @tparam ObjectTile initial The initial tile.
+-- @tparam ObjectTile final The destination tile.
+-- @tparam Character user The character moving between tiles.
+-- @treturn number The estimated move cost.
 function MoveAction:estimateCost(initial, final, user)
   local baseCost = mathf.tileDistance(initial.x, initial.y, final.x, final.y)
   if final.characterList.size > 0 then
@@ -143,8 +153,9 @@ function MoveAction:estimateCost(initial, final, user)
     return baseCost - 0.00001
   end
 end
--- The max distance the character can walk.
--- @ret(number) the distance in tiles (may not be integer)
+--- The max distance the character can walk.
+-- @tparam Character user The character moving between tiles.
+-- @treturn number The distance in tiles (may not be integer).
 function MoveAction:maxDistance(user)
   return self.pathLimit
 end

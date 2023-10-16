@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-TextParser
+@module TextParser
 ---------------------------------------------------------------------------------------------------
 Module to parse a rich text string to generate table of fragments.
 
@@ -23,14 +23,14 @@ local max = math.max
 
 local TextParser = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Fragments
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Split raw text into an array of fragments.
--- @param(text : string) Raw text.
--- @param(plainText : boolean) When true, will not parse commands (optional, false by default).
--- @ret(table) Array of fragments.
+--- Split raw text into an array of fragments.
+-- @tparam string text Raw text.
+-- @tparam boolean plainText When true, will not parse commands (optional, false by default).
+-- @treturn table Array of fragments.
 function TextParser.parse(text, plainText, fragments)
   local vars = Config.variables
   fragments = fragments or {}
@@ -93,9 +93,9 @@ function TextParser.parse(text, plainText, fragments)
 	end
   return fragments
 end
--- Parse and insert new fragment(s).
--- @param(fragments : table) Array of parsed fragments.
--- @param(textFragment : string) Unparsed (and unwrapped) text fragment. 
+--- Parse and insert new fragment(s).
+-- @tparam table fragments Array of parsed fragments.
+-- @tparam string textFragment Unparsed (and unwrapped) text fragment.
 function TextParser.parseFragment(fragments, textFragment)
 	-- break up fragments with newlines
 	local n = textFragment:find('\n', 1, true)
@@ -108,15 +108,18 @@ function TextParser.parseFragment(fragments, textFragment)
 	insert(fragments, textFragment)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Lines
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates line list. Each line is a table containing an array of fragments, a height and a width.
--- It also contains its length for character counting.
--- @param(fragments : table) Array of fragments.
--- @ret(table) Array of lines.
--- @ret(table) Array of text events.
+--- Creates line list. Each line is a table containing an array of fragments, a height and a width.
+--- It also contains its length for character counting.
+-- @tparam table fragments Array of fragments.
+-- @tparam Font initialFont The default font.
+-- @tparam number maxWidth The width limit for wrapped text (optional).
+-- @tparam number scale Text's size multiplier (optional, 1 by default).
+-- @treturn table Array of lines.
+-- @treturn table Array of text events.
 function TextParser.createLines(fragments, initialFont, maxWidth, scale)
   local currentFont = ResourceManager:loadFont(initialFont, scale)
   local currentFontInfo = { unpack(initialFont) }
@@ -124,6 +127,7 @@ function TextParser.createLines(fragments, initialFont, maxWidth, scale)
   local lines = { currentLine, length = 0, scale = scale }
   local events = {}
   local point = 0
+  scale = scale or 1
 	for i = 1, #fragments do
     local fragment = fragments[i]
 		if type(fragment) == 'string' then -- Piece of text
@@ -167,10 +171,10 @@ function TextParser.createLines(fragments, initialFont, maxWidth, scale)
 	end
 	return lines, events
 end
--- Cuts the text in the given character index.
--- @param(lines : table) Array of parsed lines.
--- @param(point : number) The index of the last text character.
--- @ret(table) New array of parsed lines.
+--- Cuts the text in the given character index.
+-- @tparam table lines Array of parsed lines.
+-- @tparam number point The index of the last text character.
+-- @treturn table New array of parsed lines.
 function TextParser.cutText(lines, point)
   local newLines = { length = 0 }
   for l = 1, #lines do
@@ -199,18 +203,19 @@ function TextParser.cutText(lines, point)
   return newLines
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Text Fragments
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Inserts new text fragment to the given line (may have to add new lines).
--- @param(lines : table) The array of lines.
--- @param(currentLine : table) The line of the fragment.
--- @param(fragment : string) The text fragment.
--- @param(maxWidth : number) Max width for wrapping.
--- @param(scale : number) Font scale.
--- @ret(table) The new current line.
--- @ret(number) Total length of the fragment inserted.
+--- Inserts new text fragment to the given line (may have to add new lines).
+-- @tparam table lines The array of lines.
+-- @tparam table currentLine The line of the fragment.
+-- @tparam string fragment The text fragment.
+-- @tparam Font font Font of the text in this fragment.
+-- @tparam number maxWidth The width limit for wrapped text (optional).
+-- @tparam number scale Text's size multiplier (optional, 1 by default).
+-- @treturn table The new current line.
+-- @treturn number Total length of the fragment inserted.
 function TextParser.addTextFragment(lines, currentLine, fragment, font, maxWidth, scale)
   if fragment == '\n' then
     -- New line
@@ -224,13 +229,14 @@ function TextParser.addTextFragment(lines, currentLine, fragment, font, maxWidth
     return currentLine, TextParser.insertFragment(lines, currentLine, fragment, font)
   end
 end
--- Wraps text fragment (may have to add new lines).
--- @param(lines : table) The array of lines.
--- @param(currentLine : table) The line of the fragment.
--- @param(fragment : string) The text fragment.
--- @param(width : number) Max width for wrapping.
--- @ret(table) The new current line.
--- @ret(number) Total length of the fragment inserted.
+--- Wraps text fragment (may have to add new lines).
+-- @tparam table lines The array of lines.
+-- @tparam table currentLine The line of the fragment.
+-- @tparam string fragment The text fragment.
+-- @tparam Font font Font of the text in this fragment.
+-- @tparam number width Max width for wrapping.
+-- @treturn table The new current line.
+-- @treturn number Total length of the fragment inserted.
 function TextParser.wrapText(lines, currentLine, fragment, font, width)
   local x = currentLine.width
   local breakPoint = nil
@@ -263,12 +269,12 @@ function TextParser.wrapText(lines, currentLine, fragment, font, width)
   end
   return currentLine, TextParser.insertFragment(lines, currentLine, fragment, font)
 end
--- Inserts a new fragment into the line.
--- @param(lines : table) Array of all lines.
--- @param(currentLine : table) The line that the fragment will be inserted.
--- @param(fragment : table | string) The fragment to insert.
--- @param(font : Font) The font of the fragment's text (in case the fragment is a string).
--- @ret(number) The length of the inserted fragment.
+--- Inserts a new fragment into the line.
+-- @tparam table lines Array of all lines.
+-- @tparam table currentLine The line that the fragment will be inserted.
+-- @tparam table|string fragment The fragment to insert.
+-- @tparam Font font The font of the fragment's text (in case the fragment is a string).
+-- @treturn number The length of the inserted fragment.
 function TextParser.insertFragment(lines, currentLine, fragment, font)
   if type(fragment) == 'string' then
     local fw = font:getWidth(fragment)

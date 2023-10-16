@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-KeyPoint
+@classmod KeyPoint
 ---------------------------------------------------------------------------------------------------
 Rigged-like animation using transformation key points.
 
@@ -22,13 +22,14 @@ Notes:
 -- Imports
 local Animation = require('core/graphics/Animation')
 
+-- Class table.
 local KeyPoint = class(Animation)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(...) parameters from Animation:init.
+-- @tparam(...) parameters from Animation:init.
 function KeyPoint:init(...)
   Animation.init(self, ...)
   self.keyPoints = {}
@@ -39,10 +40,10 @@ function KeyPoint:init(...)
     self:addKeyPoint(unpack(kp))
   end
 end
--- Adds a new transformation key point.
--- @param(t : number | string) Time in frames.
--- @param(field : string) Transformation field (see instructions above).
--- @param(...) Target values.
+--- Adds a new transformation key point.
+-- @tparam number|string t Time in frames.
+-- @tparam string field Transformation field (see instructions above).
+-- @tparam(...) Target values.
 function KeyPoint:addKeyPoint(t, field, ...)
   local params = {...}
   for i = 1, #params do
@@ -72,11 +73,11 @@ function KeyPoint:addKeyPoint(t, field, ...)
   layer[tonumber(t)] = params
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Update
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Animation:update.
+--- Overrides Animation:update.
 function KeyPoint:update(dt)
   Animation.update(self, dt)
   if self.paused or not self.duration or not self.timing then
@@ -98,11 +99,11 @@ function KeyPoint:update(dt)
     end
   end
 end
--- Changes the current values for the given by interpolations two key points.
--- @param(f : string) Transformation field name.
--- @param(t1 : number) Time of previous key point in frames.
--- @param(t2 : number) Time of next key point in frames.
--- @param(loopTime : number) Current time relative to the whole loop/pattern.
+--- Changes the current values for the given by interpolations two key points.
+-- @tparam string f Transformation field name.
+-- @tparam number t1 Time of previous key point in frames.
+-- @tparam number t2 Time of next key point in frames.
+-- @tparam number loopTime Current time relative to the whole loop/pattern.
 function KeyPoint:interpolate(f, t1, t2, loopTime)
   local orig = self.keyPoints[f][t1]
   local dest = self.keyPoints[f][t2]

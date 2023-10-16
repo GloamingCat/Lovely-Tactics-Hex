@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-Pointer
+@classmod Pointer
 ---------------------------------------------------------------------------------------------------
 A sprite that points in a given direction (vertical or horizontal).
 
@@ -18,13 +18,14 @@ local Animation = require('core/graphics/Animation')
 local round = math.round
 local abs = math.abs
 
+-- Class table.
 local Pointer = class(Animation)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(...) parameters from Animation:init.
+-- @tparam(...) parameters from Animation:init.
 function Pointer:init(...)
   Animation.init(self, ...)
   local centerx = self.sprite.offsetX
@@ -44,11 +45,11 @@ function Pointer:init(...)
   self.sprite:setOffset(round(self.minx), round(self.miny))
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Update
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Animation:update.
+--- Overrides Animation:update.
 function Pointer:update(dt)
   Animation.update(self, dt)
   if self.paused or not self.duration or not self.timing then

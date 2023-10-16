@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-AttackRule
+@classmod AttackRule
 ---------------------------------------------------------------------------------------------------
 The rule for an AI that attacks the character with the highest chance of KO.
 
@@ -10,13 +10,14 @@ The rule for an AI that attacks the character with the highest chance of KO.
 -- Imports
 local SkillRule = require('core/battle/ai/SkillRule')
 
+-- Class table.
 local AttackRule = class(SkillRule)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides SkillRule:onSelect.
+--- Overrides SkillRule:onSelect.
 function AttackRule:onSelect(...)
   SkillRule.onSelect(self, ...)
   -- Find target with higher chance of dying
@@ -28,7 +29,7 @@ function AttackRule:onSelect(...)
     self.input = nil
   end
 end
--- @ret(string) String identifier.
+-- @treturn string String identifier.
 function AttackRule:__tostring()
   return 'AttackRule (' .. tostring(self.skill)  .. '): ' .. self.battler.key
 end

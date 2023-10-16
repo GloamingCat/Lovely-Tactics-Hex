@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-QuickSave
+@script QuickSave
 ---------------------------------------------------------------------------------------------------
 Adds keys the save/load any time.
 
@@ -20,9 +20,9 @@ local PopText = require('core/graphics/PopText')
 KeyMap.main['save'] = args.save
 KeyMap.main['load'] = args.load
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Auxiliary
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 local loadRequested = false
 
@@ -49,9 +49,9 @@ local function checkInput()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- GameManager
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 local GameManager_checkRequests = GameManager.checkRequests
 function GameManager:checkRequests()
@@ -67,17 +67,17 @@ function GameManager:updateManagers(dt)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- LoadWindow
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override to include quick save in the load options.
+--- Override to include quick save in the load options.
 local LoadWindow_createWidgets = LoadWindow.createWidgets
 function LoadWindow:createWidgets()
   self:createSaveButton('quick', Vocab.quickSave)
   LoadWindow_createWidgets(self)
 end
--- Override.
+--- Override.
 local LoadWindow_rowCount = LoadWindow.rowCount
 function LoadWindow:rowCount()
   return LoadWindow_rowCount(self) + 1

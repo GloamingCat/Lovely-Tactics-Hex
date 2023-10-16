@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-ShopListWindow
+@classmod ShopListWindow
 ---------------------------------------------------------------------------------------------------
 Window with the list of items available to buy.
 
@@ -11,17 +11,18 @@ Window with the list of items available to buy.
 local Button = require('core/gui/widget/control/Button')
 local ListWindow = require('core/gui/common/window/interactable/ListWindow')
 
+-- Class table.
 local ShopListWindow = class(ListWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 function ShopListWindow:init(gui)
   self.visibleRowCount = 4
   ListWindow.init(self, gui, {})
 end
--- Implements ListWindow:createListButton.
+--- Implements ListWindow:createListButton.
 function ShopListWindow:createListButton(item)
   local price = item.price
   item = Database.items[item.id]
@@ -47,26 +48,26 @@ function ShopListWindow:createListButton(item)
   return button
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Mode
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Use this window to buy items.
+--- Use this window to buy items.
 function ShopListWindow:setBuyMode()
   self.buy = true
   self:refreshButtons(self.GUI.items)
 end
--- Use this window to sell items.
+--- Use this window to sell items.
 function ShopListWindow:setSellMode()
   self.buy = false
   self:refreshButtons(self.GUI.troop.inventory)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Enable Conditions
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(boolean) True if at least one item of this type can be bought.
+-- @treturn boolean True if at least one item of this type can be bought.
 function ShopListWindow:buttonEnabled(button)
   if self.buy then
     return self.GUI.troop.money >= button.price
@@ -75,11 +76,11 @@ function ShopListWindow:buttonEnabled(button)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Confirm Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows the window to select the quantity.
+--- Shows the window to select the quantity.
 function ShopListWindow:onButtonConfirm(button)
   local w = self.GUI.countWindow
   self:hide()
@@ -87,24 +88,24 @@ function ShopListWindow:onButtonConfirm(button)
   w:setItem(button.item, button.price)
   w:activate()
 end
--- Closes buy GUI.
+--- Closes buy GUI.
 function ShopListWindow:onButtonCancel(button)
   self.GUI:hideShopGUI()
 end
--- Updates item description.
+--- Updates item description.
 function ShopListWindow:onButtonSelect(button)
   self.GUI.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Confirm Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides ListWindow:cellWidth.
+--- Overrides ListWindow:cellWidth.
 function ShopListWindow:cellWidth()
   return ListWindow.cellWidth(self) * 4 / 5
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function ShopListWindow:__tostring()
   return 'Shop Item Window'
 end

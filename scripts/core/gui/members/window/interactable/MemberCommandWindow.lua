@@ -1,7 +1,7 @@
 
 --[[===============================================================================================
 
-MemberCommandWindow
+@classmod MemberCommandWindow
 ---------------------------------------------------------------------------------------------------
 The small windows with the commands for character management.
 
@@ -14,72 +14,73 @@ local ItemGUI = require('core/gui/members/ItemGUI')
 local GridWindow = require('core/gui/GridWindow')
 local SkillGUI = require('core/gui/members/SkillGUI')
 
+-- Class table.
 local MemberCommandWindow = class(GridWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Buttons
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function MemberCommandWindow:createWidgets()
   Button:fromKey(self, 'equips')
   Button:fromKey(self, 'skills')
   --Button:fromKey(self, 'items')
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Confirm Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Items button.
+--- Items button.
 function MemberCommandWindow:itemsConfirm()
   self:showGUI(ItemGUI)
 end
--- Skills button.
+--- Skills button.
 function MemberCommandWindow:skillsConfirm()
   self:showGUI(SkillGUI)
 end
--- Equips button.
+--- Equips button.
 function MemberCommandWindow:equipsConfirm()
   self:showGUI(EquipGUI)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Enabled Conditions
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(boolean) True if Item GUI may be open, false otherwise.
+-- @treturn boolean True if Item GUI may be open, false otherwise.
 function MemberCommandWindow:itemsEnabled()
   return ItemGUI:memberEnabled(self.GUI:currentMember())
 end
--- @ret(boolean) True if Skill GUI may be open, false otherwise.
+-- @treturn boolean True if Skill GUI may be open, false otherwise.
 function MemberCommandWindow:skillsEnabled()
   return SkillGUI:memberEnabled(self.GUI:currentMember())
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Member GUI
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows a sub GUI for the current member.
--- @param(GUI : class)
+--- Shows a sub GUI for the current member.
+-- @tparam class GUI
 function MemberCommandWindow:showGUI(GUI)
   self.cursor:hide()
   self.GUI:showSubGUI(GUI)
   self.cursor:show()
 end
--- Called when player presses "next" key.
+--- Called when player presses "next" key.
 function MemberCommandWindow:onNext()
   AudioManager:playSFX(Config.sounds.buttonSelect)
   self.GUI:nextMember()
 end
--- Called when player presses "prev" key.
+--- Called when player presses "prev" key.
 function MemberCommandWindow:onPrev()
   AudioManager:playSFX(Config.sounds.buttonSelect)
   self.GUI:prevMember()
 end
--- Changes current selected member.
--- @param(member : Battler)
+--- Changes current selected member.
+-- @tparam Battler battler The Battler associated with current/chosen character.
 function MemberCommandWindow:setBattler(battler)
   for i = 1, #self.matrix do
     self.matrix[i]:refreshEnabled()
@@ -87,19 +88,19 @@ function MemberCommandWindow:setBattler(battler)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:colCount.
+--- Overrides GridWindow:colCount.
 function MemberCommandWindow:colCount()
   return 1
 end
--- Overrides GridWindow:rowCount.
+--- Overrides GridWindow:rowCount.
 function MemberCommandWindow:rowCount()
   return 2
 end
--- @ret(string) String representation (for debugging).
+-- @treturn string String representation (for debugging).
 function MemberCommandWindow:__tostring()
   return 'Member Command Window'
 end
