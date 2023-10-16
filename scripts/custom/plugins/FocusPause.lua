@@ -3,11 +3,11 @@
 
 @script FocusPause
 ---------------------------------------------------------------------------------------------------
-Pauses game when window loses focus.
-
+-- Pauses game when window loses focus.
+-- 
 -- Plugin parameters:
-If the audio should be paused too, then set <pauseAudio> to true.
-Set <fullscreen> to true to pause when it's not fullscreen (mobile only).
+--  * If the audio should be paused too, then set <pauseAudio> to true.
+--  * Set <fullscreen> to true to pause when it's not fullscreen (mobile only).
 
 =================================================================================================]]
 

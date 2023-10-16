@@ -3,7 +3,7 @@
 
 @classmod HSpinner
 ---------------------------------------------------------------------------------------------------
-A horizontal spinner for choosing a numeric value.
+-- A horizontal spinner for choosing a numeric value.
 
 =================================================================================================]]
 

@@ -3,7 +3,7 @@
 
 @classmod AttributeSet
 ---------------------------------------------------------------------------------------------------
-Represents a set of battler attributes, stored by key.
+-- Represents a set of battler attributes, stored by key.
 
 =================================================================================================]]
 

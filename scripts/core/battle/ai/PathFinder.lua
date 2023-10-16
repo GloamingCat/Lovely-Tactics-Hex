@@ -3,9 +3,9 @@
 
 @module PathFinder
 -- ------------------------------------------------------------------------------------------------
-A module with graph algorithms used for grids during battle.
-Some parts of the algorithm used abstract functions from MoveAction class, so any action used in 
-this module must inherit from this class.
+-- A module with graph algorithms used for grids during battle.
+-- Some parts of the algorithm used abstract functions from MoveAction class, so any action used in 
+-- this module must inherit from this class.
 
 =================================================================================================]]
 

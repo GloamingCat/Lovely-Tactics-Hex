@@ -3,11 +3,10 @@
 
 @script SkillProjectile
 ---------------------------------------------------------------------------------------------------
-Abstraction of a projectile thrown during the use of a skill.
-
+-- Abstraction of a projectile thrown during the use of a skill.
+-- 
 -- Skill parameters:
-Set <projectileID> tag as projectile animation ID or key.
-Must be an animation with "Projectile" script.
+--  * Set <projectileID> tag as projectile animation ID or key.
 
 =================================================================================================]]
 

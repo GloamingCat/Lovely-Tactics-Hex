@@ -3,7 +3,7 @@
 
 @script Tutorial
 ---------------------------------------------------------------------------------------------------
-Adds a new button to the title screen to show a tutorial window.
+-- Adds a new button to the title screen to show a tutorial window.
 
 =================================================================================================]]
 

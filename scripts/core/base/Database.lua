@@ -3,7 +3,7 @@
 
 @module Database
 ---------------------------------------------------------------------------------------------------
-Loads data from the data folder and stores in the Database or Config global tables.
+-- Loads data from the data folder and stores in the Database or Config global tables.
 
 =================================================================================================]]
 

@@ -3,7 +3,7 @@
 
 @classmod TextInputGUI
 ---------------------------------------------------------------------------------------------------
-The GUI that contains only a text input window.
+-- The GUI that contains only a text input window.
 
 =================================================================================================]]
 

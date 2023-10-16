@@ -3,7 +3,7 @@
 
 @classmod ItemWindow
 ---------------------------------------------------------------------------------------------------
-The window that shows the list of items to be used.
+-- The window that shows the list of items to be used.
 
 =================================================================================================]]
 

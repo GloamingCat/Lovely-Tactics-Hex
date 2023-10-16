@@ -3,9 +3,9 @@
 
 @classmod WalkingObject
 ---------------------------------------------------------------------------------------------------
-A directed, animated object with walk methods.
-It is not responsible for checking collisions or updating tile object lists. These must be handled
-outside of these methods.
+-- A directed, animated object with walk methods.
+-- It is not responsible for checking collisions or updating tile object lists. These must be handled
+-- outside of these methods.
 
 =================================================================================================]]
 

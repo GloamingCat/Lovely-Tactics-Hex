@@ -3,7 +3,7 @@
 
 @classmod EventSheet
 ---------------------------------------------------------------------------------------------------
-A fiber that processes a list of sequential commands.
+-- A fiber that processes a list of sequential commands.
 
 =================================================================================================]]
 

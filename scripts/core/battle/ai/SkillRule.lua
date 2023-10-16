@@ -3,8 +3,9 @@
 
 @classmod SkillRule
 ---------------------------------------------------------------------------------------------------
-An AIRule that executes a skill defined by the tag field "id", which means the id-th skill of the
-battler. If there's no such field, it will use battler's attack skill.
+-- An AIRule that executes a skill. 
+-- The skill is defined by the tag field "id", which means the id-th skill of 
+-- the battler. If there's no such field, it will use battler's attack skill.
 
 =================================================================================================]]
 

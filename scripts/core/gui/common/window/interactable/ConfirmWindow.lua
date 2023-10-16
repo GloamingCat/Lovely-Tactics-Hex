@@ -3,9 +3,10 @@
 
 @classmod ConfirmWindow
 ---------------------------------------------------------------------------------------------------
-A window that contains "Confirm" and "Cancel" options.
-result = 0 -> cancel
-result = 1 -> confirm
+-- A window that contains "Confirm" and "Cancel" options.
+-- Result codes:
+--  * 0 -> cancel
+--  * 1 -> confirm
 
 =================================================================================================]]
 

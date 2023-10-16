@@ -3,10 +3,10 @@
 
 @script EventSheet
 ---------------------------------------------------------------------------------------------------
-Execute an event sheet from the database. 
-
+-- Execute an event sheet from the database. 
+-- 
 -- Parameters:
-<sheet> is the ID or key of the sheet to be executed.
+--  * <sheet> is the ID or key of the sheet to be executed.
 
 =================================================================================================]]
 

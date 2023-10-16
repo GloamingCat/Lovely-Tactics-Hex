@@ -3,22 +3,22 @@
 
 @script Reflect
 ---------------------------------------------------------------------------------------------------
-Makes a skill reflect to the user.
-
+-- Makes a skill reflect to the user.
+-- 
 -- Plugin parameters:
-When a character reflects a skill, the animation given by <anim> is played in the character's
-tile. No skill is played if the parameter is not set.
-<self> determines what happens when a user casts a skills on oneself. If 'all', it's reflected 
-and consumes one reflection use, but with no changes on target/user. If 'none' (default), it
-passes through the reflection. If 'offensive', only offensive skills will be reflected.
-
+--  * When a character reflects a skill, the animation given by <anim> is played in the character's
+--  tile. No skill is played if the parameter is not set.
+--  * <self> determines what happens when a user casts a skills on oneself. If 'all', it's reflected 
+--  and consumes one reflection use, but with no changes on target/user. If 'none' (default), it
+--  passes through the reflection. If 'offensive', only offensive skills will be reflected.
+--
 -- Skill parameters:
-Only the skills with <reflectable> tags may be reflected.
-
+--  * Only the skills with <reflectable> tags may be reflected.
+--
 -- Status parameters:
-Status with <reflect> tag makes the characters reflect the next skill. The status is removed if a
-skill is reflected.
-Set <removeOnUse> to true to limit the reflection to one use.
+--  * Statuses with <reflect> tag makes the characters reflect the next skill. The status is
+--  removed if a skill is reflected.
+--  * Set <removeOnUse> to true to limit the reflection to one use.
 
 =================================================================================================]]
 

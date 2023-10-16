@@ -3,19 +3,20 @@
 
 @classmod KeyPoint
 ---------------------------------------------------------------------------------------------------
-Rigged-like animation using transformation key points.
-
+-- Rigged-like animation using transformation key points.
+-- 
 -- Animation parameters:
-All keypoints are defined by <kp> tag.
-The value of the <kp> must of the following format:
-  TIME FIELD X [Y Z W]
-Where TIME is the time stamp in frames, FIELD is either Offset (3 values), Scale (2 values), 
-Rotation (1 value), RGBA (4 values) or HSV (3 values), and values X to W are the target values.
-
-Notes:
- - FIELD is case-sensitive.
- - Scale and RGBA values are in 0-1 range, as well as saturation and brightness.
- - Rotation is in radians.
+--  * All keypoints are defined by <kp> tag.
+--  * The value of the <kp> must be of the format TIME FIELD X [Y Z W] where:
+--    * TIME is the time stamp in frames;
+--    * FIELD is either Offset (3 values), Scale (2 values), Rotation (1 value), RGBA (4 values)
+--    or HSV (3 values); 
+--    * Values X to W are the target values.
+--
+-- Notes:
+--  * FIELD is case-sensitive.
+--  * Scale and RGBA values are in 0-1 range, as well as saturation and brightness.
+--  * Rotation is in radians.
 
 =================================================================================================]]
 

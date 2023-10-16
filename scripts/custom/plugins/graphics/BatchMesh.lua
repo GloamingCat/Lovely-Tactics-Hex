@@ -3,7 +3,7 @@
 
 @script BatchMesh
 ---------------------------------------------------------------------------------------------------
-Uses a mesh to renderer sprites with different HSVs.
+-- Uses a mesh to renderer sprites with different HSVs.
 
 =================================================================================================]]
 

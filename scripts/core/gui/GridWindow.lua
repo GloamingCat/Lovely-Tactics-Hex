@@ -3,7 +3,7 @@
 
 @classmod GridWindow
 ---------------------------------------------------------------------------------------------------
-Provides the base for windows with widgets in a matrix.
+-- Provides the base for windows with widgets in a matrix.
 
 =================================================================================================]]
 

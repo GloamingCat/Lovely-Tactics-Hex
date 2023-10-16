@@ -3,7 +3,7 @@
 
 @classmod EscapeAction
 ---------------------------------------------------------------------------------------------------
-The BattleAction that is executed when players chooses the "Escape" button.
+-- The BattleAction that is executed when players chooses the "Escape" button.
 
 =================================================================================================]]
 

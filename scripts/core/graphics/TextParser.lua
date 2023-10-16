@@ -3,17 +3,17 @@
 
 @module TextParser
 ---------------------------------------------------------------------------------------------------
-Module to parse a rich text string to generate table of fragments.
-
-Rich text codes:
-{i} = set italic;
-{b} = set bold;
-{u} = set underlined;
-{+x} = increases font size by x points;
-{-x} = decreases font size by x points;
-{fx} = set font (x must be a key in the global Fonts table);
-{cx} = sets the color (x must be a key in the global Color table);
-{sx} = shows an icon image (x must be a key in the Config.icons table).
+-- Module to parse a rich text string to generate table of fragments.
+-- 
+-- Rich text codes:
+--  * {i} = set italic;
+--  * {b} = set bold;
+--  * {u} = set underlined;
+--  * {+x} = increases font size by x points;
+--  * {-x} = decreases font size by x points;
+--  * {fx} = set font (x must be a key in the global Fonts table);
+--  * {cx} = sets the color (x must be a key in the global Color table);
+--  * {sx} = shows an icon image (x must be a key in the Config.icons table).
 
 =================================================================================================]]
 

@@ -3,8 +3,8 @@
 
 @classmod Renderer
 ---------------------------------------------------------------------------------------------------
-A Renderer manages a list of sprites to be rendered. 
-Stores them in order and draws them using a batch.
+-- A Renderer manages a list of sprites to be rendered. 
+-- Stores them in order and draws them using a batch.
 
 =================================================================================================]]
 
@@ -78,6 +78,7 @@ end
 --- Sets Renderer's center position in the world coordinates.
 -- @tparam number x Pixel x.
 -- @tparam number y Pixel y.
+-- @tparam number z Pixel z.
 function Renderer:setXYZ(x, y, z)
   x = round(x or self.position.x)
   y = round(y or self.position.y)

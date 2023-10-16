@@ -3,7 +3,7 @@
 
 Sprite Shader 
 -- -----------------------------------------------------------------------------------------------
-Draws the sprite with HSV (hue, saturation, value/brightness) modifications.
+-- Draws the sprite with HSV (hue, saturation, value/brightness) modifications.
 
 =================================================================================================*/
 

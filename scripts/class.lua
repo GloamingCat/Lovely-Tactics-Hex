@@ -3,8 +3,8 @@
 
 @classmod class
 ---------------------------------------------------------------------------------------------------
-The base class.
-Reference: Kevin Clancy's Game Kitchen project.
+-- The base class.
+-- Reference: Kevin Clancy's Game Kitchen project.
 
 =================================================================================================]]
 

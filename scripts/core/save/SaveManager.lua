@@ -3,7 +3,7 @@
 
 @classmod SaveManager
 ---------------------------------------------------------------------------------------------------
-Responsible for storing and loading game saves.
+-- Responsible for storing and loading game saves.
 
 =================================================================================================]]
 

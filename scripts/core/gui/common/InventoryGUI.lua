@@ -3,7 +3,7 @@
 
 @classmod InventoryGUI
 ---------------------------------------------------------------------------------------------------
-The GUI to manage and use a item from party's inventory.
+-- The GUI to manage and use a item from party's inventory.
 
 =================================================================================================]]
 

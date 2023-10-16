@@ -3,10 +3,10 @@
 
 @classmod Knockback
 ---------------------------------------------------------------------------------------------------
-The animation of knockback when a characters receives damage.
-
+-- The animation of knockback when a characters receives damage.
+-- 
 -- Animation parameters:
-The length of the step in pixels is defined by <step> tag. The default is 12.
+--  * The length of the step in pixels is defined by <step> tag. The default is 12.
 
 =================================================================================================]]
 

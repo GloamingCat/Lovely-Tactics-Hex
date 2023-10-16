@@ -3,8 +3,8 @@
 
 @classmod Obstacle
 ---------------------------------------------------------------------------------------------------
-An Obstacle is a static object stored in the tile. 
-It may be passable or not, and have an image or not.
+-- An Obstacle is a static object stored in the tile. 
+-- It may be passable or not, and have an image or not.
 
 =================================================================================================]]
 

@@ -3,7 +3,7 @@
 
 @classmod PropertyWindow
 ---------------------------------------------------------------------------------------------------
-Window that opens in Action GUI to show a property of the current character.
+-- Window that opens in Action GUI to show a property of the current character.
 
 =================================================================================================]]
 

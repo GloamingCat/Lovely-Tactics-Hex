@@ -3,7 +3,7 @@
 
 @classmod ShopCommandWindow
 ---------------------------------------------------------------------------------------------------
-Window with the initial commands of the shop GUI (buy, sell, cancel).
+-- Window with the initial commands of the shop GUI (buy, sell, cancel).
 
 =================================================================================================]]
 

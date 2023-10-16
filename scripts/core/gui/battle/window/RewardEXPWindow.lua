@@ -3,7 +3,7 @@
 
 @classmod RewardEXPWindow
 ---------------------------------------------------------------------------------------------------
-The window that shows the gained experience.
+-- The window that shows the gained experience.
 
 =================================================================================================]]
 

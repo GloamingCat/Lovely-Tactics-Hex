@@ -3,8 +3,8 @@
 
 @classmod TurnWindow
 ---------------------------------------------------------------------------------------------------
-Window that opens in the start of a character turn.
-Result = 1 means that the turn ended.
+-- Window that opens in the start of a character turn.
+-- Result = 1 means that the turn ended.
 
 =================================================================================================]]
 

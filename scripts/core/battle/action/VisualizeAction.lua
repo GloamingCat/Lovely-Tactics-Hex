@@ -3,7 +3,7 @@
 
 @classmod VisualizeAction
 ---------------------------------------------------------------------------------------------------
-The BattleAction that is executed when players cancels in the Turn Window.
+-- The BattleAction that is executed when players cancels in the Turn Window.
 
 =================================================================================================]]
 

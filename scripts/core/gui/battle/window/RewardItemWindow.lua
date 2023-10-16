@@ -3,7 +3,7 @@
 
 @classmod RewardItemWindow
 ---------------------------------------------------------------------------------------------------
-The window that shows the list of gained items.
+-- The window that shows the list of gained items.
 
 =================================================================================================]]
 

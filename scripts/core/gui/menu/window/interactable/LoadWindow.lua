@@ -3,7 +3,7 @@
 
 @classmod LoadWindow
 ---------------------------------------------------------------------------------------------------
-Window that shows the list of save files to load.
+-- Window that shows the list of save files to load.
 
 =================================================================================================]]
 

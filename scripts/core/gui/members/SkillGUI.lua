@@ -3,7 +3,7 @@
 
 @classmod SkillGUI
 ---------------------------------------------------------------------------------------------------
-The GUI to manage and use skills from a member's skill set.
+-- The GUI to manage and use skills from a member's skill set.
 
 =================================================================================================]]
 

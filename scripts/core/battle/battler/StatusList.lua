@@ -3,7 +3,7 @@
 
 @classmod StatusList
 ---------------------------------------------------------------------------------------------------
-A special kind of list that provides functions to manage battler's list of status effects.
+-- A special kind of list that provides functions to manage battler's list of status effects.
 
 =================================================================================================]]
 
@@ -54,8 +54,8 @@ end
 function StatusList:__tostring()
   return 'Status' .. getmetatable(List).__tostring(self)
 end
---- Gets the status with the given ID (the first created).
--- @tparam number|string id The status' ID or key in the database.
+--- Gets the statuses with the given ID (the first created).
+-- @tparam number|string id The status's ID or key in the database.
 -- @treturn Status
 function StatusList:findStatus(id)
   local data = Database.status[id]
@@ -77,7 +77,7 @@ function StatusList:findPosition(priority)
   end
   return 1
 end
---- Creates an array with the status icons, sorted by priority, with no repetition.
+--- Creates an array with the all statuses' icons, sorted by priority, with no repetition.
 -- @treturn table
 function StatusList:getIcons()
   local addedIcons = {}
@@ -242,7 +242,7 @@ function StatusList:elementBuff(id)
   return e
 end
 --- Gets the total status immunity given by the current status effects.
--- @tparam number id The status ID.
+-- @tparam number id The status's ID.
 -- @treturn number Status immunity.
 function StatusList:statusDef(id)
   local e = 1
@@ -314,7 +314,7 @@ end
 -- Other Callbacks
 -- ------------------------------------------------------------------------------------------------
 
---- Calls a certain function in all status in the list.
+--- Calls a certain function in all statuses in the list.
 -- @tparam string name The name of the event.
 -- @tparam(...) Other parameters to the callback.
 function StatusList:callback(name, ...)
@@ -337,7 +337,7 @@ end
 function StatusList:__tostring()
   return 'StatusList: ' .. tostring(self.battler)
 end
---- Gets all the status states.
+--- Gets the states of all the statuses.
 -- @treturn table An array with the state tables.
 function StatusList:getState()
   local status = {}

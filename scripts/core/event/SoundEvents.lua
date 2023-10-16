@@ -3,7 +3,7 @@
 
 @module SoundEvents
 ---------------------------------------------------------------------------------------------------
-Audio-related functions that are loaded from the EventSheet.
+-- Audio-related functions that are loaded from the EventSheet.
 
 =================================================================================================]]
 

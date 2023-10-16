@@ -3,7 +3,7 @@
 
 @classmod GameOverGUI
 ---------------------------------------------------------------------------------------------------
-The GUI that is shown when player loses the battle.
+-- The GUI that is shown when player loses the battle.
 
 =================================================================================================]]
 

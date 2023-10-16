@@ -3,7 +3,7 @@
 
 @classmod FieldGUI
 ---------------------------------------------------------------------------------------------------
-The GUI that is openned when player presses the menu button in the field.
+-- The GUI that is openned when player presses the menu button in the field.
 
 =================================================================================================]]
 

@@ -3,8 +3,8 @@
 
 @classmod MoveAction
 ---------------------------------------------------------------------------------------------------
-The BattleAction that is executed when players chooses the "Move" button.
-Any action used in PathFinder must inherit from this.
+-- The BattleAction that is executed when players chooses the "Move" button.
+-- Any action used in PathFinder must inherit from this.
 
 =================================================================================================]]
 

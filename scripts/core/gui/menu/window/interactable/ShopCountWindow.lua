@@ -3,7 +3,7 @@
 
 @classmod ShopCountWindow
 ---------------------------------------------------------------------------------------------------
-Window that shows the total price to be paidin the Shop GUI.
+-- Window that shows the total price to be paidin the Shop GUI.
 
 =================================================================================================]]
 

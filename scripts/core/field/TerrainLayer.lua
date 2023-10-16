@@ -3,8 +3,8 @@
 
 @classmod TerrainLayer
 ---------------------------------------------------------------------------------------------------
-A TerrainLayer is a matrix of TerrainTiles.
-There may be more then one TerrainLayer in the field per height.
+-- A TerrainLayer is a matrix of TerrainTiles.
+-- There may be more then one TerrainLayer in the field per height.
 
 =================================================================================================]]
 

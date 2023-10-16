@@ -3,7 +3,7 @@
 
 @classmod OptionsWindow
 ---------------------------------------------------------------------------------------------------
-Window with general options: settings, save, quit.
+-- Window with general options: settings, save, quit.
 
 =================================================================================================]]
 

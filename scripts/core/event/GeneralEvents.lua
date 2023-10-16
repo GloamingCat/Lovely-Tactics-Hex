@@ -3,7 +3,7 @@
 
 @module GeneralEvents
 ---------------------------------------------------------------------------------------------------
-General event functions that are loaded from the EventSheet.
+-- General event functions that are loaded from the EventSheet.
 
 =================================================================================================]]
 

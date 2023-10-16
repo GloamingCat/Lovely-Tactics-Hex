@@ -3,10 +3,11 @@
 
 @classmod GameOverWindow
 ---------------------------------------------------------------------------------------------------
-A window that contains options after game over.
-result = 1 -> continue
-result = 2 -> retry
-result = 3 -> title screen
+-- A window that contains options after game over.
+-- Result codes:
+--  * 1 -> continue
+--  * 2 -> retry
+--  * 3 -> title screen
 
 =================================================================================================]]
 

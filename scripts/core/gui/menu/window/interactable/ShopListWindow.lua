@@ -3,7 +3,7 @@
 
 @classmod ShopListWindow
 ---------------------------------------------------------------------------------------------------
-Window with the list of items available to buy.
+-- Window with the list of items available to buy.
 
 =================================================================================================]]
 

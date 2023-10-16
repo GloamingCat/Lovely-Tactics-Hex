@@ -3,7 +3,7 @@
 
 @classmod Text
 ---------------------------------------------------------------------------------------------------
-A special type of Sprite which texture if a rendered text.
+-- A special type of Sprite which texture if a rendered text.
 
 =================================================================================================]]
 

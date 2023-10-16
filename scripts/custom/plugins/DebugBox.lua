@@ -3,8 +3,8 @@
 
 @script DebugBox
 ---------------------------------------------------------------------------------------------------
-Shows a text box to enter any executable Lua script. If the script has any outputs, it will be
-shown at the console.
+-- Shows a text box to enter any executable Lua script. If the script has any outputs, it will be
+-- shown at the console.
 
 =================================================================================================]]
 

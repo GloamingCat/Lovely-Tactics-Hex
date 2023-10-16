@@ -2,11 +2,11 @@
 
 @script Wanderer
 ---------------------------------------------------------------------------------------------------
-NPC that walks around while it is not blocking the player.
-
+-- NPC that walks around while it is not blocking the player.
+-- 
 -- Parameters:
-<pause> Pause in frames between each step.
-<pauseVar> Variation of the pause in frames.
+--  * <pause> Pause in frames between each step.
+--  * <pauseVar> Variation of the pause in frames.
 
 =================================================================================================]]
 

@@ -3,7 +3,7 @@
 
 @classmod CallWindow
 ---------------------------------------------------------------------------------------------------
-Window with the list of battles in the party backup.
+-- Window with the list of battles in the party backup.
 
 =================================================================================================]]
 

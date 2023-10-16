@@ -3,8 +3,8 @@
 
 @classmod SimpleText
 ---------------------------------------------------------------------------------------------------
-A simple content element for GUI window containing just a text.
-It's a type of window content.
+-- A simple content element for GUI window containing just a text.
+-- It's a type of window content.
 
 =================================================================================================]]
 

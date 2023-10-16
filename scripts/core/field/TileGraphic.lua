@@ -3,8 +3,8 @@
 
 @classmod TileGraphic
 ---------------------------------------------------------------------------------------------------
-Used for single-row tile graphics. It is composed by the top half ans bottom half sprites,
-such that the top half sprite's depth is greater by 0.5 tile.
+-- Used for single-row tile graphics. It is composed by the top half ans bottom half sprites,
+-- such that the top half sprite's depth is greater by 0.5 tile.
 
 =================================================================================================]]
 

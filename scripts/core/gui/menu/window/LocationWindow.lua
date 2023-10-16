@@ -3,7 +3,7 @@
 
 @classmod LocationWindow
 ---------------------------------------------------------------------------------------------------
-Small window that shows the location of the player.
+-- Small window that shows the location of the player.
 
 =================================================================================================]]
 

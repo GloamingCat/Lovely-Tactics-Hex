@@ -3,7 +3,7 @@
 
 @classmod Hightlight
 ---------------------------------------------------------------------------------------------------
-The light background that is visible behind the selected widget.
+-- The light background that is visible behind the selected widget.
 
 =================================================================================================]]
 

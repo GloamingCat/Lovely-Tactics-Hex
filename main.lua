@@ -3,8 +3,8 @@
 
 @script Main
 ---------------------------------------------------------------------------------------------------
-Implements basic game callbacks (load, update and draw).
-Loads global variables and overrides callback for love events.
+-- Implements basic game callbacks (load, update and draw).
+-- Loads global variables and overrides callback for love events.
 
 =================================================================================================]]
 

@@ -3,7 +3,7 @@
 
 @classmod RecruitListWindow
 ---------------------------------------------------------------------------------------------------
-Window with the list of items available to hire.
+-- Window with the list of items available to hire.
 
 =================================================================================================]]
 

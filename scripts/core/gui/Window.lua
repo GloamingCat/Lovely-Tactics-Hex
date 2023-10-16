@@ -3,13 +3,13 @@
 
 @classmod Window
 ---------------------------------------------------------------------------------------------------
-Provides the base for windows.
-Every content element for the window must have all the following methods:
-  show
-  hide
-  updatePosition(pos) (optional)
-  update (optional)
-  destroy
+-- Provides the base for windows.
+-- Every content element for the window must have all the following methods:
+--  * show
+--  * hide
+--  * updatePosition(pos) (optional)
+--  * update (optional)
+--  * destroy
 
 =================================================================================================]]
 

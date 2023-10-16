@@ -3,8 +3,8 @@
 
 @classmod VSlider
 ---------------------------------------------------------------------------------------------------
-A side bar to scroll through windows.
-It's a type of window content.
+-- A side bar to scroll through windows.
+-- It's a type of window content.
 
 =================================================================================================]]
 

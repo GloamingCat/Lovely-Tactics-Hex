@@ -3,7 +3,7 @@
 
 @classmod MemberCommandWindow
 ---------------------------------------------------------------------------------------------------
-The small windows with the commands for character management.
+-- The small windows with the commands for character management.
 
 =================================================================================================]]
 

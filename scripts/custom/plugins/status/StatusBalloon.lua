@@ -3,11 +3,11 @@
 
 @script StatusBalloon
 ---------------------------------------------------------------------------------------------------
-The balloon animation to show a battler's status. The "balloon" animation must be set in the 
-project's config.
-
+-- The balloon animation to show a battler's status list. The "balloon" animation must be set in 
+-- the project's config.
+-- 
 -- Requires: 
-EmotionBallon
+--  * EmotionBallon
 
 =================================================================================================]]
 

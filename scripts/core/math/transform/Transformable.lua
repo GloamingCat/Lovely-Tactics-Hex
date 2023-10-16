@@ -3,7 +3,7 @@
 
 @classmod Transformable
 ---------------------------------------------------------------------------------------------------
-An object with physical properties (position, rotation, scale) and color.
+-- An object with physical properties (position, rotation, scale) and color.
 
 =================================================================================================]]
 

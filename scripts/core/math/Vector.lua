@@ -3,9 +3,9 @@
 
 @classmod Vector
 ---------------------------------------------------------------------------------------------------
-An offset in three-dimensional space. 
-It consists of an x, and a y component,
-each being an offset along a different orthogonal axis.
+-- An offset in three-dimensional space. 
+-- It consists of an x, and a y component,
+-- each being an offset along a different orthogonal axis.
 
 =================================================================================================]]
 

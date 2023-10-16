@@ -3,7 +3,7 @@
 
 @classmod Gauge
 ---------------------------------------------------------------------------------------------------
-A variable meter that shows the variable state in a bar and in text.
+-- A variable meter that shows the variable state in a bar and in text.
 
 =================================================================================================]]
 

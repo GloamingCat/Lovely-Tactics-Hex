@@ -3,7 +3,7 @@
 
 @classmod HideRule
 ---------------------------------------------------------------------------------------------------
-The rule for an AI that moves to the tile with less close enemies.
+-- The rule for an AI that moves to the tile with less close enemies.
 
 =================================================================================================]]
 

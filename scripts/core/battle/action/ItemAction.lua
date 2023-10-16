@@ -3,7 +3,7 @@
 
 @classmod ItemAction
 ---------------------------------------------------------------------------------------------------
-A type of SkillAction that gets its effect from item data.
+-- A type of SkillAction that gets its effect from item data.
 
 =================================================================================================]]
 

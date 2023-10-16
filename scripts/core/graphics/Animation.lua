@@ -3,8 +3,8 @@
 
 @classmod Animation
 ---------------------------------------------------------------------------------------------------
-An Animation updates the quad of the associated Sprite, assuming that the texture of the sprite 
-is a spritesheet.
+-- An Animation updates the quad of the associated Sprite, assuming that the texture of the sprite 
+-- is a spritesheet.
 
 =================================================================================================]]
 

@@ -3,23 +3,23 @@
 
 @classmod Sprite
 ---------------------------------------------------------------------------------------------------
-A Sprite is a group of information the determines the way an image should be rendered. 
-The image may be scaled, rotated, translated and coloured.
-Its position determines where on the screen it's going to be rendered (x and y axis, relative to 
-the world's coordinate system) and the depth/render order (z axis).
-
-Transform table values:
-- offsetX, offsetY: center pixel coordinates of the quad, relative to top left corner;
-- offsetYDepth: value added to sprite's depth;
-- scaleX, scaleY: scale values from 0 to 100;
-- rotation: rotation angle in degrees, from 0 to 360;
-- red: color red component, from 0 to 255;
-- green: color green component, from 0 to 255;
-- blue: color blue component, from 0 to 255;
-- alpha: color alpha component, from 0 to 255;
-- hue: color hue offset, from 0 to 360;
-- saturation: color saturation multiplier, from 0 to 100;
-- brightness: color value multiplier, from 0 to 100.
+-- A Sprite is a group of information the determines the way an image should be rendered. 
+-- The image may be scaled, rotated, translated and coloured.
+-- Its position determines where on the screen it's going to be rendered (x and y axis, relative to 
+-- the world's coordinate system) and the depth/render order (z axis).
+--
+-- Transform table values:
+--  * offsetX, offsetY: center pixel coordinates of the quad, relative to top left corner;
+--  * offsetYDepth: value added to sprite's depth;
+--  * scaleX, scaleY: scale values from 0 to 100;
+--  * rotation: rotation angle in degrees, from 0 to 360;
+--  * red: color red component, from 0 to 255;
+--  * green: color green component, from 0 to 255;
+--  * blue: color blue component, from 0 to 255;
+--  * alpha: color alpha component, from 0 to 255;
+--  * hue: color hue offset, from 0 to 360;
+--  * saturation: color saturation multiplier, from 0 to 100;
+--  * brightness: color value multiplier, from 0 to 100.
 
 =================================================================================================]]
 

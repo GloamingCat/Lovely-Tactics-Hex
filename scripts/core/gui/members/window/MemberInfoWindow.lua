@@ -3,7 +3,7 @@
 
 @classmod MemberInfoWindow
 ---------------------------------------------------------------------------------------------------
-A window that shows HP and MP of a troop member.
+-- A window that shows HP and MP of a troop member.
 
 =================================================================================================]]
 

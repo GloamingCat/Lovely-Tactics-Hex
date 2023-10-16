@@ -3,7 +3,7 @@
 
 @classmod BattleAnimations
 ---------------------------------------------------------------------------------------------------
-Module with helper functions to play battle effects.
+-- Module with helper functions to play battle effects.
 
 =================================================================================================]]
 

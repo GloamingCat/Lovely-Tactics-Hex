@@ -3,7 +3,7 @@
 
 @classmod BattleEffect
 ---------------------------------------------------------------------------------------------------
-Animation that plays all rows of frames sequentially.
+-- Animation that plays all rows of frames sequentially.
 
 =================================================================================================]]
 

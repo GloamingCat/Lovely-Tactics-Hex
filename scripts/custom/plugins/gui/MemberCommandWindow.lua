@@ -3,9 +3,9 @@
 
 @script MemberCommandWindow
 ---------------------------------------------------------------------------------------------------
-The small windows with the commands for character management.
-
-Should come before VisiblePartyWindow.
+-- The small windows with the commands for character management.
+-- 
+-- Should come before VisiblePartyWindow if both plugins are used.
 
 =================================================================================================]]
   

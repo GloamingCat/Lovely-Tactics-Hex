@@ -3,7 +3,7 @@
 
 @classmod EquipItemWindow
 ---------------------------------------------------------------------------------------------------
-A window that shows the possible items to equip.
+-- A window that shows the possible items to equip.
 
 =================================================================================================]]
 

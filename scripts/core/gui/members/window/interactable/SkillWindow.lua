@@ -3,7 +3,7 @@
 
 @classmod SkillWindow
 ---------------------------------------------------------------------------------------------------
-The window that shows the list of skills to be used.
+-- The window that shows the list of skills to be used.
 
 =================================================================================================]]
 

@@ -3,7 +3,7 @@
 
 @module BattleTactics
 -- ------------------------------------------------------------------------------------------------
-A module with some search algorithms to solve optimization problems in the battle.
+-- A module with some search algorithms to solve optimization problems in the battle.
 
 =================================================================================================]]
 

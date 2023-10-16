@@ -3,9 +3,9 @@
 
 @classmod MemberGUI
 ---------------------------------------------------------------------------------------------------
-The GUI that is shown when the player chooses a troop member to manage.
-It is also the base class for other member GUI, such as SkillGUI, ItemGUI and EquipGUI.
-When not used as based class, it just shows the battler window for the current member.
+-- The GUI that is shown when the player chooses a troop member to manage.
+-- It is also the base class for other member GUI, such as SkillGUI, ItemGUI and EquipGUI.
+-- When not used as based class, it just shows the battler window for the current member.
 
 =================================================================================================]]
 

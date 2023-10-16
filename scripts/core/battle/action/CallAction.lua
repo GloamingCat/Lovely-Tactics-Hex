@@ -3,7 +3,7 @@
 
 @classmod CallAction
 ---------------------------------------------------------------------------------------------------
-The BattleAction that is executed when players chooses the "Call Ally" button.
+-- The BattleAction that is executed when players chooses the "Call Ally" button.
 
 =================================================================================================]]
 

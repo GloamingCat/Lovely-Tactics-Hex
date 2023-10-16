@@ -3,7 +3,7 @@
 
 @module CharacterEvents
 ---------------------------------------------------------------------------------------------------
-Character-related functions that are loaded from the EventSheet.
+-- Character-related functions that are loaded from the EventSheet.
 
 =================================================================================================]]
 

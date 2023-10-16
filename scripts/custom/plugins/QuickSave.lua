@@ -3,11 +3,11 @@
 
 @script QuickSave
 ---------------------------------------------------------------------------------------------------
-Adds keys the save/load any time.
-
+-- Adds keys the save/load any time.
+-- 
 -- Plugin parameters
-When player presses the button key <save>, the game is saved in the quick save slot.
-When player presses the button key <load>, the game in the quick save slot is loaded.
+-- * When player presses the button key <save>, the game is saved in the quick save slot.
+-- * When player presses the button key <load>, the game in the quick save slot is loaded.
 
 =================================================================================================]]
 

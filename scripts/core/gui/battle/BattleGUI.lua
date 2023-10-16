@@ -3,8 +3,8 @@
 
 @classmod BattleGUI
 ---------------------------------------------------------------------------------------------------
-The GUI that is openned in the start of a character turn.
-Its result is the action time that the character spent.
+-- The GUI that is openned in the start of a character turn.
+-- Its result is the action time that the character spent.
 
 =================================================================================================]]
 

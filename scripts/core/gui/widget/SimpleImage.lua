@@ -3,7 +3,7 @@
 
 @classmod SimpleImage
 ---------------------------------------------------------------------------------------------------
-A generic window content that stores a sprite with a given viewport.
+-- A generic window content that stores a sprite with a given viewport.
 
 =================================================================================================]]
 

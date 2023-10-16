@@ -3,7 +3,7 @@
 
 @module ScreenEvents
 ---------------------------------------------------------------------------------------------------
-Screen-related functions that are loaded from the EventSheet.
+-- Screen-related functions that are loaded from the EventSheet.
 
 =================================================================================================]]
 

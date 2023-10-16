@@ -3,7 +3,7 @@
 
 @classmod TimeWindow
 ---------------------------------------------------------------------------------------------------
-Small window that shows the play time of the player.
+-- Small window that shows the play time of the player.
 
 =================================================================================================]]
 

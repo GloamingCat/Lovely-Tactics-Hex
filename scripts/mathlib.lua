@@ -3,8 +3,8 @@
 
 @script Math
 -- ------------------------------------------------------------------------------------------------
-This module extends Lua's native math module with a few functions for generic
-purposes and a module for grid/field math.
+-- This module extends Lua's native math module with a few functions for generic
+-- purposes and a module for grid/field math.
 
 =================================================================================================]]
 

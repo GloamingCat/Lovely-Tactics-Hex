@@ -3,7 +3,7 @@
 
 @classmod FieldHUD
 ---------------------------------------------------------------------------------------------------
-The GUI that is shown when the player chooses a troop member to manage.
+-- The GUI that is shown when the player chooses a troop member to manage.
 
 =================================================================================================]]
 

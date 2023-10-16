@@ -3,7 +3,7 @@
 
 @classmod ResourceManager
 ---------------------------------------------------------------------------------------------------
-Stores images, fonts and shaders to be reused.
+-- Stores images, fonts and shaders to be reused.
 
 =================================================================================================]]
 

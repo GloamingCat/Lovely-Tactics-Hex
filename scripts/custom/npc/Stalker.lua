@@ -2,12 +2,12 @@
 
 @script Stalker
 ---------------------------------------------------------------------------------------------------
-NPC that walks towards the player.
-
+-- NPC that walks towards the player.
+-- 
 -- Parameters:
-<pause> Pause in frames between each step.
-<pauseVar> Variation of the pause in frames.
-<vision> Maximum distance in tiles.
+--  * <pause> Pause in frames between each step.
+--  * <pauseVar> Variation of the pause in frames.
+--  * <vision> Maximum distance in tiles.
 
 =================================================================================================]]
 

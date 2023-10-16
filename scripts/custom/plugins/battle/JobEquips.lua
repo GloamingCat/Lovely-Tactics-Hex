@@ -3,10 +3,10 @@
 
 @script JobEquips
 ---------------------------------------------------------------------------------------------------
-Provides a way to restrict the available equipment items for a certain job.
-Add 'equip' tags on a Job to indicate which types of item it can equip.
-Add 'equip' tag on an item indicate the type of the item.
-Jobs with no equip tags have no restrictions.
+-- Provides a way to restrict the available equipment items for a certain job.
+-- Add 'equip' tags on a Job to indicate which types of item it can equip.
+-- Add 'equip' tag on an item to indicate the type of the item.
+-- Jobs with no equip tags have no restrictions.
 
 =================================================================================================]]
 

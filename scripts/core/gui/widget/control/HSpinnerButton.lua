@@ -3,7 +3,7 @@
 
 @classmod HSpinnerButton
 ---------------------------------------------------------------------------------------------------
-A spinner with button properties (cancel and confirm actions).
+-- A spinner with button properties (cancel and confirm actions).
 
 =================================================================================================]]
 

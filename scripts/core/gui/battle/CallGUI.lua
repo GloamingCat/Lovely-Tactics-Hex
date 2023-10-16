@@ -3,7 +3,7 @@
 
 @classmod CallGUI
 ---------------------------------------------------------------------------------------------------
-The GUI that is openned when player chooses a target for the call action.
+-- The GUI that is openned when player chooses a target for the call action.
 
 =================================================================================================]]
 

@@ -3,7 +3,7 @@
 
 @classmod GridWidget
 ---------------------------------------------------------------------------------------------------
-Generic widget for windows (like button or spinner).
+-- Generic widget for windows (like button or spinner).
 
 =================================================================================================]]
 

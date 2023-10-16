@@ -3,7 +3,7 @@
 
 @module Serializer
 ---------------------------------------------------------------------------------------------------
-A module that deals with string-object convertion using JSON.
+-- A module that deals with string-object convertion using JSON.
 
 =================================================================================================]]
 

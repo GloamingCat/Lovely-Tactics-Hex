@@ -3,8 +3,8 @@
 
 @classmod Character
 ---------------------------------------------------------------------------------------------------
-This class provides general functions to be called by fibers. 
-The [COUROUTINE] functions must ONLY be called from a fiber.
+-- This class provides general functions to be called by fibers. 
+-- The [COUROUTINE] functions must ONLY be called from a fiber.
 
 =================================================================================================]]
 

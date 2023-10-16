@@ -3,7 +3,7 @@
 
 @classmod IsoMath
 ---------------------------------------------------------------------------------------------------
-Implements FieldMath methods to hexagonal fields in which the tiles are connected vertically.
+-- Implements FieldMath methods to hexagonal fields in which the tiles are connected vertically.
 
 =================================================================================================]]
 

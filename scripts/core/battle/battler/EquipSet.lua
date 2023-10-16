@@ -3,7 +3,7 @@
 
 @classmod EquipSet
 ---------------------------------------------------------------------------------------------------
-Represents the equipment set of a battler.
+-- Represents the equipment set of a battler.
 
 =================================================================================================]]
 
@@ -273,7 +273,7 @@ function EquipSet:addBattleStatus(character)
     end
   end
 end
---- Adds the equip's status.
+--- Adds the equip's statuses, either persistent or battle-only.
 -- @tparam table data Item's data.
 -- @tparam Character character Battler's character, in case it's during battle (optional).
 -- @tparam boolean battle True to add battle status, false to add persistent status (optional).
@@ -286,7 +286,7 @@ function EquipSet:addStatus(data, character, battle)
     end
   end
 end
---- Removes the equip's persistent status.
+--- Removes the equip's persistent statuses.
 -- @tparam table data Item's equip data.
 -- @tparam Character character Battler's character, in case it's during battle (optional).
 function EquipSet:removeStatus(data, character)

@@ -3,7 +3,7 @@
 
 @script Child Animation
 ---------------------------------------------------------------------------------------------------
-Child that synchronizes with the parent animation.
+-- Child that synchronizes with the parent animation.
 
 =================================================================================================]]
 

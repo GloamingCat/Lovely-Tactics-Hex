@@ -2,7 +2,7 @@
 
 @classmod AudioManager
 ---------------------------------------------------------------------------------------------------
-Stores and manages all sound objects in the game. 
+-- Stores and manages all sound objects in the game. 
 
 =================================================================================================]]
 

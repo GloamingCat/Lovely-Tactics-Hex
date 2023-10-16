@@ -3,11 +3,11 @@
 
 @classmod GameMouse
 ---------------------------------------------------------------------------------------------------
-Entity that represents game's mouse.
-Buttons:
-1 => left;
-2 => right;
-3 => middle.
+-- Entity that represents game's mouse.
+-- Buttons:
+--  * 1 => left;
+--  * 2 => right;
+--  * 3 => middle.
 
 =================================================================================================]]
 

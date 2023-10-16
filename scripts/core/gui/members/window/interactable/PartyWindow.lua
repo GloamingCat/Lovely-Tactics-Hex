@@ -3,8 +3,8 @@
 
 @classmod PartyWindow
 ---------------------------------------------------------------------------------------------------
-A button window that shows all the visibles members in the troop.
-It selected one of the member to manage with MemberGUI.
+-- A button window that shows all the visibles members in the troop.
+-- It selected one of the member to manage with MemberGUI.
 
 =================================================================================================]]
 

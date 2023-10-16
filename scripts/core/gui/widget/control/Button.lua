@@ -3,7 +3,7 @@
 
 @classmod Button
 ---------------------------------------------------------------------------------------------------
-A window button. It may have a text and an animated icon.
+-- A window button. It may have a text and an animated icon.
 
 =================================================================================================]]
 

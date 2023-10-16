@@ -3,7 +3,7 @@
 
 @classmod BattlerWindow
 ---------------------------------------------------------------------------------------------------
-Window that shows on each character in the VisualizeAction.
+-- Window that shows on each character in the VisualizeAction.
 
 =================================================================================================]]
 

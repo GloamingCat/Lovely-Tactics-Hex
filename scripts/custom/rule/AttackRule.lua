@@ -3,7 +3,7 @@
 
 @classmod AttackRule
 ---------------------------------------------------------------------------------------------------
-The rule for an AI that attacks the character with the highest chance of KO.
+-- The rule for an AI that attacks the character with the highest chance of KO.
 
 =================================================================================================]]
 

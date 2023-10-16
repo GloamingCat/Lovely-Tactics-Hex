@@ -3,8 +3,8 @@
 
 @script Thread
 ---------------------------------------------------------------------------------------------------
-Used to create a thread. Needs two arguments when started: the channel object (where the result 
-of the function will be stored) and a function to be executed.
+-- Used to create a thread. Needs two arguments when started: the channel object (where the result 
+-- of the function will be stored) and a function to be executed.
 
 =================================================================================================]]
 

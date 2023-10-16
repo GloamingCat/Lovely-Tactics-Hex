@@ -3,7 +3,7 @@
 
 @classmod VisualizeGUI
 ---------------------------------------------------------------------------------------------------
-GUI that is shown when player selects a battler during Visualize action.
+-- GUI that is shown when player selects a battler during Visualize action.
 
 =================================================================================================]]
 

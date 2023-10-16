@@ -3,7 +3,7 @@
 
 @script VisiblePartyWindow
 ---------------------------------------------------------------------------------------------------
-Makes the ShopCountWindow in the ShopGUI visible alongside the ShopListWindow.
+-- Makes the ShopCountWindow in the ShopGUI visible alongside the ShopListWindow.
 
 =================================================================================================]]
 

@@ -3,7 +3,7 @@
 
 @classmod EquipBonusWindow
 ---------------------------------------------------------------------------------------------------
-A window that shows the attribute and element bonus of the equip item.
+-- A window that shows the attribute and element bonus of the equip item.
 
 =================================================================================================]]
 

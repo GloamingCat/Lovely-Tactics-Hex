@@ -3,8 +3,8 @@
 
 @classmod Music
 ---------------------------------------------------------------------------------------------------
-A type of sound that loops and may have a non-looping intro.
-multiline
+-- A type of sound that loops and may have a non-looping intro.
+-- multiline
 
 =================================================================================================]]
 

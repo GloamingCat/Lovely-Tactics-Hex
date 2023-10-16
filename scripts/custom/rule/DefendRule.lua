@@ -3,7 +3,7 @@
 
 @classmod DefendRule
 ---------------------------------------------------------------------------------------------------
-The rule for an AI that moves to the safest tile that still has a reachable target.
+-- The rule for an AI that moves to the safest tile that still has a reachable target.
 
 =================================================================================================]]
 

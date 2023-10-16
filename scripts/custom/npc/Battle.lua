@@ -3,14 +3,14 @@
 
 @script Battle
 ---------------------------------------------------------------------------------------------------
-Checks whether the enemy was already defeated.
-
+-- Checks whether the enemy was already defeated.
+-- 
 -- Parameters:
-<fieldID> The ID of the battle field.
-<gameOverCondition> The conditions to lose or win the battle:
-  'none' -> There is no gameover regardless of who wins;
-  'survive' -> The game is over if the player loses;
-  'kill' -> The game is over if the player loses or it's a draw.
+--  * <fieldID> The ID of the battle field.
+--  * <gameOverCondition> The conditions to lose or win the battle:
+--      * 'none' -> There is no gameover regardless of who wins;
+--      * 'survive' -> The game is over if the player loses;
+--      * 'kill' -> The game is over if the player loses or it's a draw.
 
 =================================================================================================]]
 

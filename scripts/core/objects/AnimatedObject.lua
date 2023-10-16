@@ -3,9 +3,9 @@
 
 @classmod AnimatedObject
 ---------------------------------------------------------------------------------------------------
-An object with a table of animations.
-Sets of animations may be created by using the separator ":" the animation's name in the given
-format: "setName:animationName".
+-- An object with a table of animations.
+-- Sets of animations may be created by using the separator ":" the animation's name in the given
+-- format: "setName:animationName".
 
 =================================================================================================]]
 

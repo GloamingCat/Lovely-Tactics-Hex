@@ -3,18 +3,18 @@
 
 @script EmotionBalloon
 ---------------------------------------------------------------------------------------------------
-The balloon animation to show a battler's emotion. The "balloon" and "emotions" animations must be
-set in the project's config.
-
+-- The balloon animation to show a battler's emotion. The "balloon" and "emotions" animations must 
+-- be set in the project's config.
+-- 
 -- Requires: 
-ChildAnimations
-
+--  * ChildAnimations
+--
 -- Plugin parameters:
-Use <balloonY> to shift the balloon sprite in pixels.
-Use <emotions> to set a different list of emotions. It should be a list of strings, with each
-string being the emotion's code.
-Use <rows> to set custons rows for each emotion. The rows should be in the same order as the
-emotions listed in <emotions>.
+--  * Use <balloonY> to shift the balloon sprite in pixels.
+--  * Use <emotions> to set a different list of emotions. It should be a list of strings, with each
+--  string being the emotion's code.
+--  * Use <rows> to set custons rows for each emotion. The rows should be in the same order as the
+--  emotions listed in <emotions>.
 
 =================================================================================================]]
 
@@ -59,7 +59,7 @@ function ResourceManager:loadEmotionAnimation(emotion, renderer)
   return anim
 end
 --- Creates an icon animation for balloons.
--- @tparam table|string emotion Icon data or name (from config).
+-- @tparam table|string icon Icon data or name (from config).
 -- @tparam Renderer renderer
 -- @treturn Animation
 function ResourceManager:loadBalloonIconAnimation(icon, renderer)

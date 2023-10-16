@@ -3,7 +3,7 @@
 
 @module PartyEvents
 ---------------------------------------------------------------------------------------------------
-Party-related functions that are loaded from the EventSheet.
+-- Party-related functions that are loaded from the EventSheet.
 
 =================================================================================================]]
 

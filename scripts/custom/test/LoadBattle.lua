@@ -3,7 +3,7 @@
 
 @script LoadBattle
 ---------------------------------------------------------------------------------------------------
-Test script that starts battle when field is loaded.
+-- Test script that starts battle when field is loaded.
 
 =================================================================================================]]
 

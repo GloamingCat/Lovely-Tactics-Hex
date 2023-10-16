@@ -3,7 +3,7 @@
 
 @classmod Inventory
 ---------------------------------------------------------------------------------------------------
-A special kind of list that stores pairs (item ID, quantity).
+-- A special kind of list that stores pairs (item ID, quantity).
 
 =================================================================================================]]
 

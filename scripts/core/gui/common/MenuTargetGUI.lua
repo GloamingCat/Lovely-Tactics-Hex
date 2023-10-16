@@ -3,7 +3,7 @@
 
 @classmod MenuTargetGUI
 ---------------------------------------------------------------------------------------------------
-A GUI to selected a target character for an action (usually skill or item).
+-- A GUI to selected a target character for an action (usually skill or item).
 
 =================================================================================================]]
 

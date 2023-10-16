@@ -3,7 +3,7 @@
 
 @module GUIEvents
 ---------------------------------------------------------------------------------------------------
-GUI-related functions that are loaded from the EventSheet.
+-- GUI-related functions that are loaded from the EventSheet.
 
 =================================================================================================]]
 

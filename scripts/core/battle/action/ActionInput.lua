@@ -3,7 +3,7 @@
 
 @classmod ActionInput
 ---------------------------------------------------------------------------------------------------
-An action that represents a full decision for the turn (a movement, a BattleAction and a target).
+-- An action that represents a full decision for the turn (a movement, a BattleAction and a target).
 
 =================================================================================================]]
 

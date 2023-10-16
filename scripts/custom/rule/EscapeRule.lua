@@ -3,11 +3,11 @@
 
 @classmod EscapeRule
 ---------------------------------------------------------------------------------------------------
-The rule for an AI that removes character from battle field. If not possible to execute,
-it moves the character to the closest party tile.
-
+-- The rule for an AI that removes character from battle field. If not possible to execute,
+-- it moves the character to the closest party tile.
+-- 
 -- Parameters:
-Set <hide> as true to make the battler unable to be called again into battle.
+--  * Set <hide> as true to make the battler unable to be called again into battle.
 
 =================================================================================================]]
 

@@ -3,7 +3,7 @@
 
 @classmod GUI
 ---------------------------------------------------------------------------------------------------
-Manages a set of GUI elements (generally, a set of windows).
+-- Manages a set of GUI elements (generally, a set of windows).
 
 =================================================================================================]]
 

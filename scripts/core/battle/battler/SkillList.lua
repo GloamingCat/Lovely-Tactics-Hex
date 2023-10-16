@@ -3,7 +3,7 @@
 
 @classmod SkillList
 ---------------------------------------------------------------------------------------------------
-A special kind of list that provides functions to manage battler's list of skills.
+-- A special kind of list that provides functions to manage battler's list of skills.
 
 =================================================================================================]]
 

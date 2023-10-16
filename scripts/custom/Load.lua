@@ -3,8 +3,8 @@
 
 @script Load
 ---------------------------------------------------------------------------------------------------
-Default script that runs when the game is loaded.
-It is used as load script for most non-battle fields.
+-- Default script that runs when the game is loaded.
+-- It is used as load script for most non-battle fields.
 
 =================================================================================================]]
 

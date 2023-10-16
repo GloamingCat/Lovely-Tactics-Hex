@@ -3,8 +3,8 @@
 
 @classmod Fiber
 ---------------------------------------------------------------------------------------------------
-A piece of code that may be executed in coroutines, as a separate "process" or "thread". 
-It must be updated by its root every frame, unless it's paused.
+-- A piece of code that may be executed in coroutines, as a separate "process" or "thread". 
+-- It must be updated by its root every frame, unless it's paused.
 
 =================================================================================================]]
 

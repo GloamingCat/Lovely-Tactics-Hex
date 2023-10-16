@@ -3,12 +3,15 @@
 
 @script HideCursorOnMobile
 ---------------------------------------------------------------------------------------------------
-Hides window cursor and button highlight when on mobile.
-
+-- Hides window cursor and button highlight when on mobile.
+-- Possible values for visibility type:
+--  * 'hide' -> always invisible;
+--  * 'list' -> visible on windows of type ListWindow only;
+--  * 'show' -> always visible.
+-- 
 -- Plugin parameters:
-Use <cursor> and <highlight> tags to set visibility: 'hide' to always hide, 'list' to show
-on ListWindow type of window, and 'show' to always show. The default value for <highlight> is
-'hide' and for <cursor> is 'list'. 
+--  * Tag <cursor> sets the visibility type of the button cursor. The default type is 'list'.
+--  * Tag <highlight> sets the visibility type of the button highlight. The default type is 'hide'.
 
 =================================================================================================]]
 

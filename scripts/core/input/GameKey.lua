@@ -3,12 +3,12 @@
 
 @classmod GameKey
 ---------------------------------------------------------------------------------------------------
-Entity that represents an input key.
-Key states:
--1 => just released;
-0 => not pressing;
-1 => pressing;
-2 => just pressed.
+-- Entity that represents an input key.
+-- Key state codes:
+--  * -1 => just released;
+--  * 0 => not pressing;
+--  * 1 => pressing;
+--  * 2 => just pressed.
 
 =================================================================================================]]
 

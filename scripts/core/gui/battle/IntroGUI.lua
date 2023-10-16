@@ -3,7 +3,7 @@
 
 @classmod IntroGUI
 ---------------------------------------------------------------------------------------------------
-The GUI that is shown in the beginning of the battle.
+-- The GUI that is shown in the beginning of the battle.
 
 =================================================================================================]]
 

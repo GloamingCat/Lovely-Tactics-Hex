@@ -3,10 +3,10 @@
 
 @classmod ActionGUI
 ---------------------------------------------------------------------------------------------------
-The GUI that is open when player selects an action.
-It does not have windows, and instead it implements its own "waitForResult" 
-and "checkInput" methods.
-Its result is the action time that the character spent.
+-- The GUI that is open when player selects an action.
+-- It does not have windows, and instead it implements its own "waitForResult" 
+-- and "checkInput" methods.
+-- Its result is the action time that the character spent.
 
 =================================================================================================]]
 

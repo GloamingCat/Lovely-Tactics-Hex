@@ -3,11 +3,11 @@
 
 @classmod Pointer
 ---------------------------------------------------------------------------------------------------
-A sprite that points in a given direction (vertical or horizontal).
-
+-- A sprite that points in a given direction (vertical or horizontal).
+-- 
 -- Animation parameters:
-The amount of pixels moved in the horizontal direction is set by <dx>.
-The amount of pixels moved in the vertical direction is set by <dy>.
+--  * The amount of pixels moved in the horizontal direction is set by <dx>.
+--  * The amount of pixels moved in the vertical direction is set by <dy>.
 
 =================================================================================================]]
 

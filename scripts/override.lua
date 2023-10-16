@@ -3,7 +3,7 @@
 
 @script Overrides
 ---------------------------------------------------------------------------------------------------
-Overrides a few functions from standard libraries.
+-- Overrides a few functions from standard libraries.
 
 =================================================================================================]]
 

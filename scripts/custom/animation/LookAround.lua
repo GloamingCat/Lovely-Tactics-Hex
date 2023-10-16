@@ -3,8 +3,8 @@
 
 @classmod LookAround
 ---------------------------------------------------------------------------------------------------
-An animation that randomly switches row.
-
+-- An animation that randomly switches row.
+-- 
 -- Animation parameters:
 * <freq> is the frequency (in frames) in which the row is switched. By default, it's the duration 
 of the animation.

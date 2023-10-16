@@ -3,8 +3,8 @@
 
 @classmod Status
 ---------------------------------------------------------------------------------------------------
-A generic status effect that a battler may have.
-The effects of them on battle and field depend on each individual implementation.
+-- A generic status effect that a battler may have.
+-- The effects of them on battle and field depend on each individual implementation.
 
 =================================================================================================]]
 
@@ -20,7 +20,7 @@ local Status = class()
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam table data Status' data from database file.
+-- @tparam table data Status's data from database file.
 -- @tparam StatusList list The list that included this status.
 -- @tparam string caster Key of the character who casted this status 
 --  (null if it did not come from a character). 
@@ -78,7 +78,7 @@ end
 function Status:__tostring()
   return 'Status: ' .. self.data.id .. ' (' .. self.data.name .. ')'
 end
---- Gets status persistent data. Must include its ID.
+--- Gets status's persistent data. Must include its ID.
 -- @treturn table State data.
 function Status:getState()
   return { id = self.data.id,
@@ -111,7 +111,7 @@ function Status:drain(char)
     char:playKOAnimation()
   end
 end
---- Gets the table of status element bonus.
+--- Gets the table of status's element bonus.
 -- @tparam table data Status data.
 -- @treturn table Array for attack elements.
 -- @treturn table Array for element immunity.

@@ -3,7 +3,7 @@
 
 @module Stats
 ---------------------------------------------------------------------------------------------------
-Module that reads and counts the files and lines from the projects.
+-- Module that reads and counts the files and lines from the projects.
 
 =================================================================================================]]
 

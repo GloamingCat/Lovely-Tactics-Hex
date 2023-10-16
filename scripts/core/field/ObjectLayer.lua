@@ -3,8 +3,8 @@
 
 @classmod ObjectLayer
 ---------------------------------------------------------------------------------------------------
-An ObjectLayer is a matrix of ObjectTiles.
-There's only one ObjectLayer in the field per height.
+-- An ObjectLayer is a matrix of ObjectTiles.
+-- There's only one ObjectLayer in the field per height.
 
 =================================================================================================]]
 

@@ -3,8 +3,8 @@
 
 @classmod IconList
 ---------------------------------------------------------------------------------------------------
-A list of icons to the drawn in a given rectangle.
-Commonly used to show status icons in windows.
+-- A list of icons to the drawn in a given rectangle.
+-- Commonly used to show status icons in windows.
 
 =================================================================================================]]
 

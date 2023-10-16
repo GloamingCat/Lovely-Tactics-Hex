@@ -3,22 +3,23 @@
 
 @script RingArea
 ---------------------------------------------------------------------------------------------------
-Allows a battle action to use a ring area instead of a grid mask. A ring is defined by the minimum 
-distance, or the radius of the smallest circle - <near> value -, and the maximum distance, or the 
-radius of the largest circle - <far> value. The ring is the set of tiles within these limits.
-It is also possible to define the maximum and minimum height differences, <minh> and <maxh>.
-
+-- Allows a battle action to use a ring area instead of a grid mask. A ring is defined by the minimum 
+-- distance, or the radius of the smallest circle - <near> value -, and the maximum distance, or the 
+-- radius of the largest circle - <far> value. The ring is the set of tiles within these limits.
+-- It is also possible to define the maximum and minimum height differences, <minh> and <maxh>.
+--
 -- Skill parameters:
-The range of the skill is defined by <cast_far>, <cast_near>, <cast_minh> and <cast_maxh>.
-The effect area of the skill is defined by <effect_far>, <effect_near>, <effect_minh> and 
-<effect_maxh>.
-If no <cast_> tag is defined, then the default cast mask is used. The same for the <effect_> tags.
-
-Notes:
-* If <near> is bigger than <far> value, the set is empty.
-* If <far> and <near> are the same value X, the ring is the set of tiles that distantiates from
-the center by exactly X.
-* If <far> and <near> are 0, the set contains only the center tile.
+--  * The range of the skill is defined by <cast_far>, <cast_near>, <cast_minh> and <cast_maxh>.
+--  * The effect area of the skill is defined by <effect_far>, <effect_near>, <effect_minh> and 
+--  <effect_maxh>.
+--  * If no <cast_> tag is defined, then the default cast mask is used. The same for the <effect_>
+--  tags.
+--
+-- Notes:
+--  * If <near> is bigger than <far> value, the set is empty.
+--  * If <far> and <near> are the same value X, the ring is the set of tiles that distantiates from
+--  the center by exactly X.
+--  * If <far> and <near> are 0, the set contains only the center tile.
 
 =================================================================================================]]
 

@@ -3,7 +3,7 @@
 
 @module Affine
 ---------------------------------------------------------------------------------------------------
-This module implements some functions to calculate affine transformations.
+-- This module implements some functions to calculate affine transformations.
 
 =================================================================================================]]
 

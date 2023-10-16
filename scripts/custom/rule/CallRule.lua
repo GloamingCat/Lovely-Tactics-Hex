@@ -3,11 +3,11 @@
 
 @classmod CallRule
 ---------------------------------------------------------------------------------------------------
-The rule for an AI that removes character from battle field.
-
+-- The rule for an AI that removes character from battle field.
+-- 
 -- Parameters:
-The <member> as a boolean formula to only consider the members that satifies it. 
-Set <reset> as true to discard any saved changes on the called member.
+--  * The <member> as a boolean formula to only consider the members that satifies it. 
+--  * Set <reset> as true to discard any saved changes on the called member.
 
 =================================================================================================]]
 

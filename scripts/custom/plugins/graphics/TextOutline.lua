@@ -3,10 +3,10 @@
 
 @script Text Outline
 ---------------------------------------------------------------------------------------------------
-Renders text with a black outline.
-
+-- Renders text with a black outline.
+-- 
 -- Plugin parameters:
-Use <width> to set the outline thickness (in pixels).
+--  * Use <width> to set the outline thickness (in pixels).
 
 =================================================================================================]]
 

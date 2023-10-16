@@ -3,7 +3,7 @@
 
 @classmod RecruitConfirmWindow
 ---------------------------------------------------------------------------------------------------
-Window that shows the total price to be paidin the Recruit GUI.
+-- Window that shows the total price to be paidin the Recruit GUI.
 
 =================================================================================================]]
 

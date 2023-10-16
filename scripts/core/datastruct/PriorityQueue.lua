@@ -3,8 +3,8 @@
 
 @classmod PriorityQueue
 ---------------------------------------------------------------------------------------------------
-A priority queue with numeric keys. Be default, the element in the front will be the one with the 
-lowest key. See more in: https://en.wikipedia.org/wiki/Priority_queue
+-- A priority queue with numeric keys. Be default, the element in the front will be the one with  
+-- the lowest key. See more in: https://en.wikipedia.org/wiki/Priority_queue
 
 =================================================================================================]]
 

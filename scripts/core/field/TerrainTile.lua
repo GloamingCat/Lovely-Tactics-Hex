@@ -3,8 +3,8 @@
 
 @classmod TerrainTile
 ---------------------------------------------------------------------------------------------------
-A TerrainTile is a tile composed by a set of renderers (for each corner), 
-with possible animation, that stores the id of the associated terrain.
+-- A TerrainTile is a tile composed by a set of renderers (for each corner), 
+-- with possible animation, that stores the id of the associated terrain.
 
 =================================================================================================]]
 

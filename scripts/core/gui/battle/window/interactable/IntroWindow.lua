@@ -3,7 +3,7 @@
 
 @classmod IntroWindow
 ---------------------------------------------------------------------------------------------------
-Window that is shown in the beginning of the battle.
+-- Window that is shown in the beginning of the battle.
 
 =================================================================================================]]
 

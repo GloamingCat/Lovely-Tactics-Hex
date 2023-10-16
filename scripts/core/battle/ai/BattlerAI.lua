@@ -3,7 +3,7 @@
 
 @classmod BattlerAI
 ---------------------------------------------------------------------------------------------------
-Implements basic functions to be used in AI classes.
+-- Implements basic functions to be used in AI classes.
 
 =================================================================================================]]
 

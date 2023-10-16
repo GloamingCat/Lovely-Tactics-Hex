@@ -3,7 +3,7 @@
 
 @script Merlin
 ---------------------------------------------------------------------------------------------------
-Simple dialogue with choice. It adds a new member if the player wishes so.
+-- Simple dialogue with choice. It adds a new member if the player wishes so.
 
 =================================================================================================]]
 

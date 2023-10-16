@@ -3,7 +3,7 @@
 
 @classmod Pagination
 ---------------------------------------------------------------------------------------------------
-A small text showing the current page of a window.
+-- A small text showing the current page of a window.
 
 =================================================================================================]]
 

@@ -3,7 +3,7 @@
 
 @classmod TurnManager
 ---------------------------------------------------------------------------------------------------
-Provides methods for battle's turn management.
+-- Provides methods for battle's turn management.
 -- At the end of each turn, a "battle result" table must be returned by either the GUI (player) or
 -- the AI (enemies). 
 -- This table must include the following entries:

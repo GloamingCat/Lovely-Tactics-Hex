@@ -3,7 +3,7 @@
 
 @classmod ActionSkillWindow
 ---------------------------------------------------------------------------------------------------
-The window that is open to choose a skill from character's skill list.
+-- The window that is open to choose a skill from character's skill list.
 
 =================================================================================================]]
 

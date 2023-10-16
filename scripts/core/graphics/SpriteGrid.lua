@@ -3,8 +3,8 @@
 
 @classmod SpriteGrid
 ---------------------------------------------------------------------------------------------------
-A group of sprites created from a 9-sliced skin.
-Each animation frame should contain within itself all 9 slices.
+-- A group of sprites created from a 9-sliced skin.
+-- Each animation frame should contain within itself all 9 slices.
 
 =================================================================================================]]
 

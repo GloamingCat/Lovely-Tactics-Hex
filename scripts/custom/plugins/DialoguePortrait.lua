@@ -3,10 +3,10 @@
 
 @script DialoguePortrait
 ---------------------------------------------------------------------------------------------------
-Indents the dialogue text to fit the speaker's portrait, shown above window.
-
+-- Indents the dialogue text to fit the speaker's portrait, shown above window.
+-- 
 -- Plugin parameters:
-Use <indent> to fix an indentation length instead of using portrait's width.
+--  * Use <indent> to fix an indentation length instead of using portrait's width.
 
 =================================================================================================]]
 

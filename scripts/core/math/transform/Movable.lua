@@ -3,7 +3,7 @@
 
 @classmod Movable
 ---------------------------------------------------------------------------------------------------
-An object with position and movement properties.
+-- An object with position and movement properties.
 
 =================================================================================================]]
 

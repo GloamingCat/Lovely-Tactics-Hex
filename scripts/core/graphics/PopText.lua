@@ -3,7 +3,7 @@
 
 @classmod PopText
 ---------------------------------------------------------------------------------------------------
-A text sprite that is shown in the field with a pop-up animation.
+-- A text sprite that is shown in the field with a pop-up animation.
 
 =================================================================================================]]
 

@@ -3,8 +3,8 @@
 
 @classmod Stack
 ---------------------------------------------------------------------------------------------------
-A stack datatype implementation. See more in:
-http://en.wikipedia.org/wiki/Stack_(abstract_data_type)
+-- A stack datatype implementation. See more in:
+-- http://en.wikipedia.org/wiki/Stack_(abstract_data_type)
 
 =================================================================================================]]
 

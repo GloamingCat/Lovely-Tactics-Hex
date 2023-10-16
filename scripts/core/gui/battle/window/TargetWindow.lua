@@ -3,7 +3,7 @@
 
 @classmod TargetWindow
 ---------------------------------------------------------------------------------------------------
-Window that shows when the battle cursor is over a character.
+-- Window that shows when the battle cursor is over a character.
 
 =================================================================================================]]
 

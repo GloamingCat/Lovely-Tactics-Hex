@@ -3,9 +3,9 @@
 
 @classmod CharacterBase
 ---------------------------------------------------------------------------------------------------
-A Character is a dynamic object stored in the tile. It may be passable or not, and have an image 
-or not. Player may also interact with this.
-A CharacterBase provides very basic functions that are necessary for every character.
+-- A Character is a dynamic object stored in the tile. It may be passable or not, and have an image 
+-- or not. Player may also interact with this.
+-- A CharacterBase provides very basic functions that are necessary for every character.
 
 =================================================================================================]]
 
@@ -62,9 +62,11 @@ function CharacterBase:init(instData, save)
   self:addToTiles()
 end
 --- Sets generic properties.
+-- @tparam table instData The info about the character's instance.
 -- @tparam string name The name of the character.
 -- @tparam table tiles A list of collision tiles.
 -- @tparam number colliderHeight Collider's height in height units.
+-- @tparam table save The instance's save data.
 function CharacterBase:initProperties(instData, name, tiles, colliderHeight, save)
   self.name = name
   self.collisionTiles = tiles

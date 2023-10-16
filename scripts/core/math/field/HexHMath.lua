@@ -3,7 +3,7 @@
 
 @classmod HexHMath
 ---------------------------------------------------------------------------------------------------
-Implements a FieldMath specially to isometric and hexagonal fields.
+-- Implements a FieldMath specially to isometric and hexagonal fields.
 
 =================================================================================================]]
 

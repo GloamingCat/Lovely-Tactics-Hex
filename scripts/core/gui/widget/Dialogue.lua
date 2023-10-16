@@ -3,12 +3,12 @@
 
 @classmod Dialogue
 ---------------------------------------------------------------------------------------------------
-A GUI text that is written character by character and interacts with text events and player input.
-
+-- A GUI text that is written character by character and interacts with text events and player input.
+-- 
 Event codes:
-{p} = pauses text drawing until player input;
-{tx} = pauses text drawing by x frames;
-{ax} = plays SFX (x must be a key in the global Config.sounds table).
+--  * {p} = pauses text drawing until player input;
+--  * {tx} = pauses text drawing by x frames;
+--  * {ax} = plays SFX (x must be a key in the global Config.sounds table).
 
 =================================================================================================]]
 

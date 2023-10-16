@@ -3,8 +3,8 @@
 
 @classmod FieldManager
 ---------------------------------------------------------------------------------------------------
-Responsible for drawing and updating the current field, and also loading and storing fields from 
-game's data.
+-- Responsible for drawing and updating the current field, and also loading and storing fields from 
+-- game's data.
 
 =================================================================================================]]
 
