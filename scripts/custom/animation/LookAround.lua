@@ -1,16 +1,16 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod LookAround
----------------------------------------------------------------------------------------------------
--- An animation that randomly switches row.
+--- An animation that randomly switches row.
 -- 
 -- Animation parameters:
-* <freq> is the frequency (in frames) in which the row is switched. By default, it's the duration 
-of the animation.
-* <rows> is an optional list of possible rows (by default, any row).
+--  * <freq> is the frequency (in frames) in which the row is switched. By default, it's the
+--  duration of the animation.
+--  * <rows> is an optional list of possible rows (by default, any row).
+-- ------------------------------------------------------------------------------------------------
+-- @classmod LookAround
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Animation = require('core/graphics/Animation')

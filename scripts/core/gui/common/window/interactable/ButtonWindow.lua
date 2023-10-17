@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod ButtonWindow
----------------------------------------------------------------------------------------------------
--- Shows a list of custom choices.
+--- Shows a list of custom choices.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod ButtonWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Button = require('core/gui/widget/control/Button')
@@ -20,8 +20,11 @@ local ButtonWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
-function ButtonWindow:init(gui, names, align, ...)
+-- @tparam GUI parent Parent GUI.
+-- @tparam table names A list of the names (keys) of the buttons.
+-- @tparam string align The horizontal alignment of the text in the buttons.
+-- @param ... Other parameters from the GridWindow constructor.
+function ButtonWindow:init(parent, names, align, ...)
   if type(names) == 'string' then
     self.buttonNames = {names}
     self.noCursor = true
@@ -30,7 +33,7 @@ function ButtonWindow:init(gui, names, align, ...)
     self.buttonNames = names
   end
   self.align = align or 'center'
-  GridWindow.init(self, gui, ...)
+  GridWindow.init(self, parent, ...)
   self.offBoundsCancel = false
   self.active = true
 end

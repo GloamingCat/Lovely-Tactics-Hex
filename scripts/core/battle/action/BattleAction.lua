@@ -1,15 +1,15 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod BattleAction
----------------------------------------------------------------------------------------------------
--- A class that holds the behavior of a battle action: what happens when the players first chooses 
+--- A class that holds the behavior of a battle action: what happens when the players first chooses 
 -- the action, or if that action need grid selecting, if so, what tiles are selectable, etc.
 -- Examples of battle actions: Move Action (needs grid and only blue tiles are selectables), Escape 
 -- Action (doesn't need grid, and instead opens a confirm window), Call Action (only team tiles), 
 -- etc. 
+-- ------------------------------------------------------------------------------------------------
+-- @classmod BattleAction
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local FieldAction = require('core/battle/action/FieldAction')

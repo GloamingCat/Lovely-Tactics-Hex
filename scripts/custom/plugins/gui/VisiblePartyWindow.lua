@@ -1,13 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@script VisiblePartyWindow
----------------------------------------------------------------------------------------------------
--- Makes the PartyWindow in the FieldGUI visible alongside the FieldCommandWindow.
+--- Makes the PartyWindow in the FieldGUI visible alongside the FieldCommandWindow.
 -- 
 -- Use this together with the MemberCommandWindow script for better fit.
+-- ------------------------------------------------------------------------------------------------
+-- @plugin VisiblePartyWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local FieldGUI = require('core/gui/menu/FieldGUI')

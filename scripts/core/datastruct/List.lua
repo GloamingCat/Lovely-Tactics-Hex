@@ -1,12 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod List
----------------------------------------------------------------------------------------------------
--- A list datatype implementation. See more in:
+--- A list datatype implementation. See more in:
 -- http://en.wikipedia.org/wiki/List_(abstract_data_type)
+-- ------------------------------------------------------------------------------------------------
+-- @classmod List
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Alias
 local insert = table.insert
@@ -38,6 +38,7 @@ end
 
 --- Insert new element to the list.
 -- @tparam unknown element The new element.
+-- @tparam number pos The position to insert the element (optional, use append to end by default).
 function List:add(element, pos)
   assert(element, 'Element cannot be nil')
   if pos then
@@ -180,7 +181,7 @@ function List:iterator()
   end
 end
 --- Call all items with given arguments (items must be all functions).
--- @tparam(...) Call arguments.
+-- @param ...  Call arguments.
 function List:notify(...)
   for i = 1, self.size do
     self[i](...)

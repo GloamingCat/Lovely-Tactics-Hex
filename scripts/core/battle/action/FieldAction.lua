@@ -1,14 +1,14 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod FieldAction
----------------------------------------------------------------------------------------------------
--- An abstract action where the player selects a tile in the field grid.
+--- An abstract action where the player selects a tile in the field grid.
 -- The method <execute> defines what happens when player confirms the selected tile.
 -- The method <isSelectable> checks if a tile is valid to be chosen or not.
 -- When called outsite of battle, the tiles' graphics must be set up before using.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod FieldAction
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Alias
 local mathf = math.field

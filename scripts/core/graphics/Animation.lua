@@ -1,12 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod Animation
----------------------------------------------------------------------------------------------------
--- An Animation updates the quad of the associated Sprite, assuming that the texture of the sprite 
+--- An Animation updates the quad of the associated Sprite, assuming that the texture of the sprite 
 -- is a spritesheet.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod Animation
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Sprite = require('core/graphics/Sprite')
@@ -25,6 +25,7 @@ local Animation = class()
 
 --- Constructor.
 -- @tparam Sprite sprite The sprite that this animation if associated to.
+-- @tparam table data The animation's data from data (optional).
 function Animation:init(sprite, data)
   self.sprite = sprite
   self.data = data

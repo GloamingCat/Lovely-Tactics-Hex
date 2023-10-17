@@ -1,15 +1,15 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@script DoubleClickDash
----------------------------------------------------------------------------------------------------
--- Makes player dash when double-clicking to a destination tile.
+--- Makes player dash when double-clicking to a destination tile.
 -- 
 -- Plugin parameters:
 --  * When <player> is true, it affects the player movement.
 --  * When <spinner> is true, it affects the spinner change.
+-- ------------------------------------------------------------------------------------------------
+-- @plugin DoubleClickDash
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local GameKey = require('core/input/GameKey')

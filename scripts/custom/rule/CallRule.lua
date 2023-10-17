@@ -1,15 +1,15 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod CallRule
----------------------------------------------------------------------------------------------------
--- The rule for an AI that removes character from battle field.
+--- The rule for an AI that removes character from battle field.
 -- 
 -- Parameters:
 --  * The <member> as a boolean formula to only consider the members that satifies it. 
 --  * Set <reset> as true to discard any saved changes on the called member.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod CallRule
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
@@ -24,7 +24,7 @@ local CallRule = class(AIRule)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam(...) AIRule constructor arguments.
+-- @param ...  AIRule constructor arguments.
 function CallRule:init(...)
   AIRule.init(self, ...)
   if self.tags and self.tags.member then

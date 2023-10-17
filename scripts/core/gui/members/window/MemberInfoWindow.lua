@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod MemberInfoWindow
----------------------------------------------------------------------------------------------------
--- A window that shows HP and MP of a troop member.
+--- A window that shows HP and MP of a troop member.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod MemberInfoWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local MemberInfo = require('core/gui/widget/data/MemberInfo')
@@ -23,7 +23,7 @@ local MemberInfoWindow = class(Window)
 
 --- Constructor.
 -- @tparam Battler member The initial member.
--- @tparam(...) Other default parameters from Window:init.
+-- @param ...  Other default parameters from Window:init.
 function MemberInfoWindow:init(member, ...)
   self.member = member
   Window.init(self, ...)

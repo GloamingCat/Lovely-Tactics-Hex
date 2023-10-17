@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod ListWindow
----------------------------------------------------------------------------------------------------
--- A Button Window that has its buttons generated automatically given a list of arbitrary elements.
+--- A Button Window that has its buttons generated automatically given a list of arbitrary elements.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod ListWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local GridWindow = require('core/gui/GridWindow')
@@ -18,6 +18,7 @@ local ListWindow = class(GridWindow)
 -- -------------------------------------------------------------------------------------------------
 
 --- Overrides GridWindow:init.
+-- @tparam GUI parent Parent GUI.
 -- @tparam table list Array of data used to create each button.
 function ListWindow:init(parent, list, ...)
   self.list = list

@@ -1,12 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod PartyWindow
----------------------------------------------------------------------------------------------------
--- A button window that shows all the visibles members in the troop.
+--- A button window that shows all the visibles members in the troop.
 -- It selected one of the member to manage with MemberGUI.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod PartyWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Button = require('core/gui/widget/control/Button')
@@ -22,13 +22,14 @@ local PartyWindow = class(ListWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Gets the member list from the troop.
+--- Constructor. Gets the member list from the troop.
+-- @tparam GUI parent Parent GUI.
 -- @tparam Troop troop
-function PartyWindow:init(gui, troop)
+function PartyWindow:init(parent, troop)
   self.visibleRowCount = GameManager:isMobile() and 3 or 4
   local list = troop:visibleBattlers()
   self.troop = troop
-  ListWindow.init(self, gui, list)
+  ListWindow.init(self, parent, list)
 end
 --- Overrides GridWindow:setProperties.
 --- Initialized tooltip.

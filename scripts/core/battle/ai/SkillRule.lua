@@ -1,13 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod SkillRule
----------------------------------------------------------------------------------------------------
--- An AIRule that executes a skill. 
+--- An AIRule that executes a skill. 
 -- The skill is defined by the tag field "id", which means the id-th skill of 
 -- the battler. If there's no such field, it will use battler's attack skill.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod SkillRule
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
@@ -21,7 +21,7 @@ local SkillRule = class(AIRule)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam(...) AIRule constructor arguments.
+-- @param ...  AIRule constructor arguments.
 function SkillRule:init(...)
   AIRule.init(self, ...)
   local id = self.tags and tonumber(self.tags.id)

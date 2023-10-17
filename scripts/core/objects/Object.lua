@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod Object
----------------------------------------------------------------------------------------------------
--- A common class for obstacles and characters.
+--- A common class for obstacles and characters.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod Object
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Sprite = require('core/graphics/Sprite')
@@ -29,6 +29,7 @@ local Object = class(Transformable)
 
 --- Constructor.
 -- @tparam table data Data from file (obstacle or character).
+-- @tparam Vector pos The position of the object in world coordinates.
 function Object:init(data, pos)
   Transformable.init(self, pos)
   self.data = data

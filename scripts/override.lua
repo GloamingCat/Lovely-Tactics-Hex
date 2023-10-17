@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@script Overrides
----------------------------------------------------------------------------------------------------
--- Overrides a few functions from standard libraries.
+--- Overrides a few functions from standard libraries.
+-- ------------------------------------------------------------------------------------------------
+-- @script Overrides
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- ------------------------------------------------------------------------------------------------
 -- String
@@ -64,7 +64,7 @@ local FunctionCache = {}
 
 --- Overrides Lua's native function to store string in cache if already compiled.
 -- @tparam string str The string chunk.
--- @tparam(...) Any other parameters to the original loadstring function.
+-- @param ...  Any other parameters to the original loadstring function.
 -- @treturn function The function that executes the chunk in the string.
 local old_loadstring = loadstring
 function loadstring(str, ...)

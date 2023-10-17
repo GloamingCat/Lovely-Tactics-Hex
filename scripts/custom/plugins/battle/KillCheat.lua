@@ -1,16 +1,16 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@script KillCheat
----------------------------------------------------------------------------------------------------
--- Adds a key to kill all enemies in the nuxt turn during battle.
+--- Adds a key to kill all enemies in the nuxt turn during battle.
 -- Used to skip battles during game test.
 -- 
 -- Plugin parameters:
 --  * When player presses the button key <win>, all enemy characters die.
 --  * When player presses the button key <lose>, all ally characters die.
+-- ------------------------------------------------------------------------------------------------
+-- @plugin KillCheat
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local TurnManager = require('core/battle/TurnManager')

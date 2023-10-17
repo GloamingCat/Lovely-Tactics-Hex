@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod Troop
----------------------------------------------------------------------------------------------------
--- Manipulates the matrix of battler IDs to the instatiated in the beginning of the battle.
+--- Manipulates the matrix of battler IDs to the instatiated in the beginning of the battle.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod Troop
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Battler = require('core/battle/battler/Battler')
@@ -151,7 +151,7 @@ function Troop:battlerCount(id)
   return count
 end
 --- Adds a new member to the troop.
--- @tparam table member Member data.
+-- @tparam table member The troop unit data of the character.
 -- @tparam Battler battler Member's battler (optional).
 function Troop:addMember(member, battler)
   self.members[member.key] = member

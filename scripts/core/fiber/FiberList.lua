@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod FiberList
----------------------------------------------------------------------------------------------------
--- A List of Fibers. Must be updated every frame.
+--- A List of Fibers. Must be updated every frame.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod FiberList
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local EventSheet = require('core/fiber/EventSheet')
@@ -53,7 +53,7 @@ end
 
 --- Creates new Fiber from function.
 -- @tparam function func The function of the Fiber.
--- @tparam(...) Any arguments to the function.
+-- @param ...  Any arguments to the function.
 -- @treturn Fiber The newly created Fiber.
 function FiberList:fork(func, ...)
   return Fiber(self, func, ...)

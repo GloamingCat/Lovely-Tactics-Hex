@@ -1,14 +1,14 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod TroopManager
----------------------------------------------------------------------------------------------------
--- Creates and manages battle troops.
+--- Creates and manages battle troops.
 -- Parties are troop slots in the field, and they are identified by a number from 0 to the total
 -- number of parties minus 1.
 -- A troop contains member information and can be instantied in any party.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod TroopManager
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Animation = require('core/graphics/Animation')

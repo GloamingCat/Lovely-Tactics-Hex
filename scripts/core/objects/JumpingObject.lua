@@ -1,13 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod JumpingObject
----------------------------------------------------------------------------------------------------
--- A directed, animated, walking object with jump methods.
+--- A directed, animated, walking object with jump methods.
 -- It is not responsible for checking collisions or updating tile object lists. These must be 
 -- handled outside of these methods.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod JumpingObject
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local WalkingObject = require('core/objects/WalkingObject')

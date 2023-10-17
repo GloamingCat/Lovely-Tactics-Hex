@@ -1,13 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@module PathFinder
--- ------------------------------------------------------------------------------------------------
--- A module with graph algorithms used for grids during battle.
+--- A module with graph algorithms used for grids during battle.
 -- Some parts of the algorithm used abstract functions from MoveAction class, so any action used in 
 -- this module must inherit from this class.
+-- ------------------------------------------------------------------------------------------------
+-- @module PathFinder
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local List = require('core/datastruct/List')
@@ -32,7 +32,11 @@ local PathFinder = {}
 --    isPassableBetween(initial, final)
 --    getDistanceBetween(initial, final)
 --    isStandable(tile).
--- @tparam Tile initial The start tile (optional).
+-- @tparam Character user The character that will follow this path.
+-- @tparam ObjectTile initial The start tile (optional, user's current tile by default).
+-- @tparam number w Grid's width (optional, current field's width by default).
+-- @tparam number h Grid's height (optional, current field's height by default).
+-- @tparam number d Grid's depth (optional, current field's depth by default).
 -- @treturn Matrix The path matrix.
 function PathFinder.dijkstra(action, user, initial, w, h, d)
   user = user or TurnManager:currentCharacter()
@@ -80,9 +84,9 @@ end
 --    isFinal(tile, final, user) : boolean
 --    getDistanceBetween(initial, final, user) : number
 --    estimateCost(initial, final, user) : number.
--- @tparam Character user
--- @tparam ObjectTile target
--- @tparam ObjectTile initial The start tile (optional).
+-- @tparam Character user The character that will follow this path.
+-- @tparam ObjectTile target The tile that would be final if reachable.
+-- @tparam ObjectTile initial The start tile (optional, user's current tile by default).
 -- @tparam boolean ignoreDistance Flag to ignore maximum distance (false by default).
 -- @tparam number w Grid's width (optional, current field's width by default).
 -- @tparam number h Grid's height (optional, current field's height by default).

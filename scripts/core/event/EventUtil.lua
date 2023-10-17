@@ -1,14 +1,14 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@module EventUtil
----------------------------------------------------------------------------------------------------
--- Utility functions that are loaded from the EventSheet.
+--- Utility functions that are loaded from the EventSheet.
 -- This is intended to be a private module. Do not call require on this script directly from a
 -- plugin.
 -- When overriding a utility function, override it on EventSheet class instead.
+-- ------------------------------------------------------------------------------------------------
+-- @module EventUtil
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')

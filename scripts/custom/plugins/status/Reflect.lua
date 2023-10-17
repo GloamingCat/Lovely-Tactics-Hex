@@ -1,9 +1,7 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@script Reflect
----------------------------------------------------------------------------------------------------
--- Makes a skill reflect to the user.
+--- Makes a skill reflect to the user.
 -- 
 -- Plugin parameters:
 --  * When a character reflects a skill, the animation given by <anim> is played in the character's
@@ -19,8 +17,10 @@
 --  * Statuses with <reflect> tag makes the characters reflect the next skill. The status is
 --  removed if a skill is reflected.
 --  * Set <removeOnUse> to true to limit the reflection to one use.
+-- ------------------------------------------------------------------------------------------------
+-- @plugin Reflect
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')

@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod AttributeSet
----------------------------------------------------------------------------------------------------
--- Represents a set of battler attributes, stored by key.
+--- Represents a set of battler attributes, stored by key.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod AttributeSet
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Alias
 local copyTable = util.table.shallowCopy
@@ -19,6 +19,7 @@ local AttributeSet = class()
 
 --- Constructor.
 -- @tparam Battler battler The battler with this attribute set.
+-- @tparam table save The attribute set's save data.
 function AttributeSet:init(battler, save)
   self.battler = battler
   self.jobBase = {}

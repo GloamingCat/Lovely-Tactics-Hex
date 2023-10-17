@@ -1,13 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod CharacterBase
----------------------------------------------------------------------------------------------------
--- A Character is a dynamic object stored in the tile. It may be passable or not, and have an image 
+--- A Character is a dynamic object stored in the tile. It may be passable or not, and have an image 
 -- or not. Player may also interact with this.
 -- A CharacterBase provides very basic functions that are necessary for every character.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod CharacterBase
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Interactable = require('core/objects/Interactable')
@@ -26,6 +26,7 @@ local CharacterBase = class(JumpingObject, Interactable)
 
 --- Constructor.
 -- @tparam table instData The character's instance data from field file.
+-- @tparam table save The instance's save data.
 function CharacterBase:init(instData, save)
   assert(not (save and save.deleted), 'Deleted character.')
   -- Character data

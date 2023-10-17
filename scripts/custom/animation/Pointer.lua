@@ -1,15 +1,15 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod Pointer
----------------------------------------------------------------------------------------------------
--- A sprite that points in a given direction (vertical or horizontal).
+--- A sprite that points in a given direction (vertical or horizontal).
 -- 
 -- Animation parameters:
 --  * The amount of pixels moved in the horizontal direction is set by <dx>.
 --  * The amount of pixels moved in the vertical direction is set by <dy>.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod Pointer
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Animation = require('core/graphics/Animation')
@@ -25,7 +25,7 @@ local Pointer = class(Animation)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
--- @tparam(...) parameters from Animation:init.
+-- @param ...  parameters from Animation:init.
 function Pointer:init(...)
   Animation.init(self, ...)
   local centerx = self.sprite.offsetX

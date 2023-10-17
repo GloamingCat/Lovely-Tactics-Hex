@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod VisualizeGUI
----------------------------------------------------------------------------------------------------
--- GUI that is shown when player selects a battler during Visualize action.
+--- GUI that is shown when player selects a battler during Visualize action.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod VisualizeGUI
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local BattlerWindow = require('core/gui/common/window/BattlerWindow')
@@ -19,6 +19,7 @@ local VisualizeGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides GUI:init.
+-- @tparam GUI parent Parent GUI.
 -- @tparam Character character Member's character in the battle field.
 function VisualizeGUI:init(parent, character)
   self.name = 'Visualize GUI'

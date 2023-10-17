@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod Colorable
----------------------------------------------------------------------------------------------------
--- An object with color properties.
+--- An object with color properties.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod Colorable
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Class table.
 local Colorable = class()
@@ -16,6 +16,7 @@ local Colorable = class()
 
 --- Initalizes color.
 -- @tparam table color A color table containing {red, green, blue, alpha} components (optional).
+-- @tparam table hsv A color table containing {h, s, v} components (optional).
 function Colorable:initColor(color, hsv)
   color = color or { red = 1, green = 1, blue = 1, alpha = 1 }
   self.hsv = hsv or { h = 0, s = 1, v = 1 }

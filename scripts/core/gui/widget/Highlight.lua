@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod Hightlight
----------------------------------------------------------------------------------------------------
--- The light background that is visible behind the selected widget.
+--- The light background box that is visible behind the selected widget.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod Hightlight
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Component = require('core/gui/Component')
@@ -22,6 +22,10 @@ local Highlight = class(Component, Transformable)
 
 --- Constructor.
 -- @tparam GridWindow window Parent window.
+-- @tparam number width The width of the box in pixels.
+-- @tparam number height The height of the box in pixels.
+-- @tparam Vector pos The position of the top left corner of the box
+--  (optional, only used if the window parent is nil).
 function Highlight:init(window, width, height, pos)
   if window then
     local mx = window:colMargin() / 2 + 6

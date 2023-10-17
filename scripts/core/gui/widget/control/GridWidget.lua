@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod GridWidget
----------------------------------------------------------------------------------------------------
--- Generic widget for windows (like button or spinner).
+--- Generic widget for windows (like button or spinner).
+-- ------------------------------------------------------------------------------------------------
+-- @classmod GridWidget
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Component = require('core/gui/Component')
@@ -24,7 +24,6 @@ local GridWidget = class(Component)
 
 --- Constructor.
 -- @tparam GridWindow window The window this widget belongs to.
--- @tparam number index The child index of this widget.
 function GridWidget:init(window)
   Component.init(self)
   local index = #window.matrix + 1

@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod StatusList
----------------------------------------------------------------------------------------------------
--- A special kind of list that provides functions to manage battler's list of status effects.
+--- A special kind of list that provides functions to manage battler's list of status effects.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod StatusList
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Affine = require('core/math/Affine')
@@ -25,7 +25,7 @@ local StatusList = class(List)
 
 --- Constructor.
 -- @tparam Battler battler The battler whose this list belongs to.
--- @tparam table initialStatus The array with the battler's initiat status (optional).
+-- @tparam table save The status list's save data.
 function StatusList:init(battler, save)
   List.init(self)
   self.battler = battler
@@ -296,7 +296,7 @@ end
 
 --- Called when the turn of the character starts.
 -- @tparam Character char The Character associated with this StatusList (optional).
--- @tparam(...) Other parameters to the callback.
+-- @param ...  Other parameters to the callback.
 function StatusList:onTurnStart(char, ...)
   local i = 1
   while i <= self.size do
@@ -316,7 +316,7 @@ end
 
 --- Calls a certain function in all statuses in the list.
 -- @tparam string name The name of the event.
--- @tparam(...) Other parameters to the callback.
+-- @param ...  Other parameters to the callback.
 function StatusList:callback(name, ...)
   local i = 1
   name = 'on' .. name

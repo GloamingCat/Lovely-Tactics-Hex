@@ -1,12 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod SpriteGrid
----------------------------------------------------------------------------------------------------
--- A group of sprites created from a 9-sliced skin.
+--- A group of sprites created from a 9-sliced skin.
 -- Each animation frame should contain within itself all 9 slices.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod SpriteGrid
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Sprite = require('core/graphics/Sprite')
@@ -25,6 +25,7 @@ local SpriteGrid = class()
 
 --- Constructor.
 -- @tparam table skin Skin's animation data.
+-- @tparam Vector relativePos The position of the grid relative to its parent.
 function SpriteGrid:init(skin, relativePos)
   self.skin = skin
   self.position = relativePos or Vector(0, 0)

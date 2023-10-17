@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod PopText
----------------------------------------------------------------------------------------------------
--- A text sprite that is shown in the field with a pop-up animation.
+--- A text sprite that is shown in the field with a pop-up animation.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod PopText
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Text = require('core/graphics/Text')
@@ -23,7 +23,7 @@ local PopText = class()
 --- Constructor. Starts with no lines.
 -- @tparam number x Origin pixel x.
 -- @tparam number y Origin pixel y.
--- @tparam number z Origin pixel z (depth).
+-- @tparam Renderer renderer The target renderer.
 function PopText:init(x, y, renderer)
   self.x = x
   self.y = y

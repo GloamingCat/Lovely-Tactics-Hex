@@ -1,9 +1,7 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod KeyPoint
----------------------------------------------------------------------------------------------------
--- Rigged-like animation using transformation key points.
+--- Rigged-like animation using transformation key points.
 -- 
 -- Animation parameters:
 --  * All keypoints are defined by <kp> tag.
@@ -17,8 +15,10 @@
 --  * FIELD is case-sensitive.
 --  * Scale and RGBA values are in 0-1 range, as well as saturation and brightness.
 --  * Rotation is in radians.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod KeyPoint
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Animation = require('core/graphics/Animation')
@@ -30,7 +30,7 @@ local KeyPoint = class(Animation)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
--- @tparam(...) parameters from Animation:init.
+-- @param ...  parameters from Animation:init.
 function KeyPoint:init(...)
   Animation.init(self, ...)
   self.keyPoints = {}
@@ -44,7 +44,7 @@ end
 --- Adds a new transformation key point.
 -- @tparam number|string t Time in frames.
 -- @tparam string field Transformation field (see instructions above).
--- @tparam(...) Target values.
+-- @param ...  Target values.
 function KeyPoint:addKeyPoint(t, field, ...)
   local params = {...}
   for i = 1, #params do

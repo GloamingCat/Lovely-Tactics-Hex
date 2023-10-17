@@ -1,13 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod ActionWindow
----------------------------------------------------------------------------------------------------
--- A window that implements common methods for battle windows that start an action execution 
+--- A window that implements common methods for battle windows that start an action execution 
 -- (TurnWindow, ActionSkillWindow, ActionItemWindow and IntroWindow).
 -- Its result is the result data returned by the action.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod ActionWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local ActionGUI = require('core/gui/battle/ActionGUI')
@@ -26,8 +26,9 @@ local ActionWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Select an action.
--- @tparam class actionType The class of the action.
+-- @tparam BattleAction action The action to the executed on button selection.
 --  (must inherit from BattleAction) 
+-- @tparam ActionInput input User's input data (optional, creates new by default).
 function ActionWindow:selectAction(action, input)
   -- Executes action grid selecting.
   input = input or ActionInput(nil, TurnManager:currentCharacter(), nil, self.GUI)
@@ -46,6 +47,8 @@ function ActionWindow:selectAction(action, input)
   end
 end
 --- Checks if a given skill action is enabled to use.
+-- @tparam SkillAction skill
+-- @treturn boolean
 function ActionWindow:skillActionEnabled(skill)
   if skill.freeNavigation then
     return true

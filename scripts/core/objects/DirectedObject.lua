@@ -1,13 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod DirectedObject
----------------------------------------------------------------------------------------------------
--- An object with a direction. It uses the animation's rows to set the direction of the sprite.
+--- An object with a direction. It uses the animation's rows to set the direction of the sprite.
 -- The animation must contain 8 rows, each row representing a direction. The direction of a row r
 -- (a value from 0 to 7) is (r * 45).
+-- ------------------------------------------------------------------------------------------------
+-- @classmod DirectedObject
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local AnimatedObject = require('core/objects/AnimatedObject')

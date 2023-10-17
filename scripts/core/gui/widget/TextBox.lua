@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod TextBox
----------------------------------------------------------------------------------------------------
--- Box to input a one-line string. 
+--- Box to input a one-line string. 
+-- ------------------------------------------------------------------------------------------------
+-- @classmod TextBox
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Highlight = require('core/gui/widget/Highlight')
@@ -22,7 +22,10 @@ local TextBox = class(SimpleText)
 
 --- Constructor.
 -- @tparam GridWindow window The window this text box belongs to.
-function TextBox:init(window, initStr, position, width)
+-- @tparam string initStr The initial text in the box.
+-- @tparam Vector pos The position of the box's top left corner in pixels, relative to the window.
+-- @tparam number width The width of the box in pixels.
+function TextBox:init(window, initStr, pos, width)
   self.input = initStr
   self.cursorPoint = #initStr + 1
   self.cursorVisible = true
@@ -31,7 +34,7 @@ function TextBox:init(window, initStr, position, width)
   self.cancelSound = Config.sounds.buttonCancel
   self.errorSound = Config.sounds.buttonError
   self.window = window
-  SimpleText.init(self, initStr .. '{u} {u}', position, width, 'left', Fonts.gui_button)
+  SimpleText.init(self, initStr .. '{u} {u}', pos, width, 'left', Fonts.gui_button)
 end
 --- Overrides SimpleText:createContent.
 --- Creates highlight.

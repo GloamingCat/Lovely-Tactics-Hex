@@ -1,13 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod Interactable
----------------------------------------------------------------------------------------------------
--- Base methods for objects with start/collision/interaction scripts.
+--- Base methods for objects with start/collision/interaction scripts.
 -- It is created from a instance data table, which contains (x, y, h) coordinates, scripts, and 
 -- passable and persistent properties.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod Interactable
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local FiberList = require('core/fiber/FiberList')
@@ -22,6 +22,7 @@ local Interactable = class()
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam table instData Instance data from field file.
 -- @tparam table save Persistent data from save file (optional).
 function Interactable:init(instData, save)
@@ -40,6 +41,7 @@ function Interactable:init(instData, save)
 end
 --- Creates listeners from instance data.
 -- @tparam table instData Instance data from field file.
+-- @tparam table save Persistent data from save file (optional).
 function Interactable:initScripts(instData, save)
   self.fiberList = FiberList(self)
   self.collider = save and save.collider
@@ -92,6 +94,7 @@ function Interactable:destroy(permanent)
     FieldManager:storeCharData(FieldManager.currentField.id, self)
   end
 end
+--- String representation.
 -- @treturn string String representation (for debugging).
 function Interactable:__tostring()
   return 'Interactable: ' .. self.key

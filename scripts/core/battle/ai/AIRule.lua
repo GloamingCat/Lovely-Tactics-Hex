@@ -1,13 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod AIRule
----------------------------------------------------------------------------------------------------
--- A rule that defines a decision in the battle turn, storing only data that are independent from 
+--- A rule that defines a decision in the battle turn, storing only data that are independent from 
 -- the current battle state. Instead of storing state-dependent data, it generates in run time the
 -- ActionInput to be used according to the state.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod AIRule
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
@@ -22,6 +22,10 @@ local AIRule = class()
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
+-- @tparam Battler battler The battler executing this rule.
+-- @tparam string condition The condition expression that decides if this rule should be executed now.
+-- @tparam table tags Array of tag entries.
 function AIRule:init(battler, condition, tags)
   self.battler = battler
   self.condition = condition
@@ -30,6 +34,7 @@ function AIRule:init(battler, condition, tags)
 end
 --- Creates an AIRule from the given rule data.
 -- @tparam table data Rule data with path, param and condition fields.
+-- @tparam Battler battler The battler executing this rule.
 -- @treturn AIRule
 function AIRule:fromData(data, battler)
   local class = self

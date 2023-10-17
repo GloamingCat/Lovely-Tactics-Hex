@@ -1,21 +1,21 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@module TextParser
----------------------------------------------------------------------------------------------------
--- Module to parse a rich text string to generate table of fragments.
+--- Module to parse a rich text string to generate table of fragments.
 -- 
 -- Rich text codes:
---  * {i} = set italic;
---  * {b} = set bold;
---  * {u} = set underlined;
---  * {+x} = increases font size by x points;
---  * {-x} = decreases font size by x points;
---  * {fx} = set font (x must be a key in the global Fonts table);
---  * {cx} = sets the color (x must be a key in the global Color table);
---  * {sx} = shows an icon image (x must be a key in the Config.icons table).
+--  * {i} -> set italic;
+--  * {b} -> set bold;
+--  * {u} -> set underlined;
+--  * {+x} -> increases font size by x points;
+--  * {-x} -> decreases font size by x points;
+--  * {fx} -> set font (x must be a key in the global Fonts table);
+--  * {cx} -> sets the color (x must be a key in the global Color table);
+--  * {sx} -> shows an icon image (x must be a key in the Config.icons table).
+-- ------------------------------------------------------------------------------------------------
+-- @module TextParser
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Alias
 local insert = table.insert
@@ -30,6 +30,7 @@ local TextParser = {}
 --- Split raw text into an array of fragments.
 -- @tparam string text Raw text.
 -- @tparam boolean plainText When true, will not parse commands (optional, false by default).
+-- @tparam table fragments Array of raw fragments (optional, creates an empty one by default).
 -- @treturn table Array of fragments.
 function TextParser.parse(text, plainText, fragments)
   local vars = Config.variables

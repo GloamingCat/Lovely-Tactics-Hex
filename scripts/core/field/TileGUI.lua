@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod TileGUI
----------------------------------------------------------------------------------------------------
--- ObjectTile graphics for battle interface.
+--- ObjectTile graphics for battle interface.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod TileGUI
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local TileGraphic = require('core/field/TileGraphic')
@@ -22,6 +22,8 @@ local TileGUI = class()
 
 --- Constructor.
 -- @tparam ObjectTile tile The tile this object belongs to.
+-- @tparam data baseAnim The animation data for the tile's base image.
+-- @tparam data highlightAnim The animation data for the tile's selection highlight.
 function TileGUI:init(tile, baseAnim, highlightAnim)
   local x, y, z = tile.center:coordinates()
   if baseAnim and Config.animations.tile >= 0 then

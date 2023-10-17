@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod EquipItemWindow
----------------------------------------------------------------------------------------------------
--- A window that shows the possible items to equip.
+--- A window that shows the possible items to equip.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod EquipItemWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local List = require('core/datastruct/List')
@@ -21,13 +21,15 @@ local EquipItemWindow = class(InventoryWindow)
 -- -------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui
--- @tparam number w Window's width (optional).
--- @tparam number h Window's height (optional).
+-- @tparam GUI parent Parent GUI.
+-- @tparam number w Window's width in pixels(optional).
+-- @tparam number h Window's height in pixels(optional).
 -- @tparam Vector pos Position of the window's center (optional).
-function EquipItemWindow:init(gui, w, h, pos, rowCount, member)
-  self.member = member or gui:currentMember()
-  InventoryWindow.init(self, gui, nil, gui.inventory, {}, w, h, pos, rowCount)
+-- @tparam number rowCount The number of buttons.
+-- @tparam table member The troop unit data of the character.
+function EquipItemWindow:init(parent, w, h, pos, rowCount, member)
+  self.member = member or parent:currentMember()
+  InventoryWindow.init(self, parent, nil, gui.inventory, {}, w, h, pos, rowCount)
 end
 --- Overrides ListWindow:createWidgets.
 --- Adds the "unequip" button.
@@ -55,11 +57,14 @@ end
 -- General
 -- -------------------------------------------------------------------------------------------------
 
--- @tparam Battler member
-function EquipItemWindow:setBattler(battler)
-  self.member = battler
+--- Sets the selected member.
+-- @tparam table member The troop unit data of the character.
+function EquipItemWindow:setBattler(member)
+  self.member = member
 end
--- @tparam string slot
+--- Sets the selected slot. 
+-- @tparam string key Key of the specific slot.
+-- @tparam data slot Info about the slot.
 function EquipItemWindow:setSlot(key, slot)
   self.slotKey = key
   self.slotType = slot

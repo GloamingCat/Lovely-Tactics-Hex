@@ -1,9 +1,7 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@script HideCursorOnMobile
----------------------------------------------------------------------------------------------------
--- Hides window cursor and button highlight when on mobile.
+--- Hides window cursor and button highlight when on mobile.
 -- Possible values for visibility type:
 --  * 'hide' -> always invisible;
 --  * 'list' -> visible on windows of type ListWindow only;
@@ -12,8 +10,10 @@
 -- Plugin parameters:
 --  * Tag <cursor> sets the visibility type of the button cursor. The default type is 'list'.
 --  * Tag <highlight> sets the visibility type of the button highlight. The default type is 'hide'.
+-- ------------------------------------------------------------------------------------------------
+-- @plugin HideCursorOnMobile
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Highlight = require('core/gui/widget/Highlight')

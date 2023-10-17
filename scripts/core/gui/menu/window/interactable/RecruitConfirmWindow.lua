@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod RecruitConfirmWindow
----------------------------------------------------------------------------------------------------
--- Window that shows the total price to be paidin the Recruit GUI.
+--- Window that shows the total price to be paidin the Recruit GUI.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod RecruitConfirmWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Battler = require('core/battle/battler/Battler')
@@ -38,6 +38,7 @@ end
 -- Item
 -- ------------------------------------------------------------------------------------------------
 
+--- Sets the selected character. Creates a new Battler for the character.
 -- @tparam table char Character data from database.
 -- @tparam number price Price to hire.
 function RecruitConfirmWindow:setChar(char, price)
@@ -50,7 +51,8 @@ function RecruitConfirmWindow:setChar(char, price)
   self.char = char
   self.price = price
 end
--- @tparam table member Member data from troop.
+--- Sets the selected member.
+-- @tparam table member The troop unit data of the new character.
 -- @tparam number price Money received to dismiss.
 function RecruitConfirmWindow:setMember(member, price)
   self:setBattler(self.GUI.troop.battlers[member.key])
@@ -62,6 +64,7 @@ end
 -- Confirm Callbacks
 -- ------------------------------------------------------------------------------------------------
 
+--- Confirms the hire action.
 function RecruitConfirmWindow:onConfirm()
   AudioManager:playSFX(Config.sounds.buy)
   self:apply()

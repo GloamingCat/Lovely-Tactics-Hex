@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod Text
----------------------------------------------------------------------------------------------------
--- A special type of Sprite which texture if a rendered text.
+--- A special type of Sprite which texture if a rendered text.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod Text
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Sprite = require('core/graphics/Sprite')
@@ -28,14 +28,13 @@ local Text = class(Sprite)
 
 --- Constructor.
 -- @tparam string text The rich text.
--- @tparam table resources Table of resources used in text.
--- @tparam Renderer renderer The destination renderer of the sprite.
 -- @tparam table properties The table with text properties:
 --  (properties[1] : number) The width of the text box;
 --  (properties[2] : string) The align type (left, right or center) 
 --    (optional, left by default);
 --  (properties[3] : number) The initial font 
 ---    (if nil, uses defaultFont).
+-- @tparam Renderer renderer The destination renderer of the sprite.
 function Text:init(text, properties, renderer)
   Sprite.init(self, renderer)
   assert(text, 'Nil text')

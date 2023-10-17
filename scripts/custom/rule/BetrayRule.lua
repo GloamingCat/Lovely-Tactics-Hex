@@ -1,12 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod BetrayRule
----------------------------------------------------------------------------------------------------
--- Rule to attack the closest character, changing the battler' party to the status caster's party.
+--- Rule to attack the closest character, changing the battler' party to the status caster's party.
 -- If no caster is found, then this rule is the same as RushRule.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod BetrayRule
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local SkillRule = require('core/battle/ai/SkillRule')

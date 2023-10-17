@@ -1,9 +1,7 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod TurnManager
----------------------------------------------------------------------------------------------------
--- Provides methods for battle's turn management.
+--- Provides methods for battle's turn management.
 -- At the end of each turn, a "battle result" table must be returned by either the GUI (player) or
 -- the AI (enemies). 
 -- This table must include the following entries:
@@ -13,8 +11,10 @@
 -- * <executed> is true if the chosen action was entirely executed (usually true, unless it was a
 -- move action to an unreachable tile, or the action could not be executed for some reason).
 -- * <escaped> is true if all members of the current party have escaped.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod TurnManager
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')

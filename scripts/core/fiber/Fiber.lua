@@ -1,12 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod Fiber
----------------------------------------------------------------------------------------------------
--- A piece of code that may be executed in coroutines, as a separate "process" or "thread". 
+--- A piece of code that may be executed in coroutines, as a separate "process" or "thread". 
 -- It must be updated by its root every frame, unless it's paused.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod Fiber
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Class table.
 local Fiber = class()
@@ -39,7 +39,7 @@ end
 --- Creates new Fiber from a script table.
 -- @tparam FiberList root The list this Fiber belongs to.
 -- @tparam string path Path to script from "custom" folder.
--- @tparam(...) Any other arguments to the Fiber.
+-- @param ... Any other arguments to the Fiber.
 -- @treturn Fiber The newly created Fiber (nil if path is empty).
 function Fiber:fromScript(root, path, ...)
   local func = require('custom/' .. path)
@@ -105,7 +105,7 @@ end
 
 --- Executes this fiber until it finishes.
 -- Used specially when this fiber does not have a root, 
----  so it's not updated every frame.
+-- so it's not updated every frame.
 function Fiber:execAll()
   while self:update() do
   end
@@ -120,7 +120,7 @@ function Fiber:waitForEnd()
 end
 --- [COROUTINE] Wait for frames.
 -- @tparam number t The number of frames to wait.
----  Consider a rate of 60 frames per second.
+--  Consider a rate of 60 frames per second.
 function Fiber:wait(t)
   assert(coroutine.running(), 'Called by main thread.')
   if not t then
@@ -134,7 +134,7 @@ function Fiber:wait(t)
 end
 --- [COROUTINE] Waits until a given condition returns true.
 -- @tparam function func A function that returns a boolean.
--- @tparam(...) Function's parameters.
+-- @param ... Function's parameters.
 function Fiber:waitUntil(func, ...)
   assert(coroutine.running(), 'Called by main thread.')
   local args = {...}
@@ -145,7 +145,7 @@ end
 --- Calls a given function after a certain time.
 -- @tparam number time Time in frames.
 -- @tparam function func Function to be called.
--- @tparam(...) Function's parameters.
+-- @param ...  Function's parameters.
 function Fiber:invoke(time, func, ...)
   local args = {...}
   self:fork(function()

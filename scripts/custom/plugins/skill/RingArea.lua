@@ -1,9 +1,7 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@script RingArea
----------------------------------------------------------------------------------------------------
--- Allows a battle action to use a ring area instead of a grid mask. A ring is defined by the minimum 
+--- Allows a battle action to use a ring area instead of a grid mask. A ring is defined by the minimum 
 -- distance, or the radius of the smallest circle - <near> value -, and the maximum distance, or the 
 -- radius of the largest circle - <far> value. The ring is the set of tiles within these limits.
 -- It is also possible to define the maximum and minimum height differences, <minh> and <maxh>.
@@ -20,8 +18,10 @@
 --  * If <far> and <near> are the same value X, the ring is the set of tiles that distantiates from
 --  the center by exactly X.
 --  * If <far> and <near> are 0, the set contains only the center tile.
+-- ------------------------------------------------------------------------------------------------
+-- @plugin RingArea
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local FieldAction = require('core/battle/action/FieldAction')

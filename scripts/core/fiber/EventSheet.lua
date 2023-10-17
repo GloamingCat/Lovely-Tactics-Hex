@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod EventSheet
----------------------------------------------------------------------------------------------------
--- A fiber that processes a list of sequential commands.
+--- A fiber that processes a list of sequential commands.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod EventSheet
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local EventUtil = require('core/event/EventUtil')
@@ -20,7 +20,7 @@ local EventSheet = class(Fiber, EventUtil)
 
 --- Constructor.
 -- @tparam FiberList root The FiberList that originated this fiber.
--- @tparam table script Table with name (or func) and tags.
+-- @tparam table data Table with name (or func) and tags.
 -- @tparam Character char Character associated with this fiber (optional).
 function EventSheet:init(root, data, char)
   if data.func then
@@ -58,7 +58,7 @@ end
 -- @tparam function|unknown condition A condition to execute the command, either a function or
 --  a constant value.
 --  Can be either a constant or a function to be computed before the event executes.
--- @tparam(...) Any aditional argumentes to the event's function.
+-- @param ...  Any aditional argumentes to the event's function.
 function EventSheet:addEvent(func, condition, ...)
   if condition ~= nil and type(condition) ~= 'function' then
     local value = condition

@@ -1,18 +1,17 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod ScreenManager
----------------------------------------------------------------------------------------------------
--- ScreenManager stores info about screen's 
--- transformation (translation and scale).
--- 
+--- Stores info about screen's transformation (translation and scale).
+--
 -- Scaling types:
---  * 0 => cannot scale at all
---  * 1 => scale only by integer scalars
---  * 2 => scale by real scalars, but do not change width:height ratio
---  * 3 => scale freely
+--  * 0 -> cannot scale at all.
+--  * 1 -> scale only by integer scalars.
+--  * 2 -> scale by real scalars, but do not change width:height ratio.
+--  * 3 -> scale freely.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod ScreenManager
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Alias
 local lgraphics = love.graphics

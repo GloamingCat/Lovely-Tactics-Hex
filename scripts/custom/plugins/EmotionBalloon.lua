@@ -1,9 +1,7 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@script EmotionBalloon
----------------------------------------------------------------------------------------------------
--- The balloon animation to show a battler's emotion. The "balloon" and "emotions" animations must 
+--- The balloon animation to show a battler's emotion. The "balloon" and "emotions" animations must 
 -- be set in the project's config.
 -- 
 -- Requires: 
@@ -15,8 +13,10 @@
 --  string being the emotion's code.
 --  * Use <rows> to set custons rows for each emotion. The rows should be in the same order as the
 --  emotions listed in <emotions>.
+-- ------------------------------------------------------------------------------------------------
+-- @plugin EmotionBalloon
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Animation = require('core/graphics/Animation')

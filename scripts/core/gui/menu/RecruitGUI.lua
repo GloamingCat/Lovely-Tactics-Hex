@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod RecruitGUI
----------------------------------------------------------------------------------------------------
--- Menu to hire or dismiss allies.
+--- Menu to hire or dismiss allies.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod RecruitGUI
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
@@ -26,7 +26,8 @@ local RecruitGUI = class(GUI)
 
 --- Overrides GUI:init.
 -- @tparam GUI parent Parent GUI.
--- @tparam table chars Array of chars to be hired/dismissed.
+-- @tparam table chars Array of characters to be hired/dismissed.
+-- @tparam Troop troop The troop recruiting new battlers.
 function RecruitGUI:init(parent, chars, troop)
   self.troop = troop or Troop()
   self.chars = chars

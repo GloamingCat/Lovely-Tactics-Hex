@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod ShopGUI
----------------------------------------------------------------------------------------------------
--- Menu to buy or sell items from the database.
+--- Menu to buy or sell items from the database.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod ShopGUI
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
@@ -28,6 +28,7 @@ local ShopGUI = class(GUI)
 -- @tparam GUI parent Parent GUI.
 -- @tparam table items Array of items to be sold.
 -- @tparam boolean sell True if the player can sell anything here.
+-- @tparam Troop troop The troop to which the bought items will be added.
 function ShopGUI:init(parent, items, sell, troop)
   self.troop = troop or Troop()
   self.items = items

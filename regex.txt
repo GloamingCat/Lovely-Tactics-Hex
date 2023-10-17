@@ -1,0 +1,41 @@
+Remove parens: bla\((.*)\) -> bla \1
+
+Search for badly formatted params/return.
+-- @tparam\([^\)]+\)[^\n]+[^\.]\n
+
+Search for params/return with no descriptions:
+-- @tparam\([^\)]+\)\n
+
+Search for non-typed params:
+@tparam\([^\):]+\)
+
+Search for params with "unknown" type:
+@tparam\([^\)]+unknown\)
+
+Change params format with multiple types:
+@tparam\(([^:\)]+) : ([^\)]+)\)
+@tparam \1 \2
+
+Change return format
+@treturn\(([^\)]+)\)
+@treturn \1
+
+Swap type and name
+@tparam (\w+) ([\w\|]+)
+@tparam \2 \1
+
+Change header lines
+\-\-\-(\-+)
+\-\- \1
+
+Change summary lines
+--\[\[(=+\n\n)(@(?:script|classmod|module|table|plugin) \w+\n)---(-*\n)([^=]*)\n=(=*)\]\]
+-- =\1-\4-- \3-- \2\n-- \5
+
+Add comments on missing lines (post summary change)
+(?s)(---? [^\n]+)\n(?!-- )([^\n]+.*)(?=\n---------)
+\1\n-- \2
+
+Add comments on missing lines (pre summary change)
+(?s)(----\n)((?:\-\- [^\n]+\n)*)((?:[^\-][^\n]+\n)+)(?=\n\=\=\=\=)
+\1\2-- \3

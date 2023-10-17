@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod CallGUI
----------------------------------------------------------------------------------------------------
--- The GUI that is openned when player chooses a target for the call action.
+--- The GUI that is openned when player chooses a target for the call action.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod CallGUI
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local GUI = require('core/gui/GUI')
@@ -20,6 +20,7 @@ local CallGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides GUI:init.
+-- @tparam GUI parent Parent GUI.
 -- @tparam Troop troop Current troop.
 -- @tparam boolean allMembers If false will include only backup members.
 function CallGUI:init(parent, troop, allMembers)

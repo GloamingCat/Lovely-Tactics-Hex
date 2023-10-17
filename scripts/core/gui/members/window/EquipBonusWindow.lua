@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod EquipBonusWindow
----------------------------------------------------------------------------------------------------
--- A window that shows the attribute and element bonus of the equip item.
+--- A window that shows the attribute and element bonus of the equip item.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod EquipBonusWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local EquipSet = require('core/battle/battler/EquipSet')
@@ -26,11 +26,15 @@ local EquipBonusWindow = class(Window)
 -- -------------------------------------------------------------------------------------------------
 
 --- Overrides Window:init.
--- @tparam table member Troop unit data.
-function EquipBonusWindow:init(gui, w, h, pos, member)
-  self.member = member or gui:currentMember()
+-- @tparam GUI parent Parent GUI.
+-- @tparam number w Window's width in pixels.
+-- @tparam number h Window's height in pixels.
+-- @tparam Vector pos The position of the window's center.
+-- @tparam table member The troop unit data of the character.
+function EquipBonusWindow:init(parent, w, h, pos, member)
+  self.member = member or parent:currentMember()
   self.bonus = List()
-  Window.init(self, gui, w, h, pos)
+  Window.init(self, parent, w, h, pos)
 end
 --- Prints a list of attributes to receive a bonus.
 -- @tparam table att Array of attributes bonus (with key, oldValue and newValue).

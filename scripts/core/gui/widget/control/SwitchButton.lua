@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod SwitchButton
----------------------------------------------------------------------------------------------------
--- A button two options.
+--- A button two options.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod SwitchButton
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Button = require('core/gui/widget/control/Button')
@@ -18,7 +18,7 @@ local SwitchButton = class(Button)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam window  GridWindow The window this spinner belongs to.
+-- @tparam GridWindow window The window this spinner belongs to.
 -- @tparam boolean initValue Initial value.
 -- @tparam number x Position x of the switch text relative to the button width (from 0 to 1).
 -- @tparam table values List of possible values (optional, boolean by default).
@@ -31,7 +31,7 @@ function SwitchButton:init(window, initValue, x, values)
   self:initContent(initValue or false, w * x, self.window:cellHeight() / 2, w * (1 - x))
 end
 --- Creates a button for the action represented by the given key.
--- @tparam GridWindow window The window that this button is component of.
+-- @tparam GridWindow window The window this spinner belongs to.
 -- @tparam string key Action's key.
 -- @treturn SwitchButton
 function SwitchButton:fromKey(window, key, ...)

@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod BattlerWindow
----------------------------------------------------------------------------------------------------
--- Window that shows on each character in the VisualizeAction.
+--- Window that shows on each character in the VisualizeAction.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod BattlerWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Vector = require('core/math/Vector')
@@ -27,12 +27,12 @@ local BattlerWindow = class(Window)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam Character character The character of the battler to be shown.
-function BattlerWindow:init(GUI)
+-- @tparam GUI parent The parent GUI.
+function BattlerWindow:init(parent)
   self.font = Fonts.gui_small
   self.nameFont = Fonts.gui_medium
   local cw, ch = self:preprocess()
-  Window.init(self, GUI, cw +  2 * self:paddingX(), ch + 2 * self:paddingY())
+  Window.init(self, parent, cw +  2 * self:paddingX(), ch + 2 * self:paddingY())
 end
 --- Pre-processes the content that need to be shown and calculates the space needed.
 -- @treturn number

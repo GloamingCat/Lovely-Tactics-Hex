@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod Component
----------------------------------------------------------------------------------------------------
--- Base for a generic GUI component node.
+--- Base for a generic GUI component node.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod Component
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local List = require('core/datastruct/List')
@@ -20,7 +20,7 @@ local Component = class()
 
 --- Constructor.
 -- @tparam Vector position The component's position relative to its parent.
--- @tparam(...) Aditional arguments passed to Component:createContent.
+-- @param ...  Aditional arguments passed to Component:createContent.
 function Component:init(position, ...)
   self.visible = true
   self.content = List()

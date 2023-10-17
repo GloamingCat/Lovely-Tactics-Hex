@@ -1,9 +1,7 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@script SkillEXP
----------------------------------------------------------------------------------------------------
--- Characters receive EXP for each action and can level-up mid-battle.
+--- Characters receive EXP for each action and can level-up mid-battle.
 -- 
 -- Plugin parameters:
 --  * <battleOnly> When true, characters will only receive EXP during a battle.
@@ -12,8 +10,10 @@
 --  * <missExp> Multiplier for when the skill did not succeed.
 --  * <levelDiff> Aditional exp per level difference between user and target.
 --  * <enemyExp> When true enemies also receive experience.
+-- ------------------------------------------------------------------------------------------------
+-- @plugin SkillEXP
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local BattleManager = require('core/battle/BattleManager')

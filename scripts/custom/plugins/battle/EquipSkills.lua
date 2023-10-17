@@ -1,17 +1,17 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@script EquipSkills
----------------------------------------------------------------------------------------------------
--- Add skills and change attack skill when item is equipped.
+--- Add skills and change attack skill when item is equipped.
 -- 
 -- Item parameters:
 --  * Set <attack> to a skill's ID or key to set it as the attack skill of the item.
 --  * Add a <skill> tag with a skill's ID or key to make it available for the character with this 
 --  item equipped. You may also add a second number to indicate a minimum level, and a third to 
 --  replace another skill.
+-- ------------------------------------------------------------------------------------------------
+-- @plugin EquipSkills
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Battler = require('core/battle/battler/Battler')

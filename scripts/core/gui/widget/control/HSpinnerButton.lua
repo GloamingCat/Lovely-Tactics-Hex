@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod HSpinnerButton
----------------------------------------------------------------------------------------------------
--- A spinner with button properties (cancel and confirm actions).
+--- A spinner with button properties (cancel and confirm actions).
+-- ------------------------------------------------------------------------------------------------
+-- @classmod HSpinnerButton
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Button = require('core/gui/widget/control/Button')
@@ -19,7 +19,7 @@ local HSpinnerButton = class(HSpinner, Button)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam window  GridWindow the window this spinner belongs to.
+-- @tparam GridWindow window The window this spinner belongs to.
 -- @tparam number minValue Minimum value.
 -- @tparam number maxValue Maximum value.
 -- @tparam number initValue Initial value.
@@ -34,7 +34,7 @@ function HSpinnerButton:init(window, minValue, maxValue, initValue, x)
   self:initContent(initValue or 0, w * x, self.window:cellHeight(), w * (1 - x))
 end
 --- Creates a button for the action represented by the given key.
--- @tparam GridWindow window The window that this button is component of.
+-- @tparam GridWindow window The window this spinner belongs to.
 -- @tparam string key Action's key.
 -- @tparam number minValue Minimum value.
 -- @tparam number maxValue Maximum value.

@@ -1,20 +1,20 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@script Critical
----------------------------------------------------------------------------------------------------
--- Doubles damage for critical hits.
+--- Doubles damage for critical hits.
 -- 
 -- Plugin parameters:
 --  * The attribute used to calculate the chance of critical hit is given by <attName>.
 --  * When critical hit occurs, the base result is multiplied by <ratio>.
 --  * When critical hit occurs, an SFX may be played, with its path, volume and pitch being 
 --  defined by <sound>, <volume> and <pitch>, respectively.
-
+--
 -- Skill parameters:
 --  * If the skill allows critical hit to occur, then the tag <critical> must be set.
+-- ------------------------------------------------------------------------------------------------
+-- @plugin Critical
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Battler = require('core/battle/battler/Battler')

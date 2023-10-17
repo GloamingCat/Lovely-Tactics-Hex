@@ -1,13 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod AnimatedObject
----------------------------------------------------------------------------------------------------
--- An object with a table of animations.
+--- An object with a table of animations.
 -- Sets of animations may be created by using the separator ":" the animation's name in the given
 -- format: "setName:animationName".
+-- ------------------------------------------------------------------------------------------------
+-- @classmod AnimatedObject
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Sprite = require('core/graphics/Sprite')
@@ -23,6 +23,7 @@ local AnimatedObject = class(Object)
 --- Creates sprite and animation list.
 -- @tparam table animations An array of animation data.
 -- @tparam number initAnim The initial animation's name.
+-- @tparam table transform The graphic's affine transformation.
 -- @tparam boolean sets True if animations are separated in sets.
 function AnimatedObject:initGraphics(animations, initAnim, transform, sets)
   self.animName = nil

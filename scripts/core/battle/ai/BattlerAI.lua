@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod BattlerAI
----------------------------------------------------------------------------------------------------
--- Implements basic functions to be used in AI classes.
+--- Implements basic functions to be used in AI classes.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod BattlerAI
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local AIRule = require('core/battle/ai/AIRule')
@@ -21,7 +21,7 @@ local BattlerAI = class()
 
 --- Constructor.
 -- @tparam Battler battler The battler with this AI.
--- @tparam string param Any custom arguments.
+-- @tparam table rules The list of data tables for each AI rule.
 function BattlerAI:init(battler, rules)
   self.battler = battler
   self.rules = rules

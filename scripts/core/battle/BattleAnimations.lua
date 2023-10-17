@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod BattleAnimations
----------------------------------------------------------------------------------------------------
--- Module with helper functions to play battle effects.
+--- Module with helper functions to play battle effects.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod BattleAnimations
 
-=================================================================================================]]
+-- ================================================================================================
 
 local BattleAnimations = {}
 
@@ -14,6 +14,7 @@ local BattleAnimations = {}
 -- ------------------------------------------------------------------------------------------------
 
 --- [COROUTINE] Plays a battle animation.
+-- @tparam GUIManager|FieldManager manager The manager that will be responsible for the animation's object.
 -- @tparam number animID The animation's ID from database.
 -- @tparam number x Pixel x of the animation.
 -- @tparam number y Pixel y of the animation.

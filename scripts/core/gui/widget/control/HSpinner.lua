@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@classmod HSpinner
----------------------------------------------------------------------------------------------------
--- A horizontal spinner for choosing a numeric value.
+--- A horizontal spinner for choosing a numeric value.
+-- ------------------------------------------------------------------------------------------------
+-- @classmod HSpinner
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Vector = require('core/math/Vector')
@@ -25,7 +25,7 @@ local HSpinner = class(GridWidget)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam window  GridWindow the window this spinner belongs to.
+-- @tparam GridWindow window The window this spinner belongs to.
 -- @tparam number minValue Minimum value.
 -- @tparam number maxValue Maximum value.
 -- @tparam number initValue Initial value.

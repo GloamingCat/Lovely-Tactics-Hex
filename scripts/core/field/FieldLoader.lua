@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@module FieldLoader
----------------------------------------------------------------------------------------------------
--- Loads and prepares field from file data.
+--- Loads and prepares field from file data.
+-- ------------------------------------------------------------------------------------------------
+-- @module FieldLoader
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Character = require('core/objects/Character')
@@ -23,6 +23,7 @@ local FieldLoader = {}
 
 --- Loads the field of the given ID.
 -- @tparam number id Field's ID.
+-- @tparam table save The field's save data.
 -- @treturn Field New empty field.
 -- @treturn table Field file data.
 function FieldLoader.loadField(id, save)
