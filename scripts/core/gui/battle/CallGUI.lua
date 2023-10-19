@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI that is openned when player chooses a target for the call action.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod CallGUI
 
 -- ================================================================================================
@@ -19,7 +19,8 @@ local CallGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:init.
+--- Overrides `GUI:init`. 
+-- @override init
 -- @tparam GUI parent Parent GUI.
 -- @tparam Troop troop Current troop.
 -- @tparam boolean allMembers If false will include only backup members.
@@ -28,8 +29,9 @@ function CallGUI:init(parent, troop, allMembers)
   self.allMembers = allMembers
   GUI.init(self, parent)
 end
---- Implements GUI:createWindows.
---- Creates the CallWindow with the list of members, and TargetWindow with selected member's info. 
+--- Implements `GUI:createWindows`. Creates the CallWindow with the list of members, and TargetWindow
+-- with selected member's info. 
+-- @implement createWindows
 function CallGUI:createWindows()
   self.name = 'Call GUI'
   -- Info window

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Implements basic functions to be used in AI classes.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod BattlerAI
 
 -- ================================================================================================
@@ -32,7 +32,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Executes next action of the current character, when it's the character's turn.
---- By default, just skips turn, with no time loss.
+-- By default, just skips turn, with no time loss.
 -- @treturn number The action result table.
 function BattlerAI:runTurn()
   local char = TurnManager:currentCharacter()

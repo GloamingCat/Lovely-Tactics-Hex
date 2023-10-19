@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Implements FieldMath methods to hexagonal fields in which the tiles are connected vertically.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod IsoMath
 
 -- ================================================================================================
@@ -214,7 +214,7 @@ function IsoMath.isCollinear(x1, y1, x2, y2, x3, y3)
     x1 - y1 == x2 - y2 and x2 - y2 == x3 - y3
 end
 --- Iterates through the set of tiles inside the given radius.
---- The radius is the maximum distance to the center tile, so the center is always included.
+-- The radius is the maximum distance to the center tile, so the center is always included.
 -- @tparam number radius The max distance.
 -- @tparam number centerX The starting tile's x.
 -- @tparam number centerY The starting tile's y.
@@ -248,7 +248,7 @@ end
 -- --------------------------------------------------------------------------------------------
 
 --- Gets the next tile coordinates given the current tile and an input.
---- Fixates up as the northwest.
+-- Fixates up as the northwest.
 -- @tparam number x Current tile's x.
 -- @tparam number y Current tile's y.
 -- @tparam number axisX The input in x axis.

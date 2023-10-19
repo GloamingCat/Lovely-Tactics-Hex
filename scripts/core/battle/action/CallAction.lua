@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The BattleAction that is executed when players chooses the "Call Ally" button.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod CallAction
 
 -- ================================================================================================
@@ -31,7 +31,8 @@ end
 -- Input callback
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:onConfirm.
+--- Overrides `FieldAction:onConfirm`. 
+-- @override onConfirm
 function CallAction:onConfirm(input)
   self.troop = TroopManager.troops[(input.party or input.user.party)]
   if input.GUI then
@@ -44,7 +45,8 @@ function CallAction:onConfirm(input)
   end
   return self:execute(input)
 end
---- Overrides BattleAction:execute.
+--- Overrides `BattleAction:execute`. 
+-- @override execute
 function CallAction:execute(input)
   self:callMember(input.member, input.target, true)
   return BattleAction.execute(self, input)
@@ -54,11 +56,13 @@ end
 -- Tile Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:resetTileProperties.
+--- Overrides `BattleAction:resetTileProperties`. 
+-- @override resetTileProperties
 function CallAction:resetTileProperties(input)
   self:resetSelectableTiles(input)
 end
---- Overrides BattleAction:resetTileColors.
+--- Overrides `BattleAction:resetTileColors`. 
+-- @override resetTileColors
 function CallAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
     if tile.gui.selectable then
@@ -73,7 +77,8 @@ end
 -- Selectable Tiles
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:isSelectable.
+--- Overrides `BattleAction:isSelectable`. 
+-- @override isSelectable
 function CallAction:isSelectable(input, tile)
   return tile.party == (input.party or input.user.party) and not tile:collides(0, 0) 
     and not self.field:collidesTerrain(tile:coordinates())

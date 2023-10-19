@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI that is open to choose an item from character's inventory.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod InventoryWindow
 
 -- ================================================================================================
@@ -134,11 +134,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides ListWindow:cellWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override cellWidth
 function InventoryWindow:cellWidth()
   return 200
 end
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function InventoryWindow:colCount()
   return 1
 end

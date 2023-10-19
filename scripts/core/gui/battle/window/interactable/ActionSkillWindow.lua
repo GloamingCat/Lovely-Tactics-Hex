@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The window that is open to choose a skill from character's skill list.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ActionSkillWindow
 
 -- ================================================================================================
@@ -84,11 +84,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function ActionSkillWindow:colCount()
   return 1
 end
---- Overrides ListWindow:cellWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override cellWidth
 function ActionSkillWindow:cellWidth()
   return 200
 end

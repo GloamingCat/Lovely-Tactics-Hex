@@ -39,3 +39,20 @@ Add comments on missing lines (post summary change)
 Add comments on missing lines (pre summary change)
 (?s)(----\n)((?:\-\- [^\n]+\n)*)((?:[^\-][^\n]+\n)+)(?=\n\=\=\=\=)
 \1\2-- \3
+
+Change coroutine tag
+--- (\[COROUTINE\] )([.\n]*)(?!-- @)((?:---? .*\n)*function \w+:)(\w+)
+to:
+--- \2-- @coroutine \4\n\3\4
+v2:
+--- (\[COROUTINE\] )(.*\n(?:\-\-.*\n)*)(?!\-\- @)(?!\-\-  )((?:---? .*\n)*function \w+:)(\w+)
+v3:
+--- (\[COROUTINE\] )([^@\n]*\n)((?:-- .*\n)*function \w+:)(\w+)
+
+Change overrides tag
+--- Overrides (\w+:\w+)\.([^@\n]*\n)((?:-- .*\n)*function \w+:)(\w+)
+--- Overrides `\1`.\2-- @override \4\n\3\4
+
+Change override (plugin) tag
+(--- Override\.)(.*\n)((?:local.*\n)*function )(\w+:)(\w+)
+--- Rewrites `\4\5`.\2-- @override \5\n\3\4\5

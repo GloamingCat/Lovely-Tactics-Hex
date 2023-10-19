@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A cursor for button windows.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod WindowCursor
 
 -- ================================================================================================
@@ -26,8 +26,8 @@ function WindowCursor:init(window)
   Component.init(self, Vector(0, window:cellHeight() / 2))
   window.content:add(self)
 end
---- Overrides Component:createContent. 
---- Creates cursor sprite.
+--- Overrides `Component:createContent`. Creates cursor sprite.
+-- @override createContent
 function WindowCursor:createContent()
   self.anim = ResourceManager:loadAnimation(Config.animations.cursor, GUIManager.renderer)
   self.anim.sprite:setTransformation(self.anim.data.transform)

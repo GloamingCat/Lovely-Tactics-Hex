@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- An object with rotation properties.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Rotatable
 
 -- ================================================================================================
@@ -50,7 +50,8 @@ function Rotatable:updateRotation(dt)
     end
   end
 end
---- [COROUTINE] Rotates to (sx, sy).
+--- Rotates to (sx, sy).
+-- @coroutine rotateTo
 -- @tparam number r Initial rotation.
 -- @tparam number speed The speed of the scaling (optional).
 -- @tparam boolean wait flag to wait until the scaling finishes (optional).
@@ -68,7 +69,8 @@ function Rotatable:instantRotateTo(r)
   self:setRotation(r)
   return nil
 end
---- [COROUTINE] Rotates to (sx, sy).
+--- Rotates to (sx, sy).
+-- @coroutine gradualRotateTo
 -- @tparam number r Initial rotation.
 -- @tparam number speed The speed of the scaling (optional).
 -- @tparam boolean wait Flag to wait until the scaling finishes.
@@ -81,7 +83,8 @@ function Rotatable:gradualRotateTo(r, speed, wait)
     self:waitForRotation()
   end
 end
---- [COROUTINE] Waits until the rotation time is 1.
+--- Waits until the rotation time is 1.
+-- @coroutine waitForRotation
 function Rotatable:waitForRotation()
   local fiber = _G.Fiber
   if self.rotationFiber then

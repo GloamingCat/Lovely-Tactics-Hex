@@ -10,7 +10,7 @@
 -- Plugin parameters:
 --  * Tag <cursor> sets the visibility type of the button cursor. The default type is 'list'.
 --  * Tag <highlight> sets the visibility type of the button highlight. The default type is 'hide'.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin HideCursorOnMobile
 
 -- ================================================================================================

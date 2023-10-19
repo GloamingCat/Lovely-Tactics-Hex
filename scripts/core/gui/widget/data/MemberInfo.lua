@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A container for a battler's main information.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod MemberInfo
 
 -- ================================================================================================
@@ -33,7 +33,8 @@ function MemberInfo:init(battler, width, height, topLeft)
   Component.init(self, topLeft, width, height, battler)
   self.battler = battler
 end
---- Overrides Component:createContent.
+--- Overrides `Component:createContent`. 
+-- @override createContent
 function MemberInfo:createContent(w, h, battler)
   local topLeft = Vector(0, 1, -2)
   local margin = 4

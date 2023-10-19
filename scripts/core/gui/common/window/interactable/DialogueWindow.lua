@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Show a dialogue.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod DialogueWindow
 
 -- ================================================================================================
@@ -38,8 +38,8 @@ function DialogueWindow:initProperties()
   self.nameWidth = 80
   self.nameHeight = 24
 end
---- Overrides Window:createContent.
---- Creates a simple text for dialogue.
+--- Overrides `Window:createContent`. Creates a simple text for dialogue.
+-- @override createContent
 function DialogueWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local pos = Vector(-width / 2 + self:paddingX(), -height / 2 + self:paddingY())
@@ -49,7 +49,7 @@ function DialogueWindow:createContent(width, height)
   self.nameWindow:setVisible(false)
 end
 --- Changes the window's size.
---- It recreates all contents.
+-- It recreates all contents.
 function DialogueWindow:resize(...)
   DescriptionWindow.resize(self, ...)
   self.dialogue.position = Vector(-self.width / 2 + self:paddingX(), -self.height / 2 + self:paddingY())
@@ -63,12 +63,14 @@ end
 function DialogueWindow:onClick(button, x, y)
   self:onConfirm()
 end
---- Overrides Window:hide.
+--- Overrides `Window:hide`. 
+-- @override hide
 function DialogueWindow:hide(...)
   self.nameWindow:setVisible(false)
   Window.hide(self, ...)
 end
---- Overrides Window:destroy.
+--- Overrides `Window:destroy`. 
+-- @override destroy
 function DialogueWindow:destroy(...)
   self.nameWindow:destroy()
   self.nameWindow:removeSelf()
@@ -79,7 +81,8 @@ end
 -- Dialogue
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Shows a message and waits until player presses the confirm button.
+--- Shows a message and waits until player presses the confirm button.
+-- @coroutine showDialogue
 -- @tparam string text The message.
 -- @tparam string align The text's horizontal alignment ('left', 'right' or 'center').
 -- @tparam table speaker The speaker's name and position of name box (optional).

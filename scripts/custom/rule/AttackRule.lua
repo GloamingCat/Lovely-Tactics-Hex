@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The rule for an AI that attacks the character with the highest chance of KO.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod AttackRule
 
 -- ================================================================================================
@@ -17,7 +17,8 @@ local AttackRule = class(SkillRule)
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides SkillRule:onSelect.
+--- Overrides `SkillRule:onSelect`. 
+-- @override onSelect
 function AttackRule:onSelect(...)
   SkillRule.onSelect(self, ...)
   -- Find target with higher chance of dying

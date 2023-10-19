@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Adds a new button to the title screen to show a tutorial window.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin Tutorial
 
 -- ================================================================================================
@@ -22,7 +22,8 @@ local texts = args.text:split()
 -- Player
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides TitleCommandWindow:createWidgets.
+--- Rewrites `TitleCommandWindow:createWidgets`.
+-- @override TitleCommandWindow_createWidgets
 function TitleCommandWindow:createWidgets()
   Button:fromKey(self, 'newGame')
   Button:fromKey(self, 'loadGame')
@@ -56,7 +57,8 @@ function TitleCommandWindow:tutorialConfirm()
   self.GUI.topText:setVisible(true)
   self:show()
 end
---- Overrides TitleCommandWindow:rowCount.
+--- Rewrites `TitleCommandWindow:rowCount`.
+-- @override TitleCommandWindow_rowCount
 function TitleCommandWindow:rowCount()
   return GameManager:isDesktop() and 5 or 4
 end

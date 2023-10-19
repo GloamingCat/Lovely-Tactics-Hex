@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Stores images, fonts and shaders to be reused.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ResourceManager
 
 -- ================================================================================================
@@ -34,7 +34,7 @@ local ResourceManager = class()
 -- Image
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides LÖVE's newImage function to use cache.
+--- Loads an Image given its path.
 -- @tparam string path Image's path relative to main path.
 -- @treturn Image To image store in the path.
 function ResourceManager:loadTexture(path)
@@ -148,7 +148,7 @@ function ResourceManager:loadIconQuad(icon)
   return self:loadQuad(data.quad, nil, data.cols, data.rows, icon.col, icon.row)
 end
 --- Clears Image cache table.
---- Only use this if there is no other reference to the images.
+-- Only use this if there is no other reference to the images.
 function ResourceManager:clearImageCache()
   for k in pairs(ImageCache) do
     ImageCache[k] = nil
@@ -190,7 +190,7 @@ function ResourceManager:loadFont(data, scale)
   return font
 end
 --- Clears Font cache table.
---- Only use this if there is no other reference to the fonts.
+-- Only use this if there is no other reference to the fonts.
 function ResourceManager:clearFontCache()
   for k in pairs(FontCache) do
     FontCache[k] = nil
@@ -213,7 +213,7 @@ function ResourceManager:loadShader(name)
   return shader
 end
 --- Clears Shader cache table.
---- Only use this if there is no other reference to the shaders.
+-- Only use this if there is no other reference to the shaders.
 function ResourceManager:clearShaderCache()
   for k in pairs(ShaderCache) do
     ShaderCache[k] = nil
@@ -258,7 +258,7 @@ function ResourceManager:loadSFX(name)
   return newSource(AudioCache[name])
 end
 --- Clears Font cache table.
---- Only use this if there is no other reference to the fonts.
+-- Only use this if there is no other reference to the fonts.
 function ResourceManager:clearAudioCache()
   for k in pairs(AudioCache) do
     AudioCache[k] = nil

@@ -12,7 +12,7 @@
 --  * {fx} -> set font (x must be a key in the global Fonts table);
 --  * {cx} -> sets the color (x must be a key in the global Color table);
 --  * {sx} -> shows an icon image (x must be a key in the Config.icons table).
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @module TextParser
 
 -- ================================================================================================
@@ -114,7 +114,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Creates line list. Each line is a table containing an array of fragments, a height and a width.
---- It also contains its length for character counting.
+-- It also contains its length for character counting.
 -- @tparam table fragments Array of fragments.
 -- @tparam Font initialFont The default font.
 -- @tparam number maxWidth The width limit for wrapped text (optional).

@@ -3,7 +3,7 @@
 
 --- The BattleAction that is executed when players chooses the "Move" button.
 -- Any action used in PathFinder must inherit from this.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod BattleMoveAction
 
 -- ================================================================================================
@@ -23,7 +23,8 @@ local BattleMoveAction = class(MoveAction)
 -- Initalization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:init.
+--- Overrides `BattleAction:init`. 
+-- @override init
 function BattleMoveAction:init(...)
   MoveAction.init(self, ...)
   self.freeNavigation = true
@@ -35,7 +36,8 @@ end
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:execute.
+--- Overrides `BattleAction:execute`. 
+-- @override execute
 function BattleMoveAction:execute(input)  
   FieldManager.renderer:moveToObject(input.user, nil, true)
   FieldManager.renderer.focusObject = input.user
@@ -44,14 +46,16 @@ function BattleMoveAction:execute(input)
   TurnManager:updatePathMatrix()
   return result
 end
---- Overrides MoveAction:moveToTile.
+--- Overrides `MoveAction:moveToTile`. 
+-- @override moveToTile
 function BattleMoveAction:moveToTile(input, nextTile)
   local previousTiles = input.user:getAllTiles()
   input.user.battler:onTerrainExit(input.user, previousTiles)
   MoveAction.moveToTile(self, input, nextTile)
   input.user.battler:onTerrainEnter(input.user, input.user:getAllTiles())
 end
---- Overrides MoveAction:calculatePath.
+--- Overrides `MoveAction:calculatePath`. 
+-- @override calculatePath
 function BattleMoveAction:calculatePath(input)
   local matrix = not self:isRanged() and TurnManager:pathMatrix() or nil
   return input.path or BattleTactics.optimalPath(self, input.user, input.target, matrix)
@@ -61,7 +65,8 @@ end
 -- Selectable Tiles
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:isSelectable.
+--- Overrides `BattleAction:isSelectable`. 
+-- @override isSelectable
 function BattleMoveAction:isSelectable(input, tile)
   return tile.gui.movable
 end
@@ -70,7 +75,8 @@ end
 -- Path Finder
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides MoveAction:isPassableBetween.
+--- Overrides `MoveAction:isPassableBetween`. 
+-- @override isPassableBetween
 function BattleMoveAction:isPassableBetween(initial, final, user)
   local x, y, h = initial:coordinates()
   local c = self.field:collisionXYZ(user, x, y, h, final:coordinates())
@@ -82,11 +88,13 @@ function BattleMoveAction:isPassableBetween(initial, final, user)
   local dh = final.layer.height - h
   return mindh <= dh and dh <= maxdh
 end
---- Overrides MoveAction:getDistanceBetween.
+--- Overrides `MoveAction:getDistanceBetween`. 
+-- @override getDistanceBetween
 function BattleMoveAction:getDistanceBetween(initial, final, user)
   return max(initial:getMoveCost(user), final:getMoveCost(user))
 end
---- Overrides MoveAction:maxDistance.
+--- Overrides `MoveAction:maxDistance`. 
+-- @override maxDistance
 function BattleMoveAction:maxDistance(user)
   return user.battler.steps or self.pathLimit
 end

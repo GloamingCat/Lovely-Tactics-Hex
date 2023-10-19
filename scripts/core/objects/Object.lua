@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A common class for obstacles and characters.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Object
 
 -- ================================================================================================
@@ -62,16 +62,16 @@ function Object:setVisible(value)
     self.sprite:setVisible(value)
   end
 end
---- Overrides Movable:setXYZ.
---- Updates sprite's position.
+--- Overrides `Movable:setXYZ`. Updates sprite's position.
+-- @override setXYZ
 function Object:setXYZ(...)
   Transformable.setXYZ(self, ...)
   if self.sprite then
     self.sprite:setXYZ(...)
   end
 end
---- Overrides Colorable:setRGBA.
---- Updates sprite's color.
+--- Overrides `Colorable:setRGBA`. Updates sprite's color.
+-- @override setRGBA
 function Object:setRGBA(...)
   Transformable.setRGBA(self, ...)
   if self.sprite then

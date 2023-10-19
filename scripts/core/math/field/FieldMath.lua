@@ -5,7 +5,7 @@
 -- shift, autotile rows, grid navigation/iteration, etc.
 -- This module implements only the common operations. The abstract methods must be implemented by
 -- specific field math modules for each grid type.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod FieldMath
 
 -- ================================================================================================

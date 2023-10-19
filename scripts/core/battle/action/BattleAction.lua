@@ -6,7 +6,7 @@
 -- Examples of battle actions: Move Action (needs grid and only blue tiles are selectables), Escape 
 -- Action (doesn't need grid, and instead opens a confirm window), Call Action (only team tiles), 
 -- etc. 
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod BattleAction
 
 -- ================================================================================================
@@ -83,7 +83,7 @@ function BattleAction:onSelect(input)
   input.moveAction = self.moveAction
 end
 --- Called when the ActionGUI is open.
---- By default, just updates the "selectable" field in all tiles for grid selecting.
+-- By default, just updates the "selectable" field in all tiles for grid selecting.
 -- @tparam ActionInput input
 function BattleAction:onActionGUI(input)
   self:resetTileColors()
@@ -118,7 +118,8 @@ function BattleAction:resetTileColors(input)
     end
   end
 end
---- Overrides FieldAction:resetTileProperties.
+--- Overrides `FieldAction:resetTileProperties`. 
+-- @override resetTileProperties
 function BattleAction:resetTileProperties(input)
   self:resetMovableTiles(input)
   self:resetReachableTiles(input)
@@ -143,8 +144,8 @@ function BattleAction:resetMovableTiles(input)
   end
 end
 --- Paints and resets properties for the target tiles.
---- By default, paints all movable tile with movable color, and non-movable but reachable (within
---- skill's range) tiles with the skill's type color.
+-- By default, paints all movable tile with movable color, and non-movable but reachable (within
+-- skill's range) tiles with the skill's type color.
 -- @tparam ActionInput input
 function BattleAction:resetReachableTiles(input)
   local matrix = TurnManager:pathMatrix()
@@ -183,7 +184,8 @@ end
 -- Affected Tiles
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides FieldAction:isTileAffected.
+--- Overrides `FieldAction:isTileAffected`. 
+-- @override isTileAffected
 function BattleAction:isTileAffected(input, tile)
   for char in tile.characterList:iterator() do
     if self:isCharacterAffected(input, char) then
@@ -211,7 +213,8 @@ end
 -- Grid navigation
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides FieldAction:isSelectable.
+--- Overrides `FieldAction:isSelectable`. 
+-- @override isSelectable
 function BattleAction:isSelectable(input, tile)
   if not FieldAction.isSelectable(self, input, tile) then
     return false
@@ -233,7 +236,8 @@ function BattleAction:isLongRanged()
   local grid = self.range.grid
   return #grid > 3 or #grid > 0 and #grid[1] > 3 or #grid[1][1] > 3
 end
---- Overrides FieldAction:firstTarget.
+--- Overrides `FieldAction:firstTarget`. 
+-- @override firstTarget
 function BattleAction:firstTarget(input)
   if self.selectionTiles then
     return self.selectionTiles[self.index]
@@ -241,7 +245,8 @@ function BattleAction:firstTarget(input)
     return input.target or input.user:getTile()
   end
 end
---- Overrides FieldAction:nextTarget.
+--- Overrides `FieldAction:nextTarget`. 
+-- @override nextTarget
 function BattleAction:nextTarget(input, axisX, axisY)
   if self.selectionTiles then
     if axisX > 0 or axisY > 0 then
@@ -253,14 +258,16 @@ function BattleAction:nextTarget(input, axisX, axisY)
   end
   return FieldAction.nextTarget(self, input, axisX, axisY)
 end
---- Overrides FieldAction:nextLayer.
+--- Overrides `FieldAction:nextLayer`. 
+-- @override nextLayer
 function BattleAction:nextLayer(input, axis)
   if self.selectionTiles then
     return self:nextTarget(input, axis, axis)
   end
   return FieldAction.nextLayer(self, input, axis)
 end
---- Overrides FieldAction:getAreaTiles. Rotates area mask if necessary.
+--- Overrides `FieldAction:getAreaTiles`. Rotates area mask if necessary.
+-- @override getAreaTiles
 function BattleAction:getAreaTiles(input, centerTile, mask)
   if not self.rotateEffect or self.autoPath or not self:isArea() then
     return FieldAction.getAreaTiles(self, input, centerTile, mask)
@@ -289,7 +296,8 @@ end
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides FieldAction:execute. By default, just ends turn.
+--- Overrides `FieldAction:execute`. By default, just ends turn.
+-- @override execute
 function BattleAction:execute(input)
   return { executed = true, endCharacterTurn = true }
 end

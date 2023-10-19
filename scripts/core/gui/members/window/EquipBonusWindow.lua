@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A window that shows the attribute and element bonus of the equip item.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod EquipBonusWindow
 
 -- ================================================================================================
@@ -25,7 +25,8 @@ local EquipBonusWindow = class(Window)
 -- Initialization
 -- -------------------------------------------------------------------------------------------------
 
---- Overrides Window:init.
+--- Overrides `Window:init`. 
+-- @override init
 -- @tparam GUI parent Parent GUI.
 -- @tparam number w Window's width in pixels.
 -- @tparam number h Window's height in pixels.

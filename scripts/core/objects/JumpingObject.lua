@@ -4,7 +4,7 @@
 --- A directed, animated, walking object with jump methods.
 -- It is not responsible for checking collisions or updating tile object lists. These must be 
 -- handled outside of these methods.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod JumpingObject
 
 -- ================================================================================================
@@ -84,7 +84,8 @@ end
 -- Jump in Pixels
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Jumps to the given pixel point (x, y, d).
+--- Jumps to the given pixel point (x, y, d).
+-- @coroutine jumpToPoint
 -- @tparam number x Coordinate x of the point.
 -- @tparam number y Coordinate y of the point.
 -- @tparam number z The depth of the point.
@@ -99,7 +100,8 @@ function JumpingObject:jumpToPoint(x, y, z, gravity)
   self:moveTo(x, y, z, self.speed / distance, true)
   return self.position:almostEquals(x, y, z, 0.2)
 end
---- [COROUTINE] Jumps a given distance in each axis.
+--- Jumps a given distance in each axis.
+-- @coroutine jumpDistance
 -- @tparam number dx The distance in axis x (in pixels).
 -- @tparam number dy The distance in axis y (in pixels).
 -- @tparam number dz The distance in depth (in pixels).
@@ -109,7 +111,8 @@ function JumpingObject:jumpDistance(dx, dy, dz, gravity)
   local pos = self.position
   return self:jumpToPoint(pos.x + dx, pos.y + dy, pos.z + dz, gravity)
 end
---- [COROUTINE] Walks the given distance in the given direction.
+--- Walks the given distance in the given direction.
+-- @coroutine jumpInAngle
 -- @tparam number d The distance to be walked.
 -- @tparam number angle The direction angle.
 -- @tparam number dz The distance in depth.
@@ -125,7 +128,8 @@ end
 -- Jump in Tiles
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Jumps to the center of the tile (x, y).
+--- Jumps to the center of the tile (x, y).
+-- @coroutine jumpToTile
 -- @tparam number x Coordinate x of the tile.
 -- @tparam number y Coordinate y of the tile.
 -- @tparam number h The height of the tile.
@@ -135,7 +139,8 @@ function JumpingObject:jumpToTile(x, y, h, gravity)
   x, y, h = tile2Pixel(x, y, h or self:getTile().layer.height)
   return self:jumpToPoint(x, y, h, gravity)
 end
---- [COROUTINE] Jumps a distance in tiles defined by (dx, dy, dh).
+--- Jumps a distance in tiles defined by (dx, dy, dh).
+-- @coroutine jumpTiles
 -- @tparam number dx The x-axis distance.
 -- @tparam number dy The y-axis distance.
 -- @tparam number dh The height difference.
@@ -151,14 +156,16 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides AnimatedObject:update.
+--- Overrides `AnimatedObject:update`. 
+-- @override update
 function JumpingObject:update(dt)
   WalkingObject.update(self, dt)
   if not self.paused then
     self:updateJump(dt)
   end
 end
---- Overrides Object:setXYZ.
+--- Overrides `Object:setXYZ`. 
+-- @override setXYZ
 function JumpingObject:setXYZ(...)
   WalkingObject.setXYZ(self, ...)
   local y = self.position.y - (self.jumpHeight or 0)

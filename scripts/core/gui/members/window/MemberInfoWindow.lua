@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A window that shows HP and MP of a troop member.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod MemberInfoWindow
 
 -- ================================================================================================
@@ -28,8 +28,8 @@ function MemberInfoWindow:init(member, ...)
   self.member = member
   Window.init(self, ...)
 end
---- Overrides Window:createContent.
---- Creates the content of the initial member.
+--- Overrides `Window:createContent`. Creates the content of the initial member.
+-- @override createContent
 function MemberInfoWindow:createContent(...)
   Window.createContent(self, ...)
   self.page = Pagination(self)

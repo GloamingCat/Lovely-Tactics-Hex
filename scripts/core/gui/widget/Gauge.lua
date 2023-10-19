@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A variable meter that shows the variable state in a bar and in text.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Gauge
 
 -- ================================================================================================
@@ -33,7 +33,8 @@ function Gauge:init(topLeft, width, color, x)
   end
   Component.init(self, topLeft, width, color)
 end
---- Overrides Component:createContent.
+--- Overrides `Component:createContent`. 
+-- @override createContent
 function Gauge:createContent(width, color)
   self.width = width
   self.bar = Bar(Vector(0, 3, 1), width, 6, 1)

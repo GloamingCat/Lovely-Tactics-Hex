@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI that contains only a text input window.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod TextInputGUI
 
 -- ================================================================================================
@@ -20,14 +20,16 @@ local TextInputGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:init.
+--- Overrides `GUI:init`. 
+-- @override init
 function TextInputGUI:init(parent, description, emptyAllowed, cancelAllowed)
   self.description = description
   self.emptyAllowed = emptyAllowed
   self.cancelAllowed = cancelAllowed
   GUI.init(self, parent)
 end
---- Overrides GUI:createWindow.
+--- Overrides `GUI:createWindows`. 
+-- @override createWindows
 function TextInputGUI:createWindows()
   self.name = 'TextInput GUI'
   local textWindow = TextInputWindow(self, self.emptyAllowed, self.cancelAllowed)

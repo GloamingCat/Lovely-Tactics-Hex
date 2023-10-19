@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Base for a generic GUI component node.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Component
 
 -- ================================================================================================
@@ -69,10 +69,12 @@ function Component:setVisible(value, ...)
   self.visible = value
 end
 --- Shows child content.
+-- @coroutine show
 function Component:show(...)
   self:setVisible(true, ...)
 end
 --- Hides child content.
+-- @coroutine hide
 function Component:hide(...)
   self:setVisible(false, ...)
 end

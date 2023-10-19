@@ -7,7 +7,7 @@
 -- Plugin parameters:
 --  * When player presses the button key <win>, all enemy characters die.
 --  * When player presses the button key <lose>, all ally characters die.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin KillCheat
 
 -- ================================================================================================
@@ -32,7 +32,8 @@ local function killAll(party)
     end
   end
 end
---- Override. Check lose and win keys.
+--- Rewrites `TurnManager:runTurn`.
+-- @override TurnManager_runTurn
 local TurnManager_runTurn = TurnManager.runTurn
 function TurnManager:runTurn(...)
   local enemyParty = #TroopManager.troops - TroopManager.playerParty

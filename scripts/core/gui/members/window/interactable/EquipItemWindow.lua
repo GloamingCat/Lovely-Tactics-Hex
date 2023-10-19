@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A window that shows the possible items to equip.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod EquipItemWindow
 
 -- ================================================================================================
@@ -31,8 +31,8 @@ function EquipItemWindow:init(parent, w, h, pos, rowCount, member)
   self.member = member or parent:currentMember()
   InventoryWindow.init(self, parent, nil, gui.inventory, {}, w, h, pos, rowCount)
 end
---- Overrides ListWindow:createWidgets.
---- Adds the "unequip" button.
+--- Overrides `ListWindow:createWidgets`. Adds the "unequip" button.
+-- @override createWidgets
 function EquipItemWindow:createWidgets(...)
   if self.slotKey then
     local button = Button(self)
@@ -43,7 +43,8 @@ function EquipItemWindow:createWidgets(...)
     InventoryWindow.createWidgets(self, ...)
   end
 end
---- Overrides ListWindow:createListButton.
+--- Overrides `ListWindow:createListButton`. 
+-- @override createListButton
 function EquipItemWindow:createListButton(itemSlot)
   local button = InventoryWindow.createListButton(self, itemSlot)
   button:setEnabled(self.member.equipSet:canEquip(self.slotKey, button.item))
@@ -113,11 +114,13 @@ end
 -- Properties
 -- -------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function EquipItemWindow:colCount()
   return 1
 end
---- Overrides ListWindow:computeWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override cellWidth
 function EquipItemWindow:cellWidth(width)
   return 200
 end

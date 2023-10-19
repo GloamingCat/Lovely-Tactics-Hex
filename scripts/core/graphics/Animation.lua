@@ -3,7 +3,7 @@
 
 --- An Animation updates the quad of the associated Sprite, assuming that the texture of the sprite 
 -- is a spritesheet.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Animation
 
 -- ================================================================================================
@@ -214,7 +214,7 @@ function Animation:setCol(col)
     self.sprite.renderer.needsRedraw = true
   end
 end
--- Changes the row of the current quad
+--- Changes the row of the current quad
 -- @tparam number row The row number, starting from 0.
 function Animation:setRow(row)
   row = mod(row, self.rowCount)
@@ -231,7 +231,8 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn number Total time relatie to current loop/pattern (instead of current frame).
+--- Gets Total time relatie to current loop/pattern (instead of current frame).
+-- @treturn number
 function Animation:getLoopTime()
   local t = self.time
   for i = 1, self.index - 1 do
@@ -252,6 +253,7 @@ function Animation:reset()
   self:setIndex(1)
 end
 --- Makes the animation self-destroy when it ends.
+-- @tparam boolean value
 function Animation:setOneshot(value)
   self.oneshot = value
 end
@@ -303,16 +305,19 @@ end
 -- Transform
 -- ------------------------------------------------------------------------------------------------
 
+--- Sets sprite's position.
 function Animation:setXYZ(...)
   if self.sprite then
     self.sprite:setXYZ(...)
   end
 end
+--- Sets sprite's transformation.
 function Animation:setTransformation(...)
   if self.sprite then
     self.sprite:setTransformation(...)
   end
 end
+--- Apply transformation to sprite.
 function Animation:applyTransformation(...)
   if self.sprite then
     self.sprite:applyTransformation(...)

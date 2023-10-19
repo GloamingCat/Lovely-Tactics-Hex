@@ -1,8 +1,11 @@
 
 -- ================================================================================================
 
---- Loads data from the data folder and stores in the Database or Config global tables.
--- ------------------------------------------------------------------------------------------------
+--- Loads data and configuration from the data folder.
+-- Data files and the root data folder are stored in the global `Database` table.  
+-- Data files from the "system" subfolder are stored in the global `Config` table.  
+-- Dependencies: `Serializer`, `TagMap`
+---------------------------------------------------------------------------------------------------
 -- @module Database
 
 -- ================================================================================================
@@ -148,7 +151,7 @@ function Database.loadConfigFiles()
   Database.insertKeys(Config.equipTypes)
 end
 --- Creates alternate keys for the data elements in the given array.
---- Each element must contain a string "key" field.
+-- Each element must contain a string "key" field.
 -- @tparam table arr Array with data element.
 function Database.insertKeys(arr)
   for i = 1, #arr do

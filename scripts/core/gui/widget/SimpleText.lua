@@ -3,7 +3,7 @@
 
 --- A simple content element for GUI window containing just a text.
 -- It's a type of window content.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod SimpleText
 
 -- ================================================================================================
@@ -20,6 +20,7 @@ local SimpleText = class(Component)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam string text The text content (not rich text).
 -- @tparam Vector position Position relative to its window (optional).
 -- @tparam number width The max width for texto box (optional).
@@ -31,7 +32,8 @@ function SimpleText:init(text, position, width, align, font, plainText)
   local properties = { width, align or 'left', font or Fonts.gui_default, plainText}
   Component.init(self, position, text, properties)
 end
---- Implements Component:createContent.
+--- Implements `Component:createContent`.
+-- @implement createContent
 -- @tparam string text Initial text, in raw form.
 -- @tparam table properties Array with text properties in order:
 --  Maximum width, horizontal alignment, initial font.
@@ -56,7 +58,8 @@ function SimpleText:setRelativeXYZ(x, y, z)
   pos.y = pos.y or y
   pos.z = pos.z or z
 end
---- Overrides Component:updatePosition.
+--- Overrides `Component:updatePosition`. 
+-- @override updatePosition
 -- @tparam Vector pos Window position.
 function SimpleText:updatePosition(pos)
   local rpos = self.position

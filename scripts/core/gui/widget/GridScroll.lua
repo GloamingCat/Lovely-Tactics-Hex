@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Four arrows to navigate a GridWindow.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod GridScroll
 
 -- ================================================================================================
@@ -55,7 +55,8 @@ end
 -- Position
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Component:updatePosition.
+--- Overrides `Component:updatePosition`. 
+-- @override updatePosition
 -- @tparam Vector pos The position of the window.
 function GridScroll:updatePosition(pos)
   local w = self.window.width / 2 + self.margin
@@ -71,8 +72,8 @@ end
 -- Position
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Component:update.
---- Updates scroll count.
+--- Overrides `Component:update`. Updates scroll count.
+-- @override update
 function GridScroll:update(dt)
   if self.horizontal then
     if InputManager.usingKeyboard then
@@ -149,7 +150,8 @@ end
 -- Content methods
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Component:setVisible.
+--- Overrides `Component:setVisible`. 
+-- @override setVisible
 function GridScroll:setVisible(value)
   Component.setVisible(self, value)
   if value then

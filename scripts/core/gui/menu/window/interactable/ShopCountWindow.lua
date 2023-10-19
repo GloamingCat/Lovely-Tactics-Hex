@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window that shows the total price to be paidin the Shop GUI.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ShopCountWindow
 
 -- ================================================================================================
@@ -21,7 +21,8 @@ local ShopCountWindow = class(CountWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:createContent. Creates the text with the price values.
+--- Overrides `GridWindow:createContent`. Creates the text with the price values.
+-- @override createContent
 function ShopCountWindow:createContent(...)
   CountWindow.createContent(self, ...)
   self:createValues()
@@ -30,7 +31,8 @@ function ShopCountWindow:createContent(...)
   self.spinner.confirmSound = Config.sounds.buy or self.spinner.confirmSound
   self.spinner.bigIncrement = 5
 end
---- Overrides CountWindow:createWidgets. Adds "buy" button.
+--- Overrides `CountWindow:createWidgets`. Adds "buy" button.
+-- @override createWidgets
 function ShopCountWindow:createWidgets(...)
   CountWindow.createWidgets(self, ...)
   local button = Button:fromKey(self, "buy")
@@ -202,11 +204,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function ShopCountWindow:rowCount()
   return 2
 end
---- Overrides GridWindow:cellWidth.
+--- Overrides `GridWindow:cellWidth`. 
+-- @override cellWidth
 function ShopCountWindow:cellWidth()
   return 100
 end

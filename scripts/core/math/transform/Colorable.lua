@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- An object with color properties.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Colorable
 
 -- ================================================================================================
@@ -105,7 +105,8 @@ function Colorable:updateColor(dt)
     end
   end
 end
---- [COROUTINE] Moves to (x, y).
+--- Moves to (x, y).
+-- @coroutine colorizeTo
 -- @tparam number r Red component.
 -- @tparam number g Green component.
 -- @tparam number b Blue component.
@@ -129,7 +130,8 @@ function Colorable:instantColorizeTo(r, g, b, a)
   self:setRGBA(r, g, b, a)
   return nil
 end
---- [COROUTINE] Moves gradually (through updateMovement) to the given point.
+--- Moves gradually (through updateMovement) to the given point.
+-- @coroutine gradualColorizeTo
 -- @tparam number r Red component.
 -- @tparam number g Green component.
 -- @tparam number b Blue component.
@@ -146,7 +148,8 @@ function Colorable:gradualColorizeTo(r, g, b, a, speed, wait)
     self:waitForColor()
   end
 end
---- [COROUTINE] Waits until the move time is 1.
+--- Waits until the move time is 1.
+-- @coroutine waitForColor
 function Colorable:waitForColor()
   local fiber = _G.Fiber
   if self.colorFiber then

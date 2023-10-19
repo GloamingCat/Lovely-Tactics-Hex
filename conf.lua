@@ -1,19 +1,30 @@
 
 -- ================================================================================================
 
---- File run before main. Prepares window.
--- ------------------------------------------------------------------------------------------------
+--- File run before main. 
+-- Looks for the flag `-p` in the execution arguments to get the project name and loads the
+-- project's main file into the global table `Project`.  
+-- Loads the project's system configuration into the global table `Config` then sets parameters
+-- related to window and graphics. 
+-- Dependencies: `Serializer`
+-- @see Main
+---------------------------------------------------------------------------------------------------
 -- @script Conf
 
 -- ================================================================================================
 
+-- To better console output.
 io.stdout:setvbuf("no")
+
+-- Makes it not necessary to include the `scripts/` folder in a file's path.
 love.filesystem.setRequirePath('scripts/?.lua;/?.lua')
 
+-- Loads independent modules.
 require('override')
 require('mathlib')
 require('class')
 
+-- Imports
 local Serializer = require('core/save/Serializer')
 
 function love.conf(t)

@@ -3,7 +3,7 @@
 
 --- A piece of code that may be executed in coroutines, as a separate "process" or "thread". 
 -- It must be updated by its root every frame, unless it's paused.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Fiber
 
 -- ================================================================================================
@@ -110,15 +110,17 @@ function Fiber:execAll()
   while self:update() do
   end
 end
---- [COROUTINE] Wait until this fiber's function finishes.
---- Specially useful when other fiber must wait until this one finishes.
+--- Wait until this fiber's function finishes.
+-- Specially useful when other fiber must wait until this one finishes.
+-- @coroutine waitForEnd
 function Fiber:waitForEnd()
   assert(coroutine.running(), 'Called by main thread.')
   while self.coroutine do
     coroutine.yield()
   end
 end
---- [COROUTINE] Wait for frames.
+--- Wait for frames.
+-- @coroutine wait
 -- @tparam number t The number of frames to wait.
 --  Consider a rate of 60 frames per second.
 function Fiber:wait(t)
@@ -132,7 +134,8 @@ function Fiber:wait(t)
     end
   end
 end
---- [COROUTINE] Waits until a given condition returns true.
+--- Waits until a given condition returns true.
+-- @coroutine waitUntil
 -- @tparam function func A function that returns a boolean.
 -- @param ... Function's parameters.
 function Fiber:waitUntil(func, ...)

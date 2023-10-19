@@ -3,7 +3,7 @@
 
 --- Window that opens in the start of a character turn.
 -- When the character's turn ends, the result field is 1.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod TurnWindow
 
 -- ================================================================================================
@@ -39,13 +39,14 @@ function TurnWindow:init(...)
   self.waitAction = WaitAction()
   ActionWindow.init(self, ...)
 end
---- Overrides GridWindow:setProperties.
+--- Overrides `GridWindow:setProperties`. 
+-- @override setProperties
 function TurnWindow:setProperties()
   ActionWindow.setProperties(self)
   self.tooltipTerm = ''
 end
---- Overrides GridWindow:createContent.
---- Creates character cursor and stores troop's data.
+--- Overrides `GridWindow:createContent`. Creates character cursor and stores troop's data.
+-- @override createContent
 function TurnWindow:createContent(...)
   local troop = TurnManager:currentTroop()
   self.backupBattlers = troop:backupBattlers()
@@ -55,7 +56,8 @@ function TurnWindow:createContent(...)
   self.userCursor = BattleCursor()
   self.content:add(self.userCursor)
 end
---- Overrides GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`. 
+-- @implement createWidgets
 function TurnWindow:createWidgets()
   Button:fromKey(self, 'attack')
   Button:fromKey(self, 'move')
@@ -109,20 +111,23 @@ function TurnWindow:optionsConfirm(button)
   self.GUI:showWindowForResult(self.GUI.optionsWindow)
   self:show()
 end
---- Overrides GridWindow:onCancel.
+--- Overrides `GridWindow:onCancel`. 
+-- @override onCancel
 function TurnWindow:onCancel()
   AudioManager:playSFX(Config.sounds.buttonCancel)
   self:optionsConfirm()
   self.result = nil
 end
---- Overrides Window:onNext.
+--- Overrides `Window:onNext`. 
+-- @override onNext
 function TurnWindow:onNext()
   local index = TurnManager:nextCharacterIndex(1, true)
   if index and index ~= TurnManager.characterIndex then
     self.result = { characterIndex = index }
   end
 end
---- Overrides Window:onPrev.
+--- Overrides `Window:onPrev`. 
+-- @override onPrev
 function TurnWindow:onPrev()
   local index = TurnManager:nextCharacterIndex(-1, true)
   if index and index ~= TurnManager.characterIndex then
@@ -135,7 +140,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Attack condition. Enabled if there are tiles to move to or if there are any
----  enemies that the skill can reach.
+--  enemies that the skill can reach.
 function TurnWindow:attackEnabled(button)
   local user = TurnManager:currentCharacter()
   return self:skillActionEnabled(user.battler:getAttackSkill())
@@ -170,7 +175,8 @@ end
 -- Show / Hide
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Window:show.
+--- Overrides `Window:show`. 
+-- @override show
 function TurnWindow:show(...)
   local user = TurnManager:currentCharacter()
   self.userCursor:setCharacter(user)
@@ -181,15 +187,18 @@ end
 -- General info
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function TurnWindow:colCount()
   return 2
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function TurnWindow:rowCount()
   return 4
 end
---- Overrides GridWindow:cellWidth.
+--- Overrides `GridWindow:cellWidth`. 
+-- @override cellWidth
 function TurnWindow:cellWidth()
   return ActionWindow.cellWidth(self) * 3 / 4
 end

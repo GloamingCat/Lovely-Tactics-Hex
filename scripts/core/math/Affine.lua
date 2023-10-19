@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- This module implements some functions to calculate affine transformations.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @module Affine
 
 -- ================================================================================================
@@ -13,6 +13,42 @@ local max = math.max
 local rotate = math.rotate
 
 local Affine = {}
+
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- A neutral transform table.
+-- @tfield number offsetX Center pixel x of the quad, relative to top left corner.
+-- @tfield number offsetY Center pixel y of the quad, relative to top left corner.
+-- @tfield number offsetDepth Value added to sprite's depth;
+-- @tfield number scaleX Scale multiplier for the X axis (neutral is 100).
+-- @tfield number scaleY Scale multiplier for the Y axis (neutral is 100).
+-- @tfield number rotation Angle in degrees (from 0 to 360).
+-- @tfield number red Red color component (from 0 to 255).
+-- @tfield number green Green color component (from 0 to 255).
+-- @tfield number blue Blue color component (from 0 to 255).
+-- @tfield number alpha Alpha color component (from 0 to 255).
+-- @tfield number hue Hue offset (from 0 to 360).
+-- @tfield number saturation Saturation multiplier (neutral is 100).
+-- @tfield number brightness Color value multiplier (neutral is 100).
+Affine.neutralTransform = {
+  -- Space
+  offsetX = 0,
+  offsetY = 0,
+  offsetDepth = 0,
+  scaleX = 100,
+  scaleY = 100,
+  rotation = 0,
+  -- Color
+  red = 255,
+  green = 255,
+  blue = 255,
+  alpha = 255,
+  hue = 0,
+  saturation = 100,
+  brightness = 100
+}
 
 -- ------------------------------------------------------------------------------------------------
 -- Image Bounds

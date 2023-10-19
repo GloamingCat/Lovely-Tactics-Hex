@@ -5,7 +5,7 @@
 -- Result codes:
 --  * 0 -> cancel
 --  * 1 -> confirm
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ConfirmWindow
 
 -- ================================================================================================
@@ -53,15 +53,18 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function ConfirmWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function ConfirmWindow:rowCount()
   return 2
 end
---- Overrides GridWindow:cellWidth.
+--- Overrides `GridWindow:cellWidth`. 
+-- @override cellWidth
 function ConfirmWindow:cellWidth()
   return 80
 end

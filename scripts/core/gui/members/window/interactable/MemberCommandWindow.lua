@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The small windows with the commands for character management.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod MemberCommandWindow
 
 -- ================================================================================================
@@ -92,11 +92,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function MemberCommandWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function MemberCommandWindow:rowCount()
   return 2
 end

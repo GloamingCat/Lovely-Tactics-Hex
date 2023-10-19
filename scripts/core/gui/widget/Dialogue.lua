@@ -6,7 +6,7 @@
 --  * {p} -> pauses text drawing until player input;
 --  * {tx} -> pauses text drawing by x frames;
 --  * {ax} -> plays SFX (x must be a key in the global Config.sounds table).
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Dialogue
 
 -- ================================================================================================
@@ -21,7 +21,8 @@ local Dialogue = class(SimpleText)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides SimpleText:init.
+--- Overrides `SimpleText:init`. 
+-- @override init
 function Dialogue:init(...)
   SimpleText.init(self, ...)
   self.sprite.wrap = true

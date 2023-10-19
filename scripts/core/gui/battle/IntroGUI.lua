@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI that is shown in the beginning of the battle.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod IntroGUI
 
 -- ================================================================================================
@@ -22,13 +22,15 @@ local IntroGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:init.
+--- Overrides `GUI:init`. 
+-- @override init
 function IntroGUI:init(parent)
   self.name = 'Intro GUI'
   self.troop = TroopManager:getPlayerTroop()
   GUI.init(self, parent)
 end
---- Implements GUI:createWindows.
+--- Implements `GUI:createWindows`.
+-- @implement createWindows
 function IntroGUI:createWindows()
   self:createMainWindow()
   self:createMembersWindow()

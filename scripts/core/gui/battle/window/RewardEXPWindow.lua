@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The window that shows the gained experience.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod RewardEXPWindow
 
 -- ================================================================================================
@@ -20,7 +20,8 @@ local RewardEXPWindow = class(Window)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Window:createContent.
+--- Overrides `Window:createContent`. 
+-- @override createContent
 function RewardEXPWindow:createContent(...)
   Window.createContent(self, ...)
   self.done = false
@@ -73,7 +74,8 @@ end
 -- EXP Gain
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Show EXP gain.
+--- Show EXP gain.
+-- @coroutine addEXP
 function RewardEXPWindow:addEXP()
   local done, levelup, changed
   local soundTime = self.soundPeriod
@@ -121,7 +123,8 @@ function RewardEXPWindow:addEXP()
     Fiber:wait()
   until done
 end
---- Overrides Window:onConfirm.
+--- Overrides `Window:onConfirm`. 
+-- @override onConfirm
 function RewardEXPWindow:onConfirm()
   AudioManager:playSFX(Config.sounds.buttonConfirm)
   if self.done then
@@ -132,7 +135,8 @@ function RewardEXPWindow:onConfirm()
   self.done = true
   self.fiber = GUIManager.fiberList:fork(self.addEXP, self)
 end
---- Overrides Window:onCancel.
+--- Overrides `Window:onCancel`. 
+-- @override onCancel
 function RewardEXPWindow:onCancel()
   self:onConfirm()
 end

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The window that shows the list of skills to be used.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod SkillWindow
 
 -- ================================================================================================
@@ -28,7 +28,8 @@ function SkillWindow:init(gui)
   self.member = gui:currentMember()
   ListWindow.init(self, gui, self.member:getSkillList())
 end
---- Overrides ListWindow:createButtons.
+--- Overrides `ListWindow:createWidgets`. 
+-- @override createWidgets
 function SkillWindow:createWidgets()
   if #self.list > 0 then
     ListWindow.createWidgets(self)
@@ -139,15 +140,18 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides ListWindow:cellWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override cellWidth
 function SkillWindow:cellWidth()
   return 200
 end
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function SkillWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function SkillWindow:rowCount()
   return self.visibleRowCount
 end

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A fiber that processes a list of sequential commands.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod EventSheet
 
 -- ================================================================================================
@@ -105,7 +105,8 @@ end
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
---- Runs the script commands.
+--- Implements `Fiber:execute`. Runs the script commands.
+-- @implement execute
 function EventSheet:execute()
   self:setUp()
   self:commands()
@@ -153,7 +154,8 @@ function EventSheet:clear()
     self.data.running = nil
   end
 end
---- Overrides Fiber:finish.
+--- Overrides `Fiber:finish`. 
+-- @override finish
 function EventSheet:finish()
   Fiber.finish(self)
   self:clear()

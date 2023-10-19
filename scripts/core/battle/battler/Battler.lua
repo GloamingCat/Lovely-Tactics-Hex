@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A class the holds character's information for battle formula.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Battler
 
 -- ================================================================================================
@@ -367,7 +367,7 @@ function Battler:onMove(char, path)
   self.statusList:callback('Move', char, path)
 end
 --- Callback for when the character enters the given tiles.
---- Adds terrain statuses.
+-- Adds terrain statuses.
 -- @tparam Character char The Character associated with this Battler.
 -- @tparam table tiles Array of terrain tiles.
 function Battler:onTerrainEnter(char, tiles)
@@ -379,7 +379,7 @@ function Battler:onTerrainEnter(char, tiles)
   end
 end
 --- Callback for when the character exits the given tiles.
---- Removes terrain statuses.
+-- Removes terrain statuses.
 -- @tparam Character char The Character associated with this Battler.
 -- @tparam table tiles Array of terrain tiles.
 function Battler:onTerrainExit(char, tiles)

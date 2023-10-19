@@ -2,39 +2,47 @@
 -- ================================================================================================
 
 --- Controls battle flow (initializes troops, runs loop, checks victory and game over).
--- Parameters:
---  * gameOverCondition: 
---    * 0 -> no gameover
---    * 1 -> only when lost
---    * 2 -> lost or draw
---  * skipAnimations: for debugging purposes (skips battle/character animations)
---  * escapeEnabled: enable Escape action
--- Result codes:
---  * 1 -> win
---  * 0 -> draw
---  * -1 -> lost
--- ------------------------------------------------------------------------------------------------
+-- Dependencies: `TurnManager`, `TroopManager`, `GameOverGUI`, `RewardGUI` `Inventory`, `TileGUI`
+---------------------------------------------------------------------------------------------------
 -- @classmod BattleManager
 
 -- ================================================================================================
 
 -- Imports
-local Animation = require('core/graphics/Animation')
 local GameOverGUI = require('core/gui/battle/GameOverGUI')
 local IntroGUI = require('core/gui/battle/IntroGUI')
 local Inventory = require('core/battle/Inventory')
 local RewardGUI = require('core/gui/battle/RewardGUI')
-local TileGUI = require('core/field/TileGUI')
-
--- Constants
-local defaultParams = {
-  fade = 60,
-  intro = false,
-  gameOverCondition = 0, 
-  escapeEnabled = true }
 
 -- Class table.
 local BattleManager = class()
+
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Result codes.
+-- @enum GameOverCondition
+-- @field NONE Code for no game over, regardless of battle result. Equals to 0.
+-- @field LOSE Code for game over when the player party loses. Equals to 1.
+-- @field NOWIN Code for game over when the player party loses or there's a draw. Equals to 2.
+BattleManager.GameOverCondition = {
+  NONE = 0,
+  LOSE = 1,
+  NOWIN = 2
+}
+--- Default battle arguments.
+-- @tfield number fade The duration in frames of the fading transition. Default: `60`.
+-- @tfield boolean intro When false, skips the intro animation showing the parties. Default: `true`.
+-- @tfield GameOverCondition gameOverCondition The condition to block the "Continue" option from
+--  the Game Over screen. Default: `NONE`.
+-- @tfield boolean escapeEnabled Flag to enable the escape action for the player. Default: `true`.
+BattleManager.defaultParams = {
+  fade = 60,
+  intro = false,
+  gameOverCondition = BattleManager.NONE, 
+  escapeEnabled = true
+}
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -43,14 +51,14 @@ local BattleManager = class()
 --- Constructor.
 function BattleManager:init()
   self.onBattle = false
-  self.params = defaultParams
+  self.params = self.defaultParams
 end
 --- Creates battle elements (GUI, characters, party tiles).
 -- @tparam table state Data about battle state for when the game is loaded mid-battle (optional).
 function BattleManager:setUp(state)
   TroopManager:setPartyTiles(self.currentField)
   for tile in FieldManager.currentField:gridIterator() do
-    tile.gui = TileGUI(tile, true, true)
+    tile:initializeGUI()
   end
   TroopManager:createTroops(state and state.troops)
   TurnManager:setUp(state and state.turn)
@@ -178,30 +186,30 @@ end
 
 -- @treturn boolean Whether the player party won the battle.
 function BattleManager:playerWon()
-  return self.result > 0
+  return self.result >= TurnManager.Result.WIN 
 end
 -- @treturn boolean Whether the player party escaped.
 function BattleManager:playerEscaped()
-  return self.result == -2
+  return self.result == TurnManager.Result.ESCAPE
 end
 -- @treturn boolean Whether the enemy party won battle.
 function BattleManager:enemyWon()
-  return self.result == -1
+  return self.result == TurnManager.Result.LOSE
 end
 -- @treturn boolean Whether the enemy party escaped.
 function BattleManager:enemyEscaped()
-  return self.result == 2
+  return self.result == TurnManager.Result.WALKOVER
 end
 -- @treturn boolean Whether both parties lost.
 function BattleManager:drawed()
-  return self.result == 0
+  return self.result == TurnManager.Result.DRAW
 end
 --- Checks if the player received a game over.
 function BattleManager:isGameOver()
   if self:drawed() then
-    return self.params.gameOverCondition >= 2
+    return self.params.gameOverCondition >= self.GameOverCondition.NOWIN
   elseif self:enemyWon() then
-    return self.params.gameOverCondition >= 1
+    return self.params.gameOverCondition >= self.GameOverCondition.LOSE
   else
     return false
   end

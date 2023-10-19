@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Child that synchronizes with the parent animation.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin ChildAnimation
 
 -- ================================================================================================
@@ -15,7 +15,8 @@ local List = require('core/datastruct/List')
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Gets child animations from tags.
+--- Rewrites `Animation:init`.
+-- @override Animation_init
 local Animation_init = Animation.init
 function Animation:init(...)
   Animation_init(self, ...)
@@ -40,7 +41,8 @@ function Animation:addChild(anim)
   anim:setXYZ(self.sprite.position:coordinates())
   self.children:add(anim)
 end
---- Override. Instantiate delayed children.
+--- Rewrites `Animation:callEvents`.
+-- @override Animation_callEvents
 local Animation_callEvents = Animation.callEvents
 function Animation:callEvents()
   if self.childQueue then
@@ -57,7 +59,8 @@ end
 -- Update
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Updates children.
+--- Rewrites `Animation:update`.
+-- @override Animation_update
 local Animation_update = Animation.update
 function Animation:update(dt)
   Animation_update(self, dt)
@@ -75,7 +78,8 @@ end
 -- Finish
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Destroys children.
+--- Rewrites `Animation:destroy`.
+-- @override Animation_destroy
 local Animation_destroy = Animation.destroy
 function Animation:destroy()
   Animation_destroy(self)
@@ -85,7 +89,8 @@ function Animation:destroy()
     end
   end
 end
---- Override. Resets children.
+--- Rewrites `Animation:reset`.
+-- @override Animation_reset
 local Animation_reset = Animation.reset
 function Animation:reset()
   Animation_reset(self)
@@ -95,7 +100,8 @@ function Animation:reset()
     end
   end
 end
---- Override. Sets children as oneshot.
+--- Rewrites `Animation:setOneshot`.
+-- @override Animation_setOneshot
 local Animation_setOneshot = Animation.setOneshot
 function Animation:setOneshot(value)
   Animation_setOneshot(self, value)
@@ -110,7 +116,8 @@ end
 -- Position
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Sets children's position.
+--- Rewrites `Animation:setXYZ`.
+-- @override Animation_setXYZ
 local Animation_setXYZ = Animation.setXYZ
 function Animation:setXYZ(...)
   Animation_setXYZ(self, ...)

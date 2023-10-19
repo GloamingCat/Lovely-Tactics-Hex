@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- This class manages all GUI objects.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod GUIManager
 
 -- ================================================================================================
@@ -64,7 +64,8 @@ end
 function GUIManager:isWaitingInput()
   return self.current and self.current.activeWindow ~= nil
 end
---- [COROUTINE] Shows GUI and waits until returns a result.
+--- Shows GUI and waits until returns a result.
+-- @coroutine showGUIForResult
 -- @tparam GUI newGUI The GUI object to be added and shown.
 -- @treturn unknown Any result returned by the GUI after it's closed.
 function GUIManager:showGUIForResult(newGUI)
@@ -73,7 +74,8 @@ function GUIManager:showGUIForResult(newGUI)
   self:returnGUI()
   return result
 end
---- [COROUTINE] Shows GUI and adds to the stack.
+--- Shows GUI and adds to the stack.
+-- @coroutine showGUI
 -- @tparam GUI newGUI The GUI object to be added and shown.
 function GUIManager:showGUI(newGUI)
   if self.current then
@@ -82,14 +84,15 @@ function GUIManager:showGUI(newGUI)
   self.current = newGUI
   newGUI:show()
 end
---- [COROUTINE] Closes current GUI and returns to the previous.
+--- Closes current GUI and returns to the previous.
+-- @coroutine returnGUI
 function GUIManager:returnGUI()
   local lastGUI = self.current
   lastGUI:hide()
   self:removeGUI(lastGUI)
 end
 --- Remove a specific GUI, not necessarily from the top of the stack.
---- Hide animations must be called before this.
+-- Hide animations must be called before this.
 -- @tparam GUI gui
 function GUIManager:removeGUI(gui)
   gui:destroy()

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A text sprite that is shown in the field with a pop-up animation.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod PopText
 
 -- ================================================================================================
@@ -95,7 +95,8 @@ end
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Show the text lines.
+--- Show the text lines.
+-- @coroutine pop
 -- @tparam number dir 1 to pop up, -1 to pop down.
 function PopText:pop(dir)
   local p = {self.width, self.align}
@@ -117,7 +118,8 @@ function PopText:pop(dir)
   end
   sprite:destroy()
 end
---- [COROUTINE] Show the text lines.
+--- Show the text lines.
+-- @coroutine popUp
 -- @tparam boolean wait True if the execution should wait until the animation finishes 
 --  (optional, false by default).
 -- @treturn number The duration in frames.
@@ -133,7 +135,8 @@ function PopText:popUp(wait)
     return 0
   end
 end
---- [COROUTINE] Show the text lines.
+--- Show the text lines.
+-- @coroutine popDown
 -- @tparam boolean wait True if the execution should wait until the animation finishes 
 --  (optional, false by default).
 -- @treturn number The duration in frames.

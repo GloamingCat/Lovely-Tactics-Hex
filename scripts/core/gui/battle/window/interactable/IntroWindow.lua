@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window that is shown in the beginning of the battle.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod IntroWindow
 
 -- ================================================================================================
@@ -62,7 +62,8 @@ function IntroWindow:formationConfirm(button)
   FieldManager.renderer:moveToPoint(center.x, center.y)
   self.result = nil
 end
---- Overrides GridWindow:onCancel.
+--- Overrides `GridWindow:onCancel`. 
+-- @override inspectConfirm
 function IntroWindow:inspectConfirm()
   local center = TroopManager.centers[TroopManager.playerParty]
   local x, y, z = math.field.pixel2Tile(center.x, center.y, center.z)
@@ -79,7 +80,8 @@ function IntroWindow:optionsConfirm(button)
   self.GUI:showWindowForResult(self.GUI.optionsWindow)
   self:show()
 end
---- Overrides GridWindow:onCancel.
+--- Overrides `GridWindow:onCancel`. 
+-- @override onCancel
 function IntroWindow:onCancel()
   AudioManager:playSFX(Config.sounds.buttonCancel)
   self:optionsConfirm()
@@ -90,11 +92,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function IntroWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function IntroWindow:rowCount()
   return 6
 end

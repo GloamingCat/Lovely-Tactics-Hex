@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window to change basic system settings.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod SettingsWindow
 
 -- ================================================================================================
@@ -20,12 +20,14 @@ local SettingsWindow = class(GridWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:setProperties.
+--- Overrides `GridWindow:setProperties`. 
+-- @override setProperties
 function SettingsWindow:setProperties()
   GridWindow.setProperties(self)
   self.tooltipTerm = ''
 end
---- Implements GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`.
+-- @implement createWidgets
 function SettingsWindow:createWidgets()
   if #Project.languages > 1 then
     SwitchButton:fromKey(self, 'language', GameManager.language, nil, Project.languages)
@@ -154,17 +156,20 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function SettingsWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function SettingsWindow:rowCount()
   --local n = GameManager:isMobile() and 5 or GameManager:isWeb() and 8 or 9
   local n = 5
   return #Project.languages > 1 and n + 1 or n 
 end
---- Overrides GridWindow:cellWidth.
+--- Overrides `GridWindow:cellWidth`. 
+-- @override cellWidth
 function SettingsWindow:cellWidth()
   return 240
 end

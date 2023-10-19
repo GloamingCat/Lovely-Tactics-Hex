@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The BattleAction that is executed when players cancels in the Turn Window.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod VisualizeAction
 
 -- ================================================================================================
@@ -32,7 +32,8 @@ end
 -- Event handlers
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:execute.
+--- Overrides `BattleAction:execute`. 
+-- @override execute
 function VisualizeAction:execute(input)
   local character = input.target:getFirstBattleCharacter()
   FieldManager.renderer:moveToTile(input.target)
@@ -46,7 +47,8 @@ end
 -- Tile Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:resetTileColors.
+--- Overrides `BattleAction:resetTileColors`. 
+-- @override resetTileColors
 function VisualizeAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
     tile.gui:setColor('')
@@ -57,7 +59,8 @@ end
 -- Selectable Tiles
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:isSelectable.
+--- Overrides `BattleAction:isSelectable`. 
+-- @override isSelectable
 function VisualizeAction:isSelectable(input, tile)
   return tile:getFirstBattleCharacter() ~= nil
 end

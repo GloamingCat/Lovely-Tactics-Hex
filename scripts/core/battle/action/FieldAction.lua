@@ -5,7 +5,7 @@
 -- The method <execute> defines what happens when player confirms the selected tile.
 -- The method <isSelectable> checks if a tile is valid to be chosen or not.
 -- When called outsite of battle, the tiles' graphics must be set up before using.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod FieldAction
 
 -- ================================================================================================
@@ -39,13 +39,13 @@ function FieldAction:onSelect(input)
   self:resetTileProperties(input)
 end
 --- Called when the ActionGUI is open.
---- By default, just updates the "selectable" field in all tiles for grid selecting.
+-- By default, just updates the "selectable" field in all tiles for grid selecting.
 -- @tparam ActionInput input
 function FieldAction:onActionGUI(input)
   input.GUI:startGridSelecting(self:firstTarget(input))
 end
 --- Called when player chooses a target for the action. 
---- By default, just ends grid seleting and calls execute.
+-- By default, just ends grid seleting and calls execute.
 -- @tparam ActionInput input
 -- @treturn table Battle results.
 function FieldAction:onConfirm(input)
@@ -55,7 +55,7 @@ function FieldAction:onConfirm(input)
   return self:execute(input)
 end
 --- Called when player chooses a target for the action. 
---- By default, just ends grid selecting.
+-- By default, just ends grid selecting.
 -- @tparam ActionInput input
 -- @treturn table The turn result.
 function FieldAction:onCancel(input)
@@ -109,7 +109,7 @@ function FieldAction:isTileAffected(input, tile)
   return true -- Abstract.
 end
 --- Gets all tiles that will be affected by action's effect.
---- It included any tile within action's area that are flagged by isTileAffected method.
+-- It included any tile within action's area that are flagged by isTileAffected method.
 -- @tparam ActionInput input Action input.
 -- @tparam ObjectTile tile Center tile (input's target by default).
 -- @treturn table Array of affected tile within tile's area.
@@ -128,7 +128,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Tells if a tile can be chosen as target. 
---- By default, no tile is selectable.
+-- By default, no tile is selectable.
 -- @tparam ActionInput input
 -- @tparam ObjectTile tile The tile to check.
 -- @treturn boolean True if can be chosen, false otherwise.

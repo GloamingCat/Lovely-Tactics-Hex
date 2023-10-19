@@ -4,7 +4,7 @@
 --- Makes the PartyWindow in the FieldGUI visible alongside the FieldCommandWindow.
 -- 
 -- Use this together with the MemberCommandWindow script for better fit.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin VisiblePartyWindow
 
 -- ================================================================================================
@@ -18,7 +18,8 @@ local PartyWindow = require('core/gui/members/window/interactable/PartyWindow')
 -- FieldGUI
 -- ------------------------------------------------------------------------------------------------
 
---- Changes the position of the info windows.
+--- Rewrites `FieldGUI:createWindows`.
+-- @override FieldGUI_createWindows
 local FieldGUI_createWindows = FieldGUI.createWindows
 function FieldGUI:createWindows(...)
   FieldGUI_createWindows(self, ...)
@@ -27,7 +28,8 @@ function FieldGUI:createWindows(...)
   self.locationWindow:setXYZ(nil, y)
   self.timeWindow:setXYZ(nil, y)
 end
---- Changes the position of the main window.
+--- Rewrites `FieldGUI:createMainWindow`.
+-- @override FieldGUI_createMainWindow
 local FieldGUI_createMainWindow = FieldGUI.createMainWindow
 function FieldGUI:createMainWindow()
   FieldGUI_createMainWindow(self)
@@ -37,7 +39,8 @@ function FieldGUI:createMainWindow()
   self.goldWindowWidth = self.mainWindow.width
   self.mainWindow:setXYZ(x, y)
 end
---- Changes the position of the members window and hides highlight.
+--- Rewrites `FieldGUI:createMembersWindow`.
+-- @override FieldGUI_createMembersWindow
 local FieldGUI_createMembersWindow = FieldGUI.createMembersWindow
 function FieldGUI:createMembersWindow()
   FieldGUI_createMembersWindow(self)
@@ -54,13 +57,15 @@ end
 -- FieldCommandWindow
 -- ------------------------------------------------------------------------------------------------
 
---- Changes the alignment of the button.
+--- Rewrites `FieldCommandWindow:setProperties`.
+-- @override FieldCommandWindow_setProperties
 local FieldCommandWindow_setProperties = FieldCommandWindow.setProperties
 function FieldCommandWindow:setProperties(...)
   FieldCommandWindow_setProperties(self, ...)
   self.buttonAlign = 'left'
 end
---- Do not open/close GUI when changing focus to/from the PartyWindow.
+--- Rewrites `FieldCommandWindow:openPartyWindow`.
+-- @override FieldCommandWindow_openPartyWindow
 function FieldCommandWindow:openPartyWindow(GUI, tooltip)
   if self.GUI.partyWindow.troop:visibleMembers().size <= 1 then
     self.GUI:hide()
@@ -82,13 +87,15 @@ function FieldCommandWindow:openPartyWindow(GUI, tooltip)
   self:activate()
   self.GUI.partyWindow.highlight:hide()
 end
---- To make the window thinner to fit the party window.
+--- Rewrites `FieldCommandWindow:colCount`.
+-- @override FieldCommandWindow_colCount
 local FieldCommandWindow_colCount = FieldCommandWindow.colCount
 function FieldCommandWindow:colCount()
   return 1
 end
+--- Rewrites `FieldCommandWindow:rowCount`.
+-- @override FieldCommandWindow_rowCount
 local FieldCommandWindow_rowCount = FieldCommandWindow.rowCount
---- To make the window longer to fit the other buttons.
 function FieldCommandWindow:rowCount()
   return FieldCommandWindow_rowCount(self) * FieldCommandWindow_colCount(self)
 end
@@ -97,7 +104,8 @@ end
 -- PartyWindow
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides ListWindow:cellWidth.
+--- Rewrites `PartyWindow:cellWidth`.
+-- @override PartyWindow_cellWidth
 local PartyWindow_cellWidth = PartyWindow.cellWidth
 function PartyWindow:cellWidth()
   if self.GUI and self.GUI.mainWindow then
@@ -106,7 +114,8 @@ function PartyWindow:cellWidth()
   end
   return PartyWindow_cellWidth(self)
 end
---- Overrides ListWindow:cellWidth.
+--- Rewrites `PartyWindow:cellHeight`.
+-- @override PartyWindow_cellHeight
 local PartyWindow_cellHeight = PartyWindow.cellHeight
 function PartyWindow:cellHeight()
   if self.GUI and self.GUI.goldWindow then

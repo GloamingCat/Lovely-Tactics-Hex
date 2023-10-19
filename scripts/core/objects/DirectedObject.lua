@@ -4,7 +4,7 @@
 --- An object with a direction. It uses the animation's rows to set the direction of the sprite.
 -- The animation must contain 8 rows, each row representing a direction. The direction of a row r
 -- (a value from 0 to 7) is (r * 45).
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod DirectedObject
 
 -- ================================================================================================
@@ -26,7 +26,8 @@ local DirectedObject = class(AnimatedObject)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides AnimatedObject:initGraphics.
+--- Overrides `AnimatedObject:initGraphics`. 
+-- @override initGraphics
 -- @tparam number direction The initial direction.
 function DirectedObject:initGraphics(direction, ...)
   self.direction = direction
@@ -38,7 +39,8 @@ end
 -- Direction
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides AnimatedObject:replayAnimation.
+--- Overrides `AnimatedObject:replayAnimation`. 
+-- @override replayAnimation
 function DirectedObject:replayAnimation(name, row)
   row = row or angle2Row(self.direction)
   return AnimatedObject.replayAnimation(self, name, row)
@@ -67,7 +69,7 @@ function DirectedObject:getFrontTile(angle)
   return tile.layer.grid[tile.x + dx][tile.y + dy]
 end
 --- Gets the tiles on front of the character, considering character's direction.
---- It includes tiles in other layers that are accessible from ramps.
+-- It includes tiles in other layers that are accessible from ramps.
 -- @treturn table Array of ObjectTiles.
 function DirectedObject:getFrontTiles(angle)
   local tile = self:getTile()

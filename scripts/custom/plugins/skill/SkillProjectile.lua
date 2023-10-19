@@ -5,7 +5,7 @@
 -- 
 -- Skill parameters:
 --  * Set <projectileID> tag as projectile animation ID or key.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin SkillProjectile
 
 -- ================================================================================================
@@ -48,7 +48,8 @@ function Animation:setTarget(target)
   self.moveTime = 0
   return self.sprite.position:distance2DTo(self.target:coordinates())
 end
---- [COROUTINE] Starts the movement towards the target tile.
+--- Starts the movement towards the target tile.
+-- @coroutine throw
 -- @tparam Character user
 -- @tparam ObjectTile target The target tile.
 -- @tparam number speed Speed in pixels per second (optional if speed is set in tags).
@@ -71,8 +72,8 @@ function Animation:throw(user, target, speed, wait)
   end
   return time
 end
---- Overrides Animation:update.
---- Updates sprite position.
+--- Rewrites `Animation:update`.
+-- @override Animation_update
 local Animation_update = Animation.update
 function Animation:update(dt)
   Animation_update(self, dt)
@@ -86,7 +87,8 @@ end
 -- Character
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides. Change throw projectile after cast animation.
+--- Rewrites `Character:castSkill`.
+-- @override Character_castSkill
 local Character_castSkill = Character.castSkill
 function Character:castSkill(skill, dir, target)
   local minTime = Character_castSkill(self, skill, dir, target)

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Shows a list of custom choices.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ChoiceWindow
 
 -- ================================================================================================
@@ -29,8 +29,8 @@ function ChoiceWindow:init(gui, args)
   self.cancelChoice = args.cancel
   GridWindow.init(self, gui, self.width, nil, args.pos)
 end
---- Implements GridWindow:creatwWidgets.
---- Creates a button for each choice.
+--- Implements `GridWindow:creatwWidgets`. Creates a button for each choice.
+-- @implement createWidgets
 function ChoiceWindow:createWidgets()
   for i = 1, self.choices.size do
     local choice = self.choices[i]
@@ -58,15 +58,18 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function ChoiceWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function ChoiceWindow:rowCount()
   return #self.choices
 end
---- Overrides GridWindow:cellWidth.
+--- Overrides `GridWindow:cellWidth`. 
+-- @override cellWidth
 function ChoiceWindow:cellWidth()
   return (self.width or 100) - self:paddingX() * 2
 end

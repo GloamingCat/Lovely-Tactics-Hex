@@ -6,7 +6,7 @@
 --  * 1 -> continue
 --  * 2 -> retry
 --  * 3 -> title screen
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod GameOverWindow
 
 -- ================================================================================================
@@ -45,11 +45,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function GameOverWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function GameOverWindow:rowCount()
   return 3
 end

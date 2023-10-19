@@ -6,7 +6,7 @@
 -- 
 -- Requires: 
 --  * EmotionBallon
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin StatusBalloon
 
 -- ================================================================================================
@@ -20,7 +20,8 @@ local StatusList = require('core/battle/battler/StatusList')
 -- StatusList
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Refreshes icon list.
+--- Rewrites `StatusList:updateGraphics`.
+-- @override StatusList_updateGraphics
 local StatusList_updateGraphics = StatusList.updateGraphics
 function StatusList:updateGraphics(character)
   StatusList_updateGraphics(self, character)
@@ -32,7 +33,8 @@ end
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Considers state 4, when the character has no status.
+--- Rewrites `CharacterBase:update`.
+-- @override CharacterBase_update
 local CharacterBase_update = CharacterBase.update
 function CharacterBase:update(dt)
   CharacterBase_update(self, dt)
@@ -55,7 +57,8 @@ end
 -- BattleCursor
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Adds balloon height if there are characters with a balloon.
+--- Rewrites `BattleCursor:setTile`.
+-- @override BattleCursor_setTile
 local BattleCursor_setTile = BattleCursor.setTile
 function BattleCursor:setTile(tile)
   BattleCursor_setTile(self, tile)
@@ -66,7 +69,8 @@ function BattleCursor:setTile(tile)
     end
   end
 end
---- Override. Adds balloon height if character has a balloon.
+--- Rewrites `BattleCursor:setCharacter`.
+-- @override BattleCursor_setCharacter
 local BattleCursor_setCharacter = BattleCursor.setCharacter
 function BattleCursor:setCharacter(char)
   BattleCursor_setCharacter(self, char)

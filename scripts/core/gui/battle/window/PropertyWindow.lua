@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window that opens in Action GUI to show a property of the current character.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod PropertyWindow
 
 -- ================================================================================================
@@ -19,14 +19,15 @@ local PropertyWindow = class(Window)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Window:init.
+--- Overrides `Window:init`. 
+-- @override init
 function PropertyWindow:init(GUI)
   local w, h, m = 90, 30, GUI:windowMargin()
   Window.init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - m, 
       ScreenManager.height / 2 - h / 2 - m))
 end
---- Overrides Window:createContent.
---- Creates step text.
+--- Overrides `Window:createContent`. Creates step text.
+-- @override createContent
 function PropertyWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local w = self.width - self:paddingX() * 2

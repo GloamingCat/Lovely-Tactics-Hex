@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window that shows the list of save slots.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod SaveWindow
 
 -- ================================================================================================
@@ -30,12 +30,14 @@ function SaveWindow:init(...)
   button.confirmSound = Config.sounds.save or button.confirmSound
   button.clickSound = button.confirmSound
 end
---- Overrides GridWindow:setProperties.
+--- Overrides `GridWindow:setProperties`. 
+-- @override setProperties
 function SaveWindow:setProperties()
   GridWindow.setProperties(self)
   self.tooltipTerm = 'saveSlot'
 end
---- Overrides GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`. 
+-- @implement createWidgets
 function SaveWindow:createWidgets()
   for i = 1, SaveManager.maxSaves do
     self:createSaveButton(i .. '', Vocab.saveName .. ' ' .. i)
@@ -68,7 +70,8 @@ function SaveWindow:refreshSave(button)
   button:updatePosition(self.position)
   button:refreshEnabled()
 end
---- Overrides Window:show.
+--- Overrides `Window:show`. 
+-- @override show
 function SaveWindow:show(...)
   if not self.open then
     for button in self.matrix:iterator() do
@@ -104,19 +107,23 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function SaveWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function SaveWindow:rowCount()
   return math.min(SaveManager.maxSaves, GameManager:isMobile() and 3 or 4)
 end
---- Overrides ListWindow:cellWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override cellWidth
 function SaveWindow:cellWidth()
   return GridWindow.cellWidth(self) * 2
 end
---- Overrides GridWindow:cellHeight.
+--- Overrides `GridWindow:cellHeight`. 
+-- @override cellHeight
 function SaveWindow:cellHeight()
   return (GridWindow.cellHeight(self) * 2 + self:rowMargin() * 2) - 4
 end

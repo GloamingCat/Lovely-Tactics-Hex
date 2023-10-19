@@ -5,7 +5,7 @@
 -- Add 'equip' tags on a Job to indicate which types of item it can equip.
 -- Add 'equip' tag on an item to indicate the type of the item.
 -- Jobs with no equip tags have no restrictions.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin JobEquips
 
 -- ================================================================================================
@@ -34,7 +34,8 @@ local function canEquip(itemTags, jobTags)
   end
   return false
 end
---- Override. Filters out equips that cannot be equiped by the given job.
+--- Rewrites `Inventory:getEquipItems`.
+-- @override Inventory_getEquipItems
 local Inventory_getEquipItems = Inventory.getEquipItems
 function Inventory:getEquipItems(key, member)
   local items = Inventory_getEquipItems(self, key, member)

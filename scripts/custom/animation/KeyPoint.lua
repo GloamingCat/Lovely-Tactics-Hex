@@ -15,7 +15,7 @@
 --  * FIELD is case-sensitive.
 --  * Scale and RGBA values are in 0-1 range, as well as saturation and brightness.
 --  * Rotation is in radians.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod KeyPoint
 
 -- ================================================================================================
@@ -78,7 +78,8 @@ end
 -- Update
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Animation:update.
+--- Overrides `Animation:update`. 
+-- @override update
 function KeyPoint:update(dt)
   Animation.update(self, dt)
   if self.paused or not self.duration or not self.timing then

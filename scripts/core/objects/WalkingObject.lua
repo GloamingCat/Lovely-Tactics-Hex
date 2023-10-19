@@ -4,7 +4,7 @@
 --- A directed, animated object with walk methods.
 -- It is not responsible for checking collisions or updating tile object lists. These must be handled
 -- outside of these methods.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod WalkingObject
 
 -- ================================================================================================
@@ -64,7 +64,8 @@ end
 -- Walk in Pixels
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Walks to the given pixel point (x, y, d).
+--- Walks to the given pixel point (x, y, d).
+-- @coroutine walkToPoint
 -- @tparam number x Coordinate x of the point.
 -- @tparam number y Coordinate y of the point.
 -- @tparam number z The depth of the point.
@@ -76,7 +77,8 @@ function WalkingObject:walkToPoint(x, y, z)
   self:moveTo(x, y, z, self.speed / distance, true)
   return self.position:almostEquals(x, y, z, 0.2)
 end
---- [COROUTINE] Walks a given distance in each axis.
+--- Walks a given distance in each axis.
+-- @coroutine walkDistance
 -- @tparam number dx The distance in axis x (in pixels).
 -- @tparam number dy The distance in axis y (in pixels).
 -- @tparam number dz The distance in depth (in pixels).
@@ -85,7 +87,8 @@ function WalkingObject:walkDistance(dx, dy, dz)
   local pos = self.position
   return self:walkToPoint(pos.x + dx, pos.y + dy, pos.z + dz)
 end
---- [COROUTINE] Walks the given distance in the given direction.
+--- Walks the given distance in the given direction.
+-- @coroutine walkInAngle
 -- @tparam number d The distance to be walked.
 -- @tparam number angle The direction angle.
 -- @tparam number dz The distance in depth.
@@ -100,7 +103,8 @@ end
 -- Walk in Tiles
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Walks to the center of the tile (x, y).
+--- Walks to the center of the tile (x, y).
+-- @coroutine walkToTile
 -- @tparam number x Coordinate x of the tile.
 -- @tparam number y Coordinate y of the tile.
 -- @tparam number h The height of the tile.
@@ -109,7 +113,8 @@ function WalkingObject:walkToTile(x, y, h)
   x, y, h = tile2Pixel(x, y, h or self:getTile().layer.height)
   return self:walkToPoint(x, y, h)
 end
---- [COROUTINE] Walks a distance in tiles defined by (dx, dy, dh).
+--- Walks a distance in tiles defined by (dx, dy, dh).
+-- @coroutine walkTiles
 -- @tparam number dx The x-axis distance.
 -- @tparam number dy The y-axis distance.
 -- @tparam number dh The height difference.

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window that shows the total price to be paidin the Recruit GUI.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod RecruitConfirmWindow
 
 -- ================================================================================================
@@ -21,7 +21,8 @@ local RecruitConfirmWindow = class(BattlerWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides CountWindow:createWidgets. Adds "hire" button.
+--- Overrides `CountWindow:createWidgets`. Adds "hire" button.
+-- @override createContent
 function RecruitConfirmWindow:createContent(...)
   BattlerWindow.createContent(self, ...)
   local w = self.width - self:paddingX() * 2
@@ -120,11 +121,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function RecruitConfirmWindow:rowCount()
   return 2
 end
---- Overrides GridWindow:cellWidth.
+--- Overrides `GridWindow:cellWidth`. 
+-- @override cellWidth
 function RecruitConfirmWindow:cellWidth()
   return 100
 end

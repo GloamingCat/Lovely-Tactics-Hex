@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The window that shows each equipment slot.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod EquipSlotWindow
 
 -- ================================================================================================
@@ -35,7 +35,8 @@ function EquipSlotWindow:init(gui)
   self.visibleRowCount = min(6, max(self.visibleRowCount, 4))
   ListWindow.init(self, gui, Config.equipTypes)
 end
---- Overrides ListWindow:createListButton.
+--- Overrides `ListWindow:createListButton`. 
+-- @override createListButton
 -- @tparam table slot The table with the equip slot info (name, key, state, id).
 function EquipSlotWindow:createListButton(slot)
   for i = 1, slot.count do
@@ -97,7 +98,7 @@ function EquipSlotWindow:onButtonSelect(button)
   self.GUI.bonusWindow:setEquip(button.key, button.item)
 end
 --- Called when player presses "confirm".
---- Open item window to choose the new equip.
+-- Open item window to choose the new equip.
 -- @tparam Button button
 function EquipSlotWindow:onButtonConfirm(button)
   self:hide()
@@ -106,7 +107,7 @@ function EquipSlotWindow:onButtonConfirm(button)
   self.GUI.itemWindow:activate()
 end
 --- Called when player presses "cancel".
---- Closes GUI.
+-- Closes GUI.
 function EquipSlotWindow:onButtonCancel()
   self.result = 0
 end
@@ -123,11 +124,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function EquipSlotWindow:colCount()
   return 1
 end
---- Overrides ListWindow:computeWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override cellWidth
 function EquipSlotWindow:cellWidth(width)
   return 200
 end

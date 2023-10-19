@@ -5,20 +5,7 @@
 -- The image may be scaled, rotated, translated and coloured.
 -- Its position determines where on the screen it's going to be rendered (x and y axis, relative to 
 -- the world's coordinate system) and the depth/render order (z axis).
---
--- Transform table values:
---  * offsetX, offsetY: center pixel coordinates of the quad, relative to top left corner;
---  * offsetYDepth: value added to sprite's depth;
---  * scaleX, scaleY: scale values from 0 to 100;
---  * rotation: rotation angle in degrees, from 0 to 360;
---  * red: color red component, from 0 to 255;
---  * green: color green component, from 0 to 255;
---  * blue: color blue component, from 0 to 255;
---  * alpha: color alpha component, from 0 to 255;
---  * hue: color hue offset, from 0 to 360;
---  * saturation: color saturation multiplier, from 0 to 100;
---  * brightness: color value multiplier, from 0 to 100.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Sprite
 
 -- ================================================================================================
@@ -42,6 +29,7 @@ local Sprite = class(Colorable)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam Renderer renderer The renderer that is going to handle this sprite.
 -- @tparam Texture texture Sprite's texture.
 -- @tparam Quad quad The piece of the texture to render.
@@ -145,7 +133,7 @@ function Sprite:setTransformation(data)
   self:setHSV(data.hue / 360, data.saturation / 100, data.brightness / 100)
 end
 --- Merges sprite's current transformation with a new one.
--- @tparam table data Transformation data.
+-- @tparam table data Transformation data, using the format of `Affine.neutralTransform`.
 function Sprite:applyTransformation(data)
   self:setOffset(data.offsetX + self.offsetX, self.offsetY + data.offsetY, 
     data.offsetDepth + self.offsetDepth)
@@ -252,7 +240,8 @@ end
 -- Color
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Colorable:setRGBA.
+--- Overrides `Colorable:setRGBA`. 
+-- @override setRGBA
 function Sprite:setRGBA(newr, newg, newb, newa)
   local r, g, b, a = self:getRGBA()
   Colorable.setRGBA(self, newr, newg, newb, newa)
@@ -260,7 +249,8 @@ function Sprite:setRGBA(newr, newg, newb, newa)
     self.renderer.needsRedraw = true
   end
 end
---- Overrides Colorable:setHSV.
+--- Overrides `Colorable:setHSV`. 
+-- @override setHSV
 function Sprite:setHSV(newh, news, newv)
   local h, s, v = self:getHSV()
   Colorable.setHSV(self, newh, news, newv)

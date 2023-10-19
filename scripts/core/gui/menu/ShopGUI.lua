@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Menu to buy or sell items from the database.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ShopGUI
 
 -- ================================================================================================
@@ -24,7 +24,8 @@ local ShopGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:init.
+--- Overrides `GUI:init`. 
+-- @override init
 -- @tparam GUI parent Parent GUI.
 -- @tparam table items Array of items to be sold.
 -- @tparam boolean sell True if the player can sell anything here.
@@ -35,7 +36,8 @@ function ShopGUI:init(parent, items, sell, troop)
   self.sell = sell
   GUI.init(self, parent)
 end
---- Implements GUI:createWindow.
+--- Implements `GUI:createWindow`.
+-- @implement createWindows
 function ShopGUI:createWindows()
   self:createCommandWindow()
   self:createGoldWindow()
@@ -105,7 +107,8 @@ function ShopGUI:hideShopGUI()
   self.listWindow:hide()
   self.commandWindow:activate()
 end
---- Overrides GUI:hide. Saves troop modifications.
+--- Overrides `GUI:hide`. Saves troop modifications.
+-- @override hide
 function ShopGUI:hide(...)
   TroopManager:saveTroop(self.troop)
   GUI.hide(self, ...)

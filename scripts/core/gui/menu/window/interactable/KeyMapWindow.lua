@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window with resolution options.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod KeyMapWindow
 
 -- ================================================================================================
@@ -21,14 +21,15 @@ local KeyMapWindow = class(GridWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:setProperties.
---- Sets tooltip.
+--- Overrides `GridWindow:setProperties`. Sets tooltip.
+-- @override setProperties
 function KeyMapWindow:setProperties()
   self.keys = { 'confirm', 'cancel', 'dash', 'pause', 'prev', 'next' }
   GridWindow.setProperties(self)
   self.tooltipTerm = 'buttonChange'
 end
---- Implements GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`.
+-- @implement createWidgets
 function KeyMapWindow:createWidgets()
   for i = 1, #self.keys do
     self:createKeyButtons(self.keys[i])
@@ -57,7 +58,8 @@ end
 -- Keys
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Window:show.
+--- Overrides `Window:show`. 
+-- @override show
 function KeyMapWindow:show(...)
   if not self.open then
     self.map = { main = copyTable(InputManager.mainMap),
@@ -120,15 +122,17 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function KeyMapWindow:colCount()
   return 2
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function KeyMapWindow:rowCount()
   return 7
 end
--- Overrides GridWindow:cellWidth()
+-- Overrides `GridWindow:cellWidth`.
 function KeyMapWindow:cellWidth()
   return 140
 end

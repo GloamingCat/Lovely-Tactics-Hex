@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI that is shown when the player chooses a troop member to manage.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod FieldHUD
 
 -- ================================================================================================
@@ -28,7 +28,8 @@ function FieldHUD:init()
   self.name = 'Field HUD'
   GUI.init(self)
 end
---- Implements GUI:createWindows.
+--- Implements `GUI:createWindows`.
+-- @implement createWindows
 function FieldHUD:createWindows()
   self:createSaveInfoWindow()
   self:createButtonWindow()
@@ -83,7 +84,8 @@ function FieldHUD:refreshSave(all)
     self.saveInfoWindow:hideContent()
   end
 end
---- Overrides GUI:show.
+--- Overrides `GUI:show`. 
+-- @override show
 function FieldHUD:show(...)
   if self.buttonWindow then
     self.buttonWindow:refreshLastOpen()
@@ -92,7 +94,8 @@ function FieldHUD:show(...)
   GUI.show(self, ...)
   self:refreshSave(true)
 end
---- Overrides GUI:update.
+--- Overrides `GUI:update`. 
+-- @override update
 function FieldHUD:update(dt)
   GUI.update(self, dt)
   if self.open then

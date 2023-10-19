@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Main GUI's selectable window.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod FieldCommandWindow
 
 -- ================================================================================================
@@ -22,13 +22,14 @@ local FieldCommandWindow = class(OptionsWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides OptionsWindow:setPropertis.
---- Changes button alingment.
+--- Overrides `OptionsWindow:setProperties`. Changes button alingment.
+-- @override setProperties
 function FieldCommandWindow:setProperties()
   OptionsWindow.setProperties(self)
   self.buttonAlign = 'left'
 end
---- Implements GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`.
+-- @implement createWidgets
 function FieldCommandWindow:createWidgets()
   Button:fromKey(self, 'inventory')
   Button:fromKey(self, 'members')
@@ -109,11 +110,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function FieldCommandWindow:colCount()
   return 2
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function FieldCommandWindow:rowCount()
   return 4
 end

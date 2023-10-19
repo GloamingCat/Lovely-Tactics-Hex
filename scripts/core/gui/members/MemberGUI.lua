@@ -4,7 +4,7 @@
 --- The GUI that is shown when the player chooses a troop member to manage.
 -- It is also the base class for other member GUI, such as SkillGUI, ItemGUI and EquipGUI.
 -- When not used as based class, it just shows the battler window for the current member.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod MemberGUI
 
 -- ================================================================================================
@@ -22,8 +22,10 @@ local MemberGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
--- @tparam TroopBase troop Current troop (player's troop by default).
--- @tparam table memberList Arra of troop unit tables from current troop.
+--- Constructor.
+-- @tparam GUI parent Parent GUI.
+-- @tparam Troop troop Current troop (player's troop by default).
+-- @tparam table memberList Array of troop unit tables from current troop.
 -- @tparam number memberID Current selected member on the list (first one by default).
 function MemberGUI:init(parent, troop, memberList, memberID)
   self.name = self.name or 'Member GUI'
@@ -35,7 +37,8 @@ function MemberGUI:init(parent, troop, memberList, memberID)
   self.initY = 0
   GUI.init(self, parent)
 end
---- Implements GUI:createWindows.
+--- Implements `GUI:createWindows`.
+-- @implement createWindows
 function MemberGUI:createWindows()
   self:createInfoWindow()
   self:createBattlerWindow()
@@ -96,7 +99,8 @@ end
 function MemberGUI:currentMember()
   return self.members[self.memberID]
 end
---- Overrides GUI:show. Refreshes member info.
+--- Overrides `GUI:show`. Refreshes member info.
+-- @override show
 function MemberGUI:show(...)
   self:refreshMember()
   GUI.show(self, ...)

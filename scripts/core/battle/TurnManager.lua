@@ -2,16 +2,9 @@
 -- ================================================================================================
 
 --- Provides methods for battle's turn management.
--- At the end of each turn, a "battle result" table must be returned by either the GUI (player) or
+-- At the end of each turn, an `ActionResult` table must be returned by either the GUI (player) or
 -- the AI (enemies). 
--- This table must include the following entries:
--- * <endTurn> tells turn manager to pass turn to next party.
--- * <endCharacterTurn> tells the turn window to close and pass turn to the next character.
--- * <characterIndex> indicates the next turn's character (from same party).
--- * <executed> is true if the chosen action was entirely executed (usually true, unless it was a
--- move action to an unreachable tile, or the action could not be executed for some reason).
--- * <escaped> is true if all members of the current party have escaped.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod TurnManager
 
 -- ================================================================================================
@@ -26,6 +19,39 @@ local indexOf = util.arrayIndexOf
 
 -- Class table.
 local TurnManager = class()
+
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Result codes.
+-- @enum Result
+-- @field WIN Code for when player wins. Equals to 1.
+-- @field DRAW Code for when no one wins. Equals to 0.
+-- @field LOSE Code for when player loses. Equals to -1.
+-- @field WALKOVER Code for when the enemy escapes. Equals to 2.
+-- @field ESCAPE Code for when the player escapes. Equals to -2.
+TurnManager.Result = {
+  WIN = 1,
+  DRAW = 0,
+  LOSE = -1,
+  WALKOVER = 2,
+  ESCAPE = -2
+}
+--- Info table returned when a BattleAction is concluded.
+-- @tfield boolean endTurn Tells the TurnManager to pass turn to next party.
+-- @tfield boolean endCharacterTurn Tells the TurnWindow to close and pass turn to the next character.
+-- @tfield number|nil characterIndex Indicates the next turn's character (from same party).
+-- @tfield boolean executed Is true if the chosen action was entirely executed (usually true, unless it was a
+--  move action to an unreachable tile, or the action could not be executed for some reason).
+-- @tfield boolean escaped Is true if all members of the current party have escaped.
+TurnManager.ActionResult = {
+  endTurn = false,
+  endCharacterTurn = true,
+  characterIndex = nil,
+  executed = true,
+  escaped = false
+}
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -101,7 +127,8 @@ end
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Executes turn and returns when the turn finishes.
+--- Executes turn and returns when the turn finishes.
+-- @coroutine runTurn
 -- @treturn number Result code (nil if battle is still running).
 -- @treturn number The party that won or escaped (nil if battle is still running).
 function TurnManager:runTurn(skipStart)
@@ -109,13 +136,13 @@ function TurnManager:runTurn(skipStart)
   if winner then
     if winner == TroopManager.playerParty then
       -- Player wins.
-      return 1, winner
+      return self.Result.WIN, winner
     elseif winner == -1 then
       -- Draw.
-      return 0, -1
+      return self.Result.DRAW, -1
     else
       -- Enemy wins.
-      return -1, winner
+      return self.Result.LOSE, winner
     end
   end
   self:startTurn(skipStart)
@@ -138,8 +165,9 @@ function TurnManager:runTurn(skipStart)
   self:endTurn(result)
   self.turns = self.turns + 1
 end
---- [COROUTINE] Runs the player's turn.
--- @treturn table The action result table of the turn.
+--- Runs the player's turn.
+-- @coroutine runPlayerTurn
+-- @treturn ActionResult result Result info for the current turn.
 function TurnManager:runPlayerTurn()
   while true do
     if #self.turnCharacters == 0 then
@@ -189,7 +217,8 @@ function TurnManager:nextCharacterIndex(i, controllable)
   end
   return index
 end
--- @treturn boolean Whether there are characters on battle that can act, either by input or AI.
+--- Whether there are characters on battle that can act, either by input or AI.
+-- @treturn boolean
 function TurnManager:hasActiveCharacters()
   for i = 1, #self.turnCharacters do
     if self.turnCharacters[i].battler:isActive() then
@@ -204,6 +233,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Prepares for turn.
+-- @tparam boolean skipStart True to skip any `onTurnStart` callbacks.
 function TurnManager:startTurn(skipStart)
   while #self.turnCharacters == 0 do
     self:nextParty()
@@ -224,13 +254,13 @@ function TurnManager:startTurn(skipStart)
   end
 end
 --- Closes turn.
--- @tparam table result Result info for the current turn.
+-- @tparam ActionResult result Result info for the current turn.
 function TurnManager:endTurn(result)
   for char in TroopManager.characterList:iterator() do
     char.battler:onTurnEnd(char)
   end
 end
---- Gets the next party.
+--- Sets the next party.
 function TurnManager:nextParty()
   self.party = math.mod(self.party + 1, TroopManager.partyCount)
   self.turnCharacters = {}
@@ -254,7 +284,7 @@ function TurnManager:characterTurnStart()
   FieldManager.renderer:moveToObject(char, nil, true)
 end
 -- Called the character's turn ended
--- @tparam table result The action result returned by the BattleAction (or wait action).
+-- @tparam ActionResult result Result info for the current turn.
 function TurnManager:characterTurnEnd(result)
   local char = self:currentCharacter()
   char.battler:onSelfTurnEnd(char, result)

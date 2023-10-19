@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The light background box that is visible behind the selected widget.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Hightlight
 
 -- ================================================================================================
@@ -41,7 +41,8 @@ function Highlight:init(window, width, height, pos)
   Transformable.init(self, self.displacement:clone())
   Component.init(self, self.position, width, height)
 end
---- Overrides Component:createContent.
+--- Overrides `Component:createContent`. 
+-- @override createContent
 function Highlight:createContent(width, height)
   self.spriteGrid = SpriteGrid(self:getSkin(), Vector(0, 0, 1))
   self.spriteGrid:createGrid(GUIManager.renderer, width, height)
@@ -58,8 +59,8 @@ end
 -- Content methods
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Component:updatePosition.
---- Updates position to the selected button.
+--- Overrides `Component:updatePosition`. Updates position to the selected button.
+-- @override updatePosition
 function Highlight:updatePosition(wpos)
   if self.window then
     local button = self.window:currentWidget()

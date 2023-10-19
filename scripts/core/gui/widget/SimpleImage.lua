@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A generic window content that stores a sprite with a given viewport.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod SimpleImage
 
 -- ================================================================================================
@@ -67,7 +67,8 @@ end
 -- Window Content methods
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Component:updatePosition.
+--- Overrides `Component:updatePosition`. 
+-- @override updatePosition
 function SimpleImage:updatePosition(pos)
   if self.sprite then
     local rpos = self.position

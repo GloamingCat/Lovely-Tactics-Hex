@@ -5,7 +5,7 @@
 -- 
 -- Animation parameters:
 --  * The length of the step in pixels is defined by <step> tag. The default is 12.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Knockback
 
 -- ================================================================================================
@@ -39,7 +39,8 @@ function Knockback:init(...)
     self.step = defaultStep
   end
 end
---- Overrides Animation:setRow.
+--- Overrides `Animation:setRow`. 
+-- @override setRow
 function Knockback:setRow(row)
   Animation.setRow(self, row)
   local dx, dy = angle2Coord(row2Angle(row))
@@ -54,7 +55,8 @@ end
 -- Update movement
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Animation:update.
+--- Overrides `Animation:update`. 
+-- @override update
 function Knockback:update(dt)
   Animation.update(self, dt)
   self:updateTime(dt)

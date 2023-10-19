@@ -6,7 +6,7 @@
 -- Parameters:
 --  * The <member> as a boolean formula to only consider the members that satifies it. 
 --  * Set <reset> as true to discard any saved changes on the called member.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod CallRule
 
 -- ================================================================================================
@@ -31,7 +31,8 @@ function CallRule:init(...)
     self.memberCondition = loadformula('not (' .. self.tags.member .. ')', 'member')
   end
 end
---- Overrides AIRule:onSelect.
+--- Overrides `AIRule:onSelect`. 
+-- @override onSelect
 function CallRule:onSelect(user)
   local troop = TroopManager.troops[user.party]
   local backup = troop:backupBattlers()

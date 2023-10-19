@@ -4,7 +4,7 @@
 --- An object with a table of animations.
 -- Sets of animations may be created by using the separator ":" the animation's name in the given
 -- format: "setName:animationName".
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod AnimatedObject
 
 -- ================================================================================================
@@ -136,7 +136,8 @@ function AnimatedObject:replayAnimation(name, row, index)
   self.sprite.renderer.needsRedraw = true
   return anim
 end
---- Overrides Object:update. Updates animation.
+--- Overrides `Transformable:update`. Updates animation.
+-- @override update
 function AnimatedObject:update(dt)
   Object.update(self, dt)
   if self.animation then

@@ -6,7 +6,7 @@
 -- Plugin parameters
 -- * When player presses the button key <save>, the game is saved in the quick save slot.
 -- * When player presses the button key <load>, the game in the quick save slot is loaded.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin QuickSave
 
 -- ================================================================================================
@@ -71,13 +71,15 @@ end
 -- LoadWindow
 -- ------------------------------------------------------------------------------------------------
 
---- Override to include quick save in the load options.
+--- Rewrites `LoadWindow:createWidgets`.
+-- @override LoadWindow_createWidgets
 local LoadWindow_createWidgets = LoadWindow.createWidgets
 function LoadWindow:createWidgets()
   self:createSaveButton('quick', Vocab.quickSave)
   LoadWindow_createWidgets(self)
 end
---- Override.
+--- Rewrites `LoadWindow:rowCount`.
+-- @override LoadWindow_rowCount
 local LoadWindow_rowCount = LoadWindow.rowCount
 function LoadWindow:rowCount()
   return LoadWindow_rowCount(self) + 1

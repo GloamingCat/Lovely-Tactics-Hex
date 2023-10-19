@@ -7,7 +7,7 @@
 --  * <freq> is the frequency (in frames) in which the row is switched. By default, it's the
 --  duration of the animation.
 --  * <rows> is an optional list of possible rows (by default, any row).
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod LookAround
 
 -- ================================================================================================
@@ -25,7 +25,8 @@ local LookAround = class(Animation)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Animation:init.
+--- Overrides `Animation:init`. 
+-- @override init
 function LookAround:init(...)
   Animation.init(self, ...)
   self.rows = {}
@@ -46,7 +47,8 @@ function LookAround:init(...)
   end
   self.lookTime = 0
 end
---- Overrides Animation:update.
+--- Overrides `Animation:update`. 
+-- @override update
 function LookAround:update(dt)
   Animation.update(self, dt)
   self.lookTime = self.lookTime + dt

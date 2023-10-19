@@ -3,7 +3,7 @@
 
 --- A button window that shows all the visibles members in the troop.
 -- It selects one of the targets to execute an action.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod MenuTargetWindow
 
 -- ================================================================================================
@@ -18,7 +18,8 @@ local MenuTargetWindow = class(PartyWindow)
 -- Member Input
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:setProperties.
+--- Overrides `GridWindow:setProperties`. 
+-- @override setProperties
 function MenuTargetWindow:setProperties()
   PartyWindow.setProperties(self)
   self.tooltipTerm = 'target'

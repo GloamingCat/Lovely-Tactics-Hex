@@ -3,7 +3,7 @@
 
 --- A type of sound that loops and may have a non-looping intro.
 -- multiline
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Music
 
 -- ================================================================================================
@@ -44,7 +44,8 @@ function Music:update()
     self.source:play()
   end
 end
---- Overrides Sound:getDuration.
+--- Overrides `Sound:getDuration`. 
+-- @override getDuration
 function Music:getDuration(unit)
   return (self.intro and self.intro:getDuration(unit) or 0) + self.loop:getDuration(unit)
 end
@@ -53,7 +54,8 @@ end
 -- Playing
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Sound:stop.
+--- Overrides `Sound:stop`. 
+-- @override stop
 function Music:stop()
   if self.intro then
     self.intro:stop()
@@ -68,11 +70,13 @@ end
 -- Volume & Pitch
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Sound:refreshVolume.
+--- Overrides `Sound:refreshVolume`. 
+-- @override refreshVolume
 function Music:refreshVolume()
   self.source:setVolume((self.volume / 100) * (AudioManager.volumeBGM / 100) * AudioManager.fading)
 end
---- Overrides Sound:refreshPitch.
+--- Overrides `Sound:refreshPitch`. 
+-- @override refreshPitch
 function Music:refreshPitch()
   self.source:setPitch((self.pitch / 100) * (AudioManager.pitchBGM / 100) * GameManager.speed)
 end

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Shows a list of custom choices.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ButtonWindow
 
 -- ================================================================================================
@@ -37,8 +37,8 @@ function ButtonWindow:init(parent, names, align, ...)
   self.offBoundsCancel = false
   self.active = true
 end
---- Implements GridWindow:creatwWidgets.
---- Creates a button for each choice.
+--- Implements `GridWindow:creatwWidgets`. Creates a button for each choice.
+-- @implement createWidgets
 function ButtonWindow:createWidgets()
   for _, name in ipairs(self.buttonNames) do
     local button = Button:fromKey(self, name)
@@ -54,8 +54,8 @@ end
 -- Input Callbacks
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:update.
---- Opens or closes automatically depending if the player is using the mouse or not.
+--- Overrides `Window:update`. Opens or closes automatically depending if the player is using the mouse or not.
+-- @override update
 function ButtonWindow:update(dt)
   if self.GUI.open and self.active then
     self:refreshLastOpen()
@@ -74,13 +74,13 @@ function ButtonWindow:update(dt)
   end
   GridWindow.update(self, dt)
 end
---- Implements GridWindow:buttonEnabled.
---- Disables when window is inactive.
+--- Implements `GridWindow:buttonEnabled`. Disables when window is inactive.
+-- @implement buttonEnabled
 function ButtonWindow:buttonEnabled(button)
   return self.active
 end
---- Overrides GridWindow:checkInput.
---- Ignores keyboard input.
+--- Overrides `Window:checkInput`. Ignores keyboard input.
+-- @override checkInput
 function ButtonWindow:checkInput()
   if not self.open then
     return
@@ -121,15 +121,18 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function ButtonWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function ButtonWindow:rowCount()
   return #self.buttonNames
 end
---- Overrides GridWindow:cellWidth.
+--- Overrides `GridWindow:cellWidth`. 
+-- @override cellWidth
 function ButtonWindow:cellWidth()
   if self.width then
     return self.width - self:paddingX() * 2
@@ -137,7 +140,8 @@ function ButtonWindow:cellWidth()
     return GridWindow.cellWidth(self) / 1.5
   end
 end
---- Overrides GridWindow:cellHeight.
+--- Overrides `GridWindow:cellHeight`. 
+-- @override cellHeight
 function ButtonWindow:cellHeight()
   if self.height then
     return self.height - self:paddingY() * 2
@@ -145,11 +149,13 @@ function ButtonWindow:cellHeight()
     return GridWindow.cellHeight(self) * 1.5
   end
 end
---- Overrides GridWindow:paddingX.
+--- Overrides `Window:paddingX`. 
+-- @override paddingX
 function ButtonWindow:paddingX()
   return GridWindow.paddingX(self) / 4
 end
---- Overrides GridWindow:paddingY.
+--- Overrides `Window:paddingY`. 
+-- @override paddingY
 function ButtonWindow:paddingY()
   return GridWindow.paddingY(self) / 4
 end

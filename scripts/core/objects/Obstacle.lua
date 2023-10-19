@@ -3,7 +3,7 @@
 
 --- An Obstacle is a static object stored in the tile. 
 -- It may be passable or not, and have an image or not.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Obstacle
 
 -- ================================================================================================
@@ -69,7 +69,8 @@ function Obstacle:isPassable(dx, dy, obj)
   end
   return self.passability[dx][dy] == true
 end
---- Overrides Object:getHeight.
+--- Overrides `Object:getHeight`. 
+-- @override getHeight
 function Obstacle:getHeight(x, y)
   return self.collisionHeight
 end
@@ -78,7 +79,8 @@ end
 -- Tiles
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Object:addToTiles.
+--- Overrides `Object:addToTiles`. 
+-- @override addToTiles
 function Obstacle:addToTiles(tiles)
   local tile = tiles and tiles[1] or self:getTile()
   tile.obstacleList:add(self)
@@ -92,7 +94,8 @@ function Obstacle:addToTiles(tiles)
     layerNeighbors[r].rampNeighbors:add(topTile)
   end
 end
---- Overrides Object:removeFromTiles.
+--- Overrides `Object:removeFromTiles`. 
+-- @override removeFromTiles
 function Obstacle:removeFromTiles(tiles)
   local tile = tiles and tiles[1] or self:getTile()
   tile.obstacleList:removeElement(self)

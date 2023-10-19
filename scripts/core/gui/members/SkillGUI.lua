@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI to manage and use skills from a member's skill set.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod SkillGUI
 
 -- ================================================================================================
@@ -20,12 +20,14 @@ local SkillGUI = class(MemberGUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides MemberGUI:init.
+--- Overrides `MemberGUI:init`. 
+-- @override init
 function SkillGUI:init(...)
   self.name = 'Skill GUI'
   MemberGUI.init(self, ...)
 end
---- Overrides GUI:createWindows.
+--- Overrides `GUI:createWindows`. 
+-- @override createWindows
 function SkillGUI:createWindows()
   self:createInfoWindow()
   self:createSkillWindow()

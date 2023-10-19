@@ -5,7 +5,7 @@
 -- Parties are troop slots in the field, and they are identified by a number from 0 to the total
 -- number of parties minus 1.
 -- A troop contains member information and can be instantied in any party.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod TroopManager
 
 -- ================================================================================================
@@ -284,7 +284,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Setup party tiles by position of each party.
---- With two parties, each party gets a third of the map.
+-- With two parties, each party gets a third of the map.
 function TroopManager:setPartyTiles()
   local field = FieldManager.currentField
   for i, partyInfo in ipairs(field.parties) do

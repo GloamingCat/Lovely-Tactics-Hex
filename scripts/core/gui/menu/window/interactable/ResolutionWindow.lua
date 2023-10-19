@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window with resolution options.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ResolutionWindow
 
 -- ================================================================================================
@@ -18,7 +18,8 @@ local ResolutionWindow = class(GridWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Implements GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`.
+-- @implement createWidgets
 function ResolutionWindow:createWidgets()
   Button:fromKey(self, 'resolution1')
   Button:fromKey(self, 'resolution2')
@@ -39,11 +40,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function ResolutionWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function ResolutionWindow:rowCount()
   return 4
 end

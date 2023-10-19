@@ -3,7 +3,7 @@
 
 --- A list datatype implementation. See more in:
 -- http://en.wikipedia.org/wiki/List_(abstract_data_type)
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod List
 
 -- ================================================================================================
@@ -19,6 +19,7 @@ local List = class()
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam table content An array of initial elements, 
 --  indexed continously starting from 1 (optional).
 function List:init(content)

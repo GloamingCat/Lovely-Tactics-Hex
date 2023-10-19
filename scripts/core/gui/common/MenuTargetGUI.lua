@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A GUI to selected a target character for an action (usually skill or item).
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod MenuTargetGUI
 
 -- ================================================================================================
@@ -19,14 +19,16 @@ local MenuTargetGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:init.
+--- Overrides `GUI:init`. 
+-- @override init
 function MenuTargetGUI:init(parent, troop, input)
   self.name = 'Menu Target GUI'
   self.troop = troop
   self.input = input
   GUI.init(self, parent)
 end
---- Overrides GUI:createWindow.
+--- Overrides `GUI:createWindows`. 
+-- @override createWindows
 function MenuTargetGUI:createWindows()
   self.partyWindow = MenuTargetWindow(self, self.troop)
   if self.position then

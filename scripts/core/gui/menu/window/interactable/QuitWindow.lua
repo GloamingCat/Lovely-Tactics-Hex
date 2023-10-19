@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window with options to close / restart game.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod QuitWindow
 
 -- ================================================================================================
@@ -18,7 +18,8 @@ local QuitWindow = class(OptionsWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Implements GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`.
+-- @implement createWidgets
 function QuitWindow:createWidgets()
   Button:fromKey(self, 'cancel')
   Button:fromKey(self, 'title')
@@ -35,11 +36,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function QuitWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function QuitWindow:rowCount()
   return GameManager:isDesktop() and 3 or 2
 end

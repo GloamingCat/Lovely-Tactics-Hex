@@ -5,7 +5,7 @@
 -- 
 -- Plugin parameters:
 --  * Use <indent> to fix an indentation length instead of using portrait's width.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin DialoguePortrait
 
 -- ================================================================================================
@@ -55,7 +55,8 @@ function DialogueWindow:setPortrait(icon)
     self.indent = (indent or w) / self.width * 2
   end
 end
---- Override. Adjusts text position and width.
+--- Rewrites `DialogueWindow:showDialogue`.
+-- @override DialogueWindow_showDialogue
 local DialogueWindow_showDialogue = DialogueWindow.showDialogue
 function DialogueWindow:showDialogue(...)
   local x = self.portrait and (self.indent * self.width / 2) or 0
@@ -64,7 +65,8 @@ function DialogueWindow:showDialogue(...)
   self.dialogue:updatePosition(self.position)
   DialogueWindow_showDialogue(self, ...)
 end
---- Override. Adjusts name window position.
+--- Rewrites `DialogueWindow:setName`.
+-- @override DialogueWindow_setName
 local DialogueWindow_setName = DialogueWindow.setName
 function DialogueWindow:setName(text, x, ...)
   x = (x or -0.7) + (self.indent or 0)
@@ -75,7 +77,8 @@ end
 -- GUIEvents
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Sets portrait.
+--- Rewrites `GUIEvents:showDialogue`.
+-- @override GUIEvents_showDialogue
 local GUIEvents_showDialogue = GUIEvents.showDialogue
 function GUIEvents:showDialogue(args)
   self:openDialogueWindow(args)

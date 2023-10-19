@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Manages a set of GUI elements (generally, a set of windows).
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod GUI
 
 -- ================================================================================================
@@ -31,7 +31,8 @@ end
 function GUI:createWindows()
  -- Abstract.
 end
--- @treturn number Distance between windows.
+--- Distance between windows.
+-- @treturn number
 function GUI:windowMargin()
   return 4
 end
@@ -79,7 +80,8 @@ function GUI:setActiveWindow(window)
     window:setActive(true)
   end
 end
---- [COROUTINE] Waits until GUI closes and returns a result.
+--- Waits until GUI closes and returns a result.
+-- @coroutine waitForResult
 -- @treturn The result of GUI (will never be nil).
 function GUI:waitForResult()
   if self.activeWindow then
@@ -95,7 +97,8 @@ function GUI:waitForResult()
   self.activeWindow.result = nil
   return result
 end
---- [COROUTINE] Waits until window closes and returns a result.
+--- Waits until window closes and returns a result.
+-- @coroutine showWindowForResult
 -- @tparam Window window The new active window.
 -- @treturn The result of window (will never be nil).
 function GUI:showWindowForResult(window)
@@ -119,7 +122,8 @@ end
 -- Coroutine calls
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Shows all windows.
+--- Shows all windows.
+-- @coroutine show
 function GUI:show()
   if self.open then
     return
@@ -148,7 +152,8 @@ function GUI:show()
   self.animationFibers = {}
   self.open = true
 end
---- [COROUTINE] Hides all windows.
+--- Hides all windows.
+-- @coroutine hide
 function GUI:hide()
   if self.closed then
     return

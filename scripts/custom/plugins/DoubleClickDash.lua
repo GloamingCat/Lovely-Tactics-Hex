@@ -6,7 +6,7 @@
 -- Plugin parameters:
 --  * When <player> is true, it affects the player movement.
 --  * When <spinner> is true, it affects the spinner change.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin DoubleClickDash
 
 -- ================================================================================================
@@ -29,6 +29,7 @@ local fasterSpinner = args.spinner
 local defaultDoubleClickGap = 0.2
 
 --- Checks if button was triggered (just pressed).
+-- @tparam number gap Time distance in seconds between the two triggers.
 -- @treturn boolean True if was triggered in the current frame, false otherwise.
 function GameKey:isDoubleTriggered(gap)
   if self.pressState ~= 2 then
@@ -43,7 +44,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 if fasterPlayer then
-  -- Sets the speed according to dash input.
+  --- Rewrites `Player:refreshSpeed`. Sets the speed according to dash input.
+  -- @override Player_refreshSpeed
   function Player:refreshSpeed()
     local dash = InputManager.keys['dash']:isPressing()
     if self.path and self.pathButton then
@@ -59,6 +61,8 @@ if fasterPlayer then
       self.speed = self.walkSpeed
     end
   end
+  --- Rewrites `Player:moveByMouse`.
+  -- @override Player_moveByMouse
   local Player_moveByMouse = Player.moveByMouse
   function Player:moveByMouse(button)
     if button then
@@ -74,13 +78,16 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 if fasterSpinner then
-  -- Uses big increment if double clicked.
+  --- Rewrites `HSpinner:multiplier`. Uses big increment if double clicked.
+  -- @override HSpinner_multiplier
   function HSpinner:multiplier()
     return (InputManager.keys['dash']:isPressing()
       or InputManager.keys['mouse1']:isDoubleTriggered()
       or InputManager.keys['touch']:isDoubleTriggered())
         and self.bigIncrement or 1
   end
+  --- Rewrites `VSpinner:multiplier`. Uses big increment if double clicked.
+  -- @override VSpinner_multiplier
   function VSpinner:multiplier()
     return (InputManager.keys['dash']:isPressing()
       or InputManager.keys['mouse1']:isDoubleTriggered()

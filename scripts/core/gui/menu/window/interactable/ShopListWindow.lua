@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window with the list of items available to buy.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ShopListWindow
 
 -- ================================================================================================
@@ -22,7 +22,8 @@ function ShopListWindow:init(gui)
   self.visibleRowCount = 4
   ListWindow.init(self, gui, {})
 end
---- Implements ListWindow:createListButton.
+--- Implements `ListWindow:createListButton`.
+-- @implement createListButton
 function ShopListWindow:createListButton(item)
   local price = item.price
   item = Database.items[item.id]
@@ -101,7 +102,8 @@ end
 -- Confirm Callbacks
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides ListWindow:cellWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override cellWidth
 function ShopListWindow:cellWidth()
   return ListWindow.cellWidth(self) * 4 / 5
 end

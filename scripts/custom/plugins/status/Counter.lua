@@ -9,7 +9,7 @@
 -- Battler parameters:
 --  * The skill used when character counter-attacks is defined by <counterID> tag. If not set, 
 --  then this battler does not counter-attack.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin Counter
 
 -- ================================================================================================
@@ -27,7 +27,8 @@ local maxCounters = args.maxCounters or 1
 -- Skill Action
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides. Initializes counter attack skill.
+--- Rewrites `Battler:initState`.
+-- @override Battler_initState
 local Battler_initState = Battler.initState
 function Battler:initState(data, save)
   Battler_initState(self, data, save)
@@ -42,7 +43,8 @@ end
 -- Skill Action
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Checks for characters that counter attack.
+--- Rewrites `SkillAction:allTargetsEffect`.
+-- @override SkillAction_allTargetsEffect
 local SkillAction_allTargetsEffect = SkillAction.allTargetsEffect
 function SkillAction:allTargetsEffect(input, originTile)
   local allTargets = SkillAction_allTargetsEffect(self, input, originTile)

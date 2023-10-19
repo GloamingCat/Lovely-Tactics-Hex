@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window with general options: settings, save, quit.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod OptionsWindow
 
 -- ================================================================================================
@@ -20,13 +20,15 @@ local OptionsWindow = class(GridWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:setProperties.
+--- Overrides `GridWindow:setProperties`. 
+-- @override setProperties
 function OptionsWindow:setProperties(...)
   GridWindow.setProperties(self, ...)
   self.tooltipTerm = ''
   self.buttonAlign = 'center'
 end
---- Implements GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`.
+-- @implement createWidgets
 function OptionsWindow:createWidgets()
   Button:fromKey(self, 'return')
   Button:fromKey(self, 'config')
@@ -86,11 +88,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function OptionsWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function OptionsWindow:rowCount()
   if self.GUI.quitWindow then
     return 4

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI that contains only a confirm window.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ConfirmGUI
 
 -- ================================================================================================
@@ -23,7 +23,8 @@ function ConfirmGUI:init(parent, confirmTerm, cancelTerm, ...)
   self.cancelTerm = cancelTerm
   GUI.init(self, parent, ...)
 end
---- Overrides GUI:createWindow.
+--- Overrides `GUI:createWindows`. 
+-- @override createWindows
 function ConfirmGUI:createWindows()
   self.name = 'Confirm GUI'
   local confirmWindow = ConfirmWindow(self, self.confirmTerm, self.cancelTerm)

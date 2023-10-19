@@ -10,7 +10,7 @@
 --  * <missExp> Multiplier for when the skill did not succeed.
 --  * <levelDiff> Aditional exp per level difference between user and target.
 --  * <enemyExp> When true enemies also receive experience.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin SkillEXP
 
 -- ================================================================================================
@@ -78,7 +78,8 @@ function SkillAction:expGain(user, target, results)
   end
   return gain
 end
---- Override. Gives EXP if target if killed and user is from the player's party.
+--- Rewrites `SkillAction:allTargetsEffect`.
+-- @override SkillAction_allTargetsEffect
 local SkillAction_allTargetsEffect = SkillAction.allTargetsEffect
 function SkillAction:allTargetsEffect(input, originTile)
   if not enemyExp and input.user.party ~= TroopManager.playerParty then
@@ -117,7 +118,8 @@ function SkillAction:allTargetsEffect(input, originTile)
   end
   return allTargets
 end
---- Override.
+--- Rewrites `SkillAction:menuTargetsEffect`.
+-- @override SkillAction_menuTargetsEffect
 local SkillAction_menuTargetsEffect = SkillAction.menuTargetsEffect
 function SkillAction:menuTargetsEffect(input, targets)
   if battleOnly then

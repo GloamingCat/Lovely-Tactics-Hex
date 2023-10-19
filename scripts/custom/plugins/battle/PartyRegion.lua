@@ -6,7 +6,7 @@
 -- Plugin parameters:
 --  * <party1>, <party2> ... <partyN>: the region ID's associated with each field party.
 --  * Set <override> to completely override old method, instead of merging.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin PartyRegion
 
 -- ================================================================================================
@@ -29,7 +29,8 @@ local TroopManager = require('core/battle/TroopManager')
 -- TroopManager
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Checks for tile regions.
+--- Rewrites `TroopManager:setPartyTiles`.
+-- @override TroopManager_setPartyTiles
 local TroopManager_setPartyTiles = TroopManager.setPartyTiles
 function TroopManager:setPartyTiles()
   if merge then

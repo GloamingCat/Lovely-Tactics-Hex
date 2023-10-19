@@ -13,7 +13,7 @@
 --  string being the emotion's code.
 --  * Use <rows> to set custons rows for each emotion. The rows should be in the same order as the
 --  emotions listed in <emotions>.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin EmotionBalloon
 
 -- ================================================================================================
@@ -82,7 +82,8 @@ end
 -- CharacterBase
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Updates balloon position when character moves.
+--- Overrides `CharacterBase:setXYZ`. Updates balloon position when character moves.
+-- @override setXYZ
 local CharacterBase_setXYZ = CharacterBase.setXYZ
 function CharacterBase:setXYZ(x, y, z)
   CharacterBase_setXYZ(self, x, y, z)
@@ -94,7 +95,8 @@ function CharacterBase:setXYZ(x, y, z)
     --self.iconAnim:setXYZ(p.x, p.y - h - self.height / 2, p.z - 1)
   end
 end
---- Override. Updates balloon animation.
+--- Rewrites `CharacterBase:update`.
+-- @override CharacterBase_update
 local CharacterBase_update = CharacterBase.update
 function CharacterBase:update(dt)
   CharacterBase_update(self, dt)
@@ -106,7 +108,8 @@ function CharacterBase:update(dt)
     end
   end
 end
---- Override. Destroys balloon with characters is destroyed.
+--- Rewrites `CharacterBase:destroy`.
+-- @override CharacterBase_destroy
 local CharacterBase_destroy = CharacterBase.destroy
 function CharacterBase:destroy(...)
   CharacterBase_destroy(self, ...)

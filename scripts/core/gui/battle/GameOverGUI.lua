@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI that is shown when player loses the battle.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod GameOverGUI
 
 -- ================================================================================================
@@ -23,7 +23,8 @@ local GameOverGUI = class(GUI)
 -- Initialize
 -- ------------------------------------------------------------------------------------------------
 
---- Implements GUI:createWindows.
+--- Implements `GUI:createWindows`.
+-- @implement createWindows
 function GameOverGUI:createWindows()
   self.name = 'Game Over GUI'
   self:createTopText()
@@ -49,7 +50,8 @@ function GameOverGUI:createMainWindow()
   local window = GameOverWindow(self)
   self.mainWindow = window
 end
---- Overrides GUI:destroy to destroy top text.
+--- Overrides `GUI:destroy`. Destroys top text.
+-- @override destroy
 function GameOverGUI:destroy(...)
   GUI.destroy(self, ...)
   self.topText:destroy()

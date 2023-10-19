@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Module to create each rendered line of text.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @module TextRenderer
 
 -- ================================================================================================
@@ -18,7 +18,7 @@ local TextRenderer = {}
 -- ------------------------------------------------------------------------------------------------
 
 --- Draws a line of text in the current graphics context.
---- The size of the buffer image is Fonts.scale * size of the text in-game.
+-- The size of the buffer image is Fonts.scale * size of the text in-game.
 -- @tparam table line A list of text fragments.
 -- @tparam number x The x position of the top left corner of the line.
 -- @tparam number y The y position of the top left corner of the line.

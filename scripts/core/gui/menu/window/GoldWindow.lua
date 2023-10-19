@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Small window that shows the troop's money.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod GoldWindow
 
 -- ================================================================================================
@@ -20,7 +20,8 @@ local GoldWindow = class(Window)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Implements Window:createContent.
+--- Implements `Window:createContent`.
+-- @implement createContent
 function GoldWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local icon = Config.icons.money

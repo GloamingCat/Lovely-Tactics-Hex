@@ -3,7 +3,7 @@
 
 --- This is a special character that can me controlled by the player with keyboard or mouse.
 -- It only exists in exploration fields, not in battle fields.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Player
 
 -- ================================================================================================
@@ -27,7 +27,8 @@ local Player = class(Character)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides CharacterBase:init.
+--- Overrides `CharacterBase:init`. 
+-- @override init
 function Player:init(transition, save)
   local troopData = Database.troops[TroopManager.playerTroopID]
   local leader = troopData.members[1]
@@ -47,7 +48,8 @@ function Player:init(transition, save)
   Character.init(self, data, save)
   self.waitList = List()
 end
---- Overrides CharacterBase:initProperties.
+--- Overrides `CharacterBase:initProperties`. 
+-- @override initProperties
 function Player:initProperties(instData, name, collisionTiles, colliderHeight)
   Character.initProperties(self, instData, name, collisionTiles, colliderHeight)
   self.inputDelay = 6 / 60
@@ -65,7 +67,8 @@ end
 -- Input
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides CharacterBase:update.
+--- Overrides `CharacterBase:update`. 
+-- @override update
 function Player:update(dt)
   if FieldManager.playerInput then
     self:refreshSpeed()
@@ -159,7 +162,8 @@ end
 -- Mouse Movement
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Moves player to the mouse coordinate.
+--- Moves player to the mouse coordinate.
+-- @coroutine moveByMouse
 -- @tparam string button Key of the button used to move (mouse1 or touch).
 function Player:moveByMouse(button)
   local tile = FieldManager.currentField:getHoveredTile()
@@ -189,7 +193,8 @@ end
 -- Keyboard Movement
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Moves player depending on input.
+--- Moves player depending on input.
+-- @coroutine moveByKeyboard
 -- @tparam number dx The x-axis input.
 -- @tparam number dy The x-axis input.
 -- @tparam boolean move False if character is just turning to the given direction, true if it
@@ -265,7 +270,8 @@ end
 -- Interaction
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Interacts with whoever is the player looking at (if any).
+--- Interacts with whoever is the player looking at (if any).
+-- @coroutine interact
 -- @treturn boolean True if the character interacted with someone, false otherwise.
 function Player:interact()
   self:playIdleAnimation()

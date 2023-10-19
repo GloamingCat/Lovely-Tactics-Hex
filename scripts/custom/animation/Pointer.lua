@@ -6,7 +6,7 @@
 -- Animation parameters:
 --  * The amount of pixels moved in the horizontal direction is set by <dx>.
 --  * The amount of pixels moved in the vertical direction is set by <dy>.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Pointer
 
 -- ================================================================================================
@@ -49,7 +49,8 @@ end
 -- Update
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Animation:update.
+--- Overrides `Animation:update`. 
+-- @override update
 function Pointer:update(dt)
   Animation.update(self, dt)
   if self.paused or not self.duration or not self.timing then

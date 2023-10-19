@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The window that shows the list of gained items.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod RewardItemWindow
 
 -- ================================================================================================
@@ -30,8 +30,8 @@ function RewardItemWindow:init(gui, w, h, pos)
   self.money = gui.rewards.money
   InventoryWindow.init(self, gui, nil, gui.rewards.items, nil, w, h, pos)
 end
---- Overrides ListWindow:createWidgets.
---- Adds the Gold button.
+--- Overrides `ListWindow:createWidgets`. Adds the Gold button.
+-- @override createWidgets
 function RewardItemWindow:createWidgets()
   local icon = Config.icons.money.id >= 0 and 
     ResourceManager:loadIconAnimation(Config.icons.money, GUIManager.renderer)
@@ -52,11 +52,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function RewardItemWindow:colCount()
   return 1
 end
---- Overrides ListWindow:computeWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override cellWidth
 function RewardItemWindow:cellWidth(width)
   local w = (ScreenManager.width - self.GUI:windowMargin() * 3) / 2
   return self:computeCellWidth(w)

@@ -3,7 +3,7 @@
 
 --- The GUI that is openned in the start of a character turn.
 -- Its result is the action time that the character spent.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod BattleGUI
 
 -- ================================================================================================
@@ -25,12 +25,14 @@ local BattleGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:init.
+--- Overrides `GUI:init`. 
+-- @override init
 function BattleGUI:init(...)
   self.troop = TurnManager:currentTroop()
   GUI.init(self, ...)
 end
---- Implements GUI:createWindows.
+--- Implements `GUI:createWindows`.
+-- @implement createWindows
 function BattleGUI:createWindows()
   self.name = 'Battle GUI'
   self:createTurnWindow()
@@ -122,7 +124,8 @@ end
 -- Camera focus
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:show.
+--- Overrides `GUI:show`. 
+-- @override show
 function BattleGUI:show(...)
   FieldManager.renderer:moveToObject(TurnManager:currentCharacter())
   GUI.show(self, ...)

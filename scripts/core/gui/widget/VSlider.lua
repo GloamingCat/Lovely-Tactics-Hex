@@ -3,7 +3,7 @@
 
 --- A side bar to scroll through windows.
 -- It's a type of window content.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod VSlider
 
 -- ================================================================================================
@@ -31,7 +31,8 @@ function VSlider:init(window, position, length)
   self.window = window
   window.content:add(self)
 end
---- Overrides Component:createContent.
+--- Overrides `Component:createContent`. 
+-- @override createContent
 function VSlider:createContent(length)
   self.length = length
   local bar = Image(Project.imagePath .. 'GUI/VSlider/bar.png')
@@ -60,7 +61,8 @@ end
 -- Position
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Component:updatePosition.
+--- Overrides `Component:updatePosition`. 
+-- @override updatePosition
 function VSlider:updatePosition(pos)
   pos = pos + self.position
   self.bar:setXYZ(pos.x, pos.y)

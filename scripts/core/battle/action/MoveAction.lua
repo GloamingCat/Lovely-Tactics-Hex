@@ -3,7 +3,7 @@
 
 --- The BattleAction that is executed when players chooses the "Move" button.
 -- Any action used in PathFinder must inherit from this.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod MoveAction
 
 -- ================================================================================================
@@ -22,7 +22,8 @@ local MoveAction = class(BattleAction)
 -- Initalization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:init.
+--- Overrides `BattleAction:init`. 
+-- @override init
 function MoveAction:init(range, limit)
   self.pathLimit = limit or math.huge
   BattleAction.init(self, '', range)
@@ -35,7 +36,8 @@ end
 -- Reachable Tiles
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:resetReachableTiles.
+--- Overrides `BattleAction:resetReachableTiles`. 
+-- @override resetReachableTiles
 function MoveAction:resetReachableTiles(input)
   for tile in self.field:gridIterator() do
     tile.gui.reachable = tile.gui.movable
@@ -46,7 +48,8 @@ end
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:execute.
+--- Overrides `BattleAction:execute`. 
+-- @override execute
 function MoveAction:execute(input)
   local path = self:calculatePath(input)
   if path then

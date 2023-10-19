@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- An object with position and movement properties.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Movable
 
 -- ================================================================================================
@@ -73,7 +73,8 @@ end
 function Movable:moving()
   return self.moveTime < 1
 end
---- [COROUTINE] Moves to (x, y, z).
+--- Moves to (x, y, z).
+-- @coroutine moveTo
 -- @tparam number x The pixel x.
 -- @tparam number y The pixel y.
 -- @tparam number z The pixel depth.
@@ -95,7 +96,8 @@ function Movable:instantMoveTo(x, y, z)
   self:setXYZ(x, y, z)
   return false
 end
---- [COROUTINE] Moves gradativaly (through updateMovement) to the given point.
+--- Moves gradativaly (through updateMovement) to the given point.
+-- @coroutine gradualMoveTo
 -- @tparam number x The pixel x.
 -- @tparam number y The pixel y.
 -- @tparam number z The pixel depth.
@@ -110,7 +112,8 @@ function Movable:gradualMoveTo(x, y, z, speed, wait)
     self:waitForMovement()
   end
 end
---- [COROUTINE] Waits until the move time is 1.
+--- Waits until the move time is 1.
+-- @coroutine waitForMovement
 function Movable:waitForMovement()
   local fiber = _G.Fiber
   if self.moveFiber then

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A Button Window that has its buttons generated automatically given a list of arbitrary elements.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ListWindow
 
 -- ================================================================================================
@@ -17,14 +17,16 @@ local ListWindow = class(GridWindow)
 -- Initialization
 -- -------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:init.
+--- Overrides `Window:init`. 
+-- @override init
 -- @tparam GUI parent Parent GUI.
 -- @tparam table list Array of data used to create each button.
 function ListWindow:init(parent, list, ...)
   self.list = list
   GridWindow.init(self, parent, ...)
 end
---- Overrides GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`. 
+-- @implement createWidgets
 function ListWindow:createWidgets()
   for i = 1, #self.list do
     self:createListButton(self.list[i])
@@ -64,15 +66,18 @@ end
 -- Properties
 -- -------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function ListWindow:colCount()
   return 2
 end
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override rowCount
 function ListWindow:rowCount()
   return self.visibleRowCount
 end
---- Overrides GridWindow:cellWidth. Adapts the cell width to fit the whole screen.
+--- Overrides `GridWindow:cellWidth`. Adapts the cell width to fit the whole screen.
+-- @override cellWidth
 function ListWindow:cellWidth()
   local w = ScreenManager.width - self.GUI:windowMargin() * 2
   return self:computeCellWidth(w)

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI to manage a character's equipment.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod EquipGUI
 
 -- ================================================================================================
@@ -22,13 +22,15 @@ local EquipGUI = class(MemberGUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:init.
+--- Overrides `GUI:init`. 
+-- @override init
 function EquipGUI:init(...)
   self.name = 'Equip GUI'
   MemberGUI.init(self, ...)
   self.inventory = self.troop.inventory
 end
---- Overrides GUI:createWindows.
+--- Overrides `GUI:createWindows`. 
+-- @override createWindows
 function EquipGUI:createWindows()
   self:createInfoWindow()
   self:createSlotWindow()
@@ -73,8 +75,8 @@ end
 -- Member
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides MemberGUI:refreshMember.
---- Refreshes current open windows to match the new selected member.
+--- Overrides `MemberGUI:refreshMember`. Refreshes current open windows to match the new selected member.
+-- @override refreshMember
 function EquipGUI:refreshMember(member)
   member = member or self:currentMember()
   MemberGUI.refreshMember(self, member)

@@ -3,7 +3,7 @@
 
 --- Responsible for drawing and updating the current field, and also loading and storing fields from 
 -- game's data.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod FieldManager
 
 -- ================================================================================================
@@ -79,9 +79,9 @@ function FieldManager:loadField(fieldID, save)
   return fieldData
 end
 --- Loads a field from file data and replaces current. 
---- The information about the field must be stored in the transition data.
---- The loaded field will the treated as an exploration field.
---- Don't use this function if you just want to move the player to another tile in the same field.
+-- The information about the field must be stored in the transition data.
+-- The loaded field will the treated as an exploration field.
+-- Don't use this function if you just want to move the player to another tile in the same field.
 -- @tparam table transition The transition data.
 -- @tparam table save Field's save data (optional).
 function FieldManager:loadTransition(transition, save)

@@ -1,9 +1,12 @@
 
 -- ================================================================================================
 
---- Implements basic game callbacks (load, update and draw).
--- Loads global variables and overrides callback for love events.
--- ------------------------------------------------------------------------------------------------
+--- Implements basic game callbacks.
+-- Loads the global variables and overrides callback for love events to redirect
+-- to the associated manager.
+-- Dependencies: `Globals`
+-- @see Conf
+---------------------------------------------------------------------------------------------------
 -- @script Main
 
 -- ================================================================================================

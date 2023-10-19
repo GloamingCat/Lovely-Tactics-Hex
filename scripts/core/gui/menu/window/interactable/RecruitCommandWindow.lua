@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window with the initial commands of the shop GUI (hire, dismiss, cancel).
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod RecruitCommandWindow
 
 -- ================================================================================================
@@ -27,13 +27,15 @@ function RecruitCommandWindow:init(GUI, hire, dismiss)
   self.dismiss = dismiss
   GridWindow.init(self, GUI)
 end
---- Overrides GridWindow:setProperties.
+--- Overrides `GridWindow:setProperties`. 
+-- @override setProperties
 function RecruitCommandWindow:setProperties()
   GridWindow.setProperties(self)
   self.tooltipTerm = ''
   self.buttonAlign = 'center'
 end
---- Implements GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`.
+-- @implement createWidgets
 function RecruitCommandWindow:createWidgets()
   Button:fromKey(self, 'hire').text:setAlign('center', 'center')
   Button:fromKey(self, 'dismiss').text:setAlign('center', 'center')
@@ -78,15 +80,18 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function RecruitCommandWindow:colCount()
   return 3
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function RecruitCommandWindow:rowCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override cellWidth
 function RecruitCommandWindow:cellWidth()
   return 60
 end

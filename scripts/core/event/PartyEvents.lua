@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Party-related functions that are loaded from the EventSheet.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @module PartyEvents
 
 -- ================================================================================================
@@ -136,7 +136,7 @@ function PartyEvents:learnSkill(args)
   end
 end
 --- Sets a member's level. 
---- Learns new skills if level increased, but keeps old skills if decreased.
+-- Learns new skills if level increased, but keeps old skills if decreased.
 -- @tparam table args
 --  args.key (string): The key of the member to be modified.
 --  args.level (number): Member's new level.

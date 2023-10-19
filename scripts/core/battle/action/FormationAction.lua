@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The BattleAction that is executed when players chooses "Formation" in the intro GUI.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod FormationAction
 
 -- ================================================================================================
@@ -18,13 +18,15 @@ local FormationAction = class(CallAction)
 -- Input callback
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:onSelect.
+--- Overrides `BattleAction:onSelect`. 
+-- @override onSelect
 function FormationAction:onSelect(input)
   self.party = input.party or TurnManager.party
   self.troop = TroopManager.troops[self.party]
   CallAction.onSelect(self, input)
 end
---- Overrides BattleAction:onConfirm.
+--- Overrides `FieldAction:onConfirm`. 
+-- @override onConfirm
 function FormationAction:onConfirm(input)
   local result = GUIManager:showGUIForResult(CallGUI(input.GUI, self.troop, input.user == nil))
   if result ~= 0 then
@@ -59,7 +61,8 @@ end
 -- Selectable Tiles
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:isSelectable.
+--- Overrides `BattleAction:isSelectable`. 
+-- @override isSelectable
 function FormationAction:isSelectable(input, tile)
   return tile.party == self.party and tile.obstacleList:isEmpty() and
     not FieldManager.currentField:collidesTerrain(tile:coordinates())
@@ -69,7 +72,8 @@ end
 -- Target
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:firstTarget.
+--- Overrides `BattleAction:firstTarget`. 
+-- @override firstTarget
 function FormationAction:firstTarget(input)
   local leader = self.troop:currentMembers()[1]
   local char = FieldManager:search(leader.key)

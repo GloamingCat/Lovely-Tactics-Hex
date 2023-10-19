@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window with the initial commands of the shop GUI (buy, sell, cancel).
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ShopCommandWindow
 
 -- ================================================================================================
@@ -27,13 +27,15 @@ function ShopCommandWindow:init(GUI, buy, sell)
   self.sell = sell
   GridWindow.init(self, GUI)
 end
---- Overrides GridWindow:setProperties.
+--- Overrides `GridWindow:setProperties`. 
+-- @override setProperties
 function ShopCommandWindow:setProperties()
   GridWindow.setProperties(self)
   self.tooltipTerm = ''
   self.buttonAlign = 'center'
 end
---- Implements GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`.
+-- @implement createWidgets
 function ShopCommandWindow:createWidgets()
   Button:fromKey(self, 'buy').text:setAlign('center', 'center')
   Button:fromKey(self, 'sell').text:setAlign('center', 'center')
@@ -78,15 +80,18 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function ShopCommandWindow:colCount()
   return 3
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function ShopCommandWindow:rowCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override cellWidth
 function ShopCommandWindow:cellWidth()
   return 60
 end

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- GUI that is shown when player selects a battler during Visualize action.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod VisualizeGUI
 
 -- ================================================================================================
@@ -18,7 +18,8 @@ local VisualizeGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:init.
+--- Overrides `GUI:init`. 
+-- @override init
 -- @tparam GUI parent Parent GUI.
 -- @tparam Character character Member's character in the battle field.
 function VisualizeGUI:init(parent, character)
@@ -26,7 +27,8 @@ function VisualizeGUI:init(parent, character)
   self.character = character
   GUI.init(self, parent)
 end
---- Override GUI:createWindows.
+--- Overrides `GUI:createWindows`.
+-- @override createWindows
 function VisualizeGUI:createWindows()
   local mainWindow = BattlerWindow(self)
   mainWindow:setBattler(self.character.battler)

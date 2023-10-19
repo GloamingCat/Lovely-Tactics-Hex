@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI to manage and use a item from party's inventory.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ItemGUI
 
 -- ================================================================================================
@@ -20,14 +20,16 @@ local ItemGUI = class(MemberGUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:init.
+--- Overrides `GUI:init`. 
+-- @override init
 -- @tparam MemberGUI parent Parent Member GUI.
 function ItemGUI:init(...)
   self.name = 'Item GUI'
   MemberGUI.init(self, ...)
   self.inventory = self.troop.inventory
 end
---- Overrides GUI:createWindows.
+--- Overrides `GUI:createWindows`. 
+-- @override createWindows
 function ItemGUI:createWindows()
   self:createInfoWindow()
   self:createItemWindow()

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Stores relevant inputs for the game.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod InputManager
 
 -- ================================================================================================
@@ -271,7 +271,7 @@ function InputManager:onTextInput(char)
   end
 end
 --- Read text input from keyboard. When enabled, consumes all key events that represent either a
---- character or backspace key.
+-- character or backspace key.
 function InputManager:startTextInput()
   if self.readingText then
     return

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Print game statistics for debugging.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin PrintStats
 
 -- ================================================================================================
@@ -19,7 +19,8 @@ local GameManager = require('core/base/GameManager')
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Initializes stats tables.
+--- Rewrites `GameManager:init`.
+-- @override GameManager_init
 local GameManager_init = GameManager.init
 function GameManager:init()
   GameManager_init(self)
@@ -29,7 +30,8 @@ function GameManager:init()
   self.avgStats = {}
   self.stats = { 0, 0, 0, 0, 0, 0 }
 end
---- Override. Checks for stats toggle input.
+--- Rewrites `GameManager:updateManagers`.
+-- @override GameManager_updateManagers
 local GameManager_updateManagers = GameManager.updateManagers
 function GameManager:updateManagers(dt)
   if InputManager.keys['stats']:isTriggered() then
@@ -45,7 +47,8 @@ function GameManager:updateManagers(dt)
   end
   GameManager_updateManagers(self, dt)
 end
---- Override. Prints stats.
+--- Rewrites `GameManager:draw`.
+-- @override GameManager_draw
 local GameManager_draw = GameManager.draw
 function GameManager:draw()
   GameManager_draw(self)

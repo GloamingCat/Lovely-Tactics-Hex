@@ -5,7 +5,7 @@
 --
 -- Plugin parameters:
 --  * Use <width> to set the outline thickness (in pixels).
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin TextOutline
 
 -- ================================================================================================
@@ -51,7 +51,8 @@ end
 -- Visibility
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Include bufferLines.
+--- Rewrites `Text:isVisible`.
+-- @override Text_isVisible
 function Text:isVisible()
   return (self.bufferLines or self.lines) and self.visible
 end

@@ -2,13 +2,7 @@
 -- ================================================================================================
 
 --- Stores info about screen's transformation (translation and scale).
---
--- Scaling types:
---  * 0 -> cannot scale at all.
---  * 1 -> scale only by integer scalars.
---  * 2 -> scale by real scalars, but do not change width:height ratio.
---  * 3 -> scale freely.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ScreenManager
 
 -- ================================================================================================
@@ -22,6 +16,23 @@ local rotate = math.rotate
 
 -- Class table.
 local ScreenManager = class()
+
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Types of configuration for window scaling.
+-- @enum ScalingTypes
+-- @field NONE Cannot scale at all.
+-- @field INT Scales only by integer scalars.
+-- @field RATIO Scales by real scalars, but do not change width:height ratio.
+-- @field ANY Scales freely.
+ScreenManager.ScalingTypes = {
+  NONE = 0,
+  INT = 1,
+  RATIO = 2,
+  ANY = 3
+}
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -48,9 +59,9 @@ end
 --- Creates the canvas, after the screen size is set.
 function ScreenManager:initCanvas()
   if not GameManager:isMobile() then
-    self.scalingType = Config.screen.scaleType or 1
+    self.scalingType = Config.screen.scaleType or self.ScalingTypes.INT
   else
-    self.scalingType = Config.screen.mobileScaleType or 2
+    self.scalingType = Config.screen.mobileScaleType or self.ScalingTypes.RATIO
   end
   local w = lgraphics.getWidth()
   local h = lgraphics.getHeight()
@@ -117,15 +128,15 @@ end
 -- @tparam number y The scale factor in axis y.
 -- @treturn boolean True if the canvas size changed.
 function ScreenManager:setScale(x, y)
-  if self.scalingType == 0 then
+  if self.scalingType == self.ScalingTypes.NONE then
     return
-  elseif self.scalingType == 1 then
+  elseif self.scalingType == self.ScalingTypes.INT then
     local m = min(x, y)
     if m > 1 then
       m = floor(m)
     end
     x, y = m, m
-  elseif self.scalingType == 2 then
+  elseif self.scalingType == self.ScalingTypes.RATIO then
     local m = min(x, y)
     x, y = m, m
   end
@@ -151,11 +162,13 @@ function ScreenManager:setScale(x, y)
     return true
   end
 end
--- @treturn number Width in world size.
+--- Width in world size.
+-- @treturn number 
 function ScreenManager:totalWidth()
   return self.scaleX * self.width * self.canvasScaleX
 end
--- @treturn number Height in world size.
+--- Height in world size.
+-- @treturn number 
 function ScreenManager:totalHeight()
   return self.scaleY * self.height * self.canvasScaleY
 end

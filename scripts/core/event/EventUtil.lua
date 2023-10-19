@@ -5,7 +5,7 @@
 -- This is intended to be a private module. Do not call require on this script directly from a
 -- plugin.
 -- When overriding a utility function, override it on EventSheet class instead.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @module EventUtil
 
 -- ================================================================================================

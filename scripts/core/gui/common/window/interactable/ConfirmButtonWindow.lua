@@ -5,7 +5,7 @@
 -- Result codes:
 --  * 0 -> cancel
 --  * 1 -> confirm
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ConfirmButtonWindow
 
 -- ================================================================================================
@@ -31,15 +31,18 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides ButtonWindow:cellWidth.
+--- Overrides `ButtonWindow:cellWidth`. 
+-- @override cellWidth
 function ConfirmButtonWindow:cellWidth()
   return ConfirmWindow.cellWidth(self) + ConfirmWindow.paddingX(self) * 2 / self:colCount()
 end
---- Overrides ButtonWindow:cellHeight.
+--- Overrides `ButtonWindow:cellHeight`. 
+-- @override cellHeight
 function ConfirmButtonWindow:cellHeight()
   return ConfirmWindow.cellHeight(self) + ConfirmWindow.paddingY(self) * 2 / self:rowCount()
 end
---- Overrides GridWindow:cellHeight.
+--- Overrides `GridWindow:cellHeight`. 
+-- @override rowMargin
 function ConfirmButtonWindow:rowMargin()
   return ButtonWindow.rowMargin(self) - 6
 end

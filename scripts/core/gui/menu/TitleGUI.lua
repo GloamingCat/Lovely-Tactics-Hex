@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI that is shown in the end of the battle.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod TitleGUI
 
 -- ================================================================================================
@@ -21,7 +21,8 @@ local TitleGUI = class(GUI)
 -- Initialize
 -- ------------------------------------------------------------------------------------------------
 
---- Implements GUI:createWindows.
+--- Implements `GUI:createWindows`.
+-- @implement createWindows
 function TitleGUI:createWindows()
   self.name = 'Title GUI'
   self.coverSpeed = 2
@@ -80,7 +81,8 @@ end
 -- Cover
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:show to show cover before windows.
+--- Overrides `GUI:show`. Shows cover before windows.
+-- @override show
 function TitleGUI:show(...)
   if not self.cover or self.cover.color.alpha == 0 then
     self:playBGM()
@@ -140,14 +142,16 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:refresh. Refreshes title.
+--- Overrides `GUI:refresh`. Refreshes title.
+-- @override refresh
 function TitleGUI:refresh()
   GUI.refresh(self)
   if self.topText and self.topText.text then
     self.topText:setText(Vocab.data.conf.title or Config.name)
   end
 end
---- Overrides GUI:destroy to destroy top text.
+--- Overrides `GUI:destroy`. Destroys top text.
+-- @override destroy
 function TitleGUI:destroy(...)
   GUI.destroy(self, ...)
   self.topText:destroy()
@@ -155,7 +159,8 @@ function TitleGUI:destroy(...)
     self.cover:destroy()
   end
 end
---- Overrides GUI:windowMargin.
+--- Overrides `GUI:windowMargin`. 
+-- @override windowMargin
 function TitleGUI:windowMargin()
   return 10
 end

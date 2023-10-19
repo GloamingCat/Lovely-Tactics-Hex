@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window that shows on each character in the VisualizeAction.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod BattlerWindow
 
 -- ================================================================================================
@@ -61,7 +61,8 @@ function BattlerWindow:preprocess()
   local hsh = 15 + max(10 * max(#primary, #secondary), eHeight)
   return hsw, hsh
 end
---- Overrides Window:createContent.
+--- Overrides `Window:createContent`. 
+-- @override createContent
 function BattlerWindow:createContent(width, height)
   Window.createContent(self, width, height)
   -- Portrait
@@ -176,7 +177,7 @@ function BattlerWindow:setBattler(battler)
   end
 end
 --- Shows the graphics of the given battler.
---- If they have a full body image, it is used. Otherwise, it uses the idle animation.
+-- If they have a full body image, it is used. Otherwise, it uses the idle animation.
 -- @tparam Battler battler The battler shown in the window.
 function BattlerWindow:setPortrait(battler)
   local charData = Database.characters[battler.charID]
@@ -202,11 +203,13 @@ end
 -- Input
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Window:onConfirm.
+--- Overrides `Window:onConfirm`. 
+-- @override onConfirm
 function BattlerWindow:onConfirm()
   self:onCancel()
 end
---- Overrides Window:onCancel.
+--- Overrides `Window:onCancel`. 
+-- @override onCancel
 function BattlerWindow:onCancel()
   AudioManager:playSFX(Config.sounds.buttonCancel)
   self.result = 0

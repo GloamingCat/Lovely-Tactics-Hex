@@ -3,13 +3,14 @@
 
 --- An ObjectTile stores a list of static obstacles and a list of dynamic characters.
 -- There's only one ObjectTile for each (i, j, height) in the field.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ObjectTile
 
 -- ================================================================================================
 
 -- Imports
 local List = require('core/datastruct/List')
+local TileGUI = require('core/field/TileGUI')
 local Vector = require('core/math/Vector')
 
 -- Class table.
@@ -48,6 +49,10 @@ function ObjectTile:createNeighborList()
   for n in self.rampNeighbors:iterator() do
     self.neighborList:add(n)
   end
+end
+-- Creates the graphics for menu interaction.
+function ObjectTile:initializeGUI()
+  self.gui = TileGUI(self, true, true)
 end
 
 -- ------------------------------------------------------------------------------------------------

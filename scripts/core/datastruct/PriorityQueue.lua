@@ -3,7 +3,7 @@
 
 --- A priority queue with numeric keys. Be default, the element in the front will be the one with  
 -- the lowest key. See more in: https://en.wikipedia.org/wiki/Priority_queue
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod PriorityQueue
 
 -- ================================================================================================
@@ -117,7 +117,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Transform this queue into a list of elements (does not include keys).
---- Empties the queue during the proccess.
+-- Empties the queue during the proccess.
 -- @treturn List List of arbitrary elements.
 function PriorityQueue:toList()
   local list = List()

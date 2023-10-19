@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI that is openned when player presses the menu button in the field.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod FieldGUI
 
 -- ================================================================================================
@@ -26,7 +26,8 @@ local FieldGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:createWindows.
+--- Overrides `GUI:createWindows`. 
+-- @override createWindows
 function FieldGUI:createWindows()
   self.goldWindowWidth = ScreenManager.width / 4
   self.goldWindowHeight = 32
@@ -84,7 +85,8 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:hide. Saves troop modifications.
+--- Overrides `GUI:hide`. Saves troop modifications.
+-- @override hide
 function FieldGUI:hide(...)
   TroopManager:saveTroop(self.troop)
   GUI.hide(self, ...)

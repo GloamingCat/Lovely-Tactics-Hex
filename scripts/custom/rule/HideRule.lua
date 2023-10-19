@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The rule for an AI that moves to the tile with less close enemies.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod HideRule
 
 -- ================================================================================================
@@ -20,7 +20,8 @@ local HideRule = class(AIRule)
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides AIRule:onSelect.
+--- Overrides `AIRule:onSelect`. 
+-- @override onSelect
 function HideRule:onSelect(user)
   user = user or TurnManager:currentCharacter()
   self.input = ActionInput(BattleMoveAction(), user)

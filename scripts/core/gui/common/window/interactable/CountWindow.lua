@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window to choose a number given a max limit.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod CountWindow
 
 -- ================================================================================================
@@ -24,7 +24,8 @@ function CountWindow:init(...)
   self.noHighlight = true
   GridWindow.init(self, ...)
 end
---- Implements GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`.
+-- @implement createWidgets
 function CountWindow:createWidgets()
   local spinner = HSpinner(self, 1, 1, 1)
   self.spinner = spinner
@@ -54,11 +55,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function CountWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function CountWindow:rowCount()
   return 1
 end

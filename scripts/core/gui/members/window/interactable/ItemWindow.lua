@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The window that shows the list of items to be used.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ItemWindow
 
 -- ================================================================================================
@@ -27,7 +27,8 @@ function ItemWindow:init(gui, rowCount)
   self.visibleRowCount = rowCount
   InventoryWindow.init(self, gui, nil, gui.inventory, gui.inventory:getUsableItems(2))
 end
---- Overrides ListWindow:createButtons.
+--- Overrides `ListWindow:createWidgets`. 
+-- @override createWidgets
 function ItemWindow:createWidgets()
   if #self.list > 0 then
     InventoryWindow.createWidgets(self)
@@ -77,11 +78,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function ItemWindow:colCount()
   return 1
 end
---- Overrides ListWindow:cellWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override cellWidth
 function ItemWindow:cellWidth()
   return 200
 end

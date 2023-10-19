@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A bar meter.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Bar
 
 -- ================================================================================================
@@ -33,7 +33,8 @@ function Bar:init(topLeft, width, height, value)
   self.height = height - self:padding() * 2
   self:setValue(value or 1)
 end
---- Overrides Component:createContent.
+--- Overrides `Component:createContent`. 
+-- @override createContent
 function Bar:createContent(width, height)
   local pos = Vector(width / 2, height / 2, 1)
   pos:add(self.position)
@@ -58,7 +59,8 @@ function Bar:setValue(value)
   self.bar.sprite:setQuad(0, 0, w, h)
   self.bar.sprite:setScale(value * self.width / w, self.height / h)
 end
---- Overrides Component:updatePosition.
+--- Overrides `Component:updatePosition`. 
+-- @override updatePosition
 function Bar:updatePosition(pos)
   self.bar.sprite:setXYZ(round(pos.x + self.position.x + self:padding()),
     round(pos.y + self.position.y + self:padding()),

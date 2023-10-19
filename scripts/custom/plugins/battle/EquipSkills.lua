@@ -8,7 +8,7 @@
 --  * Add a <skill> tag with a skill's ID or key to make it available for the character with this 
 --  item equipped. You may also add a second number to indicate a minimum level, and a third to 
 --  replace another skill.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin EquipSkills
 
 -- ================================================================================================
@@ -23,13 +23,15 @@ local SkillList = require('core/battle/battler/SkillList')
 -- EquipSet
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Creates the list of skills 
+--- Rewrites `EquipSet:init`.
+-- @override EquipSet_init
 local EquipSet_init = EquipSet.init
 function EquipSet:init(...)
   self.skills = {}
   EquipSet_init(self, ...)
 end
---- Override. Updates the skills for each slot.
+--- Rewrites `EquipSet:updateSlotBonus`.
+-- @override EquipSet_updateSlotBonus
 local EquipSet_updateSlotBonus = EquipSet.updateSlotBonus
 function EquipSet:updateSlotBonus(key)
   EquipSet_updateSlotBonus(self, key)
@@ -62,7 +64,8 @@ end
 -- Battler
 -- ------------------------------------------------------------------------------------------------
 
---- Override. Adds equip skills.
+--- Rewrites `Battler:getSkillList`.
+-- @override Battler_getSkillList
 local Battler_getSkillList = Battler.getSkillList
 function Battler:getSkillList()
   local list = Battler_getSkillList(self)
@@ -82,7 +85,8 @@ function Battler:getSkillList()
   end
   return list
 end
---- Override. Check if there's an equip attack skill.
+--- Rewrites `Battler:getAttackSkill`.
+-- @override Battler_getAttackSkill
 local Battler_getAttackSkill = Battler.getAttackSkill
 function Battler:getAttackSkill()
   for k, skills in pairs(self.equipSet.skills) do

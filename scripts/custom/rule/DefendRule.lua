@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The rule for an AI that moves to the safest tile that still has a reachable target.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod DefendRule
 
 -- ================================================================================================
@@ -19,7 +19,8 @@ local DefendRule = class(SkillRule)
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides SkillRule:onSelect.
+--- Overrides `SkillRule:onSelect`. 
+-- @override onSelect
 function DefendRule:onSelect(user)
   SkillRule.onSelect(self, user)
   -- Find tile to move

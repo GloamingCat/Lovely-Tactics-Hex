@@ -6,7 +6,7 @@
 -- 
 -- Parameters:
 --  * Set <hide> as true to make the battler unable to be called again into battle.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod EscapeRule
 
 -- ================================================================================================
@@ -23,7 +23,8 @@ local EscapeRule = class(AIRule)
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides AIRule:onSelect.
+--- Overrides `AIRule:onSelect`. 
+-- @override onSelect
 function EscapeRule:onSelect(user)
   user = user or TurnManager:currentCharacter()
   self.input = ActionInput(EscapeAction(true), user)

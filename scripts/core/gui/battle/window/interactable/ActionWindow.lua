@@ -4,7 +4,7 @@
 --- A window that implements common methods for battle windows that start an action execution 
 -- (TurnWindow, ActionSkillWindow, ActionItemWindow and IntroWindow).
 -- Its result is the result data returned by the action.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ActionWindow
 
 -- ================================================================================================

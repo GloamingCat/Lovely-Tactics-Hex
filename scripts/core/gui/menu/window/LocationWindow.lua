@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Small window that shows the location of the player.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod LocationWindow
 
 -- ================================================================================================
@@ -20,7 +20,8 @@ local LocationWindow = class(Window)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Window:createContent.
+--- Overrides `Window:createContent`. 
+-- @override createContent
 function LocationWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local icon = Config.icons.location

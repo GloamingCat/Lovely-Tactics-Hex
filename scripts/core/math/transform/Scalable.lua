@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- An object with scale properties.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Scalable
 
 -- ================================================================================================
@@ -57,7 +57,8 @@ function Scalable:updateScaling(dt)
     end
   end
 end
---- [COROUTINE] Scales to (sx, sy).
+--- Scales to (sx, sy).
+-- @coroutine scaleTo
 -- @tparam number sx Initial axis-x scale.
 -- @tparam number sy Initial axis-y scale.
 -- @tparam number speed The speed of the scaling (optional).
@@ -77,7 +78,8 @@ function Scalable:instantScaleTo(sx, sy)
   self:setScale(sx, sy)
   return nil
 end
---- [COROUTINE] Scales to (sx, sy).
+--- Scales to (sx, sy).
+-- @coroutine gradualScaleTo
 -- @tparam number sx Initial axis-x scale.
 -- @tparam number sy Initial axis-y scale.
 -- @tparam number speed the speed of the scaling (optional).
@@ -91,7 +93,8 @@ function Scalable:gradualScaleTo(sx, sy, speed, wait)
     self:waitForScaling()
   end
 end
---- [COROUTINE] Waits until the scale time is 1.
+--- Waits until the scale time is 1.
+-- @coroutine waitForScaling
 function Scalable:waitForScaling()
   local fiber = _G.Fiber
   if self.scaleFiber then

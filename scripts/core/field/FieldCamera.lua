@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The FieldCamera is a renderer with transform properties.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod FieldCamera
 
 -- ================================================================================================
@@ -41,7 +41,8 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Movable:updateMovement.
+--- Overrides `Movable:updateMovement`. 
+-- @override updateMovement
 function FieldCamera:updateMovement(dt)
   if self.focusObject then
     self:setXYZ(self.focusObject.position.x, self.focusObject.position.y)
@@ -54,7 +55,8 @@ end
 -- Images
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Movable:setXYZ.
+--- Overrides `Movable:setXYZ`. 
+-- @override setXYZ
 function FieldCamera:setXYZ(x, y, ...)
   Renderer.setXYZ(self, x, y, ...)
   for _, img in pairs(self.images) do
@@ -105,7 +107,8 @@ end
 -- Camera Movement
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Moves camera to the given tile.
+--- Moves camera to the given tile.
+-- @coroutine moveToTile
 -- @tparam ObjectTile tile The destionation tile.
 -- @tparam number speed The speed of the movement (optional, uses default speed).
 -- @tparam boolean wait Flag to wait until the move finishes (optional, false by default).
@@ -113,7 +116,8 @@ function FieldCamera:moveToTile(tile, speed, wait)
   local x, y = tile.center:coordinates()
   self:moveToPoint(x, y, speed, wait)
 end
---- [COROUTINE] Movec camera to the given object.
+--- Movec camera to the given object.
+-- @coroutine moveToObject
 -- @tparam Object obj The destination object.
 -- @tparam number speed The speed of the movement (optional, uses default speed).
 -- @tparam boolean wait Flag to wait until the move finishes (optional, false by default).

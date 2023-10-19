@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- A special type of Sprite which texture if a rendered text.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Text
 
 -- ================================================================================================
@@ -153,7 +153,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Sets maximum line width. If wrap is set as true, new lines will be created to accomodate text 
---- out of width limit. Else, the line that surpasses width limit is shrinked horizontally to fit.
+-- out of width limit. Else, the line that surpasses width limit is shrinked horizontally to fit.
 -- @tparam number w Maximum width in GUI pixel coordinates.
 function Text:setMaxWidth(w)
   if self.maxWidth ~= w then
@@ -243,7 +243,7 @@ function Text:draw(renderer)
   lgraphics.setShader(shader)
 end
 --- Prints parsed lines in the current graphics context.
---- All fragments are assumed to have pre-multiplied width/height.
+-- All fragments are assumed to have pre-multiplied width/height.
 -- @tparam number sx Scale x.
 -- @tparam number sy Scale y.
 function Text:drawLines(sx, sy)

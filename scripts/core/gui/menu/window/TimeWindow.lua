@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Small window that shows the play time of the player.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod TimeWindow
 
 -- ================================================================================================
@@ -20,7 +20,8 @@ local TimeWindow = class(Window)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Window:createContent.
+--- Overrides `Window:createContent`. 
+-- @override createContent
 function TimeWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local icon = Config.icons.time

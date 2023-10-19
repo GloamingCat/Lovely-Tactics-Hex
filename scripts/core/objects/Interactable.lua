@@ -4,7 +4,7 @@
 --- Base methods for objects with start/collision/interaction scripts.
 -- It is created from a instance data table, which contains (x, y, h) coordinates, scripts, and 
 -- passable and persistent properties.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Interactable
 
 -- ================================================================================================
@@ -94,13 +94,8 @@ function Interactable:destroy(permanent)
     FieldManager:storeCharData(FieldManager.currentField.id, self)
   end
 end
---- String representation.
--- @treturn string String representation (for debugging).
-function Interactable:__tostring()
-  return 'Interactable: ' .. self.key
-end
---- Data with fiber list's state and local variables.
--- @treturn table Interactable's state to be saved.
+--- Gets data with fiber list's state and local variables.
+-- @treturn table State data to be saved.
 function Interactable:getPersistentData()
   local function copyScripts(scripts)
     local copy = {}
@@ -124,6 +119,11 @@ function Interactable:getPersistentData()
     interacting = self.interacting,
     collider = self.collider,
     collided = self.collided }
+end
+--- String representation.
+-- @treturn string String representation (for debugging).
+function Interactable:__tostring()
+  return 'Interactable: ' .. self.key
 end
 
 -- ------------------------------------------------------------------------------------------------

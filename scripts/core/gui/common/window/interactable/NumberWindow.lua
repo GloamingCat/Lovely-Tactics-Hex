@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Shows a list of numbers from 0 to 9 to be chosen.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod NumberWindow
 
 -- ================================================================================================
@@ -20,7 +20,8 @@ local NumberWindow = class(GridWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:init.
+--- Overrides `Window:init`. 
+-- @override init
 function NumberWindow:init(GUI, args)
   self.noCursor = true
   self.length = args.length
@@ -29,7 +30,8 @@ function NumberWindow:init(GUI, args)
   self.cancelValue = args.cancel
   GridWindow.init(self, GUI, self.width, nil, args.pos)
 end
---- Implements GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`.
+-- @implement createWidgets
 function NumberWindow:createWidgets()
   for i = 1, self.length do
     VSpinner(self, 0, 9, 0)
@@ -74,19 +76,23 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function NumberWindow:colCount()
   return self.length + 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function NumberWindow:rowCount()
   return 1
 end
---- Overrides GridWindow:cellWidth.
+--- Overrides `GridWindow:cellWidth`. 
+-- @override cellWidth
 function NumberWindow:cellWidth()
   return 16
 end
---- Overrides GridWindow:cellHeight.
+--- Overrides `GridWindow:cellHeight`. 
+-- @override cellHeight
 function NumberWindow:cellHeight()
   return (self.height or 48) - self:paddingY() * 2
 end

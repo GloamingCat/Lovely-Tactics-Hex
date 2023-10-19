@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window with the list of items available to hire.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod RecruitListWindow
 
 -- ================================================================================================
@@ -22,7 +22,8 @@ function RecruitListWindow:init(gui)
   self.visibleRowCount = 4
   ListWindow.init(self, gui, {})
 end
---- Implements ListWindow:createListButton.
+--- Implements `ListWindow:createListButton`.
+-- @implement createListButton
 function RecruitListWindow:createListButton(entry)
   local battler, price, char, member
   if self.hire then
@@ -117,7 +118,8 @@ end
 -- Confirm Callbacks
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides ListWindow:cellWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override cellWidth
 function RecruitListWindow:cellWidth()
   return ListWindow.cellWidth(self) * 4 / 5
 end

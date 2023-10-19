@@ -17,7 +17,7 @@
 --  * Statuses with <reflect> tag makes the characters reflect the next skill. The status is
 --  removed if a skill is reflected.
 --  * Set <removeOnUse> to true to limit the reflection to one use.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin Reflect
 
 -- ================================================================================================
@@ -36,7 +36,8 @@ local selfReflect = args.selfReflect or 'none'
 -- Skill Action
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides. Changes targets if reflect.
+--- Rewrites `SkillAction:singleTargetEffect`.
+-- @override SkillAction_singleTargetEffect
 local SkillAction_singleTargetEffect = SkillAction.singleTargetEffect
 function SkillAction:singleTargetEffect(results, input, target, originTile)
   local minTime = 0

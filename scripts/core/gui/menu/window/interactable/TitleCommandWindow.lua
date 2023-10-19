@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The small windows with the commands for character management.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod TitleCommandWindow
 
 -- ================================================================================================
@@ -26,7 +26,8 @@ function TitleCommandWindow:init(...)
   self.currentCol = 1
   self.currentRow = self:loadGameEnabled() and 2 or 1
 end
---- Implements GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`.
+-- @implement createWidgets
 function TitleCommandWindow:createWidgets()
   Button:fromKey(self, 'newGame')
   Button:fromKey(self, 'loadGame')
@@ -97,11 +98,13 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function TitleCommandWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function TitleCommandWindow:rowCount()
   return GameManager:isDesktop() and 4 or 3
 end

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window with the list of battles in the party backup.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod CallWindow
 
 -- ================================================================================================
@@ -89,15 +89,18 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:cellWidth.
+--- Overrides `GridWindow:cellWidth`. 
+-- @override cellWidth
 function CallWindow:cellWidth()
   return 70
 end
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function CallWindow:colCount()
   return 1
 end
---- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override rowCount
 function CallWindow:rowCount()
   return 4
 end

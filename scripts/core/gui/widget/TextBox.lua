@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Box to input a one-line string. 
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod TextBox
 
 -- ================================================================================================
@@ -36,8 +36,8 @@ function TextBox:init(window, initStr, pos, width)
   self.window = window
   SimpleText.init(self, initStr .. '{u} {u}', pos, width, 'left', Fonts.gui_button)
 end
---- Overrides SimpleText:createContent.
---- Creates highlight.
+--- Overrides `SimpleText:createContent`. Creates highlight.
+-- @override createContent
 function TextBox:createContent(...)
   SimpleText.createContent(self, ...)
   local width = self.window.width - self.window:colMargin() / 2 - 4
@@ -76,8 +76,8 @@ end
 -- Cursor
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides SimpleText:updatePosition.
---- Updates highlight position.
+--- Overrides `SimpleText:updatePosition`. Updates highlight position.
+-- @override updatePosition
 function TextBox:updatePosition(...)
   if self.highlight then
     local my = self.window:rowMargin() / 2 + 4

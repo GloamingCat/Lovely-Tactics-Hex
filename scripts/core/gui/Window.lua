@@ -8,7 +8,7 @@
 --  * updatePosition(pos) (optional)
 --  * update (optional)
 --  * destroy
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod Window
 
 -- ================================================================================================
@@ -31,6 +31,7 @@ local Window = class(Component, Transformable)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam GUI gui Parent GUI.
 -- @tparam number width Total width in pixels (if nil, must be set later).
 -- @tparam number height Total height in pixels (if nil, must be set later).
@@ -60,8 +61,8 @@ function Window:setProperties()
   self.speed = 10
   self.offBoundsCancel = true
 end
---- Overrides Component:createContent.
---- By default, only creates the skin.
+--- Overrides `Component:createContent`. By default, only creates the skin.
+-- @override createContent
 function Window:createContent(width, height)
   self.width = width
   self.height = height
@@ -108,8 +109,8 @@ function Window:updatePosition()
   end
   Component.updatePosition(self)
 end
---- Overrides Component:refresh.
---- Refreshes the background color.
+--- Overrides `Component:refresh`. Refreshes the background color.
+-- @override refresh
 function Window:refresh()
   Component.refresh(self)
   if self.background then
@@ -197,7 +198,9 @@ function Window:setScale(sx, sy)
   end
 end
 --- Changes the window's size.
---- It recreates all contents.
+-- It recreates all contents.
+-- @tparam number w Window's width in UI coordinates.
+-- @tparam number h Window's width in UI coordinates.
 function Window:resize(w, h)
   w, h = w or self.width, h or self.height
   if w ~= self.width or h ~= self.height then
@@ -236,7 +239,8 @@ end
 -- Show/hide
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Opens this window. Overrides Component:show.
+--- Overrides `Component:show`. Opens this window.
+-- @override show
 function Window:show()
   if self.scaleY >= 1 then
     return
@@ -249,7 +253,8 @@ function Window:show()
     self:showContent()
   end
 end
---- [COROUTINE] Closes this window. Overrides Component:hide.
+--- Overrides `Component:hide`. Closes this window.
+-- @override hide
 -- @tparam boolean gui If it's called from GUI:hide.
 --  If true, automatically opens the window back if its GUI opens again.
 --  Else, it stays hidden until it is manually openned again.
@@ -307,7 +312,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Checks if player pressed any GUI button.
---- By default, only checks the "cancel" key.
+-- By default, only checks the "cancel" key.
 function Window:checkInput()
   if not self.open then
     return
@@ -354,7 +359,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Called when player presses "confirm" key.
---- By default, only sets the result to 1.
+-- By default, only sets the result to 1.
 function Window:onConfirm()
   self.result = 1
   if self.confirmSound then
@@ -362,7 +367,7 @@ function Window:onConfirm()
   end
 end
 --- Called when player presses "cancel" key.
---- By default, only dets the result to 0.
+-- By default, only dets the result to 0.
 function Window:onCancel()
   self.result = 0
   if self.cancelSound then
@@ -371,7 +376,7 @@ function Window:onCancel()
 end
 function Window:onTextInput(c)
 end
---- Callod when player presses arrows.
+--- Called when player presses arrows.
 function Window:onMove(dx, dy)
 end
 --- Called when player presses "next" key.
@@ -381,6 +386,10 @@ end
 function Window:onPrev()
 end
 --- Called when player presses a mouse button or touches screen.
+-- @tparam number button Button type ID (1-3 for mouse, 4-5 for touch).
+-- @tparam number x Current cursor/touch x position relative to the window's center.
+-- @tparam number y Current cursor/touch y position relative to the window's center.
+-- @tparam Vector triggerPoint The point in which the click/touch started, relative to the window's center.
 function Window:onClick(button, x, y, triggerPoint)
   if button == 1 then
     if self:isInside(x, y) then
@@ -401,14 +410,20 @@ function Window:onClick(button, x, y, triggerPoint)
   end
 end
 --- Confirmation by mouse or touch.
+-- @tparam number x Cursor/touch x position relative to the window's center.
+-- @tparam number y Cursor/touch y position relative to the window's center.
 function Window:onMouseConfirm(x, y)
   self:onConfirm()
 end
 --- Cancel my mouse or touch.
+-- @tparam number x Cursor/touch x position relative to the window's center.
+-- @tparam number y Cursor/touch y position relative to the window's center.
 function Window:onMouseCancel(x, y)
   self:onCancel()
 end
 --- Called when player moves mouse.
+-- @tparam number x Current cursor/touch x position relative to the window's center.
+-- @tparam number y Current cursor/touch y position relative to the window's center.
 function Window:onMouseMove(x, y)
 end
 

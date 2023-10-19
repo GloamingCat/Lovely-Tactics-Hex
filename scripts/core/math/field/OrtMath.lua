@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Implements FieldMath methods to hexagonal fields in which the tiles are connected vertically.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod OrtMath
 
 -- ================================================================================================
@@ -211,7 +211,7 @@ function OrtMath.isCollinear(x1, y1, x2, y2, x3, y3)
     x1 - y1 == x2 - y2 and x2 - y2 == x3 - y3
 end
 --- Iterates through the set of tiles inside the given radius.
---- The radius is the maximum distance to the center tile, so the center is always included.
+-- The radius is the maximum distance to the center tile, so the center is always included.
 -- @tparam number radius The max distance.
 -- @tparam number centerX The starting tile's x.
 -- @tparam number centerY The starting tile's y.

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI that is shown in the end of the battle.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod RewardGUI
 
 -- ================================================================================================
@@ -24,7 +24,8 @@ local RewardGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Implements GUI:createWindows.
+--- Implements `GUI:createWindows`.
+-- @implement createWindows
 function RewardGUI:createWindows()
   self.name = 'Reward GUI'
   self:createTopText()
@@ -119,7 +120,8 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:destroy to destroy top text.
+--- Overrides `GUI:destroy`. Destroys top text.
+-- @override destroy
 function RewardGUI:destroy(...)
   GUI.destroy(self, ...)
   self.topText:destroy()

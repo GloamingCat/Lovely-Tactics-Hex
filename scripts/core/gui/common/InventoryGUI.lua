@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The GUI to manage and use a item from party's inventory.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod InventoryGUI
 
 -- ================================================================================================
@@ -20,14 +20,16 @@ local InventoryGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:init.
+--- Overrides `GUI:init`. 
+-- @override init
 function InventoryGUI:init(parent, troop)
   self.name = 'Inventory GUI'
   self.troop = troop
   self.inventory = troop.inventory
   GUI.init(self, parent)
 end
---- Overrides GUI:createWindows.
+--- Overrides `GUI:createWindows`. 
+-- @override createWindows
 function InventoryGUI:createWindows()
   self:createItemWindow()
   self:createDescriptionWindow()

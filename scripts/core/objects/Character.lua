@@ -2,8 +2,8 @@
 -- ================================================================================================
 
 --- This class provides general functions to be called by fibers. 
--- The [COUROUTINE] functions must ONLY be called from a fiber.
--- ------------------------------------------------------------------------------------------------
+-- The coroutine functions must ONLY be called from a fiber.
+---------------------------------------------------------------------------------------------------
 -- @classmod Character
 
 -- ================================================================================================
@@ -44,10 +44,11 @@ end
 -- Movement
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Tries to move in a given angle.
+--- Tries to move in a given angle.
+-- @coroutine tryAngleMovement
 -- @tparam number angle The angle in degrees to move.
 -- @treturn boolean Returns false if the next angle must be tried, a number to stop trying.
----  If 0, then the path was free. If 1, there was a character in this tile.
+--  If 0, then the path was free. If 1, there was a character in this tile.
 function Character:tryAngleMovement(angle)  
   local frontTiles = self:getFrontTiles(angle)
   if #frontTiles == 0 then
@@ -61,10 +62,11 @@ function Character:tryAngleMovement(angle)
   end
   return false
 end
---- [COROUTINE] Tries to move to the given tile.
+--- Tries to move to the given tile.
+-- @coroutine tryTileMovement
 -- @tparam ObjectTile tile The destination tile.
 -- @treturn number Returns false if the next angle must be tried, a number to stop trying.
----  If 0, then the path was free. If 1, there was a character in this tile.
+--  If 0, then the path was free. If 1, there was a character in this tile.
 function Character:tryTileMovement(tile)
   local ox, oy, oh = self:tileCoordinates()
   local dx, dy, dh = tile:coordinates()
@@ -93,7 +95,8 @@ function Character:tryTileMovement(tile)
   end
   return false
 end
---- [COROUTINE] Tries to walk a path to the given tile.
+--- Tries to walk a path to the given tile.
+-- @coroutine tryPathMovement
 -- @tparam ObjectTile tile Destination tile.
 -- @tparam number pathLength Maximum length of path.
 -- @treturn boolean True if the character walked the full path.
@@ -106,7 +109,8 @@ function Character:tryPathMovement(tile, pathLength)
   self.path = path:addStep(tile, 1):toStack()
   return true
 end
---- [COROUTINE] Moves to the given tile.
+--- Moves to the given tile.
+-- @coroutine applyTileMovement
 -- @tparam ObjectTile tile The destination tile.
 -- @treturn number Returns false if path was blocked, true otherwise.
 function Character:applyTileMovement(tile)
@@ -132,12 +136,13 @@ function Character:applyTileMovement(tile)
   end
   return false
 end
---- [COROUTINE] Walks the next tile of the path.
+--- Walks the next tile of the path.
+-- @coroutine consumePath
 -- @treturn boolean True if character walked to the next tile, false if collided.
 -- @treturn ObjectTile The next tile in the path:
 --  If passable, it's the current tile;
 --  If not, it's the front tile;
----  If path was empty, then nil.
+--  If path was empty, then nil.
 function Character:consumePath()
   local tile = nil
   if not self.path:isEmpty() then
@@ -154,7 +159,8 @@ end
 -- Skill (user)
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Play load animation.
+--- Play load animation.
+-- @coroutine loadSkill
 -- @tparam table skill Skill data from database.
 -- @treturn number The duration of the animation.
 function Character:loadSkill(skill)
@@ -171,7 +177,8 @@ function Character:loadSkill(skill)
   end
   return 0
 end
---- [COROUTINE] Plays cast animation.
+--- Plays cast animation.
+-- @coroutine castSkill
 -- @tparam table skill Skill's data.
 -- @tparam number dir The direction of the cast.
 -- @tparam ObjectTile target Target of the skill.
@@ -196,7 +203,8 @@ function Character:castSkill(skill, dir, target)
   end
   return minTime
 end
---- [COROUTINE] Returns to original tile and stays idle.
+--- Returns to original tile and stays idle.
+-- @coroutine finishSkill
 -- @tparam ObjectTile origin The original tile of the character.
 -- @tparam table skill Skill data from database.
 function Character:finishSkill(origin, skill)
@@ -220,7 +228,8 @@ end
 -- Skill (target)
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Plays damage and KO (if died) animation.
+--- Plays damage and KO (if died) animation.
+-- @coroutine damage
 -- @tparam Skill skill The skill used.
 -- @tparam ObjectTile origin The tile of the skill user.
 -- @tparam table results Results of the skill.

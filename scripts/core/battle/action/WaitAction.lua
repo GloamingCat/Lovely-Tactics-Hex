@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The BattleAction that is executed when players chooses the "Wait" button.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod WaitAction
 
 -- ================================================================================================
@@ -17,11 +17,13 @@ local WaitAction = class(BattleAction)
 -- Callback
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:onActionGUI.
+--- Overrides `BattleAction:onActionGUI`. 
+-- @override onActionGUI
 function WaitAction:onActionGUI(input)
   return self:onConfirm(input)
 end
---- Overrides BattleAction:onConfirm.
+--- Overrides `FieldAction:onConfirm`. 
+-- @override onConfirm
 function WaitAction:onConfirm(input)
   return { endCharacterTurn = true, endTurn = #TurnManager.turnCharacters == 1 }
 end

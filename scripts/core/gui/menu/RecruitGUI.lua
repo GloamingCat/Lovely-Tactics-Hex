@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Menu to hire or dismiss allies.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod RecruitGUI
 
 -- ================================================================================================
@@ -24,7 +24,8 @@ local RecruitGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:init.
+--- Overrides `GUI:init`. 
+-- @override init
 -- @tparam GUI parent Parent GUI.
 -- @tparam table chars Array of characters to be hired/dismissed.
 -- @tparam Troop troop The troop recruiting new battlers.
@@ -33,7 +34,8 @@ function RecruitGUI:init(parent, chars, troop)
   self.chars = chars
   GUI.init(self, parent)
 end
---- Implements GUI:createWindow.
+--- Implements `GUI:createWindow`.
+-- @implement createWindows
 function RecruitGUI:createWindows()
   self:createCommandWindow()
   self:createGoldWindow()
@@ -103,7 +105,8 @@ function RecruitGUI:hideRecruitGUI()
   self.listWindow:hide()
   self.commandWindow:activate()
 end
---- Overrides GUI:hide. Saves troop modifications.
+--- Overrides `GUI:hide`. Saves troop modifications.
+-- @override hide
 function RecruitGUI:hide(...)
   TroopManager:saveTroop(self.troop, true)
   GUI.hide(self, ...)

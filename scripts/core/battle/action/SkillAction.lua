@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- The BattleAction that is executed when players chooses a skill to use.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod SkillAction
 
 -- ================================================================================================
@@ -162,12 +162,13 @@ end
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:canExecute.
+--- Overrides `FieldAction:canExecute`. 
+-- @override canExecute
 function SkillAction:canExecute(input)
   return self:canBattleUse(input.user)
 end
---- Overrides BattleAction:onConfirm.
---- Executes the movement action and the skill's effect.
+--- Overrides `FieldAction:onConfirm`. Executes the movement action and the skill's effect.
+-- @override execute
 function SkillAction:execute(input)
   if input.moveResult.executed then
     -- Skill use
@@ -210,7 +211,7 @@ function SkillAction:canBattleUse(user)
   return self:canUse(user.battler, user) and self.data.restriction <= 1
 end
 --- The effect applied when the user is prepared to use the skill.
---- It executes animations and applies damage/heal to the targets.
+-- It executes animations and applies damage/heal to the targets.
 -- @tparam ActionInput input
 function SkillAction:battleUse(input)
   -- Intro time.
@@ -297,7 +298,8 @@ end
 -- Affected Tiles
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides BattleAction:isCharacterAffected.
+--- Overrides `BattleAction:isCharacterAffected`. 
+-- @override isCharacterAffected
 function SkillAction:isCharacterAffected(input, char)
   if not BattleAction.isCharacterAffected(self, input, char) then
     return false
@@ -314,7 +316,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Calculates the final damage / heal for the target.
---- It considers all element bonuses provided by the skill data.
+-- It considers all element bonuses provided by the skill data.
 -- @tparam Battler user
 -- @tparam Battler target
 -- @tparam function rand Random number generator (optional).
@@ -356,7 +358,7 @@ function SkillAction:calculateEffectResults(user, target, rand)
     status = status }
 end
 --- Calculates the final damage / heal for the target from an specific effect.
---- It considers all element bonuses provided by the skill data.
+-- It considers all element bonuses provided by the skill data.
 -- @tparam table effect Effect's info (successRate and basicResult).
 -- @tparam Battler user User of the skill.
 -- @tparam Battler target Receiver of the effect.

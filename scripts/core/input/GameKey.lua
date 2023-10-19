@@ -7,7 +7,7 @@
 --  * 0 -> not pressing;
 --  * 1 -> pressing;
 --  * 2 -> just pressed.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod GameKey
 
 -- ================================================================================================
@@ -26,6 +26,7 @@ local GameKey = class()
 -- General
 -- ------------------------------------------------------------------------------------------------
 
+-- Constructor.
 function GameKey:init()
   self.previousPressTime = 0
   self.pressTime = 0
@@ -47,6 +48,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Checks if button was triggered (just pressed).
+-- @tparam number gap Time distance in seconds between repeated triggers.
 -- @treturn boolean True if was triggered in the current frame, false otherwise.
 function GameKey:isTriggered(gap)
   return self.pressState == 2

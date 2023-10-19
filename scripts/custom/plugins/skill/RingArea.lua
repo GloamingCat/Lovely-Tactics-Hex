@@ -18,7 +18,7 @@
 --  * If <far> and <near> are the same value X, the ring is the set of tiles that distantiates from
 --  the center by exactly X.
 --  * If <far> and <near> are 0, the set contains only the center tile.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @plugin RingArea
 
 -- ================================================================================================
@@ -36,7 +36,7 @@ local mathf = math.field
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
---- Creates ring masks if parameters are set in the tags.
+-- Creates ring masks if parameters are set in the tags.
 local SkillAction_init = SkillAction.init
 function SkillAction:init(...)
   SkillAction_init(self, ...)
@@ -54,7 +54,8 @@ function SkillAction:init(...)
     self.moveAction.range = self.range
   end
 end
---- Overrides to create Range window.
+--- Rewrites `SkillAction:onActionGUI`.
+-- @override SkillAction_onActionGUI
 local SkillAction_onActionGUI = SkillAction.onActionGUI
 function SkillAction:onActionGUI(input)
   SkillAction_onActionGUI(self, input)
@@ -93,11 +94,13 @@ end
 -- FieldAction
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn boolean True if skill's area represents whole field.
+--- Checks whether the skill's area represents whole field or not.
+-- @treturn boolean
 function FieldAction:wholeField()
   return self.area == nil
 end
---- Override. All tiles are affected if marked as whole field.
+--- Rewrites `FieldAction:resetAffectedTiles`.
+-- @override FieldAction_resetAffectedTiles
 local FieldAction_resetAffectedTiles = FieldAction.resetAffectedTiles
 function FieldAction:resetAffectedTiles(input)
   if self:wholeField() then
@@ -109,8 +112,8 @@ function FieldAction:resetAffectedTiles(input)
     return FieldAction_resetAffectedTiles(self, input)
   end
 end
---- Override.
---- Only one tile (user's tile) is selectable if the skill affects the whole field.
+--- Rewrites `FieldAction:isSelectable`.
+-- @override FieldAction_isSelectable
 local FieldAction_isSelectable = FieldAction.isSelectable
 function FieldAction:isSelectable(input, tile)
   if self:wholeField() then
@@ -120,7 +123,8 @@ function FieldAction:isSelectable(input, tile)
     return FieldAction_isSelectable(self, input, tile)
   end
 end
---- Override. Returns true if marked as whole field.
+--- Rewrites `FieldAction:isArea`.
+-- @override FieldAction_isArea
 local FieldAction_isArea = FieldAction.isArea
 function FieldAction:isArea()
   if self:wholeField() then
@@ -128,8 +132,8 @@ function FieldAction:isArea()
   end
   return FieldAction_isArea(self)
 end
---- Override.
---- Returns all field tiles if area is nil.
+--- Rewrites `FieldAction:getAreaTiles`.
+-- @override FieldAction_getAreaTiles
 local FieldAction_getAreaTiles = FieldAction.getAreaTiles
 function FieldAction:getAreaTiles(input, centerTile)
   if self:wholeField() then

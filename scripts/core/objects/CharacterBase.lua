@@ -4,7 +4,7 @@
 --- A Character is a dynamic object stored in the tile. It may be passable or not, and have an image 
 -- or not. Player may also interact with this.
 -- A CharacterBase provides very basic functions that are necessary for every character.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod CharacterBase
 
 -- ================================================================================================
@@ -80,7 +80,8 @@ function CharacterBase:initProperties(instData, name, tiles, colliderHeight, sav
     self.speed = save.speed or (save.defaultSpeed or 100) * Config.player.walkSpeed / 100
   end
 end
---- Override DirectedObject:initGraphics. Creates the animation sets.
+--- Overrides `DirectedObject:initGraphics`. Creates the animation sets.
+-- @override initGraphics
 function CharacterBase:initGraphics(instData, animations, portraits, transform, shadowID, save)
   if shadowID and shadowID >= 0 then
     local shadowData = Database.animations[shadowID]
@@ -106,8 +107,8 @@ end
 -- Shadow
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Object:setXYZ.
---- Updates shadow's position.
+--- Overrides `Object:setXYZ`. Updates shadow's position.
+-- @override setXYZ
 function CharacterBase:setXYZ(x, y, z)
   z = z or self.position.z
   JumpingObject.setXYZ(self, x, y, z)
@@ -115,16 +116,16 @@ function CharacterBase:setXYZ(x, y, z)
     self.shadow:setXYZ(x, y, z + 1)
   end
 end
---- Overrides Object:setVisible.
---- Updates shadow's visibility.
+--- Overrides `Object:setVisible`. Updates shadow's visibility.
+-- @override setVisible
 function CharacterBase:setVisible(value)
   JumpingObject.setVisible(self, value)
   if self.shadow then
     self.shadow:setVisible(value)
   end
 end
---- Overrides Object:setRGBA.
---- Updates shadow's color.
+--- Overrides `Object:setRGBA`. Updates shadow's color.
+-- @override setRGBA
 function CharacterBase:setRGBA(...)
   JumpingObject.setRGBA(self, ...)
   if self.sprite then
@@ -139,8 +140,8 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides AnimatedObject:update. 
---- Updates fibers.
+--- Overrides `AnimatedObject:update`. Updates fibers.
+-- @override update
 function CharacterBase:update(dt)
   if self.paused then
     return
@@ -175,7 +176,8 @@ end
 -- Collision
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Object:getHeight.
+--- Overrides `Object:getHeight`. 
+-- @override getHeight
 function CharacterBase:getHeight(dx, dy)
   dx, dy = dx or 0, dy or 0
   for i = 1, #self.collisionTiles do
@@ -249,8 +251,8 @@ end
 -- Persistent Data
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Interactable:getPersistenData.
---- Included position, direction and animation.
+--- Overrides `Interactable:getPersistentData`. Includes position, direction and animation.
+-- @override getPersistentData
 function CharacterBase:getPersistentData()
   local data = Interactable.getPersistentData(self)
   data.x = self.position.x

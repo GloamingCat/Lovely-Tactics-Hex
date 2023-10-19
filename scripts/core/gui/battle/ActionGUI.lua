@@ -5,7 +5,7 @@
 -- It does not have windows, and instead it implements its own "waitForResult" 
 -- and "checkInput" methods.
 -- Its result is the action time that the character spent.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod ActionGUI
 
 -- ================================================================================================
@@ -25,7 +25,8 @@ local ActionGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GUI:init.
+--- Overrides `GUI:init`. 
+-- @override init
 function ActionGUI:init(parent, input)
   self.name = 'Action GUI'
   self.slideMargin = 16
@@ -55,8 +56,8 @@ function ActionGUI:createScrollArrows()
   self.scrollArrows[4]:setXYZ(-(ScreenManager.width - self.slideMargin) / 2, 0)
   self.scrollArrows[3]:setXYZ(0, -(ScreenManager.height - self.slideMargin) / 2)
 end
---- Overrides GUI:destroy.
---- Destroys scroll arrows.
+--- Overrides `GUI:destroy`. Destroys scroll arrows.
+-- @override destroy
 function ActionGUI:destroy(...)
   GUI.destroy(self, ...)
   if self.scrollArrows then
@@ -131,7 +132,8 @@ end
 -- Input
 -- ------------------------------------------------------------------------------------------------
 
---- [COROUTINE] Overrides GUI:waitForResult.
+--- Overrides `GUI:waitForResult`. 
+-- @override waitForResult
 function ActionGUI:waitForResult()
   self.result = self.input.action:onActionGUI(self.input)
   while self.result == nil do

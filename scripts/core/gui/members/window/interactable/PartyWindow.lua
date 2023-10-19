@@ -3,7 +3,7 @@
 
 --- A button window that shows all the visibles members in the troop.
 -- It selected one of the member to manage with MemberGUI.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod PartyWindow
 
 -- ================================================================================================
@@ -31,14 +31,14 @@ function PartyWindow:init(parent, troop)
   self.troop = troop
   ListWindow.init(self, parent, list)
 end
---- Overrides GridWindow:setProperties.
---- Initialized tooltip.
+--- Overrides `GridWindow:setProperties`. Initialized tooltip.
+-- @override setProperties
 function PartyWindow:setProperties()
   ListWindow.setProperties(self)
   self.tooltipTerm = ''
 end
---- Overrides ListWindow:createListButton.
---- Creates a button for the given member.
+--- Overrides `ListWindow:createListButton`. Creates a button for the given member.
+-- @override createListButton
 -- @tparam Battler battler
 -- @treturn Button
 function PartyWindow:createListButton(battler)
@@ -65,7 +65,8 @@ function PartyWindow:refreshMembers()
     button:updatePosition(self.position)
   end
 end
---- Overrides Window:show.
+--- Overrides `Window:show`. 
+-- @override show
 function PartyWindow:show(...)
   if not self.open then
     self:refreshMembers()
@@ -78,15 +79,18 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override colCount
 function PartyWindow:colCount()
   return 1
 end
---- Overrides ListWindow:cellWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override cellWidth
 function PartyWindow:cellWidth()
   return 240
 end
---- Overrides GridWindow:cellHeight.
+--- Overrides `GridWindow:cellHeight`. 
+-- @override cellHeight
 function PartyWindow:cellHeight()
   return (ListWindow.cellHeight(self) * 2 + self:rowMargin() * 2)
 end

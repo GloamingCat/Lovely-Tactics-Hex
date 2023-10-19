@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Module that reads and counts the files and lines from the projects.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @module Stats
 
 -- ================================================================================================
@@ -55,7 +55,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Counts the number of code lines in a file, ignoring comments.
---- The file is assumed to be a compilable Lua file.
+-- The file is assumed to be a compilable Lua file.
 -- @treturn number Number of code lines.
 function stats.countCodeLines(path)
   local content = readFile(path)
@@ -68,7 +68,7 @@ function stats.countCodeLines(path)
   return count
 end
 --- Counts the number of data lines in a (assumed valid) file, ignoring comment.
---- The file is assumed to be a parsable JSON file.
+-- The file is assumed to be a parsable JSON file.
 -- @treturn number Number of data lines.
 function stats.countDataLines(path)
   local content = readFile(path)

@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Window that shows the list of save files to load.
--- ------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- @classmod LoadWindow
 
 -- ================================================================================================
@@ -17,12 +17,14 @@ local LoadWindow = class(SaveWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides SaveWindow:setProperties.
+--- Overrides `SaveWindow:setProperties`. 
+-- @override setProperties
 function LoadWindow:setProperties()
   SaveWindow.setProperties(self)
   self.tooltipTerm = 'loadSlot'
 end
---- Overrides SaveWindow:createSaveButton.
+--- Overrides `SaveWindow:createSaveButton`. 
+-- @override createSaveButton
 function LoadWindow:createSaveButton(file, name)
   if SaveManager:getHeader(file) then
     return SaveWindow.createSaveButton(self, file, name)
