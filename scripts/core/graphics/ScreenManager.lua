@@ -22,12 +22,12 @@ local ScreenManager = class()
 -- ------------------------------------------------------------------------------------------------
 
 --- Types of configuration for window scaling.
--- @enum ScalingTypes
+-- @enum ScalingType
 -- @field NONE Cannot scale at all.
 -- @field INT Scales only by integer scalars.
 -- @field RATIO Scales by real scalars, but do not change width:height ratio.
 -- @field ANY Scales freely.
-ScreenManager.ScalingTypes = {
+ScreenManager.ScalingType = {
   NONE = 0,
   INT = 1,
   RATIO = 2,
@@ -59,9 +59,9 @@ end
 --- Creates the canvas, after the screen size is set.
 function ScreenManager:initCanvas()
   if not GameManager:isMobile() then
-    self.scalingType = Config.screen.scaleType or self.ScalingTypes.INT
+    self.scalingType = Config.screen.scaleType or self.ScalingType.INT
   else
-    self.scalingType = Config.screen.mobileScaleType or self.ScalingTypes.RATIO
+    self.scalingType = Config.screen.mobileScaleType or self.ScalingType.RATIO
   end
   local w = lgraphics.getWidth()
   local h = lgraphics.getHeight()
@@ -128,15 +128,15 @@ end
 -- @tparam number y The scale factor in axis y.
 -- @treturn boolean True if the canvas size changed.
 function ScreenManager:setScale(x, y)
-  if self.scalingType == self.ScalingTypes.NONE then
+  if self.scalingType == self.ScalingType.NONE then
     return
-  elseif self.scalingType == self.ScalingTypes.INT then
+  elseif self.scalingType == self.ScalingType.INT then
     local m = min(x, y)
     if m > 1 then
       m = floor(m)
     end
     x, y = m, m
-  elseif self.scalingType == self.ScalingTypes.RATIO then
+  elseif self.scalingType == self.ScalingType.RATIO then
     local m = min(x, y)
     x, y = m, m
   end

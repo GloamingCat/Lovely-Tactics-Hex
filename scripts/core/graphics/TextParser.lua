@@ -2,16 +2,10 @@
 -- ================================================================================================
 
 --- Module to parse a rich text string to generate table of fragments.
--- 
--- Rich text codes:
---  * {i} -> set italic;
---  * {b} -> set bold;
---  * {u} -> set underlined;
---  * {+x} -> increases font size by x points;
---  * {-x} -> decreases font size by x points;
---  * {fx} -> set font (x must be a key in the global Fonts table);
---  * {cx} -> sets the color (x must be a key in the global Color table);
---  * {sx} -> shows an icon image (x must be a key in the Config.icons table).
+-- Rich text commands appear in the text in the form of `{C}`, where `C` is the rich text code.
+-- When a command requires a parameters, just write it right after the command code, e.g. `{+10}`
+-- or `{slove}`.
+-- See `TextParser.Code` for the list of codes.
 ---------------------------------------------------------------------------------------------------
 -- @module TextParser
 
@@ -22,6 +16,39 @@ local insert = table.insert
 local max = math.max
 
 local TextParser = {}
+
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Rich text codes.
+-- @enum Code
+-- @field i Toggles between italic and non-italic.
+-- @field b Toggles between bold and non-bold.
+-- @field u Toggles between underlined and not underlined.
+-- @field plusx Increases font text by `x` points (type it as `+x`).
+-- @field minusx Decreases font text by `x` points (type it as `-x`).
+-- @field fx Changes font to `x` (x must be a key in the global `Fonts` table).
+-- @field cx Changes text color to `x` (x must be a key in the global `Color` table).
+-- @field sx Shows sprite (dialogue-only). `x` must be a key in the `Config.icons` data table).
+-- @field ax Player an audio (dialogue-only). `x` must be a key in the `Config.sounds` data table).
+-- @field tx Waits for `x` frames before showing the rest of the text (dialogue-only).
+-- @field p Waits until the player presses a key (dialogue-only).
+TextParser.Code = {
+  i = "italic",
+  b = "bold",
+  u = "underline",
+  r = "reset",
+  ["+"] = "size",
+  ["-"] = "size",
+  f = "font",
+  c = "color",
+  s = "sprite",
+  a = "audio",
+  t = "time",
+  p = "input",
+  ["%"] = "var"
+}
 
 -- ------------------------------------------------------------------------------------------------
 -- Fragments
@@ -40,52 +67,9 @@ function TextParser.parse(text, plainText, fragments)
       TextParser.parseFragment(fragments, text)
       return fragments
     end
-		for textFragment, resourceKey in text:gmatch('([^{]*){(.-)}') do
+		for textFragment, code in text:gmatch('([^{]*){(.-)}') do
       TextParser.parseFragment(fragments, textFragment)
-      local t = resourceKey:sub(1, 1)
-      if t == 'i' then
-        insert(fragments, { type = 'italic' })
-      elseif t == 'b' then
-        insert(fragments, { type = 'bold' })
-      elseif t == 'r' then
-        insert(fragments, { type = 'reset' })
-      elseif t == 'u' then
-        insert(fragments, { type = 'underline' })
-      elseif t == 'f' then
-        insert(fragments, { type = 'font', value = Fonts[resourceKey:sub(2)] })
-      elseif t == '+' then
-        insert(fragments, { type = 'size', value = tonumber(resourceKey:sub(2)) })
-      elseif t == '-' then
-        insert(fragments, { type = 'size', value = -tonumber(resourceKey:sub(2)) })
-      elseif t == 'c' then
-        insert(fragments, { type = 'color', value = Color[resourceKey:sub(2)] })
-      elseif t == 's' then
-        insert(fragments, { type = 'sprite', value = Config.icons[resourceKey:sub(2)] })
-      elseif t == 'a' then
-        insert(fragments, { event = true, type = 'audio', value = Config.sounds[resourceKey:sub(2)] })
-      elseif t == 't' then
-        insert(fragments, { event = true, type = 'time', value = tonumber(resourceKey:sub(2)) })
-      elseif t == 'p' then
-        insert(fragments, { event = true, type = 'input' })
-      elseif t == '%' then
-        local key = resourceKey:sub(2)
-        local f
-        if vars[key] then
-          f = tostring(vars[key].value)
-        else
-          local value = util.table.access(Vocab, key)
-          assert(value, 'Text variable or term ' .. tostring(key) .. ' not found.')
-          f = tostring(value)
-        end
-        if plainText then
-          TextParser.parseFragment(fragments, f)
-        else
-          TextParser.parse(f, false, fragments)
-        end
-      else
-        TextParser.parseFragment(fragments, textFragment .. '{' .. resourceKey .. '}')
-        --error('Text command not identified: ' .. (t or 'nil'))
-      end
+      TextParser.parseCode(fragments, code, vars)
 		end
     text = text:match('[^}]+$')
     if text then
@@ -107,6 +91,56 @@ function TextParser.parseFragment(fragments, textFragment)
 		n = textFragment:find('\n', 1, true)
 	end
 	insert(fragments, textFragment)
+end
+--- Parse and insert new fragment(s) according to code.
+-- @tparam table fragments Array of parsed fragments.
+-- @tparam string code The next code inside braces.
+-- @tparam table vars The table of variables to be referenced in the text.
+function TextParser.parseCode(fragments, code, vars)
+  local t = code:sub(1, 1)
+  if not TextParser.Code[t] then
+    TextParser.parseFragment(fragments, '{' .. code .. '}')
+    --error('Text command not identified: ' .. (t or 'nil'))
+    return
+  end
+  if t == '%' then
+    local key = code:sub(2)
+    local f
+    if vars[key] then
+      f = tostring(vars[key].value)
+    else
+      local value = util.table.access(Vocab, key)
+      assert(value, 'Text variable or term ' .. tostring(key) .. ' not found.')
+      f = tostring(value)
+    end
+    if plainText then
+      TextParser.parseFragment(fragments, f)
+    else
+      TextParser.parse(f, false, fragments)
+    end
+    return
+  end
+  local fragment = { type = TextParser.Code[t] }
+  if t == 'f' then
+    fragment.value = Fonts[code:sub(2)]
+  elseif t == '+' then
+    fragment.value = tonumber(code:sub(2))
+  elseif t == '-' then
+    fragment.value = -tonumber(code:sub(2))
+  elseif t == 'c' then
+    fragment.value = Color[code:sub(2)]
+  elseif t == 's' then
+    fragment.value = Config.icons[code:sub(2)]
+  elseif t == 'a' then
+    fragment.value = Config.sounds[code:sub(2)]
+    fragment.event = true
+  elseif t == 't' then
+    fragment.value = tonumber(code:sub(2))
+    fragment.event = true
+  elseif t == 'p' then
+    fragment.event = true
+  end
+  insert(fragments, fragment)
 end
 
 -- ------------------------------------------------------------------------------------------------

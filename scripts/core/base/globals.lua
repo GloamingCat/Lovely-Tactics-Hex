@@ -2,10 +2,17 @@
 -- ================================================================================================
 
 --- Creates all global variables.
--- Global objects, tables and modules that era initialized here (in order):  
---  * util, `util.table` and `util.array` (modules);  
---  * `Database` (module);
---  * `Color`, `Fonts` and `KeyMap` (tables);
+-- Global objects, tables and modules that era initialized here (in order):
+-- 
+-- * `TableUtil` and `ArrayUtil` (modules);
+-- * `Database` (module);
+-- * `Color`, `Fonts` and `KeyMap` (tables);
+-- * `math.field` (`FieldMath`) module according to grid configuration;
+-- * Each plugin added in the project's configuration;
+-- * Event modules `GeneralEvents`, `GUIEvents`, `CharacterEvents`, `ScreenEvents`, `SoundEvents`, `PartyEvents`;
+-- * `GameManager`, `ResourceManager`, `AudioManager`, `InputManager`, `SaveManager`, 
+-- `ScreenManager`, `FieldManager`, `GUIManager`, `BattleManager`, `TroopManager`, `TurnManager`
+-- (singletons).
 ---------------------------------------------------------------------------------------------------
 -- @script Globals
 
@@ -15,6 +22,9 @@
 -- Util
 -- ------------------------------------------------------------------------------------------------
 
+--- Global table with utility modules.
+-- @field table Module `TableUtil`
+-- @field array Module `ArrayUtil`
 util = {}
 util.table = require('core/base/util/TableUtil')
 util.array = require('core/base/util/ArrayUtil')
@@ -23,6 +33,8 @@ util.array = require('core/base/util/ArrayUtil')
 -- Database
 -- ------------------------------------------------------------------------------------------------
 
+--- Global table with data from the project's data folder.
+-- @table Database
 Database = require('core/base/Database')
 Database.loadDataFiles()
 Database.loadConfigFiles()

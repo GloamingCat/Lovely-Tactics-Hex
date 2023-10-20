@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- The GUI that is open to choose an item from character's inventory.
+--- The window that is open to choose an item from character's inventory.
 ---------------------------------------------------------------------------------------------------
 -- @classmod ActionItemWindow
 

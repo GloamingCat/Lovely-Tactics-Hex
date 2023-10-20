@@ -2,9 +2,7 @@
 -- ================================================================================================
 
 --- The animation of knockback when a characters receives damage.
--- 
--- Animation parameters:
---  * The length of the step in pixels is defined by <step> tag. The default is 12.
+-- It moves the character backwards and then moves back to its tile.
 ---------------------------------------------------------------------------------------------------
 -- @classmod Knockback
 
@@ -32,6 +30,11 @@ local Knockback = class(Animation)
 --- Constructor.
 function Knockback:init(...)
   Animation.init(self, ...)
+  --- Contains the tags from the Animation data.
+  -- @table param
+  -- @tfield number step length of the step in pixels (optional, 12 by default).
+  local param = self.tags
+
   self.knockTime = 0
   if self.tags and self.tags.step then
     self.step = tonumber(self.tags.step) or defaultStep

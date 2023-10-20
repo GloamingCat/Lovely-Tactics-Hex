@@ -2,20 +2,23 @@
 -- ================================================================================================
 
 --- Checks whether the enemy was already defeated.
--- 
--- Parameters:
---  * <fieldID> The ID of the battle field.
---  * <gameOverCondition> The conditions to lose or win the battle:
---      * 'none' -> There is no gameover regardless of who wins;
---      * 'survive' -> The game is over if the player loses;
---      * 'kill' -> The game is over if the player loses or it's a draw.
 ---------------------------------------------------------------------------------------------------
 -- @event Battle
 
 -- ================================================================================================
 
 return function(script)
-  
+
+  --- Contains the tags from the Script's data.
+  -- @table param
+  -- @tfield number fieldID The ID of the battle field.
+  -- @tfield BattleManager.GameOverCondition|GeneralEvents.VictoryCondition gameOverCondition The condition to block the "Continue" option from
+  --  the Game Over screen (optional, "survive" by default).
+  -- @tfield boolean deactivate Flag to deactivate the character's script when its hidden.
+  -- @tfield boolean permanent Flag to permanently remove the character if the player wins.
+  -- @tfield number cooldown Time in frames to wait after the player escapes (optional, 180 by default).
+  local param = script.args
+
   -- Event 1: start battle
   script:addEvent(function()
     if FieldManager.playerInput and script:collidedWith('player') then
@@ -27,8 +30,8 @@ return function(script)
       script:startBattle {
         intro = true,
         escapeEnabled = true,
-        gameOverCondition = script.args.gameOverCondition or 'survive',
-        fieldID = tonumber(script.args.fieldID) or 0,
+        gameOverCondition = param.gameOverCondition or 'survive',
+        fieldID = param.fieldID or 0,
         fade = 60
       }
     else
@@ -40,15 +43,15 @@ return function(script)
   script:addEvent(function()
     local escaped = BattleManager:playerEscaped()
     if escaped then
-      script.char.cooldown = 180
+      script.char.cooldown = param.cooldown or 180
     else
-      script:hideChar { deactivate = script.args.deactivate, key = 'self' }
+      script:hideChar { deactivate = param.deactivate, key = 'self' }
     end
     script:finishBattle { fade = 60, wait = true }
     print(script.battleLog)
     if not escaped then
       script.char.vars.defeated = true
-      script:deleteChar { permanent = script.args.permanent, key = 'self' }
+      script:deleteChar { permanent = param.permanent, key = 'self' }
     end
   end)
   

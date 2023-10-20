@@ -1,8 +1,9 @@
 
 -- ================================================================================================
 
---- A rule that defines a decision in the battle turn, storing only data that are independent from 
--- the current battle state. Instead of storing state-dependent data, it generates in run time the
+--- A rule that decides a character's action in a battle turn.
+-- It doesn't have a persistent state of its own and only keeps data that are independent from th
+-- current battle state. Instead of storing state-dependent data, it generates in run time the
 -- ActionInput to be used according to the state.
 ---------------------------------------------------------------------------------------------------
 -- @classmod AIRule

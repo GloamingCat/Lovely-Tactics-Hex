@@ -1,7 +1,8 @@
 
 -- ================================================================================================
 
---- Controls battle flow (initializes troops, runs loop, checks victory and game over).
+--- Controls battle flow.
+-- It initializes troops, runs loop, checks victory and game over.
 -- Dependencies: `TurnManager`, `TroopManager`, `GameOverGUI`, `RewardGUI` `Inventory`, `TileGUI`
 ---------------------------------------------------------------------------------------------------
 -- @classmod BattleManager
@@ -31,7 +32,8 @@ BattleManager.GameOverCondition = {
   LOSE = 1,
   NOWIN = 2
 }
---- Default battle arguments.
+--- Battle arguments.
+-- @table BattleParams
 -- @tfield number fade The duration in frames of the fading transition. Default: `60`.
 -- @tfield boolean intro When false, skips the intro animation showing the parties. Default: `true`.
 -- @tfield GameOverCondition gameOverCondition The condition to block the "Continue" option from
@@ -40,7 +42,7 @@ BattleManager.GameOverCondition = {
 BattleManager.defaultParams = {
   fade = 60,
   intro = false,
-  gameOverCondition = BattleManager.NONE, 
+  gameOverCondition = BattleManager.GameOverCondition.NONE, 
   escapeEnabled = true
 }
 
@@ -186,23 +188,23 @@ end
 
 -- @treturn boolean Whether the player party won the battle.
 function BattleManager:playerWon()
-  return self.result >= TurnManager.Result.WIN 
+  return self.result >= TurnManager.BattleResult.WIN 
 end
 -- @treturn boolean Whether the player party escaped.
 function BattleManager:playerEscaped()
-  return self.result == TurnManager.Result.ESCAPE
+  return self.result == TurnManager.BattleResult.ESCAPE
 end
 -- @treturn boolean Whether the enemy party won battle.
 function BattleManager:enemyWon()
-  return self.result == TurnManager.Result.LOSE
+  return self.result == TurnManager.BattleResult.LOSE
 end
 -- @treturn boolean Whether the enemy party escaped.
 function BattleManager:enemyEscaped()
-  return self.result == TurnManager.Result.WALKOVER
+  return self.result == TurnManager.BattleResult.WALKOVER
 end
 -- @treturn boolean Whether both parties lost.
 function BattleManager:drawed()
-  return self.result == TurnManager.Result.DRAW
+  return self.result == TurnManager.BattleResult.DRAW
 end
 --- Checks if the player received a game over.
 function BattleManager:isGameOver()

@@ -1,8 +1,12 @@
 
 -- ================================================================================================
 
---- An Animation updates the quad of the associated Sprite, assuming that the texture of the sprite 
+--- A frame-by-frame animation associated with a Sprite. 
+-- It updates the quad of the associated Sprite, assuming that the texture of the sprite 
 -- is a spritesheet.
+-- @see BattleEffect
+-- @see KeyPoint
+-- @see LookAround
 ---------------------------------------------------------------------------------------------------
 -- @classmod Animation
 
@@ -305,22 +309,26 @@ end
 -- Transform
 -- ------------------------------------------------------------------------------------------------
 
---- Sets sprite's position.
-function Animation:setXYZ(...)
+--- Sets the sprite's pixel position the update's its position in the sprite list.
+-- @tparam number x The pixel x of the image.
+-- @tparam number y The pixel y of the image.
+-- @tparam number z The pixel depth of the image.
+function Animation:setXYZ(x, y, z)
   if self.sprite then
-    self.sprite:setXYZ(...)
+    self.sprite:setXYZ(x, y, z)
   end
 end
 --- Sets sprite's transformation.
-function Animation:setTransformation(...)
+function Animation:setTransformation(data)
   if self.sprite then
-    self.sprite:setTransformation(...)
+    self.sprite:setTransformation(data)
   end
 end
 --- Apply transformation to sprite.
-function Animation:applyTransformation(...)
+-- @tparam Affine.Transform data Transformation data.
+function Animation:applyTransformation(data)
   if self.sprite then
-    self.sprite:applyTransformation(...)
+    self.sprite:applyTransformation(data)
   end
 end
 

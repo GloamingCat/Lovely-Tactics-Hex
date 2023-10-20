@@ -1,10 +1,7 @@
 
 -- ================================================================================================
 
---- A window that contains "Confirm" and "Cancel" options.
--- Result codes:
---  * 0 -> cancel
---  * 1 -> confirm
+--- A window that contains "Confirm" and "Cancel" options. The "Cancel" button returns result `0`.
 ---------------------------------------------------------------------------------------------------
 -- @classmod ConfirmWindow
 

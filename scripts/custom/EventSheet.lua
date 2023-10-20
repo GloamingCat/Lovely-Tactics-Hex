@@ -2,15 +2,17 @@
 -- ================================================================================================
 
 --- Execute an event sheet from the database. 
--- 
--- Parameters:
---  * <sheet> is the ID or key of the sheet to be executed.
 ---------------------------------------------------------------------------------------------------
 -- @event EventSheet
 
 -- ================================================================================================
 
 return function (script)
+
+  --- Contains the tags from the Script's data.
+  -- @table param
+  -- @tfield number sheet The ID or key of the event sheet to be executed.
+  local param = script.args
   
   local data = Database.events[script.args.sheet]
   

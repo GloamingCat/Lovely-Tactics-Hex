@@ -1,10 +1,6 @@
 -- ================================================================================================
 
 --- NPC that walks towards the player.
--- 
--- Parameters:
---  * <id> ID of the item to be received.
---  * <count> Quantity (1 by default).
 ---------------------------------------------------------------------------------------------------
 -- @event Loot
 
@@ -14,9 +10,16 @@
 local rand = love.math.random
 
 return function(script)
-  local id = tonumber(script.args.id) or script.args.id
+
+  --- Contains the tags from the Script's data.
+  -- @table param
+  -- @tfield number id The ID of the item to be received.
+  -- @tfield number count The quantity of the item rewarded (optional, 1 by default).
+  local param = script.args
+
+  local id = tonumber(param.id) or param.id
   local item = Database.items[id]
-  local count = tonumber(script.args.count) or 1
+  local count = tonumber(param.count) or 1
   local name = "{%data.item." .. item.key .. "}"
   Config.variables["loot"].value = name
   Config.variables["lootq"].value = count

@@ -1,7 +1,13 @@
 
 -- ================================================================================================
 
---- An action that represents a full decision for the turn (a movement, a BattleAction and a target).
+--- Represents the decision for the turn (action and target).
+-- It contains the user character, an optional MoveAction, the decided BattleAction and the
+-- target ObjectTile.  
+-- Depending on the context, the information might change its type, e. g. `user` might be a
+-- `Battler` or a `Character` depending if it's called from the menu or from the battle field, as
+-- well as the `target`.
+-- @see BattleAction
 ---------------------------------------------------------------------------------------------------
 -- @classmod ActionInput
 
@@ -17,8 +23,9 @@ local ActionInput = class()
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam BattleAction action
--- @tparam Character user
+-- @tparam Character|Battler user
 -- @tparam ObjectTile target Action target (optional).
 -- @tparam ActionGUI GUI Aurrent ActionGUI, if any (optional).
 function ActionInput:init(action, user, target, GUI)
@@ -33,6 +40,7 @@ end
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
+--- Checks if the action can be executed in this turn.
 -- @treturn boolean
 function ActionInput:canExecute()
   return self.action and self.action:canExecute(self)
@@ -53,7 +61,9 @@ function ActionInput:executeMovement()
     self.moveResult = moveInput:execute()
   end
 end
--- @treturn ActionInput New input with BattleMoveAction with the same user to the moveTarget.
+--- Creates a new ActionInput with the same user, using its `moveAction` as the new 
+-- action and `moveTarget` as new target.
+-- @treturn ActionInput 
 function ActionInput:createMoveInput()
   local moveInput = ActionInput(self.moveAction, self.user, self.target, self.GUI)
   moveInput.skipAnimations = self.skipAnimations

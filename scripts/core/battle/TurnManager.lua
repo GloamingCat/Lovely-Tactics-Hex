@@ -25,13 +25,13 @@ local TurnManager = class()
 -- ------------------------------------------------------------------------------------------------
 
 --- Result codes.
--- @enum Result
+-- @enum BattleResult
 -- @field WIN Code for when player wins. Equals to 1.
 -- @field DRAW Code for when no one wins. Equals to 0.
 -- @field LOSE Code for when player loses. Equals to -1.
 -- @field WALKOVER Code for when the enemy escapes. Equals to 2.
 -- @field ESCAPE Code for when the player escapes. Equals to -2.
-TurnManager.Result = {
+TurnManager.BattleResult = {
   WIN = 1,
   DRAW = 0,
   LOSE = -1,
@@ -136,13 +136,13 @@ function TurnManager:runTurn(skipStart)
   if winner then
     if winner == TroopManager.playerParty then
       -- Player wins.
-      return self.Result.WIN, winner
+      return self.BattleResult.WIN, winner
     elseif winner == -1 then
       -- Draw.
-      return self.Result.DRAW, -1
+      return self.BattleResult.DRAW, -1
     else
       -- Enemy wins.
-      return self.Result.LOSE, winner
+      return self.BattleResult.LOSE, winner
     end
   end
   self:startTurn(skipStart)
@@ -156,9 +156,9 @@ function TurnManager:runTurn(skipStart)
     local winner = TroopManager:winnerParty()
     if winner then
       if self.party == TroopManager.playerParty then
-        return -2, winner
+        return self.BattleResult.ESCAPE, winner
       else
-        return 2, winner
+        return self.BattleResult.WALKOVER, winner
       end
     end
   end

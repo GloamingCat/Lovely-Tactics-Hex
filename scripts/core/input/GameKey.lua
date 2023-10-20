@@ -2,11 +2,7 @@
 -- ================================================================================================
 
 --- Entity that represents an input key.
--- Key state codes:
---  * -1 -> just released;
---  * 0 -> not pressing;
---  * 1 -> pressing;
---  * 2 -> just pressed.
+-- Used in `InputManager`.
 ---------------------------------------------------------------------------------------------------
 -- @classmod GameKey
 
@@ -15,12 +11,25 @@
 -- Alias
 local now = love.timer.getTime
 
--- Constants
-local defaultStartGap = 0.5
-local defaultRepreatGap = 0.05
-
 -- Class table.
 local GameKey = class()
+
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Key state codes.
+-- @enum State
+-- @field RELEASED Just released the button. Only lasts one frame.
+-- @field RESTING The key is not being pressed.
+-- @field PRESSING The key is being pressed.
+-- @field TRIGGERED Just pressed the button. Only lasts one frame.
+GameKey.State = {
+  RELEASED = -1,
+  RESTING = 0,
+  PRESSING = 1,
+  TRIGGERED = 2
+}
 
 -- ------------------------------------------------------------------------------------------------
 -- General
@@ -33,13 +42,15 @@ function GameKey:init()
   self.pressState = 0
   self.releaseTime = 0
   self.blocked = false
+  self.defaultRepeatGap = 0.05
+  self.defaultStartGap = 0.5
 end
 --- Updates state.
 function GameKey:update()
-  if self.pressState == 2 then
-    self.pressState = 1
-  elseif self.pressState == -1 then
-    self.pressState = 0
+  if self.pressState == self.State.TRIGGERED then
+    self.pressState = self.State.PRESSING
+  elseif self.pressState == self.State.RELEASED then
+    self.pressState = self.State.RESTING
   end
 end
 
@@ -51,12 +62,12 @@ end
 -- @tparam number gap Time distance in seconds between repeated triggers.
 -- @treturn boolean True if was triggered in the current frame, false otherwise.
 function GameKey:isTriggered(gap)
-  return self.pressState == 2
+  return self.pressState == self.State.TRIGGERED
 end
 --- Checks if player is pressing the key.
 -- @treturn boolean True if pressing, false otherwise.
 function GameKey:isPressing()
-  return self.pressState >= 1
+  return self.pressState >= self.State.PRESSING
 end
 --- Checks if player just released a key.
 -- @treturn boolean True if was released in the current frame, false otherwise.
@@ -64,23 +75,23 @@ function GameKey:isReleased(maxTime)
   if maxTime and now() - self.pressTime > maxTime then
     return false
   end
-  return self.pressState == -1
+  return self.pressState == self.State.RELEASED
 end
 --- Checks if player is pressing the key, considering a delay.
 -- @tparam number startGap The time in seconds between first true value and the second.
 -- @tparam number repeatGap The time in seconds between two true values starting from the second one.
 -- @treturn boolean True if triggering, false otherwise.
 function GameKey:isPressingGap(startGap, repeatGap)
-  if self.pressState <= 0 then
+  if self.pressState <= self.State.RESTING then
     return false
-  elseif self.pressState == 2 then
+  elseif self.pressState == self.State.TRIGGERED then
     return true
   end
   if repeatGap == 0 then
     return self:isPressing()
   end
-  startGap = startGap or defaultStartGap
-  repeatGap = repeatGap or defaultRepreatGap
+  startGap = startGap or self.defaultStartGap
+  repeatGap = repeatGap or self.defaultRepeatGap
   local time = now() - self.pressTime
   if time >= startGap then
     return time % repeatGap <= GameManager:frameTime()
@@ -106,13 +117,13 @@ function GameKey:onPress()
   if not self.blocked then
     self.previousPressTime = self.pressTime
     self.pressTime = now()
-    self.pressState = 2
+    self.pressState = self.State.TRIGGERED
   end
 end
 --- Called when this kay is released.
 function GameKey:onRelease()
   self.releaseTime = now()
-  self.pressState = -1
+  self.pressState = self.State.RELEASED
 end
 
 -- ------------------------------------------------------------------------------------------------

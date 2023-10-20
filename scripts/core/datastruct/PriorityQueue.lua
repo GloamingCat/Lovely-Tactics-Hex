@@ -116,7 +116,7 @@ end
 -- Convertion
 -- ------------------------------------------------------------------------------------------------
 
---- Transform this queue into a list of elements (does not include keys).
+--- Converts this queue to a list of elements (does not include keys).
 -- Empties the queue during the proccess.
 -- @treturn List List of arbitrary elements.
 function PriorityQueue:toList()
@@ -127,7 +127,7 @@ function PriorityQueue:toList()
   end
   return list
 end
---- Transform this queue into a list of elements (does not include keys).
+--- Converts this queue to a list of elements (does not include keys).
 -- @treturn List List of arbitrary elements.
 function PriorityQueue:asList()
   local list = List()

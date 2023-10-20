@@ -10,6 +10,21 @@
 local GeneralEvents = {}
 
 -- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- The conditions to enable the "Continue" button on the `GameOverWindow`.
+-- @enum VictoryCondition
+-- @field none Always enabled regardless of who wins.
+-- @field survive Enabled as long as the player is still alive.
+-- @field kill Never enabled.
+GeneralEvents.VictoryConditions = {
+  NONE = 'none',
+  SURVIVE = 'survive',
+  KILL = 'kill'
+}
+
+-- ------------------------------------------------------------------------------------------------
 -- Field
 -- ------------------------------------------------------------------------------------------------
 
@@ -46,17 +61,17 @@ end
 --  args.intro (boolean): Battle introduction animation.
 --  args.fade (boolean): Fade out/in effect when exiting/returning to previous field.
 --  args.escapeEnabled (boolean): True to enable the whole party to escape.
---  args.gameOverCondition (number): GameOver condition:
---  0 => no gameover, 1 => only when lost, 2 => lost or draw.
+--  args.gameOverCondition (number|string): Either a number value from `BattleManager.GameOverCondition`
+-- or a string value from `EventUtil.VictoryCondition`.
 function GeneralEvents:startBattle(args)
   args.gameOverCondition = args.gameOverCondition or 1
   if type(args.gameOverCondition) == 'string' then
     local conditionName = args.gameOverCondition:trim():lower()
-    if conditionName == 'survive' then
-      args.gameOverCondition = 2 -- Must win.
-    elseif conditionName == 'kill' then
+    if conditionName == self.VictoryConditions.SURVIVE then
+      args.gameOverCondition = BattleManager.GameOverCondition.NOWIN -- Must win.
+    elseif conditionName == self.VictoryConditions.KILL then
       args.gameOverCondition = 1 -- Must win or draw.
-    elseif conditionName == 'none' then
+    elseif conditionName == self.VictoryConditions.NONE then
       args.gameOverCondition = 0 -- Never gets a game over.
     else
       args.gameOverCondition = 1 -- Default.

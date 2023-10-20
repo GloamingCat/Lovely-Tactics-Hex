@@ -1,12 +1,7 @@
 
 -- ================================================================================================
 
---- An animation that randomly switches row.
--- 
--- Animation parameters:
---  * <freq> is the frequency (in frames) in which the row is switched. By default, it's the
---  duration of the animation.
---  * <rows> is an optional list of possible rows (by default, any row).
+--- An animation that randomly switches to another row at consistent intervals.
 ---------------------------------------------------------------------------------------------------
 -- @classmod LookAround
 
@@ -29,9 +24,17 @@ local LookAround = class(Animation)
 -- @override init
 function LookAround:init(...)
   Animation.init(self, ...)
+  --- Contains the tags from the Animation data.
+  -- @table param
+  -- @tfield number freq The duration (in frames) before switching to another row
+  --  (optional, uses the duration of the animation).
+  -- @tfield sring rows A string containing the possible rows, separated by space
+  --  (optional, all rows by default).
+  local param = self.tags
+  
   self.rows = {}
-  if self.tags and self.tags.rows then
-    local rows = string.split(self.tags.rows)
+  if param and param.rows then
+    local rows = string.split(param.rows)
     for i = 1, #rows do
       self.rows[i] = tonumber(rows[i])
     end
@@ -40,8 +43,8 @@ function LookAround:init(...)
       self.rows[i] = i - 1
     end
   end
-  if self.tags and self.tags.freq then
-    self.frequence = tonumber(self.tags.freq)
+  if param and param.freq then
+    self.frequence = tonumber(param.freq)
   else
     self.frequence = self.duration / 60
   end

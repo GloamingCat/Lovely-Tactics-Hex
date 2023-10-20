@@ -34,5 +34,10 @@ function HideRule:onSelect(user)
     self.input.target = queue:front()
   end
 end
+--- String identifier.
+-- @treturn string
+function HideRule:__tostring()
+  return 'HideRule: ' .. self.battler.key
+end
 
 return HideRule

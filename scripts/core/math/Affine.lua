@@ -18,7 +18,8 @@ local Affine = {}
 -- Tables
 -- ------------------------------------------------------------------------------------------------
 
---- A neutral transform table.
+--- A transform table.
+-- @table Transform
 -- @tfield number offsetX Center pixel x of the quad, relative to top left corner.
 -- @tfield number offsetY Center pixel y of the quad, relative to top left corner.
 -- @tfield number offsetDepth Value added to sprite's depth;
@@ -101,7 +102,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Creates a neutral transform. Optionally, applies a list of transformations.
--- @tparam table t Initial transform table. If nil, a neutral transform is used (optional).
+-- @tparam Transform t Initial transform table. If nil, a neutral transform is used (optional).
 -- @tparam array transformations Array of transformations with type and value (optional).
 function Affine.createTransform(t, transformations)
   t = t or {
@@ -141,9 +142,9 @@ function Affine.createTransform(t, transformations)
   return t
 end
 --- Combines two transform tables (order does not matter).
--- @tparam table t1 First transform table.
--- @tparam table t2 Second transform table.
--- @treturn table New transform table.
+-- @tparam Transform t1 First transform table.
+-- @tparam Transform t2 Second transform table.
+-- @treturn Transform New transform table.
 function Affine.combineTransforms(t1, t2)
   local t = {
     -- Space

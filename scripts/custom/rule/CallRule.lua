@@ -1,11 +1,7 @@
 
 -- ================================================================================================
 
---- The rule for an AI that removes character from battle field.
--- 
--- Parameters:
---  * The <member> as a boolean formula to only consider the members that satifies it. 
---  * Set <reset> as true to discard any saved changes on the called member.
+--- The rule for an AI that calls another character to the battle field.
 ---------------------------------------------------------------------------------------------------
 -- @classmod CallRule
 
@@ -27,8 +23,13 @@ local CallRule = class(AIRule)
 -- @param ...  AIRule constructor arguments.
 function CallRule:init(...)
   AIRule.init(self, ...)
-  if self.tags and self.tags.member then
-    self.memberCondition = loadformula('not (' .. self.tags.member .. ')', 'member')
+  --- Contains the tags from the Battler's rules data.
+  -- @table param
+  -- @tfield string member A boolean formula to only consider the members that satifies it. 
+  -- @tfield boolean reset Flag to discard any saved changes on the called member.
+  local param = self.tags
+  if param and param.member then
+    self.memberCondition = loadformula('not (' .. param.member .. ')', 'member')
   end
 end
 --- Overrides `AIRule:onSelect`. 
@@ -59,7 +60,8 @@ function CallRule:onSelect(user)
     end
   end
 end
--- @treturn string String identifier.
+--- String identifier.
+-- @treturn string
 function CallRule:__tostring()
   return 'CallRule: ' .. self.battler.key
 end

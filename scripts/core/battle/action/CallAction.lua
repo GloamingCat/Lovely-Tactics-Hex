@@ -1,7 +1,8 @@
 
 -- ================================================================================================
 
---- The BattleAction that is executed when players chooses the "Call Ally" button.
+--- Calls an ally from the troop's backup in the battle field.
+-- It is executed when players chooses the "Call Ally" button, and also from the `CallRule`.
 ---------------------------------------------------------------------------------------------------
 -- @classmod CallAction
 

@@ -1,8 +1,8 @@
 
 -- ================================================================================================
 
---- A window that implements common methods for battle windows that start an action execution 
--- (TurnWindow, ActionSkillWindow, ActionItemWindow and IntroWindow).
+--- Parent window for the classes that execute some `BattleAction`.
+-- It implements common methods for starting an action execution.
 -- Its result is the result data returned by the action.
 ---------------------------------------------------------------------------------------------------
 -- @classmod ActionWindow

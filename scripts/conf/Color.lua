@@ -7,6 +7,20 @@
 
 -- ================================================================================================
 
+
+--- Color RGBA format.
+-- @table RGBA
+-- @tfield number red Red color component (from 0 to 1).
+-- @tfield number green Green color component (from 0 to 1).
+-- @tfield number blue Blue color component (from 0 to 1).
+-- @tfield number alpha Alpha color component (from 0 to 1).
+local RGBA = {
+  red = 0,
+  green = 0,
+  blue = 0,
+  alpha = 0
+}
+
 local black = {red = 0, green = 0, blue = 0, alpha = 1}
 local red = {red = 1, green = 0, blue = 0, alpha = 1}
 local green = {red = 0, green = 1, blue = 0, alpha = 1}

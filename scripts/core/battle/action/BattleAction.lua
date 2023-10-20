@@ -1,11 +1,13 @@
 
 -- ================================================================================================
 
---- A class that holds the behavior of a battle action: what happens when the players first chooses 
--- the action, or if that action need grid selecting, if so, what tiles are selectable, etc.
--- Examples of battle actions: Move Action (needs grid and only blue tiles are selectables), Escape 
--- Action (doesn't need grid, and instead opens a confirm window), Call Action (only team tiles), 
--- etc. 
+--- Defines the behavior of a battle action.
+-- It defines what happens when the players first chooses the action, or if that action need grid
+-- selecting, if so, what tiles are selectable, etc.  
+-- Examples of battle actions: `MoveAction` (needs grid and only blue tiles are selectables),
+-- `EscapeAction` (doesn't need grid, and instead opens a confirm window), `CallAction` (only used
+-- on team tiles), etc.  
+-- Doesn't have any persistent data of its own.
 ---------------------------------------------------------------------------------------------------
 -- @classmod BattleAction
 

@@ -2,10 +2,6 @@
 -- ================================================================================================
 
 --- A sprite that points in a given direction (vertical or horizontal).
--- 
--- Animation parameters:
---  * The amount of pixels moved in the horizontal direction is set by <dx>.
---  * The amount of pixels moved in the vertical direction is set by <dy>.
 ---------------------------------------------------------------------------------------------------
 -- @classmod Pointer
 
@@ -28,10 +24,17 @@ local Pointer = class(Animation)
 -- @param ...  parameters from Animation:init.
 function Pointer:init(...)
   Animation.init(self, ...)
+  
+  --- Contains the tags from the Animation data.
+  -- @table param
+  -- @tfield number dx The amount of pixels moved in the horizontal direction.
+  -- @tfield number dy The amount of pixels moved in the vertical direction.
+  local param = self.tags
+
   local centerx = self.sprite.offsetX
   local centery = self.sprite.offsetY
-  local dx = self.tags and tonumber(self.tags.dx) or 0
-  local dy = self.tags and tonumber(self.tags.dy) or 0
+  local dx = param and tonumber(param.dx) or 0
+  local dy = param and tonumber(param.dy) or 0
   self.maxx = centerx + dx
   self.maxy = centery + dy
   self.minx = centerx - dx

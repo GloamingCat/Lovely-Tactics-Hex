@@ -1,10 +1,6 @@
 -- ================================================================================================
 
 --- NPC that walks around while it is not blocking the player.
--- 
--- Parameters:
---  * <pause> Pause in frames between each step.
---  * <pauseVar> Variation of the pause in frames.
 ---------------------------------------------------------------------------------------------------
 -- @event Wanderer
 
@@ -14,9 +10,16 @@
 local rand = love.math.random
 
 return function(script)
+
+  --- Contains the tags from the Script's data.
+  -- @table param
+  -- @tfield number Pause time in frames between each step.
+  -- @tfield number Variation of the pause in frames (optional, 0 by default).
+  local param = script.args
+
   script.char.approachToInteract = false
-  local pause = tonumber(script.args.pause) or 60
-  local pauseVar = tonumber(script.args.pauseVar) or 0
+  local pause = tonumber(param.pause) or 60
+  local pauseVar = tonumber(param.pauseVar) or 0
   while true do
     Fiber:wait()
     if not (FieldManager.player:isBusy() or script.char.interacting) then

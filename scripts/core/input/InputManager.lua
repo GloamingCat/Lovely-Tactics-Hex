@@ -29,6 +29,21 @@ local textControl = {
 local InputManager = class()
 
 -- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- The string codes for the GameKeys associated with each mouse button.
+-- @enum MouseButton
+-- @field LEFT Left mouse button. Equals to `"mouse1"`.
+-- @field RIGHT Right mouse button. Equals to `"mouse2"`.
+-- @field MIDDLE Middle mouse button. Equals to `"mouse3"`.
+InputManager.MouseButton = {
+  LEFT = 'mouse1',
+  RIGHT = 'mouse2',
+  MIDDLE = 'mouse3'
+}
+
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 

@@ -124,7 +124,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 -- Sets sprite's offset, scale, rotation and color
--- @tparam table data Transformation data.
+-- @tparam Affine.Transform data Transformation data.
 function Sprite:setTransformation(data)
   self:setOffset(data.offsetX, data.offsetY, data.offsetDepth)
   self:setScale(data.scaleX / 100, data.scaleY / 100)
@@ -133,7 +133,7 @@ function Sprite:setTransformation(data)
   self:setHSV(data.hue / 360, data.saturation / 100, data.brightness / 100)
 end
 --- Merges sprite's current transformation with a new one.
--- @tparam table data Transformation data, using the format of `Affine.neutralTransform`.
+-- @tparam Affine.Transform data Transformation data.
 function Sprite:applyTransformation(data)
   self:setOffset(data.offsetX + self.offsetX, self.offsetY + data.offsetY, 
     data.offsetDepth + self.offsetDepth)
