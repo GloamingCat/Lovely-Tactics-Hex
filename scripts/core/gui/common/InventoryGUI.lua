@@ -21,7 +21,7 @@ local InventoryGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:init`. 
--- @override init
+-- @override
 function InventoryGUI:init(parent, troop)
   self.name = 'Inventory GUI'
   self.troop = troop
@@ -29,7 +29,7 @@ function InventoryGUI:init(parent, troop)
   GUI.init(self, parent)
 end
 --- Overrides `GUI:createWindows`. 
--- @override createWindows
+-- @override
 function InventoryGUI:createWindows()
   self:createItemWindow()
   self:createDescriptionWindow()

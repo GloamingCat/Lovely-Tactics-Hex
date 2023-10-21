@@ -16,9 +16,14 @@
 local Highlight = require('core/gui/widget/Highlight')
 local WindowCursor = require('core/gui/widget/WindowCursor')
 
--- Arguments
+-- Rewrites
+local WindowCursor_setVisible = WindowCursor.setVisible
+local Highlight_setVisible = Highlight.setVisible
+
+-- Parameters
 local cursor = args.cursor or 'list'
 local hl = args.highlight or 'hide'
+
 
 -- ------------------------------------------------------------------------------------------------
 -- Tables
@@ -40,8 +45,7 @@ local Visibility = {
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `WindowCursor:setVisible`. Hide window cursor.
--- @override WindowCursor_setVisible
-local WindowCursor_setVisible = WindowCursor.setVisible
+-- @rewrite
 function WindowCursor:setVisible(value)
   if cursor == 'hide' then
     value = value and InputManager:hasKeyboard()
@@ -58,8 +62,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Highlight:setVisible`. Hide button highlight.
--- @override Highlight_setVisible
-local Highlight_setVisible = Highlight.setVisible
+-- @rewrite
 function Highlight:setVisible(value)
   if hl == 'hide' then
     value = value and InputManager:hasKeyboard()

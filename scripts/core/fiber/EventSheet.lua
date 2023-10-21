@@ -106,7 +106,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Implements `Fiber:execute`. Runs the script commands.
--- @implement execute
+-- @implement
 function EventSheet:execute()
   self:setUp()
   self:commands()
@@ -155,7 +155,7 @@ function EventSheet:clear()
   end
 end
 --- Overrides `Fiber:finish`. 
--- @override finish
+-- @override
 function EventSheet:finish()
   Fiber.finish(self)
   self:clear()

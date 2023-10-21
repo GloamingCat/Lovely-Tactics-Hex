@@ -25,7 +25,7 @@ local RecruitGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:init`. 
--- @override init
+-- @override
 -- @tparam GUI parent Parent GUI.
 -- @tparam table chars Array of characters to be hired/dismissed.
 -- @tparam Troop troop The troop recruiting new battlers.
@@ -35,7 +35,7 @@ function RecruitGUI:init(parent, chars, troop)
   GUI.init(self, parent)
 end
 --- Implements `GUI:createWindow`.
--- @implement createWindows
+-- @implement
 function RecruitGUI:createWindows()
   self:createCommandWindow()
   self:createGoldWindow()
@@ -106,7 +106,7 @@ function RecruitGUI:hideRecruitGUI()
   self.commandWindow:activate()
 end
 --- Overrides `GUI:hide`. Saves troop modifications.
--- @override hide
+-- @override
 function RecruitGUI:hide(...)
   TroopManager:saveTroop(self.troop, true)
   GUI.hide(self, ...)

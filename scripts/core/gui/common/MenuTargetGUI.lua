@@ -20,7 +20,7 @@ local MenuTargetGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:init`. 
--- @override init
+-- @override
 function MenuTargetGUI:init(parent, troop, input)
   self.name = 'Menu Target GUI'
   self.troop = troop
@@ -28,7 +28,7 @@ function MenuTargetGUI:init(parent, troop, input)
   GUI.init(self, parent)
 end
 --- Overrides `GUI:createWindows`. 
--- @override createWindows
+-- @override
 function MenuTargetGUI:createWindows()
   self.partyWindow = MenuTargetWindow(self, self.troop)
   if self.position then

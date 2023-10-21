@@ -34,7 +34,7 @@ function Bar:init(topLeft, width, height, value)
   self:setValue(value or 1)
 end
 --- Overrides `Component:createContent`. 
--- @override createContent
+-- @override
 function Bar:createContent(width, height)
   local pos = Vector(width / 2, height / 2, 1)
   pos:add(self.position)
@@ -60,7 +60,7 @@ function Bar:setValue(value)
   self.bar.sprite:setScale(value * self.width / w, self.height / h)
 end
 --- Overrides `Component:updatePosition`. 
--- @override updatePosition
+-- @override
 function Bar:updatePosition(pos)
   self.bar.sprite:setXYZ(round(pos.x + self.position.x + self:padding()),
     round(pos.y + self.position.y + self:padding()),

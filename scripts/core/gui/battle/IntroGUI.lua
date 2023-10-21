@@ -23,14 +23,14 @@ local IntroGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:init`. 
--- @override init
+-- @override
 function IntroGUI:init(parent)
   self.name = 'Intro GUI'
   self.troop = TroopManager:getPlayerTroop()
   GUI.init(self, parent)
 end
 --- Implements `GUI:createWindows`.
--- @implement createWindows
+-- @implement
 function IntroGUI:createWindows()
   self:createMainWindow()
   self:createMembersWindow()

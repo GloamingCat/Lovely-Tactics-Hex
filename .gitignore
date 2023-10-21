@@ -4,6 +4,7 @@ web/*
 *.love
 *.zip
 ignore/
-doc/
+doc/**/*.html
+doc/**/*.css
 desktop.ini
 profi*.txt

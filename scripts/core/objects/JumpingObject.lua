@@ -157,7 +157,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `AnimatedObject:update`. 
--- @override update
+-- @override
 function JumpingObject:update(dt)
   WalkingObject.update(self, dt)
   if not self.paused then
@@ -165,7 +165,7 @@ function JumpingObject:update(dt)
   end
 end
 --- Overrides `Object:setXYZ`. 
--- @override setXYZ
+-- @override
 function JumpingObject:setXYZ(...)
   WalkingObject.setXYZ(self, ...)
   local y = self.position.y - (self.jumpHeight or 0)

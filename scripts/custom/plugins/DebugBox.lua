@@ -17,12 +17,15 @@
 local Player = require('core/objects/Player')
 local TextInputGUI = require('core/gui/common/TextInputGUI')
 
+-- Rewrites
+local Player_checkFieldInput = Player.checkFieldInput
+
 -- Parameters
 local key = args.key
 local mod = args.mod
 
 -- ------------------------------------------------------------------------------------------------
--- Shortcuts
+-- Auxiliary
 -- ------------------------------------------------------------------------------------------------
 
 local function debugEvent(funcName, ...)
@@ -42,8 +45,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Player:checkFieldInput`. Checks for the debug key input.
--- @override Player.checkFieldInput
-local Player_checkFieldInput = Player.checkFieldInput
+-- @rewrite
 function Player:checkFieldInput()
   if InputManager:getKey(key):isTriggered() and (not mod or InputManager:getKey(mod):isPressing()) then
     self:openDebugGUI()

@@ -42,7 +42,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Movable:updateMovement`. 
--- @override updateMovement
+-- @override
 function FieldCamera:updateMovement(dt)
   if self.focusObject then
     self:setXYZ(self.focusObject.position.x, self.focusObject.position.y)
@@ -56,7 +56,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Movable:setXYZ`. 
--- @override setXYZ
+-- @override
 function FieldCamera:setXYZ(x, y, ...)
   Renderer.setXYZ(self, x, y, ...)
   for _, img in pairs(self.images) do

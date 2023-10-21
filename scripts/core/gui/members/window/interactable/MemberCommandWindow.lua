@@ -93,12 +93,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function MemberCommandWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function MemberCommandWindow:rowCount()
   return 2
 end

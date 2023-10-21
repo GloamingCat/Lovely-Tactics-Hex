@@ -18,13 +18,21 @@
 local Animation = require('core/graphics/Animation')
 local List = require('core/datastruct/List')
 
+-- Rewrites
+local Animation_init = Animation.init
+local Animation_callEvents = Animation.callEvents
+local Animation_update = Animation.update
+local Animation_destroy = Animation.destroy
+local Animation_reset = Animation.reset
+local Animation_setOneshot = Animation.setOneshot
+local Animation_setXYZ = Animation.setXYZ
+
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Animation:init`.
--- @override Animation_init
-local Animation_init = Animation.init
+-- @rewrite
 function Animation:init(...)
   Animation_init(self, ...)
   if self.tags and self.tags.child then
@@ -50,8 +58,7 @@ function Animation:addChild(anim)
   self.children:add(anim)
 end
 --- Rewrites `Animation:callEvents`.
--- @override Animation_callEvents
-local Animation_callEvents = Animation.callEvents
+-- @rewrite
 function Animation:callEvents()
   if self.childQueue then
     for _, c in pairs(self.childQueue) do
@@ -68,8 +75,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Animation:update`.
--- @override Animation_update
-local Animation_update = Animation.update
+-- @rewrite
 function Animation:update(dt)
   Animation_update(self, dt)
   if self.paused or not self.duration or not self.timing or not self.children then
@@ -87,8 +93,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Animation:destroy`.
--- @override Animation_destroy
-local Animation_destroy = Animation.destroy
+-- @rewrite
 function Animation:destroy()
   Animation_destroy(self)
   if self.children then
@@ -98,8 +103,7 @@ function Animation:destroy()
   end
 end
 --- Rewrites `Animation:reset`.
--- @override Animation_reset
-local Animation_reset = Animation.reset
+-- @rewrite
 function Animation:reset()
   Animation_reset(self)
   if self.children then
@@ -109,8 +113,7 @@ function Animation:reset()
   end
 end
 --- Rewrites `Animation:setOneshot`.
--- @override Animation_setOneshot
-local Animation_setOneshot = Animation.setOneshot
+-- @rewrite
 function Animation:setOneshot(value)
   Animation_setOneshot(self, value)
   if self.children then
@@ -125,8 +128,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Animation:setXYZ`.
--- @override Animation_setXYZ
-local Animation_setXYZ = Animation.setXYZ
+-- @rewrite
 function Animation:setXYZ(...)
   Animation_setXYZ(self, ...)
   if self.children then

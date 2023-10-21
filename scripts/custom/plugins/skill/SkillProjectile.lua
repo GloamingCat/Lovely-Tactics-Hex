@@ -20,6 +20,10 @@ local nextCoordDir = math.field.nextCoordDir
 local pixel2Tile = math.field.pixel2Tile
 local tile2Pixel = math.field.tile2Pixel
 
+-- Rewrites
+local Animation_update = Animation.update
+local Character_castSkill = Character.castSkill
+
 -- ------------------------------------------------------------------------------------------------
 -- Animation
 -- ------------------------------------------------------------------------------------------------
@@ -70,8 +74,7 @@ function Animation:throw(user, target, speed, wait)
   return time
 end
 --- Rewrites `Animation:update`.
--- @override update
-local Animation_update = Animation.update
+-- @rewrite
 function Animation:update(dt)
   Animation_update(self, dt)
   if self.moveSpeed then
@@ -85,8 +88,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Character:castSkill`.
--- @override castSkill
-local Character_castSkill = Character.castSkill
+-- @rewrite
 function Character:castSkill(skill, dir, target)
   local minTime = Character_castSkill(self, skill, dir, target)
   -- Projectile

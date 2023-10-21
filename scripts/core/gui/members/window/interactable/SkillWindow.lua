@@ -29,7 +29,7 @@ function SkillWindow:init(gui)
   ListWindow.init(self, gui, self.member:getSkillList())
 end
 --- Overrides `ListWindow:createWidgets`. 
--- @override createWidgets
+-- @override
 function SkillWindow:createWidgets()
   if #self.list > 0 then
     ListWindow.createWidgets(self)
@@ -141,17 +141,17 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `ListWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function SkillWindow:cellWidth()
   return 200
 end
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function SkillWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function SkillWindow:rowCount()
   return self.visibleRowCount
 end

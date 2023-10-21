@@ -15,6 +15,10 @@
 -- Imports
 local ScreenManager = require('core/graphics/ScreenManager')
 
+-- Rewrites
+local ScreenManager_onFocus = ScreenManager.onFocus
+local ScreenManager_onResize = ScreenManager.onResize
+
 -- Parameters
 local pauseAudio = args.pauseAudio
 local fullscreen = args.fullscreen
@@ -24,8 +28,7 @@ local fullscreen = args.fullscreen
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `ScreenManager:onFocus`. Pause when window loses focus.
--- @override ScreenManager_onFocus
-local ScreenManager_onFocus = ScreenManager.onFocus
+-- @rewrite
 function ScreenManager:onFocus(f)
   ScreenManager_onFocus(self, f)
   self.focus = f
@@ -35,7 +38,6 @@ function ScreenManager:onFocus(f)
   GameManager:setPaused(not f, pauseAudio, true)
 end
 --- Pause if on mobile and minimized.
-local ScreenManager_onResize = ScreenManager.onResize
 function ScreenManager:onResize(...)
   ScreenManager_onResize(self, ...)
   if not GameManager:isMobile() then

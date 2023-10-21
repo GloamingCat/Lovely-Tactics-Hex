@@ -24,7 +24,7 @@ local GameOverGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Implements `GUI:createWindows`.
--- @implement createWindows
+-- @implement
 function GameOverGUI:createWindows()
   self.name = 'Game Over GUI'
   self:createTopText()
@@ -51,7 +51,7 @@ function GameOverGUI:createMainWindow()
   self.mainWindow = window
 end
 --- Overrides `GUI:destroy`. Destroys top text.
--- @override destroy
+-- @override
 function GameOverGUI:destroy(...)
   GUI.destroy(self, ...)
   self.topText:destroy()

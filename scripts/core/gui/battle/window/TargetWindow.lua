@@ -23,7 +23,7 @@ local TargetWindow = class(Window)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:init`. 
--- @override init
+-- @override
 function TargetWindow:init(GUI)
   local w = 120
   local h = self:computeHeight()

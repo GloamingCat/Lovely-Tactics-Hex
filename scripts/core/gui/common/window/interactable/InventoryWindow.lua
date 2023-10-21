@@ -135,12 +135,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `ListWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function InventoryWindow:cellWidth()
   return 200
 end
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function InventoryWindow:colCount()
   return 1
 end

@@ -25,7 +25,7 @@ local SaveInfo = class(Component)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Component:createContent`. 
--- @override createContent
+-- @override
 function SaveInfo:createContent(w, h)
   local margin = 4
   local x, y, z = 2, 0, -2

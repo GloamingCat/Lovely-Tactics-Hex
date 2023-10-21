@@ -26,13 +26,13 @@ local BattleGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:init`. 
--- @override init
+-- @override
 function BattleGUI:init(...)
   self.troop = TurnManager:currentTroop()
   GUI.init(self, ...)
 end
 --- Implements `GUI:createWindows`.
--- @implement createWindows
+-- @implement
 function BattleGUI:createWindows()
   self.name = 'Battle GUI'
   self:createTurnWindow()
@@ -125,7 +125,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:show`. 
--- @override show
+-- @override
 function BattleGUI:show(...)
   FieldManager.renderer:moveToObject(TurnManager:currentCharacter())
   GUI.show(self, ...)

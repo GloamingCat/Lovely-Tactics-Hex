@@ -26,7 +26,7 @@ local EquipBonusWindow = class(Window)
 -- -------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:init`. 
--- @override init
+-- @override
 -- @tparam GUI parent Parent GUI.
 -- @tparam number w Window's width in pixels.
 -- @tparam number h Window's height in pixels.

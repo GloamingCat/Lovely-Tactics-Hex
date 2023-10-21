@@ -23,14 +23,14 @@ local EquipGUI = class(MemberGUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:init`. 
--- @override init
+-- @override
 function EquipGUI:init(...)
   self.name = 'Equip GUI'
   MemberGUI.init(self, ...)
   self.inventory = self.troop.inventory
 end
 --- Overrides `GUI:createWindows`. 
--- @override createWindows
+-- @override
 function EquipGUI:createWindows()
   self:createInfoWindow()
   self:createSlotWindow()
@@ -76,7 +76,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `MemberGUI:refreshMember`. Refreshes current open windows to match the new selected member.
--- @override refreshMember
+-- @override
 function EquipGUI:refreshMember(member)
   member = member or self:currentMember()
   MemberGUI.refreshMember(self, member)

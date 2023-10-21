@@ -21,7 +21,7 @@ local GoldWindow = class(Window)
 -- ------------------------------------------------------------------------------------------------
 
 --- Implements `Window:createContent`.
--- @implement createContent
+-- @implement
 function GoldWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local icon = Config.icons.money

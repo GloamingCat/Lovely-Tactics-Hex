@@ -20,7 +20,7 @@ local CallGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:init`. 
--- @override init
+-- @override
 -- @tparam GUI parent Parent GUI.
 -- @tparam Troop troop Current troop.
 -- @tparam boolean allMembers If false will include only backup members.
@@ -31,7 +31,7 @@ function CallGUI:init(parent, troop, allMembers)
 end
 --- Implements `GUI:createWindows`. Creates the CallWindow with the list of members, and TargetWindow
 -- with selected member's info. 
--- @implement createWindows
+-- @implement
 function CallGUI:createWindows()
   self.name = 'Call GUI'
   -- Info window

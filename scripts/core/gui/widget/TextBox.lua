@@ -37,7 +37,7 @@ function TextBox:init(window, initStr, pos, width)
   SimpleText.init(self, initStr .. '{u} {u}', pos, width, 'left', Fonts.gui_button)
 end
 --- Overrides `SimpleText:createContent`. Creates highlight.
--- @override createContent
+-- @override
 function TextBox:createContent(...)
   SimpleText.createContent(self, ...)
   local width = self.window.width - self.window:colMargin() / 2 - 4
@@ -77,7 +77,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `SimpleText:updatePosition`. Updates highlight position.
--- @override updatePosition
+-- @override
 function TextBox:updatePosition(...)
   if self.highlight then
     local my = self.window:rowMargin() / 2 + 4

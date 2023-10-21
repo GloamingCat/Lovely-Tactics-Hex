@@ -18,7 +18,7 @@ local ItemAction = class(SkillAction)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `SkillAction:init`. Adds item effects.
--- @override init
+-- @override
 -- @tparam number skillID Item's skill ID.
 -- @tparam table item Item data.
 function ItemAction:init(skillID, item)
@@ -35,13 +35,13 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `SkillAction:canExecute`. 
--- @override canExecute
+-- @override
 function ItemAction:canExecute(input)
   return input.user.battler.troop.inventory:getCount(self.item.id) > 0 and 
     SkillAction.canExecute(self, input)
 end
 --- Overrides `SkillAction:battleUse`. 
--- @override battleUse
+-- @override
 function ItemAction:battleUse(input)
   if self.item.consume then
     input.user.battler.troop.inventory:removeItem(self.item.id)
@@ -49,7 +49,7 @@ function ItemAction:battleUse(input)
   return SkillAction.battleUse(self, input)
 end
 --- Overrides `SkillAction:menuUse`. 
--- @override menuUse
+-- @override
 function ItemAction:menuUse(input)
   if self.item.consume then
     input.user.troop.inventory:removeItem(self.item.id)

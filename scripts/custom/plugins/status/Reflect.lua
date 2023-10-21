@@ -13,6 +13,9 @@ local Battler = require('core/battle/battler/Battler')
 local SkillAction = require('core/battle/action/SkillAction')
 local BattleAnimations = require('core/battle/BattleAnimations')
 
+-- Rewrites
+local SkillAction_singleTargetEffect = SkillAction.singleTargetEffect
+
 -- ------------------------------------------------------------------------------------------------
 -- Tables
 -- ------------------------------------------------------------------------------------------------
@@ -55,8 +58,7 @@ local selfReflect = args.selfReflect or SelfReflection.NONE
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `SkillAction:singleTargetEffect`.
--- @override SkillAction_singleTargetEffect
-local SkillAction_singleTargetEffect = SkillAction.singleTargetEffect
+-- @rewrite
 function SkillAction:singleTargetEffect(results, input, target, originTile)
   local minTime = 0
   if originTile and self.tags.reflectable and (#results.points > 0 or #results.status > 0) and

@@ -18,7 +18,7 @@ local AttackRule = class(SkillRule)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `SkillRule:onSelect`. 
--- @override onSelect
+-- @override
 function AttackRule:onSelect(...)
   SkillRule.onSelect(self, ...)
   -- Find target with higher chance of dying

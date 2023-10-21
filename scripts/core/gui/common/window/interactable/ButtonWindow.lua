@@ -38,7 +38,7 @@ function ButtonWindow:init(parent, names, align, ...)
   self.active = true
 end
 --- Implements `GridWindow:createWidgets`. Creates a button for each choice.
--- @implement createWidgets
+-- @implement
 function ButtonWindow:createWidgets()
   for _, name in ipairs(self.buttonNames) do
     local button = Button:fromKey(self, name)
@@ -55,7 +55,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:update`. Opens or closes automatically depending if the player is using the mouse or not.
--- @override update
+-- @override
 function ButtonWindow:update(dt)
   if self.GUI.open and self.active then
     self:refreshLastOpen()
@@ -75,12 +75,12 @@ function ButtonWindow:update(dt)
   GridWindow.update(self, dt)
 end
 --- Implements `GridWindow:buttonEnabled`. Disables when window is inactive.
--- @implement buttonEnabled
+-- @implement
 function ButtonWindow:buttonEnabled(button)
   return self.active
 end
 --- Overrides `Window:checkInput`. Ignores keyboard input.
--- @override checkInput
+-- @override
 function ButtonWindow:checkInput()
   if not self.open then
     return
@@ -122,17 +122,17 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function ButtonWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function ButtonWindow:rowCount()
   return #self.buttonNames
 end
 --- Overrides `GridWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function ButtonWindow:cellWidth()
   if self.width then
     return self.width - self:paddingX() * 2
@@ -141,7 +141,7 @@ function ButtonWindow:cellWidth()
   end
 end
 --- Overrides `GridWindow:cellHeight`. 
--- @override cellHeight
+-- @override
 function ButtonWindow:cellHeight()
   if self.height then
     return self.height - self:paddingY() * 2
@@ -150,12 +150,12 @@ function ButtonWindow:cellHeight()
   end
 end
 --- Overrides `Window:paddingX`. 
--- @override paddingX
+-- @override
 function ButtonWindow:paddingX()
   return GridWindow.paddingX(self) / 4
 end
 --- Overrides `Window:paddingY`. 
--- @override paddingY
+-- @override
 function ButtonWindow:paddingY()
   return GridWindow.paddingY(self) / 4
 end

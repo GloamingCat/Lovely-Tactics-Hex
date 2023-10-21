@@ -34,7 +34,7 @@ function MemberInfo:init(battler, width, height, topLeft)
   self.battler = battler
 end
 --- Overrides `Component:createContent`. 
--- @override createContent
+-- @override
 function MemberInfo:createContent(w, h, battler)
   local topLeft = Vector(0, 1, -2)
   local margin = 4

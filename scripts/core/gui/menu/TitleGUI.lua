@@ -22,7 +22,7 @@ local TitleGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Implements `GUI:createWindows`.
--- @implement createWindows
+-- @implement
 function TitleGUI:createWindows()
   self.name = 'Title GUI'
   self.coverSpeed = 2
@@ -82,7 +82,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:show`. Shows cover before windows.
--- @override show
+-- @override
 function TitleGUI:show(...)
   if not self.cover or self.cover.color.alpha == 0 then
     self:playBGM()
@@ -143,7 +143,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:refresh`. Refreshes title.
--- @override refresh
+-- @override
 function TitleGUI:refresh()
   GUI.refresh(self)
   if self.topText and self.topText.text then
@@ -151,7 +151,7 @@ function TitleGUI:refresh()
   end
 end
 --- Overrides `GUI:destroy`. Destroys top text.
--- @override destroy
+-- @override
 function TitleGUI:destroy(...)
   GUI.destroy(self, ...)
   self.topText:destroy()
@@ -160,7 +160,7 @@ function TitleGUI:destroy(...)
   end
 end
 --- Overrides `GUI:windowMargin`. 
--- @override windowMargin
+-- @override
 function TitleGUI:windowMargin()
   return 10
 end

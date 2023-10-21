@@ -30,7 +30,7 @@ function ChoiceWindow:init(gui, args)
   GridWindow.init(self, gui, self.width, nil, args.pos)
 end
 --- Implements `GridWindow:creatwWidgets`. Creates a button for each choice.
--- @implement createWidgets
+-- @implement
 function ChoiceWindow:createWidgets()
   for i = 1, self.choices.size do
     local choice = self.choices[i]
@@ -59,17 +59,17 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function ChoiceWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function ChoiceWindow:rowCount()
   return #self.choices
 end
 --- Overrides `GridWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function ChoiceWindow:cellWidth()
   return (self.width or 100) - self:paddingX() * 2
 end

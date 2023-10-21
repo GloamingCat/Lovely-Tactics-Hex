@@ -131,6 +131,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Called when a character interacts with this object.
+-- @coroutine
 -- @treturn boolean Whether the interact script were executed or not.
 function Interactable:onInteract()
   if self.deleted or #self.interactScripts == 0 then
@@ -147,6 +148,7 @@ function Interactable:onInteract()
   return true
 end
 --- Called when a character collides with this object.
+-- @coroutine
 -- @tparam string collided Key of the character who was collided with.
 -- @tparam string collider Key of the character who started the collision.
 -- @tparam boolean repeating Whether the script collision scripts of this character are already running.
@@ -168,6 +170,7 @@ function Interactable:onCollide(collided, collider, repeating)
   return true
 end
 --- Called when this interactable is created.
+-- @coroutine
 -- @treturn boolean Whether the load scripts were executed or not.
 function Interactable:onLoad()
   if self.deleted or #self.loadScripts == 0 then
@@ -182,6 +185,7 @@ function Interactable:onLoad()
   return true
 end
 --- Creates a new event sheet from the given script data.
+-- @coroutine
 -- @tparam table script Script initialization info.
 function Interactable:runScript(script)
   if script.running then
@@ -194,6 +198,7 @@ function Interactable:runScript(script)
   end
 end
 --- Runs scripts according to object's state (colliding or interacting).
+-- @coroutine
 function Interactable:resumeScripts()
   if self.collided then
     self:onCollide(self.collided, self.collider)

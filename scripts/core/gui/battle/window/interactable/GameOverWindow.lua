@@ -42,12 +42,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function GameOverWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function GameOverWindow:rowCount()
   return 3
 end

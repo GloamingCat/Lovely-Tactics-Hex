@@ -20,14 +20,14 @@ local PropertyWindow = class(Window)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:init`. 
--- @override init
+-- @override
 function PropertyWindow:init(GUI)
   local w, h, m = 90, 30, GUI:windowMargin()
   Window.init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - m, 
       ScreenManager.height / 2 - h / 2 - m))
 end
 --- Overrides `Window:createContent`. Creates step text.
--- @override createContent
+-- @override
 function PropertyWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local w = self.width - self:paddingX() * 2

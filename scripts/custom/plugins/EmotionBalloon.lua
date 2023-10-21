@@ -24,6 +24,11 @@ local CharacterBase = require('core/objects/CharacterBase')
 local CharacterEvents = require('core/event/CharacterEvents')
 local ResourceManager = require('core/base/ResourceManager')
 
+-- Rewrites
+local CharacterBase_setXYZ = CharacterBase.setXYZ
+local CharacterBase_update = CharacterBase.update
+local CharacterBase_destroy = CharacterBase.destroy
+
 -- Parameters
 local keyToRow = {}
 keyToRow['!'] = 0 -- Surprised
@@ -82,9 +87,8 @@ end
 -- CharacterBase
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `CharacterBase:setXYZ`. Updates balloon position when character moves.
--- @override CharacterBase_setXYZ
-local CharacterBase_setXYZ = CharacterBase.setXYZ
+--- Rewrites `CharacterBase:setXYZ`. Updates balloon position when character moves.
+-- @rewrite
 function CharacterBase:setXYZ(x, y, z)
   CharacterBase_setXYZ(self, x, y, z)
   if self.balloon then
@@ -96,8 +100,7 @@ function CharacterBase:setXYZ(x, y, z)
   end
 end
 --- Rewrites `CharacterBase:update`. Updates balloon animation.
--- @override CharacterBase_update
-local CharacterBase_update = CharacterBase.update
+-- @rewrite
 function CharacterBase:update(dt)
   CharacterBase_update(self, dt)
   if not self.paused and self.balloon then
@@ -109,8 +112,7 @@ function CharacterBase:update(dt)
   end
 end
 --- Rewrites `CharacterBase:destroy`. Destroys balloon object.
--- @override CharacterBase_destroy
-local CharacterBase_destroy = CharacterBase.destroy
+-- @rewrite
 function CharacterBase:destroy(...)
   CharacterBase_destroy(self, ...)
   if self.balloon then

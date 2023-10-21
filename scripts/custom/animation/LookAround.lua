@@ -28,7 +28,7 @@ local LookAround = class(Animation)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Animation:init`. 
--- @override init
+-- @override
 function LookAround:init(...)
   Animation.init(self, ...)
   self.rows = {}
@@ -50,7 +50,7 @@ function LookAround:init(...)
   self.lookTime = 0
 end
 --- Overrides `Animation:update`. 
--- @override update
+-- @override
 function LookAround:update(dt)
   Animation.update(self, dt)
   self.lookTime = self.lookTime + dt

@@ -137,7 +137,7 @@ function AnimatedObject:replayAnimation(name, row, index)
   return anim
 end
 --- Overrides `Transformable:update`. Updates animation.
--- @override update
+-- @override
 function AnimatedObject:update(dt)
   Object.update(self, dt)
   if self.animation then

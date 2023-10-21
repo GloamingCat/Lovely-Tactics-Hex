@@ -55,4 +55,4 @@ Change overrides tag
 
 Change override (plugin) tag
 (--- Override\.)(.*\n)((?:local.*\n)*function )(\w+:)(\w+)
---- Rewrites `\4\5`.\2-- @override \5\n\3\4\5
+--- Rewrites `\4\5`.\2-- @rewrite \5\n\3\4\5

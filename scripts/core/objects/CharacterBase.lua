@@ -81,7 +81,7 @@ function CharacterBase:initProperties(instData, name, tiles, colliderHeight, sav
   end
 end
 --- Overrides `DirectedObject:initGraphics`. Creates the animation sets.
--- @override DirectedObject:initGraphics
+-- @override
 function CharacterBase:initGraphics(instData, animations, portraits, transform, shadowID, save)
   if shadowID and shadowID >= 0 then
     local shadowData = Database.animations[shadowID]
@@ -108,7 +108,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Object:setXYZ`. Updates shadow's position.
--- @override setXYZ
+-- @override
 function CharacterBase:setXYZ(x, y, z)
   z = z or self.position.z
   JumpingObject.setXYZ(self, x, y, z)
@@ -117,7 +117,7 @@ function CharacterBase:setXYZ(x, y, z)
   end
 end
 --- Overrides `Object:setVisible`. Updates shadow's visibility.
--- @override setVisible
+-- @override
 function CharacterBase:setVisible(value)
   JumpingObject.setVisible(self, value)
   if self.shadow then
@@ -125,7 +125,7 @@ function CharacterBase:setVisible(value)
   end
 end
 --- Overrides `Object:setRGBA`. Updates shadow's color.
--- @override setRGBA
+-- @override
 function CharacterBase:setRGBA(...)
   JumpingObject.setRGBA(self, ...)
   if self.sprite then
@@ -141,7 +141,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `AnimatedObject:update`. Updates fibers.
--- @override update
+-- @override
 function CharacterBase:update(dt)
   if self.paused then
     return
@@ -160,7 +160,7 @@ function CharacterBase:destroy(permanent)
   Interactable.destroy(self, permanent)
 end
 --- Changes character's key.
--- @tparam string key Ney key.
+-- @tparam string key New key.
 function CharacterBase:setKey(key)
   FieldManager.characterList[self.key] = nil
   FieldManager.characterList[key] = self
@@ -177,7 +177,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Object:getHeight`. 
--- @override getHeight
+-- @override
 function CharacterBase:getHeight(dx, dy)
   dx, dy = dx or 0, dy or 0
   for i = 1, #self.collisionTiles do
@@ -252,7 +252,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Interactable:getPersistentData`. Includes position, direction and animation.
--- @override getPersistentData
+-- @override
 function CharacterBase:getPersistentData()
   local data = Interactable.getPersistentData(self)
   data.x = self.position.x

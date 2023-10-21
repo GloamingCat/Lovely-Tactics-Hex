@@ -19,7 +19,7 @@ local Dialogue = class(SimpleText)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `SimpleText:init`. 
--- @override init
+-- @override
 function Dialogue:init(...)
   SimpleText.init(self, ...)
   self.sprite.wrap = true

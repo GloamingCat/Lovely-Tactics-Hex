@@ -38,7 +38,7 @@ function MemberGUI:init(parent, troop, memberList, memberID)
   GUI.init(self, parent)
 end
 --- Implements `GUI:createWindows`.
--- @implement createWindows
+-- @implement
 function MemberGUI:createWindows()
   self:createInfoWindow()
   self:createBattlerWindow()
@@ -100,7 +100,7 @@ function MemberGUI:currentMember()
   return self.members[self.memberID]
 end
 --- Overrides `GUI:show`. Refreshes member info.
--- @override show
+-- @override
 function MemberGUI:show(...)
   self:refreshMember()
   GUI.show(self, ...)

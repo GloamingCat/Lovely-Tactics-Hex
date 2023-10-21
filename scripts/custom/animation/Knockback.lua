@@ -32,7 +32,7 @@ local Knockback = class(Animation)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Animation:init`. 
--- @override init
+-- @override
 function Knockback:init(...)
   Animation.init(self, ...)
   self.knockTime = 0
@@ -43,7 +43,7 @@ function Knockback:init(...)
   end
 end
 --- Overrides `Animation:setRow`. 
--- @override setRow
+-- @override
 function Knockback:setRow(row)
   Animation.setRow(self, row)
   local dx, dy = angle2Coord(row2Angle(row))
@@ -59,7 +59,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Animation:update`. 
--- @override update
+-- @override
 function Knockback:update(dt)
   Animation.update(self, dt)
   self:updateTime(dt)

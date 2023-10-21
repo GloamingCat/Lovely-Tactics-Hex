@@ -18,12 +18,12 @@ local WaitAction = class(BattleAction)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:onActionGUI`. 
--- @override onActionGUI
+-- @override
 function WaitAction:onActionGUI(input)
   return self:onConfirm(input)
 end
 --- Overrides `FieldAction:onConfirm`. 
--- @override onConfirm
+-- @override
 function WaitAction:onConfirm(input)
   return { endCharacterTurn = true, endTurn = #TurnManager.turnCharacters == 1 }
 end

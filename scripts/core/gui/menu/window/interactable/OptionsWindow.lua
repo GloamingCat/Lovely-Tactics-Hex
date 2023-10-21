@@ -21,14 +21,14 @@ local OptionsWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:setProperties`. 
--- @override setProperties
+-- @override
 function OptionsWindow:setProperties(...)
   GridWindow.setProperties(self, ...)
   self.tooltipTerm = ''
   self.buttonAlign = 'center'
 end
 --- Implements `GridWindow:createWidgets`.
--- @implement createWidgets
+-- @implement
 function OptionsWindow:createWidgets()
   Button:fromKey(self, 'return')
   Button:fromKey(self, 'config')
@@ -89,12 +89,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function OptionsWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function OptionsWindow:rowCount()
   if self.GUI.quitWindow then
     return 4

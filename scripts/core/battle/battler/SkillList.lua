@@ -23,7 +23,7 @@ local SkillList = class(List)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `List:init`. 
--- @override init
+-- @override
 -- @tparam Battler battler
 -- @tparam table save
 function SkillList:init(battler, save)

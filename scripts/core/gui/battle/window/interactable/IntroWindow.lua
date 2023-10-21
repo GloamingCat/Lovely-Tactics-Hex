@@ -63,7 +63,7 @@ function IntroWindow:formationConfirm(button)
   self.result = nil
 end
 --- Overrides `GridWindow:onCancel`. 
--- @override inspectConfirm
+-- @override
 function IntroWindow:inspectConfirm()
   local center = TroopManager.centers[TroopManager.playerParty]
   local x, y, z = math.field.pixel2Tile(center.x, center.y, center.z)
@@ -81,7 +81,7 @@ function IntroWindow:optionsConfirm(button)
   self:show()
 end
 --- Overrides `GridWindow:onCancel`. 
--- @override onCancel
+-- @override
 function IntroWindow:onCancel()
   AudioManager:playSFX(Config.sounds.buttonCancel)
   self:optionsConfirm()
@@ -93,12 +93,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function IntroWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function IntroWindow:rowCount()
   return 6
 end

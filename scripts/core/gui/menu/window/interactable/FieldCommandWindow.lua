@@ -23,13 +23,13 @@ local FieldCommandWindow = class(OptionsWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `OptionsWindow:setProperties`. Changes button alingment.
--- @override setProperties
+-- @override
 function FieldCommandWindow:setProperties()
   OptionsWindow.setProperties(self)
   self.buttonAlign = 'left'
 end
 --- Implements `GridWindow:createWidgets`.
--- @implement createWidgets
+-- @implement
 function FieldCommandWindow:createWidgets()
   Button:fromKey(self, 'inventory')
   Button:fromKey(self, 'members')
@@ -111,12 +111,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function FieldCommandWindow:colCount()
   return 2
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function FieldCommandWindow:rowCount()
   return 4
 end

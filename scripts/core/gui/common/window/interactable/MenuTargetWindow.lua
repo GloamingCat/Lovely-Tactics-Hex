@@ -19,7 +19,7 @@ local MenuTargetWindow = class(PartyWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:setProperties`. 
--- @override setProperties
+-- @override
 function MenuTargetWindow:setProperties()
   PartyWindow.setProperties(self)
   self.tooltipTerm = 'target'

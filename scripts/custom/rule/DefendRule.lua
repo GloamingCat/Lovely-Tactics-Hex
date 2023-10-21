@@ -20,7 +20,7 @@ local DefendRule = class(SkillRule)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `SkillRule:onSelect`. 
--- @override onSelect
+-- @override
 function DefendRule:onSelect(user)
   SkillRule.onSelect(self, user)
   -- Find tile to move

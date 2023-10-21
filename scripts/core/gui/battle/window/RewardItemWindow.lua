@@ -31,7 +31,7 @@ function RewardItemWindow:init(gui, w, h, pos)
   InventoryWindow.init(self, gui, nil, gui.rewards.items, nil, w, h, pos)
 end
 --- Overrides `ListWindow:createWidgets`. Adds the Gold button.
--- @override createWidgets
+-- @override
 function RewardItemWindow:createWidgets()
   local icon = Config.icons.money.id >= 0 and 
     ResourceManager:loadIconAnimation(Config.icons.money, GUIManager.renderer)
@@ -53,12 +53,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function RewardItemWindow:colCount()
   return 1
 end
 --- Overrides `ListWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function RewardItemWindow:cellWidth(width)
   local w = (ScreenManager.width - self.GUI:windowMargin() * 3) / 2
   return self:computeCellWidth(w)

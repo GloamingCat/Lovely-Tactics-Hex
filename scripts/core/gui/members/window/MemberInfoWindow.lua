@@ -29,7 +29,7 @@ function MemberInfoWindow:init(member, ...)
   Window.init(self, ...)
 end
 --- Overrides `Window:createContent`. Creates the content of the initial member.
--- @override createContent
+-- @override
 function MemberInfoWindow:createContent(...)
   Window.createContent(self, ...)
   self.page = Pagination(self)

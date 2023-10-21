@@ -21,7 +21,7 @@ local SettingsGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:createWindows`.
--- @override createWindows
+-- @override
 function SettingsGUI:createWindows()
   self.name = 'Settings GUI'
   self:createMainWindow()

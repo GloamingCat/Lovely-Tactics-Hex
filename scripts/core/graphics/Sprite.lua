@@ -241,7 +241,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Colorable:setRGBA`. 
--- @override setRGBA
+-- @override
 function Sprite:setRGBA(newr, newg, newb, newa)
   local r, g, b, a = self:getRGBA()
   Colorable.setRGBA(self, newr, newg, newb, newa)
@@ -250,7 +250,7 @@ function Sprite:setRGBA(newr, newg, newb, newa)
   end
 end
 --- Overrides `Colorable:setHSV`. 
--- @override setHSV
+-- @override
 function Sprite:setHSV(newh, news, newv)
   local h, s, v = self:getHSV()
   Colorable.setHSV(self, newh, news, newv)

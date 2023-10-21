@@ -28,14 +28,14 @@ function RecruitCommandWindow:init(GUI, hire, dismiss)
   GridWindow.init(self, GUI)
 end
 --- Overrides `GridWindow:setProperties`. 
--- @override setProperties
+-- @override
 function RecruitCommandWindow:setProperties()
   GridWindow.setProperties(self)
   self.tooltipTerm = ''
   self.buttonAlign = 'center'
 end
 --- Implements `GridWindow:createWidgets`.
--- @implement createWidgets
+-- @implement
 function RecruitCommandWindow:createWidgets()
   Button:fromKey(self, 'hire').text:setAlign('center', 'center')
   Button:fromKey(self, 'dismiss').text:setAlign('center', 'center')
@@ -81,17 +81,17 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function RecruitCommandWindow:colCount()
   return 3
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function RecruitCommandWindow:rowCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override cellWidth
+-- @override
 function RecruitCommandWindow:cellWidth()
   return 60
 end

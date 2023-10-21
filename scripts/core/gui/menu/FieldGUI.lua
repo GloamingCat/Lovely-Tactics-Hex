@@ -27,7 +27,7 @@ local FieldGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:createWindows`. 
--- @override createWindows
+-- @override
 function FieldGUI:createWindows()
   self.goldWindowWidth = ScreenManager.width / 4
   self.goldWindowHeight = 32
@@ -86,7 +86,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:hide`. Saves troop modifications.
--- @override hide
+-- @override
 function FieldGUI:hide(...)
   TroopManager:saveTroop(self.troop)
   GUI.hide(self, ...)

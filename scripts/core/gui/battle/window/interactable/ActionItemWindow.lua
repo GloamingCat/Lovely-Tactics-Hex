@@ -65,12 +65,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function ActionItemWindow:colCount()
   return 1
 end
 --- Overrides `ListWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function ActionItemWindow:cellWidth()
   return 200
 end

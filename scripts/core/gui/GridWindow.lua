@@ -23,7 +23,7 @@ local GridWindow = class(Window)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:setProperties`. 
--- @override setProperties
+-- @override
 function GridWindow:setProperties()
   Window.setProperties(self)
   self.loopVertical = true
@@ -31,7 +31,7 @@ function GridWindow:setProperties()
   self.tooltipTerm = nil
 end
 --- Overrides `Window:createContent`. 
--- @override createContent
+-- @override
 function GridWindow:createContent(width, height)
   self.matrix = Matrix2(self:colCount(), 1)
   self:createWidgets()
@@ -88,7 +88,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:setActive`. Hides cursor and unselected widget if deactivated.
--- @override setActive
+-- @override
 function GridWindow:setActive(value)
   if self.active ~= value then
     Window.setActive(self, value)
@@ -120,7 +120,7 @@ function GridWindow:setActive(value)
   end
 end
 --- Overrides `Window:showContent`. Checks if there is a selected widget to show/hide the cursor.
--- @override showContent
+-- @override
 function GridWindow:showContent()
   Window.showContent(self)
   local widget = self:currentWidget()
@@ -387,7 +387,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:onClick`. First verifies if user clicked on scroll.
--- @override onClick
+-- @override
 function GridWindow:onClick(button, x, y, triggerPoint)
   if button == 1 and self.scroll and self.scroll:onClick(x, y) then
     return
@@ -396,7 +396,7 @@ function GridWindow:onClick(button, x, y, triggerPoint)
   end
 end
 --- Overrides `Window:onMouseConfirm`.
--- @override onMouseConfirm
+-- @override
 function GridWindow:onMouseConfirm(x, y, triggerPoint)
   local widget = self:clickedWidget(x, y, triggerPoint)
   if not widget then

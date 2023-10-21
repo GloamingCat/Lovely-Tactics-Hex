@@ -23,7 +23,7 @@ local MoveAction = class(BattleAction)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:init`. 
--- @override init
+-- @override
 function MoveAction:init(range, limit)
   self.pathLimit = limit or math.huge
   BattleAction.init(self, '', range)
@@ -37,7 +37,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:resetReachableTiles`. 
--- @override resetReachableTiles
+-- @override
 function MoveAction:resetReachableTiles(input)
   for tile in self.field:gridIterator() do
     tile.gui.reachable = tile.gui.movable
@@ -49,7 +49,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:execute`. 
--- @override execute
+-- @override
 function MoveAction:execute(input)
   local path = self:calculatePath(input)
   if path then

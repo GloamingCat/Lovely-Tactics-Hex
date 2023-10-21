@@ -20,7 +20,7 @@ local BetrayRule = class(SkillRule)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `SkillRule:onSelect`. 
--- @override onSelect
+-- @override
 function BetrayRule:onSelect(user)
   self.originalParty = user.party
   for s in user.battler.statusList:iterator() do
@@ -42,7 +42,7 @@ function BetrayRule:onSelect(user)
   end
 end
 --- Overrides `AIRule:execute`.
--- @override execute
+-- @override
 function BetrayRule:execute()
   local result = SkillRule.execute(self)
   self.input.user.party = self.originalParty

@@ -18,6 +18,9 @@ local Player = require('core/objects/Player')
 local HSpinner = require('core/gui/widget/control/HSpinner')
 local VSpinner = require('core/gui/widget/control/VSpinner')
 
+-- Rewrites
+local Player_moveByMouse = Player.moveByMouse
+
 -- Parameters
 local fasterPlayer = args.player
 local fasterSpinner = args.spinner
@@ -46,7 +49,7 @@ end
 
 if fasterPlayer then
   --- Rewrites `Player:refreshSpeed`. Sets the speed according to dash input.
-  -- @override Player_refreshSpeed
+  -- @rewrite
   function Player:refreshSpeed()
     local dash = InputManager.keys['dash']:isPressing()
     if self.path and self.pathButton then
@@ -63,8 +66,7 @@ if fasterPlayer then
     end
   end
   --- Rewrites `Player:moveByMouse`.
-  -- @override Player_moveByMouse
-  local Player_moveByMouse = Player.moveByMouse
+  -- @rewrite
   function Player:moveByMouse(button)
     if button then
       self.pathButton = button
@@ -80,7 +82,7 @@ end
 
 if fasterSpinner then
   --- Rewrites `HSpinner:multiplier`. Uses big increment if double clicked.
-  -- @override HSpinner_multiplier
+  -- @rewrite
   function HSpinner:multiplier()
     return (InputManager.keys['dash']:isPressing()
       or InputManager.keys['mouse1']:isDoubleTriggered()
@@ -88,7 +90,7 @@ if fasterSpinner then
         and self.bigIncrement or 1
   end
   --- Rewrites `VSpinner:multiplier`. Uses big increment if double clicked.
-  -- @override VSpinner_multiplier
+  -- @rewrite
   function VSpinner:multiplier()
     return (InputManager.keys['dash']:isPressing()
       or InputManager.keys['mouse1']:isDoubleTriggered()

@@ -22,6 +22,10 @@ local Battler = require('core/battle/battler/Battler')
 local SkillAction = require('core/battle/action/SkillAction')
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
 
+-- Rewrites
+local Battler_initState = Battler.initState
+local SkillAction_allTargetsEffect = SkillAction.allTargetsEffect
+
 -- Parameters
 local maxCounters = args.maxCounters or 1
 
@@ -30,8 +34,7 @@ local maxCounters = args.maxCounters or 1
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Battler:initState`.
--- @override Battler_initState
-local Battler_initState = Battler.initState
+-- @rewrite
 function Battler:initState(data, save)
   Battler_initState(self, data, save)
   if self.tags.counterID then
@@ -46,8 +49,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `SkillAction:allTargetsEffect`.
--- @override SkillAction_allTargetsEffect
-local SkillAction_allTargetsEffect = SkillAction.allTargetsEffect
+-- @rewrite
 function SkillAction:allTargetsEffect(input, originTile)
   local allTargets = SkillAction_allTargetsEffect(self, input, originTile)
   if not self.offensive or (self.counter and self.counter >= maxCounters) then

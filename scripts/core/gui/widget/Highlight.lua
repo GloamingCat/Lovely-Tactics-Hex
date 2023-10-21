@@ -42,7 +42,7 @@ function Highlight:init(window, width, height, pos)
   Component.init(self, self.position, width, height)
 end
 --- Overrides `Component:createContent`. 
--- @override createContent
+-- @override
 function Highlight:createContent(width, height)
   self.spriteGrid = SpriteGrid(self:getSkin(), Vector(0, 0, 1))
   self.spriteGrid:createGrid(GUIManager.renderer, width, height)
@@ -60,7 +60,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Component:updatePosition`. Updates position to the selected button.
--- @override updatePosition
+-- @override
 function Highlight:updatePosition(wpos)
   if self.window then
     local button = self.window:currentWidget()
@@ -80,7 +80,7 @@ function Highlight:updatePosition(wpos)
   end
 end
 --- Overrides `Component:setVisible`. Shows sprite grid.
--- @override setVisible
+-- @override
 function Highlight:setVisible(value)
   local active = (not self.hideOnDeactive or self.window.active)
   Component.setVisible(self, value and active and (not self.window or #self.window.matrix > 0))

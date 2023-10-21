@@ -21,20 +21,24 @@ local EquipSet = require('core/battle/battler/EquipSet')
 local SkillAction = require('core/battle/action/SkillAction')
 local SkillList = require('core/battle/battler/SkillList')
 
+-- Rewrites
+local EquipSet_init = EquipSet.init
+local EquipSet_updateSlotBonus = EquipSet.updateSlotBonus
+local Battler_getAttackSkill = Battler.getAttackSkill
+local Battler_getSkillList = Battler.getSkillList
+
 -- ------------------------------------------------------------------------------------------------
 -- EquipSet
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `EquipSet:init`.
--- @override EquipSet_init
-local EquipSet_init = EquipSet.init
+-- @rewrite
 function EquipSet:init(...)
   self.skills = {}
   EquipSet_init(self, ...)
 end
 --- Rewrites `EquipSet:updateSlotBonus`.
--- @override EquipSet_updateSlotBonus
-local EquipSet_updateSlotBonus = EquipSet.updateSlotBonus
+-- @rewrite
 function EquipSet:updateSlotBonus(key)
   EquipSet_updateSlotBonus(self, key)
   if not self.battler then
@@ -72,8 +76,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Battler:getSkillList`.
--- @override Battler_getSkillList
-local Battler_getSkillList = Battler.getSkillList
+-- @rewrite
 function Battler:getSkillList()
   local list = Battler_getSkillList(self)
   for k, skills in pairs(self.equipSet.skills) do
@@ -93,8 +96,7 @@ function Battler:getSkillList()
   return list
 end
 --- Rewrites `Battler:getAttackSkill`.
--- @override Battler_getAttackSkill
-local Battler_getAttackSkill = Battler.getAttackSkill
+-- @rewrite
 function Battler:getAttackSkill()
   for k, skills in pairs(self.equipSet.skills) do
     if skills[0] then

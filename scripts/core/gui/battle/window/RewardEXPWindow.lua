@@ -21,7 +21,7 @@ local RewardEXPWindow = class(Window)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:createContent`. 
--- @override createContent
+-- @override
 function RewardEXPWindow:createContent(...)
   Window.createContent(self, ...)
   self.done = false
@@ -124,7 +124,7 @@ function RewardEXPWindow:addEXP()
   until done
 end
 --- Overrides `Window:onConfirm`. 
--- @override onConfirm
+-- @override
 function RewardEXPWindow:onConfirm()
   AudioManager:playSFX(Config.sounds.buttonConfirm)
   if self.done then
@@ -136,7 +136,7 @@ function RewardEXPWindow:onConfirm()
   self.fiber = GUIManager.fiberList:fork(self.addEXP, self)
 end
 --- Overrides `Window:onCancel`. 
--- @override onCancel
+-- @override
 function RewardEXPWindow:onCancel()
   self:onConfirm()
 end

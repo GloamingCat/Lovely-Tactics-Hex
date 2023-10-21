@@ -32,13 +32,13 @@ function PartyWindow:init(parent, troop)
   ListWindow.init(self, parent, list)
 end
 --- Overrides `GridWindow:setProperties`. Initialized tooltip.
--- @override setProperties
+-- @override
 function PartyWindow:setProperties()
   ListWindow.setProperties(self)
   self.tooltipTerm = ''
 end
 --- Overrides `ListWindow:createListButton`. Creates a button for the given member.
--- @override createListButton
+-- @override
 -- @tparam Battler battler
 -- @treturn Button
 function PartyWindow:createListButton(battler)
@@ -66,7 +66,7 @@ function PartyWindow:refreshMembers()
   end
 end
 --- Overrides `Window:show`. 
--- @override show
+-- @override
 function PartyWindow:show(...)
   if not self.open then
     self:refreshMembers()
@@ -80,17 +80,17 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function PartyWindow:colCount()
   return 1
 end
 --- Overrides `ListWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function PartyWindow:cellWidth()
   return 240
 end
 --- Overrides `GridWindow:cellHeight`. 
--- @override cellHeight
+-- @override
 function PartyWindow:cellHeight()
   return (ListWindow.cellHeight(self) * 2 + self:rowMargin() * 2)
 end

@@ -7,21 +7,26 @@
 
 -- ================================================================================================
 
+-- Imports
+local GameManager = require('core/base/GameManager')
+
+-- Rewrites
+local GameManager_init = GameManager.init
+local GameManager_updateManagers = GameManager.updateManagers
+local GameManager_draw = GameManager.draw
+local GameManager_updateProfi = GameManager.updateProfi
+
 -- Parameters
 KeyMap.main['stats'] = args.stats
 KeyMap.main['profi'] = args.profi
 local countdown = args.countdown
-
--- Imports
-local GameManager = require('core/base/GameManager')
 
 -- ------------------------------------------------------------------------------------------------
 -- General
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `GameManager:init`.
--- @override GameManager_init
-local GameManager_init = GameManager.init
+-- @rewrite
 function GameManager:init()
   GameManager_init(self)
   self.profiPaused = false
@@ -31,8 +36,7 @@ function GameManager:init()
   self.stats = { 0, 0, 0, 0, 0, 0 }
 end
 --- Rewrites `GameManager:updateManagers`.
--- @override GameManager_updateManagers
-local GameManager_updateManagers = GameManager.updateManagers
+-- @rewrite
 function GameManager:updateManagers(dt)
   if InputManager.keys['stats']:isTriggered() then
     self.statsVisible = not self.statsVisible
@@ -48,8 +52,7 @@ function GameManager:updateManagers(dt)
   GameManager_updateManagers(self, dt)
 end
 --- Rewrites `GameManager:draw`.
--- @override GameManager_draw
-local GameManager_draw = GameManager.draw
+-- @rewrite
 function GameManager:draw()
   GameManager_draw(self)
   if self.statsVisible then
@@ -73,7 +76,6 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Pauses default ProFi behavior if it was activated by button.
-local GameManager_updateProfi = GameManager.updateProfi
 function GameManager:updateProfi()
   if not self.profiPaused and self.keepProfi then
     GameManager_updateProfi(self)

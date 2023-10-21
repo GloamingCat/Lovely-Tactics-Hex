@@ -33,7 +33,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:execute`. 
--- @override execute
+-- @override
 function VisualizeAction:execute(input)
   local character = input.target:getFirstBattleCharacter()
   FieldManager.renderer:moveToTile(input.target)
@@ -48,7 +48,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:resetTileColors`. 
--- @override resetTileColors
+-- @override
 function VisualizeAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
     tile.gui:setColor('')
@@ -60,7 +60,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:isSelectable`. 
--- @override isSelectable
+-- @override
 function VisualizeAction:isSelectable(input, tile)
   return tile:getFirstBattleCharacter() ~= nil
 end

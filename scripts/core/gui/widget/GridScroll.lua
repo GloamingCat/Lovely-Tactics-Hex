@@ -56,7 +56,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Component:updatePosition`. 
--- @override updatePosition
+-- @override
 -- @tparam Vector pos The position of the window.
 function GridScroll:updatePosition(pos)
   local w = self.window.width / 2 + self.margin
@@ -73,7 +73,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Component:update`. Updates scroll count.
--- @override update
+-- @override
 function GridScroll:update(dt)
   if self.horizontal then
     if InputManager.usingKeyboard then
@@ -151,7 +151,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Component:setVisible`. 
--- @override setVisible
+-- @override
 function GridScroll:setVisible(value)
   Component.setVisible(self, value)
   if value then

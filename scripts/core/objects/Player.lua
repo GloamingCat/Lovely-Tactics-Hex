@@ -28,7 +28,7 @@ local Player = class(Character)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `CharacterBase:init`. 
--- @override init
+-- @override
 function Player:init(transition, save)
   local troopData = Database.troops[TroopManager.playerTroopID]
   local leader = troopData.members[1]
@@ -49,7 +49,7 @@ function Player:init(transition, save)
   self.waitList = List()
 end
 --- Overrides `CharacterBase:initProperties`. 
--- @override initProperties
+-- @override
 function Player:initProperties(instData, name, collisionTiles, colliderHeight)
   Character.initProperties(self, instData, name, collisionTiles, colliderHeight)
   self.inputDelay = 6 / 60
@@ -68,7 +68,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `CharacterBase:update`. 
--- @override update
+-- @override
 function Player:update(dt)
   if FieldManager.playerInput then
     self:refreshSpeed()

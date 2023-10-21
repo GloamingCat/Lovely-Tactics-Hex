@@ -34,7 +34,7 @@ function Gauge:init(topLeft, width, color, x)
   Component.init(self, topLeft, width, color)
 end
 --- Overrides `Component:createContent`. 
--- @override createContent
+-- @override
 function Gauge:createContent(width, color)
   self.width = width
   self.bar = Bar(Vector(0, 3, 1), width, 6, 1)

@@ -28,7 +28,7 @@ function ItemWindow:init(gui, rowCount)
   InventoryWindow.init(self, gui, nil, gui.inventory, gui.inventory:getUsableItems(2))
 end
 --- Overrides `ListWindow:createWidgets`. 
--- @override createWidgets
+-- @override
 function ItemWindow:createWidgets()
   if #self.list > 0 then
     InventoryWindow.createWidgets(self)
@@ -79,12 +79,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function ItemWindow:colCount()
   return 1
 end
 --- Overrides `ListWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function ItemWindow:cellWidth()
   return 200
 end

@@ -45,7 +45,7 @@ function Music:update()
   end
 end
 --- Overrides `Sound:getDuration`. 
--- @override getDuration
+-- @override
 function Music:getDuration(unit)
   return (self.intro and self.intro:getDuration(unit) or 0) + self.loop:getDuration(unit)
 end
@@ -55,7 +55,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Sound:stop`. 
--- @override stop
+-- @override
 function Music:stop()
   if self.intro then
     self.intro:stop()
@@ -71,12 +71,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Sound:refreshVolume`. 
--- @override refreshVolume
+-- @override
 function Music:refreshVolume()
   self.source:setVolume((self.volume / 100) * (AudioManager.volumeBGM / 100) * AudioManager.fading)
 end
 --- Overrides `Sound:refreshPitch`. 
--- @override refreshPitch
+-- @override
 function Music:refreshPitch()
   self.source:setPitch((self.pitch / 100) * (AudioManager.pitchBGM / 100) * GameManager.speed)
 end

@@ -21,13 +21,13 @@ local SettingsWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:setProperties`. 
--- @override setProperties
+-- @override
 function SettingsWindow:setProperties()
   GridWindow.setProperties(self)
   self.tooltipTerm = ''
 end
 --- Implements `GridWindow:createWidgets`.
--- @implement createWidgets
+-- @implement
 function SettingsWindow:createWidgets()
   if #Project.languages > 1 then
     SwitchButton:fromKey(self, 'language', GameManager.language, nil, Project.languages)
@@ -157,19 +157,19 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function SettingsWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function SettingsWindow:rowCount()
   --local n = GameManager:isMobile() and 5 or GameManager:isWeb() and 8 or 9
   local n = 5
   return #Project.languages > 1 and n + 1 or n 
 end
 --- Overrides `GridWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function SettingsWindow:cellWidth()
   return 240
 end

@@ -33,7 +33,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `FieldAction:onConfirm`. 
--- @override onConfirm
+-- @override
 function CallAction:onConfirm(input)
   self.troop = TroopManager.troops[(input.party or input.user.party)]
   if input.GUI then
@@ -47,7 +47,7 @@ function CallAction:onConfirm(input)
   return self:execute(input)
 end
 --- Overrides `BattleAction:execute`. 
--- @override execute
+-- @override
 function CallAction:execute(input)
   self:callMember(input.member, input.target, true)
   return BattleAction.execute(self, input)
@@ -58,12 +58,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:resetTileProperties`. 
--- @override resetTileProperties
+-- @override
 function CallAction:resetTileProperties(input)
   self:resetSelectableTiles(input)
 end
 --- Overrides `BattleAction:resetTileColors`. 
--- @override resetTileColors
+-- @override
 function CallAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
     if tile.gui.selectable then
@@ -79,7 +79,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:isSelectable`. 
--- @override isSelectable
+-- @override
 function CallAction:isSelectable(input, tile)
   return tile.party == (input.party or input.user.party) and not tile:collides(0, 0) 
     and not self.field:collidesTerrain(tile:coordinates())

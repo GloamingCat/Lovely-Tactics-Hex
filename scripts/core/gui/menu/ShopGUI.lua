@@ -25,7 +25,7 @@ local ShopGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:init`. 
--- @override init
+-- @override
 -- @tparam GUI parent Parent GUI.
 -- @tparam table items Array of items to be sold.
 -- @tparam boolean sell True if the player can sell anything here.
@@ -37,7 +37,7 @@ function ShopGUI:init(parent, items, sell, troop)
   GUI.init(self, parent)
 end
 --- Implements `GUI:createWindow`.
--- @implement createWindows
+-- @implement
 function ShopGUI:createWindows()
   self:createCommandWindow()
   self:createGoldWindow()
@@ -108,7 +108,7 @@ function ShopGUI:hideShopGUI()
   self.commandWindow:activate()
 end
 --- Overrides `GUI:hide`. Saves troop modifications.
--- @override hide
+-- @override
 function ShopGUI:hide(...)
   TroopManager:saveTroop(self.troop)
   GUI.hide(self, ...)

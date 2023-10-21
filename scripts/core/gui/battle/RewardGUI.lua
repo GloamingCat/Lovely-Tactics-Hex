@@ -25,7 +25,7 @@ local RewardGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Implements `GUI:createWindows`.
--- @implement createWindows
+-- @implement
 function RewardGUI:createWindows()
   self.name = 'Reward GUI'
   self:createTopText()
@@ -121,7 +121,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:destroy`. Destroys top text.
--- @override destroy
+-- @override
 function RewardGUI:destroy(...)
   GUI.destroy(self, ...)
   self.topText:destroy()

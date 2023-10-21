@@ -21,7 +21,7 @@ local EscapeAction = class(BattleAction)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:init`. Sets animation speed.
--- @override init
+-- @override
 function EscapeAction:init(move, ...)
   BattleAction.init(self, ...)
   self.animSpeed = 2
@@ -36,7 +36,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:onSelect`. 
--- @override onSelect
+-- @override
 function EscapeAction:onSelect(input)
   BattleAction.onSelect(self, input)
   if self.moveAction and not self:canExecute(input) then
@@ -52,7 +52,7 @@ function EscapeAction:onSelect(input)
   end
 end
 --- Overrides `BattleAction:onActionGUI`. 
--- @override onActionGUI
+-- @override
 function EscapeAction:onActionGUI(input)
   local confirm = GUIManager:showGUIForResult(ConfirmGUI(input.GUI))
   if confirm == 1 then
@@ -62,7 +62,7 @@ function EscapeAction:onActionGUI(input)
   end
 end
 --- Overrides `BattleAction:execute`. Executes the escape animation for the given character.
--- @override execute
+-- @override
 function EscapeAction:execute(input)
   if input.moveResult then
     if input.moveResult.executed then
@@ -92,7 +92,7 @@ function EscapeAction:escape(input)
   end
 end
 --- Overrides `FieldAction:canExecute`. 
--- @override canExecute
+-- @override
 function EscapeAction:canExecute(input)
   local userParty = input.user.party
   local tileParty = input.user:getTile().party

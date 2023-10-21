@@ -14,7 +14,7 @@ local Animation = require('core/graphics/Animation')
 local Flash = class(Animation)
 
 --- Overrides `Animation:update`.
--- @override update
+-- @override
 function Flash:update(dt)
   -- TODO.
 end

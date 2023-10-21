@@ -1,8 +1,8 @@
 
 -- ================================================================================================
 
---- A list datatype implementation. See more in:
--- http://en.wikipedia.org/wiki/List_(abstract_data_type)
+--- A list datatype implementation.
+-- See more in: <http://en.wikipedia.org/wiki/List_(abstract_data_type)>
 ---------------------------------------------------------------------------------------------------
 -- @classmod List
 

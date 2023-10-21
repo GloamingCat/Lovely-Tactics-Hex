@@ -15,6 +15,9 @@
 -- Imports
 local GameManager = require('core/base/GameManager')
 
+-- Rewrites
+local GameManager_update = GameManager.update
+
 -- Parameters
 KeyMap.main['speedup'] = args.key
 local speedup = args.speed or 3
@@ -24,8 +27,7 @@ local speedup = args.speed or 3
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `GameManager:update`.
--- @override GameManager_update
-local GameManager_update = GameManager.update
+-- @rewrite
 function GameManager:update(dt)
   if InputManager.keys['speedup']:isPressing() then
     if self.speed == 1 then

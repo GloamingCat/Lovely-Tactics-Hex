@@ -16,13 +16,18 @@ local BattleCursor = require('core/battle/BattleCursor')
 local CharacterBase = require('core/objects/CharacterBase')
 local StatusList = require('core/battle/battler/StatusList')
 
+-- Rewrites
+local StatusList_updateGraphics = StatusList.updateGraphics
+local CharacterBase_update = CharacterBase.update
+local BattleCursor_setTile = BattleCursor.setTile
+local BattleCursor_setCharacter = BattleCursor.setCharacter
+
 -- ------------------------------------------------------------------------------------------------
 -- StatusList
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `StatusList:updateGraphics`.
--- @override StatusList_updateGraphics
-local StatusList_updateGraphics = StatusList.updateGraphics
+-- @rewrite
 function StatusList:updateGraphics(character)
   StatusList_updateGraphics(self, character)
   character.statusIcons = self:getIcons()
@@ -34,8 +39,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `CharacterBase:update`.
--- @override CharacterBase_update
-local CharacterBase_update = CharacterBase.update
+-- @rewrite
 function CharacterBase:update(dt)
   CharacterBase_update(self, dt)
   if self.statusIcons and #self.statusIcons > 0 then 
@@ -58,8 +62,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `BattleCursor:setTile`.
--- @override BattleCursor_setTile
-local BattleCursor_setTile = BattleCursor.setTile
+-- @rewrite
 function BattleCursor:setTile(tile)
   BattleCursor_setTile(self, tile)
   for char in tile.characterList:iterator() do
@@ -70,8 +73,7 @@ function BattleCursor:setTile(tile)
   end
 end
 --- Rewrites `BattleCursor:setCharacter`.
--- @override BattleCursor_setCharacter
-local BattleCursor_setCharacter = BattleCursor.setCharacter
+-- @rewrite
 function BattleCursor:setCharacter(char)
   BattleCursor_setCharacter(self, char)
   if char.balloon then

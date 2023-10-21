@@ -22,7 +22,7 @@ local SaveWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:init`.
--- @override init
+-- @override
 function SaveWindow:init(...)
   GridWindow.init(self, ...)
   self.confirmWindow = ConfirmWindow(self.GUI, 'overwrite')
@@ -33,13 +33,13 @@ function SaveWindow:init(...)
   button.clickSound = button.confirmSound
 end
 --- Overrides `GridWindow:setProperties`. 
--- @override setProperties
+-- @override
 function SaveWindow:setProperties()
   GridWindow.setProperties(self)
   self.tooltipTerm = 'saveSlot'
 end
 --- Implements `GridWindow:createWidgets`. 
--- @implement createWidgets
+-- @implement
 function SaveWindow:createWidgets()
   for i = 1, SaveManager.maxSaves do
     self:createSaveButton(i .. '', Vocab.saveName .. ' ' .. i)
@@ -73,7 +73,7 @@ function SaveWindow:refreshSave(button)
   button:refreshEnabled()
 end
 --- Overrides `Window:show`. 
--- @override show
+-- @override
 function SaveWindow:show(...)
   if not self.open then
     for button in self.matrix:iterator() do
@@ -110,22 +110,22 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function SaveWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function SaveWindow:rowCount()
   return math.min(SaveManager.maxSaves, GameManager:isMobile() and 3 or 4)
 end
 --- Overrides `ListWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function SaveWindow:cellWidth()
   return GridWindow.cellWidth(self) * 2
 end
 --- Overrides `GridWindow:cellHeight`. 
--- @override cellHeight
+-- @override
 function SaveWindow:cellHeight()
   return (GridWindow.cellHeight(self) * 2 + self:rowMargin() * 2) - 4
 end

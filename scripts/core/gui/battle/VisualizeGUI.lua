@@ -19,7 +19,7 @@ local VisualizeGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:init`. 
--- @override init
+-- @override
 -- @tparam GUI parent Parent GUI.
 -- @tparam Character character Member's character in the battle field.
 function VisualizeGUI:init(parent, character)
@@ -28,7 +28,7 @@ function VisualizeGUI:init(parent, character)
   GUI.init(self, parent)
 end
 --- Overrides `GUI:createWindows`.
--- @override createWindows
+-- @override
 function VisualizeGUI:createWindows()
   local mainWindow = BattlerWindow(self)
   mainWindow:setBattler(self.character.battler)

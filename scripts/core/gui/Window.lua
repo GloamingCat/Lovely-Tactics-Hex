@@ -57,7 +57,7 @@ function Window:setProperties()
   self.offBoundsCancel = true
 end
 --- Overrides `Component:createContent`. By default, only creates the skin.
--- @override createContent
+-- @override
 function Window:createContent(width, height)
   self.width = width
   self.height = height
@@ -105,7 +105,7 @@ function Window:updatePosition()
   Component.updatePosition(self)
 end
 --- Overrides `Component:refresh`. Refreshes the background color.
--- @override refresh
+-- @override
 function Window:refresh()
   Component.refresh(self)
   if self.background then
@@ -235,7 +235,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Component:show`. Opens this window.
--- @override show
+-- @override
 function Window:show()
   if self.scaleY >= 1 then
     return
@@ -249,7 +249,7 @@ function Window:show()
   end
 end
 --- Overrides `Component:hide`. Closes this window.
--- @override hide
+-- @override
 -- @tparam boolean gui If it's called from GUI:hide.
 --  If true, automatically opens the window back if its GUI opens again.
 --  Else, it stays hidden until it is manually openned again.

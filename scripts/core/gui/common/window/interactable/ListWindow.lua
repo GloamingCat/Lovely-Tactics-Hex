@@ -18,7 +18,7 @@ local ListWindow = class(GridWindow)
 -- -------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:init`. 
--- @override init
+-- @override
 -- @tparam GUI parent Parent GUI.
 -- @tparam table list Array of data used to create each button.
 function ListWindow:init(parent, list, ...)
@@ -26,7 +26,7 @@ function ListWindow:init(parent, list, ...)
   GridWindow.init(self, parent, ...)
 end
 --- Implements `GridWindow:createWidgets`. 
--- @implement createWidgets
+-- @implement
 function ListWindow:createWidgets()
   for i = 1, #self.list do
     self:createListButton(self.list[i])
@@ -67,17 +67,17 @@ end
 -- -------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function ListWindow:colCount()
   return 2
 end
 --- Overrides `GridWindow:colCount`. 
--- @override rowCount
+-- @override
 function ListWindow:rowCount()
   return self.visibleRowCount
 end
 --- Overrides `GridWindow:cellWidth`. Adapts the cell width to fit the whole screen.
--- @override cellWidth
+-- @override
 function ListWindow:cellWidth()
   local w = ScreenManager.width - self.GUI:windowMargin() * 2
   return self:computeCellWidth(w)

@@ -24,6 +24,12 @@ local Battler = require('core/battle/battler/Battler')
 local PopText = require('core/graphics/PopText')
 local SkillAction = require('core/battle/action/SkillAction')
 
+-- Rewrites
+local SkillAction_calculateEffectResults = SkillAction.calculateEffectResults
+local PopText_addDamage = PopText.addDamage
+local PopText_addHeal = PopText.addHeal
+local Battler_popResults = Battler.popResults
+
 -- Parameters
 local attName = args.attName
 local ratio = args.ratio or 2
@@ -33,8 +39,7 @@ local ratio = args.ratio or 2
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `SkillAction:calculateEffectResults`. Calculates critical hit rate.
--- @override SkillAction_calculateEffectResults
-local SkillAction_calculateEffectResults = SkillAction.calculateEffectResults
+-- @rewrite
 function SkillAction:calculateEffectResults(user, target)
   local results = SkillAction_calculateEffectResults(self, user, target)
    if self.tags.critical then
@@ -56,8 +61,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `PopText:addDamage`. Changes font and show text when critical.
--- @override PopText_addDamage
-local PopText_addDamage = PopText.addDamage
+-- @rewrite
 function PopText:addDamage(points)  
   local crit = points.critical and '_crit' or ''
   local popupName = 'popup_dmg' .. points.key
@@ -67,8 +71,7 @@ function PopText:addDamage(points)
   self:addLine(points.value, popupName, popupName .. crit)
 end
 --- Rewrites `PopText:addHeal`. Changes font and show text when critical.
--- @override PopText_addHeal
-local PopText_addHeal = PopText.addHeal
+-- @rewrite
 function PopText:addHeal(points)
   local crit = points.critical and '_crit' or ''
   local popupName = 'popup_heal' .. points.key
@@ -83,8 +86,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Battler:popResults`. Plays sound before pop-up.
--- @override Battler_popResults
-local Battler_popResults = Battler.popResults
+-- @rewrite
 function Battler:popResults(popText, results, character)
   if Config.sounds.critical and results.critical then
     AudioManager:playSFX(Config.sounds.critical)

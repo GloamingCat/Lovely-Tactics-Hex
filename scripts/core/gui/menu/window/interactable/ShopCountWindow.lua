@@ -22,7 +22,7 @@ local ShopCountWindow = class(CountWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:createContent`. Creates the text with the price values.
--- @override createContent
+-- @override
 function ShopCountWindow:createContent(...)
   CountWindow.createContent(self, ...)
   self:createValues()
@@ -32,7 +32,7 @@ function ShopCountWindow:createContent(...)
   self.spinner.bigIncrement = 5
 end
 --- Overrides `CountWindow:createWidgets`. Adds "buy" button.
--- @override createWidgets
+-- @override
 function ShopCountWindow:createWidgets(...)
   CountWindow.createWidgets(self, ...)
   local button = Button:fromKey(self, "buy")
@@ -205,12 +205,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function ShopCountWindow:rowCount()
   return 2
 end
 --- Overrides `GridWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function ShopCountWindow:cellWidth()
   return 100
 end

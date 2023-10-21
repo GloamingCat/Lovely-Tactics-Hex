@@ -25,7 +25,7 @@ local EscapeRule = class(AIRule)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `AIRule:onSelect`. 
--- @override onSelect
+-- @override
 function EscapeRule:onSelect(user)
   user = user or TurnManager:currentCharacter()
   self.input = ActionInput(EscapeAction(true), user)

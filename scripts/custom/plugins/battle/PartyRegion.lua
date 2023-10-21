@@ -14,6 +14,12 @@
 
 -- ================================================================================================
 
+-- Imports
+local TroopManager = require('core/battle/TroopManager')
+
+-- Rewrites
+local TroopManager_setPartyTiles = TroopManager.setPartyTiles
+
 -- Parameters
 local regionIDs = {}
 do
@@ -25,16 +31,12 @@ do
 end
 local merge = args.override ~= true
 
--- Imports
-local TroopManager = require('core/battle/TroopManager')
-
 -- ------------------------------------------------------------------------------------------------
 -- TroopManager
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `TroopManager:setPartyTiles`.
--- @override TroopManager_setPartyTiles
-local TroopManager_setPartyTiles = TroopManager.setPartyTiles
+-- @rewrite
 function TroopManager:setPartyTiles()
   if merge then
     TroopManager_setPartyTiles(self)

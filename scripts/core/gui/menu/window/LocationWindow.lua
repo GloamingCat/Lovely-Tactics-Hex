@@ -21,7 +21,7 @@ local LocationWindow = class(Window)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:createContent`. 
--- @override createContent
+-- @override
 function LocationWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local icon = Config.icons.location

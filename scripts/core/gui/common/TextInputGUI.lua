@@ -21,7 +21,7 @@ local TextInputGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:init`. 
--- @override init
+-- @override
 function TextInputGUI:init(parent, description, emptyAllowed, cancelAllowed)
   self.description = description
   self.emptyAllowed = emptyAllowed
@@ -29,7 +29,7 @@ function TextInputGUI:init(parent, description, emptyAllowed, cancelAllowed)
   GUI.init(self, parent)
 end
 --- Overrides `GUI:createWindows`. 
--- @override createWindows
+-- @override
 function TextInputGUI:createWindows()
   self.name = 'TextInput GUI'
   local textWindow = TextInputWindow(self, self.emptyAllowed, self.cancelAllowed)

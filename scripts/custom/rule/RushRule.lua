@@ -18,7 +18,7 @@ local RushRule = class(SkillRule)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `SkillRule:onSelect`. 
--- @override onSelect
+-- @override
 function RushRule:onSelect(...)
   SkillRule.onSelect(self, ...)
   self:selectClosestTarget()

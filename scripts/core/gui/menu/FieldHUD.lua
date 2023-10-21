@@ -29,7 +29,7 @@ function FieldHUD:init()
   GUI.init(self)
 end
 --- Implements `GUI:createWindows`.
--- @implement createWindows
+-- @implement
 function FieldHUD:createWindows()
   self:createSaveInfoWindow()
   self:createButtonWindow()
@@ -85,7 +85,7 @@ function FieldHUD:refreshSave(all)
   end
 end
 --- Overrides `GUI:show`. 
--- @override show
+-- @override
 function FieldHUD:show(...)
   if self.buttonWindow then
     self.buttonWindow:refreshLastOpen()
@@ -95,7 +95,7 @@ function FieldHUD:show(...)
   self:refreshSave(true)
 end
 --- Overrides `GUI:update`. 
--- @override update
+-- @override
 function FieldHUD:update(dt)
   GUI.update(self, dt)
   if self.open then

@@ -51,17 +51,17 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function ConfirmWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function ConfirmWindow:rowCount()
   return 2
 end
 --- Overrides `GridWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function ConfirmWindow:cellWidth()
   return 80
 end

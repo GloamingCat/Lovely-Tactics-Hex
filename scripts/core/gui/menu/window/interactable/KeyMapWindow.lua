@@ -22,14 +22,14 @@ local KeyMapWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:setProperties`. Sets tooltip.
--- @override setProperties
+-- @override
 function KeyMapWindow:setProperties()
   self.keys = { 'confirm', 'cancel', 'dash', 'pause', 'prev', 'next' }
   GridWindow.setProperties(self)
   self.tooltipTerm = 'buttonChange'
 end
 --- Implements `GridWindow:createWidgets`.
--- @implement createWidgets
+-- @implement
 function KeyMapWindow:createWidgets()
   for i = 1, #self.keys do
     self:createKeyButtons(self.keys[i])
@@ -59,7 +59,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:show`. 
--- @override show
+-- @override
 function KeyMapWindow:show(...)
   if not self.open then
     self.map = { main = copyTable(InputManager.mainMap),
@@ -123,12 +123,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function KeyMapWindow:colCount()
   return 2
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function KeyMapWindow:rowCount()
   return 7
 end

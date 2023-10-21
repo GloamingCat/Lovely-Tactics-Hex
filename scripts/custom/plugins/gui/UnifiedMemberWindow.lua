@@ -18,7 +18,13 @@ local MemberCommandWindow = require('core/gui/members/window/interactable/Member
 local MemberGUI = require('core/gui/members/MemberGUI')
 local SkillGUI = require('core/gui/members/SkillGUI')
 
--- Arguments
+-- Rewrites
+local MemberGUI_createWindows = MemberGUI.createWindows
+local MemberGUI_createInfoWindow = MemberGUI.createInfoWindow
+local MemberGUI_refreshMember = MemberGUI.refreshMember
+local FieldCommandWindow_setProperties = FieldCommandWindow.setProperties
+
+-- Parameters
 local useItem = args.useItem
 
 -- ------------------------------------------------------------------------------------------------
@@ -26,7 +32,7 @@ local useItem = args.useItem
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `MemberCommandWindow:createWidgets`.
--- @override MemberCommandWindow_createWidgets
+-- @rewrite
 function MemberCommandWindow:createWidgets()
   Button:fromKey(self, 'equips')
   Button:fromKey(self, 'skills')
@@ -40,17 +46,17 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `MemberCommandWindow:itemsConfirm`.
--- @override MemberCommandWindow_itemsConfirm
+-- @rewrite
 function MemberCommandWindow:itemsConfirm()
   self.GUI:showSubGUI(ItemGUI)
 end
 --- Rewrites `MemberCommandWindow:skillsConfirm`.
--- @override MemberCommandWindow_skillsConfirm
+-- @rewrite
 function MemberCommandWindow:skillsConfirm()
   self.GUI:showSubGUI(SkillGUI)
 end
 --- Rewrites `MemberCommandWindow:equipsConfirm`.
--- @override MemberCommandWindow_equipsConfirm
+-- @rewrite
 function MemberCommandWindow:equipsConfirm()
   self.GUI:showSubGUI(EquipGUI)
 end
@@ -60,7 +66,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `MemberCommandWindow:rowCount`. 
--- @override MemberCommandWindow_rowCount
+-- @rewrite
 function MemberCommandWindow:rowCount()
   return useItem and 3 or 2
 end
@@ -69,10 +75,8 @@ end
 -- MemberGUI
 -- ------------------------------------------------------------------------------------------------
 
---- Rewrites `MemberGUI:createWindows`.
---  Creates the window with the commands for the chosen member.
--- @override MemberGUI_createWindows
-local MemberGUI_createWindows = MemberGUI.createWindows
+--- Rewrites `MemberGUI:createWindows`. Creates the window with the commands for the chosen member.
+-- @rewrite
 function MemberGUI:createWindows(...)
   -- Creates command window
   local window = MemberCommandWindow(self)
@@ -91,8 +95,7 @@ function MemberGUI:createWindows(...)
   self:setActiveWindow(window)
 end
 --- Rewrites `MemberGUI:createInfoWindow`.
--- @override MemberGUI_createInfoWindow
-local MemberGUI_createInfoWindow = MemberGUI.createInfoWindow
+-- @rewrite
 function MemberGUI:createInfoWindow()
   if self.parent and self.parent.createInfoWindow then
     -- Is sub GUI
@@ -102,10 +105,8 @@ function MemberGUI:createInfoWindow()
     MemberGUI_createInfoWindow(self)
   end
 end
---- Rewrites `MemberGUI:refreshMember`.
--- Refreshes current member of command window.
--- @override MemberGUI_refreshMember
-local MemberGUI_refreshMember = MemberGUI.refreshMember
+--- Rewrites `MemberGUI:refreshMember`. Refreshes current member of command window.
+-- @rewrite
 function MemberGUI:refreshMember(member)
   MemberGUI_refreshMember(self, member)
   if self.parent and self.parent.refreshMember then
@@ -119,7 +120,7 @@ function MemberGUI:refreshMember(member)
   end
 end
 --- Rewrites `MemberGUI:memberEnabled`.
--- @override MemberGUI_memberEnabled
+-- @rewrite
 function MemberGUI:memberEnabled(member)
   return not self.subGUI or self.subGUI:memberEnabled(self:currentMember())
 end
@@ -151,14 +152,13 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `FieldCommandWindow:setProperties`. Changes the alignment of the button.
--- @override FieldCommandWindow_setProperties
-local FieldCommandWindow_setProperties = FieldCommandWindow.setProperties
+-- @rewrite
 function FieldCommandWindow:setProperties(...)
   FieldCommandWindow_setProperties(self, ...)
   self.buttonAlign = 'center'
 end
 --- Rewrites `FieldCommandWindow:createWidgets`. Changes the available buttons.
--- @override FieldCommandWindow_createWidgets
+-- @rewrite
 function FieldCommandWindow:createWidgets(...)
   Button:fromKey(self, 'inventory')
   Button:fromKey(self, 'members')
@@ -168,12 +168,12 @@ function FieldCommandWindow:createWidgets(...)
   Button:fromKey(self, 'return')
 end
 --- Rewrites `FieldCommandWindow:colCount`.
--- @override FieldCommandWindow_colCount
+-- @rewrite
 function FieldCommandWindow:colCount()
   return 1
 end
 --- Rewrites `FieldCommandWindow:rowCount`.
--- @override FieldCommandWindow_rowCount
+-- @rewrite
 function FieldCommandWindow:rowCount()
   return 6
 end

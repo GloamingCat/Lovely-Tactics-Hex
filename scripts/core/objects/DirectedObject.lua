@@ -27,7 +27,7 @@ local DirectedObject = class(AnimatedObject)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `AnimatedObject:initGraphics`. 
--- @override initGraphics
+-- @override
 -- @tparam number direction The initial direction.
 function DirectedObject:initGraphics(direction, ...)
   self.direction = direction
@@ -40,7 +40,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `AnimatedObject:replayAnimation`. 
--- @override replayAnimation
+-- @override
 function DirectedObject:replayAnimation(name, row)
   row = row or angle2Row(self.direction)
   return AnimatedObject.replayAnimation(self, name, row)

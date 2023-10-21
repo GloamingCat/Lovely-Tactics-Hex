@@ -23,7 +23,7 @@ local texts = args.text:split()
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `TitleCommandWindow:createWidgets`.
--- @override TitleCommandWindow_createWidgets
+-- @rewrite
 function TitleCommandWindow:createWidgets()
   Button:fromKey(self, 'newGame')
   Button:fromKey(self, 'loadGame')
@@ -58,7 +58,7 @@ function TitleCommandWindow:tutorialConfirm()
   self:show()
 end
 --- Rewrites `TitleCommandWindow:rowCount`.
--- @override TitleCommandWindow_rowCount
+-- @rewrite
 function TitleCommandWindow:rowCount()
   return GameManager:isDesktop() and 5 or 4
 end

@@ -29,17 +29,17 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `ButtonWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function ConfirmButtonWindow:cellWidth()
   return ConfirmWindow.cellWidth(self) + ConfirmWindow.paddingX(self) * 2 / self:colCount()
 end
 --- Overrides `ButtonWindow:cellHeight`. 
--- @override cellHeight
+-- @override
 function ConfirmButtonWindow:cellHeight()
   return ConfirmWindow.cellHeight(self) + ConfirmWindow.paddingY(self) * 2 / self:rowCount()
 end
 --- Overrides `GridWindow:cellHeight`. 
--- @override rowMargin
+-- @override
 function ConfirmButtonWindow:rowMargin()
   return ButtonWindow.rowMargin(self) - 6
 end

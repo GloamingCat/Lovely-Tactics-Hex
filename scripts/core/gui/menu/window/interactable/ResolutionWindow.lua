@@ -19,7 +19,7 @@ local ResolutionWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Implements `GridWindow:createWidgets`.
--- @implement createWidgets
+-- @implement
 function ResolutionWindow:createWidgets()
   Button:fromKey(self, 'resolution1')
   Button:fromKey(self, 'resolution2')
@@ -41,12 +41,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function ResolutionWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function ResolutionWindow:rowCount()
   return 4
 end

@@ -21,6 +21,11 @@ local Quad = lgraphics.newQuad
 local max = math.max
 local round = math.round
 
+-- Rewrites
+local Text_setText = Text.setText
+local Text_rescale = Text.rescale
+local Text_setCutPoint = Text.setCutPoint
+
 -- Parameters
 local outlineSize = args.width or 1
 
@@ -31,23 +36,20 @@ local textShader = lgraphics.newShader('shaders/Text.glsl')
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Text:setText`.
--- @override Text_setText
-local Text_setText = Text.setText
+-- @rewrite
 function Text:setText(...)
   self.bufferLines = nil
   self.needsRedraw = true
   Text_setText(self, ...)
 end
 --- Rewrites `Text:rescale`.
--- @override Text_rescale
-local Text_rescale = Text.rescale
+-- @rewrite
 function Text:rescale(...)
   self.needsRedraw = true
   Text_rescale(self, ...)
 end
 --- Rewrites `Text:setCutPoint`.
--- @override Text_setCutPoint
-local Text_setCutPoint = Text.setCutPoint
+-- @rewrite
 function Text:setCutPoint(...)
   self.bufferLines = nil
   self.needsRedraw = true
@@ -59,7 +61,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Text:isVisible`.
--- @override Text_isVisible
+-- @rewrite
 function Text:isVisible()
   return (self.bufferLines or self.lines) and self.visible
 end

@@ -21,7 +21,7 @@ local HideRule = class(AIRule)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `AIRule:onSelect`. 
--- @override onSelect
+-- @override
 function HideRule:onSelect(user)
   user = user or TurnManager:currentCharacter()
   self.input = ActionInput(BattleMoveAction(), user)

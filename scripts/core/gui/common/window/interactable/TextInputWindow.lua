@@ -21,7 +21,7 @@ local TextInputWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:init`. 
--- @override init
+-- @override
 function TextInputWindow:init(gui, emptyAllowed, cancelAllowed, ...)
   self.emptyAllowed = emptyAllowed
   self.cancelAllowed = cancelAllowed
@@ -29,7 +29,7 @@ function TextInputWindow:init(gui, emptyAllowed, cancelAllowed, ...)
   GridWindow.init(self, gui, ...)
 end
 --- Implements `GridWindow:createWidgets`. Creates confirm and cancel buttons.
--- @implement createWidgets
+-- @implement
 function TextInputWindow:createWidgets()
   self.confirmButton = Button:fromKey(self, 'confirm')
   self.cancelButton = Button:fromKey(self, 'cancel')
@@ -37,7 +37,7 @@ function TextInputWindow:createWidgets()
   self.cancelButton.clickSound = Config.sounds.buttonCancel
 end
 --- Overrides `GridWindow:createContent`. Creates text box.
--- @override createContent
+-- @override
 function TextInputWindow:createContent(width, height, ...)
   GridWindow.createContent(self, width, height, ...)
   local pos = Vector(-self.width / 2 + self:paddingX(), -self.height / 2 + self:paddingY(), -1)
@@ -66,13 +66,13 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:onConfirm`. If no button is selected, then choose confirm button.
--- @override onConfirm
+-- @override
 function TextInputWindow:onConfirm()
   local widget = self:currentWidget() or self.confirmButton
   GridWindow.onConfirm(self, widget)
 end
 --- Overrides `GridWindow:onCancel`. If no button is selected, then choose cancel button.
--- @override onCancel
+-- @override
 function TextInputWindow:onCancel()
   if self.cancelAllowed then
     local widget = self:currentWidget() or self.cancelButton
@@ -103,7 +103,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:onTextInput`. Updates current text.
--- @override onTextInput
+-- @override
 function TextInputWindow:onTextInput(c)
   if c == 'backspace' then
     if #self.textBox.input >= self.textBox.cursorPoint - 1 then
@@ -141,7 +141,7 @@ function TextInputWindow:deselectText()
   InputManager:endTextInput()
 end
 --- Overrides `GridWindow:setSelectedWidget`. Hides text cursor.
--- @override setSelectedWidget
+-- @override
 function TextInputWindow:setSelectedWidget(widget)
   if widget ~= nil then
     self.textBox:setCursorVisible(false)
@@ -150,7 +150,7 @@ function TextInputWindow:setSelectedWidget(widget)
   GridWindow.setSelectedWidget(self, widget)
 end
 --- Overrides `GridWindow:onMove`. Updates current selected widget.
--- @override onMove
+-- @override
 function TextInputWindow:onMove(dx, dy)
   if dy < 0 then
     if self.currentRow == 1 then
@@ -181,7 +181,7 @@ function TextInputWindow:onMove(dx, dy)
   GridWindow.onMove(self, dx, dy)
 end
 --- Overrides `Window:show`. Start text input.
--- @override show
+-- @override
 function TextInputWindow:show(...)
   self.currentRow = 0
   GridWindow.show(self, ...)
@@ -198,12 +198,12 @@ function TextInputWindow:gridY()
   return self:cellHeight() + self:rowMargin()
 end
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function TextInputWindow:colCount()
   return 2
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function TextInputWindow:rowCount()
   return 1
 end

@@ -63,7 +63,7 @@ function Object:setVisible(value)
   end
 end
 --- Overrides `Movable:setXYZ`. Updates sprite's position.
--- @override setXYZ
+-- @override
 function Object:setXYZ(...)
   Transformable.setXYZ(self, ...)
   if self.sprite then
@@ -71,7 +71,7 @@ function Object:setXYZ(...)
   end
 end
 --- Overrides `Colorable:setRGBA`. Updates sprite's color.
--- @override setRGBA
+-- @override
 function Object:setRGBA(...)
   Transformable.setRGBA(self, ...)
   if self.sprite then

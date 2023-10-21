@@ -24,7 +24,7 @@ function ConfirmGUI:init(parent, confirmTerm, cancelTerm, ...)
   GUI.init(self, parent, ...)
 end
 --- Overrides `GUI:createWindows`. 
--- @override createWindows
+-- @override
 function ConfirmGUI:createWindows()
   self.name = 'Confirm GUI'
   local confirmWindow = ConfirmWindow(self, self.confirmTerm, self.cancelTerm)

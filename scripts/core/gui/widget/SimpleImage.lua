@@ -68,7 +68,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Component:updatePosition`. 
--- @override updatePosition
+-- @override
 function SimpleImage:updatePosition(pos)
   if self.sprite then
     local rpos = self.position

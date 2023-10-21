@@ -26,6 +26,9 @@ local TagMap = require('core/datastruct/TagMap')
 -- Alias
 local indexOf = util.array.indexOf
 
+-- Rewrites
+local Inventory_getEquipItems = Inventory.getEquipItems
+
 -- ------------------------------------------------------------------------------------------------
 -- Inventory
 -- ------------------------------------------------------------------------------------------------
@@ -44,8 +47,7 @@ local function canEquip(itemTags, jobTags)
   return false
 end
 --- Rewrites `Inventory:getEquipItems`.
--- @override Inventory_getEquipItems
-local Inventory_getEquipItems = Inventory.getEquipItems
+-- @rewrite
 function Inventory:getEquipItems(key, member)
   local items = Inventory_getEquipItems(self, key, member)
   if member.job.tags.equip then

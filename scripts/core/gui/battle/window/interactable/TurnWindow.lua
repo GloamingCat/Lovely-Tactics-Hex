@@ -40,13 +40,13 @@ function TurnWindow:init(...)
   ActionWindow.init(self, ...)
 end
 --- Overrides `GridWindow:setProperties`. 
--- @override setProperties
+-- @override
 function TurnWindow:setProperties()
   ActionWindow.setProperties(self)
   self.tooltipTerm = ''
 end
 --- Overrides `GridWindow:createContent`. Creates character cursor and stores troop's data.
--- @override createContent
+-- @override
 function TurnWindow:createContent(...)
   local troop = TurnManager:currentTroop()
   self.backupBattlers = troop:backupBattlers()
@@ -57,7 +57,7 @@ function TurnWindow:createContent(...)
   self.content:add(self.userCursor)
 end
 --- Implements `GridWindow:createWidgets`. 
--- @implement createWidgets
+-- @implement
 function TurnWindow:createWidgets()
   Button:fromKey(self, 'attack')
   Button:fromKey(self, 'move')
@@ -112,14 +112,14 @@ function TurnWindow:optionsConfirm(button)
   self:show()
 end
 --- Overrides `GridWindow:onCancel`. 
--- @override onCancel
+-- @override
 function TurnWindow:onCancel()
   AudioManager:playSFX(Config.sounds.buttonCancel)
   self:optionsConfirm()
   self.result = nil
 end
 --- Overrides `Window:onNext`. 
--- @override onNext
+-- @override
 function TurnWindow:onNext()
   local index = TurnManager:nextCharacterIndex(1, true)
   if index and index ~= TurnManager.characterIndex then
@@ -127,7 +127,7 @@ function TurnWindow:onNext()
   end
 end
 --- Overrides `Window:onPrev`. 
--- @override onPrev
+-- @override
 function TurnWindow:onPrev()
   local index = TurnManager:nextCharacterIndex(-1, true)
   if index and index ~= TurnManager.characterIndex then
@@ -176,7 +176,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:show`. 
--- @override show
+-- @override
 function TurnWindow:show(...)
   local user = TurnManager:currentCharacter()
   self.userCursor:setCharacter(user)
@@ -188,17 +188,17 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function TurnWindow:colCount()
   return 2
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function TurnWindow:rowCount()
   return 4
 end
 --- Overrides `GridWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function TurnWindow:cellWidth()
   return ActionWindow.cellWidth(self) * 3 / 4
 end

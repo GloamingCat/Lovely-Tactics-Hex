@@ -16,6 +16,9 @@
 -- Imports
 local TurnManager = require('core/battle/TurnManager')
 
+-- Rewrites
+local TurnManager_runTurn = TurnManager.runTurn
+
 -- Parameters
 KeyMap.main['win'] = args.win
 KeyMap.main['lose'] = args.lose
@@ -34,8 +37,7 @@ local function killAll(party)
   end
 end
 --- Rewrites `TurnManager:runTurn`.
--- @override TurnManager_runTurn
-local TurnManager_runTurn = TurnManager.runTurn
+-- @rewrite
 function TurnManager:runTurn(...)
   local enemyParty = #TroopManager.troops - TroopManager.playerParty
   if InputManager.keys['win']:isPressing() and InputManager.keys['lose']:isPressing() then

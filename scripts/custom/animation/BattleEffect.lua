@@ -18,7 +18,7 @@ local BattleEffect = class(Animation)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Animation:setFrames`. Considers row count.
--- @override setFrames
+-- @override
 function BattleEffect:setFrames(timing, pattern)
   self.timing = {}
   self.duration = 0
@@ -34,7 +34,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Animation:nextFrame`. Plays the next row if reached the last index.
--- @override nextFrame
+-- @override
 function BattleEffect:nextFrame()
   local lastIndex = self.pattern and #self.pattern or self.colCount
   if self.index < lastIndex then
@@ -49,7 +49,7 @@ function BattleEffect:nextFrame()
   end
 end
 --- Overrides `Animation:onEnd`. Plays next row on loop.
--- @override onEnd
+-- @override
 function BattleEffect:onEnd()
   Animation.onEnd(self)
   if self.loop or self.loopDuration then
@@ -62,7 +62,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Animation:reset`. Resets row number.
--- @override reset
+-- @override
 function BattleEffect:reset()
   Animation.reset(self)
   self:setRow(0)

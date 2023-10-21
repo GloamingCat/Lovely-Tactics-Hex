@@ -163,12 +163,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `FieldAction:canExecute`. 
--- @override canExecute
+-- @override
 function SkillAction:canExecute(input)
   return self:canBattleUse(input.user)
 end
 --- Overrides `FieldAction:onConfirm`. Executes the movement action and the skill's effect.
--- @override execute
+-- @override
 function SkillAction:execute(input)
   if input.moveResult.executed then
     -- Skill use
@@ -299,7 +299,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:isCharacterAffected`. 
--- @override isCharacterAffected
+-- @override
 function SkillAction:isCharacterAffected(input, char)
   if not BattleAction.isCharacterAffected(self, input, char) then
     return false

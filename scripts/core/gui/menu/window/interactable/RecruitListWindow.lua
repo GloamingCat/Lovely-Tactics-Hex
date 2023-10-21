@@ -23,7 +23,7 @@ function RecruitListWindow:init(gui)
   ListWindow.init(self, gui, {})
 end
 --- Implements `ListWindow:createListButton`.
--- @implement createListButton
+-- @implement
 function RecruitListWindow:createListButton(entry)
   local battler, price, char, member
   if self.hire then
@@ -119,7 +119,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `ListWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function RecruitListWindow:cellWidth()
   return ListWindow.cellWidth(self) * 4 / 5
 end

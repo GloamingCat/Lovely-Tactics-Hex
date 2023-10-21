@@ -27,7 +27,7 @@ function WindowCursor:init(window)
   window.content:add(self)
 end
 --- Overrides `Component:createContent`. Creates cursor sprite.
--- @override createContent
+-- @override
 function WindowCursor:createContent()
   self.anim = ResourceManager:loadAnimation(Config.animations.cursor, GUIManager.renderer)
   self.anim.sprite:setTransformation(self.anim.data.transform)

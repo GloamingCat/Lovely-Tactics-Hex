@@ -23,7 +23,7 @@ function ShopListWindow:init(gui)
   ListWindow.init(self, gui, {})
 end
 --- Implements `ListWindow:createListButton`.
--- @implement createListButton
+-- @implement
 function ShopListWindow:createListButton(item)
   local price = item.price
   item = Database.items[item.id]
@@ -103,7 +103,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `ListWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function ShopListWindow:cellWidth()
   return ListWindow.cellWidth(self) * 4 / 5
 end

@@ -27,7 +27,7 @@ local Pointer = class(Animation)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Animation:init`. 
--- @override init
+-- @override
 function Pointer:init(...)
   Animation.init(self, ...)
 
@@ -53,7 +53,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Animation:update`. 
--- @override update
+-- @override
 function Pointer:update(dt)
   Animation.update(self, dt)
   if self.paused or not self.duration or not self.timing then

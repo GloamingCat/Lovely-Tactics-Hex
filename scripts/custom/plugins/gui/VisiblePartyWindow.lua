@@ -14,13 +14,22 @@ local FieldGUI = require('core/gui/menu/FieldGUI')
 local FieldCommandWindow = require('core/gui/menu/window/interactable/FieldCommandWindow')
 local PartyWindow = require('core/gui/members/window/interactable/PartyWindow')
 
+-- Rewrites
+local FieldGUI_createWindows = FieldGUI.createWindows
+local FieldGUI_createMainWindow = FieldGUI.createMainWindow
+local FieldGUI_createMembersWindow = FieldGUI.createMembersWindow
+local FieldCommandWindow_setProperties = FieldCommandWindow.setProperties
+local FieldCommandWindow_colCount = FieldCommandWindow.colCount
+local FieldCommandWindow_rowCount = FieldCommandWindow.rowCount
+local PartyWindow_cellWidth = PartyWindow.cellWidth
+local PartyWindow_cellHeight = PartyWindow.cellHeight
+
 -- ------------------------------------------------------------------------------------------------
 -- FieldGUI
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `FieldGUI:createWindows`.
--- @override FieldGUI_createWindows
-local FieldGUI_createWindows = FieldGUI.createWindows
+-- @rewrite
 function FieldGUI:createWindows(...)
   FieldGUI_createWindows(self, ...)
   local y = -self.goldWindow.position.y
@@ -29,8 +38,7 @@ function FieldGUI:createWindows(...)
   self.timeWindow:setXYZ(nil, y)
 end
 --- Rewrites `FieldGUI:createMainWindow`.
--- @override FieldGUI_createMainWindow
-local FieldGUI_createMainWindow = FieldGUI.createMainWindow
+-- @rewrite
 function FieldGUI:createMainWindow()
   FieldGUI_createMainWindow(self)
   local m = self:windowMargin()
@@ -40,8 +48,7 @@ function FieldGUI:createMainWindow()
   self.mainWindow:setXYZ(x, y)
 end
 --- Rewrites `FieldGUI:createMembersWindow`.
--- @override FieldGUI_createMembersWindow
-local FieldGUI_createMembersWindow = FieldGUI.createMembersWindow
+-- @rewrite
 function FieldGUI:createMembersWindow()
   FieldGUI_createMembersWindow(self)
   local x = ScreenManager.width / 2 - self.partyWindow.width / 2 - self:windowMargin()
@@ -58,14 +65,13 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `FieldCommandWindow:setProperties`.
--- @override FieldCommandWindow_setProperties
-local FieldCommandWindow_setProperties = FieldCommandWindow.setProperties
+-- @rewrite
 function FieldCommandWindow:setProperties(...)
   FieldCommandWindow_setProperties(self, ...)
   self.buttonAlign = 'left'
 end
 --- Rewrites `FieldCommandWindow:openPartyWindow`.
--- @override FieldCommandWindow_openPartyWindow
+-- @rewrite
 function FieldCommandWindow:openPartyWindow(GUI, tooltip)
   if self.GUI.partyWindow.troop:visibleMembers().size <= 1 then
     self.GUI:hide()
@@ -88,14 +94,12 @@ function FieldCommandWindow:openPartyWindow(GUI, tooltip)
   self.GUI.partyWindow.highlight:hide()
 end
 --- Rewrites `FieldCommandWindow:colCount`.
--- @override FieldCommandWindow_colCount
-local FieldCommandWindow_colCount = FieldCommandWindow.colCount
+-- @rewrite
 function FieldCommandWindow:colCount()
   return 1
 end
 --- Rewrites `FieldCommandWindow:rowCount`.
--- @override FieldCommandWindow_rowCount
-local FieldCommandWindow_rowCount = FieldCommandWindow.rowCount
+-- @rewrite
 function FieldCommandWindow:rowCount()
   return FieldCommandWindow_rowCount(self) * FieldCommandWindow_colCount(self)
 end
@@ -105,8 +109,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `PartyWindow:cellWidth`.
--- @override PartyWindow_cellWidth
-local PartyWindow_cellWidth = PartyWindow.cellWidth
+-- @rewrite
 function PartyWindow:cellWidth()
   if self.GUI and self.GUI.mainWindow then
     local w = ScreenManager.width - self.GUI.mainWindow.width - self.GUI:windowMargin() * 3
@@ -115,8 +118,7 @@ function PartyWindow:cellWidth()
   return PartyWindow_cellWidth(self)
 end
 --- Rewrites `PartyWindow:cellHeight`.
--- @override PartyWindow_cellHeight
-local PartyWindow_cellHeight = PartyWindow.cellHeight
+-- @rewrite
 function PartyWindow:cellHeight()
   if self.GUI and self.GUI.goldWindow then
     local h = ScreenManager.height - self.GUI.goldWindow.height - self.GUI:windowMargin() * 3

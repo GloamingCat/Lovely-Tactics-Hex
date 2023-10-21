@@ -21,7 +21,7 @@ local TimeWindow = class(Window)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:createContent`. 
--- @override createContent
+-- @override
 function TimeWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local icon = Config.icons.time

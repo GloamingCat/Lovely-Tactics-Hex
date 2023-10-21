@@ -70,7 +70,7 @@ function Obstacle:isPassable(dx, dy, obj)
   return self.passability[dx][dy] == true
 end
 --- Overrides `Object:getHeight`. 
--- @override getHeight
+-- @override
 function Obstacle:getHeight(x, y)
   return self.collisionHeight
 end
@@ -80,7 +80,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Object:addToTiles`. 
--- @override addToTiles
+-- @override
 function Obstacle:addToTiles(tiles)
   local tile = tiles and tiles[1] or self:getTile()
   tile.obstacleList:add(self)
@@ -95,7 +95,7 @@ function Obstacle:addToTiles(tiles)
   end
 end
 --- Overrides `Object:removeFromTiles`. 
--- @override removeFromTiles
+-- @override
 function Obstacle:removeFromTiles(tiles)
   local tile = tiles and tiles[1] or self:getTile()
   tile.obstacleList:removeElement(self)

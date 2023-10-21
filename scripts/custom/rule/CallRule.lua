@@ -25,7 +25,7 @@ local CallRule = class(AIRule)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `AIRule:init`. 
--- @override init
+-- @override
 function CallRule:init(...)
   AIRule.init(self, ...)
   if self.tags and self.tags.member then
@@ -33,7 +33,7 @@ function CallRule:init(...)
   end
 end
 --- Overrides `AIRule:onSelect`. 
--- @override onSelect
+-- @override
 function CallRule:onSelect(user)
   local troop = TroopManager.troops[user.party]
   local backup = troop:backupBattlers()

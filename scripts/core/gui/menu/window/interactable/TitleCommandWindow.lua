@@ -27,7 +27,7 @@ function TitleCommandWindow:init(...)
   self.currentRow = self:loadGameEnabled() and 2 or 1
 end
 --- Implements `GridWindow:createWidgets`.
--- @implement createWidgets
+-- @implement
 function TitleCommandWindow:createWidgets()
   Button:fromKey(self, 'newGame')
   Button:fromKey(self, 'loadGame')
@@ -99,12 +99,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function TitleCommandWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function TitleCommandWindow:rowCount()
   return GameManager:isDesktop() and 4 or 3
 end

@@ -52,7 +52,7 @@ KeyPoint.Field = {
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Animation:init`.
--- @override init
+-- @override
 function KeyPoint:init(...)
   Animation.init(self, ...)
   self.keyPoints = {}
@@ -101,7 +101,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Animation:update`. 
--- @override update
+-- @override
 function KeyPoint:update(dt)
   Animation.update(self, dt)
   if self.paused or not self.duration or not self.timing then

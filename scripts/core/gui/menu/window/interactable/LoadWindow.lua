@@ -18,13 +18,13 @@ local LoadWindow = class(SaveWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `SaveWindow:setProperties`. 
--- @override setProperties
+-- @override
 function LoadWindow:setProperties()
   SaveWindow.setProperties(self)
   self.tooltipTerm = 'loadSlot'
 end
 --- Overrides `SaveWindow:createSaveButton`. 
--- @override createSaveButton
+-- @override
 function LoadWindow:createSaveButton(file, name)
   if SaveManager:getHeader(file) then
     return SaveWindow.createSaveButton(self, file, name)

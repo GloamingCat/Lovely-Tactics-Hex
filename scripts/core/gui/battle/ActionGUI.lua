@@ -26,7 +26,7 @@ local ActionGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:init`. 
--- @override init
+-- @override
 function ActionGUI:init(parent, input)
   self.name = 'Action GUI'
   self.slideMargin = 16
@@ -57,7 +57,7 @@ function ActionGUI:createScrollArrows()
   self.scrollArrows[3]:setXYZ(0, -(ScreenManager.height - self.slideMargin) / 2)
 end
 --- Overrides `GUI:destroy`. Destroys scroll arrows.
--- @override destroy
+-- @override
 function ActionGUI:destroy(...)
   GUI.destroy(self, ...)
   if self.scrollArrows then
@@ -133,7 +133,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:waitForResult`. 
--- @override waitForResult
+-- @override
 function ActionGUI:waitForResult()
   self.result = self.input.action:onActionGUI(self.input)
   while self.result == nil do

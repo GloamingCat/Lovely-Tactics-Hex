@@ -33,7 +33,7 @@ function SimpleText:init(text, position, width, align, font, plainText)
   Component.init(self, position, text, properties)
 end
 --- Implements `Component:createContent`.
--- @implement createContent
+-- @implement
 -- @tparam string text Initial text, in raw form.
 -- @tparam table properties Array with text properties in order:
 --  Maximum width, horizontal alignment, initial font.
@@ -59,7 +59,7 @@ function SimpleText:setRelativeXYZ(x, y, z)
   pos.z = pos.z or z
 end
 --- Overrides `Component:updatePosition`. 
--- @override updatePosition
+-- @override
 -- @tparam Vector pos Window position.
 function SimpleText:updatePosition(pos)
   local rpos = self.position

@@ -21,13 +21,13 @@ local SkillGUI = class(MemberGUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `MemberGUI:init`. 
--- @override init
+-- @override
 function SkillGUI:init(...)
   self.name = 'Skill GUI'
   MemberGUI.init(self, ...)
 end
 --- Overrides `GUI:createWindows`. 
--- @override createWindows
+-- @override
 function SkillGUI:createWindows()
   self:createInfoWindow()
   self:createSkillWindow()

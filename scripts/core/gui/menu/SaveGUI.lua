@@ -19,7 +19,7 @@ local SaveGUI = class(GUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:createWindows`. 
--- @override createWindows
+-- @override
 function SaveGUI:createWindows()
   self.name = 'Save GUI'
   self:createMainWindow()

@@ -21,7 +21,7 @@ local NumberWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:init`. 
--- @override init
+-- @override
 function NumberWindow:init(GUI, args)
   self.noCursor = true
   self.length = args.length
@@ -31,7 +31,7 @@ function NumberWindow:init(GUI, args)
   GridWindow.init(self, GUI, self.width, nil, args.pos)
 end
 --- Implements `GridWindow:createWidgets`.
--- @implement createWidgets
+-- @implement
 function NumberWindow:createWidgets()
   for i = 1, self.length do
     VSpinner(self, 0, 9, 0)
@@ -77,22 +77,22 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function NumberWindow:colCount()
   return self.length + 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function NumberWindow:rowCount()
   return 1
 end
 --- Overrides `GridWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function NumberWindow:cellWidth()
   return 16
 end
 --- Overrides `GridWindow:cellHeight`. 
--- @override cellHeight
+-- @override
 function NumberWindow:cellHeight()
   return (self.height or 48) - self:paddingY() * 2
 end

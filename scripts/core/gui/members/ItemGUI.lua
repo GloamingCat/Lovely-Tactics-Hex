@@ -21,7 +21,7 @@ local ItemGUI = class(MemberGUI)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GUI:init`. 
--- @override init
+-- @override
 -- @tparam MemberGUI parent Parent Member GUI.
 function ItemGUI:init(...)
   self.name = 'Item GUI'
@@ -29,7 +29,7 @@ function ItemGUI:init(...)
   self.inventory = self.troop.inventory
 end
 --- Overrides `GUI:createWindows`. 
--- @override createWindows
+-- @override
 function ItemGUI:createWindows()
   self:createInfoWindow()
   self:createItemWindow()

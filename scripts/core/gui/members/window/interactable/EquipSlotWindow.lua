@@ -36,7 +36,7 @@ function EquipSlotWindow:init(gui)
   ListWindow.init(self, gui, Config.equipTypes)
 end
 --- Overrides `ListWindow:createListButton`. 
--- @override createListButton
+-- @override
 -- @tparam table slot The table with the equip slot info (name, key, state, id).
 function EquipSlotWindow:createListButton(slot)
   for i = 1, slot.count do
@@ -125,12 +125,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function EquipSlotWindow:colCount()
   return 1
 end
 --- Overrides `ListWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function EquipSlotWindow:cellWidth(width)
   return 200
 end

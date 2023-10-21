@@ -22,7 +22,7 @@ local RecruitConfirmWindow = class(BattlerWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `CountWindow:createWidgets`. Adds "hire" button.
--- @override createContent
+-- @override
 function RecruitConfirmWindow:createContent(...)
   BattlerWindow.createContent(self, ...)
   local w = self.width - self:paddingX() * 2
@@ -122,12 +122,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function RecruitConfirmWindow:rowCount()
   return 2
 end
 --- Overrides `GridWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function RecruitConfirmWindow:cellWidth()
   return 100
 end

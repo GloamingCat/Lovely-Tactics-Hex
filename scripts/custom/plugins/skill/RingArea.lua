@@ -36,6 +36,7 @@
 -- ================================================================================================
 
 -- Imports
+local BattleAction = require('core/battle/action/BattleAction')
 local FieldAction = require('core/battle/action/FieldAction')
 local SkillAction = require('core/battle/action/SkillAction')
 local ActionGUI = require('core/gui/battle/ActionGUI')
@@ -43,13 +44,19 @@ local ActionGUI = require('core/gui/battle/ActionGUI')
 -- Alias
 local mathf = math.field
 
+-- Rewrites
+local SkillAction_init = SkillAction.init
+local FieldAction_resetAffectedTiles = FieldAction.resetAffectedTiles
+local FieldAction_isSelectable = FieldAction.isSelectable
+local FieldAction_isArea = FieldAction.isArea
+local FieldAction_getAreaTiles = FieldAction.getAreaTiles
+
 -- ------------------------------------------------------------------------------------------------
 -- SkillAction
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `SkillAction:init`. Creates ring masks if parameters are set in the tags.
--- @override SkillAction_init
-local SkillAction_init = SkillAction.init
+-- @rewrite
 function SkillAction:init(...)
   SkillAction_init(self, ...)
   local t = self.tags
@@ -67,10 +74,9 @@ function SkillAction:init(...)
   end
 end
 --- Overrides `BattleAction:onActionGUI`.
--- @override SkillAction:onActionGUI
-local SkillAction_onActionGUI = SkillAction.onActionGUI
+-- @override
 function SkillAction:onActionGUI(input)
-  SkillAction_onActionGUI(self, input)
+  BattleAction.onActionGUI(self, input)
   local far = self.tags.cast_far
   local near = self.tags.cast_near
   if not self.showStepWindow and self:isLongRanged() and (far or near) then
@@ -112,8 +118,7 @@ function FieldAction:wholeField()
   return self.area == nil
 end
 --- Rewrites `FieldAction:resetAffectedTiles`.
--- @override FieldAction_resetAffectedTiles
-local FieldAction_resetAffectedTiles = FieldAction.resetAffectedTiles
+-- @rewrite
 function FieldAction:resetAffectedTiles(input)
   if self:wholeField() then
     local affectedTiles = self:getAllAffectedTiles(input)
@@ -125,8 +130,7 @@ function FieldAction:resetAffectedTiles(input)
   end
 end
 --- Rewrites `FieldAction:isSelectable`.
--- @override FieldAction_isSelectable
-local FieldAction_isSelectable = FieldAction.isSelectable
+-- @rewrite
 function FieldAction:isSelectable(input, tile)
   if self:wholeField() then
     -- User only
@@ -136,8 +140,7 @@ function FieldAction:isSelectable(input, tile)
   end
 end
 --- Rewrites `FieldAction:isArea`.
--- @override FieldAction_isArea
-local FieldAction_isArea = FieldAction.isArea
+-- @rewrite
 function FieldAction:isArea()
   if self:wholeField() then
     return true
@@ -145,8 +148,7 @@ function FieldAction:isArea()
   return FieldAction_isArea(self)
 end
 --- Rewrites `FieldAction:getAreaTiles`.
--- @override FieldAction_getAreaTiles
-local FieldAction_getAreaTiles = FieldAction.getAreaTiles
+-- @rewrite
 function FieldAction:getAreaTiles(input, centerTile)
   if self:wholeField() then
     local tiles = {}

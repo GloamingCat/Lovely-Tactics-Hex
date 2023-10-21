@@ -28,14 +28,14 @@ function ShopCommandWindow:init(GUI, buy, sell)
   GridWindow.init(self, GUI)
 end
 --- Overrides `GridWindow:setProperties`. 
--- @override setProperties
+-- @override
 function ShopCommandWindow:setProperties()
   GridWindow.setProperties(self)
   self.tooltipTerm = ''
   self.buttonAlign = 'center'
 end
 --- Implements `GridWindow:createWidgets`.
--- @implement createWidgets
+-- @implement
 function ShopCommandWindow:createWidgets()
   Button:fromKey(self, 'buy').text:setAlign('center', 'center')
   Button:fromKey(self, 'sell').text:setAlign('center', 'center')
@@ -81,17 +81,17 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function ShopCommandWindow:colCount()
   return 3
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function ShopCommandWindow:rowCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override cellWidth
+-- @override
 function ShopCommandWindow:cellWidth()
   return 60
 end

@@ -19,7 +19,7 @@ local QuitWindow = class(OptionsWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Implements `GridWindow:createWidgets`.
--- @implement createWidgets
+-- @implement
 function QuitWindow:createWidgets()
   Button:fromKey(self, 'cancel')
   Button:fromKey(self, 'title')
@@ -37,12 +37,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function QuitWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function QuitWindow:rowCount()
   return GameManager:isDesktop() and 3 or 2
 end

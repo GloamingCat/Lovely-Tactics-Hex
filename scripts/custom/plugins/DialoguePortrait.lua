@@ -11,13 +11,17 @@
 
 -- ================================================================================================
 
--- Parameters
-local indent = args.indent
-
 -- Imports
 local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')
 local GUIEvents = require('core/event/GUIEvents')
 local SimpleImage = require('core/gui/widget/SimpleImage')
+
+-- Rewrites
+local DialogueWindow_showDialogue = DialogueWindow.showDialogue
+local GUIEvents_showDialogue = GUIEvents.showDialogue
+
+-- Parameters
+local indent = args.indent
 
 -- ------------------------------------------------------------------------------------------------
 -- DialogueWindow
@@ -57,8 +61,7 @@ function DialogueWindow:setPortrait(icon)
   end
 end
 --- Rewrites `DialogueWindow:showDialogue`.
--- @override DialogueWindow_showDialogue
-local DialogueWindow_showDialogue = DialogueWindow.showDialogue
+-- @rewrite
 function DialogueWindow:showDialogue(...)
   local x = self.portrait and (self.indent * self.width / 2) or 0
   self.dialogue:setMaxWidth(self.width - self:paddingX() * 2 - x)
@@ -66,9 +69,9 @@ function DialogueWindow:showDialogue(...)
   self.dialogue:updatePosition(self.position)
   DialogueWindow_showDialogue(self, ...)
 end
---- Rewrites `DialogueWindow:setName`.
--- @override DialogueWindow_setName
 local DialogueWindow_setName = DialogueWindow.setName
+--- Rewrites `DialogueWindow:setName`.
+-- @rewrite
 function DialogueWindow:setName(text, x, ...)
   x = (x or -0.7) + (self.indent or 0)
   DialogueWindow_setName(self, text, x, ...)
@@ -79,8 +82,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `GUIEvents:showDialogue`.
--- @override GUIEvents_showDialogue
-local GUIEvents_showDialogue = GUIEvents.showDialogue
+-- @rewrite
 function GUIEvents:showDialogue(args)
   self:openDialogueWindow(args)
   local window = self.gui.dialogues[args.id]

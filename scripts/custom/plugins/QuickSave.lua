@@ -15,7 +15,12 @@
 -- Imports
 local GameManager = require('core/base/GameManager')
 local LoadWindow = require('core/gui/menu/window/interactable/LoadWindow')
+local SaveWindow = require('core/gui/menu/window/interactable/SaveWindow')
 local PopText = require('core/graphics/PopText')
+
+-- Rewrites
+local GameManager_checkRequests = GameManager.checkRequests
+local GameManager_updateManagers = GameManager.updateManagers
 
 -- Parameters
 KeyMap.main['save'] = args.save
@@ -25,8 +30,9 @@ KeyMap.main['load'] = args.load
 -- Auxiliary
 -- ------------------------------------------------------------------------------------------------
 
+--- Used to call the pop-up after loadings.
 local loadRequested = false
-
+--- Show save/load messages.
 local function popUp(msg)
   GUIManager.fiberList:fork(function()
     local popUp = PopText(ScreenManager.width / 2 - 50, ScreenManager.height / 2, GUIManager.renderer)
@@ -35,7 +41,7 @@ local function popUp(msg)
     popUp:popUp()
   end)
 end
-
+--- Checks save/load keys.
 local function checkInput()
   if InputManager.keys['save']:isTriggered() then
     if not BattleManager.onBattle then
@@ -54,12 +60,14 @@ end
 -- GameManager
 -- ------------------------------------------------------------------------------------------------
 
-local GameManager_checkRequests = GameManager.checkRequests
+--- Rewrites `GameManager:checkRequests`.
+-- @rewrite
 function GameManager:checkRequests()
   checkInput()
   GameManager_checkRequests(self)
 end
-local GameManager_updateManagers = GameManager.updateManagers
+--- Rewrites `GameManager:updateManagers`.
+-- @rewrite
 function GameManager:updateManagers(dt)
   GameManager_updateManagers(self, dt)
   if loadRequested then
@@ -73,15 +81,13 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `SaveWindow:createWidgets`.
--- @override LoadWindow:createWidgets
-local LoadWindow_createWidgets = LoadWindow.createWidgets
+-- @override
 function LoadWindow:createWidgets()
   self:createSaveButton('quick', Vocab.quickSave)
-  LoadWindow_createWidgets(self)
+  SaveWindow.createWidgets(self)
 end
 --- Overrides `SaveWindow:rowCount`.
--- @override LoadWindow:rowCount
-local LoadWindow_rowCount = LoadWindow.rowCount
+-- @override
 function LoadWindow:rowCount()
-  return LoadWindow_rowCount(self) + 1
+  return SaveWindow.rowCount(self) + 1
 end

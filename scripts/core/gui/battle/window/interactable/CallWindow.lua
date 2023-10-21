@@ -90,17 +90,17 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function CallWindow:cellWidth()
   return 70
 end
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function CallWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function CallWindow:rowCount()
   return 4
 end

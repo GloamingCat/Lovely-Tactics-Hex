@@ -13,6 +13,9 @@ local Renderer = require('core/graphics/Renderer')
 -- Alias
 local lgraphics = love.graphics
 
+-- Rewrites
+local Renderer_init = Renderer.init
+
 -- Constants
 local vertexFormat = { { 'vhsv', 'float', 3 } }
 
@@ -21,8 +24,7 @@ local vertexFormat = { { 'vhsv', 'float', 3 } }
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Renderer:init`. Initializes mesh.
--- @override Renderer_init
-local Renderer_init = Renderer.init
+-- @rewrite
 function Renderer:init(...)
   Renderer_init(self, ...)
   self.mesh = lgraphics.newMesh(vertexFormat, self.batchSize * 4)
@@ -53,7 +55,7 @@ function Renderer:setMeshAttributes(list)
   self.mesh:setDrawRange(1, list.size * 4)
 end
 --- Rewrites `Renderer:batchPossible`.
--- @override Renderer_batchPossible
+-- @rewrite
 function Renderer:batchPossible(sprite)
   return sprite.texture == self.batchTexture
 end

@@ -23,6 +23,10 @@ local SkillAction = require('core/battle/action/SkillAction')
 local Character = require('core/objects/Character')
 local PopText = require('core/graphics/PopText')
 
+-- Rewrites
+local SkillAction_allTargetsEffect = SkillAction.allTargetsEffect
+local SkillAction_menuTargetsEffect = SkillAction.menuTargetsEffect
+
 -- Parameters
 local battleOnly = args.battleOnly
 local expPopup = args.expPopup
@@ -35,7 +39,8 @@ local enemyExp = args.enemyExp
 -- RewardGUI
 -- ------------------------------------------------------------------------------------------------
 
---- Removes EXP rewards for each enemy.
+--- Rewrites `BattleManager:getBattleRewards`. Removes EXP rewards for each enemy.
+-- @rewrite
 function BattleManager:getBattleRewards(winnerParty)
   local r = { exp = {},
     items = Inventory(),
@@ -80,8 +85,7 @@ function SkillAction:expGain(user, target, results)
   return gain
 end
 --- Rewrites `SkillAction:allTargetsEffect`.
--- @override SkillAction_allTargetsEffect
-local SkillAction_allTargetsEffect = SkillAction.allTargetsEffect
+-- @rewrite
 function SkillAction:allTargetsEffect(input, originTile)
   if not enemyExp and input.user.party ~= TroopManager.playerParty then
     return SkillAction_allTargetsEffect(self, input, originTile)
@@ -120,8 +124,7 @@ function SkillAction:allTargetsEffect(input, originTile)
   return allTargets
 end
 --- Rewrites `SkillAction:menuTargetsEffect`.
--- @override SkillAction_menuTargetsEffect
-local SkillAction_menuTargetsEffect = SkillAction.menuTargetsEffect
+-- @rewrite
 function SkillAction:menuTargetsEffect(input, targets)
   if battleOnly then
     return SkillAction_menuTargetsEffect(self, input, targets)

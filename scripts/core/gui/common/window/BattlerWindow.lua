@@ -62,7 +62,7 @@ function BattlerWindow:preprocess()
   return hsw, hsh
 end
 --- Overrides `Window:createContent`. 
--- @override createContent
+-- @override
 function BattlerWindow:createContent(width, height)
   Window.createContent(self, width, height)
   -- Portrait
@@ -204,12 +204,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Window:onConfirm`. 
--- @override onConfirm
+-- @override
 function BattlerWindow:onConfirm()
   self:onCancel()
 end
 --- Overrides `Window:onCancel`. 
--- @override onCancel
+-- @override
 function BattlerWindow:onCancel()
   AudioManager:playSFX(Config.sounds.buttonCancel)
   self.result = 0

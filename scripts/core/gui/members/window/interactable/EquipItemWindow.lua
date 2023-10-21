@@ -32,7 +32,7 @@ function EquipItemWindow:init(parent, w, h, pos, rowCount, member)
   InventoryWindow.init(self, parent, nil, gui.inventory, {}, w, h, pos, rowCount)
 end
 --- Overrides `ListWindow:createWidgets`. Adds the "unequip" button.
--- @override createWidgets
+-- @override
 function EquipItemWindow:createWidgets(...)
   if self.slotKey then
     local button = Button(self)
@@ -44,7 +44,7 @@ function EquipItemWindow:createWidgets(...)
   end
 end
 --- Overrides `ListWindow:createListButton`. 
--- @override createListButton
+-- @override
 function EquipItemWindow:createListButton(itemSlot)
   local button = InventoryWindow.createListButton(self, itemSlot)
   button:setEnabled(self.member.equipSet:canEquip(self.slotKey, button.item))
@@ -115,12 +115,12 @@ end
 -- -------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function EquipItemWindow:colCount()
   return 1
 end
 --- Overrides `ListWindow:cellWidth`. 
--- @override cellWidth
+-- @override
 function EquipItemWindow:cellWidth(width)
   return 200
 end

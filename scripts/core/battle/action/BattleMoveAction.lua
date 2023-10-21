@@ -23,7 +23,7 @@ local BattleMoveAction = class(MoveAction)
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:init`. 
--- @override init
+-- @override
 function BattleMoveAction:init(...)
   MoveAction.init(self, ...)
   self.freeNavigation = true
@@ -36,7 +36,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:execute`. 
--- @override execute
+-- @override
 function BattleMoveAction:execute(input)  
   FieldManager.renderer:moveToObject(input.user, nil, true)
   FieldManager.renderer.focusObject = input.user
@@ -46,7 +46,7 @@ function BattleMoveAction:execute(input)
   return result
 end
 --- Overrides `MoveAction:moveToTile`. 
--- @override moveToTile
+-- @override
 function BattleMoveAction:moveToTile(input, nextTile)
   local previousTiles = input.user:getAllTiles()
   input.user.battler:onTerrainExit(input.user, previousTiles)
@@ -54,7 +54,7 @@ function BattleMoveAction:moveToTile(input, nextTile)
   input.user.battler:onTerrainEnter(input.user, input.user:getAllTiles())
 end
 --- Overrides `MoveAction:calculatePath`. 
--- @override calculatePath
+-- @override
 function BattleMoveAction:calculatePath(input)
   local matrix = not self:isRanged() and TurnManager:pathMatrix() or nil
   return input.path or BattleTactics.optimalPath(self, input.user, input.target, matrix)
@@ -65,7 +65,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `BattleAction:isSelectable`. 
--- @override isSelectable
+-- @override
 function BattleMoveAction:isSelectable(input, tile)
   return tile.gui.movable
 end
@@ -75,7 +75,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `MoveAction:isPassableBetween`. 
--- @override isPassableBetween
+-- @override
 function BattleMoveAction:isPassableBetween(initial, final, user)
   local x, y, h = initial:coordinates()
   local c = self.field:collisionXYZ(user, x, y, h, final:coordinates())
@@ -88,12 +88,12 @@ function BattleMoveAction:isPassableBetween(initial, final, user)
   return mindh <= dh and dh <= maxdh
 end
 --- Overrides `MoveAction:getDistanceBetween`. 
--- @override getDistanceBetween
+-- @override
 function BattleMoveAction:getDistanceBetween(initial, final, user)
   return max(initial:getMoveCost(user), final:getMoveCost(user))
 end
 --- Overrides `MoveAction:maxDistance`. 
--- @override maxDistance
+-- @override
 function BattleMoveAction:maxDistance(user)
   return user.battler.steps or self.pathLimit
 end

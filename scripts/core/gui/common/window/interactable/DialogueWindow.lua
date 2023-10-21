@@ -39,7 +39,7 @@ function DialogueWindow:initProperties()
   self.nameHeight = 24
 end
 --- Overrides `Window:createContent`. Creates a simple text for dialogue.
--- @override createContent
+-- @override
 function DialogueWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local pos = Vector(-width / 2 + self:paddingX(), -height / 2 + self:paddingY())
@@ -64,13 +64,13 @@ function DialogueWindow:onClick(button, x, y)
   self:onConfirm()
 end
 --- Overrides `Window:hide`. 
--- @override hide
+-- @override
 function DialogueWindow:hide(...)
   self.nameWindow:setVisible(false)
   Window.hide(self, ...)
 end
 --- Overrides `Window:destroy`. 
--- @override destroy
+-- @override
 function DialogueWindow:destroy(...)
   self.nameWindow:destroy()
   self.nameWindow:removeSelf()

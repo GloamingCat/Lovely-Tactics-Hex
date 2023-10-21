@@ -25,7 +25,7 @@ function CountWindow:init(...)
   GridWindow.init(self, ...)
 end
 --- Implements `GridWindow:createWidgets`.
--- @implement createWidgets
+-- @implement
 function CountWindow:createWidgets()
   local spinner = HSpinner(self, 1, 1, 1)
   self.spinner = spinner
@@ -56,12 +56,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `GridWindow:colCount`. 
--- @override colCount
+-- @override
 function CountWindow:colCount()
   return 1
 end
 --- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+-- @override
 function CountWindow:rowCount()
   return 1
 end
