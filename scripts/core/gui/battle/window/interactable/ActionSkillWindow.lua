@@ -4,6 +4,8 @@
 --- The window that is open to choose a skill from character's skill list.
 ---------------------------------------------------------------------------------------------------
 -- @classmod ActionSkillWindow
+-- @extend ActionWindow
+-- @extend ListWindow
 
 -- ================================================================================================
 

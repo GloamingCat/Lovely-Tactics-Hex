@@ -5,6 +5,7 @@
 -- It moves the character backwards and then moves back to its tile.
 ---------------------------------------------------------------------------------------------------
 -- @classmod Knockback
+-- @extend Animation
 
 --- Parameters in the Animation tags.
 -- @tags Animation

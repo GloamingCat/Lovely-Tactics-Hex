@@ -4,6 +4,8 @@
 --- Window that is shown in the beginning of the battle.
 ---------------------------------------------------------------------------------------------------
 -- @classmod IntroWindow
+-- @extend FieldCommandWindow
+-- @extend ActionWindow
 
 -- ================================================================================================
 

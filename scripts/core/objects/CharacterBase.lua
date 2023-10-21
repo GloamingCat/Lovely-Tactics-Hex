@@ -6,6 +6,8 @@
 -- A CharacterBase provides very basic functions that are necessary for every character.
 ---------------------------------------------------------------------------------------------------
 -- @classmod CharacterBase
+-- @extend JumpingObject
+-- @extend Interactable
 
 -- ================================================================================================
 

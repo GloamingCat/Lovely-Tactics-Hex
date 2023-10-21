@@ -5,6 +5,8 @@
 -- Every content element for the window must inherit from `Component`.
 ---------------------------------------------------------------------------------------------------
 -- @classmod Window
+-- @extend Component
+-- @extend Transformable
 
 -- ================================================================================================
 

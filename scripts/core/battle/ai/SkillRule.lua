@@ -4,6 +4,7 @@
 --- An AIRule that executes a skill. 
 ---------------------------------------------------------------------------------------------------
 -- @classmod SkillRule
+-- @extend AIRule
 
 --- Parameters in the Rule tags.
 -- @tags Rule

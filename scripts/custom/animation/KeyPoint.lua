@@ -11,6 +11,7 @@
 --  * Values `X` to `W` are the target values and should be numbers.
 ---------------------------------------------------------------------------------------------------
 -- @classmod KeyPoint
+-- @extend Animation
 
 --- Parameters in the Animation tags.
 -- @tags Animation

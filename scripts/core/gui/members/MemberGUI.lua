@@ -6,6 +6,7 @@
 -- When not used as based class, it just shows the battler window for the current member.
 ---------------------------------------------------------------------------------------------------
 -- @classmod MemberGUI
+-- @extend GUI
 
 -- ================================================================================================
 

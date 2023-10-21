@@ -4,6 +4,7 @@
 --- An animation that randomly switches to another row at consistent intervals.
 ---------------------------------------------------------------------------------------------------
 -- @classmod LookAround
+-- @extend Animation
 
 --- Parameters in the Animation tags.
 -- @tags Animation 

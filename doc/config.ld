@@ -1,3 +1,8 @@
+
+-- ------------------------------------------------------------------------------------------------
+-- General
+-- ------------------------------------------------------------------------------------------------
+
 project = 'LTH Docs'
 description = 'Lovely Tactics Hex 1.2 Documentation'
 full_description = [[
@@ -17,9 +22,28 @@ global_lookup = true
 multimodule = true
 no_space_before_args = true
 
+local require = import("require")
+local print = import("print")
+local type = import("type")
+local ldoc = require("ldoc.doc")
+local List = require('pl.List')
+
+-- ------------------------------------------------------------------------------------------------
+-- Kinds
+-- ------------------------------------------------------------------------------------------------
+
 new_type("conf","Config Tables",true)
 new_type("plugin","Plugins",true)
 new_type("event","Events",true)
+
+kind_names = {
+   topic = "Manual",
+   script = "Loaders"
+}
+
+-- ------------------------------------------------------------------------------------------------
+-- Function Tags
+-- ------------------------------------------------------------------------------------------------
 
 new_type("enum","Constants",false,"Types")
 new_type("tags","Parameters",false,"Tags")
@@ -27,7 +51,7 @@ new_type("override_func","Overrides",false)
 new_type("rewrite_func","Rewrites",false)
 
 custom_tags = { 
-  { "coroutine", hidden = false },
+  { "coroutine", hidden = false }
 }
 
 alias('override',{'class',value='override_func'})
@@ -49,17 +73,6 @@ custom_display_name_handler = function(item, default_handler)
   end
   return default_handler(item)
 end
-
-kind_names = {
-   topic = "Manual",
-   script = "Loaders"
-}
-
-local require = import("require")
-local print = import("print")
-local type = import("type")
-local ldoc = require("ldoc.doc")
-
 local original_init = ldoc.Item._init
 function ldoc.Item._init(self, ...)
   original_init(self, ...)
@@ -76,5 +89,48 @@ function ldoc.Item.set_tag(self, tag, value)
     original_set_tag(self, tag, value[1])
   else
     original_set_tag(self, tag, value)
+  end
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Class Tags
+-- ------------------------------------------------------------------------------------------------
+
+ldoc.add_tag("extend", "M", true)
+add_section ("extend", "Superclasses")
+ldoc.add_tag("derive", "M", true)
+add_section ("derive", "Subclasses")
+local module_info = {'extend','derive','copyright','release','license','author'}
+
+function ldoc.module_info_tags()
+  return List.iter(module_info)
+end
+
+local original_resolve_references = ldoc.Module.resolve_references
+function ldoc.Module.resolve_references(self, modules)
+  original_resolve_references(self, modules)
+  if self.tags.extend then
+    for c in self.tags.extend:iter() do
+      local mod = modules.by_name[c]
+      if mod then
+        if not mod.tags.derive then
+          mod.tags.derive = List()
+        end
+        mod.tags.derive:append('`' .. self.name .. '`')
+      else
+        self:warning('module not found: ' .. c)
+      end
+    end
+    for i = 1, #self.tags.extend do
+      self.tags.extend[i] = '`' .. self.tags.extend[i] .. '`'
+    end
+  end
+end
+
+postprocess_html = function(out, module)
+  if module then
+    return out:gsub("Derive</strong>:", "Subclasses</strong>:"):gsub("Extend</strong>:", "Superclasses</strong>:")
+  else
+    return out
   end
 end

@@ -28,6 +28,7 @@ local Vector = class()
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam number x The x coordinate of the Vector.
 -- @tparam number y The y coordinate of the Vector.
 -- @tparam number z The z coordinate of the Vector (optional, 0 by default).

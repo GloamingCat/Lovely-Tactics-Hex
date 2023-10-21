@@ -4,6 +4,7 @@
 --- Window with the initial commands of the shop GUI (hire, dismiss, cancel).
 ---------------------------------------------------------------------------------------------------
 -- @classmod RecruitCommandWindow
+-- @extend GridWindow
 
 -- ================================================================================================
 

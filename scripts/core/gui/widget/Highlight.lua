@@ -4,6 +4,8 @@
 --- The light background box that is visible behind the selected widget.
 ---------------------------------------------------------------------------------------------------
 -- @classmod Highlight
+-- @extend Component
+-- @extend Transformable
 
 -- ================================================================================================
 

@@ -4,6 +4,8 @@
 --- A ButtonWindow that contains "Confirm" and "Cancel" options.
 ---------------------------------------------------------------------------------------------------
 -- @classmod ConfirmButtonWindow
+-- @extend ConfirmWindow
+-- @extend ButtonWindow
 
 -- ================================================================================================
 

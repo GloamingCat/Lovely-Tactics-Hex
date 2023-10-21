@@ -5,6 +5,7 @@
 -- it moves the character to the closest party tile.
 ---------------------------------------------------------------------------------------------------
 -- @classmod EscapeRule
+-- @extend AIRule
 
 --- Parameters in the Rule tags.
 -- @tags Rule

@@ -4,6 +4,7 @@
 --- The small windows with the commands for character management.
 ---------------------------------------------------------------------------------------------------
 -- @classmod MemberCommandWindow
+-- @extend GridWindow
 
 -- ================================================================================================
 
