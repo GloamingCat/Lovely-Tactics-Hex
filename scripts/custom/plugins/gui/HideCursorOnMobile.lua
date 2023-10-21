@@ -2,16 +2,13 @@
 -- ================================================================================================
 
 --- Hides window cursor and button highlight when on mobile.
--- Possible values for visibility type:
---  * 'hide' -> always invisible;
---  * 'list' -> visible on windows of type ListWindow only;
---  * 'show' -> always visible.
--- 
--- Plugin parameters:
---  * Tag <cursor> sets the visibility type of the button cursor. The default type is 'list'.
---  * Tag <highlight> sets the visibility type of the button highlight. The default type is 'hide'.
 ---------------------------------------------------------------------------------------------------
 -- @plugin HideCursorOnMobile
+
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield Visibility cursor sets the visibility type of the button cursor. The default type is `"list"`.
+-- @tfield Visibility highlight sets the visibility type of the button highlight. The default type is `"hide"`.
 
 -- ================================================================================================
 
@@ -24,10 +21,26 @@ local cursor = args.cursor or 'list'
 local hl = args.highlight or 'hide'
 
 -- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Visibility types for cursors.
+-- @enum Visibility
+-- @field hide Always invisible.
+-- @field list Visible on windows of type `ListWindow` only.
+-- @field show Always visible.
+local Visibility = {
+  HIDE = 'hide',
+  LIST = 'list',
+  SHOW = 'show'
+} 
+
+-- ------------------------------------------------------------------------------------------------
 -- WindowCursor
 -- ------------------------------------------------------------------------------------------------
 
---- Hide window cursor.
+--- Rewrites `WindowCursor:setVisible`. Hide window cursor.
+-- @override WindowCursor_setVisible
 local WindowCursor_setVisible = WindowCursor.setVisible
 function WindowCursor:setVisible(value)
   if cursor == 'hide' then
@@ -44,7 +57,8 @@ end
 -- Highlight
 -- ------------------------------------------------------------------------------------------------
 
---- Hide button highlight.
+--- Rewrites `Highlight:setVisible`. Hide button highlight.
+-- @override Highlight_setVisible
 local Highlight_setVisible = Highlight.setVisible
 function Highlight:setVisible(value)
   if hl == 'hide' then

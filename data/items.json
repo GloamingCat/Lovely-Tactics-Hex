@@ -281,15 +281,15 @@
             },
             {
               "key": "attack",
-              "value": "atk0b"
+              "value": "\"atk0b\""
             },
             {
               "key": "skill",
-              "value": "atk1b 1 atk1"
+              "value": "[\"atk1b\", 1, \"atk1\"]"
             },
             {
               "key": "skill",
-              "value": "atk2b 1 atk2"
+              "value": "[\"atk2b\", 1, \"atk2\"]"
             }
           ],
           "key": "sword"
@@ -343,15 +343,15 @@
             },
             {
               "key": "attack",
-              "value": "atk0b"
+              "value": "\"atk0b\""
             },
             {
               "key": "skill",
-              "value": "atk1b 1 atk1"
+              "value": "[\"atk1b\", 1, \"atk1\"]"
             },
             {
               "key": "skill",
-              "value": "atk2b 1 atk2"
+              "value": "[\"atk2b\", 1, \"atk2\"]"
             }
           ],
           "key": "swordcounter"

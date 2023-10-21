@@ -1,20 +1,20 @@
 
 -- ================================================================================================
 
---- The balloon animation to show a battler's emotion. The "balloon" and "emotions" animations must 
--- be set in the project's config.
+--- The balloon animation to show a battler's emotion. The `"balloon"` and `"emotions"` animations 
+-- must be set in the project's config.
 -- 
--- Requires: 
---  * ChildAnimations
---
--- Plugin parameters:
---  * Use <balloonY> to shift the balloon sprite in pixels.
---  * Use <emotions> to set a different list of emotions. It should be a list of strings, with each
---  string being the emotion's code.
---  * Use <rows> to set custons rows for each emotion. The rows should be in the same order as the
---  emotions listed in <emotions>.
+-- Requires: `ChildAnimations`
 ---------------------------------------------------------------------------------------------------
 -- @plugin EmotionBalloon
+
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield number ballonY Vertical shift in pixels applied to the balloon sprite (optional).
+-- @tfield table emotions Array of strings to set a different list of emotions, with each string 
+--  being the emotion's code (optional, uses the set `["!", "?", "...", "@", <3"]` by default).
+-- @tfield table rows Array of numbers to set custom rows for each emotion. The rows should be in the
+--  same order as the emotions listed in `emotions` (optional, uses `0` to `#emotions - 1` by default).
 
 -- ================================================================================================
 
@@ -83,7 +83,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `CharacterBase:setXYZ`. Updates balloon position when character moves.
--- @override setXYZ
+-- @override CharacterBase_setXYZ
 local CharacterBase_setXYZ = CharacterBase.setXYZ
 function CharacterBase:setXYZ(x, y, z)
   CharacterBase_setXYZ(self, x, y, z)
@@ -95,7 +95,7 @@ function CharacterBase:setXYZ(x, y, z)
     --self.iconAnim:setXYZ(p.x, p.y - h - self.height / 2, p.z - 1)
   end
 end
---- Rewrites `CharacterBase:update`.
+--- Rewrites `CharacterBase:update`. Updates balloon animation.
 -- @override CharacterBase_update
 local CharacterBase_update = CharacterBase.update
 function CharacterBase:update(dt)
@@ -108,7 +108,7 @@ function CharacterBase:update(dt)
     end
   end
 end
---- Rewrites `CharacterBase:destroy`.
+--- Rewrites `CharacterBase:destroy`. Destroys balloon object.
 -- @override CharacterBase_destroy
 local CharacterBase_destroy = CharacterBase.destroy
 function CharacterBase:destroy(...)

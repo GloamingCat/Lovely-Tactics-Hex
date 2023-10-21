@@ -13,7 +13,6 @@ local SoundEvents = {}
 -- Sound
 -- ------------------------------------------------------------------------------------------------
 
--- General parameters:
 -- @tparam args.name string The path to the sound from audio/bgm (BGMs) or audio/sfx (SFX).
 -- @tparam args.volume number Volume in percentage.
 -- @tparam args.pitch number Pitch in percentage.

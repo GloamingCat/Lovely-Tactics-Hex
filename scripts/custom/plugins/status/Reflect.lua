@@ -2,21 +2,6 @@
 -- ================================================================================================
 
 --- Makes a skill reflect to the user.
--- 
--- Plugin parameters:
---  * When a character reflects a skill, the animation given by <anim> is played in the character's
---  tile. No skill is played if the parameter is not set.
---  * <self> determines what happens when a user casts a skills on oneself. If 'all', it's reflected 
---  and consumes one reflection use, but with no changes on target/user. If 'none' (default), it
---  passes through the reflection. If 'offensive', only offensive skills will be reflected.
---
--- Skill parameters:
---  * Only the skills with <reflectable> tags may be reflected.
---
--- Status parameters:
---  * Statuses with <reflect> tag makes the characters reflect the next skill. The status is
---  removed if a skill is reflected.
---  * Set <removeOnUse> to true to limit the reflection to one use.
 ---------------------------------------------------------------------------------------------------
 -- @plugin Reflect
 
@@ -28,9 +13,42 @@ local Battler = require('core/battle/battler/Battler')
 local SkillAction = require('core/battle/action/SkillAction')
 local BattleAnimations = require('core/battle/BattleAnimations')
 
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Self-reflection types. It determines what happens when a user casts a skills on oneself.
+-- @enum SelfReflection
+-- @field none It passes through the reflection without activating it.
+-- @field offensive Only offensive skills activate the reflection, but with no changes on target/user.
+-- @field all All skills activate the reflection, but with no changes on target/user.
+local SelfReflection = {
+  NONE = 'none',
+  OFFENSIVE = 'offensive',
+  ALL = 'all'
+}
+
+-- ------------------------------------------------------------------------------------------------
 -- Parameters
+-- ------------------------------------------------------------------------------------------------
+
 local anim = args.anim
-local selfReflect = args.selfReflect or 'none'
+local selfReflect = args.selfReflect or SelfReflection.NONE
+
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield number|string anim The ID or key of the animation that is played in the character's
+--  tile when it reflects a skill. No skill is played if the parameter is not set.
+-- @tfield SelfReflection selfReflect It determines what happens when a user casts a skills on oneself.
+
+--- Skill tags.
+-- @tags Skill
+-- @tfield booelan reflectable Only the skills with this tag can be reflected.
+
+--- Status tags.
+-- @tags Status
+-- @tfield boolean reflect Makes the characters reflect the next receiving skill.
+-- @tfield boolean removeOnUse Flag to remove the status if the reflection is activated.
 
 -- ------------------------------------------------------------------------------------------------
 -- Skill Action
@@ -42,7 +60,8 @@ local SkillAction_singleTargetEffect = SkillAction.singleTargetEffect
 function SkillAction:singleTargetEffect(results, input, target, originTile)
   local minTime = 0
   if originTile and self.tags.reflectable and (#results.points > 0 or #results.status > 0) and
-      (input.user ~= target or selfReflect == 'all' or selfReflect == 'offensive' and self.offensive) then
+      (input.user ~= target or selfReflect == SelfReflection.ALL or
+      selfReflect == SelfReflection.OFFENSIVE and self.offensive) then
     local targetChar = TroopManager:getBattlerCharacter(target)
     if targetChar then
       local status = target:reflects()

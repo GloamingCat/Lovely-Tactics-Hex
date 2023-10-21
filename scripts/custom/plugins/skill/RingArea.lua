@@ -1,25 +1,37 @@
 
 -- ================================================================================================
 
---- Allows a battle action to use a ring area instead of a grid mask. A ring is defined by the minimum 
--- distance, or the radius of the smallest circle - <near> value -, and the maximum distance, or the 
--- radius of the largest circle - <far> value. The ring is the set of tiles within these limits.
--- It is also possible to define the maximum and minimum height differences, <minh> and <maxh>.
---
--- Skill parameters:
---  * The range of the skill is defined by <cast_far>, <cast_near>, <cast_minh> and <cast_maxh>.
---  * The effect area of the skill is defined by <effect_far>, <effect_near>, <effect_minh> and 
---  <effect_maxh>.
---  * If no <cast_> tag is defined, then the default cast mask is used. The same for the <effect_>
---  tags.
+--- Allows a battle action to use a ring area instead of a grid mask.
+-- A ring is defined by the minimum distance, or the radius of the smallest circle - `near`
+-- value -, and the maximum distance, or the radius of the largest circle - `far` value.
+-- The ring is the set of tiles within these limits.  
+-- It is also possible to define the maximum and minimum height differences, `minh` and `maxh`.  
+-- The `cast_` tags refer to the range of the skill, i. e. the distance between the user and the
+-- center target tile, and the `effect_` tags refer to the effect area, i. e. the distance between
+-- the center target tile and the target character around it.
 --
 -- Notes:
---  * If <near> is bigger than <far> value, the set is empty.
---  * If <far> and <near> are the same value X, the ring is the set of tiles that distantiates from
---  the center by exactly X.
---  * If <far> and <near> are 0, the set contains only the center tile.
+-- 
+--  * If no `cast_` tag is found in the skill, then the default cast mask is used. The same for
+--  the `effect_` tags.
+--  * If `near` is bigger than `far` value, the set is empty.
+--  * If `far` and `near` are the same value `X`, the ring is the set of tiles that distantiates
+--  from the center by exactly `X`.
+--  * If `far` and `near` are `0`, the set contains only the center tile.
 ---------------------------------------------------------------------------------------------------
 -- @plugin RingArea
+
+--- Parameters in the Skill tags.
+-- @tags Skill
+-- @tfield number cast_far The maximum distance for the range of the skill.
+-- @tfield number cast_near The minimum distance for the range of the skill.
+-- @tfield number cast_maxh The maximum height different for the range of the skill.
+-- @tfield number cast_minh The minimum height different for the range of the skill.
+-- @tfield number effect_far The maximum distance from the target tile for the effect area of the skill.
+-- @tfield number effect_near The minimum distance from the target tile for the effect area of the skill.
+-- @tfield number effect_maxh The maximum height different from the target tile for the effect area of the skill.
+-- @tfield number effect_minh The minimum height different from the target tile for the effect area of the skill.
+-- @tfield boolean wholeField Flag to make the skill affect the whole field.
 
 -- ================================================================================================
 
@@ -35,8 +47,8 @@ local mathf = math.field
 -- SkillAction
 -- ------------------------------------------------------------------------------------------------
 
---- Constructor.
--- Creates ring masks if parameters are set in the tags.
+--- Rewrites `SkillAction:init`. Creates ring masks if parameters are set in the tags.
+-- @override SkillAction_init
 local SkillAction_init = SkillAction.init
 function SkillAction:init(...)
   SkillAction_init(self, ...)
@@ -54,8 +66,8 @@ function SkillAction:init(...)
     self.moveAction.range = self.range
   end
 end
---- Rewrites `SkillAction:onActionGUI`.
--- @override SkillAction_onActionGUI
+--- Overrides `BattleAction:onActionGUI`.
+-- @override SkillAction:onActionGUI
 local SkillAction_onActionGUI = SkillAction.onActionGUI
 function SkillAction:onActionGUI(input)
   SkillAction_onActionGUI(self, input)

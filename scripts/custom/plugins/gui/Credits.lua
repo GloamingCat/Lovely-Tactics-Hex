@@ -5,6 +5,16 @@
 ---------------------------------------------------------------------------------------------------
 -- @plugin Credits
 
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield number speed The speed in which the text shows on screen (optional, 2 by default).
+-- @tfield number pause The pause in frames between pages (optional, 60 by default).
+-- @tfield table font The font data (optional, uses `Fonts.gui_big` by default).
+-- @tfield string pages The page names, separated by spaces.
+-- @tfield string pageX For each page `pageX`, there should be a tag `pageX` that contains the text
+--  in this page. The text contains the lines separated by spaces. Each line is a term that should
+-- be present in the `Vocab.dialogues.credits` table.
+
 -- ================================================================================================
 
 -- Imports
@@ -80,6 +90,7 @@ local function showCredits(titleText, bodyText)
   end
 end
 --- Shows credits animation and listens to player input.
+-- @coroutine showCredits
 function GUIEvents:showCredits(args)
   self:createGUI()
   local titleText = createText(self.gui:windowMargin() * 2)

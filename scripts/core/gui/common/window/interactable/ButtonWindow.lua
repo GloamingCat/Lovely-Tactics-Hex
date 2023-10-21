@@ -37,7 +37,7 @@ function ButtonWindow:init(parent, names, align, ...)
   self.offBoundsCancel = false
   self.active = true
 end
---- Implements `GridWindow:creatwWidgets`. Creates a button for each choice.
+--- Implements `GridWindow:createWidgets`. Creates a button for each choice.
 -- @implement createWidgets
 function ButtonWindow:createWidgets()
   for _, name in ipairs(self.buttonNames) do

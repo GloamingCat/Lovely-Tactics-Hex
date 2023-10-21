@@ -2,16 +2,17 @@
 -- ================================================================================================
 
 --- Characters receive EXP for each action and can level-up mid-battle.
--- 
--- Plugin parameters:
---  * <battleOnly> When true, characters will only receive EXP during a battle.
---  * <expPopup> When true, a pop-up will show the gained EXP every time an action is executed.
---  * <defaultExp> Default skill EXP when not defined.
---  * <missExp> Multiplier for when the skill did not succeed.
---  * <levelDiff> Aditional exp per level difference between user and target.
---  * <enemyExp> When true enemies also receive experience.
 ---------------------------------------------------------------------------------------------------
 -- @plugin SkillEXP
+
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield boolean battleOnly Flag to make characters only receive EXP during a battle.
+-- @tfield boolean expPopup Flag to show a pop-up with the gained EXP every time an action is executed.
+-- @tfield number defaultExp Default skill EXP when not defined.
+-- @tfield number missExp Multiplier for when the skill did not succeed.
+-- @tfield number levelDiff Aditional exp per level difference between user and target.
+-- @tfield boolean enemyExp Flag to make enemies also receive experience.
 
 -- ================================================================================================
 

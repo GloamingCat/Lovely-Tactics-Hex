@@ -2,11 +2,12 @@
 -- ================================================================================================
 
 --- Indents the dialogue text to fit the speaker's portrait, shown above window.
--- 
--- Plugin parameters:
---  * Use <indent> to fix an indentation length instead of using portrait's width.
 ---------------------------------------------------------------------------------------------------
 -- @plugin DialoguePortrait
+
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield number indent Fixes an indentation length `indent` instead of using portrait's width.
 
 -- ================================================================================================
 

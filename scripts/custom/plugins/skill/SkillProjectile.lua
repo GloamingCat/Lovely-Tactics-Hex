@@ -2,9 +2,6 @@
 -- ================================================================================================
 
 --- Abstraction of a projectile thrown during the use of a skill.
--- 
--- Skill parameters:
---  * Set <projectileID> tag as projectile animation ID or key.
 ---------------------------------------------------------------------------------------------------
 -- @plugin SkillProjectile
 
@@ -73,7 +70,7 @@ function Animation:throw(user, target, speed, wait)
   return time
 end
 --- Rewrites `Animation:update`.
--- @override Animation_update
+-- @override update
 local Animation_update = Animation.update
 function Animation:update(dt)
   Animation_update(self, dt)
@@ -88,7 +85,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `Character:castSkill`.
--- @override Character_castSkill
+-- @override castSkill
 local Character_castSkill = Character.castSkill
 function Character:castSkill(skill, dir, target)
   local minTime = Character_castSkill(self, skill, dir, target)

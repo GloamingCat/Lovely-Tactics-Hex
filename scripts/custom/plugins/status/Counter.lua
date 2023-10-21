@@ -2,15 +2,17 @@
 -- ================================================================================================
 
 --- Makes a character attack back if hit.
--- 
--- Plugin parameters:
---  <maxCounters> is the max number of counter-attacks alternating in a row.
--- 
--- Battler parameters:
---  * The skill used when character counter-attacks is defined by <counterID> tag. If not set, 
---  then this battler does not counter-attack.
 ---------------------------------------------------------------------------------------------------
 -- @plugin Counter
+
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield number maxCounters The max number of counter-attacks alternating in a row.
+
+--- Parameters in the Status tags.
+-- @tags Status
+-- @tfield string|number counterID The skill used when character counter-attacks when it has
+--  this status.
 
 -- ================================================================================================
 

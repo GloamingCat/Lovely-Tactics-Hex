@@ -2,12 +2,13 @@
 -- ================================================================================================
 
 --- Pauses game when window loses focus.
--- 
--- Plugin parameters:
---  * If the audio should be paused too, then set <pauseAudio> to true.
---  * Set <fullscreen> to true to pause when it's not fullscreen (mobile only).
 ---------------------------------------------------------------------------------------------------
 -- @plugin FocusPause
+
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield boolean pauseAudio Flag to pause the audio too.
+-- @tfield boolean fullscreen Flag to pause when it's not fullscreen (mobile only).
 
 -- ================================================================================================
 
@@ -22,7 +23,8 @@ local fullscreen = args.fullscreen
 -- ScreenManager
 -- ------------------------------------------------------------------------------------------------
 
---- Pause when window loses focus.
+--- Rewrites `ScreenManager:onFocus`. Pause when window loses focus.
+-- @override ScreenManager_onFocus
 local ScreenManager_onFocus = ScreenManager.onFocus
 function ScreenManager:onFocus(f)
   ScreenManager_onFocus(self, f)

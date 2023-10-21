@@ -1,15 +1,16 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-@plugin SpeedButton
---------------------------------------------------------------------------------------------------- 
-Speeds game up when pressing a certain button.
+--- Speeds game up when pressing a certain button.
+---------------------------------------------------------------------------------------------------
+-- @plugin SpeedButton
 
--- Plugin parameters:
-<key> is the key to be held to speed-up the game.
-<speed> is the speed multiplier (3 times by default)
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield string key The key to be held to speed-up the game.
+-- @tfield number speed The speed multiplier (optional, 3 times by default)
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local GameManager = require('core/base/GameManager')
@@ -22,6 +23,8 @@ local speedup = args.speed or 3
 -- GameManager
 -- ------------------------------------------------------------------------------------------------
 
+--- Rewrites `GameManager:update`.
+-- @override GameManager_update
 local GameManager_update = GameManager.update
 function GameManager:update(dt)
   if InputManager.keys['speedup']:isPressing() then

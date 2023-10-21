@@ -4,6 +4,11 @@
 ---------------------------------------------------------------------------------------------------
 -- @event Wanderer
 
+--- Script parameters.
+-- @tags Script
+-- @tfield number pause Pause time in frames between each step.
+-- @tfield number pauseVar Variation of the pause in frames (optional, 0 by default).
+
 -- ================================================================================================
 
 -- Alias
@@ -11,15 +16,9 @@ local rand = love.math.random
 
 return function(script)
 
-  --- Contains the tags from the Script's data.
-  -- @table param
-  -- @tfield number Pause time in frames between each step.
-  -- @tfield number Variation of the pause in frames (optional, 0 by default).
-  local param = script.args
-
   script.char.approachToInteract = false
-  local pause = tonumber(param.pause) or 60
-  local pauseVar = tonumber(param.pauseVar) or 0
+  local pause = tonumber(script.args.pause) or 60
+  local pauseVar = tonumber(script.args.pauseVar) or 0
   while true do
     Fiber:wait()
     if not (FieldManager.player:isBusy() or script.char.interacting) then

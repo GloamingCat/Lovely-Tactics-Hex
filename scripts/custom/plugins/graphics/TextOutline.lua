@@ -2,11 +2,12 @@
 -- ================================================================================================
 
 --- Renders text with a black outline.
---
--- Plugin parameters:
---  * Use <width> to set the outline thickness (in pixels).
 ---------------------------------------------------------------------------------------------------
 -- @plugin TextOutline
+
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield number number The outline thickness in pixels.
 
 -- ================================================================================================
 
@@ -29,17 +30,23 @@ local textShader = lgraphics.newShader('shaders/Text.glsl')
 -- Redraw
 -- ------------------------------------------------------------------------------------------------
 
+--- Rewrites `Text:setText`.
+-- @override Text_setText
 local Text_setText = Text.setText
 function Text:setText(...)
   self.bufferLines = nil
   self.needsRedraw = true
   Text_setText(self, ...)
 end
+--- Rewrites `Text:rescale`.
+-- @override Text_rescale
 local Text_rescale = Text.rescale
 function Text:rescale(...)
   self.needsRedraw = true
   Text_rescale(self, ...)
 end
+--- Rewrites `Text:setCutPoint`.
+-- @override Text_setCutPoint
 local Text_setCutPoint = Text.setCutPoint
 function Text:setCutPoint(...)
   self.bufferLines = nil

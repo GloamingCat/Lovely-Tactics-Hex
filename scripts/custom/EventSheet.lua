@@ -5,14 +5,13 @@
 ---------------------------------------------------------------------------------------------------
 -- @event EventSheet
 
+--- Script parameters.
+-- @tags Script
+-- @tfield number sheet The ID or key of the event sheet to be executed.
+
 -- ================================================================================================
 
 return function (script)
-
-  --- Contains the tags from the Script's data.
-  -- @table param
-  -- @tfield number sheet The ID or key of the event sheet to be executed.
-  local param = script.args
   
   local data = Database.events[script.args.sheet]
   

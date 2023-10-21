@@ -6,6 +6,10 @@
 ---------------------------------------------------------------------------------------------------
 -- @classmod EscapeRule
 
+--- Parameters in the Rule tags.
+-- @tags Rule
+-- @tfield boolean hide Flag to make the battler unable to be called again into battle.
+
 -- ================================================================================================
 
 -- Imports
@@ -23,9 +27,6 @@ local EscapeRule = class(AIRule)
 --- Overrides `AIRule:onSelect`. 
 -- @override onSelect
 function EscapeRule:onSelect(user)
-  --- Contains the tags from the Battler's rules data.
-  -- @table param
-  -- @tfield boolean hide Flag to make the battler unable to be called again into battle.
   user = user or TurnManager:currentCharacter()
   self.input = ActionInput(EscapeAction(true), user)
   self.input.action.hide = self.tags and self.tags.hide

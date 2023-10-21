@@ -8,6 +8,15 @@
 ---------------------------------------------------------------------------------------------------
 -- @plugin JobEquips
 
+--- Parameters in the Job tags.
+-- @tags Job
+-- @tfield string equip Indicates an item type that it can equip. Jobs with no `equip` tags have no
+-- restrictions.
+
+--- Parameters in the Item tags.
+-- @tags Item
+-- @tfield string equip Indicates that the item is of this equip type.
+
 -- ================================================================================================
 
 -- Imports

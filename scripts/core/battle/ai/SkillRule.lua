@@ -2,10 +2,16 @@
 -- ================================================================================================
 
 --- An AIRule that executes a skill. 
--- The skill is defined by the tag field "id", which means the id-th skill of 
--- the battler. If there's no such field, it will use battler's attack skill.
 ---------------------------------------------------------------------------------------------------
 -- @classmod SkillRule
+
+--- Parameters in the Rule tags.
+-- @tags Rule
+-- @tfield boolean reset id The position of the skill in the battler's skill list to be used,
+-- i. e. the id-th skill is used. If not defined, it uses the battler's attack skill instead.
+-- @tfield string target A boolean formula to only consider the targets that satifies it.
+-- It receives as parameter the values `action` (`SkillAction`), `user` (`Character`) and `target`
+-- (`Character`). 
 
 -- ================================================================================================
 

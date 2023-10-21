@@ -107,7 +107,7 @@ function AnimatedObject:playAnimation(name, row, index)
   end
 end
 --- Plays an animation by name.
--- @tparam string name Animation's name (optional; current animation by default).
+-- @tparam string name Animation's name (optional, current animation by default).
 -- @tparam number row The row of the animation's sprite sheet to play (0 by default).
 -- @tparam number index Starting animation index (1 by default).
 -- @treturn Animation The animation that started to play.

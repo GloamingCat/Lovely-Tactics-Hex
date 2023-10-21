@@ -3,12 +3,13 @@
 
 --- Adds a key to kill all enemies in the nuxt turn during battle.
 -- Used to skip battles during game test.
--- 
--- Plugin parameters:
---  * When player presses the button key <win>, all enemy characters die.
---  * When player presses the button key <lose>, all ally characters die.
 ---------------------------------------------------------------------------------------------------
 -- @plugin KillCheat
+
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield string win Button key to stay pressed to make all enemy characters die in the next turn.
+-- @tfield string lose Button key to stay pressed to make all ally characters die in the next turn.
 
 -- ================================================================================================
 

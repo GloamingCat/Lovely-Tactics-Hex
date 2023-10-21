@@ -29,8 +29,7 @@ local Renderer = class(Transformable)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
--- @tparam numbwe width Canvas width in pixels.
--- @tparam numbwe height Canvas height in pixels.
+--- Constructor.
 -- @tparam number minDepth Minimum depth of a sprite.
 -- @tparam number maxDepth Maximum depth of a sprite.
 -- @tparam number batchSize Max number of sprites.
@@ -202,7 +201,8 @@ function Renderer:drawSortedList(list)
     last = last + 1
   end
 end
--- @treturn number Number of sprites (visible or not).
+--- Gets the number of sprites (visible or not).
+-- @treturn number 
 function Renderer:spriteCount()
   local count = 0
   for i = self.minDepth, self.maxDepth do

@@ -6,6 +6,11 @@
 ---------------------------------------------------------------------------------------------------
 -- @plugin DebugBox
 
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield string key Key to open the debug box.
+-- @tfield string mod Modifier of the key (`"ctrl"`, `"atl"`, `"shift"`, or none).
+
 -- ================================================================================================
 
 -- Imports
@@ -36,7 +41,8 @@ end
 -- Player
 -- ------------------------------------------------------------------------------------------------
 
---- Checks for the debug key input.
+--- Rewrites `Player:checkFieldInput`. Checks for the debug key input.
+-- @override Player.checkFieldInput
 local Player_checkFieldInput = Player.checkFieldInput
 function Player:checkFieldInput()
   if InputManager:getKey(key):isTriggered() and (not mod or InputManager:getKey(mod):isPressing()) then

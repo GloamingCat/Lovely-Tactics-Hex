@@ -104,9 +104,6 @@ end
 -- Dialogue
 -- ------------------------------------------------------------------------------------------------
 
--- General parameters:
-
-
 --- Shows a dialogue in the given window.
 -- @tparam table args
 --  args.id (number): ID of the dialogue window.

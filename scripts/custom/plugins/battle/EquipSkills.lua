@@ -2,14 +2,16 @@
 -- ================================================================================================
 
 --- Add skills and change attack skill when item is equipped.
--- 
--- Item parameters:
---  * Set <attack> to a skill's ID or key to set it as the attack skill of the item.
---  * Add a <skill> tag with a skill's ID or key to make it available for the character with this 
---  item equipped. You may also add a second number to indicate a minimum level, and a third to 
---  replace another skill.
 ---------------------------------------------------------------------------------------------------
 -- @plugin EquipSkills
+
+--- Parameters in the Item tags.
+-- @tags Item
+-- @tfield string|number attack The ID or key of new attack skill of the character when it equips this
+--  item (optional).
+-- @tfield string|number|table skill The ID or key of a skill that will be  available for the 
+--  character with this item equipped. You may also add a second number (and make it a `table`)
+--  to indicate a minimum level, and a third to replace another skill instead of just adding it.
 
 -- ================================================================================================
 
@@ -45,18 +47,23 @@ function EquipSet:updateSlotBonus(key)
     return
   end
   self.skills[key] = SkillList()
-  for i, tag in ipairs(data.tags) do 
-    if tag.key == 'skill' then
-      local skill = tag.value:split()
-      local lvl = tonumber(skill[2]) or 1
-      local replace = tonumber(skill[3]) or skill[3]
-      skill = self.skills[key]:learn(tonumber(skill[1]) or skill[1])
+  local tags = Database.loadTags(data.tags)
+  if tags and tags.skill then
+    for _, tag in ipairs(tags:getAll('skill')) do
+      local skill, lvl, replace = tag, 1, nil
+      if type(skill) == 'table' then
+        skill = tag[1]
+        lvl = tag[2]
+        replace = tag[3]
+      end
+      skill = self.skills[key]:learn(skill)
       skill.minLevel = lvl
       skill.replace = replace
-    elseif tag.key == 'attack' then
-      local skill = Database.skills[tonumber(tag.value) or tag.value]
-      self.skills[key][0] = SkillAction:fromData(skill.id)
     end
+  end
+  if tags and tags.attack then
+    local skill = Database.skills[tags.attack]
+    self.skills[key][0] = SkillAction:fromData(skill.id)
   end
 end
 

@@ -7,7 +7,6 @@
 
 -- ================================================================================================
 
-
 return function(script)
 
   script:showDialogue { id = 1, character = "Arthur", portrait = "BigIcon", message = 

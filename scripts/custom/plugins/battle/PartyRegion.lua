@@ -2,12 +2,15 @@
 -- ================================================================================================
 
 --- Sets custom party tiles in a battle field.
--- 
--- Plugin parameters:
---  * <party1>, <party2> ... <partyN>: the region ID's associated with each field party.
---  * Set <override> to completely override old method, instead of merging.
 ---------------------------------------------------------------------------------------------------
 -- @plugin PartyRegion
+
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield number partyX The parameters `party1`, `party2` ... `partyN` are the region ID's
+--  associated with each field party `X`. 
+-- @tfield boolean override Flag to completely override old method for setting player tiles,
+--  instead of merging.
 
 -- ================================================================================================
 

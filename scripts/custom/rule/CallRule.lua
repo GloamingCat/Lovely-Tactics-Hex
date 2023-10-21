@@ -5,6 +5,11 @@
 ---------------------------------------------------------------------------------------------------
 -- @classmod CallRule
 
+--- Parameters in the Rule tags.
+-- @tags Rule
+-- @tfield string member A boolean formula to only consider the members that satifies it. 
+-- @tfield boolean reset Flag to discard any saved changes on the called member.
+
 -- ================================================================================================
 
 -- Imports
@@ -19,17 +24,12 @@ local CallRule = class(AIRule)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Constructor.
--- @param ...  AIRule constructor arguments.
+--- Overrides `AIRule:init`. 
+-- @override init
 function CallRule:init(...)
   AIRule.init(self, ...)
-  --- Contains the tags from the Battler's rules data.
-  -- @table param
-  -- @tfield string member A boolean formula to only consider the members that satifies it. 
-  -- @tfield boolean reset Flag to discard any saved changes on the called member.
-  local param = self.tags
-  if param and param.member then
-    self.memberCondition = loadformula('not (' .. param.member .. ')', 'member')
+  if self.tags and self.tags.member then
+    self.memberCondition = loadformula('not (' .. self.tags.member .. ')', 'member')
   end
 end
 --- Overrides `AIRule:onSelect`. 

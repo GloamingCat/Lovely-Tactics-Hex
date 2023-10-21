@@ -63,10 +63,6 @@ end
 -- Movement
 -- ------------------------------------------------------------------------------------------------
 
--- General parameters:
---  "origin" or "dest" to refer to event's characters, or any other key to refer to any other
---  character in the current field.
-
 --- Moves straight to the given tile.
 -- @tparam table args
 --  args.key (string): The key of the character.

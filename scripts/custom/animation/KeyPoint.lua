@@ -12,6 +12,10 @@
 ---------------------------------------------------------------------------------------------------
 -- @classmod KeyPoint
 
+--- Parameters in the Animation tags.
+-- @tags Animation
+-- @tfield string kp A key point. Can have multiple `kp` entries in the animation's tags.
+
 -- ================================================================================================
 
 -- Imports
@@ -21,7 +25,7 @@ local Animation = require('core/graphics/Animation')
 local KeyPoint = class(Animation)
 
 -- ------------------------------------------------------------------------------------------------
--- Table
+-- Tables
 -- ------------------------------------------------------------------------------------------------
 
 --- The string codes for each field type.
@@ -47,7 +51,8 @@ KeyPoint.Field = {
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
--- @param ...  parameters from Animation:init.
+--- Overrides `Animation:init`.
+-- @override init
 function KeyPoint:init(...)
   Animation.init(self, ...)
   self.keyPoints = {}

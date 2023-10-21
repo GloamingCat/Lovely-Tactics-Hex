@@ -4,6 +4,11 @@
 ---------------------------------------------------------------------------------------------------
 -- @event Loot
 
+--- Parameters Script tags.
+-- @tags Script
+-- @tfield number id The ID of the item to be received.
+-- @tfield number count The quantity of the item rewarded (optional, 1 by default).
+
 -- ================================================================================================
 
 -- Alias
@@ -11,15 +16,9 @@ local rand = love.math.random
 
 return function(script)
 
-  --- Contains the tags from the Script's data.
-  -- @table param
-  -- @tfield number id The ID of the item to be received.
-  -- @tfield number count The quantity of the item rewarded (optional, 1 by default).
-  local param = script.args
-
-  local id = tonumber(param.id) or param.id
+  local id = tonumber(script.args.id) or script.args.id
   local item = Database.items[id]
-  local count = tonumber(param.count) or 1
+  local count = tonumber(script.args.count) or 1
   local name = "{%data.item." .. item.key .. "}"
   Config.variables["loot"].value = name
   Config.variables["lootq"].value = count

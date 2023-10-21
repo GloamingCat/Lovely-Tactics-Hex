@@ -2,10 +2,9 @@
 -- ================================================================================================
 
 --- The small windows with the commands for character management.
--- 
--- Should come before VisiblePartyWindow if both plugins are used.
+-- Should come before `VisiblePartyWindow` if both plugins are used.
 ---------------------------------------------------------------------------------------------------
--- @plugin MemberCommandWindow
+-- @plugin UnifiedMemberWindow
 
 -- ================================================================================================
   
@@ -13,22 +12,21 @@
 local Button = require('core/gui/widget/control/Button')
 local EquipGUI = require('core/gui/members/EquipGUI')
 local FieldCommandWindow = require('core/gui/menu/window/interactable/FieldCommandWindow')
-local ItemGUI = require('core/gui/members/ItemGUI')
-local MemberGUI = require('core/gui/members/MemberGUI')
 local GridWindow = require('core/gui/GridWindow')
+local ItemGUI = require('core/gui/members/ItemGUI')
+local MemberCommandWindow = require('core/gui/members/window/interactable/MemberCommandWindow')
+local MemberGUI = require('core/gui/members/MemberGUI')
 local SkillGUI = require('core/gui/members/SkillGUI')
 
 -- Arguments
 local useItem = args.useItem
 
--- Class table.
-local MemberCommandWindow = class(GridWindow)
-
 -- ------------------------------------------------------------------------------------------------
 -- Buttons
 -- ------------------------------------------------------------------------------------------------
 
---- Constructor.
+--- Rewrites `MemberCommandWindow:createWidgets`.
+-- @override MemberCommandWindow_createWidgets
 function MemberCommandWindow:createWidgets()
   Button:fromKey(self, 'equips')
   Button:fromKey(self, 'skills')
@@ -41,79 +39,39 @@ end
 -- Confirm Callbacks
 -- ------------------------------------------------------------------------------------------------
 
---- Items button.
+--- Rewrites `MemberCommandWindow:itemsConfirm`.
+-- @override MemberCommandWindow_itemsConfirm
 function MemberCommandWindow:itemsConfirm()
   self.GUI:showSubGUI(ItemGUI)
 end
---- Skills button.
+--- Rewrites `MemberCommandWindow:skillsConfirm`.
+-- @override MemberCommandWindow_skillsConfirm
 function MemberCommandWindow:skillsConfirm()
   self.GUI:showSubGUI(SkillGUI)
 end
---- Equips button.
+--- Rewrites `MemberCommandWindow:equipsConfirm`.
+-- @override MemberCommandWindow_equipsConfirm
 function MemberCommandWindow:equipsConfirm()
   self.GUI:showSubGUI(EquipGUI)
-end
-
--- ------------------------------------------------------------------------------------------------
--- Enabled Conditions
--- ------------------------------------------------------------------------------------------------
-
--- @treturn boolean True if Item GUI may be open, false otherwise.
-function MemberCommandWindow:itemsEnabled()
-  return ItemGUI:memberEnabled(self.GUI:currentMember())
-end
--- @treturn boolean True if Skill GUI may be open, false otherwise.
-function MemberCommandWindow:skillsEnabled()
-  return SkillGUI:memberEnabled(self.GUI:currentMember())
-end
-
--- ------------------------------------------------------------------------------------------------
--- Member GUI
--- ------------------------------------------------------------------------------------------------
-
---- Called when player presses "next" key.
-function MemberCommandWindow:onNext()
-  AudioManager:playSFX(Config.sounds.buttonSelect)
-  self.GUI:nextMember()
-end
---- Called when player presses "prev" key.
-function MemberCommandWindow:onPrev()
-  AudioManager:playSFX(Config.sounds.buttonSelect)
-  self.GUI:prevMember()
-end
---- Changes current selected member.
--- @tparam Battler battler The battler associated with the current/chosen character.
-function MemberCommandWindow:setBattler(battler)
-  for i = 1, #self.matrix do
-    self.matrix[i]:refreshEnabled()
-    self.matrix[i]:refreshState()
-  end
 end
 
 -- ------------------------------------------------------------------------------------------------
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `GridWindow:colCount`. 
--- @override colCount
-function MemberCommandWindow:colCount()
-  return 1
-end
---- Overrides `GridWindow:rowCount`. 
--- @override rowCount
+--- Rewrites `MemberCommandWindow:rowCount`. 
+-- @override MemberCommandWindow_rowCount
 function MemberCommandWindow:rowCount()
   return useItem and 3 or 2
-end
--- @treturn string String representation (for debugging).
-function MemberCommandWindow:__tostring()
-  return 'Member Command Window'
 end
 
 -- ------------------------------------------------------------------------------------------------
 -- MemberGUI
 -- ------------------------------------------------------------------------------------------------
 
---- Creates the window with the commands for the chosen member.
+--- Rewrites `MemberGUI:createWindows`.
+--  Creates the window with the commands for the chosen member.
+-- @override MemberGUI_createWindows
 local MemberGUI_createWindows = MemberGUI.createWindows
 function MemberGUI:createWindows(...)
   -- Creates command window
@@ -132,6 +90,8 @@ function MemberGUI:createWindows(...)
   -- Changes active window
   self:setActiveWindow(window)
 end
+--- Rewrites `MemberGUI:createInfoWindow`.
+-- @override MemberGUI_createInfoWindow
 local MemberGUI_createInfoWindow = MemberGUI.createInfoWindow
 function MemberGUI:createInfoWindow()
   if self.parent and self.parent.createInfoWindow then
@@ -142,7 +102,9 @@ function MemberGUI:createInfoWindow()
     MemberGUI_createInfoWindow(self)
   end
 end
---- Refreshes current member of command window.
+--- Rewrites `MemberGUI:refreshMember`.
+-- Refreshes current member of command window.
+-- @override MemberGUI_refreshMember
 local MemberGUI_refreshMember = MemberGUI.refreshMember
 function MemberGUI:refreshMember(member)
   MemberGUI_refreshMember(self, member)
@@ -156,7 +118,8 @@ function MemberGUI:refreshMember(member)
     self.commandWindow:setBattler(member)
   end
 end
--- @treturn boolean True if the member is active, false otherwise.
+--- Rewrites `MemberGUI:memberEnabled`.
+-- @override MemberGUI_memberEnabled
 function MemberGUI:memberEnabled(member)
   return not self.subGUI or self.subGUI:memberEnabled(self:currentMember())
 end
@@ -187,13 +150,15 @@ end
 -- FieldCommandWindow
 -- ------------------------------------------------------------------------------------------------
 
---- Changes the alignment of the button.
+--- Rewrites `FieldCommandWindow:setProperties`. Changes the alignment of the button.
+-- @override FieldCommandWindow_setProperties
 local FieldCommandWindow_setProperties = FieldCommandWindow.setProperties
 function FieldCommandWindow:setProperties(...)
   FieldCommandWindow_setProperties(self, ...)
   self.buttonAlign = 'center'
 end
---- Changes the alignment of the button.
+--- Rewrites `FieldCommandWindow:createWidgets`. Changes the available buttons.
+-- @override FieldCommandWindow_createWidgets
 function FieldCommandWindow:createWidgets(...)
   Button:fromKey(self, 'inventory')
   Button:fromKey(self, 'members')
@@ -202,9 +167,13 @@ function FieldCommandWindow:createWidgets(...)
   Button:fromKey(self, 'quit')
   Button:fromKey(self, 'return')
 end
+--- Rewrites `FieldCommandWindow:colCount`.
+-- @override FieldCommandWindow_colCount
 function FieldCommandWindow:colCount()
   return 1
 end
+--- Rewrites `FieldCommandWindow:rowCount`.
+-- @override FieldCommandWindow_rowCount
 function FieldCommandWindow:rowCount()
   return 6
 end

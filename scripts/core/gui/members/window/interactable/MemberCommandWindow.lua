@@ -25,7 +25,7 @@ local MemberCommandWindow = class(GridWindow)
 function MemberCommandWindow:createWidgets()
   Button:fromKey(self, 'equips')
   Button:fromKey(self, 'skills')
-  --Button:fromKey(self, 'items')
+  Button:fromKey(self, 'items')
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -102,7 +102,8 @@ end
 function MemberCommandWindow:rowCount()
   return 2
 end
--- @treturn string String representation (for debugging).
+--- String representation (for debugging).
+-- @treturn string
 function MemberCommandWindow:__tostring()
   return 'Member Command Window'
 end

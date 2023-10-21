@@ -1,13 +1,14 @@
 
 -- ================================================================================================
 
---- Adds keys the save/load any time.
--- 
--- Plugin parameters
--- * When player presses the button key <save>, the game is saved in the quick save slot.
--- * When player presses the button key <load>, the game in the quick save slot is loaded.
+--- Adds keys to save/load any time in a quick save slot.
 ---------------------------------------------------------------------------------------------------
 -- @plugin QuickSave
+
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield string save Button key to save the game in the quick save slot.
+-- @tfield string load Button key to load the game from the quick save slot.
 
 -- ================================================================================================
 
@@ -71,15 +72,15 @@ end
 -- LoadWindow
 -- ------------------------------------------------------------------------------------------------
 
---- Rewrites `LoadWindow:createWidgets`.
--- @override LoadWindow_createWidgets
+--- Overrides `SaveWindow:createWidgets`.
+-- @override LoadWindow:createWidgets
 local LoadWindow_createWidgets = LoadWindow.createWidgets
 function LoadWindow:createWidgets()
   self:createSaveButton('quick', Vocab.quickSave)
   LoadWindow_createWidgets(self)
 end
---- Rewrites `LoadWindow:rowCount`.
--- @override LoadWindow_rowCount
+--- Overrides `SaveWindow:rowCount`.
+-- @override LoadWindow:rowCount
 local LoadWindow_rowCount = LoadWindow.rowCount
 function LoadWindow:rowCount()
   return LoadWindow_rowCount(self) + 1

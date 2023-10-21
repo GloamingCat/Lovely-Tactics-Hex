@@ -20,7 +20,8 @@ local vertexFormat = { { 'vhsv', 'float', 3 } }
 -- Renderer
 -- ------------------------------------------------------------------------------------------------
 
---- Initializes mesh.
+--- Rewrites `Renderer:init`. Initializes mesh.
+-- @override Renderer_init
 local Renderer_init = Renderer.init
 function Renderer:init(...)
   Renderer_init(self, ...)
@@ -51,8 +52,8 @@ function Renderer:setMeshAttributes(list)
   end
   self.mesh:setDrawRange(1, list.size * 4)
 end
---- Checks if the sprite may be added to the batch.
--- @tparam Sprite sprite
+--- Rewrites `Renderer:batchPossible`.
+-- @override Renderer_batchPossible
 function Renderer:batchPossible(sprite)
   return sprite.texture == self.batchTexture
 end

@@ -5,6 +5,13 @@
 ---------------------------------------------------------------------------------------------------
 -- @classmod LookAround
 
+--- Parameters in the Animation tags.
+-- @tags Animation 
+-- @tfield number freq The duration (in frames) before switching to another row
+--  (optional, uses the duration of the animation).
+-- @tfield sring rows A string containing the possible rows, separated by space
+--  (optional, all rows by default).
+
 -- ================================================================================================
 
 -- Imports
@@ -24,17 +31,9 @@ local LookAround = class(Animation)
 -- @override init
 function LookAround:init(...)
   Animation.init(self, ...)
-  --- Contains the tags from the Animation data.
-  -- @table param
-  -- @tfield number freq The duration (in frames) before switching to another row
-  --  (optional, uses the duration of the animation).
-  -- @tfield sring rows A string containing the possible rows, separated by space
-  --  (optional, all rows by default).
-  local param = self.tags
-  
   self.rows = {}
-  if param and param.rows then
-    local rows = string.split(param.rows)
+  if self.tags and self.tags.rows then
+    local rows = string.split(self.tags.rows)
     for i = 1, #rows do
       self.rows[i] = tonumber(rows[i])
     end
@@ -43,8 +42,8 @@ function LookAround:init(...)
       self.rows[i] = i - 1
     end
   end
-  if param and param.freq then
-    self.frequence = tonumber(param.freq)
+  if self.tags and self.tags.freq then
+    self.frequence = tonumber(self.tags.freq)
   else
     self.frequence = self.duration / 60
   end

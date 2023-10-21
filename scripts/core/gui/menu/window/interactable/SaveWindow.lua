@@ -21,6 +21,8 @@ local SaveWindow = class(GridWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Overrides `Window:init`.
+-- @override init
 function SaveWindow:init(...)
   GridWindow.init(self, ...)
   self.confirmWindow = ConfirmWindow(self.GUI, 'overwrite')

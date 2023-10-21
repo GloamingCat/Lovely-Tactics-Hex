@@ -6,6 +6,10 @@
 ---------------------------------------------------------------------------------------------------
 -- @classmod Knockback
 
+--- Parameters in the Animation tags.
+-- @tags Animation
+-- @tfield number step length of the step in pixels (optional, 12 by default).
+
 -- ================================================================================================
 
 -- Imports
@@ -27,14 +31,10 @@ local Knockback = class(Animation)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Constructor.
+--- Overrides `Animation:init`. 
+-- @override init
 function Knockback:init(...)
   Animation.init(self, ...)
-  --- Contains the tags from the Animation data.
-  -- @table param
-  -- @tfield number step length of the step in pixels (optional, 12 by default).
-  local param = self.tags
-
   self.knockTime = 0
   if self.tags and self.tags.step then
     self.step = tonumber(self.tags.step) or defaultStep

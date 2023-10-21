@@ -105,7 +105,8 @@ function MemberGUI:show(...)
   self:refreshMember()
   GUI.show(self, ...)
 end
--- @treturn boolean True if the member is active, false otherwise.
+--- True if the member is active, false otherwise.
+-- @treturn boolean
 function MemberGUI:memberEnabled(member)
   return true
 end

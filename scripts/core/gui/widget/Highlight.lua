@@ -3,7 +3,7 @@
 
 --- The light background box that is visible behind the selected widget.
 ---------------------------------------------------------------------------------------------------
--- @classmod Hightlight
+-- @classmod Highlight
 
 -- ================================================================================================
 
@@ -79,7 +79,8 @@ function Highlight:updatePosition(wpos)
     self.spriteGrid:updateTransform(self)
   end
 end
---- Shows sprite grid.
+--- Overrides `Component:setVisible`. Shows sprite grid.
+-- @override setVisible
 function Highlight:setVisible(value)
   local active = (not self.hideOnDeactive or self.window.active)
   Component.setVisible(self, value and active and (not self.window or #self.window.matrix > 0))

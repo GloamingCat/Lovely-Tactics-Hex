@@ -84,6 +84,7 @@ function Field:getPersistentData()
         block = script.block,
         wait = script.wait,
         tags = script.tags,
+        args = script.args,
         vars = script.vars }
   end
   return {

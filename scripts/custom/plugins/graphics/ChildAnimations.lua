@@ -3,7 +3,14 @@
 
 --- Child that synchronizes with the parent animation.
 ---------------------------------------------------------------------------------------------------
--- @plugin ChildAnimation
+-- @plugin ChildAnimations
+
+--- Parameters in the Animation tags.
+-- @tags Animation
+-- @tfield table|string|number child Add a child to the animation. Can have multiple `child` tags.
+--  When it's a table, the first element is the time stamp in frames to spawn the child, and the
+--  second element is the child's ID or string. Otherwise, the value of the is the child ID/key and
+-- the time stamp is `0`.
 
 -- ================================================================================================
 
@@ -31,8 +38,9 @@ function Animation:init(...)
     end
   end
 end
---- Shortcut function.
--- @tparam number anim : Animation
+--- Adds an animation to the children list. If it's not an `Animation` type, then a new animation
+-- is created from the it data in the database.
+-- @tparam string|number|Animation anim The animation to be added, or its ID or key.
 function Animation:addChild(anim)
   self.children = self.children or List()
   if type(anim) == 'number' or type(anim) == 'string' then

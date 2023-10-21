@@ -2,12 +2,13 @@
 -- ================================================================================================
 
 --- Makes player dash when double-clicking to a destination tile.
--- 
--- Plugin parameters:
---  * When <player> is true, it affects the player movement.
---  * When <spinner> is true, it affects the spinner change.
 ---------------------------------------------------------------------------------------------------
 -- @plugin DoubleClickDash
+
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield boolean player If true, it affects the player movement.
+-- @tfield boolean spinner If true, it affects the spinner change.
 
 -- ================================================================================================
 

@@ -81,7 +81,7 @@ function CharacterBase:initProperties(instData, name, tiles, colliderHeight, sav
   end
 end
 --- Overrides `DirectedObject:initGraphics`. Creates the animation sets.
--- @override initGraphics
+-- @override DirectedObject:initGraphics
 function CharacterBase:initGraphics(instData, animations, portraits, transform, shadowID, save)
   if shadowID and shadowID >= 0 then
     local shadowData = Database.animations[shadowID]
