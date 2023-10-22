@@ -14,6 +14,7 @@
 -- ================================================================================================
 
 -- To better console output.
+-- File regex: "^(?:[^/]*\\s+)*(\\w+/(?:\\w|/)*.*\\.lua):([0-9]+)(:[0-9]*)?: (...*)$"
 io.stdout:setvbuf("no")
 
 -- Makes it not necessary to include the `scripts/` folder in a file's path.
