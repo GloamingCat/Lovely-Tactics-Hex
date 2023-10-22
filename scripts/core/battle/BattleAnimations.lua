@@ -54,6 +54,7 @@ end
 -- Skill
 -- ------------------------------------------------------------------------------------------------
 
+--- Plays the load effect animation on the user's tile.
 -- @tparam table skill Skill data.
 -- @tparam Vector pos Animation position.
 -- @tparam number dir Looking angle.
@@ -68,6 +69,7 @@ function BattleAnimations.loadEffect(skill, pos, dir)
   end
   return 0
 end
+--- Plays the cast effect animation on the center target tile.
 -- @tparam table skill Skill data.
 -- @tparam ObjectTile tile Target tile.
 -- @tparam number dir Looking angle.
@@ -83,7 +85,7 @@ function BattleAnimations.castEffect(skill, tile, dir)
   end
   return 0
 end
---- Plays the visual effect for the skill's target.
+--- Plays the visual effect for one of the skill's targets.
 -- @tparam table skill Skill data.
 -- @tparam Character char Target character.
 -- @tparam ObjectTile tile Skill's origin tile.
@@ -110,7 +112,7 @@ function BattleAnimations.dieEffect(char)
   end
   return 0
 end
---- Plays the visual effect for the skill's target.
+--- Plays the visual effect for one of the skill's target over the menu.
 -- @tparam table skill Skill data.
 -- @tparam number x Position x of the target (in pixels).
 -- @tparam number y Position y of the target (in pixels).

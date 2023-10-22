@@ -60,11 +60,6 @@ function GUI:destroy()
   end
   collectgarbage('collect')
 end
---- String representation.
-function GUI:__tostring()
-  local name = self.name or 'Nameless'
-  return 'GUI: ' .. name
-end
 
 -- ------------------------------------------------------------------------------------------------
 -- Active Window
@@ -179,6 +174,10 @@ function GUI:hide()
   until done
   self.animationFibers = {}
   self.closed = true
+end
+-- For debugging.
+function GUI:__tostring()
+  return 'GUI: ' .. tostring(self.windowList)
 end
 
 return GUI

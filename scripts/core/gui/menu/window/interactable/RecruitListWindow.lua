@@ -42,11 +42,7 @@ function RecruitListWindow:createListButton(entry)
     price = -(math.floor(battler.money / 2))
   end
   local button = Button(self)
-  local icon = battler.icon and battler.icon.id >= 0 and 
-    ResourceManager:loadIconAnimation(battler.icon, GUIManager.renderer)
-  if icon then
-    button:createIcon(icon)
-  end
+  button:setIcon(batter.icon)
   button:createText('data.battler.' .. battler.key, battler.name, 'gui_button')
   button.price = price
   button.battler = battler
@@ -64,12 +60,12 @@ end
 -- Mode
 -- ------------------------------------------------------------------------------------------------
 
---- Use this window to hire items.
+--- Use this window to hire battlers.
 function RecruitListWindow:setHireMode()
   self.hire = true
   self:refreshButtons(self.GUI.chars)
 end
---- Use this window to sell items.
+--- Use this window to dismiss battlers.
 function RecruitListWindow:setDismissMode()
   self.hire = false
   self:refreshButtons(self.GUI.troop:visibleMembers())
@@ -79,7 +75,8 @@ end
 -- Enable Conditions
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn boolean True if at least one item of this type can be bought.
+--- True if at least one battler of this type can be recruited.
+-- @treturn boolean 
 function RecruitListWindow:buttonEnabled(button)
   if self.hire then
     return self.GUI.troop.money >= button.price
@@ -124,7 +121,7 @@ end
 function RecruitListWindow:cellWidth()
   return ListWindow.cellWidth(self) * 4 / 5
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function RecruitListWindow:__tostring()
   return 'Recruit List Window'
 end

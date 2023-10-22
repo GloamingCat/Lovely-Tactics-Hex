@@ -23,9 +23,11 @@ local Obstacle = class(Object)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam table data The obstacle's data from tileset file.
 -- @tparam table tileData The data about ramp and collision.
 -- @tparam ObjectTile initTile The object this tile is in.
+-- @tparam Sprite sprite The obstacle's sprite.
 -- @tparam table group The group this obstacle is part of.
 function Obstacle:init(data, tileData, initTile, sprite, group)
   local x, y, z = initTile.center:coordinates()
@@ -136,7 +138,7 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn string String representation (for debugging).
+-- For debugging.
 function Obstacle:__tostring()
   return 'Obstacle ' .. self.name .. ' ' .. tostring(self.position)
 end

@@ -174,7 +174,7 @@ end
 function SettingsWindow:cellWidth()
   return 240
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function SettingsWindow:__tostring()
   return 'Settings Window'
 end

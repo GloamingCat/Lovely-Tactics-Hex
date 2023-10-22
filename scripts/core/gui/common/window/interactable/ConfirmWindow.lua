@@ -66,7 +66,7 @@ end
 function ConfirmWindow:cellWidth()
   return 80
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function ConfirmWindow:__tostring()
   return 'Confirm Window'
 end

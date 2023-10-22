@@ -22,7 +22,8 @@ local FieldCamera = class(Renderer)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Constructor.
+--- Overrides `Renderer:init`.
+-- @override
 function FieldCamera:init(...)
   self.images = {}
   Renderer.init(self, ...)
@@ -172,10 +173,12 @@ end
 -- Camera State
 -- ------------------------------------------------------------------------------------------------
 
+--- Gets the persistent data.
 -- @treturn table Current camera state.
 function FieldCamera:getState()
   return self.color
 end
+--- Sets state from a previous saved one.
 -- @tparam table state Saved camera state.
 function FieldCamera:setState(state)
   self:setColor(state)

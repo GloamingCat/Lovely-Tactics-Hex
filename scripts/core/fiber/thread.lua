@@ -8,6 +8,7 @@
 
 -- ================================================================================================
 
+--- Runs a new thread with given channel.
 -- @tparam Channel channel The channel the result will be put in.
 -- @tparam function func The function to be executed.
 -- @param ...  Any other arguments to func.

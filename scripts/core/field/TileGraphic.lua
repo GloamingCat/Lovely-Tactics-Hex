@@ -82,8 +82,7 @@ function TileGraphic:setColor(color)
   self.topAnim.sprite:setColor(color)
   self.bottomAnim.sprite:setColor(color)
 end
---- Converts to string.
--- @treturn string The string representation.
+-- For debugging.
 function TileGraphic:__tostring()
   return 'TileGraphic (' .. self.data.id ..  ')' 
 end

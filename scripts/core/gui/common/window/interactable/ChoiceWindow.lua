@@ -74,7 +74,7 @@ end
 function ChoiceWindow:cellWidth()
   return (self.width or 100) - self:paddingX() * 2
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function ChoiceWindow:__tostring()
   return 'Choice Window ' .. tostring(self.choices)
 end

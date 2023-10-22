@@ -86,7 +86,7 @@ function BattlerAI:showCursor(char)
   end
   cursor:destroy()
 end
--- @treturn string String identifier.
+-- For debugging.
 function BattlerAI:__tostring()
   return 'BattlerAI: ' .. self.battler.key
 end

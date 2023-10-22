@@ -45,7 +45,7 @@ end
 function ConfirmButtonWindow:rowMargin()
   return ButtonWindow.rowMargin(self) - 6
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function ConfirmButtonWindow:__tostring()
   return 'Confirm Button Window'
 end

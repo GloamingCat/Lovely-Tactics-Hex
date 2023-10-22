@@ -75,7 +75,7 @@ function Matrix3:isEmpty()
   end
   return true
 end
--- @treturn string The string representation (for debugging).
+-- For debugging.
 function Matrix3:__tostring()
   local s = '{ '
   for i = 1, self.width do

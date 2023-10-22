@@ -98,8 +98,8 @@ end
 function BattleMoveAction:maxDistance(user)
   return user.battler.steps or self.pathLimit
 end
--- @treturn string String representation for debugging.
-function BattleMoveAction:toString()
+-- For debugging.
+function BattleMoveAction:__tostring()
   if self:isRanged() then
     return "BattleMoveAction ranged"
   else

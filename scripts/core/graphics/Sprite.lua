@@ -362,8 +362,7 @@ function Sprite:destroy()
   self.texture = nil
   self.renderer.needsRedraw = true
 end
---- String representation.
--- @treturn string
+-- For debugging.
 function Sprite:__tostring()
   return 'Sprite'
 end

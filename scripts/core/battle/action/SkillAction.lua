@@ -98,11 +98,6 @@ function SkillAction:fromData(skillID, ...)
     return self(skillID, ...)
   end
 end
---- String representation.
--- @treturn string A string with skill's ID and name.
-function SkillAction:__tostring()
-  return 'SkillAction (' .. self.data.id .. ': ' .. self.data.name .. ')'
-end
 
 -- ------------------------------------------------------------------------------------------------
 -- Damage / Status
@@ -497,6 +492,10 @@ function SkillAction:estimateAreaEffect(input, target, eff)
     end
   end
   return sum
+end
+-- For debugging.
+function SkillAction:__tostring()
+  return 'SkillAction (' .. self.data.id .. ': ' .. self.data.name .. ')'
 end
 
 return SkillAction

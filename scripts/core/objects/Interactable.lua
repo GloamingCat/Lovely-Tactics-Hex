@@ -120,11 +120,6 @@ function Interactable:getPersistentData()
     collider = self.collider,
     collided = self.collided }
 end
---- String representation.
--- @treturn string String representation (for debugging).
-function Interactable:__tostring()
-  return 'Interactable: ' .. self.key
-end
 
 -- ------------------------------------------------------------------------------------------------
 -- Callbacks
@@ -207,6 +202,10 @@ function Interactable:resumeScripts()
     self:onInteract()
   end
   self:collideTile(self:getTile())
+end
+-- For debugging.
+function Interactable:__tostring()
+  return 'Interactable: ' .. self.key
 end
 
 return Interactable

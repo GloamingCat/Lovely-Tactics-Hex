@@ -63,18 +63,6 @@ function Inventory:getSlot(id)
   end
   return nil
 end
---- Converting to string.
--- @treturn string A string representation.
-function Inventory:__tostring()
-  if self.size == 0 then
-    return 'Inventory {}'
-  end
-  local string = 'Inventory {'
-  for i = 1, self.size - 1 do
-    string = string .. tostring(self[i]) .. ', '
-  end
-  return string .. tostring(self[self.size]) .. '}'
-end
 
 -- ------------------------------------------------------------------------------------------------
 -- Add / Remove
@@ -168,6 +156,17 @@ function Inventory:getEquipItems(key)
     end
   end
   return items
+end
+-- For debugging.
+function Inventory:__tostring()
+  if self.size == 0 then
+    return 'Inventory {}'
+  end
+  local string = 'Inventory {'
+  for i = 1, self.size - 1 do
+    string = string .. tostring(self[i]) .. ', '
+  end
+  return string .. tostring(self[self.size]) .. '}'
 end
 
 return Inventory

@@ -119,8 +119,8 @@ function EquipBonusWindow:setEquip(slotKey, newEquip)
   end
   self:updateBonus(bonusList)
 end
--- @tparam Battler member The owner of the current equipment set.
----  It is necessary so the attribute to calculate the attribute bonus.
+--- Sets the current character. It is necessary to calculate the attribute bonus.
+-- @tparam Battler battler The owner of the current equipment set.
 function EquipBonusWindow:setBattler(battler)
   self.member = battler
   self:setEquip(self.slotKey, battler.equipSet:getEquip(self.slotKey))
@@ -130,7 +130,7 @@ end
 -- Properties
 -- -------------------------------------------------------------------------------------------------
 
--- @treturn string String representation (for debugging).
+-- For debugging.
 function EquipBonusWindow:__tostring()
   return 'Equip Bonus Window'
 end

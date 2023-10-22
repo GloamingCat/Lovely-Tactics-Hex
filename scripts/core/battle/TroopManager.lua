@@ -48,6 +48,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Creates all battle characters based on field's tile data.
+-- @tparam table save Save data (optional).
 function TroopManager:createTroops(save)
   self.characterList = List()
   self.troops = {}
@@ -92,7 +93,7 @@ end
 function TroopManager:getRandomTroop(troops, playerTroop)
   local n = 0
   local id = -1
-  local level = playerTroop:getLevel()
+  local level = playerTroop:getMaxLevel()
   for _, t in ipairs(troops) do
     if level <= t.maxLevel and level >= t.minLevel then
       n = n + 1

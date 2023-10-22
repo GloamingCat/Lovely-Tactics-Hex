@@ -103,7 +103,7 @@ function OptionsWindow:rowCount()
     return GameManager:isDesktop() and 5 or 4
   end
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function OptionsWindow:__tostring()
   return 'Options Window'
 end

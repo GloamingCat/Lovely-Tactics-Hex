@@ -234,7 +234,7 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn string String representation (for debugging).
+-- For debugging.
 function BattlerWindow:__tostring()
   return 'Battler Description Window'
 end

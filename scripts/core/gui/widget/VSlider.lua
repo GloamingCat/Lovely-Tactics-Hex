@@ -71,7 +71,8 @@ function VSlider:updatePosition(pos)
   self.downArrow:setXYZ(pos.x, pos.y + self.length / 2)
   self:updateCursorPosition(pos)
 end
--- @tparam Vector pos Center position.
+--- Updates the position of the cursor according to the window's position.
+-- @tparam Vector pos Window's position.
 function VSlider:updateCursorPosition(pos)
   local length = self.length - self.upArrow.offsetY - self.downArrow.offsetY
   local t = self.window.offsetRow / (self.window:actualRowCount() - self.window:rowCount())

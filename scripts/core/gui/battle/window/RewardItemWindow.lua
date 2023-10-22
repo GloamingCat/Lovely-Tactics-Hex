@@ -34,10 +34,8 @@ end
 --- Overrides `ListWindow:createWidgets`. Adds the Gold button.
 -- @override
 function RewardItemWindow:createWidgets()
-  local icon = Config.icons.money.id >= 0 and 
-    ResourceManager:loadIconAnimation(Config.icons.money, GUIManager.renderer)
   local button = Button(self)
-  button:createIcon(icon)
+  button:setIcon(Config.icons.money)
   button:createText('money', '', 'gui_button')
   button:createInfoText(self.money .. '{%g}', '', 'gui_button')
   InventoryWindow.createWidgets(self)
@@ -64,7 +62,7 @@ function RewardItemWindow:cellWidth(width)
   local w = (ScreenManager.width - self.GUI:windowMargin() * 3) / 2
   return self:computeCellWidth(w)
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function RewardItemWindow:__tostring()
   return 'Item Reward Window'
 end

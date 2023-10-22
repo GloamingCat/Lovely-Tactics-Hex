@@ -120,7 +120,8 @@ end
 -- Bounds
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn number The total width in world coordinates.
+--- The total width in world coordinates.
+-- @treturn number
 function Text:getWidth()
   local w = 0
   if self.parsedLines then
@@ -131,7 +132,8 @@ function Text:getWidth()
   end
   return w
 end
--- @treturn number The total height in world coordinates.
+--- The total height in world coordinates.
+-- @treturn number
 function Text:getHeight()
   local h = 0
   if self.parsedLines then

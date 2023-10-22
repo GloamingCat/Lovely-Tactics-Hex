@@ -397,11 +397,6 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Converting to string.
--- @treturn string A string representation.
-function Battler:__tostring()
-  return 'Battler ' .. self.data.id .. ': ' .. self.key .. ' (' .. self.name .. ')' 
-end
 --- Creates the save table. It also works as an extended troop unit data table.
 -- @tparam number list List type. 0 is current, 1 is backup, 2 is hidden.
 -- @tparam number x X position in the grid (optional).
@@ -429,6 +424,10 @@ end
 --- Discards save changes.
 function Battler:resetState()
   self:initState(self.data)
+end
+-- For debugging.
+function Battler:__tostring()
+  return 'Battler ' .. self.data.id .. ': ' .. self.key .. ' (' .. self.name .. ')' 
 end
 
 return Battler

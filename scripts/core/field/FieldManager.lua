@@ -128,6 +128,7 @@ end
 -- Field Creation (internal use only)
 -- ------------------------------------------------------------------------------------------------
 
+--- Creates the Player character according to the transition.
 -- @tparam table transition The transition data.
 -- @tparam table save Current field state (optional).
 function FieldManager:initializePlayer(transition, save)

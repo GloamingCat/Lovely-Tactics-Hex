@@ -60,6 +60,8 @@ end
 -- Attribute Values
 -- ------------------------------------------------------------------------------------------------
 
+--- Computes the base value of attributes from its formula plus the base valus from the job and
+-- battler data.
 -- @tparam string key Attribute's key.
 -- @treturn number The basic attribute value, without volatile bonus.
 function AttributeSet:getBase(key)
@@ -69,6 +71,7 @@ function AttributeSet:getBase(key)
   end
   return base
 end
+--- Computes the new value of the attribute added by its bonuses.
 -- @tparam string key Attribute's key.
 -- @tparam number base Attribute's basic value.
 -- @tparam Battler battler Battler that contains the bonus information.
@@ -92,14 +95,14 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Converting to string.
--- @treturn string A string representation.
-function AttributeSet:__tostring()
-  return 'AttributeSet: ' .. tostring(self.battler)
-end
--- @treturn table Persistent state of the battler's attributes.
+--- Persistent state of the battler's attributes.
+-- @treturn table 
 function AttributeSet:getState()
   return copyTable(self.battlerBase)
+end
+-- For debugging.
+function AttributeSet:__tostring()
+  return 'AttributeSet: ' .. tostring(self.battler)
 end
 
 return AttributeSet

@@ -50,11 +50,13 @@ end
 -- Enabled Conditions
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn boolean True if Item GUI may be open, false otherwise.
+--- Whether the ItemGUI can be open.
+-- @treturn boolean
 function MemberCommandWindow:itemsEnabled()
   return ItemGUI:memberEnabled(self.GUI:currentMember())
 end
--- @treturn boolean True if Skill GUI may be open, false otherwise.
+--- Whether the SkillGUI can be open.
+-- @treturn boolean
 function MemberCommandWindow:skillsEnabled()
   return SkillGUI:memberEnabled(self.GUI:currentMember())
 end
@@ -103,8 +105,7 @@ end
 function MemberCommandWindow:rowCount()
   return 2
 end
---- String representation (for debugging).
--- @treturn string
+-- For debugging.
 function MemberCommandWindow:__tostring()
   return 'Member Command Window'
 end

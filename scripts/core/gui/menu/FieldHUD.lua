@@ -22,9 +22,7 @@ local FieldHUD = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
--- @tparam TroopBase troop Current troop (player's troop by default).
--- @tparam table memberList Arra of troop unit tables from current troop.
--- @tparam number memberID Current selected member on the list (first one by default).
+--- Overrides `GUI:init`.
 function FieldHUD:init()
   self.name = 'Field HUD'
   GUI.init(self)

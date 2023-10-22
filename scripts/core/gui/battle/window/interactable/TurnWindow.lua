@@ -203,7 +203,7 @@ end
 function TurnWindow:cellWidth()
   return ActionWindow.cellWidth(self) * 3 / 4
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function TurnWindow:__tostring()
   return 'Battle Turn Window'
 end

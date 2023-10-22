@@ -62,8 +62,7 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Converting to string.
--- @treturn string A string with skill's ID and name.
+-- For debugging.
 function ItemAction:__tostring()
   return 'ItemAction (' .. self.skillID .. ': ' .. self.data.name .. ')'
 end

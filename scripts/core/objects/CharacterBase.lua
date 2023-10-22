@@ -168,11 +168,6 @@ function CharacterBase:setKey(key)
   FieldManager.characterList[key] = self
   self.key = key
 end
---- Converting to string.
--- @treturn string A string representation.
-function CharacterBase:__tostring()
-  return 'Character ' .. self.name .. ' (' .. self.key .. ')'
-end
 
 -- ------------------------------------------------------------------------------------------------
 -- Collision
@@ -264,6 +259,10 @@ function CharacterBase:getPersistentData()
   data.animName = self.animName
   data.speed = self.speed
   return data
+end
+-- For debugging.
+function CharacterBase:__tostring()
+  return 'Character ' .. self.name .. ' (' .. self.key .. ')'
 end
 
 return CharacterBase

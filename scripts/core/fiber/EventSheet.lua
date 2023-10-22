@@ -43,12 +43,6 @@ function EventSheet:init(root, data, char)
   self.labels = {}
   Fiber.init(self, root, nil)
 end
--- @treturn string String identification.
-function EventSheet:__tostring()
-  local name = self.data and self.data.name
-  name = name and (' ' .. name) or ''
-  return 'EventSheet' .. name ..  ' from ' .. tostring(self.origin.name)
-end
 
 -- ------------------------------------------------------------------------------------------------
 -- Events
@@ -167,6 +161,12 @@ end
 -- @treturn Fiber Newly created Fiber.
 function EventSheet:forkFromScript(script, ...)
   return self.root:forkFromScript(script, self.char, ...)
+end
+-- For debugging.
+function EventSheet:__tostring()
+  local name = self.data and self.data.name
+  name = name and (' ' .. name) or ''
+  return 'EventSheet' .. name ..  ' from ' .. tostring(self.origin.name)
 end
 
 return EventSheet

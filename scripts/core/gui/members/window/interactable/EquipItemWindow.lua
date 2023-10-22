@@ -125,7 +125,7 @@ end
 function EquipItemWindow:cellWidth(width)
   return 200
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function EquipItemWindow:__tostring()
   return 'Equip Item Window'
 end

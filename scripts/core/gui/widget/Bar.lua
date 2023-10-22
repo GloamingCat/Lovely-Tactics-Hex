@@ -78,15 +78,18 @@ end
 function Bar:setColor(color)
   self.bar.sprite:setColor(color)
 end
--- @treturn table The frame padding.
+--- The frame padding.
+-- @treturn number
 function Bar:padding()
   return 1
 end
--- @treturn table The frame spritesheet from Database.
+--- The frame spritesheet from Database.
+-- @treturn table
 function Bar:getFrame()
   return Database.animations[Config.animations.gaugeFrame]
 end
--- @treturn table The bar spritesheet from Database.
+--- The bar spritesheet from Database.
+-- @treturn table
 function Bar:getBar()
   return Database.animations[Config.animations.gaugeBar]
 end

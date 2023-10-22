@@ -78,7 +78,8 @@ function Troop:hasMember(key)
   end
   return false
 end
--- @treturn List List of all members in the current party grid.
+--- Creates a list with all members in the current party grid.
+-- @treturn List List of units.
 function Troop:currentMembers()
   local list = List()
   for member in self.members:iterator() do
@@ -88,7 +89,8 @@ function Troop:currentMembers()
   end
   return list
 end
--- @treturn List List of backup members.
+--- Creates a list with all backup members.
+-- @treturn List List of units.
 function Troop:backupMembers()
   local list = List()
   for member in self.members:iterator() do
@@ -98,7 +100,8 @@ function Troop:backupMembers()
   end
   return list
 end
--- @treturn List List of all hidden members.
+--- Creates a list with all hidden members.
+-- @treturn List List of units.
 function Troop:hiddenMembers()
   local list = List()
   for member in self.members:iterator() do
@@ -108,13 +111,15 @@ function Troop:hiddenMembers()
   end
   return list
 end
--- @treturn List List of all visible (current and backup) members.
+--- Creates a list with all visible (current and backup) members.
+-- @treturn List List of units.
 function Troop:visibleMembers()
   local list = List(self.members)
   list:removeAll(self:hiddenMembers())
   return list
 end
--- @treturn List List of all battlers in the current party grid.
+--- Creates a list with all battlers in the current party grid
+-- @treturn List List of `Battler`.
 function Troop:currentBattlers()
   local list = self:currentMembers()
   for i = 1, #list do
@@ -122,7 +127,8 @@ function Troop:currentBattlers()
   end
   return list
 end
--- @treturn List List of all backup battlers.
+--- Creates a list with all backup battlers.
+-- @treturn List List of `Battler`.
 function Troop:backupBattlers()
   local list = self:backupMembers()
   for i = 1, #list do
@@ -130,7 +136,8 @@ function Troop:backupBattlers()
   end
   return list
 end
--- @treturn List List of all visible (current and backup) battlers.
+--- Creates a list with all visible (current and backup) battlers.
+-- @treturn List List of `Battler`.
 function Troop:visibleBattlers()
   local list = self:visibleMembers()
   for i = 1, #list do
@@ -138,7 +145,8 @@ function Troop:visibleBattlers()
   end
   return list
 end
--- @tparam string number The battler's key or ID in the database.
+--- Counts the number of units that have Battlers of the given ID.
+-- @tparam string id The battler's key or ID in the database.
 -- @treturn number The number of members in the party with the given battler ID.
 function Troop:battlerCount(id)
   local count = 0
@@ -203,6 +211,7 @@ function Troop:rotate()
   self.rotation = mod(self.rotation + 1, 4)
   self.sizeX, self.sizeY = self.sizeY, self.sizeX
 end
+--- Gets the direction the characters are facing when the troop is not rotated.
 -- @treturn number Character direction in degrees.
 function Troop:getCharacterDirection()
   local baseDirection = math.field.baseDirection() -- Characters' direction at rotation 0.
@@ -210,15 +219,44 @@ function Troop:getCharacterDirection()
 end
 
 -- ------------------------------------------------------------------------------------------------
+-- Level
+-- ------------------------------------------------------------------------------------------------
+
+--- Computes the average level among visible members.
+-- @treturn number
+function Troop:getLevel()
+  local level = 0
+  local list = self:visibleBattlers()
+  for i = 1, #list do
+    level = level + list[i].job.level
+  end
+  return level / #level
+end
+--- Computes the higher level among visible members.
+-- @treturn number
+function Troop:getMaxLevel()
+  local level = 0
+  local list = self:visibleBattlers()
+  for i = 1, #list do
+    level = math.max(level, list[i].job.level)
+  end
+  return level
+end
+--- Computes the minimum level among visible members.
+-- @treturn number
+function Troop:getMinLevel()
+  local level = math.huge
+  local list = self:visibleBattlers()
+  for i = 1, #list do
+    level = math.min(level, list[i].job.level)
+  end
+  return level
+end
+
+-- ------------------------------------------------------------------------------------------------
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Converting to string.
--- @treturn string A string representation.
-function Troop:__tostring()
-  local party = self.party and ' (party ' .. self.party .. ')' or ''
-  return 'Troop ' .. self.data.id .. ': ' .. self.data.name .. party
-end
 --- Creates the table to represent troop's persistent data.
 -- @tparam boolean saveFormation Flag to include current formation in the persistent data.
 -- @treturn table Table with persistent data.
@@ -237,14 +275,10 @@ function Troop:getState(saveFormation)
   end
   return data
 end
--- @treturn number The higher level among visible members.
-function Troop:getLevel()
-  local level = 0
-  local list = self:visibleBattlers()
-  for i = 1, #list do
-    level = math.max(level, list[i].job.level)
-  end
-  return level
+-- For debugging.
+function Troop:__tostring()
+  local party = self.party and ' (party ' .. self.party .. ')' or ''
+  return 'Troop ' .. self.data.id .. ': ' .. self.data.name .. party
 end
 
 return Troop

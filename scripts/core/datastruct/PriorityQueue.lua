@@ -22,6 +22,7 @@ local PriorityQueue = class()
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam function comp The function that compares two pairs (optional).
 function PriorityQueue:init(comp)
   self.comp = comp or self.ascending
@@ -141,8 +142,7 @@ function PriorityQueue:asList()
   end
   return list
 end
---- Converting to string.
--- @treturn string A string representation.
+-- For debugging.
 function PriorityQueue:__tostring()
   local list = self:asList()
   return tostring(list)

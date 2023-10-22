@@ -90,10 +90,6 @@ function Fiber:interrupt()
     self:finish()
   end
 end
--- @treturn string String identification.
-function Fiber:__tostring()
-  return 'Fiber: ' .. tostring(self.origin.name)
-end
 --- Called when the coroutine finished executing.
 function Fiber:finish()
   self.coroutine = nil
@@ -155,6 +151,10 @@ function Fiber:invoke(time, func, ...)
     self:wait(time)
     func(unpack(args))
   end)
+end
+-- For debugging.
+function Fiber:__tostring()
+  return 'Fiber: ' .. tostring(self.origin.name)
 end
 
 return Fiber

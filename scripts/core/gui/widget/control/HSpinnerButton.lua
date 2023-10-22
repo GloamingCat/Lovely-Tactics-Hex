@@ -44,10 +44,7 @@ end
 -- @treturn HSpinnerButton
 function HSpinnerButton:fromKey(window, key, minValue, maxValue, initValue)
   local button = self(window, maxValue, minValue, initValue)
-  local icon = Config.icons[key]
-  if icon then
-    button:createIcon(icon)
-  end
+  button:setIcon(Config.icons[key])
   if key and Vocab[key] then
     button:createText(key, key, window.buttonFont, 'left')
     if Vocab.manual[key] then

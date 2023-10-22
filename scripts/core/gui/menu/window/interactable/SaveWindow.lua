@@ -130,7 +130,7 @@ end
 function SaveWindow:cellHeight()
   return (GridWindow.cellHeight(self) * 2 + self:rowMargin() * 2) - 4
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function SaveWindow:__tostring()
   return 'Save Window'
 end

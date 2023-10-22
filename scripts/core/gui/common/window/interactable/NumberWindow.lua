@@ -97,7 +97,7 @@ end
 function NumberWindow:cellHeight()
   return (self.height or 48) - self:paddingY() * 2
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function NumberWindow:__tostring()
   return 'NumberWindow: ' .. tostring(self.choices)
 end

@@ -146,7 +146,7 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn string String representation (for debugging).
+-- For debugging.
 function RewardEXPWindow:__tostring()
   return 'EXP Reward Window'
 end

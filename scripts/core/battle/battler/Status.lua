@@ -70,23 +70,6 @@ function Status:fromData(data, ...)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- General
--- ------------------------------------------------------------------------------------------------
-
---- Converting to string.
--- @treturn string A string representation.
-function Status:__tostring()
-  return 'Status: ' .. self.data.id .. ' (' .. self.data.name .. ')'
-end
---- Gets status's persistent data. Must include its ID.
--- @treturn table State data.
-function Status:getState()
-  return { id = self.data.id,
-    lifeTime = self.lifeTime,
-    caster = self.caster }
-end
-
--- ------------------------------------------------------------------------------------------------
 -- Effects
 -- ------------------------------------------------------------------------------------------------
 
@@ -181,6 +164,22 @@ function Status:onSkillResult(input, results, char)
   if self.data.removeOnKO and not battler:isAlive() then
     self.statusList:removeStatus(self, char)
   end
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- General
+-- ------------------------------------------------------------------------------------------------
+
+--- Gets status's persistent data. Must include its ID.
+-- @treturn table State data.
+function Status:getState()
+  return { id = self.data.id,
+    lifeTime = self.lifeTime,
+    caster = self.caster }
+end
+-- For debugging.
+function Status:__tostring()
+  return 'Status: ' .. self.data.id .. ' (' .. self.data.name .. ')'
 end
 
 return Status

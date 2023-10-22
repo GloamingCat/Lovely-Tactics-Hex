@@ -26,6 +26,7 @@ local MemberInfo = class(Component)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam table battler Battler's data.
 -- @tparam number width Width of the container.
 -- @tparam number height Height of the container.

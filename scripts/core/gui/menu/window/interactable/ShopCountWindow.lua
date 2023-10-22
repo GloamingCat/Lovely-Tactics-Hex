@@ -215,7 +215,7 @@ end
 function ShopCountWindow:cellWidth()
   return 100
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function ShopCountWindow:__tostring()
   return 'Shop Count Window'
 end

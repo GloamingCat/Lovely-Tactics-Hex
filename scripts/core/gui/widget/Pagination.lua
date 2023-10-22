@@ -33,6 +33,7 @@ function Pagination:init(window, halign, valign)
   end
   SimpleText.init(self, '', pos, window.width - window:paddingX() * 2, halign, Fonts.gui_tiny)
 end
+--- Sets the current page and the total number of pages and updates the text accordingly.
 -- @tparam number current Current page.
 -- @tparam number max Total number of pages.
 function Pagination:set(current, max)

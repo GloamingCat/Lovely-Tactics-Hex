@@ -160,7 +160,7 @@ end
 function ButtonWindow:paddingY()
   return GridWindow.paddingY(self) / 4
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function ButtonWindow:__tostring()
   return self.buttonNames[1] .. ' Button Window'
 end

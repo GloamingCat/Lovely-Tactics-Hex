@@ -116,7 +116,8 @@ function InputManager:setKeyMap(map)
     end
   end
 end
--- @treturn boolean Whether the player can use keys to play.
+--- Whether the player can use keys to play.
+-- @treturn boolean
 function InputManager:hasKeyboard()
   return not GameManager:isMobile()
 end

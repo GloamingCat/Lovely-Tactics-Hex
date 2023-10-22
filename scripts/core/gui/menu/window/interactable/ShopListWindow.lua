@@ -33,10 +33,8 @@ function ShopListWindow:createListButton(item)
   if not price or price < 0 then
     price = item.price
   end
-  local icon = item.icon.id >= 0 and 
-    ResourceManager:loadIconAnimation(item.icon, GUIManager.renderer)
   local button = Button(self)
-  button:createIcon(icon)
+  button:setIcon(item.icon)
   button:createText('data.item.' .. item.key, item.name, 'gui_button')
   if self.buy then
     button:createInfoText(price .. ' {%g}', nil, 'gui_button')
@@ -69,7 +67,8 @@ end
 -- Enable Conditions
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn boolean True if at least one item of this type can be bought.
+--- True if at least one item of this type can be bought.
+-- @treturn boolean 
 function ShopListWindow:buttonEnabled(button)
   if self.buy then
     return self.GUI.troop.money >= button.price
@@ -108,7 +107,7 @@ end
 function ShopListWindow:cellWidth()
   return ListWindow.cellWidth(self) * 4 / 5
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function ShopListWindow:__tostring()
   return 'Shop Item Window'
 end

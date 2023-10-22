@@ -75,8 +75,7 @@ end
 -- Convertion
 -- ------------------------------------------------------------------------------------------------
 
---- Converting to string.
--- @treturn string A string representation.
+-- For debugging.
 function Stack:__tostring()
   local i = self.size
   if i == 0 then

@@ -66,7 +66,7 @@ end
 function CountWindow:rowCount()
   return 1
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function CountWindow:__tostring()
   return 'Count Window'
 end

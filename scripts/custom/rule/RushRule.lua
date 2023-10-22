@@ -27,8 +27,7 @@ function RushRule:onSelect(...)
     self.input = nil
   end
 end
---- String identifier.
--- @treturn string
+-- For debugging.
 function RushRule:__tostring()
   return 'RushRule (' .. tostring(self.skill)  .. '): ' .. self.battler.key
 end

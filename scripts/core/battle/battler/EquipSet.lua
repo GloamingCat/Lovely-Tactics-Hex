@@ -403,12 +403,8 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Converting to string.
--- @treturn string A string representation.
-function EquipSet:__tostring()
-  return 'EquipSet: ' .. tostring(self.battler)
-end
--- @treturn table Persistent state.
+--- Persistent state.
+-- @treturn table
 function EquipSet:getState()
   return {
     slots = deepCopyTable(self.slots),
@@ -425,6 +421,10 @@ function EquipSet:getCount(id)
     end
   end
   return count
+end
+-- For debugging.
+function EquipSet:__tostring()
+  return 'EquipSet: ' .. tostring(self.battler)
 end
 
 return EquipSet

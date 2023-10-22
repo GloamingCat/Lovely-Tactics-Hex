@@ -69,8 +69,7 @@ function ActionInput:createMoveInput()
   moveInput.skipAnimations = self.skipAnimations
   return moveInput
 end
---- String representation.
--- @treturn string
+-- For debugging.
 function ActionInput:__tostring()
   return 'ActionInput: ' .. tostring(self.action) .. 
     ' | ' .. tostring(self.user) .. 

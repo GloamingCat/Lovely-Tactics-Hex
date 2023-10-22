@@ -47,7 +47,7 @@ end
 function QuitWindow:rowCount()
   return GameManager:isDesktop() and 3 or 2
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function QuitWindow:__tostring()
   return 'Quit Window'
 end

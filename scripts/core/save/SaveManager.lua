@@ -144,7 +144,8 @@ end
 -- Save
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn boolean Whether there are saves or not.
+--- Whether there are saves or not.
+-- @treturn boolean
 function SaveManager:hasSaves()
   for k, v in pairs(self.saves) do
     if v.version == saveVersion then

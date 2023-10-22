@@ -49,8 +49,7 @@ function BetrayRule:execute()
   self.input.user.party = self.originalParty
   return result
 end
---- String identifier.
--- @treturn string
+-- For debugging.
 function BetrayRule:__tostring()
   return 'BetrayRule (' .. tostring(self.skill)  .. '): ' .. self.battler.key
 end

@@ -90,16 +90,18 @@ end
 -- Field depth
 -- --------------------------------------------------------------------------------------------
 
+--- Gets the maximum depth a sprite can have in a field.
 -- @tparam number sizeX Field's maximum x.
 -- @tparam number sizeY Field's maximum y.
--- @tparam number height Field's maximum height.
+-- @tparam number maxHeight Field's maximum height.
 -- @treturn number The maximum depth of the field's renderer.
 function IsoMath.maxDepth(sizeX, sizeY, maxHeight)
   return ceil(sizeX * tileH / 2 * dpy + pph * 2 + dph * (maxHeight + 1))
 end
+--- Gets the minimum depth a sprite can have in a field.
 -- @tparam number sizeX Field's maximum x.
 -- @tparam number sizeY Field's maximum y.
--- @tparam number height Field's maximum height.
+-- @tparam number maxHeight Field's maximum height.
 -- @treturn number The minimum depth of the field's renderer.
 function IsoMath.minDepth(sizeX, sizeY, maxHeight)
   return -ceil(sizeY * tileH / 2 * dpy + pph + dph * (maxHeight - 1))
@@ -109,6 +111,7 @@ end
 -- Tile-Pixel
 -- --------------------------------------------------------------------------------------------
 
+--- Converts tile coordinates to world coordinates.
 -- @tparam number i Tile x coordinate.
 -- @tparam number j Tile y coordinate.
 -- @tparam number h Tile height.
@@ -119,6 +122,7 @@ function IsoMath.tile2Pixel(i, j, h)
   local d = -dpy * y
   return x, y - h * pph, d - h * dph
 end
+--- Converts world coordinates to tile coordinates.
 -- @tparam number x Pixel x.
 -- @tparam number y Pixel y.
 -- @tparam number d Pixel depth.

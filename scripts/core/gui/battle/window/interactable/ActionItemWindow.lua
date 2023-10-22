@@ -76,7 +76,7 @@ end
 function ActionItemWindow:cellWidth()
   return 200
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function ActionItemWindow:__tostring()
   return 'Battle Item Window'
 end

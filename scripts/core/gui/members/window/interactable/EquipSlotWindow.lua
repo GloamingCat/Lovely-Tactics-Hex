@@ -51,7 +51,8 @@ function EquipSlotWindow:createListButton(slot)
     button.slot = slot
   end
 end
--- @tparam Battler member The battler which the current equipment belongs to.
+--- Sets the current character to show its current equipment.
+-- @tparam Battler battler The battler which the current equipment belongs to.
 function EquipSlotWindow:setBattler(battler)
   self.member = battler
   self:refreshSlots()
@@ -135,7 +136,7 @@ end
 function EquipSlotWindow:cellWidth(width)
   return 200
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function EquipSlotWindow:__tostring()
   return 'Equip Slot Window'
 end

@@ -271,15 +271,6 @@ function Animation:destroy()
   end
   self.destroyed = true
 end
---- String representation.
--- @treturn string
-function Animation:__tostring()
-  local id = ''
-  if self.data then
-    id = ' (' .. self.data.id .. ')'
-  end
-  return 'Animation' .. id
-end
 
 -- ------------------------------------------------------------------------------------------------
 -- Visibility
@@ -330,6 +321,14 @@ function Animation:applyTransformation(data)
   if self.sprite then
     self.sprite:applyTransformation(data)
   end
+end
+-- For debugging.
+function Animation:__tostring()
+  local id = ''
+  if self.data then
+    id = ' (' .. self.data.id .. ')'
+  end
+  return 'Animation' .. id
 end
 
 return Animation

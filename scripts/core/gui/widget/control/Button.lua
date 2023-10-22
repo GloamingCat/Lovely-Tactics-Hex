@@ -22,6 +22,7 @@ local Button = class(GridWidget)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam GridWindow window The window that this button is component of.
 -- @tparam function onConfirm The function called when player confirms (optinal).
 -- @tparam function enableCondition The function that tells if 
@@ -43,11 +44,7 @@ end
 -- @treturn Button New button.
 function Button:fromKey(window, key)
   local button = self(window, window[key .. 'Confirm'], window[key .. 'Enabled'])
-  local icon = Config.icons[key]
-  if icon then
-    icon = ResourceManager:loadIconAnimation(icon, GUIManager.renderer)
-    button:createIcon(icon)
-  end
+  button:setIcon(Config.icons[key])
   if key and Vocab[key] then
     button:createText(key, key, window.buttonFont, window.buttonAlign)
     if Vocab.manual[key] then
@@ -57,12 +54,13 @@ function Button:fromKey(window, key)
   button.key = key
   return button
 end
+--- Creates the main text.
 -- @tparam string term The text term to be localized.
 -- @tparam string fallback If no localization is found, use this text (optional).
--- @tparam string fontName The text's font, from Fonts folder (optional, uses default).
--- @tparam string align The text's horizontal alignment (optional, left by default).
+-- @tparam string fontName The text's font, from Fonts folder (optional).
+-- @tparam string align The text's horizontal alignment (optional, `'left'` by default).
 -- @tparam number w The text's maximum width (optional, uses all empty space by default).
--- @tparam Vector pos The text's maximum width (optional, top left by default).
+-- @tparam Vector pos The text's top left (optional).
 function Button:createText(term, fallback, fontName, align, w, pos)
   if self.text then
     self.text:destroy()
@@ -84,9 +82,13 @@ function Button:createText(term, fallback, fontName, align, w, pos)
   self.content:add(text)
   return self.text
 end
+--- Creates the secondary text.
 -- @tparam string term The text term to be localized.
 -- @tparam string fallback If no localization is found, use this text (optional).
--- @tparam string fontName The text's font, from Fonts folder (optional, uses default).
+-- @tparam string fontName The text's font, from Fonts folder (optional).
+-- @tparam string align The text's horizontal alignment (optional, `'right'` by default).
+-- @tparam number w The text's maximum width (optional, uses all empty space by default).
+-- @tparam Vector pos The text's top left (optional).
 function Button:createInfoText(term, fallback, fontName, align, w, pos)
   if self.infoText then
     self.infoText:destroy()
@@ -108,20 +110,12 @@ function Button:createInfoText(term, fallback, fontName, align, w, pos)
   self.content:add(text)
   return text
 end
--- @tparam Animation icon The icon graphics or the path to the icon.
-function Button:createIcon(icon)
-  if not icon then
-    return
-  end
-  icon.sprite:setColor(Color.gui_icon_enabled)
-  self.icon = icon
-  self.content:add(icon)
-end
 
 -- ------------------------------------------------------------------------------------------------
 -- General
 -- ------------------------------------------------------------------------------------------------
 
+--- Gets the width of the space reserved for the icon.
 -- @treturn number
 function Button:iconWidth()
   if self.icon then
@@ -131,43 +125,50 @@ function Button:iconWidth()
     return 0
   end
 end
--- @tparam string text
+--- Sets the main text.
+-- @param ... Parameters from SimpleText:setText.
 function Button:setText(...)
   self.text:setText(...)
   self.text:redraw()
 end
--- @tparam string text
+--- Sets the main text's term.
+-- @param ... Parameters from SimpleText:setTerm.
 function Button:setTerm(...)
   self.text:setTerm(...)
   self.text:redraw()
 end
--- @tparam string text
+--- Sets the secondary text.
+-- @param ... Parameters from SimpleText:setText.
 function Button:setInfoText(...)
   self.infoText:setText(...)
   self.infoText:redraw()
 end
--- @tparam string text
+--- Sets the secondary text's term.
+-- @param ... Parameters from SimpleText:setTerm.
 function Button:setInfoTerm(...)
   self.infoText:setTerm(...)
   self.infoText:redraw()
 end
--- @tparam table icon Icon data.
+--- Sets the button's icon.
+-- @tparam table|Animation icon Icon's data (with `id`, `row` and `col`) or the Animation.
 function Button:setIcon(icon)
   if self.icon then
     self.icon:destroy()
+    self.content:removeElement(self.icon)
     self.icon = nil
   end
-  if icon and icon.id >= 0 then
+  if not icon then
+    return
+  end
+  if icon.id then
+    if icon.id < 0 then
+      return
+    end
     icon = ResourceManager:loadIconAnimation(icon, GUIManager.renderer)
-    self:createIcon(icon)
   end
-end
---- Converting to string.
-function Button:__tostring()
-  if not self.text then
-    return '' .. self.index
-  end
-  return self.index .. ': ' .. self.text.text
+  icon.sprite:setColor(Color.gui_icon_enabled)
+  self.icon = icon
+  self.content:add(icon)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -267,6 +268,13 @@ function Button:show()
     self:setEnabled(enabled)
   end
   GridWidget.show(self)
+end
+-- For debugging.
+function Button:__tostring()
+  if not self.text then
+    return '' .. self.index
+  end
+  return self.index .. ': ' .. self.text.text
 end
 
 return Button

@@ -87,12 +87,14 @@ end
 -- Volume & Pitch
 -- ------------------------------------------------------------------------------------------------
 
--- @tparam number v New local volume.
+--- Sets the sound's volume.
+-- @tparam number v New local volume (0-1).
 function Sound:setVolume(v)
   self.volume = v or self.volume
   self:refreshVolume()
 end
--- @tparam number p New local pitch.
+--- Sets the sound's pitch.
+-- @tparam number p New local pitch (0-1).
 function Sound:setPitch(p)
   self.pitch = p or self.pitch
   self:refreshPitch()

@@ -79,29 +79,33 @@ end
 -- Volume
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn number Volume multiplier for current BGM.
+--- Volume multiplier for current BGM.
+-- @treturn number
 function AudioManager:getBGMVolume()
   return self.volumeBGM
 end
--- @tparam number v Volume multiplier for current BGM.
+--- Set volume multiplier for current BGM.
+-- @tparam number v Volume (0-1).
 function AudioManager:setBGMVolume(v)
   self.volumeBGM = v
   if self.BGM then
     self.BGM:refreshVolume()
   end
 end
--- @treturn number Volume multiplier for current SFX.
+--- Volume multiplier for current SFX.
+-- @treturn number
 function AudioManager:getSFXVolume()
   return self.volumeSFX
 end
--- @tparam number v Volume multiplier for current SFX.
+--- Sets volume multiplier for current SFX.
+-- @tparam number v Volume (0-1).
 function AudioManager:setSFXVolume(v)
   self.volumeSFX = v
   for i = 1, #self.sfx do
     self.sfx[i]:refreshVolume()
   end
 end
---- Refreshes BGM and SFX pitch.
+--- Refreshes BGM and SFX volume.
 function AudioManager:refreshVolume()
   if self.BGM then 
     self.BGM:refreshVolume()
@@ -115,22 +119,26 @@ end
 -- Pitch
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn number Pitch multiplier for current BGM.
+--- Pitch multiplier for current BGM.
+-- @treturn number
 function AudioManager:getBGMPitch()
   return self.pitchBGM
 end
--- @tparam number p Pitch multiplier for current BGM.
+--- Sets pitch multiplier for current BGM.
+-- @tparam number p Pitch (0-1).
 function AudioManager:setBGMPitch(p)
   self.pitchBGM = p
   if self.BGM then 
     self.BGM:refreshPitch()
   end
 end
--- @treturn number Pitch multiplier for current SFX.
+--- Pitch multiplier for current SFX.
+-- @treturn number
 function AudioManager:getSFXPitch()
   return self.pitchSFX
 end
--- @tparam number p Pitch multiplier for current SFX.
+--- Sets pitch multiplier for current SFX.
+-- @tparam number p Pitch (0-1).
 function AudioManager:setSFXPitch(p)
   self.pitchSFX = p
   for i = 1, #self.sfx do
@@ -151,7 +159,7 @@ end
 -- SFX
 -- ------------------------------------------------------------------------------------------------
 
---- Insert a new SFX in the list and plays it.
+--- Inserts a new SFX in the list and plays it.
 -- @tparam table|string sfx Table with file's name (from audio/sfx folder), volume and pitch,
 --  or the name of the sound type in the Config.sounds table.
 function AudioManager:playSFX(sfx)
@@ -215,6 +223,7 @@ function AudioManager:playBGM(bgm, time, wait)
     print("Missing BGM: " ..  Project.audioPath .. bgm.name)
   end
 end
+--- Resumes current paused BGM (if any).
 -- @tparam number time The duration of the fading transition.
 -- @tparam boolean wait Yields until the fading animation concludes.
 function AudioManager:resumeBGM(time, wait)
@@ -226,7 +235,7 @@ function AudioManager:resumeBGM(time, wait)
     self:fadein(time, wait)
   end
 end
---- Paused current BGM.
+--- Pauses current BGM.
 -- @coroutine pauseBGM
 -- @tparam number time Fade-out time.
 -- @tparam boolean wait Wait until the end of the fading.

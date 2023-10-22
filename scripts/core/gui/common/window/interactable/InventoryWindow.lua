@@ -47,10 +47,8 @@ end
 -- @treturn Button
 function InventoryWindow:createListButton(itemSlot)
   local item = Database.items[itemSlot.id]
-  local icon = item.icon.id >= 0 and 
-    ResourceManager:loadIconAnimation(item.icon, GUIManager.renderer)
   local button = Button(self)
-  button:createIcon(icon)
+  button:setIcon(item.icon)
   button:createText('data.item.' .. item.key, item.name, 'gui_default')
   button:createInfoText('x' .. itemSlot.count, nil, 'gui_default')
   button.item = item
@@ -149,7 +147,7 @@ end
 function InventoryWindow:rowCount()
   return self.visibleRowCount
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function InventoryWindow:__tostring()
   return 'Inventory Window'
 end

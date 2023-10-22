@@ -121,7 +121,7 @@ end
 function FieldCommandWindow:rowCount()
   return 4
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function FieldCommandWindow:__tostring()
   return 'Field Command Window'
 end

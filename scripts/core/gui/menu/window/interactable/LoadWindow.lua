@@ -48,7 +48,7 @@ end
 function LoadWindow:buttonEnabled(button)
   return SaveManager:getHeader(button.file) ~= nil
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function LoadWindow:__tostring()
   return 'Load Window'
 end

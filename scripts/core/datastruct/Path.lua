@@ -18,6 +18,7 @@ local Path = class()
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam unknown lastStep The last node of the path.
 -- @tparam Path previousPath The path to the last node (optional for initial).
 -- @tparam number totalCost The total cost of the path (optional for initial).
@@ -87,8 +88,7 @@ function Path:toStack()
   stack:pop()
   return stack
 end
---- Converting to string.
--- @treturn string A string representation.
+-- For debugging.
 function Path:__tostring()
   local list = self:toList()
   if list.size == 0 then

@@ -83,7 +83,7 @@ function ListWindow:cellWidth()
   local w = ScreenManager.width - self.GUI:windowMargin() * 2
   return self:computeCellWidth(w)
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function ListWindow:__tostring()
   return 'List Window'
 end

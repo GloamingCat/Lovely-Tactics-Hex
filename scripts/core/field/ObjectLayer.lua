@@ -26,6 +26,7 @@ local ObjectLayer = class()
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam number sizeX The field's width.
 -- @tparam number sizeY The field's length.
 -- @tparam number height The layer's height.

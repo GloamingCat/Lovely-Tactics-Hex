@@ -186,27 +186,33 @@ end
 -- Battle results
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn boolean Whether the player party won the battle.
+--- Whether the player party won the battle.
+-- @treturn boolean
 function BattleManager:playerWon()
   return self.result >= TurnManager.BattleResult.WIN 
 end
--- @treturn boolean Whether the player party escaped.
+--- Whether the player party escaped.
+-- @treturn boolean
 function BattleManager:playerEscaped()
   return self.result == TurnManager.BattleResult.ESCAPE
 end
--- @treturn boolean Whether the enemy party won battle.
+--- Whether the enemy party won battle.
+-- @treturn boolean
 function BattleManager:enemyWon()
   return self.result == TurnManager.BattleResult.LOSE
 end
--- @treturn boolean Whether the enemy party escaped.
+--- Whether the enemy party escaped.
+-- @treturn boolean
 function BattleManager:enemyEscaped()
   return self.result == TurnManager.BattleResult.WALKOVER
 end
--- @treturn boolean Whether both parties lost.
+--- Whether both parties lost.
+-- @treturn boolean
 function BattleManager:drawed()
   return self.result == TurnManager.BattleResult.DRAW
 end
 --- Checks if the player received a game over.
+-- @treturn boolean
 function BattleManager:isGameOver()
   if self:drawed() then
     return self.params.gameOverCondition >= self.GameOverCondition.NOWIN
@@ -222,6 +228,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Creates a table of reward from the current state of the battle field.
+-- @tparam number winnerParty The ID of the party to get the rewards for.
 -- @treturn table Table with exp per battler, items and money.
 function BattleManager:getBattleRewards(winnerParty)
   local r = { exp = {},

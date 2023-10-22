@@ -194,7 +194,8 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn number Grid y-axis displacement in pixels.
+--- Grid y-axis displacement in pixels.
+-- @treturn number
 function TextInputWindow:gridY()
   return self:cellHeight() + self:rowMargin()
 end
@@ -208,7 +209,7 @@ end
 function TextInputWindow:rowCount()
   return 1
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function TextInputWindow:__tostring()
   return 'Text Input Window'
 end

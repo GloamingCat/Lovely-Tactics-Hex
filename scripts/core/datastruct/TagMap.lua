@@ -92,6 +92,7 @@ end
 -- Conversion
 -- ------------------------------------------------------------------------------------------------
 
+--- Converts to native table.
 -- @treturn table A table with unique keys. It will include only the first value of each key.
 function TagMap:toTable()
   local t = {}
@@ -100,8 +101,9 @@ function TagMap:toTable()
   end
   return t
 end
+--- Converts to an array of entries.
 -- @treturn table Array of {key, value} entries.
-function TagMap:toList()
+function TagMap:toArray()
   local list = {}
   for k, v in pairs(self.tags) do
     for i = 1, #v do
@@ -110,7 +112,7 @@ function TagMap:toList()
   end
   return list
 end
--- @treturn string String identifier.
+-- For debugging.
 function TagMap:__tostring()
   local s = '{'
   for k, v in pairs(self.tags) do

@@ -44,8 +44,9 @@ function CallWindow:createWidgets()
     self:createNoneButton()
   end
 end
+--- Creates a button to call a given battler.
 -- @tparam Battler battler Battler associated with this button.
--- @treturn Button
+-- @treturn Button Created button.
 function CallWindow:createBattlerButton(battler)
   local button = Button(self)
   button:createText('data.battler.' .. battler.key, battler.name)
@@ -53,7 +54,8 @@ function CallWindow:createBattlerButton(battler)
   button.memberKey = battler.key
   return button
 end
--- @treturn Button
+--- Creates a button to remove the current battler.
+-- @treturn Button Created button.
 function CallWindow:createNoneButton()
   local button = Button(self)
   button:createText('none', '')
@@ -69,10 +71,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Confirm callback for each button, returns the chosen battle.
+-- @tparam Button button Selected button.
 function CallWindow:onButtonConfirm(button)
   self.result = button.memberKey
 end
 --- Select callback for each button, show the battler's info.
+-- @tparam Button button Selected button.
 function CallWindow:onButtonSelect(button)
   if self.GUI.targetWindow then
     if button.battler then 

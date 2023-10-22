@@ -44,6 +44,7 @@ end
 -- Check / Change
 -- ------------------------------------------------------------------------------------------------
 
+--- Checks whether the skill is present in this list.
 -- @tparam number|string id Skill's ID or key.
 -- @treturn number The position of the skill if found, nil if not found.
 function SkillList:containsSkill(id)
@@ -55,7 +56,9 @@ function SkillList:containsSkill(id)
   end
   return nil
 end
+--- Add a skill to the list if not already present.
 -- @tparam number|string|SkillAction skill The skill or the skill's ID or key.
+-- @treturn SkillAction The newly added skill or nil if the skill as already present.
 function SkillList:learn(skill)
   local id = skill
   if type(skill) == 'number' or type(skill) == 'string' then
@@ -69,7 +72,8 @@ function SkillList:learn(skill)
     return skill
   end
 end
--- @tparam table list Array of skill IDs.
+--- Adds a set of skills of this list.
+-- @tparam table list Array of skill IDs or keys.
 function SkillList:learnAll(list)
   for i = 1, #list do
     self:learn(list[i])
@@ -80,11 +84,7 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Converting to string.
--- @treturn string A string representation.
-function SkillList:__tostring()
-  return 'SkillList: ' .. tostring(self.battler)
-end
+--- Gets the persistent data.
 -- @treturn table Array with skills' IDs.
 function SkillList:getState()
   local state = {}
@@ -93,13 +93,19 @@ function SkillList:getState()
   end
   return state
 end
+--- Creates a copy of this list.
 -- @treturn SkillList
 function SkillList:clone()
   return SkillList(self.battler, self)
 end
+--- Creates a copy of this list as a List type.
 -- @treturn List
 function SkillList:toList()
   return List(self)
+end
+-- For debugging.
+function StatusList:__tostring()
+  return tostring(self.battler) .. ' Skill' .. getmetatable(List).__tostring(self)
 end
 
 return SkillList

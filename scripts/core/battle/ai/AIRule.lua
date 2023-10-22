@@ -79,7 +79,7 @@ end
 -- @tparam Character user
 function AIRule:onSelect(user)
 end
--- @treturn string String identifier.
+-- For debugging.
 function AIRule:__tostring()
   return 'AIRule: ' .. self.battler.key
 end

@@ -163,7 +163,8 @@ function Colorable:waitForColor()
     self.colorFiber = nil
   end
 end
--- @treturn boolean If color animation if still on going.
+--- Whether the color animation is still on going.
+-- @treturn boolean
 function Colorable:colorizing()
   return self.colorTime < 1
 end

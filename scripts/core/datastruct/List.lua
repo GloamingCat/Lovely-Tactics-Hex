@@ -188,13 +188,7 @@ function List:notify(...)
     self[i](...)
   end
 end
-
--- ------------------------------------------------------------------------------------------------
--- Convertion
--- ------------------------------------------------------------------------------------------------
-
---- Converting to string.
--- @treturn string A string representation.
+-- For debugging.
 function List:__tostring()
   if self.size == 0 then
     return 'List {}'

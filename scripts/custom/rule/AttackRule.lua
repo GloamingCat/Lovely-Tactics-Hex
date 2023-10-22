@@ -31,8 +31,7 @@ function AttackRule:onSelect(...)
     self.input = nil
   end
 end
---- String identifier.
--- @treturn string
+-- For debugging.
 function AttackRule:__tostring()
   return 'AttackRule (' .. tostring(self.skill)  .. '): ' .. self.battler.key
 end

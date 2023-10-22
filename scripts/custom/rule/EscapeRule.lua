@@ -33,8 +33,7 @@ function EscapeRule:onSelect(user)
   self.input.action.hide = self.tags and self.tags.hide
   self.input.action:onSelect(self.input)
 end
---- String identifier.
--- @treturn string
+-- For debugging.
 function EscapeRule:__tostring()
   return 'EscapeRule: ' .. self.battler.key
 end

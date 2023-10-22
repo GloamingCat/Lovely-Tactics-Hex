@@ -65,10 +65,6 @@ function ObjectTile:generateCharacterID()
   local x, y, h = self:coordinates()
   return '' .. x .. '.' .. y .. '.' .. h .. '.' .. self.characterList.size
 end
---- Converts to string.
-function ObjectTile:__tostring()
-  return 'ObjectTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ')' 
-end
 --- Tile's coordinates.
 -- @treturn number Tile's grid x.
 -- @treturn number Tile's grid y.
@@ -242,6 +238,10 @@ function ObjectTile:getFirstBattleCharacter()
       return c
     end
   end
+end
+-- For debugging.
+function ObjectTile:__tostring()
+  return 'ObjectTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ')' 
 end
 
 return ObjectTile

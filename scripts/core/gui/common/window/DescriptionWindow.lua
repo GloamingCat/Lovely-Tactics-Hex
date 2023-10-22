@@ -61,7 +61,7 @@ function DescriptionWindow:packText()
   self.text.position = Vector(-w / 2, -h / 2, -1)
   self:resize(w + self:paddingX() * 2, h + self:paddingY() * 2)
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function DescriptionWindow:__tostring()
   return 'Description Window'
 end

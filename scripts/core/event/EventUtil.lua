@@ -116,7 +116,7 @@ end
 -- @tparam number id Window ID.
 --  1: Window at the bottom of the screen, full width;
 --  2: Window at the top of the screen, full width;
- -- 3+: Window in the middle of the screen, 3/4 width.
+--  3+: Window in the middle of the screen, 3/4 width.
 -- @treturn DialogueWindow
 function EventUtil:createDefaultDialogueWindow(id)
   local x, y = 0, 0

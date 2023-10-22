@@ -42,7 +42,9 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
--- @tparam Battler member
+--- Sets the current selected character. It's set as the user for the `ItemAction` when an item is
+-- used.
+-- @tparam Battler battler
 function ItemWindow:setBattler(battler)
   self.member = battler
   for i = 1, #self.matrix do
@@ -89,7 +91,7 @@ end
 function ItemWindow:cellWidth()
   return 200
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function ItemWindow:__tostring()
   return 'Menu Item Window'
 end

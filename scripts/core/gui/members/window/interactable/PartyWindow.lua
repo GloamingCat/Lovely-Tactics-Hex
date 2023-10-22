@@ -95,7 +95,7 @@ end
 function PartyWindow:cellHeight()
   return (ListWindow.cellHeight(self) * 2 + self:rowMargin() * 2)
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function PartyWindow:__tostring()
   return 'Member List Window'
 end

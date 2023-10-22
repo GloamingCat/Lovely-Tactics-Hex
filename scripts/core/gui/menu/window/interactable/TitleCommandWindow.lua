@@ -90,7 +90,8 @@ end
 -- Enabled Conditions
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn boolean True if Item GUI may be open, false otherwise.
+--- Whether the ItemGUI can be open.
+-- @treturn boolean
 function TitleCommandWindow:loadGameEnabled()
   return self.GUI.loadWindow
 end
@@ -109,7 +110,7 @@ end
 function TitleCommandWindow:rowCount()
   return GameManager:isDesktop() and 4 or 3
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function TitleCommandWindow:__tostring()
   return 'Title Command Window'
 end

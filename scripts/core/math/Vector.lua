@@ -101,10 +101,6 @@ end
 function Vector:distance2DTo(x, y, z)
   return len2D(x - self.x, y - self.y, z - self.z)
 end
--- @treturn string The string representation.
-function Vector:__tostring()
-  return '<' .. self.x .. ',' .. self.y .. ',' .. self.z .. '>'
-end
 
 -- ------------------------------------------------------------------------------------------------
 -- Operations
@@ -247,6 +243,10 @@ end
 -- @tparam number phi The number of radians counterclockwise to rotate the Vector.
 function Vector:rotate(phi)
 	self.x, self.y = rotate(self.x, self.y, phi)
+end
+-- For debugging.
+function Vector:__tostring()
+  return '<' .. self.x .. ',' .. self.y .. ',' .. self.z .. '>'
 end
 
 return Vector

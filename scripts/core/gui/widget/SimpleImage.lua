@@ -23,6 +23,7 @@ local SimpleImage = class(Component)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
 -- @tparam Sprite sprite Image's sprite.
 -- @tparam number x The x position of the top-left corner inside parent.
 -- @tparam number y The y position of the top-left corner inside parent.

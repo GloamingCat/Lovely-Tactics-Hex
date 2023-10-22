@@ -69,11 +69,6 @@ function TerrainTile:destroy()
     end
   end
 end
---- Converts to string.
--- @treturn string The string representation.
-function TerrainTile:__tostring()
-  return 'TerrainTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ', ' .. self.layer.order .. ')' 
-end
 
 -- ------------------------------------------------------------------------------------------------
 -- Terrain graphics
@@ -173,6 +168,10 @@ function TerrainTile:setMoveCost(data)
     self.moveCost = data.moveCost
     self.jobMoveCost = data.jobMoveCost and Database.loadBonusTable(data.jobMoveCost)
   end
+end
+-- For debugging.
+function TerrainTile:__tostring()
+  return 'TerrainTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ', ' .. self.layer.order .. ')' 
 end
 
 return TerrainTile

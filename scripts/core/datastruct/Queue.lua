@@ -53,13 +53,7 @@ end
 function Queue:isEmpty()
   return self.front == self.back
 end
-
--- ------------------------------------------------------------------------------------------------
--- Convertion
--- ------------------------------------------------------------------------------------------------
-
---- Converting to string.
--- @treturn string A string representation.
+-- For debugging.
 function Queue:__tostring()
   if self:isEmpty() then
     return 'Queue {}'

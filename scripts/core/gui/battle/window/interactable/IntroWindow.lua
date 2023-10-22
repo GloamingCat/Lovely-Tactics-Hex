@@ -104,7 +104,7 @@ end
 function IntroWindow:rowCount()
   return 6
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function IntroWindow:__tostring()
   return 'Battle Intro Window'
 end

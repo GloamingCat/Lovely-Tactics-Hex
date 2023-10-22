@@ -96,7 +96,7 @@ end
 function ShopCommandWindow:cellWidth()
   return 60
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function ShopCommandWindow:__tostring()
   return 'Shop Command Window'
 end

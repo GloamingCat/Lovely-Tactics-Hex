@@ -41,10 +41,8 @@ end
 --- Creates a button from an item.
 -- @tparam SkillAction skill The button's skill.
 function SkillWindow:createListButton(skill)
-  local icon = skill.data.icon.id >= 0 and 
-    ResourceManager:loadIconAnimation(skill.data.icon, GUIManager.renderer)
   local button = Button(self)
-  button:createIcon(icon)
+  button:setIcon(skill.data.icon)
   button:createText('data.skill.' .. skill.data.key, skill.data.name, 'gui_button')
   button.skill = skill
   -- Get SP cost
@@ -156,7 +154,7 @@ end
 function SkillWindow:rowCount()
   return self.visibleRowCount
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function SkillWindow:__tostring()
   return 'Menu Skill Window'
 end

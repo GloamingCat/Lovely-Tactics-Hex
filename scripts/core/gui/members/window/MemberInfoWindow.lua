@@ -42,7 +42,8 @@ end
 -- Member
 -- ------------------------------------------------------------------------------------------------
 
--- @tparam Battler member Changes the member info to another member's.
+--- Changes the member info to another member's.
+-- @tparam Battler battler The new member.
 function MemberInfoWindow:setBattler(battler)
   self.member = battler
   if self.info then
@@ -63,7 +64,7 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn string String representation (for debugging).
+-- For debugging.
 function MemberInfoWindow:__tostring()
   return 'Member Info Window'
 end

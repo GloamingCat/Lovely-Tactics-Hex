@@ -123,7 +123,7 @@ function TargetWindow:computeHeight(showStatus)
   local h = self:paddingY() * 2 + 15 + 10 + 10 + 10
   return showStatus and h + 16 or h
 end
---- String representation.
+-- For debugging.
 function TargetWindow:__tostring()
   return 'Battle Target Window'
 end

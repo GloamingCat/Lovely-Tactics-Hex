@@ -134,7 +134,7 @@ function Matrix2:positionOf(element)
     end
   end
 end
--- @treturn string The string representation (for debugging).
+-- For debugging.
 function Matrix2:__tostring()
   local s = '{ '
   for i = 1, self.width do

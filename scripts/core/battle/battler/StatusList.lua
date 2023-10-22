@@ -50,11 +50,6 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Converting to string.
--- @treturn string A string representation.
-function StatusList:__tostring()
-  return 'Status' .. getmetatable(List).__tostring(self)
-end
 --- Gets the statuses with the given ID (the first created).
 -- @tparam number|string id The status's ID or key in the database.
 -- @treturn Status
@@ -333,11 +328,6 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Converting to string.
--- @treturn string A string representation.
-function StatusList:__tostring()
-  return 'StatusList: ' .. tostring(self.battler)
-end
 --- Gets the states of all the statuses.
 -- @treturn table An array with the state tables.
 function StatusList:getState()
@@ -349,6 +339,10 @@ function StatusList:getState()
     end
   end
   return status
+end
+-- For debugging.
+function StatusList:__tostring()
+  return tostring(self.battler) .. ' Status' .. getmetatable(List).__tostring(self)
 end
 
 return StatusList

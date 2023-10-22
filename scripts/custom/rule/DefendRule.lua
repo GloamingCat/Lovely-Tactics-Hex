@@ -33,8 +33,7 @@ function DefendRule:onSelect(user)
   self.input.action = BattleMoveAction()
   self.input.target = queue:front()
 end
---- String identifier.
--- @treturn string
+-- For debugging.
 function DefendRule:__tostring()
   return 'DefendRule: ' .. self.battler.key
 end

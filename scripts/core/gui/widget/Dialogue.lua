@@ -33,7 +33,8 @@ end
 -- Input
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn boolean True if player pressed the button to pass the dialogue.
+--- Whether the player pressed the button to pass the dialogue.
+-- @treturn boolean
 function Dialogue:buttonPressed()
   return InputManager.keys['confirm']:isTriggered() or InputManager.keys['cancel']:isTriggered() 
     or InputManager.keys['mouse1']:isTriggered() or InputManager.keys['mouse2']:isTriggered()

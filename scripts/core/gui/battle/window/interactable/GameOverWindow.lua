@@ -52,7 +52,7 @@ end
 function GameOverWindow:rowCount()
   return 3
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function GameOverWindow:__tostring()
   return 'Game Over Window'
 end

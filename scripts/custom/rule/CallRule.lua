@@ -61,8 +61,7 @@ function CallRule:onSelect(user)
     end
   end
 end
---- String identifier.
--- @treturn string
+-- For debugging.
 function CallRule:__tostring()
   return 'CallRule: ' .. self.battler.key
 end

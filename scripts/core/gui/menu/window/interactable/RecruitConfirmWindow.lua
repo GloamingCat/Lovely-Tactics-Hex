@@ -132,7 +132,7 @@ end
 function RecruitConfirmWindow:cellWidth()
   return 100
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function RecruitConfirmWindow:__tostring()
   return 'Recruit Count Window'
 end

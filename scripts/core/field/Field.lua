@@ -168,7 +168,8 @@ function Field:gridIterator()
     end
   end
 end
--- @treturn ObjectTile The tile that the mouse is over.
+--- Gets the tile that the mouse is over.
+-- @treturn ObjectTile
 function Field:getHoveredTile()
   for l = self.maxh, self.minh, -1 do
     local x, y = InputManager.mouse:fieldCoord(l)

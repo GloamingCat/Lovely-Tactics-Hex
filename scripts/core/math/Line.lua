@@ -26,7 +26,7 @@ end
 function Line:distance(x, y)
   return math.abs(self.a * x + self.b * y + self.c) / self.q
 end
---- Converting to string.
+-- For debugging.
 function Line:__tostring()
   return '' .. self.a .. 'x + ' .. self.b .. 'y + ' .. self.c .. ' = 0'
 end

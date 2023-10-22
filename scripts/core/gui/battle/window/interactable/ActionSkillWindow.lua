@@ -33,12 +33,9 @@ end
 --- Creates a button from a skill ID.
 -- @tparam SkillAction skill The SkillAction from battler's skill list.
 function ActionSkillWindow:createListButton(skill)
-  -- Icon
-  local icon = skill.data.icon.id >= 0 and 
-    ResourceManager:loadIconAnimation(skill.data.icon, GUIManager.renderer)
   -- Button
   local button = Button(self)
-  button:createIcon(icon)
+  button:setIcon(skill.data.icon)
   button:createText('data.skill.' .. skill.data.key, skill.data.name, 'gui_button')
   button.skill = skill
   button.description = skill.data.description
@@ -96,7 +93,7 @@ end
 function ActionSkillWindow:cellWidth()
   return 200
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function ActionSkillWindow:__tostring()
   return 'Battle Skill Window'
 end

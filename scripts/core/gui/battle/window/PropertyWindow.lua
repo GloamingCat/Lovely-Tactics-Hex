@@ -54,7 +54,7 @@ function PropertyWindow:setProperty(term, value)
   self.txtValue:setText(tostring(value))
   self.txtValue:redraw()
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function PropertyWindow:__tostring()
   return 'Property Window'
 end

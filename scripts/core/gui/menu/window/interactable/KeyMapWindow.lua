@@ -137,7 +137,7 @@ end
 function KeyMapWindow:cellWidth()
   return 140
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function KeyMapWindow:__tostring()
   return 'Resolution Window'
 end

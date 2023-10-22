@@ -51,7 +51,7 @@ end
 function ResolutionWindow:rowCount()
   return 4
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function ResolutionWindow:__tostring()
   return 'Resolution Window'
 end

@@ -23,11 +23,13 @@ local Database = {}
 -- Database files
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn string Folder containing all data files.
+--- Folder containing all data files.
+-- @treturn string
 function Database.getDataDirectory()
   return Project.dataPath
 end
--- @treturn table Array with the names of all data files.
+--- Array with the names of all data files.
+-- @treturn table
 function Database.getDataFileNames()
   return {'animations', 'battlers', 'characters', 'items', 'jobs', 'obstacles',
   'skills', 'status', 'terrains', 'troops', 'events' }
@@ -119,11 +121,13 @@ end
 -- Config files
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn string Folder containing config files.
+--- Folder containing config files.
+-- @treturn string
 function Database.getConfigDirectory()
   return Database.getDataDirectory() .. 'system/'
 end
--- @treturn table Array with the names of all config files.
+--- Array with the names of all config files.
+-- @treturn table
 function Database.getConfigFileNames()
   return {'attributes', 'variables', 'elements', 'regions', 'equipTypes', 'plugins'}
 end
@@ -164,7 +168,8 @@ end
 -- Vocab files
 -- ------------------------------------------------------------------------------------------------
 
--- @treturn string Database subfolder containing vocab files.
+--- Database subfolder containing vocab files.
+-- @treturn string
 function Database.getVocabDirectory()
   return Database.getDataDirectory() .. 'vocab/'
 end

@@ -96,7 +96,7 @@ end
 function RecruitCommandWindow:cellWidth()
   return 60
 end
--- @treturn string String representation (for debugging).
+-- For debugging.
 function RecruitCommandWindow:__tostring()
   return 'Recruit Command Window'
 end

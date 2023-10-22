@@ -110,18 +110,18 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Converting to string.
--- @treturn string A string representation.
-function Job:__tostring()
-  return 'Job: ' .. tostring(self.battler)
-end
--- @treturn table Persistent data table.
+--- Gets the persistent data.
+-- @treturn table
 function Job:getState()
   local state = {}
   state.id = self.id
   state.exp = self.exp
   state.level = self.level
   return state
+end
+-- For debugging.
+function Job:__tostring()
+  return 'Job: ' .. tostring(self.battler)
 end
 
 return Job

@@ -37,10 +37,7 @@ end
 -- @treturn SwitchButton
 function SwitchButton:fromKey(window, key, ...)
   local button = self(window, ...)
-  local icon = Config.icons[key]
-  if icon then
-    button:createIcon(icon)
-  end
+  button:setIcon(Config.icons[key])
   if key and Vocab[key] then
     button:createText(key, key, window.buttonFont, 'left')
     if Vocab.manual[key] then
