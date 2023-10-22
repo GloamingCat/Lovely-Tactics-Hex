@@ -71,10 +71,10 @@ function EventUtil:createGUI()
   end
 end
 --- Creates a message window with default size and position for given ID.
--- @tparam number id Window ID.
---  1: Window at the top of the screen, full width;
---  2: Window at the width of the screen, full width;
---  3+: Window in the middle of the screen, 3/4 width.
+-- @tparam number id Window ID.  
+--  For 1: top of the screen, full width;  
+--  For 2: bottom of the screen, full width;  
+--  For 3+: middle of the screen, 3/4 width.  
 -- @treturn DescriptionWindow
 function EventUtil:createDefaultMessageWindow(id)
   local x, y = 0, 0
@@ -89,13 +89,7 @@ function EventUtil:createDefaultMessageWindow(id)
   return DescriptionWindow(self.gui, w, h, Vector(x, y))
 end
 --- Opens a new message window and stores in the given ID.
--- @tparam table args
---  args.width (number): Width of the window (optional).
---  args.height (number): Height of the window (optional).
---  args.x (number): Pixel x of the window (optional).
---  args.y (number): Pixel y of the window (optional).
---  args.alignX (string): Horizontal alignment of text (optional).
---  args.alignY (string): Vertical alignment of text (optional).
+-- @tparam WindowArguments args
 function EventUtil:openMessageWindow(args)
   self:createGUI()
   local msgs = self.gui.messages
@@ -113,10 +107,10 @@ function EventUtil:openMessageWindow(args)
   end
 end
 --- Creates a dialogue window with default size and position for given ID.
--- @tparam number id Window ID.
---  1: Window at the bottom of the screen, full width;
---  2: Window at the top of the screen, full width;
---  3+: Window in the middle of the screen, 3/4 width.
+-- @tparam number id Window ID.  
+--  For 1: bottom of the screen, full width;  
+--  For 2: top of the screen, full width;  
+--  For 3+: middle of the screen, 3/4 width.  
 -- @treturn DialogueWindow
 function EventUtil:createDefaultDialogueWindow(id)
   local x, y = 0, 0
@@ -131,11 +125,7 @@ function EventUtil:createDefaultDialogueWindow(id)
   return DialogueWindow(self.gui, w, h, x, y)
 end
 --- Opens a new dialogue window and stores in the given ID.
--- @tparam table args
---  args.width (number): Width of the window (optional).
---  args.height (number): Height of the window (optional).
---  args.x (number): Pixel x of the window (optional).
---  args.y (number): Pixel y of the window (optional).
+-- @tparam WindowArguments args
 function EventUtil:openDialogueWindow(args)
   self:createGUI()
   local dialogues = self.gui.dialogues

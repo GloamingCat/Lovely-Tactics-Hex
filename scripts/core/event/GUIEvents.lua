@@ -21,23 +21,59 @@ local Vector = require('core/math/Vector')
 local GUIEvents = {}
 
 -- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Arguments for field transition.
+-- @table WindowArguments
+-- @tfield number id ID of the window.
+-- @tfield number width Width of the window (optional).
+-- @tfield number height Height of the window (optional).
+-- @tfield number x Pixel x of the window (optional).
+-- @tfield number y Pixel y of the window (optional).
+-- @tfield string alignX Horizontal alignment of text (optional).
+-- @tfield string alignY Vertical alignment of text (optional).
+
+--- Arguments for opening a GUI.
+-- @table MenuArguments
+-- @tfield table items Array of items/battlers (with their IDs or keys), for `openShopMenu` and `openRecruitMenu`.
+-- @tfield boolean sell Enables sell/dismiss option, for `openShopMenu` and `openRecruitMenu`.
+
+--- Arguments for dialogue commands. Extends `WindowArguments`.
+-- @table DialogueArguments
+-- @tfield string message Dialogue text.
+-- @tfield string name Speaker name (optional).
+-- @tfield number nameX Speaker window X in relation to the main window, from -1 to 1 (optional).
+-- @tfield number nameY Speaker window Y in relation to the main window, from -1 to 1 (optional).
+
+--- Arguments for title/message commands. Extends `WindowArguments`.
+-- @table MessageArguments
+-- @tfield string text Text inside window.
+-- @tfield boolean wait Flag to wait for player input.
+
+--- Arguments for choice/number/input commands. Extends `WindowArguments`.
+-- @table InputCommands
+-- @tfield table choices Array with the name of each choice, for `openChoiceWindow`.
+-- @tfield number length Number of digits for number input, for `openNumberWindow`
+-- @tfield boolean emptyAllowed Whether it is allowed to leave the text empty, for `openStringWindow`
+-- @tfield unknown cancelValue Value/index returned when player presses a cancel button.
+
+-- ------------------------------------------------------------------------------------------------
 -- Menu
 -- ------------------------------------------------------------------------------------------------
 
 --- Opens the FieldGUI.
--- @tparam table args
+-- @tparam MenuArguments args
 function GUIEvents:openFieldMenu(args)
   GUIManager:showGUIForResult(FieldGUI(nil))
 end
 --- Opens the SaveGUI.
--- @tparam table args
+-- @tparam MenuArguments args
 function GUIEvents:openSaveMenu(args)
   GUIManager:showGUIForResult(SaveGUI(nil))
 end
 --- Opens the ShopGUI.
--- @tparam table args
---  args.items (table): Array of items.
---  args.sell (boolean): Sell enabling.
+-- @tparam MenuArguments args
 function GUIEvents:openShopMenu(args)
   self.vars.hudOpen = FieldManager.hud.visible
   FieldManager.hud:hide()
@@ -46,14 +82,12 @@ function GUIEvents:openShopMenu(args)
     FieldManager.hud:show()
   end
 end
---- Opens the ShopGUI.
--- @tparam table args
---  args.items (table): Array of items.
---  args.sell (boolean): Sell enabling.
+--- Opens the RecruitGUI.
+-- @tparam MenuArguments args
 function GUIEvents:openRecruitMenu(args)
   self.vars.hudOpen = FieldManager.hud.visible
   FieldManager.hud:hide()
-  GUIManager:showGUIForResult(RecruitGUI(nil, args.chars, args.dismiss))
+  GUIManager:showGUIForResult(RecruitGUI(nil, args.items, args.sell))
   if self.vars.hudOpen then
     FieldManager.hud:show()
   end
@@ -64,12 +98,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Opens a basic window with the given text. By default, it's a single-line window.
--- @tparam table args
---  args.text (number): Text inside window.
---  args.width (number): Width of the window (optional).
---  args.height (number): Height of the window (optional).
---  args.x (number): Pixel x of the window (optional).
---  args.y (number): Pixel y of the window (optional).
+-- @tparam WindowArguments args
 function GUIEvents:openTitleWindow(args)
   self:createGUI()
   local w = args.width or ScreenManager.width / 4
@@ -92,7 +121,7 @@ function GUIEvents:openTitleWindow(args)
   end
 end
 --- Closes and destroys title window.
--- @tparam table args
+-- @tparam WindowArguments args
 function GUIEvents:closeTitleWindow(args)
   assert(self.gui.titleWindow, 'Title windows is not open.')
   self.gui.titleWindow:hide()
@@ -101,63 +130,22 @@ function GUIEvents:closeTitleWindow(args)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Dialogue
--- ------------------------------------------------------------------------------------------------
-
---- Shows a dialogue in the given window.
--- @tparam table args
---  args.id (number): ID of the dialogue window.
---  args.message (string): Dialogue text.
---  args.name (string): Speaker name (optional).
---  args.nameX (string): Speaker name X, from -1 to 1 (optional).
---  args.nameY (string): Speaker name Y, from -1 to 1 (optional).
-function GUIEvents:showDialogue(args)
-  self:openDialogueWindow(args)
-  local window = self.gui.dialogues[args.id]
-  self.gui:setActiveWindow(window)
-  local speaker = args.name ~= '' and { name = args.name, 
-    x = args.nameX, y = args.nameY }
-  window:showDialogue(args.message, args.align, speaker)
-end
---- Closes and deletes a dialogue window.
--- @tparam table args
---  args.id (number): ID of the dialogue window.
-function GUIEvents:closeDialogueWindow(args)
-  if self.gui and self.gui.dialogues then
-    local window = self.gui.dialogues[args.id]
-    if window then
-      window:hide()
-      window:removeSelf()
-      window:destroy()
-      self.gui.dialogues[args.id] = nil
-      if self.gui.activeWindow == window then
-        self.gui:setActiveWindow(nil)
-      end
-    end
-  end
-end
-
--- ------------------------------------------------------------------------------------------------
 -- Message
 -- ------------------------------------------------------------------------------------------------
 
 --- Shows a message in the given window.
--- @tparam table args
---  args.id (number): ID of the message window.
---  args.message (string): Message text.
---  args.wait (boolean): True to wait for player input.
+-- @tparam MessageArguments args
 function GUIEvents:showMessage(args)
   self:openMessageWindow(args)
   local window = self.gui.messages[args.id]
-  window:updateText(args.message)
+  window:updateText(args.text)
   if args.wait then
     self.gui:setActiveWindow(window)
     self.gui:waitForResult()
   end
 end
 --- Closes and deletes a message window.
--- @tparam table args
---  args.id (number): ID of the message window.
+-- @tparam WindowArguments args
 function GUIEvents:closeMessageWindow(args)
   if self.gui and self.gui.messages then
     local window = self.gui.messages[args.id]
@@ -174,12 +162,42 @@ function GUIEvents:closeMessageWindow(args)
 end
 
 -- ------------------------------------------------------------------------------------------------
+-- Dialogue
+-- ------------------------------------------------------------------------------------------------
+
+--- Shows a dialogue in the given window.
+-- @tparam DialogueArguments args
+function GUIEvents:showDialogue(args)
+  self:openDialogueWindow(args)
+  local window = self.gui.dialogues[args.id]
+  self.gui:setActiveWindow(window)
+  local speaker = args.name ~= '' and { name = args.name, 
+    x = args.nameX, y = args.nameY }
+  window:showDialogue(args.message, args.align, speaker)
+end
+--- Closes and deletes a dialogue window.
+-- @tparam WindowArguments args
+function GUIEvents:closeDialogueWindow(args)
+  if self.gui and self.gui.dialogues then
+    local window = self.gui.dialogues[args.id]
+    if window then
+      window:hide()
+      window:removeSelf()
+      window:destroy()
+      self.gui.dialogues[args.id] = nil
+      if self.gui.activeWindow == window then
+        self.gui:setActiveWindow(nil)
+      end
+    end
+  end
+end
+
+-- ------------------------------------------------------------------------------------------------
 -- Input
 -- ------------------------------------------------------------------------------------------------
 
 --- Opens a choice window and waits for player choice before closing and deleting.
--- @tparam table args
---  args.choices (table): Array with the name of each choice.
+-- @tparam InputArguments args
 function GUIEvents:openChoiceWindow(args)
   self:createGUI()
   local window = ChoiceWindow(self.gui, args)
@@ -197,11 +215,7 @@ function GUIEvents:openChoiceWindow(args)
   end
 end
 --- Opens a password window and waits for player choice before closing and deleting.
--- @tparam table args
---  args.length (number): Number of digits.
---  args.width (number): Window width.
---  args.pos Vector Window center's position.
---  args.cancelValue (number): Index returned when player presses a cancel button.
+-- @tparam InputArguments args
 function GUIEvents:openNumberWindow(args)
   self:createGUI()
   local window = NumberWindow(self.gui, args)
@@ -217,10 +231,10 @@ function GUIEvents:openNumberWindow(args)
   end
 end
 --- Opens a text window and waits for player choice before closing and deleting.
--- @tparam table args
+-- @tparam InputArguments args
 function GUIEvents:openStringWindow(args)
   self:createGUI()
-  local window = TextInputWindow(self.gui, args.emptyAllowed, args.cancelAllowed)
+  local window = TextInputWindow(self.gui, args.emptyAllowed, args.cancelValue ~= nil)
   window:show()
   self.gui:setActiveWindow(window)
   local result = self.gui:waitForResult()

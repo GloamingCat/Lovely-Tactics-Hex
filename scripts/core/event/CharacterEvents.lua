@@ -14,14 +14,44 @@ local MoveAction = require('core/battle/action/MoveAction')
 local CharacterEvents = {}
 
 -- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Common arguments for move/turn commands in a direction.
+-- @table DirArguments
+-- @tfield string key The key of the character.
+-- @tfield number angle The direction in degrees.
+-- @tfield number distance The distance to move (in tiles).
+
+--- Common arguments for move/turn commands towards a tile.
+-- @table TileArguments
+-- @tfield string key The key of the character.
+-- @tfield number x Tile x difference (0 by default).
+-- @tfield number y Tile y difference (0 by default).
+-- @tfield number h Tile height difference (0 by default).
+-- @tfield string other: Key of a character in the target tile (optional, uses `x`, `y` and `h` if nil).
+-- @tfield number limit The maxium length of the path to be calculated (optional).
+
+--- Common arguments for delete/hide commands.
+-- @table HideArguments
+-- @tfield string key They key of the character.
+-- @tfield boolean optional Flag to raise an error when the character is not found.
+-- @tfield boolean permanent Flag to create the character again when field if reloaded.
+-- @tfield number fade Duration of fading animation (optional).
+-- @tfield boolean deactive Flag to erase the character's scripts.
+-- @tfield boolean passable Make the character passable during the fading animation.
+
+--- Common arguments for animation commands.
+-- @table AnimArguments
+-- @tfield string key They key of the character.
+-- @tfield string name Name of specific animation of a default animation for the character.
+
+-- ------------------------------------------------------------------------------------------------
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Removes a character from the field.
--- @tparam table args
---  args.key (string): The key of the character.
---  args.permanent (boolean): If false, character shows up again when field if reloaded.
---  args.optional (boolean): If false, raises an error when the character is not found.
+--- Destroys and removes a character from the field.
+-- @tparam HideArguments args
 function CharacterEvents:deleteChar(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
@@ -29,13 +59,8 @@ function CharacterEvents:deleteChar(args)
   end
   char:destroy(args.permanent)
 end
---- Hides a character.
--- @tparam table args
---  args.key (string): The key of the character.
---  args.fade (number): Duration of fading animation.
---  args.deactive (boolean): Erase the character's scripts.
---  args.passable (boolean): Make the character passable during the fading animation.
---  args.optional (boolean): If false, raises an error when the character is not found.
+--- Hides a character without deleting it.
+-- @tparam HideArguments args
 function CharacterEvents:hideChar(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
@@ -64,11 +89,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Moves straight to the given tile.
--- @tparam table args
---  args.key (string): The key of the character.
---  args.x (number): Tile x difference (0 by default).
---  args.y (number): Tile y difference (0 by default).
---  args.h (number): Tile height difference (0 by default).
+-- @tparam TileArguments args
 function CharacterEvents:moveCharTile(args)
   local char = self:findCharacter(args.key)
   if char.autoTurn then
@@ -86,10 +107,7 @@ function CharacterEvents:moveCharTile(args)
   end
 end
 --- Moves in the given direction.
--- @tparam table args
---  args.key (string): The key of the character.
---  args.angle (number): The direction in degrees.
---  args.distance (number): The distance to move (in tiles).
+-- @tparam DirArguments args
 function CharacterEvents:moveCharDir(args)
   local char = self:findCharacter(args.key)
   local nextTile = char:getFrontTiles(args.angle)[1]
@@ -113,12 +131,7 @@ function CharacterEvents:moveCharDir(args)
   end
 end
 --- Moves a path to the given tile.
--- @tparam table args
---  args.key (string): The key of the character.
---  args.x (number): Destination tile's x.
---  args.y (number): Destination tile's y.
---  args.h (number): Destination tile's height.
---  args.limit (number): The maxium length of the path to be calculated.
+-- @tparam TileArguments args
 function CharacterEvents:moveCharPath(args)
   local char = self:findCharacter(args.key)
   local tile = FieldManager.currentField:getObjectTile(args.x, args.y, args.h)
@@ -134,11 +147,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Turns character to the given tile.
--- @tparam table args
---  args.key (string): The key of the character.
---  args.other (string): Key of a character in the target tile (optional, uses args.x and args.y if nil).
---  args.x (number): The target tile's x (optional, uses target character's x position if nil).
---  args.y (number): The target tile's y (optional, uses target character's y position if nil).
+-- @tparam TileArguments args
 function CharacterEvents:turnCharTile(args)
   local char = self:findCharacter(args.key)
   if args.other then
@@ -150,9 +159,7 @@ function CharacterEvents:turnCharTile(args)
   end
 end
 --- Turn character to the given direction.
--- @tparam table args
---  args.key (string): The key of the character.
---  args.angle (number): The direction angle in degrees.
+-- @tparam DirArguments args
 function CharacterEvents:turnCharDir(args)
   local char = self:findCharacter(args.key)
   char:setDirection(args.angle)
@@ -163,16 +170,13 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Plays the idle animation.
--- @tparam table args
---  args.key (string): The key of the character.
+-- @tparam AnimArguments args
 function CharacterEvents:stopChar(args)
   local char = self:findCharacter(args.key)
   char:playIdleAnimation()
 end
 --- Plays the specified animation.
--- @tparam table args
---  args.key (string): The key of the character.
---  args.name (string): Name of specific animation of a default animation for the character.
+-- @tparam AnimArguments args
 function CharacterEvents:playCharAnim(args)
   local char = self:findCharacter(args.key)
   if args.name:find('Anim') then

@@ -45,7 +45,7 @@ return function(script)
   
   -- Event 3: recruit
   script:addEvent(function()
-    script:openRecruitMenu { chars = {
+    script:openRecruitMenu { items = {
       { id = 'slime0' }
     }}
     script:skipEvents(2) -- Skips battle events.

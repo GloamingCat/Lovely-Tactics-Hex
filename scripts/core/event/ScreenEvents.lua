@@ -10,13 +10,30 @@
 local ScreenEvents = {}
 
 -- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Arguments for fading effects.
+-- @table FadeArguments
+-- @tfield number time Duration of effect in frames.
+-- @tfield boolean wait True to wait until effect is finished.
+-- @tfield string name Shader's file name.
+
+--- Arguments for camera movement.
+-- @table CameraArguments
+-- @tfield number speed Camera movement speed (optional).
+-- @tfield bolean wait Wait until movement is complete (optional).
+-- @tfield string key Character's key, for `focusCharacter`.
+-- @tfield number x Tile grid x, for `focusTile`.
+-- @tfield number y Tile grid y, for `focusTile`.
+-- @tfield number h Tile's height, for `focusTile` (optional, 1 by default).
+
+-- ------------------------------------------------------------------------------------------------
 -- Shader Effect
 -- ------------------------------------------------------------------------------------------------
 
 --- Shows the effect of a shader.
--- @tparam table args
---  args.name (string): Shader's file name.
---  args.speed (number): Speed of the transition, in a fraction (0 to 1) per second (optional, 1 by default).
+-- @tparam FadeArguments args
 function ScreenEvents:shaderin(args)
   ScreenManager.shader = ResourceManager:loadShader(args.name)
   ScreenManager.shader:send('time', 0)
@@ -29,8 +46,7 @@ function ScreenEvents:shaderin(args)
   ScreenManager.shader:send('time', 1)
 end
 --- Hides the effect of a shader.
--- @tparam table args
---  args.speed (number): Speed of the transition, in a fraction (0 to 1) per second (optional, 1 by default).
+-- @tparam FadeArguments args
 function ScreenEvents:shaderout(args)
   ScreenManager.shader:send('time', 1)
   local time = GameManager:frameTime()
@@ -43,16 +59,12 @@ function ScreenEvents:shaderout(args)
   ScreenManager.shader = nil
 end
 --- Lightens the screen.
--- @tparam table args
---  args.time (number): Duration of effect in frames.
---  args.wait (boolean): True to wait until effect is finished.
+-- @tparam FadeArguments args
 function ScreenEvents:fadein(args)
   FieldManager.renderer:fadein(args.time, args.wait)
 end
 --- Darkens the screen.
--- @tparam table args
---  args.time (number): Duration of effect in frames.
---  args.wait (boolean): True to wait until effect is finished.
+-- @tparam FadeArguments args
 function ScreenEvents:fadeout(args)
   FieldManager.renderer:fadeout(args.time, args.wait)
 end
@@ -62,10 +74,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Makes camera start following given character.
--- @tparam table args
---  args.key (string): Character's key.
---  args.speed (number): Camera movement speed (optional).
---  args.wait (boolean): Wait until movement is complete (optional).
+-- @tparam CameraArguments args
 function ScreenEvents:focusCharacter(args)
   local char = self:findCharacter(args.key)
   FieldManager.renderer.focusObject = nil
@@ -73,12 +82,7 @@ function ScreenEvents:focusCharacter(args)
   FieldManager.renderer.focusObject = char
 end
 --- Makes focus on given tile.
--- @tparam table args
---  args.x (number): Tile grid x.
---  args.y (number): Tile grid y.
---  args.h (number): Tile's height (optional, 1 by default).
---  args.speed (number): Camera movement speed (optional).
---  args.wait (boolean): Wait until movement is complete (optional).
+-- @tparam CameraArguments args
 function ScreenEvents:focusTile(args)
   local tile = FieldManager.currentField:getObjectTile(args.x, args.y, args.h or 1)
   FieldManager.renderer.focusObject = nil

@@ -14,13 +14,37 @@ local Troop = require('core/battle/Troop')
 local PartyEvents = {}
 
 -- ------------------------------------------------------------------------------------------------
+-- Arguments
+-- ------------------------------------------------------------------------------------------------
+
+--- Common arguments.
+-- @table PartyArguments
+-- @tfield number value Value to be added/subtracted.
+-- @tfield number|string id ID or key of the item to be added, for `increaseItem`.
+-- @tfield boolean onlyCurrent True to ignore backup and members, for `increaseExp`
+--  or `healAll`.
+
+--- Common formation arguments.
+-- @table FormationArguments
+-- @tfield string key The key of the member to be moved.
+-- @tfield number x Member's grid X (if nil, it's added to backup list).
+-- @tfield number y Member's grid Y (if nil, it's added to backup list).
+-- @tfield boolean backup Flag to add member to the backup list.
+
+--- Member arguments.
+-- @table MemberArguments
+-- @tfield string key The key of the member to be modified.
+-- @tfield number|string id ID or key of the skill/item.
+-- @tfield number level Member's new level, for `setLevel`.
+-- @tfield string slot The key of the equip slot, for `setEquip`.
+-- @tfield boolean store Flag to store previous equipped item in party's inventory.
+
+-- ------------------------------------------------------------------------------------------------
 -- Party
 -- ------------------------------------------------------------------------------------------------
 
 --- Give EXP point to the members of the player's troop.
--- @tparam table args
---  args.value (number): Value to be added to each battler's exp.
---  args.onlyCurrent (boolean): True to ignore backup and members (false by default).
+-- @tparam PartyArguments args
 function PartyEvents:increaseExp(args)
   local troop = Troop()
   for battler in troop:currentBattlers():iterator() do
@@ -37,8 +61,7 @@ function PartyEvents:increaseExp(args)
   end
 end
 --- Give money to the player's troop.
--- @tparam table args
---  args.value (number): Value to be added to the party's money.
+-- @tparam PartyArguments args
 function PartyEvents:increaseMoney(args)
   local save = TroopManager.troopData[TroopManager.playerTroopID .. '']
   if not save then
@@ -51,9 +74,7 @@ function PartyEvents:increaseMoney(args)
   end
 end
 --- Add an item to the player's inventory.
--- @tparam table args
---  args.id (number) ID of the item to be added.
---  args.value (number): Quantity to be added.
+-- @tparam PartyArguments args
 function PartyEvents:increaseItem(args)
   local troop = Troop()
   troop.inventory:addItem(args.id, args.value)
@@ -63,8 +84,7 @@ function PartyEvents:increaseItem(args)
   end
 end
 --- Heal all members' HP and SP.
--- @tparam table args
---  args.onlyCurrent (boolean): True to ignore backup members (false by default).
+-- @tparam PartyArguments args
 function PartyEvents:healAll(args)
   local troop = Troop()
   local list = args.onlyCurrent and troop:currentBattlers() or troop:visibleBattlers()
@@ -88,11 +108,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Un-hide a hidden member in the player's troop.
--- @tparam table args
---  args.key (string): New member's key.
---  args.x (number): Member's grid X (if nil, it's added to backup list).
---  args.y (number): Member's grid Y (if nil, it's added to backup list).
---  args.backup (number): If true, add member to the backup list.
+-- @tparam FormationArguments args
 function PartyEvents:addMember(args)
   local troop = Troop()
   if args.backup then
@@ -106,8 +122,7 @@ function PartyEvents:addMember(args)
   end
 end
 --- Remove (hide) a member from the player's troop.
--- @tparam table args
---  args.key (string): Member's key.
+-- @tparam FormationArguments args
 function PartyEvents:hideMember(args)
   local troop = Troop()
   troop:moveMember(args.key, 2)
@@ -118,13 +133,11 @@ function PartyEvents:hideMember(args)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Battler
+-- Member
 -- ------------------------------------------------------------------------------------------------
 
 --- Makes a member learn a new skill.
--- @tparam table args
---  args.key (string): The key of the member to be modified.
---  args.id (number): Skill's ID.
+-- @tparam MemberArguments args
 function PartyEvents:learnSkill(args)
   local troop = Troop()
   local battler = troop.battlers[args.key]
@@ -137,9 +150,7 @@ function PartyEvents:learnSkill(args)
 end
 --- Sets a member's level. 
 -- Learns new skills if level increased, but keeps old skills if decreased.
--- @tparam table args
---  args.key (string): The key of the member to be modified.
---  args.level (number): Member's new level.
+-- @tparam MemberArguments args
 function PartyEvents:setLevel(args)
   local troop = Troop()
   local battler = troop.battlers[args.key]
@@ -157,11 +168,7 @@ function PartyEvents:setLevel(args)
   end
 end
 --- Sets that item equiped in the specified slot.
--- @tparam table args
---  args.key (string): The key of the member to be modified.
---  args.id (number): Item ID.
---  args.slot (string): Slot key.
---  args.store (boolean): Flag to store previous equipped item in party's inventory.
+-- @tparam MemberArguments args
 function PartyEvents:setEquip(args)
   local troop = Troop()
   local battler = troop.battlers[args.key]

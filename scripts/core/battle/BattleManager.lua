@@ -32,19 +32,6 @@ BattleManager.GameOverCondition = {
   LOSE = 1,
   NOWIN = 2
 }
---- Battle arguments.
--- @table BattleParams
--- @tfield number fade The duration in frames of the fading transition. Default: `60`.
--- @tfield boolean intro When false, skips the intro animation showing the parties. Default: `true`.
--- @tfield GameOverCondition gameOverCondition The condition to block the "Continue" option from
---  the Game Over screen. Default: `NONE`.
--- @tfield boolean escapeEnabled Flag to enable the escape action for the player. Default: `true`.
-BattleManager.defaultParams = {
-  fade = 60,
-  intro = false,
-  gameOverCondition = BattleManager.GameOverCondition.NONE, 
-  escapeEnabled = true
-}
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -53,6 +40,12 @@ BattleManager.defaultParams = {
 --- Constructor.
 function BattleManager:init()
   self.onBattle = false
+  self.defaultParams = {
+    fade = 60,
+    intro = false,
+    gameOverCondition = self.GameOverCondition.NONE, 
+    escapeEnabled = true
+  }
   self.params = self.defaultParams
 end
 --- Creates battle elements (GUI, characters, party tiles).

@@ -104,7 +104,7 @@ function SkillList:toList()
   return List(self)
 end
 -- For debugging.
-function StatusList:__tostring()
+function SkillList:__tostring()
   return tostring(self.battler) .. ' Skill' .. getmetatable(List).__tostring(self)
 end
 

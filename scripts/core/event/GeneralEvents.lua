@@ -13,12 +13,32 @@ local GeneralEvents = {}
 -- Tables
 -- ------------------------------------------------------------------------------------------------
 
+--- Arguments for field transition.
+-- @table TransitionArguments
+-- @tfield number fieldID Field to loaded's ID.
+-- @tfield number fade Duration of the fading in frames.
+-- @tfield number x Player's destination x.
+-- @tfield number y Player's destination y.
+-- @tfield number h Player's destination height.
+-- @tfield number direction Player's destination direction (in degrees).
+
+--- Arguments for battle commands.
+-- @table BattleArguments
+-- @tfield boolean fieldID Battle field ID (optional, battle takes place in the current field by default).
+-- @tfield number fade Duration of the fade out/in effect when exiting/returning to previous field.
+-- @tfield boolean intro When false, skips the intro animation showing the parties. Default: `true`.
+-- @tfield boolean escapeEnabled Flag to enable the escape action for the player. Default: `true`.
+-- @tfield GameOverCondition|VictoryCondition gameOverCondition The condition to block the
+--  "Continue" option from the Game Over screen. Either a number value from
+--  `BattleManager.GameOverCondition` or a string value from `EventUtil.VictoryCondition`.
+--  Default: `NONE`.
+
 --- The conditions to enable the "Continue" button on the `GameOverWindow`.
 -- @enum VictoryCondition
 -- @field none Always enabled regardless of who wins.
 -- @field survive Enabled as long as the player is still alive.
 -- @field kill Never enabled.
-GeneralEvents.VictoryConditions = {
+GeneralEvents.VictoryCondition = {
   NONE = 'none',
   SURVIVE = 'survive',
   KILL = 'kill'
@@ -29,13 +49,7 @@ GeneralEvents.VictoryConditions = {
 -- ------------------------------------------------------------------------------------------------
 
 --- Teleports player to other field.
--- @tparam table args
---  args.fieldID (number): Field to loaded's ID.
---  args.fade (number): Duration of the fading in frames.
---  args.x (number): Player's destination x.
---  args.y (number): Player's destination y.
---  args.h (number): Player's destination height.
---  args.direction (number): Player's destination direction (in degrees).
+-- @tparam TransitionArguments args
 function GeneralEvents:moveToField(args)
   FieldManager.playerInput = false
   if args.fade then
@@ -55,23 +69,16 @@ function GeneralEvents:moveToField(args)
   FieldManager.playerInput = true
 end
 --- Loads battle field.
--- @tparam table args
---  args.fieldID (boolean): Battle field ID (optional, battle takes place in the current field by default).
---  args.fade (number): Duration of the fading in frames.
---  args.intro (boolean): Battle introduction animation.
---  args.fade (boolean): Fade out/in effect when exiting/returning to previous field.
---  args.escapeEnabled (boolean): True to enable the whole party to escape.
---  args.gameOverCondition (number|string): Either a number value from `BattleManager.GameOverCondition`
--- or a string value from `EventUtil.VictoryCondition`.
+-- @tparam BattleArguments args
 function GeneralEvents:startBattle(args)
   args.gameOverCondition = args.gameOverCondition or 1
   if type(args.gameOverCondition) == 'string' then
     local conditionName = args.gameOverCondition:trim():lower()
-    if conditionName == self.VictoryConditions.SURVIVE then
+    if conditionName == self.VictoryCondition.SURVIVE then
       args.gameOverCondition = BattleManager.GameOverCondition.NOWIN -- Must win.
-    elseif conditionName == self.VictoryConditions.KILL then
+    elseif conditionName == self.VictoryCondition.KILL then
       args.gameOverCondition = 1 -- Must win or draw.
-    elseif conditionName == self.VictoryConditions.NONE then
+    elseif conditionName == self.VictoryCondition.NONE then
       args.gameOverCondition = 0 -- Never gets a game over.
     else
       args.gameOverCondition = 1 -- Default.
@@ -97,8 +104,7 @@ function GeneralEvents:startBattle(args)
   fiber:waitForEnd()
 end
 --- Loads battle field.
--- @tparam table args
---  args.fade (boolean): Fade out/in effect when exiting/returning to previous field.
+-- @tparam BattleArguments args
 function GeneralEvents:finishBattle(args)
   if BattleManager:playerEscaped() then
     self.battleLog = 'You escaped!'
