@@ -7,6 +7,14 @@
 
 -- ================================================================================================
 
+--- Format of the font info table. It's an array with 3 to 5 elements.
+-- @table Info
+-- @tfield string 1 The name of the font style.
+-- @tfield string 2 The name of the font's file type.
+-- @tfield number 3 The size of the font.
+-- @tfield boolean 4 Make the text italic.
+-- @tfield boolean 5 Make the text bold.
+
 local huge_font = { 'Roboto', 'ttf', 25 }
 local big_font = { 'Roboto', 'ttf', 20 }
 local critical_font = { 'Roboto', 'ttf', 17 }

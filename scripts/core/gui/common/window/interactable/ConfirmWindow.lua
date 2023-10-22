@@ -3,7 +3,7 @@
 
 --- A window that contains "Confirm" and "Cancel" options. The "Cancel" button returns result `0`.
 ---------------------------------------------------------------------------------------------------
--- @classmod ConfirmWindow
+-- @uimod ConfirmWindow
 -- @extend GridWindow
 
 -- ================================================================================================

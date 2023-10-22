@@ -3,7 +3,7 @@
 
 --- The small windows with the commands for character management.
 ---------------------------------------------------------------------------------------------------
--- @classmod MemberCommandWindow
+-- @uimod MemberCommandWindow
 -- @extend GridWindow
 
 -- ================================================================================================

@@ -3,7 +3,7 @@
 
 --- A move action that considers information from the battle state.
 ---------------------------------------------------------------------------------------------------
--- @classmod BattleMoveAction
+-- @battlemod BattleMoveAction
 -- @extend MoveAction
 
 -- ================================================================================================

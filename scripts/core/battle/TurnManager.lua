@@ -5,7 +5,7 @@
 -- At the end of each turn, an `ActionResult` table must be returned by either the GUI (player) or
 -- the AI (enemies). 
 ---------------------------------------------------------------------------------------------------
--- @classmod TurnManager
+-- @manager TurnManager
 
 -- ================================================================================================
 

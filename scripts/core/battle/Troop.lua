@@ -3,7 +3,7 @@
 
 --- Manipulates the matrix of battler IDs to the instatiated in the beginning of the battle.
 ---------------------------------------------------------------------------------------------------
--- @classmod Troop
+-- @battlemod Troop
 
 -- ================================================================================================
 

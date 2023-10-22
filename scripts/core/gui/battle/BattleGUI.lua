@@ -4,7 +4,7 @@
 --- The GUI that is openned in the start of a character turn.
 -- Its result is the action time that the character spent.
 ---------------------------------------------------------------------------------------------------
--- @classmod BattleGUI
+-- @uimod BattleGUI
 -- @extend GUI
 
 -- ================================================================================================

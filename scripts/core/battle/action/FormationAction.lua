@@ -3,7 +3,7 @@
 
 --- The BattleAction that is executed when players chooses "Formation" in the intro GUI.
 ---------------------------------------------------------------------------------------------------
--- @classmod FormationAction
+-- @battlemod FormationAction
 -- @extend CallAction
 
 -- ================================================================================================

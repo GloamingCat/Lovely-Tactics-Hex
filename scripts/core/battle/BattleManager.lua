@@ -5,7 +5,7 @@
 -- It initializes troops, runs loop, checks victory and game over.
 -- Dependencies: `TurnManager`, `TroopManager`, `GameOverGUI`, `RewardGUI` `Inventory`, `TileGUI`
 ---------------------------------------------------------------------------------------------------
--- @classmod BattleManager
+-- @manager BattleManager
 
 -- ================================================================================================
 

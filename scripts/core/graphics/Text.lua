@@ -3,7 +3,7 @@
 
 --- A special type of Sprite which texture if a rendered text.
 ---------------------------------------------------------------------------------------------------
--- @classmod Text
+-- @animmod Text
 -- @extend Sprite
 
 -- ================================================================================================
@@ -24,17 +24,23 @@ local round = math.round
 local Text = class(Sprite)
 
 -- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Text properties. It's an array of 4 elements.
+-- @table Properties
+-- @tfield number 1 Maximum width.
+-- @tfield string 2 Hoziontal aligment (`'left'`, `'right'` or `'center'`).
+-- @tfield Fonts.Info 3 The initial font.
+-- @tfield boolean 4 Flag to indicate plain text and not parse rich text flags.
+
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
 -- @tparam string text The rich text.
--- @tparam table properties The table with text properties:
---  (properties[1] : number) The width of the text box;
---  (properties[2] : string) The align type (left, right or center) 
---    (optional, left by default);
---  (properties[3] : number) The initial font 
----    (if nil, uses defaultFont).
+-- @tparam Text.Properties properties Array with text properties.
 -- @tparam Renderer renderer The destination renderer of the sprite.
 function Text:init(text, properties, renderer)
   Sprite.init(self, renderer)

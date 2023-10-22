@@ -3,7 +3,7 @@
 
 --- A generic window content that stores a sprite with a given viewport.
 ---------------------------------------------------------------------------------------------------
--- @classmod SimpleImage
+-- @uimod SimpleImage
 -- @extend Component
 
 -- ================================================================================================

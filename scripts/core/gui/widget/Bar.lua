@@ -3,7 +3,7 @@
 
 --- A bar meter.
 ---------------------------------------------------------------------------------------------------
--- @classmod Bar
+-- @uimod Bar
 -- @extend Component
 
 -- ================================================================================================
@@ -74,7 +74,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Sets the color of the bar.
--- @tparam table color New color.
+-- @tparam Color.RGBA color New color.
 function Bar:setColor(color)
   self.bar.sprite:setColor(color)
 end

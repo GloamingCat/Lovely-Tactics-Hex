@@ -4,7 +4,7 @@
 --- This is a special character that can me controlled by the player with keyboard or mouse.
 -- It only exists in exploration fields, not in battle fields.
 ---------------------------------------------------------------------------------------------------
--- @classmod Player
+-- @fieldmod Player
 -- @extend Character
 
 -- ================================================================================================

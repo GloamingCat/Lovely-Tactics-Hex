@@ -5,7 +5,7 @@
 -- Sets of animations may be created by using the separator ":" the animation's name in the given
 -- format: `setName:animationName`.
 ---------------------------------------------------------------------------------------------------
--- @classmod AnimatedObject
+-- @fieldmod AnimatedObject
 -- @extend Object
 
 -- ================================================================================================

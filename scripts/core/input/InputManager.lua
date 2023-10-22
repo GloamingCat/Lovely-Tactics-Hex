@@ -3,7 +3,7 @@
 
 --- Stores relevant inputs for the game.
 ---------------------------------------------------------------------------------------------------
--- @classmod InputManager
+-- @manager InputManager
 
 -- ================================================================================================
 
@@ -75,7 +75,7 @@ function InputManager:init()
   self.stick.threshold = 0.2
 end
 --- Sets axis keys.
--- @tparam boolean useWASD
+-- @tparam boolean useWASD Flag to use WASD keys instead of arrows.
 function InputManager:setArrowMap(useWASD)
   self.arrowMap = {}
   self.wasd = useWASD
@@ -87,14 +87,14 @@ function InputManager:setArrowMap(useWASD)
   end
 end
 --- Sets keys codes for each game key.
--- @tparam table map Key map with main and alt tables.
-function InputManager:setKeyMap(map)
+-- @tparam KeyMap.Config conf Key configuration.
+function InputManager:setKeyConfiguration(conf)
   self.mainMap = {}
   self.altMap = {}
   self.gamepadMap = {}
   self.keyMap = {}
   for k, v in pairs(KeyMap.main) do
-    v = map.main and map.main[k] or v
+    v = conf.main and conf.main[k] or v
     self.mainMap[k] = v
     if self.keys[k] then
       self.keyMap[v] = k
@@ -102,14 +102,14 @@ function InputManager:setKeyMap(map)
     end
   end
   for k, v in pairs(KeyMap.alt) do
-    v = map.alt and map.alt[k] or v
+    v = conf.alt and conf.alt[k] or v
     self.altMap[k] = v
     if self.keys[k] then
       self.keyMap[v] = k
     end
   end
   for k, v in pairs(KeyMap.gamepad) do
-    v = map.gamepad and map.gamepad[k] or v
+    v = conf.gamepad and conf.gamepad[k] or v
     self.gamepadMap[k] = v
     if self.keys[k] then
       self.keyMap[v] = k
@@ -277,7 +277,9 @@ function InputManager:onRelease(code, scancode)
     return
   end
   local key = self.arrowMap[code] or self.keyMap[code] or code
-  self.keys[key]:onRelease()
+  if self.keys[key] then
+    self.keys[key]:onRelease()
+  end
 end
 --- Called when player types a character.
 -- @tparam string char Input character.

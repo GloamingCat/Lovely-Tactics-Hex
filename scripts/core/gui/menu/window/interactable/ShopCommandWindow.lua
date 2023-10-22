@@ -3,7 +3,7 @@
 
 --- Window with the initial commands of the shop GUI (buy, sell, cancel).
 ---------------------------------------------------------------------------------------------------
--- @classmod ShopCommandWindow
+-- @uimod ShopCommandWindow
 -- @extend GridWindow
 
 -- ================================================================================================

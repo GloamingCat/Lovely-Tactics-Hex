@@ -10,7 +10,7 @@
 --  * `FIELD` is one of the string keys from `Field` table (note: it's case sensitive);
 --  * Values `X` to `W` are the target values and should be numbers.
 ---------------------------------------------------------------------------------------------------
--- @classmod KeyPoint
+-- @animmod KeyPoint
 -- @extend Animation
 
 --- Parameters in the Animation tags.

@@ -4,7 +4,7 @@
 --- An ObjectLayer is a matrix of ObjectTiles.
 -- There's only one ObjectLayer in the field per height.
 ---------------------------------------------------------------------------------------------------
--- @classmod ObjectLayer
+-- @fieldmod ObjectLayer
 
 -- ================================================================================================
 

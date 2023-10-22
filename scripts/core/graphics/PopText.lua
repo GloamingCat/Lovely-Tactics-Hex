@@ -3,7 +3,7 @@
 
 --- A text sprite that is shown in the field with a pop-up animation.
 ---------------------------------------------------------------------------------------------------
--- @classmod PopText
+-- @animmod PopText
 
 -- ================================================================================================
 
@@ -46,8 +46,8 @@ end
 
 --- Adds a new line.
 -- @tparam string text The text content.
--- @tparam table color The text color (red/green/blue/alpha table).
--- @tparam Font font The text font.
+-- @tparam string color The name of the text color.
+-- @tparam string font The name of the text font.
 function PopText:addLine(text, color, font)
   text = '{c' .. color .. '}{f' .. font .. '}' .. text
   local l = self.lineCount

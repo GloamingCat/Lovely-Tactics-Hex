@@ -4,7 +4,7 @@
 --- The rule for an AI that removes character from battle field. If not possible to execute,
 -- it moves the character to the closest party tile.
 ---------------------------------------------------------------------------------------------------
--- @classmod EscapeRule
+-- @battlemod EscapeRule
 -- @extend AIRule
 
 --- Parameters in the Rule tags.

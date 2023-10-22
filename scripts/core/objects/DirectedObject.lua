@@ -5,7 +5,7 @@
 -- The animation must contain 8 rows, each row representing a direction. The direction of a row r
 -- (a value from 0 to 7) is (r * 45).
 ---------------------------------------------------------------------------------------------------
--- @classmod DirectedObject
+-- @fieldmod DirectedObject
 -- @extend AnimatedObject
 
 -- ================================================================================================

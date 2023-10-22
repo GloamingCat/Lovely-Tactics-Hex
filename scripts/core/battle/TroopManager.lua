@@ -6,7 +6,7 @@
 -- number of parties minus 1.
 -- A troop contains member information and can be instantied in any party.
 ---------------------------------------------------------------------------------------------------
--- @classmod TroopManager
+-- @manager TroopManager
 
 -- ================================================================================================
 

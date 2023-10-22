@@ -4,7 +4,7 @@
 --- This class provides general functions to be called by fibers. 
 -- The coroutine functions must ONLY be called from a fiber.
 ---------------------------------------------------------------------------------------------------
--- @classmod Character
+-- @fieldmod Character
 -- @extend CharacterBase
 
 -- ================================================================================================

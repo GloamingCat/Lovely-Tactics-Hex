@@ -3,7 +3,7 @@
 
 --- A fiber that processes a list of sequential commands.
 ---------------------------------------------------------------------------------------------------
--- @classmod EventSheet
+-- @basemod EventSheet
 -- @extend Fiber
 -- @extend EventUtil
 

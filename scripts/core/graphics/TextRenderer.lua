@@ -22,7 +22,7 @@ local TextRenderer = {}
 -- @tparam table line A list of text fragments.
 -- @tparam number x The x position of the top left corner of the line.
 -- @tparam number y The y position of the top left corner of the line.
--- @tparam table color The RGBA multiplier for this line.
+-- @tparam Color.RGBA color The RGBA multiplier for this line.
 -- @treturn number Number of draw calls (for profiling).
 function TextRenderer.drawLine(line, x, y, color)
   local drawCalls = 0

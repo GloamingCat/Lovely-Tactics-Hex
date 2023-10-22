@@ -6,7 +6,7 @@
 -- and "checkInput" methods.
 -- Its result is the action time that the character spent.
 ---------------------------------------------------------------------------------------------------
--- @classmod ActionGUI
+-- @uimod ActionGUI
 -- @extend GUI
 
 -- ================================================================================================

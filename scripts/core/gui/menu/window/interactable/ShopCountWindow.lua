@@ -3,7 +3,7 @@
 
 --- Window that shows the total price to be paidin the Shop GUI.
 ---------------------------------------------------------------------------------------------------
--- @classmod ShopCountWindow
+-- @uimod ShopCountWindow
 -- @extend CountWindow
 
 -- ================================================================================================

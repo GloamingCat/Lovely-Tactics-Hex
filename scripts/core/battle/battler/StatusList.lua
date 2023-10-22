@@ -3,7 +3,7 @@
 
 --- A special kind of list that provides functions to manage battler's list of status effects.
 ---------------------------------------------------------------------------------------------------
--- @classmod StatusList
+-- @battlemod StatusList
 -- @extend List
 
 -- ================================================================================================

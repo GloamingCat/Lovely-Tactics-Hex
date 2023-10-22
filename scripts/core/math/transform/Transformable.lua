@@ -3,7 +3,7 @@
 
 --- An object with physical properties (position, rotation, scale) and color.
 ---------------------------------------------------------------------------------------------------
--- @classmod Transformable
+-- @basemod Transformable
 -- @extend Movable
 -- @extend Scalable
 -- @extend Rotatable

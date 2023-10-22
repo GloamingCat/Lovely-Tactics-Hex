@@ -3,7 +3,7 @@
 
 --- A GUI to selected a target character for an action (usually skill or item).
 ---------------------------------------------------------------------------------------------------
--- @classmod MenuTargetGUI
+-- @uimod MenuTargetGUI
 -- @extend GUI
 
 -- ================================================================================================

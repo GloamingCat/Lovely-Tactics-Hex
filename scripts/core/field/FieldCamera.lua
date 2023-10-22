@@ -3,7 +3,7 @@
 
 --- The FieldCamera is a renderer with transform properties.
 ---------------------------------------------------------------------------------------------------
--- @classmod FieldCamera
+-- @fieldmod FieldCamera
 -- @extend Renderer
 
 -- ================================================================================================

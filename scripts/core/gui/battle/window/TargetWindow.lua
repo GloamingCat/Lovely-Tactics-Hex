@@ -3,7 +3,7 @@
 
 --- Window that shows when the battle cursor is over a character.
 ---------------------------------------------------------------------------------------------------
--- @classmod TargetWindow
+-- @uimod TargetWindow
 -- @extend Window
 
 -- ================================================================================================

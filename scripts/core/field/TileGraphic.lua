@@ -4,7 +4,7 @@
 --- Used for single-row tile graphics. It is composed by the top half ans bottom half sprites,
 -- such that the top half sprite's depth is greater by 0.5 tile.
 ---------------------------------------------------------------------------------------------------
--- @classmod TileGraphic
+-- @fieldmod TileGraphic
 
 -- ================================================================================================
 
@@ -77,7 +77,7 @@ function TileGraphic:setVisible(value)
   self.bottomAnim.sprite:setVisible(value)
 end
 --- Sets sprites's color.
--- @tparam table color Color table, with red, green, blue and alpha values.
+-- @tparam Color.RGBA color Color table.
 function TileGraphic:setColor(color)
   self.topAnim.sprite:setColor(color)
   self.bottomAnim.sprite:setColor(color)

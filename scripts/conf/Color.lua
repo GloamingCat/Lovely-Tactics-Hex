@@ -7,19 +7,18 @@
 
 -- ================================================================================================
 
-
 --- Color RGBA format.
 -- @table RGBA
 -- @tfield number red Red color component (from 0 to 1).
 -- @tfield number green Green color component (from 0 to 1).
 -- @tfield number blue Blue color component (from 0 to 1).
 -- @tfield number alpha Alpha color component (from 0 to 1).
-local RGBA = {
-  red = 0,
-  green = 0,
-  blue = 0,
-  alpha = 0
-}
+
+--- Color HSV format.
+-- @table HSV
+-- @tfield number h Hue component (from 0 to 360).
+-- @tfield number s Saturation component (from 0 to 1).
+-- @tfield number v Value/brightness component (from 0 to 1).
 
 local black = {red = 0, green = 0, blue = 0, alpha = 1}
 local red = {red = 1, green = 0, blue = 0, alpha = 1}

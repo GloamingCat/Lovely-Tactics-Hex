@@ -9,7 +9,7 @@
 -- on team tiles), etc.  
 -- Doesn't have any persistent data of its own.
 ---------------------------------------------------------------------------------------------------
--- @classmod BattleAction
+-- @battlemod BattleAction
 -- @extend FieldAction
 
 -- ================================================================================================

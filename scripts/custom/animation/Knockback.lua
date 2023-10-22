@@ -4,7 +4,7 @@
 --- The animation of knockback when a characters receives damage.
 -- It moves the character backwards and then moves back to its tile.
 ---------------------------------------------------------------------------------------------------
--- @classmod Knockback
+-- @animmod Knockback
 -- @extend Animation
 
 --- Parameters in the Animation tags.

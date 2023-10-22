@@ -4,7 +4,7 @@
 --- A button window that shows all the visibles members in the troop.
 -- It selects one of the targets to execute an action.
 ---------------------------------------------------------------------------------------------------
--- @classmod MenuTargetWindow
+-- @uimod MenuTargetWindow
 -- @extend PartyWindow
 
 -- ================================================================================================

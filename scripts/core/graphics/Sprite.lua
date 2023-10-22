@@ -6,7 +6,7 @@
 -- Its position determines where on the screen it's going to be rendered (x and y axis, relative to 
 -- the world's coordinate system) and the depth/render order (z axis).
 ---------------------------------------------------------------------------------------------------
--- @classmod Sprite
+-- @animmod Sprite
 -- @extend Colorable
 
 -- ================================================================================================

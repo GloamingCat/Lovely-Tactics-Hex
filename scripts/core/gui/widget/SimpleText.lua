@@ -4,7 +4,7 @@
 --- A simple content element for GUI window containing just a text.
 -- It's a type of window content.
 ---------------------------------------------------------------------------------------------------
--- @classmod SimpleText
+-- @uimod SimpleText
 -- @extend Component
 
 -- ================================================================================================
@@ -26,7 +26,7 @@ local SimpleText = class(Component)
 -- @tparam Vector position Position relative to its window (optional).
 -- @tparam number width The max width for texto box (optional).
 -- @tparam string align Alignment inside the box (optional, left by default).
--- @tparam string font Font of the text (optional).
+-- @tparam Fonts.Info font Font of the text (optional).
 -- @tparam boolean plainText Disable text commands (optional, false by default).
 function SimpleText:init(text, position, width, align, font, plainText)
   assert(text, 'Nil text')
@@ -36,8 +36,7 @@ end
 --- Implements `Component:createContent`.
 -- @implement
 -- @tparam string text Initial text, in raw form.
--- @tparam table properties Array with text properties in order:
---  Maximum width, horizontal alignment, initial font.
+-- @tparam Text.Properties properties Array with text properties.
 function SimpleText:createContent(text, properties)
   self.sprite = Text(text .. '', properties, GUIManager.renderer)
   self.text = text

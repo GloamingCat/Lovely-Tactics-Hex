@@ -3,7 +3,7 @@
 
 --- A class that stores the layers of tiles in the field and provides general grid information.
 ---------------------------------------------------------------------------------------------------
--- @classmod Field
+-- @fieldmod Field
 
 -- ================================================================================================
 

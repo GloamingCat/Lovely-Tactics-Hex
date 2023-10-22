@@ -5,7 +5,7 @@
 -- It changes the battler' party to the status caster's party.
 -- If no caster is found, then this rule is the same as RushRule.
 ---------------------------------------------------------------------------------------------------
--- @classmod BetrayRule
+-- @battlemod BetrayRule
 -- @extend SkillRule
 
 -- ================================================================================================

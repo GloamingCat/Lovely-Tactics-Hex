@@ -4,11 +4,8 @@
 --- A frame-by-frame animation associated with a Sprite. 
 -- It updates the quad of the associated Sprite, assuming that the texture of the sprite 
 -- is a spritesheet.
--- @see BattleEffect
--- @see KeyPoint
--- @see LookAround
 ---------------------------------------------------------------------------------------------------
--- @classmod Animation
+-- @animmod Animation
 
 -- ================================================================================================
 

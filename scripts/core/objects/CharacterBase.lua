@@ -5,7 +5,7 @@
 -- or not. Player may also interact with this.
 -- A CharacterBase provides very basic functions that are necessary for every character.
 ---------------------------------------------------------------------------------------------------
--- @classmod CharacterBase
+-- @fieldmod CharacterBase
 -- @extend JumpingObject
 -- @extend Interactable
 

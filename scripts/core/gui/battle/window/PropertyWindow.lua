@@ -3,7 +3,7 @@
 
 --- Window that opens in Action GUI to show a property of the current character.
 ---------------------------------------------------------------------------------------------------
--- @classmod PropertyWindow
+-- @uimod PropertyWindow
 -- @extend Window
 
 -- ================================================================================================

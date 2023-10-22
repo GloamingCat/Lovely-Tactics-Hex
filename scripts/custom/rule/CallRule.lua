@@ -3,7 +3,7 @@
 
 --- The rule for an AI that calls another character to the battle field.
 ---------------------------------------------------------------------------------------------------
--- @classmod CallRule
+-- @battlemod CallRule
 -- @extend AIRule
 
 --- Parameters in the Rule tags.

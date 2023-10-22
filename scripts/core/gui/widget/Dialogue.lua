@@ -4,7 +4,7 @@
 --- A GUI text that is written character by character and interacts with text events and player
 -- input. See `TextParser.Codes` for the codes to be used in the text.
 ---------------------------------------------------------------------------------------------------
--- @classmod Dialogue
+-- @uimod Dialogue
 -- @extend SimpleText
 
 -- ================================================================================================

@@ -4,7 +4,7 @@
 --- A generic status effect that a battler may have.
 -- The effects of them on battle and field depend on each individual implementation.
 ---------------------------------------------------------------------------------------------------
--- @classmod Status
+-- @battlemod Status
 
 -- ================================================================================================
 

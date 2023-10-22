@@ -150,7 +150,7 @@ end
 --- Creates line list. Each line is a table containing an array of fragments, a height and a width.
 -- It also contains its length for character counting.
 -- @tparam table fragments Array of fragments.
--- @tparam Font initialFont The default font.
+-- @tparam Fonts.Info initialFont The default font.
 -- @tparam number maxWidth The width limit for wrapped text (optional).
 -- @tparam number scale Text's size multiplier (optional, 1 by default).
 -- @treturn table Array of lines.

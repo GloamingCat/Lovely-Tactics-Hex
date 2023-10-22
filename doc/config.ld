@@ -32,7 +32,14 @@ local List = require('pl.List')
 -- Kinds
 -- ------------------------------------------------------------------------------------------------
 
-new_type("conf","Config Tables",true)
+new_type("conf","ConfigTables",true)
+new_type("manager","Managers",true)
+new_type("iomod","IO",true)
+new_type("animmod","Graphics",true)
+new_type("fieldmod","Field",true)
+new_type("battlemod","Battle",true)
+new_type("uimod","UI",true)
+new_type("basemod","Base",true)
 new_type("plugin","Plugins",true)
 new_type("event","Events",true)
 
@@ -129,8 +136,17 @@ end
 
 postprocess_html = function(out, module)
   if module then
-    return out:gsub("Derive</strong>:", "Subclasses</strong>:"):gsub("Extend</strong>:", "Superclasses</strong>:")
-  else
-    return out
+    out = out:gsub("<h1>Basemod", "<h1>Class")
+    out = out:gsub("<h1>Iomod", "<h1>Class")
+    out = out:gsub("<h1>Uimod", "<h1>Class")
+    out = out:gsub("<h1>Fieldmod", "<h1>Class")
+    out = out:gsub("<h1>Manager", "<h1>Class")
+    out = out:gsub("<h1>Battlemod", "<h1>Class")
+    out = out:gsub("<h1>Conf", "<h1>Table")
+    out = out:gsub("Derive</strong>:", "Subclasses</strong>:")
+    out = out:gsub("Extend</strong>:", "Superclasses</strong>:")
   end
+  out = out:gsub("<h2>ConfigTables", "<h2>Config Tables")
+  out = out:gsub("<h2>IO", "<h2>I/O")
+  return out
 end

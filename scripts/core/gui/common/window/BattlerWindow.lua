@@ -3,7 +3,7 @@
 
 --- Window that shows on each character in the VisualizeAction.
 ---------------------------------------------------------------------------------------------------
--- @classmod BattlerWindow
+-- @uimod BattlerWindow
 -- @extend Window
 
 -- ================================================================================================

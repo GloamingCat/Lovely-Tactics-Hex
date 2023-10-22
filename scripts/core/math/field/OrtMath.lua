@@ -3,7 +3,7 @@
 
 --- Implements FieldMath methods to hexagonal fields in which the tiles are connected vertically.
 ---------------------------------------------------------------------------------------------------
--- @classmod OrtMath
+-- @fieldmod OrtMath
 -- @extend FieldMath
 
 -- ================================================================================================

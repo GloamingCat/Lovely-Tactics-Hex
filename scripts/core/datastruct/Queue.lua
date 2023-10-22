@@ -4,7 +4,7 @@
 --- A queue datatype implementation. See more in:
 -- http://en.wikipedia.org/wiki/Queue_(abstract_data_type)
 ---------------------------------------------------------------------------------------------------
--- @classmod Queue
+-- @basemod Queue
 
 -- ================================================================================================
 

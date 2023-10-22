@@ -4,7 +4,7 @@
 --- A Renderer manages a list of sprites to be rendered. 
 -- Stores them in order and draws them using a batch.
 ---------------------------------------------------------------------------------------------------
--- @classmod Renderer
+-- @animmod Renderer
 -- @extend Transformable
 
 -- ================================================================================================

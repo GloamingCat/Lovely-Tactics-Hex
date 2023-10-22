@@ -3,7 +3,7 @@
 
 --- A sprite that points in a given direction (vertical or horizontal).
 ---------------------------------------------------------------------------------------------------
--- @classmod Pointer
+-- @animmod Pointer
 -- @extend Animation
 
 --- Parameters in the Animation tags.

@@ -3,7 +3,7 @@
 
 --- A window that shows the possible items to equip.
 ---------------------------------------------------------------------------------------------------
--- @classmod EquipItemWindow
+-- @uimod EquipItemWindow
 -- @extend InventoryWindow
 
 -- ================================================================================================

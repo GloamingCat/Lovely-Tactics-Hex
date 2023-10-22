@@ -3,7 +3,7 @@
 
 --- The BattleAction that is executed when players chooses a skill to use.
 ---------------------------------------------------------------------------------------------------
--- @classmod SkillAction
+-- @battlemod SkillAction
 -- @extend BattleAction
 
 -- ================================================================================================

@@ -4,7 +4,7 @@
 --- A button window that shows all the visibles members in the troop.
 -- It selected one of the member to manage with MemberGUI.
 ---------------------------------------------------------------------------------------------------
--- @classmod PartyWindow
+-- @uimod PartyWindow
 -- @extend ListWindow
 
 -- ================================================================================================

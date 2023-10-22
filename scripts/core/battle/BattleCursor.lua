@@ -3,7 +3,7 @@
 
 --- Cursor used to indicate current turn's character and the selected tile.
 ---------------------------------------------------------------------------------------------------
--- @classmod BattleCursor
+-- @battlemod BattleCursor
 
 -- ================================================================================================
 

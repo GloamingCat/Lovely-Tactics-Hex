@@ -3,7 +3,7 @@
 
 --- Window with resolution options.
 ---------------------------------------------------------------------------------------------------
--- @classmod KeyMapWindow
+-- @uimod KeyMapWindow
 -- @extend GridWindow
 
 -- ================================================================================================
@@ -110,7 +110,7 @@ function KeyMapWindow:onButtonConfirm(button)
 end
 --- Applies changes.
 function KeyMapWindow:applyConfirm()
-  InputManager:setKeyMap(copyTable(self.map))
+  InputManager:setKeyConfiguration(copyTable(self.map))
   self.result = 1
 end
 --- Sets default key map.

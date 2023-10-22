@@ -3,7 +3,7 @@
 
 --- Window that shows the total price to be paidin the Recruit GUI.
 ---------------------------------------------------------------------------------------------------
--- @classmod RecruitConfirmWindow
+-- @uimod RecruitConfirmWindow
 -- @extend BattlerWindow
 
 -- ================================================================================================

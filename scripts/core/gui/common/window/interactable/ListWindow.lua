@@ -3,7 +3,7 @@
 
 --- A Button Window that has its buttons generated automatically given a list of arbitrary elements.
 ---------------------------------------------------------------------------------------------------
--- @classmod ListWindow
+-- @uimod ListWindow
 -- @extend GridWindow
 
 -- ================================================================================================

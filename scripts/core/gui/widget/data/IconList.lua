@@ -4,7 +4,7 @@
 --- A list of icons to the drawn in a given rectangle.
 -- Commonly used to show status icons in windows.
 ---------------------------------------------------------------------------------------------------
--- @classmod IconList
+-- @uimod IconList
 -- @extend Component
 
 -- ================================================================================================

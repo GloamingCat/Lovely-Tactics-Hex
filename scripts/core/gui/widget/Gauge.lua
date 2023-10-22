@@ -3,7 +3,7 @@
 
 --- A variable meter that shows the variable state in a bar and in text.
 ---------------------------------------------------------------------------------------------------
--- @classmod Gauge
+-- @uimod Gauge
 -- @extend Component
 
 -- ================================================================================================
@@ -24,7 +24,7 @@ local Gauge = class(Component)
 --- Constructor.
 -- @tparam Vector topLeft The position of the top left corner.
 -- @tparam number width The width of the bar.
--- @tparam table color The color of the bar.
+-- @tparam Color.RGBA color The color of the bar.
 -- @tparam number x Displacement of the bar (optional).
 function Gauge:init(topLeft, width, color, x)
   if x then

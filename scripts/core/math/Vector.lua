@@ -5,7 +5,7 @@
 -- It consists of an x, and a y component,
 -- each being an offset along a different orthogonal axis.
 ---------------------------------------------------------------------------------------------------
--- @classmod Vector
+-- @basemod Vector
 
 -- ================================================================================================
 

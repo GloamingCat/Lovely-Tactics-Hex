@@ -3,7 +3,7 @@
 
 --- The BattleAction that is executed when players cancels in the Turn Window.
 ---------------------------------------------------------------------------------------------------
--- @classmod VisualizeAction
+-- @battlemod VisualizeAction
 -- @extend BattleAction
 
 -- ================================================================================================

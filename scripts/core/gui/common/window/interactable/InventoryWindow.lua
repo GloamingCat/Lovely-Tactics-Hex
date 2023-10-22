@@ -3,7 +3,7 @@
 
 --- The GUI that is open to choose an item from character's inventory.
 ---------------------------------------------------------------------------------------------------
--- @classmod InventoryWindow
+-- @uimod InventoryWindow
 -- @extend ListWindow
 
 -- ================================================================================================

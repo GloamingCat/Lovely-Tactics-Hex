@@ -6,7 +6,7 @@
 -- current battle state. Instead of storing state-dependent data, it generates in run time the
 -- ActionInput to be used according to the state.
 ---------------------------------------------------------------------------------------------------
--- @classmod AIRule
+-- @battlemod AIRule
 
 -- ================================================================================================
 

@@ -4,7 +4,7 @@
 --- Provides the base for windows.
 -- Every content element for the window must inherit from `Component`.
 ---------------------------------------------------------------------------------------------------
--- @classmod Window
+-- @uimod Window
 -- @extend Component
 -- @extend Transformable
 

@@ -3,7 +3,7 @@
 
 --- The BattleAction that is executed when players chooses the "Wait" button.
 ---------------------------------------------------------------------------------------------------
--- @classmod WaitAction
+-- @battlemod WaitAction
 -- @extend BattleAction
 
 -- ================================================================================================

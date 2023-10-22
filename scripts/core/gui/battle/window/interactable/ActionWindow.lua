@@ -5,7 +5,7 @@
 -- It implements common methods for starting an action execution.
 -- Its result is the result data returned by the action.
 ---------------------------------------------------------------------------------------------------
--- @classmod ActionWindow
+-- @uimod ActionWindow
 -- @extend GridWindow
 
 -- ================================================================================================

@@ -3,7 +3,7 @@
 
 --- The window that shows the list of gained items.
 ---------------------------------------------------------------------------------------------------
--- @classmod RewardItemWindow
+-- @uimod RewardItemWindow
 -- @extend InventoryWindow
 
 -- ================================================================================================

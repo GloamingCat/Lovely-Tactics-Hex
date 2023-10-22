@@ -4,7 +4,7 @@
 --- An ObjectTile stores a list of static obstacles and a list of dynamic characters.
 -- There's only one ObjectTile for each (i, j, height) in the field.
 ---------------------------------------------------------------------------------------------------
--- @classmod ObjectTile
+-- @fieldmod ObjectTile
 
 -- ================================================================================================
 

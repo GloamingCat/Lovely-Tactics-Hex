@@ -3,7 +3,7 @@
 
 --- An object with color properties.
 ---------------------------------------------------------------------------------------------------
--- @classmod Colorable
+-- @basemod Colorable
 
 -- ================================================================================================
 
@@ -15,8 +15,8 @@ local Colorable = class()
 -- ------------------------------------------------------------------------------------------------
 
 --- Initalizes color.
--- @tparam table color A color table containing {red, green, blue, alpha} components (optional).
--- @tparam table hsv A color table containing {h, s, v} components (optional).
+-- @tparam Color.RGBA color A color table containing {red, green, blue, alpha} components (optional).
+-- @tparam Color.HSV hsv A color table containing {h, s, v} components (optional).
 function Colorable:initColor(color, hsv)
   color = color or { red = 1, green = 1, blue = 1, alpha = 1 }
   self.hsv = hsv or { h = 0, s = 1, v = 1 }
@@ -74,8 +74,8 @@ function Colorable:setHSV(h, s, v)
   self.hsv.v = v or self.hsv.v
 end
 --- Sets color's RGBA. If a component parameter is nil, it will not be changed.
--- @tparam table rgba A table containing {red, green, blue, alpha} components (optional).
--- @tparam table hsv A table containing {hue, saturation, value} components (optional).
+-- @tparam Color.RGBA rgba A table containing {red, green, blue, alpha} components (optional).
+-- @tparam Color.HSV hsv A table containing {hue, saturation, value} components (optional).
 function Colorable:setColor(rgba, hsv)
   if rgba then
     self:setRGBA(rgba.red, rgba.green, rgba.blue, rgba.alpha)

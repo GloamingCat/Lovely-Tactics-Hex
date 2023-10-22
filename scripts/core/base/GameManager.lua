@@ -3,7 +3,7 @@
 
 --- Handles basic game flow.
 ---------------------------------------------------------------------------------------------------
--- @classmod GameManager
+-- @manager GameManager
 
 -- ================================================================================================
 
@@ -102,7 +102,7 @@ function GameManager:setConfig(config)
   InputManager.autoDash = config.autoDash
   InputManager.mouseEnabled = config.useMouse
   InputManager:setArrowMap(config.wasd)
-  InputManager:setKeyMap(config.keyMap)
+  InputManager:setKeyConfiguration(config.keyMap)
   if config.resolution and self:isDesktop() then
     ScreenManager:setMode(config.resolution)
   end

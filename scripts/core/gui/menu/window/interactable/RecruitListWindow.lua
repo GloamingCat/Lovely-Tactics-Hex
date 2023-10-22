@@ -3,7 +3,7 @@
 
 --- Window with the list of items available to hire.
 ---------------------------------------------------------------------------------------------------
--- @classmod RecruitListWindow
+-- @uimod RecruitListWindow
 -- @extend ListWindow
 
 -- ================================================================================================

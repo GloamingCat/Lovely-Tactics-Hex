@@ -4,7 +4,7 @@
 --- Responsible for drawing and updating the current field, and also loading and storing fields from 
 -- game's data.
 ---------------------------------------------------------------------------------------------------
--- @classmod FieldManager
+-- @manager FieldManager
 
 -- ================================================================================================
 

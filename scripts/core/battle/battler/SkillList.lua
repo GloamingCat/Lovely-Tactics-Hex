@@ -3,7 +3,7 @@
 
 --- A special kind of list that provides functions to manage battler's list of skills.
 ---------------------------------------------------------------------------------------------------
--- @classmod SkillList
+-- @battlemod SkillList
 -- @extend List
 
 -- ================================================================================================

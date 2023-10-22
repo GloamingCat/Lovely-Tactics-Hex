@@ -3,7 +3,7 @@
 
 --- The window that is open to choose an item from character's inventory.
 ---------------------------------------------------------------------------------------------------
--- @classmod ActionItemWindow
+-- @uimod ActionItemWindow
 -- @extend ActionWindow
 -- @extend InventoryWindow
 

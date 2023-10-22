@@ -4,7 +4,7 @@
 --- Window that opens in the start of a character turn.
 -- When the character's turn ends, the result field is 1.
 ---------------------------------------------------------------------------------------------------
--- @classmod TurnWindow
+-- @uimod TurnWindow
 -- @extend ActionWindow
 
 -- ================================================================================================

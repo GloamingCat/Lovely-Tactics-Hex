@@ -6,7 +6,7 @@
 -- The method <isSelectable> checks if a tile is valid to be chosen or not.
 -- When called outsite of battle, the tiles' graphics must be set up before using.
 ---------------------------------------------------------------------------------------------------
--- @classmod FieldAction
+-- @battlemod FieldAction
 
 -- ================================================================================================
 

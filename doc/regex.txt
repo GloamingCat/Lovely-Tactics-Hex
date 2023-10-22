@@ -56,3 +56,7 @@ Change overrides tag
 Change override (plugin) tag
 (--- Override\.)(.*\n)((?:local.*\n)*function )(\w+:)(\w+)
 --- Rewrites `\4\5`.\2-- @rewrite \5\n\3\4\5
+
+Change module:
+@(extend|classmod) (\w+Window\n)
+@\1 ui.window.\2

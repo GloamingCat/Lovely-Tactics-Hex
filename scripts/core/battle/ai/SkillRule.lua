@@ -3,7 +3,7 @@
 
 --- An AIRule that executes a skill. 
 ---------------------------------------------------------------------------------------------------
--- @classmod SkillRule
+-- @battlemod SkillRule
 -- @extend AIRule
 
 --- Parameters in the Rule tags.

@@ -5,7 +5,7 @@
 -- It is created from a instance data table, which contains (x, y, h) coordinates, scripts, and 
 -- passable and persistent properties.
 ---------------------------------------------------------------------------------------------------
--- @classmod Interactable
+-- @fieldmod Interactable
 
 -- ================================================================================================
 
