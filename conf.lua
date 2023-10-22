@@ -7,6 +7,7 @@ File run before main. Prepares window.
 
 =================================================================================================]]
 
+io.stdout:setvbuf("no") -- File regex: "^(?:[^/]*\\s+)*(\\w+/(?:\\w|/)*.*\\.lua):([0-9]+)(:[0-9]*)?: (...*)$"
 love.filesystem.setRequirePath('scripts/?.lua;/?.lua')
 
 require('override')

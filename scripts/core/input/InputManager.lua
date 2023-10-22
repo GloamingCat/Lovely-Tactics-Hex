@@ -260,7 +260,9 @@ function InputManager:onRelease(code, scancode)
     return
   end
   local key = self.arrowMap[code] or self.keyMap[code] or code
-  self.keys[key]:onRelease()
+  if self.keys[key] then
+    self.keys[key]:onRelease()
+  end
 end
 -- Called when player types a character.
 -- @param(t : string) Input character.
