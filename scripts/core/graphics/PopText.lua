@@ -110,9 +110,9 @@ function PopText:pop(dir)
     Fiber:wait()
   end
   Fiber:wait(self.pause)
-  local f = self.speed / 4 / sprite.color.alpha
-  while sprite.color.alpha > 0 do
-    local a = max(sprite.color.alpha - f * GameManager:frameTime(), 0)
+  local f = self.speed / 4 / sprite.color.a
+  while sprite.color.a > 0 do
+    local a = max(sprite.color.a - f * GameManager:frameTime(), 0)
     sprite:setRGBA(nil, nil, nil, a)
     Fiber:wait()
   end

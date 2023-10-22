@@ -237,7 +237,7 @@ function Text:draw(renderer)
   renderer:clearBatch()
   local r, g, b, a = lgraphics.getColor()
   local shader = lgraphics.getShader()
-  lgraphics.setColor(self.color.red, self.color.green, self.color.blue, self.color.alpha)
+  lgraphics.setColor(self.color.r, self.color.g, self.color.b, self.color.a)
   lgraphics.setShader()
   lgraphics.push()
   local sx = ScreenManager.scaleX * renderer.scaleX

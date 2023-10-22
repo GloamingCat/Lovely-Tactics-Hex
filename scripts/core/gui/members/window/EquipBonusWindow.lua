@@ -86,9 +86,9 @@ function EquipBonusWindow:createBonusText(att, x, y, w)
     self.content:add(value2)
     self.bonus:add(value2)
     if att[i].newValue > att[i].oldValue then
-      value2.sprite:setColor(Color.green)
+      value2.sprite:setColor(Color.positive_bonus)
     else
-      value2.sprite:setColor(Color.red)
+      value2.sprite:setColor(Color.negative_bonus)
     end
     y = y + 10
   end

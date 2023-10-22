@@ -85,7 +85,7 @@ end
 --- Overrides `GUI:show`. Shows cover before windows.
 -- @override
 function TitleGUI:show(...)
-  if not self.cover or self.cover.color.alpha == 0 then
+  if not self.cover or self.cover.color.a == 0 then
     self:playBGM()
     self:showCover(false, true)
     self:showCover(true, false)

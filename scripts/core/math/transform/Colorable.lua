@@ -15,19 +15,21 @@ local Colorable = class()
 -- ------------------------------------------------------------------------------------------------
 
 --- Initalizes color.
--- @tparam Color.RGBA color A color table containing {red, green, blue, alpha} components (optional).
--- @tparam Color.HSV hsv A color table containing {h, s, v} components (optional).
+-- @tparam Color.RGBA color A color table containing `r`, `g`, `b` and `a` components (optional).
+-- @tparam Color.HSV hsv A color table containing `h`, `s`, and `v` components (optional).
 function Colorable:initColor(color, hsv)
-  color = color or { red = 1, green = 1, blue = 1, alpha = 1 }
+  color = color or { r = 1, g = 1, b = 1, a = 1 }
   self.hsv = hsv or { h = 0, s = 1, v = 1 }
   self.color = color
   self.colorSpeed = 0
-  self.origRed = color.red
-  self.origGreen = color.green
-  self.origBlue = color.blue
-  self.destRed = color.red
-  self.destGreen = color.green
-  self.destBlue = color.blue
+  self.origRed = color.r
+  self.origGreen = color.g
+  self.origBlue = color.b
+  self.origAlpha = color.a
+  self.destRed = color.r
+  self.destGreen = color.g
+  self.destBlue = color.b
+  self.destAlpha = color.a
   self.colorTime = 1
   self.colorFiber = nil
   self.cropColor = true
@@ -44,7 +46,7 @@ end
 -- @treturn number Blue component.
 -- @treturn number Alpha component.
 function Colorable:getRGBA()
-  return self.color.red, self.color.green, self.color.blue, self.color.alpha
+  return self.color.r, self.color.g, self.color.b, self.color.a
 end
 --- Sets color's RGBA. If a component parameter is nil, it will not be changed.
 -- @tparam number r Red component (optional, current by default).
@@ -52,10 +54,10 @@ end
 -- @tparam number b Blue component (optional, current by default).
 -- @tparam number a Blpha component (optional, current by default).
 function Colorable:setRGBA(r, g, b, a)
-  self.color.red = r or self.color.red
-  self.color.green = g or self.color.green
-  self.color.blue = b or self.color.blue
-  self.color.alpha = a or self.color.alpha
+  self.color.r = r or self.color.r
+  self.color.g = g or self.color.g
+  self.color.b = b or self.color.b
+  self.color.a = a or self.color.a
 end
 --- Gets each HSV component.
 -- @treturn number Hue component.
@@ -74,11 +76,11 @@ function Colorable:setHSV(h, s, v)
   self.hsv.v = v or self.hsv.v
 end
 --- Sets color's RGBA. If a component parameter is nil, it will not be changed.
--- @tparam Color.RGBA rgba A table containing {red, green, blue, alpha} components (optional).
--- @tparam Color.HSV hsv A table containing {hue, saturation, value} components (optional).
+-- @tparam Color.RGBA color A color table containing `r`, `g`, `b` and `a` components (optional).
+-- @tparam Color.HSV hsv A color table containing `h`, `s`, and `v` components (optional).
 function Colorable:setColor(rgba, hsv)
   if rgba then
-    self:setRGBA(rgba.red, rgba.green, rgba.blue, rgba.alpha)
+    self:setRGBA(rgba.r, rgba.g, rgba.b, rgba.a)
   end
   if hsv then
     self:setHSV(hsv.h, hsv.s, hsv.v)

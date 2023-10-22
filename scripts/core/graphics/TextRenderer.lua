@@ -49,7 +49,7 @@ function TextRenderer.drawLine(line, x, y, color)
       elseif t == 'table' then
         -- Color
         local c = fragment.content
-        lgraphics.setColor(c.red * color.red, c.green * color.green, c.blue * color.blue, c.alpha * color.alpha)
+        lgraphics.setColor(c.r * color.r, c.g * color.g, c.b * color.b, c.a * color.a)
       elseif t == 'userdata' then
         -- Font
         lgraphics.setFont(fragment.content)

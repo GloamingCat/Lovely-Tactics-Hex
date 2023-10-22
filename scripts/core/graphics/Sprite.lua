@@ -140,8 +140,8 @@ function Sprite:applyTransformation(data)
     data.offsetDepth + self.offsetDepth)
   self:setScale(data.scaleX / 100 * self.scaleX, data.scaleY / 100 * self.scaleY)
   self:setRotation(math.rad(data.rotation) + self.rotation)
-  self:setRGBA(data.red / 255 * self.color.red, data.green / 255 * self.color.green, 
-    data.blue / 255 * self.color.blue, data.alpha / 255 * self.color.alpha)
+  self:setRGBA(data.red / 255 * self.color.r, data.green / 255 * self.color.g, 
+    data.blue / 255 * self.color.b, data.alpha / 255 * self.color.a)
   self:setHSV(data.hue / 360 + self.hsv.h, data.saturation / 100 * self.hsv.s, 
     data.brightness / 100 * self.hsv.v)
 end
@@ -345,7 +345,7 @@ function Sprite:draw(renderer)
   end
   local sx = ScreenManager.scaleX * renderer.scaleX
   local sy = ScreenManager.scaleY * renderer.scaleY
-  renderer.batch:setColor(self.color.red, self.color.green, self.color.blue, self.color.alpha)
+  renderer.batch:setColor(self.color.r, self.color.g, self.color.b, self.color.a)
   renderer.batch:add(self.quad, round(self.position.x * sx), round(self.position.y * sy), 
     self.rotation, self.scaleX * sx, self.scaleY * sy, self.offsetX, self.offsetY)
   renderer.toDraw:add(self)

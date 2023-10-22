@@ -134,7 +134,7 @@ function CharacterBase:setRGBA(...)
     self.sprite:setRGBA(...)
   end
   if self.shadow then
-    self.shadow:setRGBA(nil, nil, nil, self.color.alpha)
+    self.shadow:setRGBA(nil, nil, nil, self.color.a)
   end
 end
 
