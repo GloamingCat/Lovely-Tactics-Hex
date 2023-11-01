@@ -48,7 +48,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Creates all battle characters based on field's tile data.
--- @tparam table save Save data (optional).
+-- @tparam[opt] table save Save data.
 function TroopManager:createTroops(save)
   self.characterList = List()
   self.troops = {}
@@ -108,7 +108,7 @@ end
 -- @tparam number troopID Troop's ID.
 -- @tparam table partyInfo Table with party's members.
 -- @tparam number party Party's ID.
--- @tparam table save Save data (optional).
+-- @tparam[opt] table save Save data.
 function TroopManager:createTroop(troopID, partyInfo, party, save)
   local troop = Troop(Database.troops[troopID], party, save)
   local field = FieldManager.currentField
@@ -238,7 +238,7 @@ function TroopManager:getBattlerCount(battler)
   return c
 end
 --- Gets the number of characters in the given party.
--- @tparam number party Party of the character (optional, player's party by default).
+-- @tparam[opt] number party Party of the character. If nil, uses the player's party.
 -- @treturn number The number of battler in the party.
 function TroopManager:getMemberCount(party)
   party = party or self.playerParty
@@ -425,8 +425,8 @@ function TroopManager:clear()
   self.centers = nil
 end
 --- Store troop data in save.
--- @tparam Troop troop True to save modified grid formation (optional).
--- @tparam boolean saveFormation True to save modified grid formation (optional).
+-- @tparam[opt] Troop troop True to save modified grid formation.
+-- @tparam[opt] boolean saveFormation True to save modified grid formation.
 function TroopManager:saveTroop(troop, saveFormation)
   self.troopData[troop.data.id .. ''] = troop:getState(saveFormation)
 end

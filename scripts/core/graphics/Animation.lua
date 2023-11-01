@@ -26,7 +26,7 @@ local Animation = class()
 
 --- Constructor.
 -- @tparam Sprite sprite The sprite that this animation if associated to.
--- @tparam table data The animation's data from data (optional).
+-- @tparam[opt] table data The animation's data from data.
 function Animation:init(sprite, data)
   self.sprite = sprite
   self.data = data
@@ -71,7 +71,7 @@ function Animation:init(sprite, data)
   end
 end
 --- Creates a clone of this animation.
--- @tparam Sprite sprite The sprite of the animation, if cloned too (optional).
+-- @tparam[opt] Sprite sprite The sprite of the animation, if cloned too.
 -- @treturn Animation Clone of the given animation.
 function Animation:clone(sprite)
   local anim = self(sprite or self.sprite, self.data)

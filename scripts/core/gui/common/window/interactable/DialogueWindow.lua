@@ -87,7 +87,7 @@ end
 -- @coroutine showDialogue
 -- @tparam string text The message.
 -- @tparam string align The text's horizontal alignment ('left', 'right' or 'center').
--- @tparam table speaker The speaker's name and position of name box (optional).
+-- @tparam[opt] table speaker The speaker's name and position of name box.
 function DialogueWindow:showDialogue(text, align, speaker)
   if speaker then
     self:setName(speaker.name, speaker.x, speaker.y)

@@ -42,14 +42,14 @@ function BattleManager:init()
   self.onBattle = false
   self.defaultParams = {
     fade = 60,
-    intro = false,
+    skipIntro = true,
+    disableEscape = false,
     gameOverCondition = self.GameOverCondition.NONE, 
-    escapeEnabled = true
   }
   self.params = self.defaultParams
 end
 --- Creates battle elements (Menu, characters, party tiles).
--- @tparam table state Data about battle state for when the game is loaded mid-battle (optional).
+-- @tparam[opt] table state Data about battle state for when the game is loaded mid-battle.
 function BattleManager:setUp(state)
   TroopManager:setPartyTiles(self.currentField)
   for tile in FieldManager.currentField:gridIterator() do
@@ -75,7 +75,7 @@ end
 --- Loads a battle field and waits for the battle to finish.
 -- It MUST be called from a fiber in FieldManager's fiber list, or else the fiber will be 
 --- lost in the field transition. At the end of the battle, it reloads the previous field.
--- @tparam table state Data about battle state for when the game is loaded mid-battle (optional).
+-- @tparam[opt] table state Data about battle state for when the game is loaded mid-battle.
 function BattleManager:loadBattle(state)
   self.saveData = state
   TroopManager:reset()
@@ -125,7 +125,7 @@ function BattleManager:battleStart(skipIntro)
   if skipIntro then
     return
   end
-  if self.params.intro then
+  if not self.params.skipIntro then
     self:battleIntro()
   end
   FieldManager:runLoadScripts()

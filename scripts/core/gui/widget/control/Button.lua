@@ -24,9 +24,9 @@ local Button = class(GridWidget)
 
 --- Constructor.
 -- @tparam GridWindow window The window that this button is component of.
--- @tparam function onConfirm The function called when player confirms (optinal).
--- @tparam function enableCondition The function that tells if 
---  this button is enabled (optional)
+-- @tparam[opt] function onConfirm The function called when player confirms.
+-- @tparam[opt] function enableCondition The function that tells if 
+--  this button is enabled.
 function Button:init(window, onConfirm, enableCondition)
   GridWidget.init(self, window)
   self.enableCondition = enableCondition or self.enableCondition or window.buttonEnabled
@@ -56,11 +56,11 @@ function Button:fromKey(window, key)
 end
 --- Creates the main text.
 -- @tparam string term The text term to be localized.
--- @tparam string fallback If no localization is found, use this text (optional).
--- @tparam string fontName The text's font, from Fonts folder (optional).
--- @tparam string align The text's horizontal alignment (optional, `'left'` by default).
--- @tparam number w The text's maximum width (optional, uses all empty space by default).
--- @tparam Vector pos The text's top left (optional).
+-- @tparam[opt] string fallback If no localization is found, use this text.
+-- @tparam[opt] string fontName The text's font, from `Fonts` folder.
+-- @tparam[opt="left"] string align The text's horizontal alignment.
+-- @tparam[opt=inf] number w The text's maximum width, in pixels.
+-- @tparam[opt] Vector pos The text's top left.
 function Button:createText(term, fallback, fontName, align, w, pos)
   if self.text then
     self.text:destroy()
@@ -84,11 +84,11 @@ function Button:createText(term, fallback, fontName, align, w, pos)
 end
 --- Creates the secondary text.
 -- @tparam string term The text term to be localized.
--- @tparam string fallback If no localization is found, use this text (optional).
--- @tparam string fontName The text's font, from Fonts folder (optional).
--- @tparam string align The text's horizontal alignment (optional, `'right'` by default).
--- @tparam number w The text's maximum width (optional, uses all empty space by default).
--- @tparam Vector pos The text's top left (optional).
+-- @tparam[opt] string fallback If no localization is found, use this text.
+-- @tparam[opt=menu_button] string fontName The text's font, from `Fonts` folder.
+-- @tparam[opt="right"] string align The text's horizontal alignment.
+-- @tparam[opt=inf] number w The text's maximum width, in pixels.
+-- @tparam[opt] Vector pos The text's top left.
 function Button:createInfoText(term, fallback, fontName, align, w, pos)
   if self.infoText then
     self.infoText:destroy()

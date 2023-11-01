@@ -20,8 +20,8 @@ local Path = class()
 
 --- Constructor.
 -- @tparam unknown lastStep The last node of the path.
--- @tparam Path previousPath The path to the last node (optional for initial).
--- @tparam number totalCost The total cost of the path (optional for initial).
+-- @tparam[opt] Path previousPath The path to the last node.
+-- @tparam[opt] number totalCost The total cost of the path.
 function Path:init(lastStep, previousPath, totalCost)
   totalCost = totalCost or 0
   self.lastStep = lastStep

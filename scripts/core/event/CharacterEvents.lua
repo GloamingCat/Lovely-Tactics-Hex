@@ -26,20 +26,20 @@ local CharacterEvents = {}
 --- Common arguments for move/turn commands towards a tile.
 -- @table TileArguments
 -- @tfield string key The key of the character.
--- @tfield number x Tile x difference (0 by default).
--- @tfield number y Tile y difference (0 by default).
--- @tfield number h Tile height difference (0 by default).
--- @tfield string other: Key of a character in the target tile (optional, uses `x`, `y` and `h` if nil).
--- @tfield number limit The maxium length of the path to be calculated (optional).
+-- @tfield[opt=0] number x Tile x difference.
+-- @tfield[opt=0] number y Tile y difference.
+-- @tfield[opt=0] number h Tile height difference.
+-- @tfield[opt] string other Key of a character in the target tile. If nil, uses `x`, `y` and `h`.
+-- @tfield[opt=inf] number limit The maxium length of the path to be calculated.
 
 --- Common arguments for delete/hide commands.
 -- @table HideArguments
 -- @tfield string key They key of the character.
--- @tfield boolean optional Flag to raise an error when the character is not found.
--- @tfield boolean permanent Flag to create the character again when field if reloaded.
--- @tfield number fade Duration of fading animation (optional).
--- @tfield boolean deactive Flag to erase the character's scripts.
--- @tfield boolean passable Make the character passable during the fading animation.
+-- @tfield[opt] boolean optional Flag to raise an error when the character is not found.
+-- @tfield[opt] boolean permanent Flag to create the character again when field if reloaded.
+-- @tfield[opt] number fade Duration of fading animation.
+-- @tfield[opt] boolean deactive Flag to erase the character's scripts.
+-- @tfield[opt] boolean passable Flag to make the character passable during the fading animation.
 
 --- Common arguments for animation commands.
 -- @table AnimArguments

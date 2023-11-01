@@ -24,9 +24,9 @@ local MemberMenu = class(Menu)
 
 --- Constructor.
 -- @tparam Menu parent Parent Menu.
--- @tparam Troop troop Current troop (player's troop by default).
+-- @tparam Troop troop Current troop.
 -- @tparam table memberList Array of troop unit tables from current troop.
--- @tparam number memberID Current selected member on the list (first one by default).
+-- @tparam[opt=1] number memberID Current selected member on the list.
 function MemberMenu:init(parent, troop, memberList, memberID)
   self.name = self.name or 'Member Menu'
   self.troop = troop

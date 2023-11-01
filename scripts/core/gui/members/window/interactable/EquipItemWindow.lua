@@ -23,9 +23,9 @@ local EquipItemWindow = class(InventoryWindow)
 
 --- Constructor.
 -- @tparam Menu menu Parent Menu.
--- @tparam number w Window's width in pixels(optional).
--- @tparam number h Window's height in pixels(optional).
--- @tparam Vector pos Position of the window's center (optional).
+-- @tparam number w Window's width in pixels.
+-- @tparam number h Window's height in pixels.
+-- @tparam Vector pos Position of the window's center.
 -- @tparam number rowCount The number of buttons.
 -- @tparam table member The troop unit data of the character.
 function EquipItemWindow:init(menu, w, h, pos, rowCount, member)

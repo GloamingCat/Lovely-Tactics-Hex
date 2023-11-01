@@ -7,7 +7,7 @@
 --- Parameters Script tags.
 -- @tags Script
 -- @tfield number id The ID of the item to be received.
--- @tfield number count The quantity of the item rewarded (optional, 1 by default).
+-- @tfield[opt=1] number count The quantity of the item rewarded.
 
 -- ================================================================================================
 

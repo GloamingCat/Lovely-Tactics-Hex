@@ -18,7 +18,7 @@ local Movable = class()
 -- ------------------------------------------------------------------------------------------------
 
 --- Initializes all data of the object's movement and velocity.
--- @tparam Vector pos Initial position (zero by default).
+-- @tparam[opt] Vector pos Initial position. If nil, sets as `Vector(0, 0, 0)`.
 function Movable:initMovement(pos)
   pos = pos or Vector(0, 0, 0)
   self.position = pos
@@ -35,9 +35,10 @@ function Movable:initMovement(pos)
   self.interruptableMove = true
 end
 --- Sets each coordinate of the position.
--- @tparam number x The pixel x of the object.
--- @tparam number y The pixel y of the object.
--- @tparam number z The pixel depth of the object.
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number x The pixel x of the object.
+-- @tparam[opt] number y The pixel y of the object.
+-- @tparam[opt] number z The pixel depth of the object.
 function Movable:setXYZ(x, y, z)
   self.position.x = x or self.position.x
   self.position.y = y or self.position.y
@@ -78,8 +79,8 @@ end
 -- @tparam number x The pixel x.
 -- @tparam number y The pixel y.
 -- @tparam number z The pixel depth.
--- @tparam number speed The speed of the movement (optional).
--- @tparam boolean wait Flag to wait until the move finishes (optional).
+-- @tparam[opt] number speed The speed of the movement.
+-- @tparam[opt] boolean wait Flag to wait until the move finishes.
 function Movable:moveTo(x, y, z, speed, wait)
   if speed then
     self:gradualMoveTo(x, y, z, speed, wait)
@@ -101,8 +102,8 @@ end
 -- @tparam number x The pixel x.
 -- @tparam number y The pixel y.
 -- @tparam number z The pixel depth.
--- @tparam number speed The speed of the movement (optional).
--- @tparam boolean wait Flag to wait until the move finishes (optional).
+-- @tparam[opt] number speed The speed of the movement.
+-- @tparam[opt] boolean wait Flag to wait until the move finishes.
 function Movable:gradualMoveTo(x, y, z, speed, wait)
   self.moveOrigX, self.moveOrigY, self.moveOrigZ = self.position:coordinates()
   self.moveDestX, self.moveDestY, self.moveDestZ = x, y, z

@@ -56,8 +56,8 @@ TextParser.Code = {
 
 --- Split raw text into an array of fragments.
 -- @tparam string text Raw text.
--- @tparam boolean plainText When true, will not parse commands (optional, false by default).
--- @tparam table fragments Array of raw fragments (optional, creates an empty one by default).
+-- @tparam[opt] boolean plainText Flag to not parse commands.
+-- @tparam[opt={}] table fragments Array of raw fragments.
 -- @treturn table Array of fragments.
 function TextParser.parse(text, plainText, fragments)
   local vars = Config.variables
@@ -151,8 +151,8 @@ end
 -- It also contains its length for character counting.
 -- @tparam table fragments Array of fragments.
 -- @tparam Fonts.Info initialFont The default font.
--- @tparam number maxWidth The width limit for wrapped text (optional).
--- @tparam number scale Text's size multiplier (optional, 1 by default).
+-- @tparam[opt] number maxWidth The width limit for wrapped text.
+-- @tparam[opt=1] number scale Text's size multiplier.
 -- @treturn table Array of lines.
 -- @treturn table Array of text events.
 function TextParser.createLines(fragments, initialFont, maxWidth, scale)
@@ -247,8 +247,8 @@ end
 -- @tparam table currentLine The line of the fragment.
 -- @tparam string fragment The text fragment.
 -- @tparam Font font Font of the text in this fragment.
--- @tparam number maxWidth The width limit for wrapped text (optional).
--- @tparam number scale Text's size multiplier (optional, 1 by default).
+-- @tparam[opt] number maxWidth The width limit for wrapped text.
+-- @tparam[opt=1] number scale Text's size multiplier.
 -- @treturn table The new current line.
 -- @treturn number Total length of the fragment inserted.
 function TextParser.addTextFragment(lines, currentLine, fragment, font, maxWidth, scale)

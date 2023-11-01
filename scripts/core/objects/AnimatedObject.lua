@@ -91,8 +91,8 @@ end
 
 --- Plays an animation by name, ignoring if the animation is already playing.
 -- @tparam string name Animation's name.
--- @tparam number row The row of the animation's sprite sheet to play (0 by default).
--- @tparam number index Starting animation index (1 by default).
+-- @tparam[opt=0] number row The row of the animation's sprite sheet to play.
+-- @tparam[opt=1] number index Starting animation index.
 -- @treturn Animation The animation that started to play (or current one if the name is the same).
 function AnimatedObject:playAnimation(name, row, index)
   if self.animName == name then
@@ -108,9 +108,9 @@ function AnimatedObject:playAnimation(name, row, index)
   end
 end
 --- Plays an animation by name.
--- @tparam string name Animation's name (optional, current animation by default).
--- @tparam number row The row of the animation's sprite sheet to play (0 by default).
--- @tparam number index Starting animation index (1 by default).
+-- @tparam[opt] string name Animation's name. If nil, uses the current animation's name.
+-- @tparam[opt=0] number row The row of the animation's sprite sheet to play.
+-- @tparam[opt=1] number index Starting animation index.
 -- @treturn Animation The animation that started to play.
 function AnimatedObject:replayAnimation(name, row, index)
   name = name or self.animName

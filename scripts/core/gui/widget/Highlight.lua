@@ -23,11 +23,11 @@ local Highlight = class(Component, Transformable)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GridWindow window Parent window.
--- @tparam number width The width of the box in pixels.
--- @tparam number height The height of the box in pixels.
--- @tparam Vector pos The position of the top left corner of the box
---  (optional, only used if the window parent is nil).
+-- @tparam[opt] GridWindow window Parent window.
+-- @tparam[opt] number width The width of the box in pixels. If nil, uses `window:cellWidth()`.
+-- @tparam[opt] number height The height of the box in pixels. If nil, uses `window:cellHeight()`.
+-- @tparam[opt] Vector pos The position of the top left corner of the box. It's only used if the
+--  window parent is nil, otherwise the position is calculated from `window`.
 function Highlight:init(window, width, height, pos)
   if window then
     local mx = window:colMargin() / 2 + 6

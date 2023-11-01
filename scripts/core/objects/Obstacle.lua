@@ -62,7 +62,7 @@ end
 --- Checks if the object is passable from the given direction.
 -- @tparam number dx The direction in axis x.
 -- @tparam number dy The direction in axis y.
--- @tparam Object obj The object which is trying to pass through this obstacle (optional).
+-- @tparam[opt] Object obj The object which is trying to pass through this obstacle.
 function Obstacle:isPassable(dx, dy, obj)
   if self == obj then
     return true

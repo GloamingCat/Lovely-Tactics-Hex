@@ -7,13 +7,13 @@
 
 --- Plugin parameters.
 -- @tags Plugin
--- @tfield number speed The speed in which the text shows on screen (optional, 2 by default).
--- @tfield number pause The pause in frames between pages (optional, 60 by default).
--- @tfield string font The font name (optional, uses `'menu_big'` by default).
+-- @tfield[opt=2] number speed The speed in which the text shows on screen.
+-- @tfield[opt=60] number pause The pause in frames between pages.
+-- @tfield[opt="menu_big"] string font The font name.
 -- @tfield string pages The page names, separated by spaces.
 -- @tfield string pageX For each page `pageX`, there should be a tag `pageX` that contains the text
 --  in this page. The text contains the lines separated by spaces. Each line is a term that should
--- be present in the `Vocab.dialogues.credits` table.
+--  be present in the `Vocab.dialogues.credits` table.
 
 -- ================================================================================================
 

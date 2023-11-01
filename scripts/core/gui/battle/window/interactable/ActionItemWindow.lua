@@ -26,7 +26,7 @@ local ActionItemWindow = class(ActionWindow, InventoryWindow)
 --- Constructor.
 -- @tparam Menu menu Parent Menu.
 -- @tparam Inventory inventory Troop's inventory.
--- @tparam table itemList List of available items (optional, gets from inventory by default).
+-- @tparam table itemList List of available items.
 -- @tparam number maxHeight The height of the space available for the window (in pixels).
 function ActionItemWindow:init(menu, inventory, itemList, maxHeight)
   local y = self:fitOnTop(maxHeight) + menu:windowMargin()

@@ -23,7 +23,7 @@ local PriorityQueue = class()
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam function comp The function that compares two pairs (optional).
+-- @tparam[opt] function comp The function that compares two pairs.
 function PriorityQueue:init(comp)
   self.comp = comp or self.ascending
   self.size = 0

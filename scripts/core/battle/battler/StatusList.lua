@@ -105,7 +105,7 @@ end
 --- Add a new status.
 -- @tparam number|string id The status' ID or key.
 -- @tparam table state The status persistent data.
--- @tparam Character char The Character associated with this StatusList (optional).
+-- @tparam[opt] Character char The Character associated with this StatusList.
 -- @tparam string caster Key of the character who casted this status 
 --  (null if it did not come from a character). 
 -- @treturn Status Newly added status (or old one, if non-cumulative).
@@ -133,7 +133,7 @@ function StatusList:addStatus(id, state, char, caster)
 end
 --- Removes a status from the list.
 -- @tparam Status|number status The status to be removed or its ID.
--- @tparam Character char The Character associated with this StatusList (optional).
+-- @tparam[opt] Character char The Character associated with this StatusList.
 -- @treturn Status The removed status.
 function StatusList:removeStatus(status, char)
   if type(status) == 'number' then
@@ -152,7 +152,7 @@ function StatusList:removeStatus(status, char)
 end
 --- Removes all status instances of the given ID.
 -- @tparam number|string id Status' ID or key in the database.
--- @tparam Character char The Character associated with this StatusList (optional).
+-- @tparam[opt] Character char The Character associated with this StatusList.
 function StatusList:removeStatusAll(id, char)
   local all = {}
   local status = self:findStatus(id)
@@ -169,7 +169,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Updates the character's graphics (transform and animation) according to the current status.
--- @tparam Character char The Character associated with this StatusList (optional).
+-- @tparam[opt] Character char The Character associated with this StatusList.
 function StatusList:updateGraphics(char)
   local transform = nil
   for i = 1, #self do
@@ -291,7 +291,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Called when the turn of the character starts.
--- @tparam Character char The Character associated with this StatusList (optional).
+-- @tparam[opt] Character char The Character associated with this StatusList.
 -- @param ...  Other parameters to the callback.
 function StatusList:onTurnStart(char, ...)
   local i = 1

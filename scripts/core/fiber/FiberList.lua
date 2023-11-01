@@ -20,7 +20,7 @@ local FiberList = class(List)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam Interactable char The character that created this list (optional).
+-- @tparam[opt] Interactable char The character that created this list.
 function FiberList:init(char)
   List.init(self)
   self.char = char

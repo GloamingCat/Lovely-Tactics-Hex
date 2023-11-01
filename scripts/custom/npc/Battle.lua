@@ -7,12 +7,12 @@
 
 --- Script parameters.
 -- @tags Script
--- @tfield number fieldID The ID of the battle field.
--- @tfield BattleManager.GameOverCondition|GeneralEvents.VictoryCondition gameOverCondition The condition to block the "Continue" option from
---  the Game Over screen (optional, "survive" by default).
--- @tfield boolean deactivate Flag to deactivate the character's script when its hidden.
--- @tfield boolean permanent Flag to permanently remove the character if the player wins.
--- @tfield number cooldown Time in frames to wait after the player escapes (optional, 180 by default).
+-- @tfield[opt=0] number fieldID The ID of the battle field.
+-- @tfield[opt="survive"] BattleManager.GameOverCondition|GeneralEvents.VictoryCondition gameOverCondition
+--  The condition to block the "Continue" option from the Game Over screen.
+-- @tfield[opt] boolean deactivate Flag to deactivate the character's script when its hidden.
+-- @tfield[opt] boolean permanent Flag to permanently remove the character if the player wins.
+-- @tfield[opt=180] number cooldown Time in frames to wait after the player escapes.
 
 -- ================================================================================================
 
@@ -27,8 +27,8 @@ return function(script)
       script:showEmotionBalloon { key = script.char.collided, emotion = '!' }
       Fiber:wait(30)
       script:startBattle {
-        intro = true,
-        escapeEnabled = true,
+        skipIntro = false,
+        disableEscape = false,
         gameOverCondition = script.args.gameOverCondition or 'survive',
         fieldID = script.args.fieldID or 0,
         fade = 60

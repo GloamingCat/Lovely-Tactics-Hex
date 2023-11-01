@@ -57,7 +57,7 @@ end
 
 --- Creates field from ID.
 -- @tparam number fieldID The field's ID.
--- @tparam table save Field's save data (optional).
+-- @tparam[opt] table save Field's save data.
 function FieldManager:loadField(fieldID, save)
   if self.currentField then
     self.currentField:destroy()
@@ -82,7 +82,7 @@ end
 -- The loaded field will the treated as an exploration field.
 -- Don't use this function if you just want to move the player to another tile in the same field.
 -- @tparam table transition The transition data.
--- @tparam table save Field's save data (optional).
+-- @tparam[opt] table save Field's save data.
 function FieldManager:loadTransition(transition, save)
   if self.currentField then
     self:storeFieldData()
@@ -129,7 +129,7 @@ end
 
 --- Creates the Player character according to the transition.
 -- @tparam table transition The transition data.
--- @tparam table save Current field state (optional).
+-- @tparam[opt] table save Current field state.
 function FieldManager:initializePlayer(transition, save)
   local player = Player(transition, save and save.chars.player)
   self.renderer.focusObject = player
@@ -181,7 +181,7 @@ function FieldManager:getFieldSave(id)
   return persistentData
 end
 --- Stores current field's information in the save data table.
--- @tparam Field field Field to store (current field by default).
+-- @tparam[opt] Field field Field to store. If nil, uses current field.
 function FieldManager:storeFieldData(field)
   field = field or self.currentField
   if field.persistent then

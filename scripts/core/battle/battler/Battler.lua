@@ -158,7 +158,7 @@ end
 --- Applies results and creates a text for each value.
 -- @tparam PopText popText The pop text to which new lines will be added.
 -- @tparam table results The array of effect results.
--- @tparam Character char The Character associated with this Battler (optional).
+-- @tparam[opt] Character char The Character associated with this Battler.
 function Battler:popResults(popText, results, char)
   for i = 1, #results.points do
     local points = results.points[i]
@@ -185,7 +185,7 @@ function Battler:popResults(popText, results, char)
 end
 --- Applies the result of a skill.
 -- @tparam table results The array of effect results.
--- @tparam Character char The Character associated with this Battler (optional).
+-- @tparam[opt] Character char The Character associated with this Battler.
 function Battler:applyResults(results, char)
   for i = 1, #results.points do
     local points = results.points[i]
@@ -399,8 +399,8 @@ end
 
 --- Creates the save table. It also works as an extended troop unit data table.
 -- @tparam number list List type. 0 is current, 1 is backup, 2 is hidden.
--- @tparam number x X position in the grid (optional).
--- @tparam number y Y position in the grid (optional).
+-- @tparam[opt] number x X position in the grid.
+-- @tparam[opt] number y Y position in the grid.
 -- @treturn table Table that stores the battler's current state to be saved.
 function Battler:getState(list, x, y)
   return {

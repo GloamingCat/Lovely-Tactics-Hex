@@ -9,7 +9,7 @@
 
 --- Parameters in the Animation tags.
 -- @tags Animation
--- @tfield number step length of the step in pixels (optional, 12 by default).
+-- @tfield[opt=12] number step length of the step in pixels.
 
 -- ================================================================================================
 

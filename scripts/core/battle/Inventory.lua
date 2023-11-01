@@ -70,7 +70,7 @@ end
 
 --- Adds new item to inventory.
 -- @tparam number id The item ID.
--- @tparam number count The quantity (optional, 1 by default).
+-- @tparam[opt=1] number count The quantity.
 -- @treturn boolean True if new slot was created, false if item already existed in inventory.
 function Inventory:addItem(id, count)
   count = count or 1
@@ -85,7 +85,7 @@ function Inventory:addItem(id, count)
 end
 --- Removes items from the bag.
 -- @tparam number id The ID of the item type in the database.
--- @tparam number count The number of items of that type to be removed (optional, 1 by default).
+-- @tparam[opt=1] number count The number of items of that type to be removed.
 function Inventory:removeItem(id, count)
   count = count or 1
   for i = 1, self.size do
@@ -115,8 +115,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Gets an array of slots of items that are usable.
--- @tparam number restriction The use restriction: 1 for battle, 2 for field, 0 for any
---  (optional, 0 by default).
+-- @tparam[opt=0] number restriction The use restriction: 1 for battle, 2 for field, 0 for any.
 -- @treturn table Array of item slots (ID and count).
 function Inventory:getUsableItems(restriction)
   restriction = restriction or 0

@@ -18,7 +18,7 @@ local Matrix3 = class()
 -- @tparam number width The number of lines.
 -- @tparam number height The number of columns.
 -- @tparam number depth The number of layers.
--- @tparam unknown startValue The initial value of every element (optional).
+-- @tparam[opt] unknown startValue The initial value of every element.
 function Matrix3:init(width, height, depth, startValue)
   depth = depth or 1
   self.width = width

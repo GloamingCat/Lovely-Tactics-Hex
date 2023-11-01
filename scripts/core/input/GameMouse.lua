@@ -97,7 +97,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Gets the tile that the mouse is over.
--- @tparam number h The height of the tile layer (1 by default).
+-- @tparam[opt=1] number h The height of the tile layer.
 -- @treturn number Tile x.
 -- @treturn number Tile y.
 -- @treturn number Tile height.

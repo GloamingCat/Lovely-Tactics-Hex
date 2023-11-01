@@ -161,7 +161,7 @@ function Troop:battlerCount(id)
 end
 --- Adds a new member to the troop.
 -- @tparam table member The troop unit data of the character.
--- @tparam Battler battler Member's battler (optional).
+-- @tparam[opt] Battler battler Member's battler.
 function Troop:addMember(member, battler)
   self.members[member.key] = member
   self.members:add(member)
@@ -180,8 +180,8 @@ end
 --- Moves a member to another list.
 -- @tparam string key Member's key.
 -- @tparam number list List type. 0 is current, 1 is backup, 2 is hidden.
--- @tparam number x Grid-x position of the member (optional).
--- @tparam number y Grid-y position of the member (optional).
+-- @tparam[opt] number x Grid-x position of the member.
+-- @tparam[opt] number y Grid-y position of the member.
 -- @treturn Battle The called member.
 function Troop:moveMember(key, list, x, y)
   assert(self.members[key], 'Member ' .. tostring(key) .. ' not in ' .. tostring(self))

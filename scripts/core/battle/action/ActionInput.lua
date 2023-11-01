@@ -26,8 +26,8 @@ local ActionInput = class()
 --- Constructor.
 -- @tparam BattleAction action
 -- @tparam Character|Battler user
--- @tparam ObjectTile target Action target (optional).
--- @tparam ActionMenu Menu Aurrent ActionMenu, if any (optional).
+-- @tparam[opt] ObjectTile target Action target.
+-- @tparam[opt] ActionMenu Menu Aurrent ActionMenu, if any.
 function ActionInput:init(action, user, target, Menu)
   self.action = action
   self.user = user

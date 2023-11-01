@@ -17,7 +17,7 @@ local Matrix2 = class()
 --- Constructor.
 -- @tparam number width The number of columns.
 -- @tparam number height The number of lines.
--- @tparam unknown startValue The initial value of every element (optional).
+-- @tparam[opt] unknown startValue The initial value of every element.
 function Matrix2:init(width, height, startValue)
   self.width = width
   self.height = height

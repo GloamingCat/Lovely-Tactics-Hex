@@ -15,8 +15,8 @@ local Colorable = class()
 -- ------------------------------------------------------------------------------------------------
 
 --- Initalizes color.
--- @tparam Color.RGBA color A color table containing `r`, `g`, `b` and `a` components (optional).
--- @tparam Color.HSV hsv A color table containing `h`, `s`, and `v` components (optional).
+-- @tparam[opt] Color.RGBA color A color table containing `r`, `g`, `b` and `a` components.
+-- @tparam[opt] Color.HSV hsv A color table containing `h`, `s`, and `v` components.
 function Colorable:initColor(color, hsv)
   color = color or { r = 1, g = 1, b = 1, a = 1 }
   self.hsv = hsv or { h = 0, s = 1, v = 1 }
@@ -49,10 +49,11 @@ function Colorable:getRGBA()
   return self.color.r, self.color.g, self.color.b, self.color.a
 end
 --- Sets color's RGBA. If a component parameter is nil, it will not be changed.
--- @tparam number r Red component (optional, current by default).
--- @tparam number g Green component (optional, current by default).
--- @tparam number b Blue component (optional, current by default).
--- @tparam number a Blpha component (optional, current by default).
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number r Red component.
+-- @tparam[opt] number g Green component.
+-- @tparam[opt] number b Blue component.
+-- @tparam[opt] number a Blpha component.
 function Colorable:setRGBA(r, g, b, a)
   self.color.r = r or self.color.r
   self.color.g = g or self.color.g
@@ -67,17 +68,18 @@ function Colorable:getHSV()
   return self.hsv.h, self.hsv.s, self.hsv.v
 end
 --- Sets color's HSV. If a component parameter is nil, it will not be changed.
--- @tparam number h Hue component (optional, current by default).
--- @tparam number s Saturation component (optional, current by default).
--- @tparam number v Value/brightness component (optional, current by default).
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number h Hue component.
+-- @tparam[opt] number s Saturation component.
+-- @tparam[opt] number v Value/brightness component.
 function Colorable:setHSV(h, s, v)
   self.hsv.h = h or self.hsv.h
   self.hsv.s = s or self.hsv.s
   self.hsv.v = v or self.hsv.v
 end
 --- Sets color's RGBA. If a component parameter is nil, it will not be changed.
--- @tparam Color.RGBA rgba A color table containing `r`, `g`, `b` and `a` components (optional).
--- @tparam Color.HSV hsv A color table containing `h`, `s`, and `v` components (optional).
+-- @tparam[opt] Color.RGBA rgba A color table containing `r`, `g`, `b` and `a` components.
+-- @tparam[opt] Color.HSV hsv A color table containing `h`, `s`, and `v` components.
 function Colorable:setColor(rgba, hsv)
   if rgba then
     self:setRGBA(rgba.r, rgba.g, rgba.b, rgba.a)
@@ -113,8 +115,8 @@ end
 -- @tparam number g Green component.
 -- @tparam number b Blue component.
 -- @tparam number a Alpha component.
--- @tparam number speed The speed of the colorizing (optional, instant by default).
--- @tparam boolean wait Flag to wait until the colorizing finishes (optional, false by default).
+-- @tparam[opt=0] number speed The speed of the colorizing. If 0, the change is instantaneous.
+-- @tparam[opt] boolean wait Flag to wait until the colorizing finishes.
 function Colorable:colorizeTo(r, g, b, a, speed, wait)
   if speed and speed > 0 then
     self:gradualColorizeTo(r, g, b, a, speed, wait)
@@ -139,7 +141,7 @@ end
 -- @tparam number b Blue component.
 -- @tparam number a Alpha component.
 -- @tparam number speed The speed of the colorizing.
--- @tparam boolean wait Flag to wait until the colorizing finishes (optional, false by default).
+-- @tparam[opt] boolean wait Flag to wait until the colorizing finishes.
 function Colorable:gradualColorizeTo(r, g, b, a, speed, wait)
   self.origRed, self.origGreen, self.origBlue, self.origAlpha = self:getRGBA()
   self.destRed, self.destGreen, self.destBlue, self.destAlpha = 

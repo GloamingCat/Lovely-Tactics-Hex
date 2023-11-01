@@ -23,8 +23,8 @@ local Music = class(Sound)
 -- @tparam string name Name of the file from the audio folder.
 -- @tparam number volume Initial volume (from 0 to 100).
 -- @tparam number pitch Initial pitch (from 0 to 100).
--- @tparam Source intro Intro source (optional).
--- @tparam Source loop Loop source (optional).
+-- @tparam[opt] Source intro Intro source.
+-- @tparam[opt] Source loop Loop source.
 function Music:init(name, volume, pitch, intro, loop)
   self.name = name
   self.intro, self.loop = ResourceManager:loadBGM(name, intro, loop)

@@ -23,7 +23,7 @@ local EventSheet = class(Fiber, EventUtil)
 --- Constructor.
 -- @tparam FiberList root The FiberList that originated this fiber.
 -- @tparam table data Table with name (or func) and tags.
--- @tparam Character char Character associated with this fiber (optional).
+-- @tparam[opt] Character char Character associated with this fiber.
 function EventSheet:init(root, data, char)
   if data.func then
     self.commands = data.func
@@ -85,7 +85,7 @@ function EventSheet:setEvent(i)
 end
 --- Stores a label name.
 -- @tparam string name Name of the label.
--- @tparam number i The index that the label points to (optional, last event by default).
+-- @tparam[opt] number i The index that the label points to. If nil, sets as the last event.
 function EventSheet:setLabel(name, i)
   i = i or #self.events + 1
   self.labels[name] = i

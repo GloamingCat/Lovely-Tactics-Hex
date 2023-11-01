@@ -22,10 +22,8 @@ local ConfirmButtonWindow = class(ConfirmWindow, ButtonWindow)
 
 --- Constructor.
 -- @tparam Menu menu Parent Menu.
--- @tparam string confirmTerm Term for the confirm button, from the `Vocab` table
---  (optional, "``confirm`" by default).
--- @tparam string cancelTerm Term for the cancel button, from the `Vocab` table.
---  (optional, "``cancel`" by default).
+-- @tparam[opt="confirm"] string confirmTerm Term for the confirm button, from the `Vocab` table.
+-- @tparam[opt="cancel"] string cancelTerm Term for the cancel button, from the `Vocab` table.
 -- @param ... Other parameters from `Window:init`.
 function ConfirmButtonWindow:init(menu, confirmTerm, cancelTerm, ...)
   self.confirmTerm = confirmTerm or 'confirm'

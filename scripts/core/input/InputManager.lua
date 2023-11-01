@@ -352,7 +352,7 @@ end
 --- Called when the cursor moves.
 -- @tparam number x Cursor's x coordinate.
 -- @tparam number y Cursor's y coordinate.
--- @tparam number touch Touch ID (optional).
+-- @tparam[opt] number touch Touch ID.
 function InputManager:onMouseMove(x, y, touch)
   if touch or self.mouseEnabled and not GameManager:isMobile() or self.keys['touch']:isPressing() then
     self.mouse:onMove(x, y)

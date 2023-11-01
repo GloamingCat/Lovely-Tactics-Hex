@@ -85,8 +85,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Creates a neutral transform. Optionally, applies a list of transformations.
--- @tparam Transform t Initial transform table. If nil, a neutral transform is used (optional).
--- @tparam array transformations Array of transformations with type and value (optional).
+-- @tparam[opt] Transform t Initial transform table. If nil, a neutral transform is used.
+-- @tparam[opt] array transformations Array of transformations with type and value.
 function Affine.createTransform(t, transformations)
   t = t or {
     -- Space

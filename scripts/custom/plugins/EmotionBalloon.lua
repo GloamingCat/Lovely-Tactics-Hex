@@ -10,11 +10,11 @@
 
 --- Plugin parameters.
 -- @tags Plugin
--- @tfield number ballonY Vertical shift in pixels applied to the balloon sprite (optional).
--- @tfield table emotions Array of strings to set a different list of emotions, with each string 
---  being the emotion's code (optional, uses the set `["!", "?", "...", "@", <3"]` by default).
--- @tfield table rows Array of numbers to set custom rows for each emotion. The rows should be in the
---  same order as the emotions listed in `emotions` (optional, uses `0` to `#emotions - 1` by default).
+-- @tfield[opt] number ballonY Vertical shift in pixels applied to the balloon sprite.
+-- @tfield[opt] table emotions Array of strings to set a different list of emotions, with each string 
+--  being the emotion's code. If nil, uses the set `["!", "?", "...", "@", <3"]`.
+-- @tfield[opt] table rows Array of numbers to set custom rows for each emotion. The rows should be in the
+--  same order as the emotions listed in `emotions`. If nil, uses `[0, 1, ..., #emotions - 1]`.
 
 -- ================================================================================================
 

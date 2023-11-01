@@ -25,7 +25,7 @@ local EventUtil = class()
 
 --- Searches for the character with the given key.
 -- @tparam string key Character's key.
--- @tparam boolean optional If true, does not throw error if not found.
+-- @tparam[opt] boolean optional Flag to not throw error if not found.
 -- @treturn Character Character with given key, nil if optional and not found.
 function EventUtil:findCharacter(key, optional)
   if key == 'self' then
@@ -44,8 +44,9 @@ end
 --- Checks the position of given character.
 -- @tparam string key Character's key.
 -- @tparam number|string i Other character's key or tile x position.
--- @tparam number j Tile y position (optional if i is a string).
--- @tparam number h Tile height (optional if i is a string).
+--  If it's a string, ignores parameters `j` and `h`.
+-- @tparam[opt] number j Tile y position.
+-- @tparam[opt] number h Tile height.
 -- @treturn boolean
 function EventUtil:checkTile(key, i, j, h)
   local char = FieldManager:search(key)

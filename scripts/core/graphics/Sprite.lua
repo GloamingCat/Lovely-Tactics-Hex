@@ -51,7 +51,7 @@ function Sprite:init(renderer, texture, quad)
   self.visible = true
 end
 --- Creates a deep copy of this sprite (does not clone texture).
--- @tparam Renderer renderer The renderer of the copy (optional).
+-- @tparam[opt] Renderer renderer The renderer of the copy.
 -- @treturn Sprite The newly created copy.
 function Sprite:clone(renderer)
   local sw, sh = self.quad:getTextureDimensions()
@@ -124,7 +124,7 @@ end
 -- Transformations
 -- ------------------------------------------------------------------------------------------------
 
--- Sets sprite's offset, scale, rotation and color
+--- Sets sprite's offset, scale, rotation and color.
 -- @tparam Affine.Transform data Transformation data.
 function Sprite:setTransformation(data)
   self:setOffset(data.offsetX, data.offsetY, data.offsetDepth)
@@ -146,11 +146,12 @@ function Sprite:applyTransformation(data)
     data.brightness / 100 * self.hsv.v)
 end
 --- Sets the quad's scale.
+-- If an argument is nil, the field is left unchanged.
 -- @tparam number sx The X-axis scale.
 -- @tparam number sy The Y-axis scale.
 function Sprite:setScale(sx, sy)
-  sx = sx or 1
-  sy = sy or 1
+  sx = sx or self.scaleX
+  sy = sy or self.scaleY
   if self.scaleX ~= sx or self.scaleY ~= sy then
     self.renderer.needsRedraw = true
     self.needsRecalcBox = true
@@ -158,7 +159,7 @@ function Sprite:setScale(sx, sy)
   self.scaleX = sx
   self.scaleY = sy
 end
--- Sets que quad's rotation
+--- Sets que quad's rotation.
 -- @tparam number angle The rotation's angle in degrees.
 function Sprite:setRotation(angle)
   if self.rotation ~= angle then
@@ -211,9 +212,10 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Sets the quad's offset from the top left corner.
--- @tparam number ox The X-axis offset (optional, keep the current one by default).
--- @tparam number oy The Y-axis offset (optional, keep the current one by default).
--- @tparam number depth The sprite's depth in world coordinates (optional, keep the current one by default).
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number ox The X-axis offset.
+-- @tparam[opt] number oy The Y-axis offset.
+-- @tparam[opt] number depth The sprite's depth in world coordinates.
 function Sprite:setOffset(ox, oy, depth)
   if ox ~= nil and ox ~= self.offsetX then
     self.offsetX = ox
@@ -265,9 +267,10 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Sets the sprite's pixel position the update's its position in the sprite list.
--- @tparam number x The pixel x of the image.
--- @tparam number y The pixel y of the image.
--- @tparam number z The pixel depth of the image.
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number x The pixel x of the image.
+-- @tparam[opt] number y The pixel y of the image.
+-- @tparam[opt] number z The pixel depth of the image.
 function Sprite:setXYZ(x, y, z)
   x = round(x or self.position.x)
   y = round(y or self.position.y)

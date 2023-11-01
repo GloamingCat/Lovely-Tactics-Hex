@@ -192,10 +192,10 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Stops current playing BGM (if any) and starts a new one.
--- @coroutine playBGM
+-- @coroutine
 -- @tparam table bgm Table with file's name (from audio/bgm folder), volume and pitch.
--- @tparam number time The duration of the fading transition (optinal, 0 by default).
--- @tparam boolean wait Yields until the fading animation concludes (optional, false by defaul).
+-- @tparam[opt=0] number time The duration of the fading transition.
+-- @tparam[opt] boolean wait Flag to yield until the fading animation concludes.
 function AudioManager:playBGM(bgm, time, wait)
   local volume = bgm.volume or 100
   local pitch = bgm.pitch or 100
@@ -224,8 +224,8 @@ function AudioManager:playBGM(bgm, time, wait)
   end
 end
 --- Resumes current paused BGM (if any).
--- @tparam number time The duration of the fading transition.
--- @tparam boolean wait Yields until the fading animation concludes.
+-- @tparam[opt=0] number time The duration of the fading transition.
+-- @tparam[opt] boolean wait Flag to yield until the fading animation concludes.
 function AudioManager:resumeBGM(time, wait)
   if self.pausedBGM then
     if self.BGM then
@@ -237,8 +237,8 @@ function AudioManager:resumeBGM(time, wait)
 end
 --- Pauses current BGM.
 -- @coroutine pauseBGM
--- @tparam number time Fade-out time.
--- @tparam boolean wait Wait until the end of the fading.
+-- @tparam[opt=0] number time Fade-out time.
+-- @tparam[opt] boolean wait Flag to wait until the end of the fading.
 -- @treturn Music Current playing BGM (if any).
 function AudioManager:pauseBGM(time, wait)
   if self.BGM then
@@ -271,8 +271,8 @@ end
 
 --- Decreases the BGM volume slowly.
 -- @coroutine fadeout
--- @tparam number time The duration of the fading.
--- @tparam boolean wait True to only return when the fading finishes.
+-- @tparam[opt=0] number time The duration of the fading.
+-- @tparam[opt] boolean wait Flag to only return when the fading finishes.
 function AudioManager:fadeout(time, wait)
   if time and time > 0 then
     self.fading = 1
@@ -290,8 +290,8 @@ function AudioManager:fadeout(time, wait)
 end
 --- Increases the BGM volume slowly.
 -- @coroutine fadein
--- @tparam number time The duration of the fading.
--- @tparam boolean wait True to only return when the fading finishes.
+-- @tparam[opt=0] number time The duration of the fading.
+-- @tparam[opt] boolean wait Flag to only return when the fading finishes.
 function AudioManager:fadein(time, wait)
   if time and time > 0 then
     self.fading = 0
@@ -308,7 +308,7 @@ function AudioManager:fadein(time, wait)
   end
 end
 --- Waits until the fading value is 1.
--- @coroutine waitForBGMFading
+-- @coroutine
 function AudioManager:waitForBGMFading()
   local fiber = _G.Fiber
   if self.fadingFiber then

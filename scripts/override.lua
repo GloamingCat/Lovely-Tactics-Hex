@@ -25,7 +25,7 @@ function string.time(time)
 end
 --- Splits a string in substring by the given separator.
 -- @tparam string inputstr String to be splitted.
--- @tparam string sep Separator (optional, black spaces by default).
+-- @tparam[opt="%s+"] string sep Separator.
 -- @treturn table Array of substrings.
 function string.split(inputstr, sep)
   sep = sep or "%s+"
@@ -95,7 +95,7 @@ function loadfunction(body, param)
 end
 --- Generates a function from a formula in string.
 -- @tparam string formula The formula expression.
--- @tparam string param The param needed for the function (optional).
+-- @tparam[opt] string param The param needed for the function.
 -- @treturn function The function that evaluates the formula.
 function loadformula(formula, param)
   if formula == '' or not formula then

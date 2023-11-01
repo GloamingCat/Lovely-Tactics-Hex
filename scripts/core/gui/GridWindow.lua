@@ -188,7 +188,7 @@ function GridWindow:widgetCount()
 end
 --- Insert widget at the given index.
 -- @tparam GridWidget widget The widget to insert.
--- @tparam number i The index of the widget (optional, last position by default).
+-- @tparam[opt] number i The index of the widget. If nil, appends to the end.
 function GridWindow:insertWidget(widget, i)
   i = i or #self.matrix + 1
   local last = #self.matrix

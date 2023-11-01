@@ -9,9 +9,9 @@
 -- @tags Plugin
 -- @tfield string attName The attribute used to calculate the chance of a critical hit.
 -- @tfield number ratio The multiplier of the base damage when a critical hit occurs.
--- @tfield string sound The name of the SFX played when a critical hit occurs (optional).
--- @tfield number pitch The pitch of the SFX played when a critical hit occurs (optional).
--- @tfield number volume The volume of the SFX played when a critical hit occurs (optional).
+-- @tfield[opt] string sound The name of the SFX played when a critical hit occurs.
+-- @tfield[opt] number pitch The pitch of the SFX played when a critical hit occurs.
+-- @tfield[opt] number volume The volume of the SFX played when a critical hit occurs.
 
 --- Parameters in the Skill tags.
 -- @tags Skill

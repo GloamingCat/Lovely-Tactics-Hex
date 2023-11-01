@@ -8,10 +8,10 @@
 
 --- Parameters in the Animation tags.
 -- @tags Animation 
--- @tfield number freq The duration (in frames) before switching to another row
---  (optional, uses the duration of the animation).
--- @tfield sring rows A string containing the possible rows, separated by space
---  (optional, all rows by default).
+-- @tfield[opt] number freq The duration (in frames) before switching to another row. If nil, sets
+--  the total duration of the animation / 60.
+-- @tfield[opt] sring rows A string containing the possible rows, separated by space. If nil, uses
+--  all rows from the spritesheet.
 
 -- ================================================================================================
 

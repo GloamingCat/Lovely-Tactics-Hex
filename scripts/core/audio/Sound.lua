@@ -46,7 +46,7 @@ function Sound:isFinished()
   return not self.source:isPlaying() and not self.paused
 end
 --- Gets the duration in a given unit.
--- @tparam string unit Either "seconds" or "samples" (optional, "seconds" by default).
+-- @tparam[opt="seconds"] string unit Either "seconds" or "samples".
 -- @treturn number The duration in the given unit.
 function Sound:getDuration(unit)
   return self.source:getDuration()

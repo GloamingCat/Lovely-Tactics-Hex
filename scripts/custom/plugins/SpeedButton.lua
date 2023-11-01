@@ -8,7 +8,7 @@
 --- Plugin parameters.
 -- @tags Plugin
 -- @tfield string key The key to be held to speed-up the game.
--- @tfield number speed The speed multiplier (optional, 3 times by default)
+-- @tfield[opt=3] number speed The speed multiplier.
 
 -- ================================================================================================
 

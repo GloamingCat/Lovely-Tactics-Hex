@@ -22,7 +22,7 @@ local SwitchButton = class(Button)
 -- @tparam GridWindow window The window this spinner belongs to.
 -- @tparam boolean initValue Initial value.
 -- @tparam number x Position x of the switch text relative to the button width (from 0 to 1).
--- @tparam table values List of possible values (optional, boolean by default).
+-- @tparam[opt] table values List of possible values. If nil, then the button works as ON/OFF.
 function SwitchButton:init(window, initValue, x, values)
   Button.init(self, window)
   self.clickSound = nil
@@ -51,7 +51,7 @@ function SwitchButton:fromKey(window, key, ...)
   return button
 end
 --- Creates on/off text.
--- @tparam boolean initValue Initial value.
+-- @tparam boolean|number initValue Initial value.
 function SwitchButton:initContent(initValue)
   self.value = initValue
   if self.values then
@@ -65,7 +65,8 @@ end
 -- Input
 -- ------------------------------------------------------------------------------------------------
 
---- Switches value.
+--- Implements `Button:onConfirm`. Switches value.
+-- @implement
 function SwitchButton.onConfirm(window, self)
   if self.values then
     self:changeValue(math.mod1(self.value + 1, #self.values))
@@ -73,7 +74,8 @@ function SwitchButton.onConfirm(window, self)
     self:changeValue(not self.value)
   end
 end
---- Sets value by arrows.
+--- Implements `Button:onMove`. Sets value by arrows.
+-- @implement
 function SwitchButton.onMove(window, self, dx, dy)
   if dx == 0 then
     return
@@ -85,6 +87,7 @@ function SwitchButton.onMove(window, self, dx, dy)
   end
 end
 --- Changes current value.
+-- @tparam boolean|number value The position of the new value or a boolean if it's an ON/OFF button.
 function SwitchButton:changeValue(value)
   if self.enabled and self.value ~= value then
     self:setValue(value)

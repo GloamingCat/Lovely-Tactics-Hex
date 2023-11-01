@@ -56,8 +56,8 @@ return function(script)
   script:addEvent(script.startBattle,
   function() return script.char.vars.choiceInput == 3 end,
   { 
-    intro = true,
-    escapeEnabled = true,
+    skipIntro = false,
+    disableEscape = false,
     gameOverCondition = 'none',
     fieldID = tonumber(script.args.fieldID) or 0,
     fade = 60

@@ -120,8 +120,7 @@ function PopText:pop(dir)
 end
 --- Show the text lines.
 -- @coroutine popUp
--- @tparam boolean wait True if the execution should wait until the animation finishes 
---  (optional, false by default).
+-- @tparam[opt] boolean wait Flag to wait until the animation finishes.
 -- @treturn number The duration in frames.
 function PopText:popUp(wait)
   if not self.text then
@@ -137,8 +136,7 @@ function PopText:popUp(wait)
 end
 --- Show the text lines.
 -- @coroutine popDown
--- @tparam boolean wait True if the execution should wait until the animation finishes 
---  (optional, false by default).
+-- @tparam[opt] boolean wait Flag to wait until the animation finishes.
 -- @treturn number The duration in frames.
 function PopText:popDown(wait)
   if not self.text then

@@ -32,11 +32,12 @@ function Scalable:initScale(sx, sy)
   self.interruptableScale = true
 end
 --- Sets object's scale.
--- @tparam number sx Initial axis-x scale.
--- @tparam number sy Initial axis-y scale.
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number sx Initial axis-x scale.
+-- @tparam[opt] number sy Initial axis-y scale.
 function Scalable:setScale(sx, sy)
-  self.scaleX = sx
-  self.scaleY = sy
+  self.scaleX = sx or self.scaleX
+  self.scaleY = sy or self.scaleY
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -61,8 +62,8 @@ end
 -- @coroutine scaleTo
 -- @tparam number sx Initial axis-x scale.
 -- @tparam number sy Initial axis-y scale.
--- @tparam number speed The speed of the scaling (optional).
--- @tparam boolean wait Flag to wait until the scaling finishes (optional).
+-- @tparam[opt] number speed The speed of the scaling.
+-- @tparam[opt] boolean wait Flag to wait until the scaling finishes.
 function Scalable:scaleTo(sx, sy, speed, wait)
   if speed then
     self:gradualScaleTo(sx, sy, speed, wait)
@@ -82,8 +83,8 @@ end
 -- @coroutine gradualScaleTo
 -- @tparam number sx Initial axis-x scale.
 -- @tparam number sy Initial axis-y scale.
--- @tparam number speed the speed of the scaling (optional).
--- @tparam boolean wait Flag to wait until the scaling finishes.
+-- @tparam[opt] number speed the speed of the scaling.
+-- @tparam[opt] boolean wait Flag to wait until the scaling finishes.
 function Scalable:gradualScaleTo(sx, sy, speed, wait)
   self.scaleOrigX, self.scaleOrigY = self.scaleX, self.scaleY
   self.scaleDestX, self.scaleDestY = sx, sy

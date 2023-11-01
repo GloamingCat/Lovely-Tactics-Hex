@@ -63,3 +63,7 @@ Change override (plugin) tag
 Change module:
 @(extend|classmod) (\w+Window\n)
 @\1 ui.window.\2
+
+Optional parameters:
+-- @tparam (.*) \(optional, (\d+) by default\)
+-- @tparam[opt=\2] \1

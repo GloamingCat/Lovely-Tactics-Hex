@@ -26,8 +26,8 @@ local IconList = class(Component)
 -- @tparam Vector topLeft Position of the top left corner.
 -- @tparam number width The max width.
 -- @tparam number height The max height.
--- @tparam number frameWidth The width of each icon (optional, 16 by default).
--- @tparam number frameHeight The height of each icon (optional, 16 by default).
+-- @tparam[opt=16] number frameWidth The width of each icon.
+-- @tparam[opt=16] number frameHeight The height of each icon.
 function IconList:init(topLeft, width, height, frameWidth, frameHeight)
   Component.init(self, topLeft)
   self.icons = {}

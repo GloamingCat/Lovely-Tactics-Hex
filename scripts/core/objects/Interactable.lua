@@ -25,7 +25,7 @@ local Interactable = class()
 
 --- Constructor.
 -- @tparam table instData Instance data from field file.
--- @tparam table save Persistent data from save file (optional).
+-- @tparam[opt] table save Persistent data from save file.
 function Interactable:init(instData, save)
   self:initScripts(instData)
   self.key = instData.key
@@ -42,7 +42,7 @@ function Interactable:init(instData, save)
 end
 --- Creates listeners from instance data.
 -- @tparam table instData Instance data from field file.
--- @tparam table save Persistent data from save file (optional).
+-- @tparam[opt] table save Persistent data from save file.
 function Interactable:initScripts(instData, save)
   self.fiberList = FiberList(self)
   self.collider = save and save.collider

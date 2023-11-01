@@ -21,7 +21,7 @@ local BattleAnimations = {}
 -- @tparam number y Pixel y of the animation.
 -- @tparam number z Pixel depth of the animation.
 -- @tparam boolean mirror mirror the sprite in x-axis.
--- @tparam boolean wait True to wait until first loop finishes (optional).
+-- @tparam[opt] boolean wait True to wait until first loop finishes.
 -- @treturn Animation The newly created animation.
 function BattleAnimations.play(manager, animID, x, y, z, mirror, wait)
   local data = Database.animations[animID]
@@ -29,7 +29,7 @@ function BattleAnimations.play(manager, animID, x, y, z, mirror, wait)
   if animation.sprite then
     animation:setXYZ(x, y, z - 10)    
     if mirror then
-      animation.sprite:setScale(-animation.sprite.scaleX, animation.sprite.scaleY)
+      animation.sprite:setScale(-animation.sprite.scaleX)
     end
   end
   animation:setOneshot(true)

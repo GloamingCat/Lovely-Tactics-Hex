@@ -228,7 +228,7 @@ function AnimatedInteractable:getAllTiles(i, j, h)
   return tiles
 end
 --- Adds this object from to tiles it's occuping.
--- @tparam table tiles The list of occuped tiles (optional).
+-- @tparam[opt] table tiles The list of occuped tiles.
 function AnimatedInteractable:addToTiles(tiles)
   tiles = tiles or self:getAllTiles()
   for i = #tiles, 1, -1 do
@@ -236,7 +236,7 @@ function AnimatedInteractable:addToTiles(tiles)
   end
 end
 --- Removes this object from the tiles it's occuping.
--- @tparam table tiles The list of occuped tiles (optional).
+-- @tparam[opt] table tiles The list of occuped tiles.
 function AnimatedInteractable:removeFromTiles(tiles)
   tiles = tiles or self:getAllTiles()
   for i = #tiles, 1, -1 do

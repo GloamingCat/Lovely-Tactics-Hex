@@ -119,7 +119,7 @@ end
 -- @tparam Battler target Target battler.
 -- @tparam table a Attributes of user battler.
 -- @tparam table b Attributes of target battler.
--- @tparam function rand Random number generator (optional).
+-- @tparam[opt] function rand Random number generator.
 -- @treturn number Base damage.
 function SkillAction:defaultPhysicalDamage(user, target, a, b, rand)
   rand = rand or self.rand or random
@@ -130,7 +130,7 @@ end
 -- @tparam Battler target Target battler.
 -- @tparam table a Attributes of user battler.
 -- @tparam table b Attributes of target battler.
--- @tparam function rand Random number generator (optional).
+-- @tparam[opt] function rand Random number generator.
 -- @treturn number Base damage.
 function SkillAction:defaultMagicalDamage(user, target, a, b, rand)
   rand = rand or self.rand or random
@@ -316,7 +316,7 @@ end
 -- It considers all element bonuses provided by the skill data.
 -- @tparam Battler user
 -- @tparam Battler target
--- @tparam function rand Random number generator (optional).
+-- @tparam[opt] function rand Random number generator.
 function SkillAction:calculateEffectResults(user, target, rand)
   local points = {}
   local status = {}
@@ -359,7 +359,7 @@ end
 -- @tparam table effect Effect's info (successRate and basicResult).
 -- @tparam Battler user User of the skill.
 -- @tparam Battler target Receiver of the effect.
--- @tparam function rand Random number generator (optional).
+-- @tparam[opt] function rand Random number generator.
 -- @treturn number Total value of the damage. Nil if miss.
 function SkillAction:calculateEffectPoints(effect, user, target, rand)
   local result = max(effect.basicResult(self, user, target, user.att, target.att, rand), 0)
@@ -463,7 +463,7 @@ end
 --- Uses random expectation to estimate average effect result.
 -- @tparam ActionInput input Input containing the user and the skill.
 -- @tparam Character char Target character.
--- @tparam table eff Effect to check validity (optional, first effect by default).
+-- @tparam[opt] table eff Effect to check validity. If nil, uses the skill's first effect.
 -- @treturn number How close the character is to being killed (0 to 1).
 function SkillAction:estimateEffect(input, char, eff)
   eff = eff or self.effects[1]
@@ -474,7 +474,7 @@ end
 --- Calculates the total damage of a skill in the given tile.
 -- @tparam ActionInput input Input containing the user and the skill.
 -- @tparam ObjectTile target Possible target for the skill.
--- @tparam table eff Effect to check validity (optional, first effect by default).
+-- @tparam[opt] table eff Effect to check validity. If nil, uses the skill's first effect.
 -- @treturn number The total damage caused to the character in this tile.
 function SkillAction:estimateAreaEffect(input, target, eff)
   eff = eff or self.effects[1]

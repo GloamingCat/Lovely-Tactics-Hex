@@ -30,10 +30,10 @@ local Window = class(Component, Transformable)
 
 --- Constructor.
 -- @tparam Menu menu Parent Menu.
--- @tparam number width Total width in pixels (if nil, must be set later).
--- @tparam number height Total height in pixels (if nil, must be set later).
--- @tparam Vector position The position of the center of the window
---  (optional, center of the screen by default).
+-- @tparam[opt] number width Total width in pixels. If nil, must be set later.
+-- @tparam[opt] number height Total height in pixels. If nil, must be set later.
+-- @tparam[opt] Vector position The position of the center of the window.
+--  If nil, sets as tha center of the screen.
 function Window:init(menu, width, height, position)
   Transformable.init(self, position)
   self.menu = menu
@@ -164,13 +164,13 @@ end
 function Window:setVisible(value)
   if value then
     self:showContent()
-    self:setScale(self.scaleX, 1)
+    self:setScale(nil, 1)
     self.open = true
     self.lastOpen = true
     self.closed = false
   else
     self:hideContent()
-    self:setScale(self.scaleX, 0)
+    self:setScale(nil, 0)
     self.lastOpen = false
     self.open = false
     self.closed = true

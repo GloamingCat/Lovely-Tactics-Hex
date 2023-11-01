@@ -31,8 +31,8 @@ local Vector = class()
 --- Constructor.
 -- @tparam number x The x coordinate of the Vector.
 -- @tparam number y The y coordinate of the Vector.
--- @tparam number z The z coordinate of the Vector (optional, 0 by default).
-function Vector:init(x,y,z)
+-- @tparam[opt=0] number z The z coordinate of the Vector.
+function Vector:init(x, y, z)
   self.x = x
   self.y = y
   self.z = z or 0

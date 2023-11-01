@@ -24,14 +24,13 @@ local GeneralEvents = {}
 
 --- Arguments for battle commands.
 -- @table BattleArguments
--- @tfield boolean fieldID Battle field ID (optional, battle takes place in the current field by default).
--- @tfield number fade Duration of the fade out/in effect when exiting/returning to previous field.
--- @tfield boolean intro When false, skips the intro animation showing the parties. Default: `true`.
--- @tfield boolean escapeEnabled Flag to enable the escape action for the player. Default: `true`.
--- @tfield GameOverCondition|VictoryCondition gameOverCondition The condition to block the
+-- @tfield[opt] boolean fieldID Battle field ID. If nil, the battle takes place in the current field.
+-- @tfield[opt] number fade Duration of the fade out/in effect when exiting/returning to previous field.
+-- @tfield[opt] boolean skipIntro Flag to skip the intro animation showing the parties.
+-- @tfield[opt] boolean disableEscape Flag to disable the escape action for the player.
+-- @tfield[opt=NONE] GameOverCondition|VictoryCondition gameOverCondition The condition to block the
 --  "Continue" option from the Game Over screen. Either a number value from
 --  `BattleManager.GameOverCondition` or a string value from `EventUtil.VictoryCondition`.
---  Default: `NONE`.
 
 --- The conditions to enable the "Continue" button on the `GameOverWindow`.
 -- @enum VictoryCondition

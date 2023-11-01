@@ -39,7 +39,7 @@ end
 
 --- Insert new element to the list.
 -- @tparam unknown element The new element.
--- @tparam number pos The position to insert the element (optional, use append to end by default).
+-- @tparam[opt] number pos The position to insert the element. If nil, appends to end.
 function List:add(element, pos)
   assert(element, 'Element cannot be nil')
   if pos then
@@ -162,7 +162,7 @@ function List.descending(a, b)
   return a[2] > b[2]
 end
 --- Sorts all elements.
--- @tparam function comp The function that compares two elements (optional).
+-- @tparam[opt] function comp The function that compares two elements.
 function List:sort(comp)
   table.sort(self, comp or self.ascending)
 end

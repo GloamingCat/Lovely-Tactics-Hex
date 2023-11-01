@@ -53,8 +53,8 @@ end
 --- Rotates to (sx, sy).
 -- @coroutine rotateTo
 -- @tparam number r Initial rotation.
--- @tparam number speed The speed of the scaling (optional).
--- @tparam boolean wait flag to wait until the scaling finishes (optional).
+-- @tparam[opt] number speed The speed of the scaling.
+-- @tparam[opt] boolean wait flag to wait until the scaling finishes.
 function Rotatable:rotateTo(r, speed, wait)
   if speed then
     self:gradualRotateTo(r, speed, wait)
@@ -72,8 +72,8 @@ end
 --- Rotates to (sx, sy).
 -- @coroutine gradualRotateTo
 -- @tparam number r Initial rotation.
--- @tparam number speed The speed of the scaling (optional).
--- @tparam boolean wait Flag to wait until the scaling finishes.
+-- @tparam[opt] number speed The speed of the scaling.
+-- @tparam[opt] boolean wait Flag to wait until the scaling finishes.
 function Rotatable:gradualRotateTo(r, speed, wait)
   self.rotationOrig = self.rotation
   self.rotationDest = r

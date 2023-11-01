@@ -7,8 +7,8 @@
 
 --- Plugin parameters.
 -- @tags Plugin
--- @tfield number number The outline thickness in pixels of native resolution (optional, 1 by default).
--- @tfield string shader The text shader file (optional).
+-- @tfield[opt=1] number number The outline thickness in pixels of native resolution.
+-- @tfield[opt] string shader The text shader file.
 
 -- ================================================================================================
 

@@ -111,7 +111,7 @@ end
 --- Gets all tiles that will be affected by action's effect.
 -- It included any tile within action's area that are flagged by isTileAffected method.
 -- @tparam ActionInput input Action input.
--- @tparam ObjectTile tile Center tile (input's target by default).
+-- @tparam[opt] ObjectTile tile Selected tile. If nil, uses `input.target`.
 -- @treturn table Array of affected tile within tile's area.
 function FieldAction:getAllAffectedTiles(input, tile)
   local tiles = self:getAreaTiles(input, tile)
@@ -168,8 +168,8 @@ function FieldAction:isArea()
 end
 --- Gets the list of object tiles within effect area.
 -- @tparam ActionInput input
--- @tparam ObjectTile centerTile Selected tile (optional, use input's target by default).
--- @tparam table mask Area mask (optional, use action's area by default).
+-- @tparam[opt] ObjectTile centerTile Selected tile. If nil, uses `input.target`.
+-- @tparam[opt] table mask Area mask. If nil, uses the action's area mask.
 -- @treturn table Array of ObjectTile.
 function FieldAction:getAreaTiles(input, centerTile, mask)
   local tiles = {}

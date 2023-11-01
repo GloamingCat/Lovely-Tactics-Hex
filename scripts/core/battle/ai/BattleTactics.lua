@@ -24,7 +24,7 @@ local BattleTactics = {}
 -- @tparam BattleAction action
 -- @tparam Character user
 -- @tparam ObjectTile target
--- @tparam Matrix3 pathMatrix Matrix with pre-computed paths for the user (optional).
+-- @tparam[opt] Matrix3 pathMatrix Matrix with pre-computed paths for the user.
 -- @treturn Path Best path towards the target.
 function BattleTactics.optimalPath(action, user, target, pathMatrix)
   local path = pathMatrix and pathMatrix:get(target.x, target.y)
@@ -55,8 +55,7 @@ end
 -- @tparam ActionInput input
 -- @tparam function isValid Checks if a tile is valid (can be put in the queue).
 -- @tparam function evaluate Gets the evaluation of a tile.
--- @tparam function order Comparison function to the priority queue
---  (optional, ascending/lowest value first by default).
+-- @tparam[opt=ascendig] function order Comparison function to the priority queue.
 -- @treturn PriorityQueue Queue of tiles sorted by priority.
 function BattleTactics.optimalTiles(user, input, isValid, evaluate, order)
   order = order or PriorityQueue.ascending
@@ -103,7 +102,7 @@ end
 -- @tparam Character user
 -- @tparam ActionInput input
 -- @tparam function getDistance The distance calculator given the party and the tile.
--- @tparam function order The comparison function for distances (optional, descending by default).
+-- @tparam[opt=descending] function order The comparison function for distances.
 -- @treturn PriorityQueue
 function BattleTactics.bestDistance(user, input, getDistance, order)
   local evaluate = function(tile)

@@ -7,9 +7,9 @@
 
 --- Parameters in the Item tags.
 -- @tags Item
--- @tfield string|number attack The ID or key of new attack skill of the character when it equips this
---  item (optional).
--- @tfield string|number|table skill The ID or key of a skill that will be  available for the 
+-- @tfield[opt] string|number attack The ID or key of new attack skill of the character when it
+--  equips this item.
+-- @tfield string|number|table skill The ID or key of a skill that will be available for the 
 --  character with this item equipped. You may also add a second number (and make it a `table`)
 --  to indicate a minimum level, and a third to replace another skill instead of just adding it.
 

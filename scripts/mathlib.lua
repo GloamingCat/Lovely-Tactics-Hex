@@ -77,8 +77,9 @@ function math.rotate(x, y, phi)
   return x, y
 end
 --- Normal random distribution.
--- @tparam number a Upper value (optional).
--- @tparam number b Lower value (optional).
+-- @tparam[opt] number a Upper value.
+-- @tparam[opt] number b Lower value.
+-- @treturn number A random value according to the distribution.
 function math.normal(a, b)
   local p = math.sqrt(-2*math.log(1-math.random()))
   local k = p * math.cos(2*math.pi*math.random())
@@ -93,8 +94,8 @@ function math.normal(a, b)
   end
 end
 --- Calculates the expectation of the default random function.
--- @tparam number a Upper value (optional).
--- @tparam number b Lower value (optional).
+-- @tparam[opt] number a Upper value.
+-- @tparam[opt] number b Lower value.
 -- @treturn number The expectation in the given interval.
 function math.randomExpectation(a, b)
   if a then
@@ -107,7 +108,7 @@ end
 --- Checks if two number values and pratically equal, given the defined epsilon (E).
 -- @tparam number x The first value.
 -- @tparam number y The second value.
--- @tparam number e Error tolerance (optional, 0 by default).
+-- @tparam[opt=0] number e Error tolerance.
 -- @treturn boolean True if they are almost equal, false otherwise.
 function math.almostEquals(x, y, e)
   return abs(x - y) < (e or E)

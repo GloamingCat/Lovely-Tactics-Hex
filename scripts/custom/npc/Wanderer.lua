@@ -6,8 +6,8 @@
 
 --- Script parameters.
 -- @tags Script
--- @tfield number pause Pause time in frames between each step.
--- @tfield number pauseVar Variation of the pause in frames (optional, 0 by default).
+-- @tfield[opt=60] number pause Pause time in frames between each step.
+-- @tfield[opt=0] number pauseVar Variation of the pause in frames.
 
 -- ================================================================================================
 

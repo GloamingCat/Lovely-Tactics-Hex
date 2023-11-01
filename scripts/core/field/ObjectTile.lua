@@ -105,7 +105,7 @@ end
 --- Checks if this tile is passable from the given direction.
 -- @tparam number dx The x difference in tiles.
 -- @tparam number dy The y difference in tiles.
--- @tparam Object object The object that is trying to access this tile (optional).
+-- @tparam[opt] Object object The object that is trying to access this tile.
 -- @treturn boolean True if collides, false otherwise.
 function ObjectTile:collides(dx, dy, object)
   return self:collidesObstacle(dx, dy, object) or self:collidesCharacter(object)
@@ -113,7 +113,7 @@ end
 --- Checks if this tile is passable from the given direction.
 -- @tparam number dx The x difference in tiles.
 -- @tparam number dy The y difference in tiles.
--- @tparam Object object The object that is trying to access this tile (optional).
+-- @tparam[opt] Object object The object that is trying to access this tile.
 -- @treturn boolean True if collides, false otherwise.
 function ObjectTile:collidesObstacle(dx, dy, object)
   for obj in self.obstacleList:iterator() do
@@ -124,7 +124,7 @@ function ObjectTile:collidesObstacle(dx, dy, object)
   return false
 end
 --- Checks if this tile is passable from the given tile.
--- @tparam Object obj The object that is trying to access this tile (optional).
+-- @tparam[opt] Object obj The object that is trying to access this tile.
 -- @tparam number x The x in tiles.
 -- @tparam number y The y in tiles.
 -- @tparam number h The height in tiles.
@@ -133,7 +133,7 @@ function ObjectTile:collidesObstacleFrom(obj, x, y, h)
   return self:collidesObstacle(self.x - x, self.y - y, obj)
 end
 --- Checks collision with characters.
--- @tparam Character char The character to check collision with (optional).
+-- @tparam[opt] Character char The character to check collision with.
 -- @treturn boolean True if collides with any of the characters, false otherwise.
 function ObjectTile:collidesCharacter(char)
   if char and char.battler then
@@ -175,7 +175,7 @@ function ObjectTile:collidesCharacters(char, other)
   return not char.passable
 end
 --- Checks if there is a bridge object that connects given tile to this tile.
--- @tparam Object obj The object that is trying to access this tile (optional).
+-- @tparam[opt] Object obj The object that is trying to access this tile.
 -- @tparam number x The x in tiles.
 -- @tparam number y The y in tiles.
 -- @tparam number h The h in tiles.

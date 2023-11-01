@@ -25,7 +25,7 @@ local Gauge = class(Component)
 -- @tparam Vector topLeft The position of the top left corner.
 -- @tparam number width The width of the bar.
 -- @tparam Color.RGBA color The color of the bar.
--- @tparam number x Displacement of the bar (optional).
+-- @tparam[opt] number x Displacement of the bar.
 function Gauge:init(topLeft, width, color, x)
   if x then
     topLeft = topLeft:clone()

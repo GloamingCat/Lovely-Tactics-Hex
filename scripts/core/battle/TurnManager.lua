@@ -67,7 +67,7 @@ function TurnManager:init()
   self.finishTime = 20
 end
 --- Sets starting party.
--- @tparam table state Data about turn state for when the game is loaded mid-battle (optional).
+-- @tparam[opt] table state Data about turn state for when the game is loaded mid-battle.
 function TurnManager:setUp(state)
   if state then
     self.party = state.party
@@ -198,7 +198,7 @@ function TurnManager:runPlayerTurn()
 end
 --- Gets the next active character in the current party.
 -- @tparam number i 1 or -1 to indicate direction.
--- @tparam boolean controllable True to exclude NPC, false to ONLY include NPC (nil by default).
+-- @tparam[opt=nil] boolean controllable True to exclude NPC, false to ONLY include NPC. If nil, includes all.
 -- @treturn number Next character index, or nil if there's no active character.
 function TurnManager:nextCharacterIndex(i, controllable)
   i = i or 1

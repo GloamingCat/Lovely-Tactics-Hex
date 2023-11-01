@@ -51,7 +51,7 @@ end
 
 --- Character if user is a valid target.
 -- @tparam Character char Target candidate.
--- @tparam table eff Effect to check validity (optional, first effect by default).
+-- @tparam[opt] table eff Effect to check validity. If nil, uses the skill's first effect.
 -- @treturn boolean
 function SkillRule:isValidTarget(char, eff)
   local support = eff and eff.heal or self.skill.support
@@ -68,7 +68,7 @@ function SkillRule:isValidTarget(char, eff)
   return true
 end
 --- Selects the closest valid character target.
--- @tparam table eff Effect to check validity (optional, first effect by default).
+-- @tparam[opt] table eff Effect to check validity. If nil, uses the skill's first effect.
 function SkillRule:selectClosestTarget(eff)
   local queue = self.skill:closestSelectableTiles(self.input)
   while not queue:isEmpty() do
@@ -82,7 +82,7 @@ function SkillRule:selectClosestTarget(eff)
   end
 end
 --- Selects the reachable tile with better effect.
--- @tparam table eff Effect to check validity (optional, first effect by default).
+-- @tparam[opt] table eff Effect to check validity. If nil, uses the skill's first effect.
 function SkillRule:selectMostEffectiveTarget(eff)
   local map = {}
   for char in TroopManager.characterList:iterator() do

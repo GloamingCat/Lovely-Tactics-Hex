@@ -296,7 +296,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Restarts the game from the TitleMenu.
--- @tparam table save Save data to be loaded (optional, starts from title menu if nil).
+-- @tparam[opt] table save Save data to be loaded. If nil, starts from `TitleMenu`.
 function GameManager:restart(save)
   ScreenManager:clear()
   FieldManager = require('core/field/FieldManager')()

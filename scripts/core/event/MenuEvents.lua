@@ -27,12 +27,12 @@ local MenuEvents = {}
 --- Arguments for field transition.
 -- @table WindowArguments
 -- @tfield number id ID of the window.
--- @tfield number width Width of the window (optional).
--- @tfield number height Height of the window (optional).
--- @tfield number x Pixel x of the window (optional).
--- @tfield number y Pixel y of the window (optional).
--- @tfield string alignX Horizontal alignment of text (optional).
--- @tfield string alignY Vertical alignment of text (optional).
+-- @tfield[opt] number width Width of the window.
+-- @tfield[opt] number height Height of the window.
+-- @tfield[opt] number x Pixel x of the window.
+-- @tfield[opt] number y Pixel y of the window.
+-- @tfield[opt] string alignX Horizontal alignment of text.
+-- @tfield[opt] string alignY Vertical alignment of text.
 
 --- Arguments for opening a Menu.
 -- @table MenuArguments
@@ -42,9 +42,9 @@ local MenuEvents = {}
 --- Arguments for dialogue commands. Extends `WindowArguments`.
 -- @table DialogueArguments
 -- @tfield string message Dialogue text.
--- @tfield string name Speaker name (optional).
--- @tfield number nameX Speaker window X in relation to the main window, from -1 to 1 (optional).
--- @tfield number nameY Speaker window Y in relation to the main window, from -1 to 1 (optional).
+-- @tfield[opt] string name Speaker name.
+-- @tfield[opt] number nameX Speaker window X in relation to the main window, from -1 to 1.
+-- @tfield[opt] number nameY Speaker window Y in relation to the main window, from -1 to 1.
 
 --- Arguments for title/message commands. Extends `WindowArguments`.
 -- @table MessageArguments

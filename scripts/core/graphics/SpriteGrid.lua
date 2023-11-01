@@ -114,19 +114,21 @@ function SpriteGrid:updateTransform(t)
   end
 end
 --- Sets the RGBA values of each slice.
--- @tparam number r Red component (optional, current by default).
--- @tparam number g Green component (optional, current by default).
--- @tparam number b Blue component (optional, current by default).
--- @tparam number a Blpha component (optional, current by default).
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number r Red component.
+-- @tparam[opt] number g Green component.
+-- @tparam[opt] number b Blue component.
+-- @tparam[opt] number a Blpha component.
 function SpriteGrid:setRGBA(r, g, b, a)
   for i = 1, 9 do
     self.slices[i].sprite:setRGBA(r, g, b, a)
   end
 end
 --- Sets the HSV values of each slice.
--- @tparam number h Hue component (optional, current by default).
--- @tparam number s Saturation component (optional, current by default).
--- @tparam number v Value/brightness component (optional, current by default).
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number h Hue component.
+-- @tparam[opt] number s Saturation component.
+-- @tparam[opt] number v Value/brightness component.
 function SpriteGrid:setHSV(h, s, v)
   for i = 1, 9 do
     self.slices[i].sprite:setHSV(h, s, v)

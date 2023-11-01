@@ -53,11 +53,11 @@ function ResourceManager:loadTexture(path)
 end
 --- Creates a Quad for given animation data.
 -- @tparam table data Table with spritesheet's x, y, width, height, cols, rows and image path.
--- @tparam Image texture Quad's texture (optional, may be loaded from data's image path).
--- @tparam number cols Number of columns (optional, 1 by default).
--- @tparam number rows Number of rows (optional, 1 by default).
--- @tparam number col Initial column (optional, 0 by default).
--- @tparam number row Initial row (optional, 0 by default).
+-- @tparam[opt] Image texture Quad's texture. If nil, it's loaded from `data.path`.
+-- @tparam[opt=1] number cols Number of columns.
+-- @tparam[opt=1] number rows Number of rows.
+-- @tparam[opt=0] number col Initial column.
+-- @tparam[opt=0] number row Initial row.
 -- @treturn Quad Newly created Quad.
 -- @treturn Image Texture associated to this Quad.
 function ResourceManager:loadQuad(data, texture, cols, rows, col, row)
@@ -106,8 +106,8 @@ end
 --- Loads a sprite.
 -- @tparam table|number|string data Animation's data or id, or path to texture.
 -- @tparam Renderer renderer Renderer of the icon (FieldManager's or MenuManager's).
--- @tparam number col Column within spritesheet (optional, 0 by default).
--- @tparam number row Row within spritesheet (optional, 0 by default).
+-- @tparam[opt=0] number col Column within spritesheet.
+-- @tparam[opt=0] number row Row within spritesheet.
 -- @treturn Sprite New Sprite object.
 function ResourceManager:loadSprite(data, renderer, col, row)
   if type(data) == 'number' then
@@ -226,8 +226,8 @@ end
 
 --- Loads intro and loop audio sources for BGM.
 -- @tparam string name Name of the file from the audio folder.
--- @tparam Source intro Intro source (optional).
--- @tparam Source loop Loop source (optional).
+-- @tparam[opt] Source intro Intro source.
+-- @tparam[opt] Source loop Loop source.
 -- @treturn Source Intro audio source (if any).
 -- @treturn Source Looping audio source.
 function ResourceManager:loadBGM(name, intro, loop)

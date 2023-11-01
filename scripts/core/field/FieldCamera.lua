@@ -112,8 +112,8 @@ end
 --- Moves camera to the given tile.
 -- @coroutine moveToTile
 -- @tparam ObjectTile tile The destionation tile.
--- @tparam number speed The speed of the movement (optional, uses default speed).
--- @tparam boolean wait Flag to wait until the move finishes (optional, false by default).
+-- @tparam[opt=cameraSpeed] number speed The speed of the movement.
+-- @tparam[opt] boolean wait Flag to wait until the move finishes.
 function FieldCamera:moveToTile(tile, speed, wait)
   local x, y = tile.center:coordinates()
   self:moveToPoint(x, y, speed, wait)
@@ -121,16 +121,16 @@ end
 --- Movec camera to the given object.
 -- @coroutine moveToObject
 -- @tparam Object obj The destination object.
--- @tparam number speed The speed of the movement (optional, uses default speed).
--- @tparam boolean wait Flag to wait until the move finishes (optional, false by default).
+-- @tparam[opt=cameraSpeed] number speed The speed of the movement.
+-- @tparam[opt] boolean wait Flag to wait until the move finishes.
 function FieldCamera:moveToObject(obj, speed, wait)
   self:moveToPoint(obj.position.x, obj.position.y, speed, wait)
 end
 --- Moves camera to the given pixel point.
 -- @tparam number x The pixel x.
 -- @tparam nubmer y The pixel y.
--- @tparam number speed The speed of the movement (optional, uses default speed).
--- @tparam boolean wait Flag to wait until the move finishes (optional, false by default).
+-- @tparam[opt=cameraSpeed] number speed The speed of the movement.
+-- @tparam[opt] boolean wait Flag to wait until the move finishes.
 function FieldCamera:moveToPoint(x, y, speed, wait)
   self.focusObject = nil
   if speed == 0 then
@@ -149,8 +149,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Fades the screen out (changes color multiplier to black). 
--- @tparam number time The duration of the fading in frames.
--- @tparam boolean wait Flag to wait until the fading finishes (optional, false by default).
+-- @tparam[opt] number time The duration of the fading in frames. If nil, uses default fading speed.
+-- @tparam[opt] boolean wait Flag to wait until the fading finishes.
 function FieldCamera:fadeout(time, wait)
   local speed = self.fadeSpeed
   if time then
@@ -159,8 +159,8 @@ function FieldCamera:fadeout(time, wait)
   self:colorizeTo(0, 0, 0, 0, speed, wait)
 end
 --- Fades the screen in (changes color multiplier to white). 
--- @tparam number time The duration of the fading in frames.
--- @tparam boolean wait Flag to wait until the fading finishes (optional, false by default).
+-- @tparam[opt] number time The duration of the fading in frames. If nil, uses default fading speed.
+-- @tparam[opt] boolean wait Flag to wait until the fading finishes.
 function FieldCamera:fadein(time, wait)
   local speed = self.fadeSpeed
   if time then

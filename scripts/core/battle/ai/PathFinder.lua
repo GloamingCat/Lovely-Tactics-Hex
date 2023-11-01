@@ -33,10 +33,10 @@ local PathFinder = {}
 --- Computes the path matrix from the initial tile.
 -- @tparam MoveAction action The move action.
 -- @tparam Character user The character that will follow this path.
--- @tparam ObjectTile initial The start tile (optional, user's current tile by default).
--- @tparam number w Grid's width (optional, current field's width by default).
--- @tparam number h Grid's height (optional, current field's height by default).
--- @tparam number d Grid's depth (optional, current field's depth by default).
+-- @tparam[opt] ObjectTile initial The start tile. If nil, use `user:getTile()`.
+-- @tparam[opt] number w Grid's width. If nil, use the width of current field.
+-- @tparam[opt] number h Grid's height. If nil, use the height of current field.
+-- @tparam[opt] number d Grid's depth. If nil, use the depth of current field.
 -- @treturn Matrix3 The path matrix.
 function PathFinder.dijkstra(action, user, initial, w, h, d)
   user = user or TurnManager:currentCharacter()
@@ -80,11 +80,11 @@ end
 -- @tparam MoveAction action The move action.
 -- @tparam Character user The character that will follow this path.
 -- @tparam ObjectTile target The tile that would be final if reachable.
--- @tparam ObjectTile initial The start tile (optional, user's current tile by default).
--- @tparam boolean ignoreDistance Flag to ignore maximum distance (false by default).
--- @tparam number w Grid's width (optional, current field's width by default).
--- @tparam number h Grid's height (optional, current field's height by default).
--- @tparam number d Grid's depth (optional, current field's depth by default).
+-- @tparam[opt] ObjectTile initial The start tile. If nil, use `user:getTile()`.
+-- @tparam[opt] boolean ignoreDistance Flag to ignore maximum distance.
+-- @tparam[opt] number w Grid's width. If nil, use the width of current field.
+-- @tparam[opt] number h Grid's height. If nil, use the height of current field.
+-- @tparam[opt] number d Grid's depth. If nil, use the depth of current field.
 -- @treturn Path The best path or nil if the target is unreachable.
 function PathFinder.findPath(action, user, target, initial, ignoreDistance, w, h, d)
   initial = initial or user:getTile()
@@ -125,11 +125,11 @@ end
 -- @tparam MoveAction action The move action.
 -- @tparam Character user The character that will follow this path.
 -- @tparam ObjectTile target The tile that would be final if reachable.
--- @tparam ObjectTile initial The start tile (optional, user's current tile by default).
--- @tparam boolean ignoreDistance Flag to ignore maximum distance (optional, false by default).
--- @tparam number w Grid's width (optional, current field's width by default).
--- @tparam number h Grid's height (optional, current field's height by default).
--- @tparam number d Grid's depth (optional, current field's depth by default).
+-- @tparam[opt] ObjectTile initial The start tile. If nil, use `user:getTile()`.
+-- @tparam[opt] boolean ignoreDistance Flag to ignore maximum distance.
+-- @tparam[opt] number w Grid's width. If nil, use the width of current field.
+-- @tparam[opt] number h Grid's height. If nil, use the height of current field.
+-- @tparam[opt] number d Grid's depth. If nil, use the depth of current field.
 -- @treturn Path The best path or nil if the character can't move.
 function PathFinder.findPathToUnreachable(action, user, target, initial, ignoreDistance, w, h, d)
   initial = initial or user:getTile()

@@ -199,8 +199,8 @@ function Text:setAlignY(align)
   end
 end
 --- Gets the line offset in x according to the alignment.
--- @tparam number w Line's width in Menu pixels.
--- @treturn number The x offset in Menu pixels.
+-- @tparam[opt] number w Line's width in menu pixels. If nil, uses maximum width.
+-- @treturn number The x offset in menu pixels.
 function Text:alignOffsetX(w)
   w = w or self:getWidth()
   if self.maxWidth then
@@ -213,7 +213,7 @@ function Text:alignOffsetX(w)
   return 0
 end
 --- Gets the text box offset in y according to the alingment.
--- @tparam number h Text's height in Menu pixels (optional, sum of all lines' heights by default).
+-- @tparam[opt] number h Text's height in menu pixels. If nil, uses total height.
 -- @treturn number The y offset in Menu pixels.
 function Text:alignOffsetY(h)
   h = h or self:getHeight()

@@ -23,11 +23,11 @@ local TextComponent = class(Component)
 
 --- Constructor.
 -- @tparam string text The text content (not rich text).
--- @tparam Vector position Position relative to its window (optional).
--- @tparam number width The max width for texto box (optional).
--- @tparam string align Alignment inside the box (optional, left by default).
--- @tparam Fonts.Info font Font of the text (optional).
--- @tparam boolean plainText Disable text commands (optional, false by default).
+-- @tparam[opt] Vector position Position relative to its window. If nil, sets at the center of the window.
+-- @tparam[opt=inf] number width The max width for text box.
+-- @tparam[opt="left"] string align Alignment inside the box.
+-- @tparam[opt=menu_default] Fonts.Info font Font of the text.
+-- @tparam[opt] boolean plainText Flag to disable text commands.
 function TextComponent:init(text, position, width, align, font, plainText)
   assert(text, 'Nil text')
   local properties = { width, align or 'left', font or Fonts.menu_default, plainText}
@@ -92,7 +92,7 @@ function TextComponent:setText(text)
 end
 --- Changes text content from a given localization term (must be redrawn later).
 -- @tparam string term The localization term.
--- @tparam string fallback The text shown if localization fails (optional, uses term by default).
+-- @tparam[opt=term] string fallback The text shown if localization fails.
 function TextComponent:setTerm(term, fallback)
   if fallback then
     self.fallback = fallback

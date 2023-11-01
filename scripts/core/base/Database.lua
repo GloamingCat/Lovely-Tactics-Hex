@@ -174,7 +174,7 @@ function Database.getVocabDirectory()
   return Database.getDataDirectory() .. 'vocab/'
 end
 --- Loads config data and store in the Config table.
--- @tparam string lang Selected language (optional, uses first one by default).
+-- @tparam[opt=1] string lang Selected language.
 function Database.loadVocabFiles(lang)
   lang = Project.languages[lang or 1]
   local dir = Database.getVocabDirectory()

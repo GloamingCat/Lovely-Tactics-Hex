@@ -157,7 +157,7 @@ end
 --- Escape condition. Only escapes if the character is in a tile of their party.
 function TurnWindow:escapeEnabled()
   if #self.livingAllies == 1 then
-    if not BattleManager.params.escapeEnabled or #self.fieldBattlers > 1 then
+    if BattleManager.params.disableEscape or #self.fieldBattlers > 1 then
       return false
     end
   end

@@ -117,7 +117,11 @@ function Object:moveToTile(tile, ...)
   local x, y, z = tile.center:coordinates()
   self:moveTo(x, y, z, ...)
 end
---- Gets all tiles this object is occuping.
+--- Gets all tiles this object is occuping around a center tile.
+-- If any argument is nil, the center is set as the object's current tile.
+-- @tparam[opt] number i Center tile x.
+-- @tparam[opt] number j Center tile y.
+-- @tparam[opt] number h Center tile height.
 -- @treturn table The list of tiles.
 function Object:getAllTiles(i, j, h)
   if i and j and h then
@@ -140,9 +144,10 @@ function Object:adjustToTile()
   self:setXYZ(x, y, z)
 end
 --- Instantly moves this object to another tile.
--- @tparam number i Tile x (optinal, current x coordinate by default).
--- @tparam number j Tile y (optinal, current y coordinate by default).
--- @tparam number h Tile height (optinal, current height by default).
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number i Tile x.
+-- @tparam[opt] number j Tile y.
+-- @tparam[opt] number h Tile height.
 function Object:transferTile(i, j, h)
   local tile = self:getTile()
   local x, y, z = tile2Pixel(i or tile.x, j or tile.y, h or tile.layer.height)

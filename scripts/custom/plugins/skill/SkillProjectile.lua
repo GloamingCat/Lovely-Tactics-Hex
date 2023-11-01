@@ -53,8 +53,8 @@ end
 -- @coroutine throw
 -- @tparam Character user
 -- @tparam ObjectTile target The target tile.
--- @tparam number speed Speed in pixels per second (optional if speed is set in tags).
--- @tparam boolean wait True to wait until the end of movement (false by default).
+-- @tparam[opt] number speed Speed in pixels per second. If nil, gets speed from tags).
+-- @tparam[opt] boolean wait Flag to wait until the end of movement.
 -- @treturn number Duration of the movement in frames.
 function Animation:throw(user, target, speed, wait)
   self:setUser(user)

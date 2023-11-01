@@ -16,17 +16,17 @@ local ScreenEvents = {}
 --- Arguments for fading effects.
 -- @table FadeArguments
 -- @tfield number time Duration of effect in frames.
--- @tfield boolean wait True to wait until effect is finished.
+-- @tfield[opt] boolean wait Flag to wait until effect is finished.
 -- @tfield string name Shader's file name.
 
 --- Arguments for camera movement.
 -- @table CameraArguments
--- @tfield number speed Camera movement speed (optional).
--- @tfield bolean wait Wait until movement is complete (optional).
+-- @tfield[opt] number speed Camera movement speed.
+-- @tfield[opt] bolean wait Flag to wait until movement is complete.
 -- @tfield string key Character's key, for `focusCharacter`.
 -- @tfield number x Tile grid x, for `focusTile`.
 -- @tfield number y Tile grid y, for `focusTile`.
--- @tfield number h Tile's height, for `focusTile` (optional, 1 by default).
+-- @tfield[opt=1] number h Tile's height, for `focusTile`.
 
 -- ------------------------------------------------------------------------------------------------
 -- Shader Effect

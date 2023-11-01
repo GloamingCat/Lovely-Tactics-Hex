@@ -7,8 +7,8 @@
 
 --- Script parameters.
 -- @tags Script
--- @tfield string gameOverCondition The condition to block the "Continue" option from
---  the Game Over screen (optional, `"survive"` by default).
+-- @tfield[opt="survive"] string gameOverCondition The condition to block the "Continue" option
+--  from the Game Over screen.
 
 -- ================================================================================================
 
@@ -20,8 +20,8 @@ return function(script)
   end)
 
   script:addEvent(script.startBattle, nil, {
-    intro = true,
-    escapeEnabled = true,
+    skipIntro = false,
+    disableEscape = false,
     gameOverCondition = script.args.gameOverCondition or 'survive',
     fieldID = 7,
     fade = 60

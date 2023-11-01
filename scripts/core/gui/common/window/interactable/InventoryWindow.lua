@@ -27,13 +27,12 @@ local InventoryWindow = class(ListWindow)
 -- @tparam Menu menu Parent Menu.
 -- @tparam Battler user The user of the items.
 -- @tparam Inventory inventory Inventory with the list of items.
--- @tparam table itemList Array with item slots that are going to be shown
---  (all inventory's items by default).
--- @tparam number w Window's width (fits to col count by default).
--- @tparam number h Window's height (fits to row count by default)
--- @tparam Vector pos Position of the window's center (screen center by default).
--- @tparam number rowCount The number of visible button rows
---  (maximum possible rows by default - needs h to be non-nil).
+-- @tparam[opt=inventory] table itemList Array with item slots that are going to be shown.
+-- @tparam[opt] number w Window's width. If nil, fits to col count.
+-- @tparam[opt] number h Window's height If nil, fits to row count.
+-- @tparam[opt] Vector pos Position of the window's center. If nil, sets at the center of the screen.
+-- @tparam[opt] number rowCount The number of visible button rows. If nil, sets as the maximum number
+--  of rows possible, computed from `h`.
 function InventoryWindow:init(menu, user, inventory, itemList, w, h, pos, rowCount)
   self.member = user
   self.leader = menu.troop:currentBattlers()[1]

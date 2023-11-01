@@ -20,7 +20,7 @@ local EquipSet = class()
 
 --- Constructor.
 -- @tparam Battler battler This set's battler.
--- @tparam table save Battler's save data (optional).
+-- @tparam[opt] table save Battler's save data.
 function EquipSet:init(battler, save)
   self.battler = battler
   self.slots = {}
@@ -79,7 +79,7 @@ end
 -- @tparam string key Slot's key.
 -- @tparam table item Item's data from database.
 -- @tparam Inventory inventory Troop's inventory.
--- @tparam Character character Battler's character, in case it's during battle (optional).
+-- @tparam[opt] Character character Battler's character, in case it's during battle.
 function EquipSet:setEquip(key, item, inventory, character)
   if item then
     assert(item.slot ~= '', 'Item is not an equipment: ' .. Database.toString(item))
@@ -95,7 +95,7 @@ end
 -- @tparam string key Slot's key.
 -- @tparam table item Item's data from database.
 -- @tparam Inventory inventory Troop's inventory.
--- @tparam Character character Battler's character, in case it's during battle (optional).
+-- @tparam[opt] Character character Battler's character, in case it's during battle.
 function EquipSet:equip(key, item, inventory, character)
   local slot = self.slots[key]
   -- If slot is blocked
@@ -142,7 +142,7 @@ end
 --- Removes equipment item (if any) from the given slot.
 -- @tparam string key Slot's key.
 -- @tparam Inventory inventory Troop's inventory.
--- @tparam Character character Battler's character, in case it's during battle (optional).
+-- @tparam[opt] Character character Battler's character, in case it's during battle.
 function EquipSet:unequip(key, inventory, character)
   if self.types[key] then
     for i = 1, self.types[key].count do
@@ -275,8 +275,8 @@ function EquipSet:addBattleStatus(character)
 end
 --- Adds the equip's statuses, either persistent or battle-only.
 -- @tparam table data Item's data.
--- @tparam Character character Battler's character, in case it's during battle (optional).
--- @tparam boolean battle True to add battle status, false to add persistent status (optional).
+-- @tparam[opt] Character character Battler's character, in case it's during battle.
+-- @tparam[opt] boolean battle True to add battle status, false to add persistent status.
 function EquipSet:addStatus(data, character, battle)
   battle = battle or false
   for i = 1, #data.equipStatus do
@@ -288,7 +288,7 @@ function EquipSet:addStatus(data, character, battle)
 end
 --- Removes the equip's persistent statuses.
 -- @tparam table data Item's equip data.
--- @tparam Character character Battler's character, in case it's during battle (optional).
+-- @tparam[opt] Character character Battler's character, in case it's during battle.
 function EquipSet:removeStatus(data, character)
   for i = 1, #data.equipStatus do
     local s = data.equipStatus[i]

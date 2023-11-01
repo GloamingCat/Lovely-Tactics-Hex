@@ -29,7 +29,7 @@ local ActionWindow = class(GridWindow)
 --- Select an action.
 -- @tparam BattleAction action The action to the executed on button selection.
 --  (must inherit from BattleAction) 
--- @tparam ActionInput input User's input data (optional, creates new by default).
+-- @tparam[opt] ActionInput input User's input data. If nil, creates a new one using current character.
 function ActionWindow:selectAction(action, input)
   -- Executes action grid selecting.
   input = input or ActionInput(nil, TurnManager:currentCharacter(), nil, self.menu)
