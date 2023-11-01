@@ -281,6 +281,10 @@ function ScreenManager:onFocus(f)
     end
   end
 end
+--- Called when the window is minimized/maximized.
+-- @tparam boolean v True if it was minimized (hidden), false if maximized.
+function ScreenManager:onVisible(v)
+end
 --- Closes game window, but keeps it running.
 function ScreenManager:closeWindow()
   if self.closed then

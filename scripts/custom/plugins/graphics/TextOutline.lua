@@ -7,7 +7,8 @@
 
 --- Plugin parameters.
 -- @tags Plugin
--- @tfield number number The outline thickness in pixels.
+-- @tfield number number The outline thickness in pixels of native resolution (optional, 1 by default).
+-- @tfield string shader The text shader file (optional).
 
 -- ================================================================================================
 
@@ -29,26 +30,26 @@ local Text_setCutPoint = Text.setCutPoint
 -- Parameters
 local outlineSize = args.width or 1
 
-local textShader = lgraphics.newShader('shaders/Text.glsl')
+local textShader = args.shader and lgraphics.newShader('shaders/' .. args.shader)
 
 -- ------------------------------------------------------------------------------------------------
 -- Redraw
 -- ------------------------------------------------------------------------------------------------
 
---- Rewrites `Text:setText`.
+--- Rewrites `Text:setText`. Sets flag to redraw buffers.
 -- @rewrite
 function Text:setText(...)
   self.bufferLines = nil
   self.needsRedraw = true
   Text_setText(self, ...)
 end
---- Rewrites `Text:rescale`.
+--- Rewrites `Text:rescale`. Sets flag to redraw buffers.
 -- @rewrite
 function Text:rescale(...)
   self.needsRedraw = true
   Text_rescale(self, ...)
 end
---- Rewrites `Text:setCutPoint`.
+--- Rewrites `Text:setCutPoint`. Sets flag to redraw buffers.
 -- @rewrite
 function Text:setCutPoint(...)
   self.bufferLines = nil
@@ -133,20 +134,38 @@ function TextRenderer.createLineBuffers(lines, sx, sy)
   local shader = lgraphics.getShader()
   local canvas = lgraphics.getCanvas()
   local font = lgraphics.getFont()
-  -- Render lines individually
   lgraphics.setColor(1, 1, 1, 1)
+  if not textShader then
+    lgraphics.setShader()
+  end
   TextRenderer.underlined = false
+  -- Render lines individually
   local drawCalls = 0
 	local renderedLines = {}
   for i = 1, #lines do
-    lgraphics.setShader()
     local buffer = lgraphics.newCanvas(lines[i].width + outlineSize * sx * 2, lines[i].height * 1.5 + outlineSize * sy * 2)
     buffer:setFilter('linear', 'linear')
     lgraphics.setCanvas(buffer)
     lgraphics.setLineWidth(sy)
-    drawCalls = drawCalls + TextRenderer.drawLine(lines[i], outlineSize * sx, lines[i].height + outlineSize * sy, Color.white)
-    lgraphics.setShader(textShader)
-    local shadedBuffer = TextRenderer.shadeBuffer(buffer, sx, sy)
+    local shadedBuffer = buffer
+    if textShader then
+      lgraphics.setShader()
+      drawCalls = drawCalls + TextRenderer.drawLine(lines[i], outlineSize * sx, lines[i].height + outlineSize * sy, Color.white)
+      lgraphics.setShader(textShader)
+      shadedBuffer = TextRenderer.shadeBuffer(buffer, sx, sy)
+    else
+      lgraphics.setColor(0, 0, 0, 1)
+      drawCalls = drawCalls + TextRenderer.drawLine(lines[i], 0, lines[i].height + outlineSize * sy, Color.black)
+      drawCalls = drawCalls + TextRenderer.drawLine(lines[i], outlineSize * sx * 2, lines[i].height + outlineSize * sy, Color.black)
+      drawCalls = drawCalls + TextRenderer.drawLine(lines[i], outlineSize * sx, lines[i].height, Color.black)
+      drawCalls = drawCalls + TextRenderer.drawLine(lines[i], outlineSize * sx, lines[i].height + outlineSize * sy * 2, Color.black)
+      drawCalls = drawCalls + TextRenderer.drawLine(lines[i], 0, lines[i].height, Color.black)
+      drawCalls = drawCalls + TextRenderer.drawLine(lines[i], outlineSize * sx * 2, lines[i].height, Color.black)
+      drawCalls = drawCalls + TextRenderer.drawLine(lines[i], 0, lines[i].height + outlineSize * sy * 2, Color.black)
+      drawCalls = drawCalls + TextRenderer.drawLine(lines[i], outlineSize * sx * 2, lines[i].height + outlineSize * sy * 2, Color.black)
+      lgraphics.setColor(1, 1, 1, 1)
+      drawCalls = drawCalls + TextRenderer.drawLine(lines[i], outlineSize * sx, lines[i].height + outlineSize * sy, Color.white)
+    end
     drawCalls = drawCalls + 1
     renderedLines[i] = {
       buffer = shadedBuffer,
@@ -168,7 +187,6 @@ end
 function TextRenderer.shadeBuffer(texture, sx, sy)
   local r, g, b, a = lgraphics.getColor()
   lgraphics.setColor(1, 1, 1, 1)
-  local shader = lgraphics.getShader()
   local w, h = texture:getWidth(), texture:getHeight()
   local newTexture = lgraphics.newCanvas(w, h)
   newTexture:setFilter('linear', 'linear')
