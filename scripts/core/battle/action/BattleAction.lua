@@ -70,7 +70,7 @@ end
 -- @tparam ActionInput input
 function BattleAction:onSelect(input)
   FieldAction.onSelect(self, input)
-  if input.GUI and not self.freeNavigation then
+  if input.menu and not self.freeNavigation then
     self.index = 1
     if self.autoPath then
       local queue = self:closestSelectableTiles(input)
@@ -85,22 +85,22 @@ function BattleAction:onSelect(input)
   end
   input.moveAction = self.moveAction
 end
---- Called when the ActionGUI is open.
+--- Called when the ActionMenu is open.
 -- By default, just updates the "selectable" field in all tiles for grid selecting.
 -- @tparam ActionInput input
-function BattleAction:onActionGUI(input)
+function BattleAction:onActionMenu(input)
   self:resetTileColors()
   if self.showTargetWindow then
-    input.GUI:createTargetWindow()
+    input.menu:createTargetWindow()
   end
-  FieldAction.onActionGUI(self, input)
+  FieldAction.onActionMenu(self, input)
   if self.showStepWindow then
-    input.GUI:createPropertyWindow('steps', input.user.battler.steps):show()
+    input.menu:createPropertyWindow('steps', input.user.battler.steps):show()
   end
   if GameManager:isMobile() then
-    input.GUI:createConfirmWindow()
+    input.menu:createConfirmWindow()
   else
-    input.GUI:createCancelWindow()
+    input.menu:createCancelWindow()
   end
 end
 
@@ -112,12 +112,12 @@ end
 -- @tparam ActionInput input
 function BattleAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
-    if tile.gui.movable then
-      tile.gui:setColor('move')
-    elseif tile.gui.reachable then
-      tile.gui:setColor(self.colorName)
+    if tile.ui.movable then
+      tile.ui:setColor('move')
+    elseif tile.ui.reachable then
+      tile.ui:setColor(self.colorName)
     else
-      tile.gui:setColor('')
+      tile.ui:setColor('')
     end
   end
 end
@@ -134,15 +134,15 @@ function BattleAction:resetMovableTiles(input)
   if self.autoPath then
     local matrix = TurnManager:pathMatrix()
     for tile in self.field:gridIterator() do
-      tile.gui.movable = matrix:get(tile:coordinates()) ~= nil
+      tile.ui.movable = matrix:get(tile:coordinates()) ~= nil
     end
   else
     for tile in self.field:gridIterator() do
-      tile.gui.movable = false
+      tile.ui.movable = false
     end
     if input.user then
       local charTile = input.user:getTile()
-      charTile.gui.movable = true
+      charTile.ui.movable = true
     end
   end
 end
@@ -155,10 +155,10 @@ function BattleAction:resetReachableTiles(input)
   local borderTiles = List()
   -- Find all border tiles
   for tile in self.field:gridIterator() do
-    tile.gui.reachable = false
+    tile.ui.reachable = false
   end
   for tile in self.field:gridIterator() do
-    if tile.gui.movable then
+    if tile.ui.movable then
       for n = 1, #tile.neighborList do
         local neighbor = tile.neighborList[n]
         -- If this tile has any non-reachable neighbors, it's a border tile
@@ -177,7 +177,7 @@ function BattleAction:resetReachableTiles(input)
     for x, y, h in mathf.maskIterator(self.range, tile:coordinates()) do
       local n = self.field:getObjectTile(x, y, h) 
       if n then
-        n.gui.reachable = true
+        n.ui.reachable = true
       end
     end
   end
@@ -225,7 +225,7 @@ function BattleAction:isSelectable(input, tile)
   if input.user and not self:isRanged() then
     return input.user:getTile() == tile
   end
-  return tile.gui.reachable or self.autoPath and not self.reachableOnly
+  return tile.ui.reachable or self.autoPath and not self.reachableOnly
 end
 --- Checks if the range mask contains any tiles besides the center tile.
 -- @treturn boolean True if it's a ranged action, false otherwise.
@@ -317,7 +317,7 @@ function BattleAction:closestSelectableTiles(input)
   local tempQueue = PriorityQueue()
   local target = input.target
   for tile in self.field:gridIterator() do
-    if tile.gui.selectable then
+    if tile.ui.selectable then
       local path, cost
       if self.moveAction then
         input.target = tile

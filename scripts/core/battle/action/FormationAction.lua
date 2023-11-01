@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Changes the initial formation of the battlers.
--- It is executed when players chooses "Formation" in the intro GUI.
+-- It is executed when players chooses "Formation" in the intro Menu.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod FormationAction
 -- @extend CallAction
@@ -11,7 +11,7 @@
 
 -- Imports
 local CallAction = require('core/battle/action/CallAction')
-local CallGUI = require('core/gui/battle/CallGUI')
+local CallMenu = require('core/gui/battle/CallMenu')
 
 -- Class table.
 local FormationAction = class(CallAction)
@@ -30,7 +30,7 @@ end
 --- Overrides `FieldAction:onConfirm`. 
 -- @override
 function FormationAction:onConfirm(input)
-  local result = GUIManager:showGUIForResult(CallGUI(input.GUI, self.troop, input.user == nil))
+  local result = MenuManager:showMenuForResult(CallMenu(input.menu, self.troop, input.user == nil))
   if result ~= 0 then
     local char = input.target:getFirstBattleCharacter()
     if result == '' then
@@ -55,7 +55,7 @@ function FormationAction:onConfirm(input)
     TroopManager.centers = TroopManager:getPartyCenters()
     self:resetTileProperties(input)
     self:resetTileColors(input)
-    input.GUI:selectTarget(input.target)
+    input.menu:selectTarget(input.target)
   end
 end
 

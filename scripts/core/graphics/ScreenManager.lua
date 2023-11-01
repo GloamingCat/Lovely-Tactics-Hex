@@ -126,7 +126,7 @@ end
 -- Size
 -- ------------------------------------------------------------------------------------------------
 
---- Scales the screen (deforms both field and GUI).
+--- Scales the screen (deforms both field and Menu).
 -- @tparam number x The scale factor in axis x.
 -- @tparam number y The scale factor in axis y.
 -- @treturn boolean True if the canvas size changed.

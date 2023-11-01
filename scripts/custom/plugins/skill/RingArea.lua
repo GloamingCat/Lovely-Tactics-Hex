@@ -39,7 +39,7 @@
 local BattleAction = require('core/battle/action/BattleAction')
 local FieldAction = require('core/battle/action/FieldAction')
 local SkillAction = require('core/battle/action/SkillAction')
-local ActionGUI = require('core/gui/battle/ActionGUI')
+local ActionMenu = require('core/gui/battle/ActionMenu')
 
 -- Alias
 local mathf = math.field
@@ -73,16 +73,16 @@ function SkillAction:init(...)
     self.moveAction.range = self.range
   end
 end
---- Overrides `BattleAction:onActionGUI`.
+--- Overrides `BattleAction:onActionMenu`.
 -- @override
-function SkillAction:onActionGUI(input)
-  BattleAction.onActionGUI(self, input)
+function SkillAction:onActionMenu(input)
+  BattleAction.onActionMenu(self, input)
   local far = self.tags.cast_far
   local near = self.tags.cast_near
   if not self.showStepWindow and self:isLongRanged() and (far or near) then
     far = far or 1
     near = near or 1
-    input.GUI:createPropertyWindow('range', near > 1 and (near .. '-' .. far) or far):show()
+    input.menu:createPropertyWindow('range', near > 1 and (near .. '-' .. far) or far):show()
   end
 end
 --- Creates a mask for the ring format.
@@ -123,7 +123,7 @@ function FieldAction:resetAffectedTiles(input)
   if self:wholeField() then
     local affectedTiles = self:getAllAffectedTiles(input)
     for i = 1, #affectedTiles do
-      affectedTiles[i].gui.affected = true
+      affectedTiles[i].ui.affected = true
     end
   else
     return FieldAction_resetAffectedTiles(self, input)

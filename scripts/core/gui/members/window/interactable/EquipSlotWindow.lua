@@ -3,14 +3,14 @@
 
 --- The window that shows each equipment slot.
 ---------------------------------------------------------------------------------------------------
--- @uimod EquipSlotWindow
+-- @windowmod EquipSlotWindow
 -- @extend ListWindow
 
 -- ================================================================================================
 
 -- Imports
 local Vector = require('core/math/Vector')
-local SimpleText = require('core/gui/widget/SimpleText')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Button = require('core/gui/widget/control/Button')
 local ListWindow = require('core/gui/common/window/interactable/ListWindow')
 
@@ -26,15 +26,15 @@ local EquipSlotWindow = class(ListWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam EquipGUI gui The parent GUI.
-function EquipSlotWindow:init(gui)
-  self.member = gui:currentMember()
+-- @tparam EquipMenu menu The parent Menu.
+function EquipSlotWindow:init(menu)
+  self.member = menu:currentMember()
   self.visibleRowCount = 0
   for i = 1, #Config.equipTypes do
     self.visibleRowCount = Config.equipTypes[i].count + self.visibleRowCount
   end
   self.visibleRowCount = min(6, max(self.visibleRowCount, 4))
-  ListWindow.init(self, gui, Config.equipTypes)
+  ListWindow.init(self, menu, Config.equipTypes)
 end
 --- Overrides `ListWindow:createListButton`. 
 -- @override
@@ -45,8 +45,8 @@ function EquipSlotWindow:createListButton(slot)
     local w = self:cellWidth()
     button.iconPos = 1
     button:setIcon(Config.icons.empty)
-    button:createText('data.conf.' .. slot.key, slot.name, 'gui_button')
-    button:createInfoText('noEquip', '', 'gui_button')
+    button:createText('data.conf.' .. slot.key, slot.name, 'menu_button')
+    button:createInfoText('noEquip', '', 'menu_button')
     button.key = slot.key .. i
     button.slot = slot
   end
@@ -93,33 +93,33 @@ end
 -- @tparam Button button
 function EquipSlotWindow:onButtonSelect(button)
   if button.item then
-    self.GUI.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
+    self.menu.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
   else
-    self.GUI.descriptionWindow:updateText('')
+    self.menu.descriptionWindow:updateText('')
   end
-  self.GUI.bonusWindow:setEquip(button.key, button.item)
+  self.menu.bonusWindow:setEquip(button.key, button.item)
 end
 --- Called when player presses "confirm".
 -- Open item window to choose the new equip.
 -- @tparam Button button
 function EquipSlotWindow:onButtonConfirm(button)
   self:hide()
-  self.GUI.itemWindow:setSlot(button.key, button.slot)
-  self.GUI.itemWindow:show()
-  self.GUI.itemWindow:activate()
+  self.menu.itemWindow:setSlot(button.key, button.slot)
+  self.menu.itemWindow:show()
+  self.menu.itemWindow:activate()
 end
 --- Called when player presses "cancel".
--- Closes GUI.
+-- Closes Menu.
 function EquipSlotWindow:onButtonCancel()
   self.result = 0
 end
 --- Called when player presses "next" key.
 function EquipSlotWindow:onNext()
-  self.GUI:nextMember()
+  self.menu:nextMember()
 end
 --- Called when player presses "prev" key.
 function EquipSlotWindow:onPrev()
-  self.GUI:prevMember()
+  self.menu:prevMember()
 end
 
 -- ------------------------------------------------------------------------------------------------

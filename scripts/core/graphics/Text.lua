@@ -48,7 +48,7 @@ function Text:init(text, properties, renderer)
   self.maxWidth = properties[1]
   self.alignX = properties[2] or 'left'
   self.alignY = 'top'
-  self.defaultFont = properties[3] or Fonts.gui_default
+  self.defaultFont = properties[3] or Fonts.menu_default
   self.plainText = properties[4]
   self.wrap = false
   self:setText(text)
@@ -163,7 +163,7 @@ end
 
 --- Sets maximum line width. If wrap is set as true, new lines will be created to accomodate text 
 -- out of width limit. Else, the line that surpasses width limit is shrinked horizontally to fit.
--- @tparam number w Maximum width in GUI pixel coordinates.
+-- @tparam number w Maximum width in Menu pixel coordinates.
 function Text:setMaxWidth(w)
   if self.maxWidth ~= w then
     self.maxWidth = w
@@ -173,7 +173,7 @@ function Text:setMaxWidth(w)
   end
 end
 --- Sets maximum text box height. It is used only to set vertical alignment.
--- @tparam number h Maximum height in GUI pixel coordinates.
+-- @tparam number h Maximum height in Menu pixel coordinates.
 function Text:setMaxHeight(h)
   if self.maxHeight ~= h then
     self.maxHeight = h
@@ -199,8 +199,8 @@ function Text:setAlignY(align)
   end
 end
 --- Gets the line offset in x according to the alignment.
--- @tparam number w Line's width in GUI pixels.
--- @treturn number The x offset in GUI pixels.
+-- @tparam number w Line's width in Menu pixels.
+-- @treturn number The x offset in Menu pixels.
 function Text:alignOffsetX(w)
   w = w or self:getWidth()
   if self.maxWidth then
@@ -213,8 +213,8 @@ function Text:alignOffsetX(w)
   return 0
 end
 --- Gets the text box offset in y according to the alingment.
--- @tparam number h Text's height in GUI pixels (optional, sum of all lines' heights by default).
--- @treturn number The y offset in GUI pixels.
+-- @tparam number h Text's height in Menu pixels (optional, sum of all lines' heights by default).
+-- @treturn number The y offset in Menu pixels.
 function Text:alignOffsetY(h)
   h = h or self:getHeight()
   if self.maxHeight then

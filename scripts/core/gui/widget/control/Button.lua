@@ -12,7 +12,7 @@
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local Animation = require('core/graphics/Animation')
-local SimpleText = require('core/gui/widget/SimpleText')
+local TextComponent = require('core/gui/widget/TextComponent')
 local GridWidget = require('core/gui/widget/control/GridWidget')
 
 -- Class table.
@@ -65,18 +65,18 @@ function Button:createText(term, fallback, fontName, align, w, pos)
   if self.text then
     self.text:destroy()
   end
-  fontName = fontName or 'gui_button'
+  fontName = fontName or 'menu_button'
   w = (w or self.window:cellWidth()) - self:iconWidth()
   if self.iconPos < 0.25 then
     pos = pos or Vector(self:iconWidth(), 0, 0)
   else
     pos = pos or Vector(0, 0, 0)
   end
-  local text = SimpleText('', pos, w, align or 'left', Fonts[fontName])
+  local text = TextComponent('', pos, w, align or 'left', Fonts[fontName])
   text:setTerm(term, fallback)
   text.sprite.alignY = 'center'
   text.sprite.maxHeight = self.window:cellHeight()
-  text.sprite:setColor(Color.gui_text_enabled)
+  text.sprite:setColor(Color.menu_text_enabled)
   text:redraw()
   self.text = text
   self.content:add(text)
@@ -99,12 +99,12 @@ function Button:createInfoText(term, fallback, fontName, align, w, pos)
   else
     pos = pos or Vector(self.window:cellWidth() - w, 0, 0)
   end
-  fontName = fontName or 'gui_button'
-  local text = SimpleText('', pos, w, align or 'right', Fonts[fontName])
+  fontName = fontName or 'menu_button'
+  local text = TextComponent('', pos, w, align or 'right', Fonts[fontName])
   text:setTerm(term, fallback)
   text.sprite.alignY = 'center'
   text.sprite.maxHeight = self.window:cellHeight()
-  text.sprite:setColor(Color.gui_text_enabled)
+  text.sprite:setColor(Color.menu_text_enabled)
   text:redraw()
   self.infoText = text
   self.content:add(text)
@@ -126,25 +126,25 @@ function Button:iconWidth()
   end
 end
 --- Sets the main text.
--- @param ... Parameters from SimpleText:setText.
+-- @param ... Parameters from TextComponent:setText.
 function Button:setText(...)
   self.text:setText(...)
   self.text:redraw()
 end
 --- Sets the main text's term.
--- @param ... Parameters from SimpleText:setTerm.
+-- @param ... Parameters from TextComponent:setTerm.
 function Button:setTerm(...)
   self.text:setTerm(...)
   self.text:redraw()
 end
 --- Sets the secondary text.
--- @param ... Parameters from SimpleText:setText.
+-- @param ... Parameters from TextComponent:setText.
 function Button:setInfoText(...)
   self.infoText:setText(...)
   self.infoText:redraw()
 end
 --- Sets the secondary text's term.
--- @param ... Parameters from SimpleText:setTerm.
+-- @param ... Parameters from TextComponent:setTerm.
 function Button:setInfoTerm(...)
   self.infoText:setTerm(...)
   self.infoText:redraw()
@@ -164,9 +164,9 @@ function Button:setIcon(icon)
     if icon.id < 0 then
       return
     end
-    icon = ResourceManager:loadIconAnimation(icon, GUIManager.renderer)
+    icon = ResourceManager:loadIconAnimation(icon, MenuManager.renderer)
   end
-  icon.sprite:setColor(Color.gui_icon_enabled)
+  icon.sprite:setColor(Color.menu_icon_enabled)
   self.icon = icon
   self.content:add(icon)
 end
@@ -188,15 +188,15 @@ end
 function Button:refreshColor()
   local name = self.enabled and 'enabled' or 'disabled'
   if self.text then
-    local color = Color['gui_text_' .. name]
+    local color = Color['menu_text_' .. name]
     self.text.sprite:setColor(color)
   end
   if self.infoText then
-    local color = Color['gui_text_' .. name]
+    local color = Color['menu_text_' .. name]
     self.infoText.sprite:setColor(color)
   end
   if self.icon then
-    local color = Color['gui_icon_' .. name]
+    local color = Color['menu_icon_' .. name]
     self.icon.sprite:setColor(color)
   end
 end

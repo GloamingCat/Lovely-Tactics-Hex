@@ -9,7 +9,7 @@
 
 -- Imports
 local Button = require('core/gui/widget/control/Button')
-local GUI = require('core/gui/GUI')
+local Menu = require('core/gui/Menu')
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
 local TitleCommandWindow = require('core/gui/menu/window/interactable/TitleCommandWindow')
 
@@ -35,15 +35,15 @@ function TitleCommandWindow:createWidgets()
 end
 --- Settings button.
 function TitleCommandWindow:tutorialConfirm()
-  self.GUI.topText:setVisible(false)
+  self.menu.topText:setVisible(false)
   self:hide()
-  local gui = GUI()
+  local menu = Menu()
   local w = width or ScreenManager.width - DescriptionWindow:paddingX() * 2
   local h = height or ScreenManager.height - DescriptionWindow:paddingY() * 2
-  local window = DescriptionWindow(gui, w, h)
+  local window = DescriptionWindow(menu, w, h)
   window.text:setAlign('left', 'top')
   window.text.sprite.wrap = true
-  window.text.sprite.defaultFont = Fonts.gui_medium
+  window.text.sprite.defaultFont = Fonts.menu_medium
   local text = ''
   for i = 1, #texts do
     text = text .. '    ' .. Vocab.dialogues.tutorial[texts[i]] .. "\n"
@@ -51,10 +51,10 @@ function TitleCommandWindow:tutorialConfirm()
   window:updateText(text)
   window.confirmSound = Config.sounds.buttonCancel
   window.cancelSound = Config.sounds.buttonCancel
-  gui.windowList:add(window)
-  gui.activeWindow = window
-  GUIManager:showGUIForResult(gui)
-  self.GUI.topText:setVisible(true)
+  menu.windowList:add(window)
+  menu.activeWindow = window
+  MenuManager:showMenuForResult(menu)
+  self.menu.topText:setVisible(true)
   self:show()
 end
 --- Rewrites `TitleCommandWindow:rowCount`.

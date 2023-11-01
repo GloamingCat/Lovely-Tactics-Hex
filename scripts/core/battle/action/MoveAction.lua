@@ -41,7 +41,7 @@ end
 -- @override
 function MoveAction:resetReachableTiles(input)
   for tile in self.field:gridIterator() do
-    tile.gui.reachable = tile.gui.movable
+    tile.ui.reachable = tile.ui.movable
   end
 end
 

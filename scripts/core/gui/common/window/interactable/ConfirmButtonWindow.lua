@@ -3,7 +3,7 @@
 
 --- A ButtonWindow that contains "Confirm" and "Cancel" options.
 ---------------------------------------------------------------------------------------------------
--- @uimod ConfirmButtonWindow
+-- @windowmod ConfirmButtonWindow
 -- @extend ConfirmWindow
 -- @extend ButtonWindow
 
@@ -21,16 +21,16 @@ local ConfirmButtonWindow = class(ConfirmWindow, ButtonWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
+-- @tparam Menu menu Parent Menu.
 -- @tparam string confirmTerm Term for the confirm button, from the `Vocab` table
 --  (optional, "``confirm`" by default).
 -- @tparam string cancelTerm Term for the cancel button, from the `Vocab` table.
 --  (optional, "``cancel`" by default).
 -- @param ... Other parameters from `Window:init`.
-function ConfirmButtonWindow:init(gui, confirmTerm, cancelTerm, ...)
+function ConfirmButtonWindow:init(menu, confirmTerm, cancelTerm, ...)
   self.confirmTerm = confirmTerm or 'confirm'
   self.cancelTerm = cancelTerm or 'cancel'
-  ButtonWindow.init(self, gui, {self.confirmTerm, self.cancelTerm}, ...)
+  ButtonWindow.init(self, menu, {self.confirmTerm, self.cancelTerm}, ...)
 end
 
 -- ------------------------------------------------------------------------------------------------

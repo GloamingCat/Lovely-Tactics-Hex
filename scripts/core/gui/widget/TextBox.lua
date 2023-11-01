@@ -4,18 +4,18 @@
 --- Box to input a one-line string. 
 ---------------------------------------------------------------------------------------------------
 -- @uimod TextBox
--- @extend SimpleText
+-- @extend TextComponent
 
 -- ================================================================================================
 
 -- Imports
 local Highlight = require('core/gui/widget/Highlight')
 local Sprite = require('core/graphics/Sprite')
-local SimpleText = require('core/gui/widget/SimpleText')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Vector = require('core/math/Vector')
 
 -- Class table.
-local TextBox = class(SimpleText)
+local TextBox = class(TextComponent)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -35,12 +35,12 @@ function TextBox:init(window, initStr, pos, width)
   self.cancelSound = Config.sounds.buttonCancel
   self.errorSound = Config.sounds.buttonError
   self.window = window
-  SimpleText.init(self, initStr .. '{u} {u}', pos, width, 'left', Fonts.gui_button)
+  TextComponent.init(self, initStr .. '{u} {u}', pos, width, 'left', Fonts.menu_button)
 end
---- Overrides `SimpleText:createContent`. Creates highlight.
+--- Overrides `TextComponent:createContent`. Creates highlight.
 -- @override
 function TextBox:createContent(...)
-  SimpleText.createContent(self, ...)
+  TextComponent.createContent(self, ...)
   local width = self.window.width - self.window:colMargin() / 2 - 4
   local height = self.window:cellHeight() + self.window:rowMargin() / 2 + 4
   self.highlight = Highlight(nil, width, height, Vector(0, 0, 0))
@@ -77,7 +77,7 @@ end
 -- Cursor
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `SimpleText:updatePosition`. Updates highlight position.
+--- Overrides `TextComponent:updatePosition`. Updates highlight position.
 -- @override
 function TextBox:updatePosition(...)
   if self.highlight then
@@ -85,10 +85,10 @@ function TextBox:updatePosition(...)
     local height = self.window:cellHeight() + my
     self.highlight.displacement.x = 0
     self.highlight.displacement.y = -self.window.height / 2 + height / 2 - my / 2 + self.window:paddingY()
-    SimpleText.updatePosition(self, ...)
+    TextComponent.updatePosition(self, ...)
     self.highlight:updatePosition(...)
   else
-    SimpleText.updatePosition(self, ...)
+    TextComponent.updatePosition(self, ...)
   end
 end
 --- Hides or redraws cursor according to its position and visibility.

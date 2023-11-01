@@ -4,7 +4,7 @@
 --- A `GridWindow` that has its `Button`s generated dinamically.
 -- The buttons are created from a given list of arbitrary elements.
 ---------------------------------------------------------------------------------------------------
--- @uimod ListWindow
+-- @windowmod ListWindow
 -- @extend GridWindow
 
 -- ================================================================================================
@@ -19,13 +19,13 @@ local ListWindow = class(GridWindow)
 -- Initialization
 -- -------------------------------------------------------------------------------------------------
 
---- Overrides `Window:init`. 
--- @override
--- @tparam GUI gui Parent GUI.
+--- Constructor.
+-- @tparam Menu menu Parent Menu.
 -- @tparam table list Array of data used to create each button.
-function ListWindow:init(gui, list, ...)
+-- @param ... Other parameters from `Window:init`.
+function ListWindow:init(menu, list, ...)
   self.list = list
-  GridWindow.init(self, gui, ...)
+  GridWindow.init(self, menu, ...)
 end
 --- Implements `GridWindow:createWidgets`. 
 -- @implement
@@ -81,7 +81,7 @@ end
 --- Overrides `GridWindow:cellWidth`. Adapts the cell width to fit the whole screen.
 -- @override
 function ListWindow:cellWidth()
-  local w = ScreenManager.width - self.GUI:windowMargin() * 2
+  local w = ScreenManager.width - self.menu:windowMargin() * 2
   return self:computeCellWidth(w)
 end
 -- For debugging.

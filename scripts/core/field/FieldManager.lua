@@ -9,7 +9,7 @@
 
 -- Imports
 local FieldCamera = require('core/field/FieldCamera')
-local FieldHUD = require('core/gui/menu/FieldHUD')
+local PlayerMenu = require('core/gui/menu/PlayerMenu')
 local FiberList = require('core/fiber/FiberList')
 local FieldLoader = require('core/field/FieldLoader')
 local List = require('core/datastruct/List')
@@ -89,7 +89,7 @@ function FieldManager:loadTransition(transition, save)
   end
   local fieldData = self:loadField(transition.fieldID, save)
   FieldLoader.createTransitions(self.currentField, fieldData.prefs.transitions)
-  self.hud = self.hud or FieldHUD()
+  self.hud = self.hud or PlayerMenu()
   self:playFieldBGM()
   self:initializePlayer(transition, save)
   self:runLoadScripts()
@@ -244,16 +244,16 @@ function FieldManager:searchAll(key)
   end
   return list
 end
---- Shows field grid GUI.
+--- Shows field grid Menu.
 function FieldManager:showGrid()
   for tile in self.currentField:gridIterator() do
-    tile.gui:show()
+    tile.ui:show()
   end
 end
---- Hides field grid GUI.
+--- Hides field grid Menu.
 function FieldManager:hideGrid()
   for tile in self.currentField:gridIterator() do
-    tile.gui:hide()
+    tile.ui:hide()
   end
 end
 --- Tells if the field was loaded from save instead of from a field transition.

@@ -1,19 +1,19 @@
 
 -- ================================================================================================
 
---- The GUI that is openned when player presses the menu button in the field.
+--- Opens when player presses the menu button when they're navigating the field.
 ---------------------------------------------------------------------------------------------------
--- @uimod FieldGUI
--- @extend GUI
+-- @menumod FieldMenu
+-- @extend Menu
 
 -- ================================================================================================
 
 -- Imports
-local GUI = require('core/gui/GUI')
+local Menu = require('core/gui/Menu')
 local FieldCommandWindow = require('core/gui/menu/window/interactable/FieldCommandWindow')
 local GoldWindow = require('core/gui/menu/window/GoldWindow')
 local LocationWindow = require('core/gui/menu/window/LocationWindow')
-local MemberGUI = require('core/gui/members/MemberGUI')
+local MemberMenu = require('core/gui/members/MemberMenu')
 local PartyWindow = require('core/gui/members/window/interactable/PartyWindow')
 local QuitWindow = require('core/gui/menu/window/interactable/QuitWindow')
 local TimeWindow = require('core/gui/menu/window/TimeWindow')
@@ -21,18 +21,18 @@ local Troop = require('core/battle/Troop')
 local Vector = require('core/math/Vector')
 
 -- Class table.
-local FieldGUI = class(GUI)
+local FieldMenu = class(Menu)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `GUI:createWindows`. 
+--- Overrides `Menu:createWindows`. 
 -- @override
-function FieldGUI:createWindows()
+function FieldMenu:createWindows()
   self.goldWindowWidth = ScreenManager.width / 4
   self.goldWindowHeight = 32
-  self.name = 'Field GUI'
+  self.name = 'Field Menu'
   self.troop = Troop()
   self:createMainWindow()
   self:createMembersWindow()
@@ -42,12 +42,12 @@ function FieldGUI:createWindows()
   self:createQuitWindow()
 end
 --- Creates the list with the main commands.
-function FieldGUI:createMainWindow()
+function FieldMenu:createMainWindow()
   self.mainWindow = FieldCommandWindow(self)
   self:setActiveWindow(self.mainWindow)
 end
 --- Creates the window that shows the troop's money.
-function FieldGUI:createGoldWindow()
+function FieldMenu:createGoldWindow()
   local w, h = self.goldWindowWidth, self.goldWindowHeight
   local x = (ScreenManager.width - w) / 2 - self:windowMargin()
   local y = -(ScreenManager.height - h) / 2 + self:windowMargin()
@@ -55,7 +55,7 @@ function FieldGUI:createGoldWindow()
   self.goldWindow:setGold(self.troop.money)
 end
 --- Creates the window that shows the current location.
-function FieldGUI:createLocationWindow()
+function FieldMenu:createLocationWindow()
   local w = ScreenManager.width - self:windowMargin() * 4 - self.goldWindowWidth * 2
   local h = self.goldWindowHeight
   local x = 0
@@ -64,7 +64,7 @@ function FieldGUI:createLocationWindow()
   self.locationWindow:setLocal(FieldManager.currentField)
 end
 --- Creates the window that shows the total playtime.
-function FieldGUI:createTimeWindow()
+function FieldMenu:createTimeWindow()
   local w, h = self.goldWindowWidth, self.goldWindowHeight
   local x = -(ScreenManager.width - w) / 2 + self:windowMargin()
   local y = -(ScreenManager.height - h) / 2 + self:windowMargin()
@@ -72,12 +72,12 @@ function FieldGUI:createTimeWindow()
   self.timeWindow:setTime(GameManager:currentPlayTime())
 end
 --- Creates the member list window the shows when player selects "Characters" button.
-function FieldGUI:createMembersWindow()
+function FieldMenu:createMembersWindow()
   self.partyWindow = PartyWindow(self, self.troop)
   self.partyWindow:setVisible(false)
 end
 --- Creates the window the shows when player selects "Quit" button.
-function FieldGUI:createQuitWindow()
+function FieldMenu:createQuitWindow()
   self.quitWindow = QuitWindow(self)
   self.quitWindow:setVisible(false)
 end
@@ -86,11 +86,11 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `GUI:hide`. Saves troop modifications.
+--- Overrides `Menu:hide`. Saves troop modifications.
 -- @override
-function FieldGUI:hide(...)
+function FieldMenu:hide(...)
   TroopManager:saveTroop(self.troop)
-  GUI.hide(self, ...)
+  Menu.hide(self, ...)
 end
 
-return FieldGUI
+return FieldMenu

@@ -3,17 +3,17 @@
 
 --- The small windows with the commands for character management.
 ---------------------------------------------------------------------------------------------------
--- @uimod MemberCommandWindow
+-- @windowmod MemberCommandWindow
 -- @extend GridWindow
 
 -- ================================================================================================
 
 -- Imports
 local Button = require('core/gui/widget/control/Button')
-local EquipGUI = require('core/gui/members/EquipGUI')
-local ItemGUI = require('core/gui/members/ItemGUI')
+local EquipMenu = require('core/gui/members/EquipMenu')
+local ItemMenu = require('core/gui/members/ItemMenu')
 local GridWindow = require('core/gui/GridWindow')
-local SkillGUI = require('core/gui/members/SkillGUI')
+local SkillMenu = require('core/gui/members/SkillMenu')
 
 -- Class table.
 local MemberCommandWindow = class(GridWindow)
@@ -35,52 +35,52 @@ end
 
 --- Items button.
 function MemberCommandWindow:itemsConfirm()
-  self:showGUI(ItemGUI)
+  self:showMenu(ItemMenu)
 end
 --- Skills button.
 function MemberCommandWindow:skillsConfirm()
-  self:showGUI(SkillGUI)
+  self:showMenu(SkillMenu)
 end
 --- Equips button.
 function MemberCommandWindow:equipsConfirm()
-  self:showGUI(EquipGUI)
+  self:showMenu(EquipMenu)
 end
 
 -- ------------------------------------------------------------------------------------------------
 -- Enabled Conditions
 -- ------------------------------------------------------------------------------------------------
 
---- Whether the ItemGUI can be open.
+--- Whether the ItemMenu can be open.
 -- @treturn boolean
 function MemberCommandWindow:itemsEnabled()
-  return ItemGUI:memberEnabled(self.GUI:currentMember())
+  return ItemMenu:memberEnabled(self.menu:currentMember())
 end
---- Whether the SkillGUI can be open.
+--- Whether the SkillMenu can be open.
 -- @treturn boolean
 function MemberCommandWindow:skillsEnabled()
-  return SkillGUI:memberEnabled(self.GUI:currentMember())
+  return SkillMenu:memberEnabled(self.menu:currentMember())
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Member GUI
+-- Member Menu
 -- ------------------------------------------------------------------------------------------------
 
---- Shows a sub GUI for the current member.
--- @tparam class GUI
-function MemberCommandWindow:showGUI(GUI)
+--- Shows a sub Menu for the current member.
+-- @tparam class Menu
+function MemberCommandWindow:showMenu(Menu)
   self.cursor:hide()
-  self.GUI:showSubGUI(GUI)
+  self.menu:showSubMenu(Menu)
   self.cursor:show()
 end
 --- Called when player presses "next" key.
 function MemberCommandWindow:onNext()
   AudioManager:playSFX(Config.sounds.buttonSelect)
-  self.GUI:nextMember()
+  self.menu:nextMember()
 end
 --- Called when player presses "prev" key.
 function MemberCommandWindow:onPrev()
   AudioManager:playSFX(Config.sounds.buttonSelect)
-  self.GUI:prevMember()
+  self.menu:prevMember()
 end
 --- Changes current selected member.
 -- @tparam Battler battler The Battler associated with current/chosen character.

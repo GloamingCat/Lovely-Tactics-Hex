@@ -1,9 +1,9 @@
 
 -- ================================================================================================
 
---- The GUI that is open to choose an item from character's inventory.
+--- Menu to choose an item from the `Troop`'s inventory.
 ---------------------------------------------------------------------------------------------------
--- @uimod InventoryWindow
+-- @windowmod InventoryWindow
 -- @extend ListWindow
 
 -- ================================================================================================
@@ -13,7 +13,7 @@ local ActionInput = require('core/battle/action/ActionInput')
 local Button = require('core/gui/widget/control/Button')
 local ItemAction = require('core/battle/action/ItemAction')
 local ListWindow = require('core/gui/common/window/interactable/ListWindow')
-local MenuTargetGUI = require('core/gui/common/MenuTargetGUI')
+local TargetMenu = require('core/gui/common/TargetMenu')
 local Vector = require('core/math/Vector')
 
 -- Class table.
@@ -24,7 +24,7 @@ local InventoryWindow = class(ListWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
+-- @tparam Menu menu Parent Menu.
 -- @tparam Battler user The user of the items.
 -- @tparam Inventory inventory Inventory with the list of items.
 -- @tparam table itemList Array with item slots that are going to be shown
@@ -34,13 +34,13 @@ local InventoryWindow = class(ListWindow)
 -- @tparam Vector pos Position of the window's center (screen center by default).
 -- @tparam number rowCount The number of visible button rows
 --  (maximum possible rows by default - needs h to be non-nil).
-function InventoryWindow:init(gui, user, inventory, itemList, w, h, pos, rowCount)
+function InventoryWindow:init(menu, user, inventory, itemList, w, h, pos, rowCount)
   self.member = user
-  self.leader = gui.troop:currentBattlers()[1]
+  self.leader = menu.troop:currentBattlers()[1]
   assert(self.leader, 'Empty party!')
   self.inventory = inventory
   self.visibleRowCount = self.visibleRowCount or rowCount or self:computeRowCount(h)
-  ListWindow.init(self, gui, itemList or inventory, w, h, pos)
+  ListWindow.init(self, menu, itemList or inventory, w, h, pos)
 end
 --- Creates a button from an item ID.
 -- @tparam table itemSlot A slot from the inventory (with item's ID and count).
@@ -49,8 +49,8 @@ function InventoryWindow:createListButton(itemSlot)
   local item = Database.items[itemSlot.id]
   local button = Button(self)
   button:setIcon(item.icon)
-  button:createText('data.item.' .. item.key, item.name, 'gui_default')
-  button:createInfoText('x' .. itemSlot.count, nil, 'gui_default')
+  button:createText('data.item.' .. item.key, item.name, 'menu_default')
+  button:createInfoText('x' .. itemSlot.count, nil, 'menu_default')
   button.item = item
   if item.skillID >= 0 then
     button.skill = ItemAction:fromData(item.skillID, button.item)
@@ -82,11 +82,11 @@ end
 --- Updates description when button is selected.
 -- @tparam Button button
 function InventoryWindow:onButtonSelect(button)
-  if self.GUI.descriptionWindow then
+  if self.menu.descriptionWindow then
     if button.item then
-      self.GUI.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
+      self.menu.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
     else
-      self.GUI.descriptionWindow:updateText('')
+      self.menu.descriptionWindow:updateText('')
     end
   end
 end
@@ -107,12 +107,12 @@ end
 --- Use item in a single member.
 -- @tparam ActionInput input
 function InventoryWindow:singleTargetItem(input)
-  self.GUI:hide()
-  local gui = MenuTargetGUI(self.GUI, input.user.troop, input)
-  GUIManager:showGUIForResult(gui)
+  self.menu:hide()
+  local menu = TargetMenu(self.menu, input.user.troop, input)
+  MenuManager:showMenuForResult(menu)
   self:refreshItems()
   _G.Fiber:wait()
-  self.GUI:show()
+  self.menu:show()
 end
 --- Use item in a all members.
 -- @tparam ActionInput input

@@ -11,7 +11,7 @@
 
 -- Imports
 local Component = require('core/gui/Component')
-local SimpleImage = require('core/gui/widget/SimpleImage')
+local ImageComponent = require('core/gui/widget/ImageComponent')
 local SpriteGrid = require('core/graphics/SpriteGrid')
 local Vector = require('core/math/Vector')
 
@@ -68,15 +68,15 @@ function IconList:setSprites(icons)
     end
     if sprite then
       sprite:setVisible(self.visible)
-      self.icons[i] = SimpleImage(sprite, x - self.iconWidth / 2, y - self.iconHeight / 2, -1, 
+      self.icons[i] = ImageComponent(sprite, x - self.iconWidth / 2, y - self.iconHeight / 2, -1, 
         self.iconWidth, self.iconHeight)
     else
-      self.icons[i] = SimpleImage(nil, x, y, -1, self.iconWidth, self.iconHeight)
+      self.icons[i] = ImageComponent(nil, x, y, -1, self.iconWidth, self.iconHeight)
     end
     self.content:add(self.icons[i])
     if frameSkin then
       self.frames[i] = SpriteGrid(frameSkin, Vector(x, y, -2))
-      self.frames[i]:createGrid(GUIManager.renderer, self.frameWidth, self.frameHeight)
+      self.frames[i]:createGrid(MenuManager.renderer, self.frameWidth, self.frameHeight)
       self.content:add(self.frames[i])
     end
     x = x + self.frameWidth - 1
@@ -87,7 +87,7 @@ end
 function IconList:setIcons(icons)
   local sprites = {}
   for i = 1, #icons do
-    sprites[i] = ResourceManager:loadIcon(icons[i], GUIManager.renderer)
+    sprites[i] = ResourceManager:loadIcon(icons[i], MenuManager.renderer)
   end
   self:setSprites(sprites)
 end

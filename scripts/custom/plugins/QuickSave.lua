@@ -34,10 +34,10 @@ KeyMap.main['load'] = args.load
 local loadRequested = false
 --- Show save/load messages.
 local function popUp(msg)
-  GUIManager.fiberList:fork(function()
-    local popUp = PopText(ScreenManager.width / 2 - 50, ScreenManager.height / 2, GUIManager.renderer)
+  MenuManager.fiberList:fork(function()
+    local popUp = PopText(ScreenManager.width / 2 - 50, ScreenManager.height / 2, MenuManager.renderer)
     popUp.align = 'right'
-    popUp:addLine(msg, 'white', 'gui_default')
+    popUp:addLine(msg, 'white', 'menu_default')
     popUp:popUp()
   end)
 end

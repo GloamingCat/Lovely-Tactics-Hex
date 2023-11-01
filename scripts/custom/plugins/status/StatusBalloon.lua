@@ -13,12 +13,12 @@
 
 -- Imports
 local BattleCursor = require('core/battle/BattleCursor')
-local CharacterBase = require('core/objects/CharacterBase')
+local AnimatedInteractable = require('core/objects/AnimatedInteractable')
 local StatusList = require('core/battle/battler/StatusList')
 
 -- Rewrites
 local StatusList_updateGraphics = StatusList.updateGraphics
-local CharacterBase_update = CharacterBase.update
+local AnimatedInteractable_update = AnimatedInteractable.update
 local BattleCursor_setTile = BattleCursor.setTile
 local BattleCursor_setCharacter = BattleCursor.setCharacter
 
@@ -38,10 +38,10 @@ end
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Rewrites `CharacterBase:update`.
+--- Rewrites `AnimatedInteractable:update`.
 -- @rewrite
-function CharacterBase:update(dt)
-  CharacterBase_update(self, dt)
+function AnimatedInteractable:update(dt)
+  AnimatedInteractable_update(self, dt)
   if self.statusIcons and #self.statusIcons > 0 then 
     if not self.balloon then
       self:nextStatusIcon()
@@ -49,7 +49,7 @@ function CharacterBase:update(dt)
   end
 end
 --- Sets the icon to the next icon in the list.
-function CharacterBase:nextStatusIcon()
+function AnimatedInteractable:nextStatusIcon()
   self.statusIndex = math.mod1(self.statusIndex + 1, #self.statusIcons)
   self:createBalloon()
   local icon = self.statusIcons[self.statusIndex]

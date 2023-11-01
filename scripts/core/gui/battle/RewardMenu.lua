@@ -1,15 +1,15 @@
 
 -- ================================================================================================
 
---- The GUI that is shown in the end of the battle.
+--- Opens after the end of the battle, if the player wins.
 ---------------------------------------------------------------------------------------------------
--- @uimod RewardGUI
--- @extend GUI
+-- @menumod RewardMenu
+-- @extend Menu
 
 -- ================================================================================================
 
 -- Imports
-local GUI = require('core/gui/GUI')
+local Menu = require('core/gui/Menu')
 local RewardEXPWindow = require('core/gui/battle/window/RewardEXPWindow')
 local RewardItemWindow = require('core/gui/battle/window/RewardItemWindow')
 local Vector = require('core/math/Vector')
@@ -19,16 +19,16 @@ local Text = require('core/graphics/Text')
 local floor = math.floor
 
 -- Class table.
-local RewardGUI = class(GUI)
+local RewardMenu = class(Menu)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Implements `GUI:createWindows`.
+--- Implements `Menu:createWindows`.
 -- @implement
-function RewardGUI:createWindows()
-  self.name = 'Reward GUI'
+function RewardMenu:createWindows()
+  self.name = 'Reward Menu'
   self:createTopText()
   -- Reward windows
   local w = (ScreenManager.width - self:windowMargin() * 3) / 2
@@ -45,10 +45,10 @@ function RewardGUI:createWindows()
   self.troop.inventory:addAllItems(self.rewards.items)
 end
 --- Creates the text at the top of the screen to show that the player won.
-function RewardGUI:createTopText()
+function RewardMenu:createTopText()
   local prop = { ScreenManager.width,
-    'center', Fonts.gui_huge }
-  self.topText = Text(Vocab.win, prop, GUIManager.renderer)
+    'center', Fonts.menu_huge }
+  self.topText = Text(Vocab.win, prop, MenuManager.renderer)
   local x = -ScreenManager.width / 2
   local y = -ScreenManager.height / 2 + self:windowMargin() * 2
   self.topText:setXYZ(x, y)
@@ -56,13 +56,13 @@ function RewardGUI:createTopText()
   self.topTextSpeed = 2
 end
 --- Creates the window that shows battle results.
-function RewardGUI:createEXPWindow(x, y, w, h)
+function RewardMenu:createEXPWindow(x, y, w, h)
   local pos = Vector(-x, y)
   local window = RewardEXPWindow(self, w, h, pos)
   self.expWindow = window
 end
 --- Creates the window that shows battle results.
-function RewardGUI:createItemWindow(x, y, w, h)
+function RewardMenu:createItemWindow(x, y, w, h)
   local pos = Vector(x, y)
   local window = RewardItemWindow(self, w, h, pos)
   self.itemWindow = window
@@ -73,13 +73,13 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Show top text before openning windows.
-function RewardGUI:show(...)
+function RewardMenu:show(...)
   self:showTopText()
   _G.Fiber:wait(15)
-  GUI.show(self, ...)
+  Menu.show(self, ...)
 end
 --- Animation that shows the text at the top.
-function RewardGUI:showTopText()
+function RewardMenu:showTopText()
   if AudioManager.victoryTheme then
     AudioManager:playBGM(AudioManager.victoryTheme)
   end
@@ -99,12 +99,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Hide top text after closing windows.
-function RewardGUI:hide(...)
-  GUI.hide(self, ...)
+function RewardMenu:hide(...)
+  Menu.hide(self, ...)
   self:hideTopText()
 end
 --- Animation that shows the text at the top.
-function RewardGUI:hideTopText()
+function RewardMenu:hideTopText()
   if AudioManager.victoryTheme then
     AudioManager:pauseBGM(120 / self.topTextSpeed, true)
   end
@@ -121,11 +121,11 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `GUI:destroy`. Destroys top text.
+--- Overrides `Menu:destroy`. Destroys top text.
 -- @override
-function RewardGUI:destroy(...)
-  GUI.destroy(self, ...)
+function RewardMenu:destroy(...)
+  Menu.destroy(self, ...)
   self.topText:destroy()
 end
 
-return RewardGUI
+return RewardMenu

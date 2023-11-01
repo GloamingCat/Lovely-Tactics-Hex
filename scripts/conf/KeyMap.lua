@@ -14,11 +14,11 @@
 --  `InputManager.MouseButton`.
 -- @table Map
 -- @field confirm Confirm selected buttons/tiles on menus and interact with NPCs.
--- @field cancel Close/cancel menus and to open the `FieldGUI` when walking around.
+-- @field cancel Close/cancel menus and to open the `FieldMenu` when walking around.
 -- @field pause Pause the game.
 -- @field dash Run or accelerate value selection on spinners.
--- @field prev Select previous menu/page and select the tile below during `ActionGUI`.
--- @field next Select next menu/page and select the tile above during `ActionGUI`.
+-- @field prev Select previous menu/page and select the tile below during `ActionMenu`.
+-- @field next Select next menu/page and select the tile above during `ActionMenu`.
 
 --- The map configuration.
 -- @table Config

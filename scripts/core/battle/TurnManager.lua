@@ -2,7 +2,7 @@
 -- ================================================================================================
 
 --- Provides methods for battle's turn management.
--- At the end of each turn, an `ActionResult` table must be returned by either the GUI (player) or
+-- At the end of each turn, an `ActionResult` table must be returned by either the Menu (player) or
 -- the AI (enemies). 
 ---------------------------------------------------------------------------------------------------
 -- @manager TurnManager
@@ -12,7 +12,7 @@
 -- Imports
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
 local PathFinder = require('core/battle/ai/PathFinder')
-local BattleGUI = require('core/gui/battle/BattleGUI')
+local TurnMenu = require('core/gui/battle/TurnMenu')
 
 -- Alias
 local indexOf = util.arrayIndexOf
@@ -181,7 +181,7 @@ function TurnManager:runPlayerTurn()
     end
     self:characterTurnStart()
     local AI = self:currentCharacter().battler:getAI()
-    local result = AI and AI:runTurn() or GUIManager:showGUIForResult(BattleGUI(nil))
+    local result = AI and AI:runTurn() or MenuManager:showMenuForResult(TurnMenu(nil))
     if result.characterIndex then
       self.characterIndex = result.characterIndex
     else

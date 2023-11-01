@@ -20,14 +20,14 @@
 
 -- Imports
 local Animation = require('core/graphics/Animation')
-local CharacterBase = require('core/objects/CharacterBase')
+local AnimatedInteractable = require('core/objects/AnimatedInteractable')
 local CharacterEvents = require('core/event/CharacterEvents')
 local ResourceManager = require('core/base/ResourceManager')
 
 -- Rewrites
-local CharacterBase_setXYZ = CharacterBase.setXYZ
-local CharacterBase_update = CharacterBase.update
-local CharacterBase_destroy = CharacterBase.destroy
+local AnimatedInteractable_setXYZ = AnimatedInteractable.setXYZ
+local AnimatedInteractable_update = AnimatedInteractable.update
+local AnimatedInteractable_destroy = AnimatedInteractable.destroy
 
 -- Parameters
 local keyToRow = {}
@@ -84,13 +84,13 @@ function ResourceManager:loadBalloonIconAnimation(icon, renderer)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- CharacterBase
+-- AnimatedInteractable
 -- ------------------------------------------------------------------------------------------------
 
---- Rewrites `CharacterBase:setXYZ`. Updates balloon position when character moves.
+--- Rewrites `AnimatedInteractable:setXYZ`. Updates balloon position when character moves.
 -- @rewrite
-function CharacterBase:setXYZ(x, y, z)
-  CharacterBase_setXYZ(self, x, y, z)
+function AnimatedInteractable:setXYZ(x, y, z)
+  AnimatedInteractable_setXYZ(self, x, y, z)
   if self.balloon then
     local p = self.position
     local h = self:getPixelHeight() + (self.jumpHeight or 0) + balloonY
@@ -99,10 +99,10 @@ function CharacterBase:setXYZ(x, y, z)
     --self.iconAnim:setXYZ(p.x, p.y - h - self.height / 2, p.z - 1)
   end
 end
---- Rewrites `CharacterBase:update`. Updates balloon animation.
+--- Rewrites `AnimatedInteractable:update`. Updates balloon animation.
 -- @rewrite
-function CharacterBase:update(dt)
-  CharacterBase_update(self, dt)
+function AnimatedInteractable:update(dt)
+  AnimatedInteractable_update(self, dt)
   if not self.paused and self.balloon then
     self.balloon:update(dt)
     if self.balloon.paused then -- Balloon animation ended
@@ -111,17 +111,17 @@ function CharacterBase:update(dt)
     end
   end
 end
---- Rewrites `CharacterBase:destroy`. Destroys balloon object.
+--- Rewrites `AnimatedInteractable:destroy`. Destroys balloon object.
 -- @rewrite
-function CharacterBase:destroy(...)
-  CharacterBase_destroy(self, ...)
+function AnimatedInteractable:destroy(...)
+  AnimatedInteractable_destroy(self, ...)
   if self.balloon then
     self.balloon:destroy()
     self.balloon = nil
   end
 end
 --- Creates a balloon animation, if there is none.
-function CharacterBase:createBalloon()
+function AnimatedInteractable:createBalloon()
   if self.balloon then
     return
   end

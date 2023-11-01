@@ -3,7 +3,7 @@
 
 --- Shows a list of custom choices.
 ---------------------------------------------------------------------------------------------------
--- @uimod ChoiceWindow
+-- @windowmod ChoiceWindow
 -- @extend GridWindow
 
 -- ================================================================================================
@@ -21,14 +21,14 @@ local ChoiceWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
+-- @tparam Menu menu Parent Menu.
 -- @tparam table args Table of arguments, including choies, width, align and cancel choice ID.
-function ChoiceWindow:init(gui, args)
+function ChoiceWindow:init(menu, args)
   self.choices = List(args.choices)
   self.width = args.width
   self.align = args.align
   self.cancelChoice = args.cancel
-  GridWindow.init(self, gui, self.width, nil, args.pos)
+  GridWindow.init(self, menu, self.width, nil, args.pos)
 end
 --- Implements `GridWindow:creatwWidgets`. Creates a button for each choice.
 -- @implement
@@ -36,7 +36,7 @@ function ChoiceWindow:createWidgets()
   for i = 1, self.choices.size do
     local choice = self.choices[i]
     local button = Button(self)
-    button:createText(choice, '', 'gui_button', self.align)
+    button:createText(choice, '', 'menu_button', self.align)
     button.choice = i
   end
 end

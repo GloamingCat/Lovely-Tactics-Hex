@@ -5,13 +5,13 @@
 -- It implements common methods for starting an action execution.
 -- Its result is the result data returned by the action.
 ---------------------------------------------------------------------------------------------------
--- @uimod ActionWindow
+-- @windowmod ActionWindow
 -- @extend GridWindow
 
 -- ================================================================================================
 
 -- Imports
-local ActionGUI = require('core/gui/battle/ActionGUI')
+local ActionMenu = require('core/gui/battle/ActionMenu')
 local ActionInput = require('core/battle/action/ActionInput')
 local GridWindow = require('core/gui/GridWindow')
 local SkillAction = require('core/battle/action/SkillAction')
@@ -32,11 +32,11 @@ local ActionWindow = class(GridWindow)
 -- @tparam ActionInput input User's input data (optional, creates new by default).
 function ActionWindow:selectAction(action, input)
   -- Executes action grid selecting.
-  input = input or ActionInput(nil, TurnManager:currentCharacter(), nil, self.GUI)
+  input = input or ActionInput(nil, TurnManager:currentCharacter(), nil, self.menu)
   input.action = action
   action:onSelect(input)
-  self.GUI:hide()
-  local result = GUIManager:showGUIForResult(ActionGUI(self.GUI, input))
+  self.menu:hide()
+  local result = MenuManager:showMenuForResult(ActionMenu(self.menu, input))
   if result.endCharacterTurn or result.escaped then
     -- End of turn.
     self.result = result
@@ -44,7 +44,7 @@ function ActionWindow:selectAction(action, input)
     if input.user then
       FieldManager.renderer:moveToObject(input.user)
     end
-    self.GUI:show()
+    self.menu:show()
   end
 end
 --- Checks if a given skill action is enabled to use.
@@ -60,14 +60,14 @@ function ActionWindow:skillActionEnabled(skill)
   if skill.autoPath and self:moveEnabled() then
     -- There's a selectable tile, and the character can move closer to it.
     for tile in FieldManager.currentField:gridIterator() do
-      if tile.gui.selectable then
+      if tile.ui.selectable then
         return true
       end
     end
   else
     -- The character can't move, but there is a reachable selectable tile.
     for tile in FieldManager.currentField:gridIterator() do
-      if tile.gui.selectable and tile.gui.reachable then
+      if tile.ui.selectable and tile.ui.reachable then
         return true
       end
     end
@@ -95,12 +95,12 @@ end
 
 --- Closes this window to be replaced by another one.
 -- @tparam GridWindow window The new active window.
--- @tparam boolean showDescription Flag to open the GUI's DescriptionWindow.
+-- @tparam boolean showDescription Flag to open the Menu's DescriptionWindow.
 function ActionWindow:changeWindow(window, showDescription)
   self:hide()
   self:removeSelf()
   if showDescription then
-    self.GUI:showDescriptionWindow(window)
+    self.menu:showDescriptionWindow(window)
   end
   window:insertSelf()
   window:show()

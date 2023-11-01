@@ -94,16 +94,16 @@ function SaveManager:currentConfigData()
   local conf = { version = configVersion }
   conf.volumeBGM = AudioManager.volumeBGM
   conf.volumeSFX = AudioManager.volumeSFX
-  conf.windowScroll = GUIManager.windowScroll
-  conf.fieldScroll = GUIManager.fieldScroll
+  conf.windowScroll = MenuManager.windowScroll
+  conf.fieldScroll = MenuManager.fieldScroll
   conf.autoDash = InputManager.autoDash
   conf.wasd = InputManager.wasd
   conf.keyMap = { main = copyTable(InputManager.mainMap), alt = copyTable(InputManager.altMap) }
   conf.useMouse = InputManager.mouseEnabled
   conf.resolution = ScreenManager.mode
   conf.language = GameManager.language
-  conf.disableTooltips = GUIManager.disableTooltips
-  conf.windowColor = GUIManager.windowColor
+  conf.disableTooltips = MenuManager.disableTooltips
+  conf.windowColor = MenuManager.windowColor
   return conf
 end
 

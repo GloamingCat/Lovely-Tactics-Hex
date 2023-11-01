@@ -11,7 +11,7 @@
 -- Imports
 local Bar = require('core/gui/widget/Bar')
 local Component = require('core/gui/Component')
-local SimpleText = require('core/gui/widget/SimpleText')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Vector = require('core/math/Vector')
 
 -- Class table.
@@ -40,7 +40,7 @@ function Gauge:createContent(width, color)
   self.width = width
   self.bar = Bar(Vector(0, 3, 1), width, 6, 1)
   self.bar:setColor(color)
-  self.text = SimpleText('', Vector(0, 0, 0), width, 'right', Fonts.gui_tiny)
+  self.text = TextComponent('', Vector(0, 0, 0), width, 'right', Fonts.menu_tiny)
   self.percentage = false
   self.content:add(self.text)
   self.content:add(self.bar)

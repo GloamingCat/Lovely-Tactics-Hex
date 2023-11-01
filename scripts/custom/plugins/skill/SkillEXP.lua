@@ -36,7 +36,7 @@ local levelDiff = args.levelDiff or 0
 local enemyExp = args.enemyExp
 
 -- ------------------------------------------------------------------------------------------------
--- RewardGUI
+-- RewardMenu
 -- ------------------------------------------------------------------------------------------------
 
 --- Rewrites `BattleManager:getBattleRewards`. Removes EXP rewards for each enemy.
@@ -143,11 +143,11 @@ function SkillAction:menuTargetsEffect(input, targets)
   if maxGain > 0 then
     local nextLevel = input.user.job:levelsup(maxGain)
     if expPopup then
-      popText = popText or PopText(input.originX or 0, input.originY or 0, GUIManager.renderer)
+      popText = popText or PopText(input.originX or 0, input.originY or 0, MenuManager.renderer)
       popText:addLine('+' .. tostring(maxGain) .. ' ' .. Vocab.exp, 'popup_exp', 'popup_exp')
     end
     if nextLevel then
-      popText = popText or PopText(input.originX or 0, input.originY or 0, GUIManager.renderer)
+      popText = popText or PopText(input.originX or 0, input.originY or 0, MenuManager.renderer)
       popText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
       if Config.sounds.levelup then
         AudioManager:playSFX(Config.sounds.levelup)

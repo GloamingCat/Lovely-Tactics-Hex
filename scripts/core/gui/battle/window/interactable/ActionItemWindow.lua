@@ -3,7 +3,7 @@
 
 --- The window that is open to choose an item from character's inventory.
 ---------------------------------------------------------------------------------------------------
--- @uimod ActionItemWindow
+-- @windowmod ActionItemWindow
 -- @extend ActionWindow
 -- @extend InventoryWindow
 
@@ -24,13 +24,13 @@ local ActionItemWindow = class(ActionWindow, InventoryWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
+-- @tparam Menu menu Parent Menu.
 -- @tparam Inventory inventory Troop's inventory.
 -- @tparam table itemList List of available items (optional, gets from inventory by default).
 -- @tparam number maxHeight The height of the space available for the window (in pixels).
-function ActionItemWindow:init(gui, inventory, itemList, maxHeight)
-  local y = self:fitOnTop(maxHeight) + gui:windowMargin()
-  InventoryWindow.init(self, gui, nil, inventory, itemList, nil, nil, Vector(0, y, 0))
+function ActionItemWindow:init(menu, inventory, itemList, maxHeight)
+  local y = self:fitOnTop(maxHeight) + menu:windowMargin()
+  InventoryWindow.init(self, menu, nil, inventory, itemList, nil, nil, Vector(0, y, 0))
 end
 --- Creates a button from an item ID.
 -- @tparam table itemSlot The item slot with ID and quantity.
@@ -51,8 +51,8 @@ end
 --- Called when player cancels.
 -- @tparam Button button
 function ActionItemWindow:onButtonCancel(button)
-  self.GUI:hideDescriptionWindow()
-  self:changeWindow(self.GUI.turnWindow)
+  self.menu:hideDescriptionWindow()
+  self:changeWindow(self.menu.turnWindow)
 end
 --- Tells if an item can be used.
 -- @tparam Button button

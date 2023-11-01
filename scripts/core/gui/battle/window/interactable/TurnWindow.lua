@@ -4,7 +4,7 @@
 --- Window that opens in the start of a character turn.
 -- When the character's turn ends, the result field is 1.
 ---------------------------------------------------------------------------------------------------
--- @uimod TurnWindow
+-- @windowmod TurnWindow
 -- @extend ActionWindow
 
 -- ================================================================================================
@@ -14,7 +14,7 @@ local ActionInput = require('core/battle/action/ActionInput')
 local ActionWindow = require('core/gui/battle/window/interactable/ActionWindow')
 local BattleCursor = require('core/battle/BattleCursor')
 local Button = require('core/gui/widget/control/Button')
-local SaveGUI = require('core/gui/menu/SaveGUI')
+local SaveMenu = require('core/gui/menu/SaveMenu')
 local CallAction = require('core/battle/action/CallAction')
 local EscapeAction = require('core/battle/action/EscapeAction')
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
@@ -92,11 +92,11 @@ function TurnWindow:callAllyConfirm(button)
 end
 --- "Skill" button callback. Opens Skill Window.
 function TurnWindow:skillConfirm(button)
-  self:changeWindow(self.GUI.skillWindow, true)
+  self:changeWindow(self.menu.skillWindow, true)
 end
 --- "Item" button callback. Opens Item Window.
 function TurnWindow:itemConfirm(button)
-  self:changeWindow(self.GUI.itemWindow, true)
+  self:changeWindow(self.menu.itemWindow, true)
 end
 --- "Inspect" button callback. Starts visualize action.
 function TurnWindow:inspectConfirm(button)
@@ -109,7 +109,7 @@ end
 --- "Save" button callback. Opens save window.
 function TurnWindow:optionsConfirm(button)
   self:hide()
-  self.GUI:showWindowForResult(self.GUI.optionsWindow)
+  self.menu:showWindowForResult(self.menu.optionsWindow)
   self:show()
 end
 --- Overrides `GridWindow:onCancel`. 
@@ -148,11 +148,11 @@ function TurnWindow:attackEnabled(button)
 end
 --- Skill condition. Enabled if character has any skills to use.
 function TurnWindow:skillEnabled(button)
-  return self.GUI.skillWindow ~= nil
+  return self.menu.skillWindow ~= nil
 end
 --- Item condition. Enabled if character has any items to use.
 function TurnWindow:itemEnabled(button)
-  return self.GUI.itemWindow ~= nil
+  return self.menu.itemWindow ~= nil
 end
 --- Escape condition. Only escapes if the character is in a tile of their party.
 function TurnWindow:escapeEnabled()

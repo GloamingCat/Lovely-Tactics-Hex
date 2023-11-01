@@ -69,7 +69,7 @@ end
 --- Overrides `BattleAction:isSelectable`. 
 -- @override
 function BattleMoveAction:isSelectable(input, tile)
-  return tile.gui.movable
+  return tile.ui.movable
 end
 
 -- ------------------------------------------------------------------------------------------------

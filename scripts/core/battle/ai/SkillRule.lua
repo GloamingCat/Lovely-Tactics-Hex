@@ -87,7 +87,7 @@ function SkillRule:selectMostEffectiveTarget(eff)
   local map = {}
   for char in TroopManager.characterList:iterator() do
     local tile = char:getTile()
-    if tile.gui.reachable and tile.gui.selectable and not map[tile] then
+    if tile.ui.reachable and tile.ui.selectable and not map[tile] then
       map[tile] = self.skill:estimateAreaEffect(self.input, tile, eff)
     end
   end

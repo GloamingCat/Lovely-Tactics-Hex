@@ -9,7 +9,7 @@
 -- @tags Plugin
 -- @tfield number speed The speed in which the text shows on screen (optional, 2 by default).
 -- @tfield number pause The pause in frames between pages (optional, 60 by default).
--- @tfield string font The font name (optional, uses `'gui_big'` by default).
+-- @tfield string font The font name (optional, uses `'menu_big'` by default).
 -- @tfield string pages The page names, separated by spaces.
 -- @tfield string pageX For each page `pageX`, there should be a tag `pageX` that contains the text
 --  in this page. The text contains the lines separated by spaces. Each line is a term that should
@@ -18,7 +18,7 @@
 -- ================================================================================================
 
 -- Imports
-local GUIEvents = require('core/event/GUIEvents')
+local MenuEvents = require('core/event/MenuEvents')
 local Text = require('core/graphics/Text')
 local Vector = require('core/math/Vector')
 
@@ -29,7 +29,7 @@ for i = 1, #pages do
 end
 local speed = args.speed or 2
 local pause = args.pause or 60
-local font = args.font and Fonts[args.font] or Fonts.gui_big
+local font = args.font and Fonts[args.font] or Fonts.menu_big
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -39,7 +39,7 @@ local font = args.font and Fonts[args.font] or Fonts.gui_big
 -- @tparam number y Space from the top of the screen, in pixels.
 local function createText(y)
   local prop = { ScreenManager.width, 'center', font }
-  local titleText = Text('', prop, GUIManager.renderer)
+  local titleText = Text('', prop, MenuManager.renderer)
   local x = -ScreenManager.width / 2
   y = y - ScreenManager.height / 2
   titleText.wrap = true
@@ -91,10 +91,10 @@ local function showCredits(titleText, bodyText)
 end
 --- Shows credits animation and listens to player input.
 -- @coroutine showCredits
-function GUIEvents:showCredits(args)
-  self:createGUI()
-  local titleText = createText(self.gui:windowMargin() * 2)
-  local bodyText = createText(self.gui:windowMargin() * 2 + font[3])
+function MenuEvents:showCredits(args)
+  self:createMenu()
+  local titleText = createText(self.menu:windowMargin() * 2)
+  local bodyText = createText(self.menu:windowMargin() * 2 + font[3])
   local fiber = self:fork(showCredits, titleText, bodyText)
   while fiber:running() do
     if InputManager.keys['confirm']:isTriggered() or InputManager.keys['cancel']:isTriggered() or

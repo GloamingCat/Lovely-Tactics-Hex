@@ -38,19 +38,19 @@ end
 function FieldAction:onSelect(input)
   self:resetTileProperties(input)
 end
---- Called when the ActionGUI is open.
+--- Called when the ActionMenu is open.
 -- By default, just updates the "selectable" field in all tiles for grid selecting.
 -- @tparam ActionInput input
-function FieldAction:onActionGUI(input)
-  input.GUI:startGridSelecting(self:firstTarget(input))
+function FieldAction:onActionMenu(input)
+  input.menu:startGridSelecting(self:firstTarget(input))
 end
 --- Called when player chooses a target for the action. 
 -- By default, just ends grid seleting and calls execute.
 -- @tparam ActionInput input
 -- @treturn table Battle results.
 function FieldAction:onConfirm(input)
-  if input.GUI then
-    input.GUI:endGridSelecting()
+  if input.menu then
+    input.menu:endGridSelecting()
   end
   return self:execute(input)
 end
@@ -59,8 +59,8 @@ end
 -- @tparam ActionInput input
 -- @treturn table The turn result.
 function FieldAction:onCancel(input)
-  if input.GUI then
-    input.GUI:endGridSelecting()
+  if input.menu then
+    input.menu:endGridSelecting()
   end
   return {}
 end
@@ -79,13 +79,13 @@ end
 -- @tparam ActionInput input
 function FieldAction:resetAffectedTiles(input)
   for tile in self.field:gridIterator() do
-    tile.gui.affected = false
+    tile.ui.affected = false
   end
   -- Tiles that are included in the target's effect area.
   for tile in self.field:gridIterator() do
     local affectedTiles = self:getAllAffectedTiles(input, tile)
     if #affectedTiles > 0 then
-      tile.gui.affected = true
+      tile.ui.affected = true
     end
   end
 end
@@ -93,7 +93,7 @@ end
 -- @tparam ActionInput input
 function FieldAction:resetSelectableTiles(input)
   for tile in self.field:gridIterator() do
-    tile.gui.selectable = self:isSelectable(input, tile)
+    tile.ui.selectable = self:isSelectable(input, tile)
   end
 end
 
@@ -133,30 +133,30 @@ end
 -- @tparam ObjectTile tile The tile to check.
 -- @treturn boolean True if can be chosen, false otherwise.
 function FieldAction:isSelectable(input, tile)
-  return not self.affectedOnly or tile.gui.affected
+  return not self.affectedOnly or tile.ui.affected
 end
 --- Called when players selects (highlights) a tile.
 -- @tparam ActionInput input
 function FieldAction:onSelectTarget(input)
-  if input.GUI then
-    if input.target.gui.selectable then
+  if input.menu then
+    if input.target.ui.selectable then
       local targets = self:getAreaTiles(input)
       for i = #targets, 1, -1 do
-        targets[i].gui:setSelected(true)
+        targets[i].ui:setSelected(true)
       end
     else
-      input.target.gui:setSelected(true)
+      input.target.ui:setSelected(true)
     end
   end
 end
 --- Called when players deselects (highlights another tile) a tile.
 -- @tparam ActionInput input
 function FieldAction:onDeselectTarget(input)
-  if input.GUI then
-    input.target.gui:setSelected(false)
+  if input.menu then
+    input.target.ui:setSelected(false)
     local oldTargets = self:getAreaTiles(input)
     for i = #oldTargets, 1, -1 do
-      oldTargets[i].gui:setSelected(false)
+      oldTargets[i].ui:setSelected(false)
     end
   end
 end
@@ -198,12 +198,12 @@ function FieldAction:nextTarget(input, axisX, axisY)
   local x, y = mathf.nextCoord(input.target.x, input.target.y, 
     axisX, axisY, self.field.sizeX, self.field.sizeY)
   local tile = input.target.layer.grid[x][y]
-  if tile.gui.selectable then
+  if tile.ui.selectable then
     return tile
   end
   for i = self.field.minh, self.field.maxh do
     tile = FieldManager.currentField:getObjectTile(tile.x, tile.y, i)
-    if tile.gui.selectable then
+    if tile.ui.selectable then
       return tile
     end
   end

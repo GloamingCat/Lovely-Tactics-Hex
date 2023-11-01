@@ -3,7 +3,7 @@
 
 --- A window that shows a `Dialogue`.
 ---------------------------------------------------------------------------------------------------
--- @uimod DialogueWindow
+-- @windowmod DialogueWindow
 -- @extend Window
 
 -- ================================================================================================
@@ -22,18 +22,18 @@ local DialogueWindow = class(Window)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
+-- @tparam Menu menu Parent Menu.
 -- @tparam number w Width of the window.
 -- @tparam number h Height of the window.
 -- @tparam number x Pixel x of the window.
 -- @tparam number y Pixel y of the window.
-function DialogueWindow:init(gui, w, h, x, y)
+function DialogueWindow:init(menu, w, h, x, y)
   self:initProperties()
-  w = w or ScreenManager.width - gui:windowMargin()
+  w = w or ScreenManager.width - menu:windowMargin()
   h = h or ScreenManager.height / 4
-  x = x or (w - ScreenManager.width) / 2 + gui:windowMargin()
-  y = y or (ScreenManager.height - h) / 2 - gui:windowMargin()
-  Window.init(self, gui, w, h, Vector(x, y))
+  x = x or (w - ScreenManager.width) / 2 + menu:windowMargin()
+  y = y or (ScreenManager.height - h) / 2 - menu:windowMargin()
+  Window.init(self, menu, w, h, Vector(x, y))
 end
 --- Sets window's properties.
 function DialogueWindow:initProperties()
@@ -45,9 +45,9 @@ end
 function DialogueWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local pos = Vector(-width / 2 + self:paddingX(), -height / 2 + self:paddingY())
-  self.dialogue = Dialogue('', pos, width - self:paddingX() * 2, 'left', Fonts.gui_dialogue)
+  self.dialogue = Dialogue('', pos, width - self:paddingX() * 2, 'left', Fonts.menu_dialogue)
   self.content:add(self.dialogue)
-  self.nameWindow = DescriptionWindow(self.GUI, self.nameWidth, self.nameHeight)
+  self.nameWindow = DescriptionWindow(self.menu, self.nameWidth, self.nameHeight)
   self.nameWindow:setVisible(false)
 end
 --- Changes the window's size.
@@ -95,7 +95,7 @@ function DialogueWindow:showDialogue(text, align, speaker)
   self.dialogue:setAlign(align)
   self.dialogue:show()
   self.dialogue:rollText(text)
-  self.GUI:waitForResult()
+  self.menu:waitForResult()
   self.result = nil
   Fiber:wait()
 end

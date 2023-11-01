@@ -3,14 +3,14 @@
 
 --- The window that shows the gained experience.
 ---------------------------------------------------------------------------------------------------
--- @uimod RewardEXPWindow
+-- @windowmod RewardEXPWindow
 -- @extend Window
 
 -- ================================================================================================
 
 -- Imports
 local PopText = require('core/graphics/PopText')
-local SimpleText = require('core/gui/widget/SimpleText')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
@@ -26,28 +26,28 @@ local RewardEXPWindow = class(Window)
 function RewardEXPWindow:createContent(...)
   Window.createContent(self, ...)
   self.done = false
-  local font = Fonts.gui_medium
+  local font = Fonts.menu_medium
   local x = - self.width / 2 + self:paddingX()
   local y = - self.height / 2 + self:paddingY()
   local w = self.width - self:paddingX() * 2
-  local title = SimpleText(Vocab.experience, Vector(x, y), w, 'center')
+  local title = TextComponent(Vocab.experience, Vector(x, y), w, 'center')
   title:setTerm('experience', '')
   title:redraw()
   self.content:add(title)
   y = y + 20
-  for _, member in ipairs(self.GUI.troop.members) do
-    local v = self.GUI.rewards.exp[member.key]
+  for _, member in ipairs(self.menu.troop.members) do
+    local v = self.menu.rewards.exp[member.key]
     if v then
-      local battler = self.GUI.troop.battlers[member.key]
+      local battler = self.menu.troop.battlers[member.key]
       -- Name
       local posName = Vector(x, y)
-      local name = SimpleText('', posName, w / 2, 'left', font)
+      local name = TextComponent('', posName, w / 2, 'left', font)
       name:setTerm('data.battler.' .. battler.key, battler.name)
       name:redraw()
       self.content:add(name)
       -- EXP - Arrow
       local plusPos = Vector(x + w / 2, y - 2, 0)
-      local plus = SimpleText('+', plusPos, w / 2, 'center')
+      local plus = TextComponent('+', plusPos, w / 2, 'center')
       local exp = battler.job.exp
       local aw = plus.sprite:getWidth()
       local expw = w / 4 - aw / 2
@@ -55,8 +55,8 @@ function RewardEXPWindow:createContent(...)
       -- EXP - Values
       local posEXP1 = Vector(x + w / 2, y)
       local posEXP2 = Vector(x + w / 2 + expw + plus.sprite:getWidth(), y)
-      local exp1 = SimpleText(exp .. '', posEXP1, expw, 'left', font)
-      local exp2 = SimpleText(v .. '', posEXP2, expw, 'left', font)    
+      local exp1 = TextComponent(exp .. '', posEXP1, expw, 'left', font)
+      local exp2 = TextComponent(v .. '', posEXP2, expw, 'left', font)    
       self.content:add(exp1)
       self.content:add(exp2)
       exp1.battler = battler
@@ -98,7 +98,7 @@ function RewardEXPWindow:addEXP()
           if nextLevel then
             local x = self:paddingX() - self.width / 2
             local y = exp1.position.y + 8
-            local popText = PopText(x, y + 10, GUIManager.renderer)
+            local popText = PopText(x, y + 10, MenuManager.renderer)
             popText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
             popText:popUp()
             levelup = true
@@ -134,7 +134,7 @@ function RewardEXPWindow:onConfirm()
     return
   end
   self.done = true
-  self.fiber = GUIManager.fiberList:fork(self.addEXP, self)
+  self.fiber = MenuManager.fiberList:fork(self.addEXP, self)
 end
 --- Overrides `Window:onCancel`. 
 -- @override

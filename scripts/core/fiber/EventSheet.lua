@@ -139,9 +139,9 @@ function EventSheet:setUp()
 end
 --- Resets any variable that indicates that this script is running.
 function EventSheet:clear()
-  if self.gui then
-    GUIManager:removeGUI(self.gui)
-    self.gui = nil
+  if self.menu then
+    MenuManager:removeMenu(self.menu)
+    self.menu = nil
   end
   if self.data then
     if self.data.block then

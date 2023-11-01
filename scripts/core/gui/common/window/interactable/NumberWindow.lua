@@ -3,7 +3,7 @@
 
 --- Shows a list of numbers from 0 to 9 to be chosen.
 ---------------------------------------------------------------------------------------------------
--- @uimod NumberWindow
+-- @windowmod NumberWindow
 -- @extend GridWindow
 
 -- ================================================================================================
@@ -23,13 +23,13 @@ local NumberWindow = class(GridWindow)
 
 --- Overrides `Window:init`. 
 -- @override
-function NumberWindow:init(GUI, args)
+function NumberWindow:init(Menu, args)
   self.noCursor = true
   self.length = args.length
   self.width = args.width
   self.align = args.align
   self.cancelValue = args.cancel
-  GridWindow.init(self, GUI, self.width, nil, args.pos)
+  GridWindow.init(self, Menu, self.width, nil, args.pos)
 end
 --- Implements `GridWindow:createWidgets`.
 -- @implement

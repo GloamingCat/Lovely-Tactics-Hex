@@ -9,9 +9,9 @@
 -- * `Color`, `Fonts` and `KeyMap` (tables);
 -- * `math.field` (`FieldMath`) module according to grid configuration;
 -- * Each plugin added in the project's configuration;
--- * Event modules `GeneralEvents`, `GUIEvents`, `CharacterEvents`, `ScreenEvents`, `SoundEvents`, `PartyEvents`;
+-- * Event modules `GeneralEvents`, `MenuEvents`, `CharacterEvents`, `ScreenEvents`, `SoundEvents`, `PartyEvents`;
 -- * `GameManager`, `ResourceManager`, `AudioManager`, `InputManager`, `SaveManager`, 
--- `ScreenManager`, `FieldManager`, `GUIManager`, `BattleManager`, `TroopManager`, `TurnManager`
+-- `ScreenManager`, `FieldManager`, `MenuManager`, `BattleManager`, `TroopManager`, `TurnManager`
 -- (singletons).
 ---------------------------------------------------------------------------------------------------
 -- @script Globals
@@ -88,7 +88,7 @@ args = nil
 
 -- Lists of event commands files
 local eventCommands = {}
-for i, file in ipairs({'General', 'GUI', 'Character', 'Screen', 'Sound', 'Party'}) do
+for i, file in ipairs({'General', 'Menu', 'Character', 'Screen', 'Sound', 'Party'}) do
   eventCommands[i] = require('core/event/' .. file .. 'Events')
 end
 local eventMeta = getmetatable(require('core/fiber/EventSheet')) 
@@ -117,7 +117,7 @@ InputManager    = require('core/input/InputManager')()
 SaveManager     = require('core/save/SaveManager')()
 ScreenManager   = require('core/graphics/ScreenManager')()
 FieldManager    = require('core/field/FieldManager')()
-GUIManager      = require('core/gui/GUIManager')()
+MenuManager      = require('core/gui/MenuManager')()
 BattleManager   = require('core/battle/BattleManager')()
 TroopManager    = require('core/battle/TroopManager')()
 TurnManager     = require('core/battle/TurnManager')()

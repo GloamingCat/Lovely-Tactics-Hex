@@ -3,15 +3,15 @@
 
 --- Menu to buy or sell items from the database.
 ---------------------------------------------------------------------------------------------------
--- @uimod ShopGUI
--- @extend GUI
+-- @menumod ShopMenu
+-- @extend Menu
 
 -- ================================================================================================
 
 -- Imports
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
 local GoldWindow = require('core/gui/menu/window/GoldWindow')
-local GUI = require('core/gui/GUI')
+local Menu = require('core/gui/Menu')
 local ShopCommandWindow = require('core/gui/menu/window/interactable/ShopCommandWindow')
 local ShopCountWindow = require('core/gui/menu/window/interactable/ShopCountWindow')
 local ShopListWindow = require('core/gui/menu/window/interactable/ShopListWindow')
@@ -19,27 +19,27 @@ local Troop = require('core/battle/Troop')
 local Vector = require('core/math/Vector')
 
 -- Class table.
-local ShopGUI = class(GUI)
+local ShopMenu = class(Menu)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `GUI:init`. 
+--- Overrides `Menu:init`. 
 -- @override
--- @tparam GUI parent Parent GUI.
+-- @tparam Menu parent Parent Menu.
 -- @tparam table items Array of items to be sold.
 -- @tparam boolean sell True if the player can sell anything here.
 -- @tparam Troop troop The troop to which the bought items will be added.
-function ShopGUI:init(parent, items, sell, troop)
+function ShopMenu:init(parent, items, sell, troop)
   self.troop = troop or Troop()
   self.items = items
   self.sell = sell
-  GUI.init(self, parent)
+  Menu.init(self, parent)
 end
---- Implements `GUI:createWindow`.
+--- Implements `Menu:createWindow`.
 -- @implement
-function ShopGUI:createWindows()
+function ShopMenu:createWindows()
   self:createCommandWindow()
   self:createGoldWindow()
   self:createListWindow()
@@ -48,7 +48,7 @@ function ShopGUI:createWindows()
   self:setActiveWindow(self.commandWindow)
 end
 --- Creates the window with the main "buy" and "sell" commands.
-function ShopGUI:createCommandWindow()
+function ShopMenu:createCommandWindow()
   local window = ShopCommandWindow(self, #self.items > 0, self.sell)
   local x = window.width / 2 - ScreenManager.width / 2 + self:windowMargin()
   local y = window.height / 2 - ScreenManager.height / 2 + self:windowMargin()
@@ -56,7 +56,7 @@ function ShopGUI:createCommandWindow()
   self.commandWindow = window
 end
 --- Creates the window showing the troop's current money.
-function ShopGUI:createGoldWindow()
+function ShopMenu:createGoldWindow()
   local width = ScreenManager.width - self.commandWindow.width - self:windowMargin() * 3
   local height = self.commandWindow.height
   local x = ScreenManager.width / 2 - self:windowMargin() - width / 2
@@ -65,7 +65,7 @@ function ShopGUI:createGoldWindow()
   self.goldWindow:setGold(self.troop.money)
 end
 --- Creates the window with the list of items to buy.
-function ShopGUI:createListWindow()
+function ShopMenu:createListWindow()
   local window = ShopListWindow(self)
   local y = window.height / 2 - ScreenManager.height / 2 +
     self.commandWindow.height + self:windowMargin() * 2
@@ -74,14 +74,14 @@ function ShopGUI:createListWindow()
   window:setVisible(false)
 end
 --- Creates the window with the number of items to buy.
-function ShopGUI:createCountWindow()
+function ShopMenu:createCountWindow()
   local width = ScreenManager.width / 2
   local height = self.listWindow.height
   self.countWindow = ShopCountWindow(self, width, height, self.listWindow.position)
   self.countWindow:setVisible(false)
 end
 --- Creates the window with the description of the selected item.
-function ShopGUI:createDescriptionWindow()
+function ShopMenu:createDescriptionWindow()
   local width = ScreenManager.width - self:windowMargin() * 2
   local height = ScreenManager.height - self:windowMargin() * 4 - 
     self.commandWindow.height - self.listWindow.height
@@ -95,24 +95,24 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Shows shop windows.
-function ShopGUI:showShopGUI()
-  GUIManager.fiberList:fork(self.descriptionWindow.show, self.descriptionWindow)
+function ShopMenu:showShopMenu()
+  MenuManager.fiberList:fork(self.descriptionWindow.show, self.descriptionWindow)
   Fiber:wait()
   self.listWindow:show()
   self.listWindow:activate()
 end
 --- Hides shop windows.
-function ShopGUI:hideShopGUI()
-  GUIManager.fiberList:fork(self.descriptionWindow.hide, self.descriptionWindow)
+function ShopMenu:hideShopMenu()
+  MenuManager.fiberList:fork(self.descriptionWindow.hide, self.descriptionWindow)
   Fiber:wait()
   self.listWindow:hide()
   self.commandWindow:activate()
 end
---- Overrides `GUI:hide`. Saves troop modifications.
+--- Overrides `Menu:hide`. Saves troop modifications.
 -- @override
-function ShopGUI:hide(...)
+function ShopMenu:hide(...)
   TroopManager:saveTroop(self.troop)
-  GUI.hide(self, ...)
+  Menu.hide(self, ...)
 end
 
-return ShopGUI
+return ShopMenu

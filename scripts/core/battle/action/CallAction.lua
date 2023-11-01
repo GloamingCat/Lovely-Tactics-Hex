@@ -11,7 +11,7 @@
 
 -- Imports
 local BattleAction = require('core/battle/action/BattleAction')
-local CallGUI = require('core/gui/battle/CallGUI')
+local CallMenu = require('core/gui/battle/CallMenu')
 
 -- Class table.
 local CallAction = class(BattleAction)
@@ -37,12 +37,12 @@ end
 -- @override
 function CallAction:onConfirm(input)
   self.troop = TroopManager.troops[(input.party or input.user.party)]
-  if input.GUI then
-    local result = GUIManager:showGUIForResult(CallGUI(input.GUI, self.troop, input.user == nil))
+  if input.menu then
+    local result = MenuManager:showMenuForResult(CallMenu(input.menu, self.troop, input.user == nil))
     if result == 0 then
       return nil
     end
-    input.GUI:endGridSelecting()
+    input.menu:endGridSelecting()
     input.member = result
   end
   return self:execute(input)
@@ -67,10 +67,10 @@ end
 -- @override
 function CallAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
-    if tile.gui.selectable then
-      tile.gui:setColor(self.colorName)
+    if tile.ui.selectable then
+      tile.ui:setColor(self.colorName)
     else
-      tile.gui:setColor('')
+      tile.ui:setColor('')
     end
   end
 end

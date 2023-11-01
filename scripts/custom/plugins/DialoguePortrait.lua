@@ -13,12 +13,12 @@
 
 -- Imports
 local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')
-local GUIEvents = require('core/event/GUIEvents')
-local SimpleImage = require('core/gui/widget/SimpleImage')
+local MenuEvents = require('core/event/MenuEvents')
+local ImageComponent = require('core/gui/widget/ImageComponent')
 
 -- Rewrites
 local DialogueWindow_showDialogue = DialogueWindow.showDialogue
-local GUIEvents_showDialogue = GUIEvents.showDialogue
+local MenuEvents_showDialogue = MenuEvents.showDialogue
 
 -- Parameters
 local indent = args.indent
@@ -43,7 +43,7 @@ function DialogueWindow:setPortrait(icon)
     icon = char.portraits[icon.name]
   end
   if icon and icon.id >= 0 then
-    local portrait = ResourceManager:loadIcon(icon, GUIManager.renderer)
+    local portrait = ResourceManager:loadIcon(icon, MenuManager.renderer)
     portrait.texture:setFilter('linear', 'linear')
     if char then
       portrait:applyTransformation(char.data.transform)
@@ -54,7 +54,7 @@ function DialogueWindow:setPortrait(icon)
     x = -self.width / 2 + x + w / 2 + self:paddingX() - ox
     y = self.height / 2 - h / 2 - self:paddingY() - oy
     portrait:setOffset(ox, oy)
-    self.portrait = SimpleImage(portrait, x - w / 2, y - h / 2, 1)
+    self.portrait = ImageComponent(portrait, x - w / 2, y - h / 2, 1)
     self.portrait:updatePosition(self.position)
     self.content:add(self.portrait)
     self.indent = (indent or w) / self.width * 2
@@ -78,14 +78,14 @@ function DialogueWindow:setName(text, x, ...)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- GUIEvents
+-- MenuEvents
 -- ------------------------------------------------------------------------------------------------
 
---- Rewrites `GUIEvents:showDialogue`.
+--- Rewrites `MenuEvents:showDialogue`.
 -- @rewrite
-function GUIEvents:showDialogue(args)
+function MenuEvents:showDialogue(args)
   self:openDialogueWindow(args)
-  local window = self.gui.dialogues[args.id]
+  local window = self.menu.dialogues[args.id]
   if args.character then -- Change portrait
     local portrait = nil
     if type(args.character) == 'number' then
@@ -105,5 +105,5 @@ function GUIEvents:showDialogue(args)
     end
     window:setPortrait(portrait)
   end
-  GUIEvents_showDialogue(self, args)
+  MenuEvents_showDialogue(self, args)
 end

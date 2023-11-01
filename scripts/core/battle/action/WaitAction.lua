@@ -19,9 +19,9 @@ local WaitAction = class(BattleAction)
 -- Callback
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `BattleAction:onActionGUI`. 
+--- Overrides `BattleAction:onActionMenu`. 
 -- @override
-function WaitAction:onActionGUI(input)
+function WaitAction:onActionMenu(input)
   return self:onConfirm(input)
 end
 --- Overrides `FieldAction:onConfirm`. 

@@ -3,7 +3,7 @@
 
 --- Window to choose a number given a max limit.
 ---------------------------------------------------------------------------------------------------
--- @uimod TextInputWindow
+-- @windowmod TextInputWindow
 -- @extend GridWindow
 
 -- ================================================================================================
@@ -21,13 +21,16 @@ local TextInputWindow = class(GridWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `Window:init`. 
--- @override
-function TextInputWindow:init(gui, emptyAllowed, cancelAllowed, ...)
+--- Constructor.
+-- @tparam Menu menu Parent Menu.
+-- @tparam boolean emptyAllowed Flag to allow empty text.
+-- @tparam boolean cancelAllowed Flag to allow the player to cancel.
+-- @param ... Other parameters from `Window:init`. 
+function TextInputWindow:init(menu, emptyAllowed, cancelAllowed, ...)
   self.emptyAllowed = emptyAllowed
   self.cancelAllowed = cancelAllowed
   self.maxLength = math.huge
-  GridWindow.init(self, gui, ...)
+  GridWindow.init(self, menu, ...)
 end
 --- Implements `GridWindow:createWidgets`. Creates confirm and cancel buttons.
 -- @implement
@@ -39,8 +42,8 @@ function TextInputWindow:createWidgets()
 end
 --- Overrides `GridWindow:createContent`. Creates text box.
 -- @override
-function TextInputWindow:createContent(width, height, ...)
-  GridWindow.createContent(self, width, height, ...)
+function TextInputWindow:createContent(width, height)
+  GridWindow.createContent(self, width, height)
   local pos = Vector(-self.width / 2 + self:paddingX(), -self.height / 2 + self:paddingY(), -1)
   local textBox = TextBox(self, '', pos)
   self.textBox = textBox
@@ -52,12 +55,14 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Sets current text.
+-- @tparam string text
 function TextInputWindow:setText(text)
   self.textBox.text = text
   self.textBox.cursorPoint = #text + 1
   self.textBox:refreshCursor()
 end
 --- Sets text's maximum length.
+-- @tparam number maxLength Maximum length in characters.
 function TextInputWindow:setMaxLength(maxLength)
   self.maxLength = maxLength
 end

@@ -36,7 +36,7 @@ function GridScroll:createArrows()
   for i = 1, 4 do
     icon.col = (i - 1) % 2
     icon.row = (i - 1 - icon.col) / 2
-    self.arrows[i] = ResourceManager:loadIcon(icon, GUIManager.renderer)
+    self.arrows[i] = ResourceManager:loadIcon(icon, MenuManager.renderer)
     self.arrows[i].dx = 0
     self.arrows[i].dy = 0
     self.arrows[i]:setVisible(false)
@@ -101,7 +101,7 @@ function GridScroll:update(dt)
   end
   if self.speed then
     if self.count then
-      local speed = self.speed * GUIManager.windowScroll * 2 / 100
+      local speed = self.speed * MenuManager.windowScroll * 2 / 100
       self.count = self.count + speed * dt
       if self.count >= 1 then
         self.count = 0

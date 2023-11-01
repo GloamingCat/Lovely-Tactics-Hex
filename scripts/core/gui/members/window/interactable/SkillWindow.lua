@@ -3,7 +3,7 @@
 
 --- The window that shows the list of skills to be used.
 ---------------------------------------------------------------------------------------------------
--- @uimod SkillWindow
+-- @windowmod SkillWindow
 -- @extend ListWindow
 
 -- ================================================================================================
@@ -12,7 +12,7 @@
 local ActionInput = require('core/battle/action/ActionInput')
 local Button = require('core/gui/widget/control/Button')
 local ListWindow = require('core/gui/common/window/interactable/ListWindow')
-local MenuTargetGUI = require('core/gui/common/MenuTargetGUI')
+local TargetMenu = require('core/gui/common/TargetMenu')
 local Vector = require('core/math/Vector')
 
 -- Class table.
@@ -23,7 +23,7 @@ local SkillWindow = class(ListWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI parent Parent GUI.
+-- @tparam Menu parent Parent Menu.
 function SkillWindow:init(parent)
   self.visibleRowCount = 4
   self.member = parent:currentMember()
@@ -43,7 +43,7 @@ end
 function SkillWindow:createListButton(skill)
   local button = Button(self)
   button:setIcon(skill.data.icon)
-  button:createText('data.skill.' .. skill.data.key, skill.data.name, 'gui_button')
+  button:createText('data.skill.' .. skill.data.key, skill.data.name, 'menu_button')
   button.skill = skill
   -- Get SP cost
   local cost = 0
@@ -52,7 +52,7 @@ function SkillWindow:createListButton(skill)
       cost = cost + skill.costs[i].cost(skill, self.member.att)
     end
   end
-  button:createInfoText(cost .. '{%sp}', '', 'gui_button')
+  button:createInfoText(cost .. '{%sp}', '', 'menu_button')
   return button
 end
 
@@ -83,19 +83,19 @@ function SkillWindow:onButtonConfirm(button)
     -- Use in all members
     input.targets = self.member.troop:currentBattlers()
     input.action:menuUse(input)
-    self.GUI:refreshMember()
+    self.menu:refreshMember()
   elseif button.skill:isRanged() then
     -- Choose a target
-    self.GUI:hide()
-    local gui = MenuTargetGUI(self.GUI, self.member.troop, input)
-    GUIManager:showGUIForResult(gui)
+    self.menu:hide()
+    local menu = TargetMenu(self.menu, self.member.troop, input)
+    MenuManager:showMenuForResult(menu)
     _G.Fiber:wait()
-    self.GUI:show()
+    self.menu:show()
   else
     -- Use on user themselves
     input.target = input.user
     input.action:menuUse(input)
-    self.GUI:refreshMember()
+    self.menu:refreshMember()
   end
   for i = 1, #self.matrix do
     self.matrix[i]:refreshEnabled()
@@ -105,26 +105,26 @@ end
 --- Updates description when button is selected.
 -- @tparam Button button
 function SkillWindow:onButtonSelect(button)
-  if self.GUI.descriptionWindow then
+  if self.menu.descriptionWindow then
     if button.skill then
-      self.GUI.descriptionWindow:updateTerm('data.skill.' .. button.skill.data.key .. '_desc', button.skill.data.description)
+      self.menu.descriptionWindow:updateTerm('data.skill.' .. button.skill.data.key .. '_desc', button.skill.data.description)
     else
-      self.GUI.descriptionWindow:updateText('')
+      self.menu.descriptionWindow:updateText('')
     end
   end
 end
 --- Changes current member to the next member in the party.
 function SkillWindow:onNext()
-  if self.GUI.nextMember then
+  if self.menu.nextMember then
     AudioManager:playSFX(Config.sounds.buttonSelect)
-    self.GUI:nextMember()
+    self.menu:nextMember()
   end
 end
 --- Changes current member to the previous member in the party.
 function SkillWindow:onPrev()
-  if self.GUI.nextMember then
+  if self.menu.nextMember then
     AudioManager:playSFX(Config.sounds.buttonSelect)
-    self.GUI:prevMember()
+    self.menu:prevMember()
   end
 end
 --- Tells the selected skill can be used.

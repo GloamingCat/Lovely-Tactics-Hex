@@ -3,7 +3,7 @@
 
 --- Window with the list of items available to buy.
 ---------------------------------------------------------------------------------------------------
--- @uimod ShopListWindow
+-- @windowmod ShopListWindow
 -- @extend ListWindow
 
 -- ================================================================================================
@@ -20,10 +20,10 @@ local ShopListWindow = class(ListWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
-function ShopListWindow:init(gui)
+-- @tparam Menu menu Parent Menu.
+function ShopListWindow:init(menu)
   self.visibleRowCount = 4
-  ListWindow.init(self, gui, {})
+  ListWindow.init(self, menu, {})
 end
 --- Implements `ListWindow:createListButton`.
 -- @implement
@@ -37,12 +37,12 @@ function ShopListWindow:createListButton(item)
   end
   local button = Button(self)
   button:setIcon(item.icon)
-  button:createText('data.item.' .. item.key, item.name, 'gui_button')
+  button:createText('data.item.' .. item.key, item.name, 'menu_button')
   if self.buy then
-    button:createInfoText(price .. ' {%g}', nil, 'gui_button')
+    button:createInfoText(price .. ' {%g}', nil, 'menu_button')
   else
     price = -(math.floor(price / 2))
-    button:createInfoText(-price .. ' {%g}', nil, 'gui_button')
+    button:createInfoText(-price .. ' {%g}', nil, 'menu_button')
   end
   button.item = item
   button.description = item.description
@@ -57,12 +57,12 @@ end
 --- Use this window to buy items.
 function ShopListWindow:setBuyMode()
   self.buy = true
-  self:refreshButtons(self.GUI.items)
+  self:refreshButtons(self.menu.items)
 end
 --- Use this window to sell items.
 function ShopListWindow:setSellMode()
   self.buy = false
-  self:refreshButtons(self.GUI.troop.inventory)
+  self:refreshButtons(self.menu.troop.inventory)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ end
 -- @treturn boolean 
 function ShopListWindow:buttonEnabled(button)
   if self.buy then
-    return self.GUI.troop.money >= button.price
+    return self.menu.troop.money >= button.price
   else
     return button.item.sellable
   end
@@ -85,19 +85,19 @@ end
 
 --- Shows the window to select the quantity.
 function ShopListWindow:onButtonConfirm(button)
-  local w = self.GUI.countWindow
+  local w = self.menu.countWindow
   self:hide()
   w:show()
   w:setItem(button.item, button.price)
   w:activate()
 end
---- Closes buy GUI.
+--- Closes buy Menu.
 function ShopListWindow:onButtonCancel(button)
-  self.GUI:hideShopGUI()
+  self.menu:hideShopMenu()
 end
 --- Updates item description.
 function ShopListWindow:onButtonSelect(button)
-  self.GUI.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
+  self.menu.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
 end
 
 -- ------------------------------------------------------------------------------------------------

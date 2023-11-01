@@ -3,17 +3,17 @@
 
 --- Controls battle flow.
 -- It initializes troops, runs loop, checks victory and game over.
--- Dependencies: `TurnManager`, `TroopManager`, `GameOverGUI`, `RewardGUI` `Inventory`, `TileGUI`
+-- Dependencies: `TurnManager`, `TroopManager`, `IntroMenu`,  `GameOverMenu`, `RewardMenu`, `Inventory`
 ---------------------------------------------------------------------------------------------------
 -- @manager BattleManager
 
 -- ================================================================================================
 
 -- Imports
-local GameOverGUI = require('core/gui/battle/GameOverGUI')
-local IntroGUI = require('core/gui/battle/IntroGUI')
+local GameOverMenu = require('core/gui/battle/GameOverMenu')
+local IntroMenu = require('core/gui/battle/IntroMenu')
 local Inventory = require('core/battle/Inventory')
-local RewardGUI = require('core/gui/battle/RewardGUI')
+local RewardMenu = require('core/gui/battle/RewardMenu')
 
 -- Class table.
 local BattleManager = class()
@@ -48,12 +48,12 @@ function BattleManager:init()
   }
   self.params = self.defaultParams
 end
---- Creates battle elements (GUI, characters, party tiles).
+--- Creates battle elements (Menu, characters, party tiles).
 -- @tparam table state Data about battle state for when the game is loaded mid-battle (optional).
 function BattleManager:setUp(state)
   TroopManager:setPartyTiles(self.currentField)
   for tile in FieldManager.currentField:gridIterator() do
-    tile:initializeGUI()
+    tile:initializeUI()
   end
   TroopManager:createTroops(state and state.troops)
   TurnManager:setUp(state and state.turn)
@@ -100,13 +100,13 @@ function BattleManager:loadBattle(state)
   FieldManager:loadTransition(FieldManager.playerState.transition, FieldManager.playerState.field)
 end
 --- Runs until battle finishes.
--- @treturn number The result of the end GUI.
+-- @treturn number The result of the end Menu.
 function BattleManager:runBattle(skipIntro)
   self.result = nil
   self.winner = nil
   self:battleStart(skipIntro)
   if not skipIntro then
-    GUIManager:showGUIForResult(IntroGUI(nil))
+    MenuManager:showMenuForResult(IntroMenu(nil))
     TroopManager:onBattleStart()
   end
   repeat
@@ -149,9 +149,9 @@ end
 function BattleManager:battleEnd()
   local result = 1
   if self:playerWon() then
-    GUIManager:showGUIForResult(RewardGUI(nil))
+    MenuManager:showMenuForResult(RewardMenu(nil))
   elseif self:enemyWon() or self:drawed() then
-    result = GUIManager:showGUIForResult(GameOverGUI(nil))
+    result = MenuManager:showMenuForResult(GameOverMenu(nil))
   end
   TroopManager:onBattleEnd()
   if result <= 1 then
@@ -166,8 +166,8 @@ end
 --- Clears batte information from characters and field.
 function BattleManager:clear()
   for tile in FieldManager.currentField:gridIterator() do
-    tile.gui:destroy()
-    tile.gui = nil
+    tile.ui:destroy()
+    tile.ui = nil
   end
   if self.cursor then
     self.cursor:destroy()

@@ -1,9 +1,9 @@
 
 -- ================================================================================================
 
---- Window that shows the total price to be paidin the Shop GUI.
+--- Window that shows the total price to be paidin the Shop Menu.
 ---------------------------------------------------------------------------------------------------
--- @uimod ShopCountWindow
+-- @windowmod ShopCountWindow
 -- @extend CountWindow
 
 -- ================================================================================================
@@ -11,8 +11,8 @@
 -- Imports
 local Button = require('core/gui/widget/control/Button')
 local CountWindow = require('core/gui/common/window/interactable/CountWindow')
-local SimpleImage = require('core/gui/widget/SimpleImage')
-local SimpleText = require('core/gui/widget/SimpleText')
+local ImageComponent = require('core/gui/widget/ImageComponent')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Vector = require('core/math/Vector')
 
 -- Class table.
@@ -46,11 +46,11 @@ function ShopCountWindow:createValues()
   local p = self.spinner:relativePosition()
   local x, y = p.x, p.y + self:cellHeight()
   local w = self.width - self:paddingX() * 2
-  local font = Fonts.gui_default
-  self.current = SimpleText('', Vector(x, y, -1), w, 'right', font)
-  self.decrease = SimpleText('', Vector(x, y + 13, -1), w, 'right', font)
-  local line = SimpleText('__________', Vector(x, y + 17), w, 'right', font)
-  self.total = SimpleText('', Vector(x, y + 30, -1), w, 'right', font)
+  local font = Fonts.menu_default
+  self.current = TextComponent('', Vector(x, y, -1), w, 'right', font)
+  self.decrease = TextComponent('', Vector(x, y + 13, -1), w, 'right', font)
+  local line = TextComponent('__________', Vector(x, y + 17), w, 'right', font)
+  self.total = TextComponent('', Vector(x, y + 30, -1), w, 'right', font)
   self.content:add(line)
   self.content:add(self.total)
   self.content:add(self.decrease)
@@ -62,17 +62,17 @@ function ShopCountWindow:createIcon()
   local h = self:cellHeight()
   local x = self:cellWidth() + self:paddingX() - self.width / 2
   local y = self:paddingY() - self.height / 2
-  self.icon = SimpleImage(nil, x, y, -1, w, h)
+  self.icon = ImageComponent(nil, x, y, -1, w, h)
   self.content:add(self.icon)
 end
 --- Creates the texts for the inventory stats (owned and equipped).
 function ShopCountWindow:createStats()
-  local font = Fonts.gui_medium
+  local font = Fonts.menu_medium
   local x = -self.width / 2 + self.paddingY()
   local y = self.height / 2 - 12 - self.paddingY()
   local w = self.width - self:paddingX() * 2
-  self.owned = SimpleText('', Vector(x, y - 12, -1), w, 'left', font)
-  self.equipped = SimpleText('', Vector(x, y, -1), w, 'left', font) 
+  self.owned = TextComponent('', Vector(x, y - 12, -1), w, 'left', font)
+  self.equipped = TextComponent('', Vector(x, y, -1), w, 'left', font) 
   self.content:add(self.owned)
   self.content:add(self.equipped)
 end
@@ -85,16 +85,16 @@ end
 -- @tparam table item The item's data from database.
 -- @tparam number price The price for each unit.
 function ShopCountWindow:setItem(item, price)
-  local money = self.GUI.troop.money
+  local money = self.menu.troop.money
   self.item = item
   self.price = price
   if self.buy then
     self:setMax(math.floor(money / price))
   else
-    self:setMax(self.GUI.troop.inventory:getCount(item.id))
+    self:setMax(self.menu.troop.inventory:getCount(item.id))
   end
   if item.icon and item.icon.id >= 0 then
-    local sprite = ResourceManager:loadIcon(item.icon, GUIManager.renderer)
+    local sprite = ResourceManager:loadIcon(item.icon, MenuManager.renderer)
     self.icon:setSprite(sprite)
     if not self.open then
       self.icon:hide()
@@ -123,7 +123,7 @@ function ShopCountWindow:setPrice(money, price)
 end
 --- Updates "owned" and "equipped" values.
 function ShopCountWindow:updateStats(id)
-  local troop = self.GUI.troop
+  local troop = self.menu.troop
   local owned = troop.inventory:getCount(id)
   local equipped = 0
   for battler in troop:visibleBattlers():iterator() do
@@ -158,7 +158,7 @@ function ShopCountWindow:onSpinnerCancel(spinner)
 end
 --- Increments / decrements the quantity of items to buy.
 function ShopCountWindow:onSpinnerChange(spinner)
-  self:setPrice(self.GUI.troop.money, spinner.value * self.price)
+  self:setPrice(self.menu.troop.money, spinner.value * self.price)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -167,20 +167,20 @@ end
 
 --- Buys / sells the selected quantity.
 function ShopCountWindow:apply()
-  local troop = self.GUI.troop
+  local troop = self.menu.troop
   troop.money = troop.money - self.spinner.value * self.price
   if self.buy then
     troop.inventory:addItem(self.item.id, self.spinner.value)
   else
     troop.inventory:removeItem(self.item.id, self.spinner.value)
-    self.GUI.listWindow:setSellMode()
+    self.menu.listWindow:setSellMode()
   end
-  self.GUI.goldWindow:setGold(troop.money)
+  self.menu.goldWindow:setGold(troop.money)
   self:returnWindow()
 end
 --- Hides this window and returns to the window with the item list.
 function ShopCountWindow:returnWindow()
-  local w = self.GUI.listWindow
+  local w = self.menu.listWindow
   self:hide()
   w:show()
   w:refreshButtons()

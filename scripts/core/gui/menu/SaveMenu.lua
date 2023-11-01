@@ -1,34 +1,34 @@
 
 -- ================================================================================================
 
---- GUI to save the game.
+--- Menu to save the game.
 ---------------------------------------------------------------------------------------------------
--- @uimod SaveGUI
--- @extend GUI
+-- @menumod SaveMenu
+-- @extend Menu
 
 -- ================================================================================================
 
 -- Imports
-local GUI = require('core/gui/GUI')
+local Menu = require('core/gui/Menu')
 local SaveWindow = require('core/gui/menu/window/interactable/SaveWindow')
 
 -- Class table.
-local SaveGUI = class(GUI)
+local SaveMenu = class(Menu)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `GUI:createWindows`. 
+--- Overrides `Menu:createWindows`. 
 -- @override
-function SaveGUI:createWindows()
-  self.name = 'Save GUI'
+function SaveMenu:createWindows()
+  self.name = 'Save Menu'
   self:createMainWindow()
 end
 --- Creates the list with the main commands.
-function SaveGUI:createMainWindow()
+function SaveMenu:createMainWindow()
   self.mainWindow = SaveWindow(self)
   self:setActiveWindow(self.mainWindow)
 end
 
-return SaveGUI
+return SaveMenu

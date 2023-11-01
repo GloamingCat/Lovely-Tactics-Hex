@@ -418,7 +418,7 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
       local pos = targetChar and targetChar.position
       popText = pos and
         PopText(pos.x, pos.y - 10, FieldManager.renderer) or
-        PopText(input.targetX or 0, input.targetY or 0, GUIManager.renderer)
+        PopText(input.targetX or 0, input.targetY or 0, MenuManager.renderer)
       popText:addLine(Vocab.miss, 'popup_miss', 'popup_miss')
       popText:popUp()
     end
@@ -426,7 +426,7 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
     local pos = targetChar and targetChar.position
     popText = pos and
       PopText(pos.x, pos.y - 10, FieldManager.renderer) or
-      PopText(input.targetX or 0, input.targetY or 0, GUIManager.renderer)
+      PopText(input.targetX or 0, input.targetY or 0, MenuManager.renderer)
     target:popResults(popText, results, targetChar)
     if targetChar then
       BattleAnimations.targetEffect(self.data, targetChar, originTile)

@@ -108,12 +108,12 @@ function GameMouse:fieldCoord(h)
   local tx, ty, th = pixel2Tile(wx, wy, -(h - 1) * (pph + dph) - wy * dpy)
   return round(tx), round(ty), round(th)
 end
---- Gets the pixel in the GUI that the mouse is over.
+--- Gets the pixel in the Menu that the mouse is over.
 -- @treturn number Pixel x.
 -- @treturn number Pixel y.
-function GameMouse:guiCoord()
+function GameMouse:menuCoord()
   local pos = self.position
-  local wx, wy = ScreenManager:screen2World(GUIManager.renderer, pos.x, pos.y)
+  local wx, wy = ScreenManager:screen2World(MenuManager.renderer, pos.x, pos.y)
   return round(wx), round(wy)
 end
 

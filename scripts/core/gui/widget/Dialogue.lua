@@ -1,29 +1,29 @@
 
 -- ================================================================================================
 
---- A `SimpleText` that shows in a `DialogueWindow`. 
+--- A `TextComponent` that shows in a `DialogueWindow`. 
 -- The text written character by character when the window is open. It may contain text events.
 -- See `TextParser.Codes` for the event codes to be used in the text.
 ---------------------------------------------------------------------------------------------------
 -- @uimod Dialogue
--- @extend SimpleText
+-- @extend TextComponent
 
 -- ================================================================================================
 
 -- Imports
-local SimpleText = require('core/gui/widget/SimpleText')
+local TextComponent = require('core/gui/widget/TextComponent')
 
 -- Class table.
-local Dialogue = class(SimpleText)
+local Dialogue = class(TextComponent)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `SimpleText:init`. 
+--- Overrides `TextComponent:init`. 
 -- @override
 function Dialogue:init(...)
-  SimpleText.init(self, ...)
+  TextComponent.init(self, ...)
   self.sprite.wrap = true
   self.soundFrequence = 4
   self.textSpeed = 40

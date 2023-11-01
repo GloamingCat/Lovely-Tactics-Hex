@@ -12,7 +12,7 @@
 
 -- Imports
 local Character = require('core/objects/Character')
-local FieldGUI = require('core/gui/menu/FieldGUI')
+local FieldMenu = require('core/gui/menu/FieldMenu')
 local List = require('core/datastruct/List')
 local Vector = require('core/math/Vector')
 
@@ -29,7 +29,7 @@ local Player = class(Character)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `CharacterBase:init`. 
+--- Overrides `AnimatedInteractable:init`. 
 -- @override
 function Player:init(transition, save)
   local troopData = Database.troops[TroopManager.playerTroopID]
@@ -50,7 +50,7 @@ function Player:init(transition, save)
   Character.init(self, data, save)
   self.waitList = List()
 end
---- Overrides `CharacterBase:initProperties`. 
+--- Overrides `AnimatedInteractable:initProperties`. 
 -- @override
 function Player:initProperties(instData, name, collisionTiles, colliderHeight)
   Character.initProperties(self, instData, name, collisionTiles, colliderHeight)
@@ -69,7 +69,7 @@ end
 -- Input
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `CharacterBase:update`. 
+--- Overrides `AnimatedInteractable:update`. 
 -- @override
 function Player:update(dt)
   if FieldManager.playerInput then
@@ -96,7 +96,7 @@ end
 --- Checks movement and interaction inputs.
 function Player:checkFieldInput()
   if InputManager.keys['cancel']:isTriggered() or InputManager.keys['mouse2']:isTriggered() or FieldManager.hud:checkInput() then
-    self:openGUI()
+    self:openMenu()
   elseif InputManager.keys['confirm']:isTriggered() then
     self:interact()
   elseif InputManager.keys['mouse1']:isPressingGap() then
@@ -109,11 +109,11 @@ function Player:checkFieldInput()
   end
 end
 -- Checks if player is waiting for an action to finish, like a movement animation, 
----  GUI input, battle, or a blocking event.
+---  Menu input, battle, or a blocking event.
 -- @treturn boolean True if some action is running.
 function Player:isBusy()
   return self.collided or self.interacting
-    or BattleManager.onBattle or GUIManager:isWaitingInput()
+    or BattleManager.onBattle or MenuManager:isWaitingInput()
     or not self.waitList:isEmpty()
 end
 --- Gets the keyboard move/turn input. 
@@ -252,17 +252,17 @@ function Player:updateStepCount(dt)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- GUI
+-- Menu
 -- ------------------------------------------------------------------------------------------------
 
---- Opens game's main GUI.
-function Player:openGUI()
+--- Opens game's main Menu.
+function Player:openMenu()
   self:playIdleAnimation()
   FieldManager.playerInput = false
   AudioManager:playSFX(Config.sounds.menu)
   FieldManager.hud:hide()
-  self.openMenu = FieldGUI(nil)
-  GUIManager:showGUIForResult(self.openMenu)
+  self.openMenu = FieldMenu(nil)
+  MenuManager:showMenuForResult(self.openMenu)
   self.openMenu = nil
   FieldManager.hud:show()
   FieldManager.playerInput = true

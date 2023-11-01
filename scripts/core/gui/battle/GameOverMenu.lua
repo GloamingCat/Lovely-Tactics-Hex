@@ -1,15 +1,15 @@
 
 -- ================================================================================================
 
---- The GUI that is shown when player loses the battle.
+--- Opens when player loses the battle.
 ---------------------------------------------------------------------------------------------------
--- @uimod GameOverGUI
--- @extend GUI
+-- @menumod GameOverMenu
+-- @extend Menu
 
 -- ================================================================================================
 
 -- Imports
-local GUI = require('core/gui/GUI')
+local Menu = require('core/gui/Menu')
 local GameOverWindow = require('core/gui/battle/window/interactable/GameOverWindow')
 local Vector = require('core/math/Vector')
 local Text = require('core/graphics/Text')
@@ -18,28 +18,28 @@ local Text = require('core/graphics/Text')
 local floor = math.floor
 
 -- Class table.
-local GameOverGUI = class(GUI)
+local GameOverMenu = class(Menu)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialize
 -- ------------------------------------------------------------------------------------------------
 
---- Implements `GUI:createWindows`.
+--- Implements `Menu:createWindows`.
 -- @implement
-function GameOverGUI:createWindows()
-  self.name = 'Game Over GUI'
+function GameOverMenu:createWindows()
+  self.name = 'Game Over Menu'
   self:createTopText()
   self.troop = TroopManager:getPlayerTroop()
   self:createMainWindow()
   self:setActiveWindow(self.mainWindow)
 end
 --- Creates the text at the top of the screen to show that the player won.
-function GameOverGUI:createTopText()
+function GameOverMenu:createTopText()
   local prop = {
     ScreenManager.width,
     'center',
-    Fonts.gui_huge }
-  self.topText = Text(Vocab.lose, prop, GUIManager.renderer)
+    Fonts.menu_huge }
+  self.topText = Text(Vocab.lose, prop, MenuManager.renderer)
   local x = -ScreenManager.width / 2
   local y = -ScreenManager.height / 2 + self:windowMargin() * 2
   self.topText:setXYZ(x, y)
@@ -47,14 +47,14 @@ function GameOverGUI:createTopText()
   self.topTextSpeed = 2
 end
 --- Creates the window that shows battle results.
-function GameOverGUI:createMainWindow()
+function GameOverMenu:createMainWindow()
   local window = GameOverWindow(self)
   self.mainWindow = window
 end
---- Overrides `GUI:destroy`. Destroys top text.
+--- Overrides `Menu:destroy`. Destroys top text.
 -- @override
-function GameOverGUI:destroy(...)
-  GUI.destroy(self, ...)
+function GameOverMenu:destroy(...)
+  Menu.destroy(self, ...)
   self.topText:destroy()
 end
 
@@ -63,13 +63,13 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Show top text before openning windows.
-function GameOverGUI:show(...)
+function GameOverMenu:show(...)
   self:showTopText()
   _G.Fiber:wait(15)
-  GUI.show(self, ...)
+  Menu.show(self, ...)
 end
 --- Animation that shows the text at the top.
-function GameOverGUI:showTopText()
+function GameOverMenu:showTopText()
   if AudioManager.gameoverTheme then
     AudioManager:playBGM(AudioManager.gameoverTheme)
   end
@@ -89,12 +89,12 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Hide top text after closing windows.
-function GameOverGUI:hide(...)
-  GUI.hide(self, ...)
+function GameOverMenu:hide(...)
+  Menu.hide(self, ...)
   self:hideTopText()
 end
 --- Animation that shows the text at the top.
-function GameOverGUI:hideTopText()
+function GameOverMenu:hideTopText()
   if AudioManager.gameoverTheme then
     AudioManager:pauseBGM(120 / self.topTextSpeed)
   end
@@ -107,4 +107,4 @@ function GameOverGUI:hideTopText()
   self.topText:setVisible(false)
 end
 
-return GameOverGUI
+return GameOverMenu

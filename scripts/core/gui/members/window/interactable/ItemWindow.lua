@@ -3,7 +3,7 @@
 
 --- The window that shows the list of items to be used.
 ---------------------------------------------------------------------------------------------------
--- @uimod ItemWindow
+-- @windowmod ItemWindow
 -- @extend InventoryWindow
 
 -- ================================================================================================
@@ -11,7 +11,7 @@
 -- Imports
 local Button = require('core/gui/widget/control/Button')
 local InventoryWindow = require('core/gui/common/window/interactable/InventoryWindow')
-local MenuTargetGUI = require('core/gui/common/MenuTargetGUI')
+local TargetMenu = require('core/gui/common/TargetMenu')
 local Vector = require('core/math/Vector')
 
 -- Class table.
@@ -22,11 +22,11 @@ local ItemWindow = class(InventoryWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI. Should have a reference to the troop's inventory.
+-- @tparam Menu menu Parent Menu. Should have a reference to the troop's inventory.
 -- @tparam number rowCount Number of visible rows.
-function ItemWindow:init(gui, rowCount)
+function ItemWindow:init(menu, rowCount)
   self.visibleRowCount = rowCount
-  InventoryWindow.init(self, gui, nil, gui.inventory, gui.inventory:getUsableItems(2))
+  InventoryWindow.init(self, menu, nil, menu.inventory, menu.inventory:getUsableItems(2))
 end
 --- Overrides `ListWindow:createWidgets`. 
 -- @override
@@ -54,7 +54,7 @@ function ItemWindow:setBattler(battler)
 end
 --- Updates buttons to match new state of the inventory.
 function ItemWindow:refreshItems()
-  local items = self.GUI.inventory:getUsableItems(2)
+  local items = self.menu.inventory:getUsableItems(2)
   self:refreshButtons(items)
 end
 
@@ -64,16 +64,16 @@ end
 
 --- Called when player presses "next" key.
 function ItemWindow:onNext()
-  if self.GUI.nextMember then
+  if self.menu.nextMember then
     AudioManager:playSFX(Config.sounds.buttonSelect)
-    self.GUI:nextMember()
+    self.menu:nextMember()
   end
 end
 --- Called when player presses "prev" key.
 function ItemWindow:onPrev()
-  if self.GUI.nextMember then
+  if self.menu.nextMember then
     AudioManager:playSFX(Config.sounds.buttonSelect)
-    self.GUI:prevMember()
+    self.menu:prevMember()
   end
 end
 

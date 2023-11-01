@@ -3,7 +3,7 @@
 
 --- Window that shows on each character in the VisualizeAction.
 ---------------------------------------------------------------------------------------------------
--- @uimod BattlerWindow
+-- @windowmod BattlerWindow
 -- @extend Window
 
 -- ================================================================================================
@@ -12,8 +12,8 @@
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
 local Window = require('core/gui/Window')
-local SimpleText = require('core/gui/widget/SimpleText')
-local SimpleImage = require('core/gui/widget/SimpleImage')
+local TextComponent = require('core/gui/widget/TextComponent')
+local ImageComponent = require('core/gui/widget/ImageComponent')
 
 -- Alias
 local max = math.max
@@ -28,10 +28,10 @@ local BattlerWindow = class(Window)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI parent The parent GUI.
+-- @tparam Menu parent The parent Menu.
 function BattlerWindow:init(parent)
-  self.font = Fonts.gui_small
-  self.nameFont = Fonts.gui_medium
+  self.font = Fonts.menu_small
+  self.nameFont = Fonts.menu_medium
   local cw, ch = self:preprocess()
   Window.init(self, parent, cw +  2 * self:paddingX(), ch + 2 * self:paddingY())
 end
@@ -67,7 +67,7 @@ end
 function BattlerWindow:createContent(width, height)
   Window.createContent(self, width, height)
   -- Portrait
-  self.portrait = SimpleImage(nil, self:paddingX() - self.width / 2, self:paddingY() - self.height / 2, 
+  self.portrait = ImageComponent(nil, self:paddingX() - self.width / 2, self:paddingY() - self.height / 2, 
       nil, round(self.width / 3) - self:paddingX(), self.height - self:paddingY() * 2)
   self.content:add(self.portrait)
   -- Content pos
@@ -75,7 +75,7 @@ function BattlerWindow:createContent(width, height)
   local y = round(self:paddingY() - self.height / 2)
   local w = round((self.width - self:paddingX()) / 4 - self:paddingX())
   -- Name
-  self.textName = SimpleText('', Vector(x, y), w * 3, 'left', self.nameFont)
+  self.textName = TextComponent('', Vector(x, y), w * 3, 'left', self.nameFont)
   self.content:add(self.textName)
   -- Attributes
   self.attValues = {}
@@ -94,12 +94,12 @@ function BattlerWindow:createAtts(list, x, y, w)
   for i, att in ipairs(list) do
     -- Attribute name
     local posName = Vector(x, y + 10 * i)
-    local textName = SimpleText('', posName, w - 30, 'left', self.font)
+    local textName = TextComponent('', posName, w - 30, 'left', self.font)
     textName:setTerm('{%data.conf.' .. att.key .. '}:', att.shortName .. ':')
     textName:redraw()
     -- Attribute value
     local posValue = Vector(x + 30, y + 10 * i)
-    local textValue = SimpleText('', posValue, w, 'left', self.font)
+    local textValue = TextComponent('', posValue, w, 'left', self.font)
     -- Store
     self.content:add(textName)
     self.content:add(textValue)
@@ -115,13 +115,13 @@ function BattlerWindow:createElements(list, x, y, w)
   local h = 0
   for i, e in ipairs(list) do
     -- Element icon
-    local icon = ResourceManager:loadIcon(e[2], GUIManager.renderer)
+    local icon = ResourceManager:loadIcon(e[2], MenuManager.renderer)
     local iw, ih = icon:scaledBounds()
-    local imgIcon = SimpleImage(icon, x, y + h, 0)
+    local imgIcon = ImageComponent(icon, x, y + h, 0)
     h = h + ih
     -- Attribute value
     local posValue = Vector(x + iw, y + h - ih / 2 - 5)
-    local textValue = SimpleText('', posValue, w - iw, 'left', self.font)
+    local textValue = TextComponent('', posValue, w - iw, 'left', self.font)
     -- Store
     self.content:add(imgIcon)
     self.content:add(textValue)
@@ -184,14 +184,14 @@ function BattlerWindow:setPortrait(battler)
   local charData = Database.characters[battler.charID]
   local icon = findByName(charData.portraits, "BigIcon")
   if icon then
-    local sprite = ResourceManager:loadIcon(icon, GUIManager.renderer)
+    local sprite = ResourceManager:loadIcon(icon, MenuManager.renderer)
     sprite.texture:setFilter('linear', 'linear')
     sprite:applyTransformation(charData.transform)
     self.portrait:setSprite(sprite)
   else
     local anim = findByName(charData.animations, "Idle") or 
       findByName(charData.animations, "Battle:Idle")
-    self.portraitAnim = ResourceManager:loadAnimation(anim.id, GUIManager.renderer)
+    self.portraitAnim = ResourceManager:loadAnimation(anim.id, MenuManager.renderer)
     self.portraitAnim:setRow(6)
     self.portraitAnim:setXYZ(0, 0, 0)
     self.portraitAnim:applyTransformation(charData.transform)
@@ -217,16 +217,16 @@ function BattlerWindow:onCancel()
 end
 --- Called when player presses "next" key.
 function BattlerWindow:onNext()
-  if self.GUI.nextMember then
+  if self.menu.nextMember then
     AudioManager:playSFX(Config.sounds.buttonSelect)
-    self.GUI:nextMember()
+    self.menu:nextMember()
   end
 end
 --- Called when player presses "prev" key.
 function BattlerWindow:onPrev()
-  if self.GUI.prevMember then
+  if self.menu.prevMember then
     AudioManager:playSFX(Config.sounds.buttonSelect)
-    self.GUI:prevMember()
+    self.menu:prevMember()
   end
 end
 

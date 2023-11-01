@@ -4,16 +4,16 @@
 --- A small text showing the current page of a window.
 ---------------------------------------------------------------------------------------------------
 -- @uimod Pagination
--- @extend SimpleText
+-- @extend TextComponent
 
 -- ================================================================================================
 
 -- Imports
-local SimpleText = require('core/gui/widget/SimpleText')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Vector = require('core/math/Vector')
 
 -- Class table.
-local Pagination = class(SimpleText)
+local Pagination = class(TextComponent)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -31,7 +31,7 @@ function Pagination:init(window, halign, valign)
   else
     pos.y = window.height / 2 - window:paddingY() - 6
   end
-  SimpleText.init(self, '', pos, window.width - window:paddingX() * 2, halign, Fonts.gui_tiny)
+  TextComponent.init(self, '', pos, window.width - window:paddingX() * 2, halign, Fonts.menu_tiny)
 end
 --- Sets the current page and the total number of pages and updates the text accordingly.
 -- @tparam number current Current page.

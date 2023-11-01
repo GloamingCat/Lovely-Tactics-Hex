@@ -69,7 +69,7 @@ function BattleCursor:setTile(tile)
     return
   end
   local x, y, z = tile.center:coordinates()
-  self.anim.sprite:setVisible(tile.gui.selectable)
+  self.anim.sprite:setVisible(tile.ui.selectable)
   local maxH = 0
   for obj in tile.obstacleList:iterator() do
     maxH = max(maxH, obj:getHeight())

@@ -3,7 +3,7 @@
 
 --- Window with the list of battles in the party backup.
 ---------------------------------------------------------------------------------------------------
--- @uimod CallWindow
+-- @windowmod CallWindow
 -- @extend GridWindow
 
 -- ================================================================================================
@@ -23,10 +23,10 @@ local CallWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
-function CallWindow:init(GUI, troop, allMembers)
+function CallWindow:init(Menu, troop, allMembers)
   self.troop = troop
   self.allMembers = allMembers
-  GridWindow.init(self, GUI)
+  GridWindow.init(self, Menu)
 end
 --- Creates a button for each backup member.
 function CallWindow:createWidgets()
@@ -60,8 +60,8 @@ function CallWindow:createNoneButton()
   local button = Button(self)
   button:createText('none', '')
   button.memberKey = ''
-  if self.GUI.targetWindow then
-    self.GUI.targetWindow:setVisible(false)
+  if self.menu.targetWindow then
+    self.menu.targetWindow:setVisible(false)
   end
   return button
 end
@@ -78,14 +78,14 @@ end
 --- Select callback for each button, show the battler's info.
 -- @tparam Button button Selected button.
 function CallWindow:onButtonSelect(button)
-  if self.GUI.targetWindow then
+  if self.menu.targetWindow then
     if button.battler then 
-      GUIManager.fiberList:fork(function()
-          self.GUI.targetWindow:show()
-          self.GUI.targetWindow:setBattler(button.battler)
+      MenuManager.fiberList:fork(function()
+          self.menu.targetWindow:show()
+          self.menu.targetWindow:setBattler(button.battler)
         end)
     else
-      GUIManager.fiberList:fork(self.GUI.targetWindow.hide, self.GUI.targetWindow)
+      MenuManager.fiberList:fork(self.menu.targetWindow.hide, self.menu.targetWindow)
     end
   end
 end

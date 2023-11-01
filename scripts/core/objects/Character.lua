@@ -1,18 +1,18 @@
 
 -- ================================================================================================
 
---- A `CharacterBase` with general movement/animation methods. 
+--- A `AnimatedInteractable` with general movement/animation methods. 
 -- The coroutine functions must ONLY be called from a fiber.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod Character
--- @extend CharacterBase
+-- @extend AnimatedInteractable
 
 -- ================================================================================================
 
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
 local BattleAnimations = require('core/battle/BattleAnimations')
-local CharacterBase = require('core/objects/CharacterBase')
+local AnimatedInteractable = require('core/objects/AnimatedInteractable')
 local MoveAction = require('core/battle/action/MoveAction')
 
 -- Alias
@@ -20,7 +20,7 @@ local mathf = math.field
 local max = math.max
 
 -- Class table.
-local Character = class(CharacterBase)
+local Character = class(AnimatedInteractable)
 
 -- ------------------------------------------------------------------------------------------------
 -- Animation

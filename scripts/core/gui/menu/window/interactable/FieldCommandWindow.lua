@@ -1,9 +1,9 @@
 
 -- ================================================================================================
 
---- Main GUI's selectable window.
+--- `FieldMenu`'s selectable window.
 ---------------------------------------------------------------------------------------------------
--- @uimod FieldCommandWindow
+-- @windowmod FieldCommandWindow
 -- @extend OptionsWindow
 
 -- ================================================================================================
@@ -11,10 +11,10 @@
 -- Imports
 local Button = require('core/gui/widget/control/Button')
 local OptionsWindow = require('core/gui/menu/window/interactable/OptionsWindow')
-local InventoryGUI = require('core/gui/common/InventoryGUI')
-local MemberGUI = require('core/gui/members/MemberGUI')
-local EquipGUI = require('core/gui/members/EquipGUI')
-local SkillGUI = require('core/gui/members/SkillGUI')
+local InventoryMenu = require('core/gui/common/InventoryMenu')
+local MemberMenu = require('core/gui/members/MemberMenu')
+local EquipMenu = require('core/gui/members/EquipMenu')
+local SkillMenu = require('core/gui/members/SkillMenu')
 
 -- Class table.
 local FieldCommandWindow = class(OptionsWindow)
@@ -48,21 +48,21 @@ end
 
 --- Opens the inventory screen.
 function FieldCommandWindow:inventoryConfirm()
-  self.GUI:hide()
-  GUIManager:showGUIForResult(InventoryGUI(self.GUI, self.GUI.troop))
-  self.GUI:show()
+  self.menu:hide()
+  MenuManager:showMenuForResult(InventoryMenu(self.menu, self.menu.troop))
+  self.menu:show()
 end
 --- Chooses a member to manage.
 function FieldCommandWindow:membersConfirm()
-  self:openPartyWindow(MemberGUI, 'battler')
+  self:openPartyWindow(MemberMenu, 'battler')
 end
 --- Chooses a member to manage.
 function FieldCommandWindow:equipsConfirm()
-  self:openPartyWindow(EquipGUI, 'equipper')
+  self:openPartyWindow(EquipMenu, 'equipper')
 end
 --- Chooses a member to manage.
 function FieldCommandWindow:skillsConfirm()
-  self:openPartyWindow(SkillGUI, 'user')
+  self:openPartyWindow(SkillMenu, 'user')
 end
 --- Closes menu.
 function FieldCommandWindow:returnConfirm()
@@ -73,38 +73,38 @@ end
 -- Members
 -- ------------------------------------------------------------------------------------------------
 
---- Open the GUI's party window.
--- @tparam class GUI The sub GUI class to open after the character selection.
+--- Open the Menu's party window.
+-- @tparam class Menu The sub Menu class to open after the character selection.
 -- @tparam string tooltip The tooltip term to be shown from this window is open.
-function FieldCommandWindow:openPartyWindow(GUI, tooltip)
-  if self.GUI.partyWindow.troop:visibleMembers().size <= 1 then
-    self.GUI:hide()
-    self:openMemberGUI(1, GUI)
-    self.GUI:show()
+function FieldCommandWindow:openPartyWindow(Menu, tooltip)
+  if self.menu.partyWindow.troop:visibleMembers().size <= 1 then
+    self.menu:hide()
+    self:openMemberMenu(1, Menu)
+    self.menu:show()
     self:activate()
     return
   end
-  self.GUI:hide()
-  self.GUI.partyWindow.tooltipTerm = tooltip
-  self.GUI.partyWindow:show()
-  self.GUI.partyWindow:activate()
-  local result = self.GUI:waitForResult()
+  self.menu:hide()
+  self.menu.partyWindow.tooltipTerm = tooltip
+  self.menu.partyWindow:show()
+  self.menu.partyWindow:activate()
+  local result = self.menu:waitForResult()
   while result > 0 do
-    self.GUI.partyWindow:hide()
-    self:openMemberGUI(result, GUI)
-    self.GUI.partyWindow:show()
-    result = self.GUI:waitForResult()
+    self.menu.partyWindow:hide()
+    self:openMemberMenu(result, Menu)
+    self.menu.partyWindow:show()
+    result = self.menu:waitForResult()
   end
-  self.GUI.partyWindow:hide()
+  self.menu.partyWindow:hide()
   self:activate()
-  self.GUI:show()
+  self.menu:show()
 end
---- Open the member GUI for the selected character.
+--- Open the member Menu for the selected character.
 -- @tparam number memberID Character's position in the party.
--- @tparam class guiClass A GUI subclass to be instantiated.
-function FieldCommandWindow:openMemberGUI(memberID, guiClass)
-  local gui = guiClass(self.GUI, self.GUI.troop, self.GUI.partyWindow.list, memberID)
-  GUIManager:showGUIForResult(gui)
+-- @tparam class menuClass A `MemberMenu` subclass to be instantiated.
+function FieldCommandWindow:openMemberMenu(memberID, menuClass)
+  local menu = menuClass(self.menu, self.menu.troop, self.menu.partyWindow.list, memberID)
+  MenuManager:showMenuForResult(menu)
 end
 
 -- ------------------------------------------------------------------------------------------------

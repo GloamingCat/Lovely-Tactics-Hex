@@ -120,7 +120,7 @@ end
 -- @tparam ActionInput input
 -- @treturn boolean
 function BattleTactics.isPotentialMoveTarget(tile, user, input)
-  if not tile.gui.movable then
+  if not tile.ui.movable then
     return false
   end
   if input then

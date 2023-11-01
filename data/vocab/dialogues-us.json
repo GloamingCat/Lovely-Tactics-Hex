@@ -35,17 +35,17 @@
   "credits": {
     "Game": "\nProgramming, Game Design",
     "Art": "\nVisual Art",
-    "Chars": "\n{fgui_button}Characters, UI and ugly scenary tiles:",
-    "Scenary": "\n{fgui_button}Pretty scenary tiles:",
+    "Chars": "\n{fmenu_button}Characters, UI and ugly scenary tiles:",
+    "Scenary": "\n{fmenu_button}Pretty scenary tiles:",
     "Sound": "\nSound",
-    "Music": "\n{fgui_button}Music:",
-    "SFX": "\n{fgui_button}Sound effects:",
+    "Music": "\n{fmenu_button}Music:",
+    "SFX": "\n{fmenu_button}Sound effects:",
     
-    "GloamingCatMain": "\n{fgui_button}GloamingCat",
-    "GloamingCat": "{fgui_dialogue}GloamingCat\n",
-    "Bibi": "{fgui_dialogue}Alex dos Ventos",
-    "Musicians": "{fgui_dialogue}Generated with Melody Raiser 1999\n",
-    "SFXDesigners": "{fgui_dialogue}Generated with Bfxr"
+    "GloamingCatMain": "\n{fmenu_button}GloamingCat",
+    "GloamingCat": "{fmenu_dialogue}GloamingCat\n",
+    "Bibi": "{fmenu_dialogue}Alex dos Ventos",
+    "Musicians": "{fmenu_dialogue}Generated with Melody Raiser 1999\n",
+    "SFXDesigners": "{fmenu_dialogue}Generated with Bfxr"
   }
   
 }

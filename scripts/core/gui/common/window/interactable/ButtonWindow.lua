@@ -3,7 +3,7 @@
 
 --- Shows a list of custom choices.
 ---------------------------------------------------------------------------------------------------
--- @uimod ButtonWindow
+-- @windowmod ButtonWindow
 -- @extend GridWindow
 
 -- ================================================================================================
@@ -21,11 +21,11 @@ local ButtonWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
+-- @tparam Menu menu Parent Menu.
 -- @tparam table names A list of the names (keys) of the buttons.
 -- @tparam string align The horizontal alignment of the text in the buttons.
 -- @param ... Other parameters from the GridWindow constructor.
-function ButtonWindow:init(gui, names, align, ...)
+function ButtonWindow:init(menu, names, align, ...)
   if type(names) == 'string' then
     self.buttonNames = {names}
     self.noCursor = true
@@ -34,7 +34,7 @@ function ButtonWindow:init(gui, names, align, ...)
     self.buttonNames = names
   end
   self.align = align or 'center'
-  GridWindow.init(self, gui, ...)
+  GridWindow.init(self, menu, ...)
   self.offBoundsCancel = false
   self.active = true
 end
@@ -58,15 +58,15 @@ end
 --- Overrides `Window:update`. Opens or closes automatically depending if the player is using the mouse or not.
 -- @override
 function ButtonWindow:update(dt)
-  if self.GUI.open and self.active then
+  if self.menu.open and self.active then
     self:refreshLastOpen()
     if not self.lastOpen then
       if self.open then
-        GUIManager.fiberList:fork(self.hide, self)
+        MenuManager.fiberList:fork(self.hide, self)
       end
     else
       if self.closed then
-        GUIManager.fiberList:fork(self.show, self)
+        MenuManager.fiberList:fork(self.show, self)
       end
     end
   end
@@ -86,7 +86,7 @@ function ButtonWindow:checkInput()
   if not self.open then
     return
   end
-  local x, y = InputManager.mouse:guiCoord()
+  local x, y = InputManager.mouse:menuCoord()
   x, y = x - self.position.x, y - self.position.y
   if InputManager.keys['mouse1']:isTriggered() then
     self:onClick(1, x, y)

@@ -1,9 +1,9 @@
 
 -- ================================================================================================
 
---- Window that shows the total price to be paidin the Recruit GUI.
+--- Window that shows the total price to be paidin the Recruit Menu.
 ---------------------------------------------------------------------------------------------------
--- @uimod RecruitConfirmWindow
+-- @windowmod RecruitConfirmWindow
 -- @extend BattlerWindow
 
 -- ================================================================================================
@@ -12,7 +12,7 @@
 local Battler = require('core/battle/battler/Battler')
 local Button = require('core/gui/widget/control/Button')
 local BattlerWindow = require('core/gui/common/window/BattlerWindow')
-local SimpleText = require('core/gui/widget/SimpleText')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Vector = require('core/math/Vector')
 
 -- Class table.
@@ -28,7 +28,7 @@ function RecruitConfirmWindow:createContent(...)
   BattlerWindow.createContent(self, ...)
   local w = self.width - self:paddingX() * 2
   local h = self.height - self:paddingY() * 2
-  local confirm = SimpleText(Vocab.confirm, Vector(-w/2, -h/2), w, 'center', Fonts.gui_button)
+  local confirm = TextComponent(Vocab.confirm, Vector(-w/2, -h/2), w, 'center', Fonts.menu_button)
   confirm:setMaxWidth(w)
   confirm:setMaxHeight(h)
   confirm:setAlign('center', 'bottom')
@@ -44,9 +44,9 @@ end
 -- @tparam table char Character data from database.
 -- @tparam number price Price to hire.
 function RecruitConfirmWindow:setChar(char, price)
-  local key = 'ally' .. #self.GUI.troop.members
+  local key = 'ally' .. #self.menu.troop.members
   local member = { key = key, battlerID = char.battlerID, charID = char.id }
-  local battler = Battler(self.GUI.troop, member)
+  local battler = Battler(self.menu.troop, member)
   self:setBattler(battler)
   self.battler = battler
   self.member = member
@@ -57,7 +57,7 @@ end
 -- @tparam table member The troop unit data of the new character.
 -- @tparam number price Money received to dismiss.
 function RecruitConfirmWindow:setMember(member, price)
-  self:setBattler(self.GUI.troop.battlers[member.key])
+  self:setBattler(self.menu.troop.battlers[member.key])
   self.member = member
   self.price = price
 end
@@ -83,21 +83,21 @@ end
 
 --- Buys / dismisss the selected quantity.
 function RecruitConfirmWindow:apply()
-  local troop = self.GUI.troop
+  local troop = self.menu.troop
   troop.money = troop.money - self.price
   if self.hire then
     troop:addMember(self.member, self.battler)
   else
     troop:removeMember(self.member.key)
-    self.GUI.listWindow:setDismissMode()
+    self.menu.listWindow:setDismissMode()
   end
-  self.GUI.goldWindow:setGold(troop.money)
+  self.menu.goldWindow:setGold(troop.money)
   self:returnWindow()
 end
 --- Hides this window and returns to the window with the item list.
 function RecruitConfirmWindow:returnWindow()
-  local w = self.GUI.listWindow
-  local w2 = self.GUI.descriptionWindow
+  local w = self.menu.listWindow
+  local w2 = self.menu.descriptionWindow
   self:hide()
   _G.Fiber:fork(w2.show, w2)
   w:show()

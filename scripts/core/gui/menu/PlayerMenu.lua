@@ -1,40 +1,40 @@
 
 -- ================================================================================================
 
---- The GUI always visible when the `Player` explores the field.
+--- A HUD shown when the `Player` explores the field.
 ---------------------------------------------------------------------------------------------------
--- @uimod FieldHUD
--- @extend GUI
+-- @menumod PlayerMenu
+-- @extend Menu
 
 -- ================================================================================================
 
 -- Imports
 local ButtonWindow = require('core/gui/common/window/interactable/ButtonWindow')
-local GUI = require('core/gui/GUI')
+local Menu = require('core/gui/Menu')
 local SaveInfo = require('core/gui/widget/data/SaveInfo')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
 -- Class table.
-local FieldHUD = class(GUI)
+local PlayerMenu = class(Menu)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `GUI:init`.
-function FieldHUD:init()
+--- Overrides `Menu:init`.
+function PlayerMenu:init()
   self.name = 'Field HUD'
-  GUI.init(self)
+  Menu.init(self)
 end
---- Implements `GUI:createWindows`.
+--- Implements `Menu:createWindows`.
 -- @implement
-function FieldHUD:createWindows()
+function PlayerMenu:createWindows()
   self:createSaveInfoWindow()
   self:createButtonWindow()
 end
 --- Creates the window with the information of the current save.
-function FieldHUD:createSaveInfoWindow()
+function PlayerMenu:createSaveInfoWindow()
   local width = Config.troop.maxMembers * 20 + 60
   local height = 44
   local wpos = Vector((width - ScreenManager.width) / 2, (height - ScreenManager.height) / 2)
@@ -45,7 +45,7 @@ function FieldHUD:createSaveInfoWindow()
   self.saveInfoWindow = window
 end
 --- Creates the window with the menu button, for mobile.
-function FieldHUD:createButtonWindow()
+function PlayerMenu:createButtonWindow()
   local window = ButtonWindow(self, 'menu', 'center', 60)
   window:setXYZ((ScreenManager.width - window.width) / 2, (window.height - ScreenManager.height) / 2)
   self.buttonWindow = window
@@ -57,7 +57,7 @@ end
 
 --- Checks if button was clicked on.
 -- @treturn boolean Whether the button was pressed or not.
-function FieldHUD:checkInput()
+function PlayerMenu:checkInput()
   return self.buttonWindow and self.buttonWindow:checkClick()
 end
 
@@ -67,7 +67,7 @@ end
 
 --- Refresh each member info.
 -- @tparam boolean all True to update all info. False to update only playtime.
-function FieldHUD:refreshSave(all)
+function PlayerMenu:refreshSave(all)
   local save = SaveManager:createHeader()
   if all then
     self.saveInfoWindow.info:refreshInfo(save)
@@ -83,20 +83,20 @@ function FieldHUD:refreshSave(all)
     self.saveInfoWindow:hideContent()
   end
 end
---- Overrides `GUI:show`. 
+--- Overrides `Menu:show`. 
 -- @override
-function FieldHUD:show(...)
+function PlayerMenu:show(...)
   if self.buttonWindow then
     self.buttonWindow:refreshLastOpen()
   end
   self.time = GameManager:currentPlayTime()
-  GUI.show(self, ...)
+  Menu.show(self, ...)
   self:refreshSave(true)
 end
---- Overrides `GUI:update`. 
+--- Overrides `Menu:update`. 
 -- @override
-function FieldHUD:update(dt)
-  GUI.update(self, dt)
+function PlayerMenu:update(dt)
+  Menu.update(self, dt)
   if self.open then
     self:refreshSave()
   end
@@ -105,4 +105,4 @@ function FieldHUD:update(dt)
   end
 end
 
-return FieldHUD
+return PlayerMenu

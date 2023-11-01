@@ -11,8 +11,8 @@
 -- Imports
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
-local SimpleText = require('core/gui/widget/SimpleText')
-local SimpleImage = require('core/gui/widget/SimpleImage')
+local TextComponent = require('core/gui/widget/TextComponent')
+local ImageComponent = require('core/gui/widget/ImageComponent')
 local GridWidget = require('core/gui/widget/control/GridWidget')
 
 -- Alias
@@ -46,17 +46,17 @@ function VSpinner:initContent(initValue, w, h, x, y)
   x, y = x or 0, y or 0
   local animID = Config.animations.arrow
   -- Left arrow
-  local downArrowSprite = ResourceManager:loadIcon({id = animID, col = 1, row = 0}, GUIManager.renderer)
+  local downArrowSprite = ResourceManager:loadIcon({id = animID, col = 1, row = 0}, MenuManager.renderer)
   local dw, dh = downArrowSprite:quadBounds()
-  self.downArrow = SimpleImage(downArrowSprite, x + (w - dw) / 2, y + h - dh)
+  self.downArrow = ImageComponent(downArrowSprite, x + (w - dw) / 2, y + h - dh)
   -- Right arrow
-  local upArrowSprite = ResourceManager:loadIcon({id = animID, col = 0, row = 1}, GUIManager.renderer)
+  local upArrowSprite = ResourceManager:loadIcon({id = animID, col = 0, row = 1}, MenuManager.renderer)
   local uw, uh = upArrowSprite:quadBounds()
-  self.upArrow = SimpleImage(upArrowSprite, x + (w - uw) / 2, y)
+  self.upArrow = ImageComponent(upArrowSprite, x + (w - uw) / 2, y)
   -- Value text in the middle
   self.value = initValue
   local textPos = Vector(x, y)
-  self.valueText = SimpleText(tostring(initValue), textPos, w, 'center', Fonts.gui_button)
+  self.valueText = TextComponent(tostring(initValue), textPos, w, 'center', Fonts.menu_button)
   self.valueText.sprite.maxHeight = h
   self.valueText.sprite.alignY = 'center'
   -- Add to content list

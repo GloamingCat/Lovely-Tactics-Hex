@@ -11,7 +11,7 @@
 
 -- Imports
 local BattleAction = require('core/battle/action/BattleAction')
-local VisualizeGUI = require('core/gui/battle/VisualizeGUI')
+local VisualizeMenu = require('core/gui/battle/VisualizeMenu')
 
 -- Class table.
 local VisualizeAction = class(BattleAction)
@@ -39,9 +39,9 @@ end
 function VisualizeAction:execute(input)
   local character = input.target:getFirstBattleCharacter()
   FieldManager.renderer:moveToTile(input.target)
-  GUIManager:showGUIForResult(VisualizeGUI(input.GUI, character))
-  if input.GUI then
-    input.GUI:startGridSelecting(input.target)
+  MenuManager:showMenuForResult(VisualizeMenu(input.menu, character))
+  if input.menu then
+    input.menu:startGridSelecting(input.target)
   end
 end
 
@@ -53,7 +53,7 @@ end
 -- @override
 function VisualizeAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
-    tile.gui:setColor('')
+    tile.ui:setColor('')
   end
 end
 

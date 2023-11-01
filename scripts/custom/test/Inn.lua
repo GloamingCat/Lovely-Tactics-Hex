@@ -14,7 +14,7 @@ return function(script)
     script:stopChar { key = 'player' }
     script:turnCharTile { key = 'player', other = 'self' }
     AudioManager:playSFX { name = 'buttonConfirm', pitch = 100, volume = 100 }
-    script:showMessage { id = 3, wait = false, width = 180, height = 60, message = 
+    script:showMessage { id = 3, wait = false, width = 180, height = 60, text = 
       Vocab.dialogues.npc.Inn
     }
     script:openChoiceWindow { width = 70, y = 60,

@@ -3,7 +3,7 @@
 
 --- Window that shows the list of save slots.
 ---------------------------------------------------------------------------------------------------
--- @uimod SaveWindow
+-- @windowmod SaveWindow
 -- @extend GridWindow
 
 -- ================================================================================================
@@ -26,7 +26,7 @@ local SaveWindow = class(GridWindow)
 -- @override
 function SaveWindow:init(...)
   GridWindow.init(self, ...)
-  self.confirmWindow = ConfirmWindow(self.GUI, 'overwrite')
+  self.confirmWindow = ConfirmWindow(self.menu, 'overwrite')
   self.confirmWindow:setXYZ(0, 0, -50)
   self.confirmWindow:setVisible(false)
   local button = self.confirmWindow.matrix[1]
@@ -92,7 +92,7 @@ end
 --- When player chooses a file to load.
 function SaveWindow:onButtonConfirm(button)
   if SaveManager:getHeader(button.file) then
-    local result = self.GUI:showWindowForResult(self.confirmWindow)
+    local result = self.menu:showWindowForResult(self.confirmWindow)
     if result == 0 then
       return
     end

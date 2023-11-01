@@ -105,7 +105,7 @@ function ResourceManager:loadAnimation(data, dest)
 end
 --- Loads a sprite.
 -- @tparam table|number|string data Animation's data or id, or path to texture.
--- @tparam Renderer renderer Renderer of the icon (FieldManager's or GUIManager's).
+-- @tparam Renderer renderer Renderer of the icon (FieldManager's or MenuManager's).
 -- @tparam number col Column within spritesheet (optional, 0 by default).
 -- @tparam number row Row within spritesheet (optional, 0 by default).
 -- @treturn Sprite New Sprite object.
@@ -125,7 +125,7 @@ function ResourceManager:loadSprite(data, renderer, col, row)
 end
 --- Loads a sprite for an icon.
 -- @tparam table icon Icon's data (animation ID, col and row).
--- @tparam Renderer renderer Renderer of the icon (FieldManager's or GUIManager's).
+-- @tparam Renderer renderer Renderer of the icon (FieldManager's or MenuManager's).
 -- @treturn Sprite New Sprite Object.
 function ResourceManager:loadIcon(icon, renderer)
   local data = Database.animations[icon.id]
@@ -133,7 +133,7 @@ function ResourceManager:loadIcon(icon, renderer)
 end
 --- Loads an icon as a single-sprite animation.
 -- @tparam table icon Icon's data (animation ID, col and row).
--- @tparam Renderer renderer Renderer of the icon (FieldManager's or GUIManager's).
+-- @tparam Renderer renderer Renderer of the icon (FieldManager's or MenuManager's).
 -- @treturn Animation Newly created Animation for the given icon.
 function ResourceManager:loadIconAnimation(icon, renderer)
   local sprite = self:loadIcon(icon, renderer)

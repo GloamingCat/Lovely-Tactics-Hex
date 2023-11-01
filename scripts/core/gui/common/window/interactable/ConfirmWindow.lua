@@ -3,7 +3,7 @@
 
 --- A window that contains "Confirm" and "Cancel" options. The "Cancel" button returns result `0`.
 ---------------------------------------------------------------------------------------------------
--- @uimod ConfirmWindow
+-- @windowmod ConfirmWindow
 -- @extend GridWindow
 
 -- ================================================================================================
@@ -20,16 +20,16 @@ local ConfirmWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
+-- @tparam Menu menu Parent Menu.
 -- @tparam string confirmTerm Term for the confirm button, from the `Vocab` table
 --  (optional, "``confirm`" by default).
 -- @tparam string cancelTerm Term for the cancel button, from the `Vocab` table.
 --  (optional, "``cancel`" by default).
 -- @param ... Other parameters from `Window:init`.
-function ConfirmWindow:init(gui, confirmTerm, cancelTerm, ...)
+function ConfirmWindow:init(menu, confirmTerm, cancelTerm, ...)
   self.confirmTerm = confirmTerm or 'confirm'
   self.cancelTerm = cancelTerm or 'cancel'
-  GridWindow.init(self, gui, ...)
+  GridWindow.init(self, menu, ...)
 end
 --- Implements `GridWindow:createWidgets`.
 -- @implement

@@ -133,8 +133,8 @@ function GameManager:updateGStats()
     self.stats[3] = self.stats[3] + FieldManager.renderer.batchDraws
     self.stats[5] = self.stats[5] + FieldManager.renderer.textDraws
   end
-  self.stats[4] = self.stats[4] + GUIManager.renderer.batchDraws
-  self.stats[6] = self.stats[6] + GUIManager.renderer.textDraws
+  self.stats[4] = self.stats[4] + MenuManager.renderer.batchDraws
+  self.stats[6] = self.stats[6] + MenuManager.renderer.textDraws
   if self.frame % 60 == 0 then
     self.avgStats = self.stats
     self.stats = { 0, 0, 0, 0, 0, 0 }

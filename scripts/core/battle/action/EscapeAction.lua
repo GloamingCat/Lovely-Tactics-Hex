@@ -13,7 +13,7 @@
 local BattleAction = require('core/battle/action/BattleAction')
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
 local BattleTactics = require('core/battle/ai/BattleTactics')
-local ConfirmGUI = require('core/gui/common/ConfirmGUI')
+local ConfirmMenu = require('core/gui/common/ConfirmMenu')
 
 -- Class table.
 local EscapeAction = class(BattleAction)
@@ -53,10 +53,10 @@ function EscapeAction:onSelect(input)
     end
   end
 end
---- Overrides `BattleAction:onActionGUI`. 
+--- Overrides `BattleAction:onActionMenu`. 
 -- @override
-function EscapeAction:onActionGUI(input)
-  local confirm = GUIManager:showGUIForResult(ConfirmGUI(input.GUI))
+function EscapeAction:onActionMenu(input)
+  local confirm = MenuManager:showMenuForResult(ConfirmMenu(input.menu))
   if confirm == 1 then
     return self:onConfirm(input)
   else

@@ -47,7 +47,7 @@ end
 -- @override
 function Highlight:createContent(width, height)
   self.spriteGrid = SpriteGrid(self:getSkin(), Vector(0, 0, 1))
-  self.spriteGrid:createGrid(GUIManager.renderer, width, height)
+  self.spriteGrid:createGrid(MenuManager.renderer, width, height)
   self.spriteGrid:updateTransform(self)
   self.content:add(self.spriteGrid)
 end

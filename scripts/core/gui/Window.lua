@@ -4,7 +4,7 @@
 --- Provides the base for windows.
 -- Every content element for the window must inherit from `Component`.
 ---------------------------------------------------------------------------------------------------
--- @uimod Window
+-- @windowmod Window
 -- @extend Component
 -- @extend Transformable
 
@@ -14,7 +14,7 @@
 local Component = require('core/gui/Component')
 local List = require('core/datastruct/List')
 local SpriteGrid = require('core/graphics/SpriteGrid')
-local SimpleText = require('core/gui/widget/SimpleText')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Transformable = require('core/math/transform/Transformable')
 local Vector = require('core/math/Vector')
 
@@ -29,14 +29,14 @@ local Window = class(Component, Transformable)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
+-- @tparam Menu menu Parent Menu.
 -- @tparam number width Total width in pixels (if nil, must be set later).
 -- @tparam number height Total height in pixels (if nil, must be set later).
 -- @tparam Vector position The position of the center of the window
 --  (optional, center of the screen by default).
-function Window:init(gui, width, height, position)
+function Window:init(menu, width, height, position)
   Transformable.init(self, position)
-  self.GUI = gui
+  self.menu = menu
   self:setProperties()
   if not self.noSkin then
     self.background = SpriteGrid(self:getBG(), Vector(0, 0, 1))
@@ -64,16 +64,16 @@ function Window:createContent(width, height)
   self.width = width
   self.height = height
   if self.background then
-    self.background:createGrid(GUIManager.renderer, width, height)
-    self.background:setHSV(nil, nil, GUIManager.windowColor / 100)
+    self.background:createGrid(MenuManager.renderer, width, height)
+    self.background:setHSV(nil, nil, MenuManager.windowColor / 100)
   end
   if self.frame then
-    self.frame:createGrid(GUIManager.renderer, width, height)
+    self.frame:createGrid(MenuManager.renderer, width, height)
   end
   if self.tooltipTerm then
-    local w = ScreenManager.width - self.GUI:windowMargin() * 2
-    local h = ScreenManager.height - self.GUI:windowMargin() * 2
-    self.tooltip = SimpleText('', Vector(-w/2, -h/2, -50), w, 'left', Fonts.gui_tooltip)
+    local w = ScreenManager.width - self.menu:windowMargin() * 2
+    local h = ScreenManager.height - self.menu:windowMargin() * 2
+    self.tooltip = TextComponent('', Vector(-w/2, -h/2, -50), w, 'left', Fonts.menu_tooltip)
     self.tooltip:setTerm('manual.' .. self.tooltipTerm, '')
     self.tooltip:setAlign('left', self.tooltipAlign or 'bottom')
     self.tooltip:setMaxHeight(h)
@@ -111,7 +111,7 @@ end
 function Window:refresh()
   Component.refresh(self)
   if self.background then
-    self.background:setHSV(nil, nil, GUIManager.windowColor / 100)
+    self.background:setHSV(nil, nil, MenuManager.windowColor / 100)
   end
 end
 --- Erases content.
@@ -129,12 +129,12 @@ function Window:destroy()
 end
 --- Sets this window as the active one.
 function Window:activate()
-  self.GUI:setActiveWindow(self)
+  self.menu:setActiveWindow(self)
 end
 --- Deactivate this window if it's the current active one.
 function Window:deactivate()
-  if self.GUI.activeWindow == self then
-    self.GUI:setActiveWindow(nil)
+  if self.menu.activeWindow == self then
+    self.menu:setActiveWindow(nil)
   end
 end
 --- Activates/deactivates window.
@@ -142,7 +142,7 @@ end
 function Window:setActive(value)
   self.active = value
   if self.tooltip then
-    self.tooltip:setVisible(value and not GUIManager.disableTooltips)
+    self.tooltip:setVisible(value and not MenuManager.disableTooltips)
   end
 end
 --- Checks in a screen point is within window's bounds.
@@ -204,11 +204,11 @@ function Window:resize(w, h)
     self.width = w
     self.height = h
     if self.background then
-      self.background:createGrid(GUIManager.renderer, w, h)
-      self.background:setHSV(nil, nil, GUIManager.windowColor / 100)
+      self.background:createGrid(MenuManager.renderer, w, h)
+      self.background:setHSV(nil, nil, MenuManager.windowColor / 100)
     end
     if self.frame then
-      self.frame:createGrid(GUIManager.renderer, w, h)
+      self.frame:createGrid(MenuManager.renderer, w, h)
     end
     self:setPosition(self.position)
   end
@@ -252,14 +252,14 @@ function Window:show()
 end
 --- Overrides `Component:hide`. Closes this window.
 -- @override
--- @tparam boolean gui If it's called from GUI:hide.
---  If true, automatically opens the window back if its GUI opens again.
+-- @tparam boolean fromMenu If it's called from Menu:hide.
+--  If true, automatically opens the window back if its Menu opens again.
 --  Else, it stays hidden until it is manually openned again.
-function Window:hide(gui)
+function Window:hide(fromMenu)
   if self.scaleY <= 0 then
     return
   end
-  self.lastOpen = gui
+  self.lastOpen = fromMenu
   self.open = false
   self:hideContent()
   self:scaleTo(self.scaleX, 0, self.speed, true)
@@ -267,15 +267,15 @@ function Window:hide(gui)
     self.closed = true
   end
 end
---- Inserts this window in the GUI's list.
+--- Inserts this window in the Menu's list.
 function Window:insertSelf()
-  if not self.GUI.windowList:contains(self) then
-    self.GUI.windowList:add(self)
+  if not self.menu.windowList:contains(self) then
+    self.menu.windowList:add(self)
   end
 end
---- Removes this window from the GUI's list.
+--- Removes this window from the Menu's list.
 function Window:removeSelf()
-  self.GUI.windowList:removeElement(self)
+  self.menu.windowList:removeElement(self)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -290,7 +290,7 @@ function Window:showContent(...)
     end
     c:show(...)
   end
-  if self.tooltip and self.active and not GUIManager.disableTooltips then
+  if self.tooltip and self.active and not MenuManager.disableTooltips then
     self.tooltip:show(...)
   end
 end
@@ -308,13 +308,13 @@ end
 -- Input
 -- ------------------------------------------------------------------------------------------------
 
---- Checks if player pressed any GUI button.
+--- Checks if player pressed any Menu button.
 -- By default, only checks the "cancel" key.
 function Window:checkInput()
   if not self.open then
     return
   end
-  local x, y = InputManager.mouse:guiCoord()
+  local x, y = InputManager.mouse:menuCoord()
   x, y = x - self.position.x, y - self.position.y
   if InputManager.textInput then
     self:onTextInput(InputManager.textInput)

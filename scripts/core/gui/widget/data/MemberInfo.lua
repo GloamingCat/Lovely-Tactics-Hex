@@ -12,8 +12,8 @@
 local Component = require('core/gui/Component')
 local Gauge = require('core/gui/widget/Gauge')
 local IconList = require('core/gui/widget/data/IconList')
-local SimpleImage = require('core/gui/widget/SimpleImage')
-local SimpleText = require('core/gui/widget/SimpleText')
+local ImageComponent = require('core/gui/widget/ImageComponent')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Vector = require('core/math/Vector')
 
 -- Alias
@@ -44,33 +44,33 @@ function MemberInfo:createContent(w, h, battler)
   local charData = Database.characters[battler.charID]
   local icon = findByName(charData.portraits, "SmallIcon")
   if icon then
-    local sprite = ResourceManager:loadIcon(icon, GUIManager.renderer)
+    local sprite = ResourceManager:loadIcon(icon, MenuManager.renderer)
     sprite.texture:setFilter('linear', 'linear')
     sprite:applyTransformation(charData.transform)
-    self.icon = SimpleImage(sprite, topLeft.x, topLeft.y, topLeft.z, nil, h)   
+    self.icon = ImageComponent(sprite, topLeft.x, topLeft.y, topLeft.z, nil, h)   
     local ix, iy, iw, ih = sprite:totalBounds()
     topLeft.x = topLeft.x + iw + margin
     w = w - iw - margin
     self.content:add(self.icon)
   end
   local rw = (w - margin) / 2
-  local small = Fonts.gui_small
-  local tiny = Fonts.gui_tiny
-  local medium = Fonts.gui_medium
+  local small = Fonts.menu_small
+  local tiny = Fonts.menu_tiny
+  local medium = Fonts.menu_medium
   -- Name
-  local txtName = SimpleText(battler.name, topLeft, rw, 'left', medium)
+  local txtName = TextComponent(battler.name, topLeft, rw, 'left', medium)
   txtName:setTerm('data.battler.' .. battler.key, battler.name) 
   txtName:redraw()
   self.content:add(txtName)
   -- HP
   local middleLeft = Vector(topLeft.x, topLeft.y + 17, topLeft.z)
-  local txtHP = SimpleText(Vocab.hp, middleLeft, rw, 'left', small)
+  local txtHP = TextComponent(Vocab.hp, middleLeft, rw, 'left', small)
   txtHP:setTerm('hp', '') 
   txtHP:redraw()
   self.content:add(txtHP)
   -- SP
   local bottomLeft = Vector(middleLeft.x, middleLeft.y + 11, middleLeft.z)
-  local txtSP = SimpleText(Vocab.sp, bottomLeft, rw, 'left', small)
+  local txtSP = TextComponent(Vocab.sp, bottomLeft, rw, 'left', small)
   txtSP:setTerm('sp', '') 
   txtSP:redraw()
   self.content:add(txtSP)
@@ -91,17 +91,17 @@ function MemberInfo:createContent(w, h, battler)
   -- Level / Class
   local middleRight = Vector(topRight.x - 7, topRight.y + 8, topRight.z)
   local job = battler.job.data
-  local txtLevel = SimpleText('', middleRight, rw, 'left', small)
+  local txtLevel = TextComponent('', middleRight, rw, 'left', small)
   txtLevel:setTerm('{%level} ' .. battler.job.level)
   txtLevel:redraw()
-  local txtJob = SimpleText('', middleRight, rw, 'right', small)
+  local txtJob = TextComponent('', middleRight, rw, 'right', small)
   txtJob:setTerm('data.job.' .. job.key, job.name)
   txtJob:redraw()
   self.content:add(txtLevel)
   self.content:add(txtJob)
   -- EXP
   local bottomRight = Vector(middleRight.x, middleRight.y + 11, middleRight.z)
-  local txtEXP = SimpleText('', bottomRight, rw, 'left', small)
+  local txtEXP = TextComponent('', bottomRight, rw, 'left', small)
   txtEXP:setTerm('exp', '')
   txtEXP:redraw()
   self.content:add(txtEXP)

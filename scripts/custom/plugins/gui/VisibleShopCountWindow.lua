@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- Makes the ShopCountWindow in the ShopGUI visible alongside the ShopListWindow.
+--- Makes the ShopCountWindow in the ShopMenu visible alongside the ShopListWindow.
 ---------------------------------------------------------------------------------------------------
 -- @plugin VisibleShopCountWindow
 
@@ -10,13 +10,13 @@
 -- Imports
 local ShopCountWindow = require('core/gui/menu/window/interactable/ShopCountWindow')
 local ShopListWindow = require('core/gui/menu/window/interactable/ShopListWindow')
-local ShopGUI = require('core/gui/menu/ShopGUI')
+local ShopMenu = require('core/gui/menu/ShopMenu')
 
 -- Rewrites
 local ShopListWindow_onButtonSelect = ShopListWindow.onButtonSelect
-local ShopGUI_showShopGUI = ShopGUI.showShopGUI
-local ShopGUI_hideShopGUI = ShopGUI.hideShopGUI
-local ShopGUI_createListWindow = ShopGUI.createListWindow
+local ShopMenu_showShopMenu = ShopMenu.showShopMenu
+local ShopMenu_hideShopMenu = ShopMenu.hideShopMenu
+local ShopMenu_createListWindow = ShopMenu.createListWindow
 
 -- ------------------------------------------------------------------------------------------------
 -- ShopListWindow
@@ -26,13 +26,13 @@ local ShopGUI_createListWindow = ShopGUI.createListWindow
 -- @rewrite
 function ShopListWindow:onButtonSelect(button)
   ShopListWindow_onButtonSelect(self, button)
-  self.GUI.countWindow:setItem(button.item, button.price)
+  self.menu.countWindow:setItem(button.item, button.price)
 end
 --- Rewrites `ShopListWindow:onButtonConfirm`.
 -- @rewrite
 function ShopListWindow:onButtonConfirm(button)
-  self.GUI.countWindow:setItem(button.item, button.price)
-  self.GUI.countWindow:activate()
+  self.menu.countWindow:setItem(button.item, button.price)
+  self.menu.countWindow:activate()
 end
 --- Rewrites `ShopListWindow:colCount`.
 -- @rewrite
@@ -42,7 +42,7 @@ end
 --- Rewrites `ShopListWindow:cellWidth`.
 -- @rewrite
 function ShopListWindow:cellWidth(width)
-  local w = (ScreenManager.width - self.GUI:windowMargin() * 3) / 2
+  local w = (ScreenManager.width - self.menu:windowMargin() * 3) / 2
   return self:computeCellWidth(w)
 end
 
@@ -53,7 +53,7 @@ end
 --- Rewrites `ShopCountWindow:returnWindow`.
 -- @rewrite
 function ShopCountWindow:returnWindow()
-  local w = self.GUI.listWindow
+  local w = self.menu.listWindow
   w:refreshButtons()
   w:activate()
   if self.highlight then
@@ -62,31 +62,31 @@ function ShopCountWindow:returnWindow()
 end
 
 -- ------------------------------------------------------------------------------------------------
--- ShopGUI
+-- ShopMenu
 -- ------------------------------------------------------------------------------------------------
 
---- Rewrites `ShopGUI:showShopGUI`.
+--- Rewrites `ShopMenu:showShopMenu`.
 -- @rewrite
-function ShopGUI:showShopGUI()
-  GUIManager.fiberList:fork(self.countWindow.show, self.countWindow)
-  ShopGUI_showShopGUI(self)
+function ShopMenu:showShopMenu()
+  MenuManager.fiberList:fork(self.countWindow.show, self.countWindow)
+  ShopMenu_showShopMenu(self)
 end
---- Rewrites `ShopGUI:hideShopGUI`.
+--- Rewrites `ShopMenu:hideShopMenu`.
 -- @rewrite
-function ShopGUI:hideShopGUI()
-  GUIManager.fiberList:fork(self.countWindow.hide, self.countWindow)
-  ShopGUI_hideShopGUI(self)
+function ShopMenu:hideShopMenu()
+  MenuManager.fiberList:fork(self.countWindow.hide, self.countWindow)
+  ShopMenu_hideShopMenu(self)
 end
---- Rewrites `ShopGUI:createListWindow`.
+--- Rewrites `ShopMenu:createListWindow`.
 -- @rewrite
-function ShopGUI:createListWindow()
-  ShopGUI_createListWindow(self)
+function ShopMenu:createListWindow()
+  ShopMenu_createListWindow(self)
   local x = self.listWindow.width / 2 - ScreenManager.width / 2 + self:windowMargin()
   self.listWindow:setXYZ(x)
 end
---- Rewrites `ShopGUI:createCountWindow`.
+--- Rewrites `ShopMenu:createCountWindow`.
 -- @rewrite
-function ShopGUI:createCountWindow()
+function ShopMenu:createCountWindow()
   local width = ScreenManager.width - self.listWindow.width - self:windowMargin() * 3
   local height = self.listWindow.height
   local x = ScreenManager.width / 2 - self:windowMargin() - width / 2

@@ -1,38 +1,38 @@
 
 -- ================================================================================================
 
---- The GUI that contains only a text input window.
+--- Menu that contains only a `TextInputWindow`.
 ---------------------------------------------------------------------------------------------------
--- @uimod TextInputGUI
--- @extend GUI
+-- @menumod TextInputMenu
+-- @extend Menu
 
 -- ================================================================================================
 
 -- Imports
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
-local GUI = require('core/gui/GUI')
+local Menu = require('core/gui/Menu')
 local TextInputWindow = require('core/gui/common/window/interactable/TextInputWindow')
 local Vector = require('core/math/Vector')
 
 -- Class table.
-local TextInputGUI = class(GUI)
+local TextInputMenu = class(Menu)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `GUI:init`. 
+--- Overrides `Menu:init`. 
 -- @override
-function TextInputGUI:init(parent, description, emptyAllowed, cancelAllowed)
+function TextInputMenu:init(parent, description, emptyAllowed, cancelAllowed)
   self.description = description
   self.emptyAllowed = emptyAllowed
   self.cancelAllowed = cancelAllowed
-  GUI.init(self, parent)
+  Menu.init(self, parent)
 end
---- Overrides `GUI:createWindows`. 
+--- Overrides `Menu:createWindows`. 
 -- @override
-function TextInputGUI:createWindows()
-  self.name = 'TextInput GUI'
+function TextInputMenu:createWindows()
+  self.name = 'TextInput Menu'
   local textWindow = TextInputWindow(self, self.emptyAllowed, self.cancelAllowed)
   if self.description then
     local descriptionWindow = DescriptionWindow(self, 100, 30, Vector(0, -50, 0))
@@ -44,4 +44,4 @@ function TextInputGUI:createWindows()
   self:setActiveWindow(textWindow)
 end
 
-return TextInputGUI
+return TextInputMenu

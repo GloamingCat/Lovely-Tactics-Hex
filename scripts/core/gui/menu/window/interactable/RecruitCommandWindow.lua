@@ -1,9 +1,9 @@
 
 -- ================================================================================================
 
---- Window with the initial commands of the shop GUI (hire, dismiss, cancel).
+--- Window with the initial commands of the shop Menu (hire, dismiss, cancel).
 ---------------------------------------------------------------------------------------------------
--- @uimod RecruitCommandWindow
+-- @windowmod RecruitCommandWindow
 -- @extend GridWindow
 
 -- ================================================================================================
@@ -20,13 +20,13 @@ local RecruitCommandWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
+-- @tparam Menu menu Parent Menu.
 -- @tparam boolean hire True if "hire" option if enabled.
 -- @tparam boolean dismiss True if "dismiss" option if enabled.
-function RecruitCommandWindow:init(gui, hire, dismiss)
+function RecruitCommandWindow:init(menu, hire, dismiss)
   self.hire = hire
   self.dismiss = dismiss
-  GridWindow.init(self, gui)
+  GridWindow.init(self, menu)
 end
 --- Overrides `GridWindow:setProperties`. 
 -- @override
@@ -49,17 +49,17 @@ end
 
 --- Shows the windows to hire.
 function RecruitCommandWindow:hireConfirm()
-  self.GUI.countWindow:setHireMode()
-  self.GUI.listWindow:setHireMode()
-  self.GUI:showRecruitGUI()
+  self.menu.countWindow:setHireMode()
+  self.menu.listWindow:setHireMode()
+  self.menu:showRecruitMenu()
 end
 --- Shows the windows to dismiss.
 function RecruitCommandWindow:dismissConfirm()
-  self.GUI.countWindow:setDismissMode()
-  self.GUI.listWindow:setDismissMode()
-  self.GUI:showRecruitGUI()
+  self.menu.countWindow:setDismissMode()
+  self.menu.listWindow:setDismissMode()
+  self.menu:showRecruitMenu()
 end
---- Closes shop GUI.
+--- Closes shop Menu.
 function RecruitCommandWindow:cancelConfirm()
   self.result = 0
 end

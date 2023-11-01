@@ -2,9 +2,9 @@
 -- ================================================================================================
 
 --- A button window that shows all the visibles members in the troop.
--- It selected one of the member to manage with MemberGUI.
+-- It selected one of the member to manage with MemberMenu.
 ---------------------------------------------------------------------------------------------------
--- @uimod PartyWindow
+-- @windowmod PartyWindow
 -- @extend ListWindow
 
 -- ================================================================================================
@@ -24,13 +24,13 @@ local PartyWindow = class(ListWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor. Gets the member list from the troop.
--- @tparam GUI gui Parent GUI.
+-- @tparam Menu menu Parent Menu.
 -- @tparam Troop troop
-function PartyWindow:init(gui, troop)
+function PartyWindow:init(menu, troop)
   self.visibleRowCount = GameManager:isMobile() and 3 or 4
   local list = troop:visibleBattlers()
   self.troop = troop
-  ListWindow.init(self, gui, list)
+  ListWindow.init(self, menu, list)
 end
 --- Overrides `GridWindow:setProperties`. Initialized tooltip.
 -- @override

@@ -4,7 +4,7 @@
 --- A button window that shows all the visibles members in the troop.
 -- It selects one of the targets to execute an action.
 ---------------------------------------------------------------------------------------------------
--- @uimod MenuTargetWindow
+-- @windowmod MenuTargetWindow
 -- @extend PartyWindow
 
 -- ================================================================================================
@@ -27,7 +27,7 @@ function MenuTargetWindow:setProperties()
 end
 --- When player selects a character from the member list window.
 function MenuTargetWindow:onButtonConfirm(button)
-  local input = self.GUI.input
+  local input = self.menu.input
   input.target = self.list[button.index]
   local pos = button:relativePosition()
   input.targetX = pos.x + self:cellWidth() / 2
@@ -43,7 +43,7 @@ function MenuTargetWindow:onButtonConfirm(button)
   local result = input.action:menuUse(input)
   if result.executed then
     self:refreshMembers()
-    self.GUI:refreshEnabled()
+    self.menu:refreshEnabled()
   end
 end
 

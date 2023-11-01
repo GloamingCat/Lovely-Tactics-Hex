@@ -3,14 +3,14 @@
 
 --- A window that shows a description text.
 ---------------------------------------------------------------------------------------------------
--- @uimod DescriptionWindow
+-- @windowmod DescriptionWindow
 -- @extend Window
 
 -- ================================================================================================
 
 -- Imports
 local Vector = require('core/math/Vector')
-local SimpleText = require('core/gui/widget/SimpleText')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Window = require('core/gui/Window')
 
 -- Alias
@@ -30,7 +30,7 @@ function DescriptionWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local textPosition = Vector(self:paddingX() - width / 2, self:paddingY() - height / 2, -1)
   local textWidth = width - self:paddingX() * 2
-  self.text = SimpleText('', textPosition, textWidth, 'left', Fonts.gui_medium)
+  self.text = TextComponent('', textPosition, textWidth, 'left', Fonts.menu_medium)
   self.text:setMaxHeight(height - self:paddingY() * 2)
   self.content:add(self.text)
 end

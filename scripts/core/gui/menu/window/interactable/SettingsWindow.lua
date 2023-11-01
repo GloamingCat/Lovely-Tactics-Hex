@@ -3,7 +3,7 @@
 
 --- Window to change basic system settings.
 ---------------------------------------------------------------------------------------------------
--- @uimod SettingsWindow
+-- @windowmod SettingsWindow
 -- @extend GridWindow
 
 -- ================================================================================================
@@ -33,13 +33,13 @@ function SettingsWindow:createWidgets()
   if #Project.languages > 1 then
     SwitchButton:fromKey(self, 'language', GameManager.language, nil, Project.languages)
   end
-  SwitchButton:fromKey(self, 'tooltips', not GUIManager.disableTooltips)
-  HSpinnerButton:fromKey(self, 'windowColor', 0, 100, GUIManager.windowColor).bigIncrement = 10
+  SwitchButton:fromKey(self, 'tooltips', not MenuManager.disableTooltips)
+  HSpinnerButton:fromKey(self, 'windowColor', 0, 100, MenuManager.windowColor).bigIncrement = 10
   HSpinnerButton:fromKey(self, 'volumeBGM', 0, 100, AudioManager.volumeBGM).bigIncrement = 10
   HSpinnerButton:fromKey(self, 'volumeSFX', 0, 100, AudioManager.volumeSFX).bigIncrement = 10
-  --HSpinnerButton:fromKey(self, 'windowScroll', 0, 100, GUIManager.windowScroll).bigIncrement = 10
+  --HSpinnerButton:fromKey(self, 'windowScroll', 0, 100, MenuManager.windowScroll).bigIncrement = 10
   if not GameManager:isMobile() then
-    HSpinnerButton:fromKey(self, 'fieldScroll', 0, 100, GUIManager.fieldScroll).bigIncrement = 10
+    HSpinnerButton:fromKey(self, 'fieldScroll', 0, 100, MenuManager.fieldScroll).bigIncrement = 10
   end
   SwitchButton:fromKey(self, 'autoDash', InputManager.autoDash)
   if not GameManager:isMobile() then
@@ -58,8 +58,8 @@ end
 
 --- Change window color brightness.
 function SettingsWindow:windowColorChange(spinner)
-  GUIManager.windowColor = spinner.value
-  GUIManager:refresh()
+  MenuManager.windowColor = spinner.value
+  MenuManager:refresh()
   if FieldManager.hud then
     FieldManager.hud:refresh()
   end
@@ -74,11 +74,11 @@ function SettingsWindow:volumeSFXChange(spinner)
 end
 --- Change window scroll speed.
 function SettingsWindow:windowScrollChange(spinner)
-  GUIManager.windowScroll = spinner.value
+  MenuManager.windowScroll = spinner.value
 end
 --- Change field scroll speed.
 function SettingsWindow:fieldScrollChange(spinner)
-  GUIManager.fieldScroll = spinner.value
+  MenuManager.fieldScroll = spinner.value
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ end
 function SettingsWindow:languageChange(button)
   GameManager.language = button.value
   Database.loadVocabFiles(GameManager.language)
-  GUIManager:refresh()
+  MenuManager:refresh()
 end
 --- Change auto dash option.
 function SettingsWindow:autoDashChange(button)
@@ -97,7 +97,7 @@ function SettingsWindow:autoDashChange(button)
 end
 --- Change tooltips option.
 function SettingsWindow:tooltipsChange(button)
-  GUIManager.disableTooltips = not button.value
+  MenuManager.disableTooltips = not button.value
   self.tooltip:setVisible(button.value)
 end
 --- Change mouse enabled option.
@@ -134,13 +134,13 @@ end
 --- Resolution settings.
 function SettingsWindow:resolutionConfirm()
   self:hide()
-  self.GUI:showWindowForResult(self.GUI.resolutionWindow)
+  self.menu:showWindowForResult(self.menu.resolutionWindow)
   self:show()
 end
 --- Key map settings.
 function SettingsWindow:keysConfirm()
   self:hide()
-  self.GUI:showWindowForResult(self.GUI.keyMapWindow)
+  self.menu:showWindowForResult(self.menu.keyMapWindow)
   self:show()
 end
 

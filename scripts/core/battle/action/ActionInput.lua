@@ -27,12 +27,12 @@ local ActionInput = class()
 -- @tparam BattleAction action
 -- @tparam Character|Battler user
 -- @tparam ObjectTile target Action target (optional).
--- @tparam ActionGUI GUI Aurrent ActionGUI, if any (optional).
-function ActionInput:init(action, user, target, GUI)
+-- @tparam ActionMenu Menu Aurrent ActionMenu, if any (optional).
+function ActionInput:init(action, user, target, Menu)
   self.action = action
   self.user = user
   self.target = target
-  self.GUI = GUI
+  self.menu = Menu
   self.skipAnimations = BattleManager.params.skipAnimations
 end
 
@@ -65,7 +65,7 @@ end
 -- action and `moveTarget` as new target.
 -- @treturn ActionInput 
 function ActionInput:createMoveInput()
-  local moveInput = ActionInput(self.moveAction, self.user, self.target, self.GUI)
+  local moveInput = ActionInput(self.moveAction, self.user, self.target, self.menu)
   moveInput.skipAnimations = self.skipAnimations
   return moveInput
 end

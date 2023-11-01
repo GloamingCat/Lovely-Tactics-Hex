@@ -13,7 +13,7 @@
 -- Imports
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
 local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')
-local GUI = require('core/gui/GUI')
+local Menu = require('core/gui/Menu')
 local Vector = require('core/math/Vector')
 
 -- Class table.
@@ -57,17 +57,17 @@ function EventUtil:checkTile(key, i, j, h)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- GUI
+-- Menu
 -- ------------------------------------------------------------------------------------------------
 
---- Creates an empty GUI for the sheet if not already created.
-function EventUtil:createGUI()
-  if not self.gui then
-    self.gui = GUI()
-    self.gui.name = "Event GUI from " .. tostring(self)
-    self.gui.dialogues = {}
-    self.gui.messages = {}
-    GUIManager:showGUI(self.gui)
+--- Creates an empty Menu for the sheet if not already created.
+function EventUtil:createMenu()
+  if not self.menu then
+    self.menu = Menu()
+    self.menu.name = "Event Menu from " .. tostring(self)
+    self.menu.dialogues = {}
+    self.menu.messages = {}
+    MenuManager:showMenu(self.menu)
   end
 end
 --- Creates a message window with default size and position for given ID.
@@ -86,13 +86,13 @@ function EventUtil:createDefaultMessageWindow(id)
   else -- Center.
     w = ScreenManager.width * 3 / 4
   end
-  return DescriptionWindow(self.gui, w, h, Vector(x, y))
+  return DescriptionWindow(self.menu, w, h, Vector(x, y))
 end
 --- Opens a new message window and stores in the given ID.
 -- @tparam WindowArguments args
 function EventUtil:openMessageWindow(args)
-  self:createGUI()
-  local msgs = self.gui.messages
+  self:createMenu()
+  local msgs = self.menu.messages
   local window = msgs[args.id]
   if not window then
     window = self:createDefaultMessageWindow(args.id)
@@ -122,13 +122,13 @@ function EventUtil:createDefaultDialogueWindow(id)
   else -- Center.
     w = ScreenManager.width * 3 / 4
   end
-  return DialogueWindow(self.gui, w, h, x, y)
+  return DialogueWindow(self.menu, w, h, x, y)
 end
 --- Opens a new dialogue window and stores in the given ID.
 -- @tparam WindowArguments args
 function EventUtil:openDialogueWindow(args)
-  self:createGUI()
-  local dialogues = self.gui.dialogues
+  self:createMenu()
+  local dialogues = self.menu.dialogues
   local window = dialogues[args.id]
   if not window then
     window = self:createDefaultDialogueWindow(args.id)
@@ -140,7 +140,7 @@ function EventUtil:openDialogueWindow(args)
     window:setVisible(false)
     window:show()
   end
-  self.gui:setActiveWindow(window)
+  self.menu:setActiveWindow(window)
 end
 
 return EventUtil

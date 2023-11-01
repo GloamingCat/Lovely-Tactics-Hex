@@ -3,7 +3,7 @@
 
 --- The window that is open to choose a skill from character's skill list.
 ---------------------------------------------------------------------------------------------------
--- @uimod ActionSkillWindow
+-- @windowmod ActionSkillWindow
 -- @extend ActionWindow
 -- @extend ListWindow
 
@@ -23,12 +23,12 @@ local ActionSkillWindow = class(ActionWindow, ListWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui /parent GUI.
+-- @tparam Menu menu Parent Menu.
 -- @tparam SkillList skillList Battler's skill set.
 -- @tparam number maxHeight The height of the space available for the window (in pixels).
-function ActionSkillWindow:init(gui, skillList, maxHeight)
-  local y = self:fitOnTop(maxHeight) + gui:windowMargin()
-  ListWindow.init(self, gui, skillList, nil, nil, Vector(0, y, 0))
+function ActionSkillWindow:init(menu, skillList, maxHeight)
+  local y = self:fitOnTop(maxHeight) + menu:windowMargin()
+  ListWindow.init(self, menu, skillList, nil, nil, Vector(0, y, 0))
 end
 --- Creates a button from a skill ID.
 -- @tparam SkillAction skill The SkillAction from battler's skill list.
@@ -36,7 +36,7 @@ function ActionSkillWindow:createListButton(skill)
   -- Button
   local button = Button(self)
   button:setIcon(skill.data.icon)
-  button:createText('data.skill.' .. skill.data.key, skill.data.name, 'gui_button')
+  button:createText('data.skill.' .. skill.data.key, skill.data.name, 'menu_button')
   button.skill = skill
   button.description = skill.data.description
   -- Get SP cost
@@ -47,7 +47,7 @@ function ActionSkillWindow:createListButton(skill)
       cost = cost + skill.costs[i].cost(skill, char.battler.att)
     end
   end
-  button:createInfoText(cost .. '{%sp}', '', 'gui_button')
+  button:createInfoText(cost .. '{%sp}', '', 'menu_button')
   return button
 end
 
@@ -58,7 +58,7 @@ end
 --- Updates description when button is selected.
 -- @tparam Button button
 function ActionSkillWindow:onButtonSelect(button)
-  self.GUI.descriptionWindow:updateTerm('data.skill.' .. button.skill.data.key .. '_desc', button.skill.data.description)
+  self.menu.descriptionWindow:updateTerm('data.skill.' .. button.skill.data.key .. '_desc', button.skill.data.description)
 end
 --- Called when player chooses a skill.
 -- @tparam Button button
@@ -68,8 +68,8 @@ end
 --- Called when player cancels.
 -- @tparam Button button
 function ActionSkillWindow:onButtonCancel(button)
-  self.GUI:hideDescriptionWindow()
-  self:changeWindow(self.GUI.turnWindow)
+  self.menu:hideDescriptionWindow()
+  self:changeWindow(self.menu.turnWindow)
 end
 --- Tells if a skill can be used.
 -- @tparam Button button

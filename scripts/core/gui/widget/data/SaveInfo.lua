@@ -11,8 +11,8 @@
 -- Imports
 local Component = require('core/gui/Component')
 local IconList = require('core/gui/widget/data/IconList')
-local SimpleImage = require('core/gui/widget/SimpleImage')
-local SimpleText = require('core/gui/widget/SimpleText')
+local ImageComponent = require('core/gui/widget/ImageComponent')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Vector = require('core/math/Vector')
 
 -- Alias
@@ -30,26 +30,26 @@ local SaveInfo = class(Component)
 function SaveInfo:createContent(w, h)
   local margin = 4
   local x, y, z = 2, 0, -2
-  local small = Fonts.gui_small
-  local tiny = Fonts.gui_tiny
+  local small = Fonts.menu_small
+  local tiny = Fonts.menu_tiny
   local medium = Fonts.medium
   -- No save
-  local txtName = SimpleText('', Vector(x, y, z), w, 'left', medium)
+  local txtName = TextComponent('', Vector(x, y, z), w, 'left', medium)
   txtName.sprite.alignX = 'center'
   txtName.sprite.alignY = 'center'
   txtName.sprite.maxHeight = h
   self.content:add(txtName)
   -- PlayTime
   local topRight = Vector(x, y + 3, z)
-  local txtTime = SimpleText('', topRight, w, 'right', small)
+  local txtTime = TextComponent('', topRight, w, 'right', small)
   self.content:add(txtTime)
   -- Gold
   local middleLeft = Vector(x, y + 13, z)
-  local txtGold = SimpleText('', middleLeft, w , 'right', small)
+  local txtGold = TextComponent('', middleLeft, w , 'right', small)
   self.content:add(txtGold)
   -- Location
   local bottomLeft = Vector(middleLeft.x, middleLeft.y + 10, middleLeft.z)
-  local txtLocal = SimpleText('', bottomLeft, w, 'left', small)
+  local txtLocal = TextComponent('', bottomLeft, w, 'left', small)
   self.content:add(txtLocal)
   -- Chars
   local iconList = IconList(Vector(x + 10, y + 12), w, 20, 20, 20)
@@ -88,7 +88,7 @@ function SaveInfo:refreshInfo(save)
       local charData = Database.characters[save.members[i]]
       local icon = { col = 0, row = 7,
         id = findByName(charData.animations, "Idle").id }
-      local sprite = ResourceManager:loadIcon(icon, GUIManager.renderer)
+      local sprite = ResourceManager:loadIcon(icon, MenuManager.renderer)
       sprite:applyTransformation(charData.transform)
       sprite:setCenterOffset()
       icons[i] = sprite

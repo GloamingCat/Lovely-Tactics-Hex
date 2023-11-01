@@ -1,48 +1,48 @@
 
 -- ================================================================================================
 
---- The GUI to manage and use skills from a member's skill set.
+--- Menu to manage and use skills from a `Battler`'s skill set.
 ---------------------------------------------------------------------------------------------------
--- @uimod SkillGUI
--- @extend MemberGUI
+-- @menumod SkillMenu
+-- @extend MemberMenu
 
 -- ================================================================================================
 
 -- Imports
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
-local MemberGUI = require('core/gui/members/MemberGUI')
+local MemberMenu = require('core/gui/members/MemberMenu')
 local SkillWindow = require('core/gui/members/window/interactable/SkillWindow')
 local Vector = require('core/math/Vector')
 
 -- Class table.
-local SkillGUI = class(MemberGUI)
+local SkillMenu = class(MemberMenu)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `MemberGUI:init`. 
+--- Overrides `MemberMenu:init`. 
 -- @override
-function SkillGUI:init(...)
-  self.name = 'Skill GUI'
-  MemberGUI.init(self, ...)
+function SkillMenu:init(...)
+  self.name = 'Skill Menu'
+  MemberMenu.init(self, ...)
 end
---- Overrides `GUI:createWindows`. 
+--- Overrides `Menu:createWindows`. 
 -- @override
-function SkillGUI:createWindows()
+function SkillMenu:createWindows()
   self:createInfoWindow()
   self:createSkillWindow()
   self:createDescriptionWindow()
   self:setActiveWindow(self.mainWindow)
 end
 --- Creates the main item window.
-function SkillGUI:createSkillWindow()
+function SkillMenu:createSkillWindow()
   local window = SkillWindow(self)
   window:setXYZ(0, self.initY - (ScreenManager.height - window.height) / 2)
   self.mainWindow = window
 end
 --- Creates the item description window.
-function SkillGUI:createDescriptionWindow()
+function SkillMenu:createDescriptionWindow()
   local w = ScreenManager.width - self:windowMargin() * 2
   local h = ScreenManager.height - self.initY - self.mainWindow.height - self:windowMargin() * 2
   local pos = Vector(0, ScreenManager.height / 2 - h / 2 - self:windowMargin())
@@ -56,8 +56,8 @@ end
 --- Verifies if a member can use an item.
 -- @tparam Battler member Member to check.
 -- @treturn boolean True if the member is active, false otherwise.
-function SkillGUI:memberEnabled(member)
+function SkillMenu:memberEnabled(member)
   return not member:getSkillList():isEmpty()
 end
 
-return SkillGUI
+return SkillMenu

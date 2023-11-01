@@ -3,7 +3,7 @@
 
 --- The small windows with the commands for character management.
 ---------------------------------------------------------------------------------------------------
--- @uimod TitleCommandWindow
+-- @windowmod TitleCommandWindow
 -- @extend GridWindow
 
 -- ================================================================================================
@@ -11,7 +11,7 @@
 -- Imports
 local Button = require('core/gui/widget/control/Button')
 local GridWindow = require('core/gui/GridWindow')
-local SettingsGUI = require('core/gui/menu/SettingsGUI')
+local SettingsMenu = require('core/gui/menu/SettingsMenu')
 
 -- Class table.
 local TitleCommandWindow = class(GridWindow)
@@ -44,42 +44,42 @@ end
 
 --- New Game button.
 function TitleCommandWindow:newGameConfirm()
-  self.GUI:pauseBGM()
-  self.GUI:hide()
-  self.GUI:hideCover(true, false)
-  self.GUI:hideCover(false, true)
+  self.menu:pauseBGM()
+  self.menu:hide()
+  self.menu:hideCover(true, false)
+  self.menu:hideCover(false, true)
   self.result = 1
   local save = SaveManager:loadSave()
   GameManager:setSave(save)
 end
 --- Load Game button.
 function TitleCommandWindow:loadGameConfirm()
-  self.GUI.topText:setVisible(false)
+  self.menu.topText:setVisible(false)
   self:hide()
-  local result = self.GUI:showWindowForResult(self.GUI.loadWindow)
+  local result = self.menu:showWindowForResult(self.menu.loadWindow)
   if result ~= '' then
-    self.GUI:pauseBGM()
-    self.GUI:hide()
-    self.GUI:hideCover(false, true)
+    self.menu:pauseBGM()
+    self.menu:hide()
+    self.menu:hideCover(false, true)
     self.result = 1
     local save = SaveManager:loadSave(result)
     GameManager:setSave(save)
   else
-    self.GUI.topText:setVisible(true)
+    self.menu.topText:setVisible(true)
     self:show()
   end
 end
 --- Settings button.
 function TitleCommandWindow:configConfirm()
-  self.GUI.topText:setVisible(false)
+  self.menu.topText:setVisible(false)
   self:hide()
-  GUIManager:showGUIForResult(SettingsGUI(self.GUI))
-  self.GUI.topText:setVisible(true)
+  MenuManager:showMenuForResult(SettingsMenu(self.menu))
+  self.menu.topText:setVisible(true)
   self:show()
 end
 --- Quit button.
 function TitleCommandWindow:quitConfirm()
-  self.GUI:hide()
+  self.menu:hide()
   GameManager:quit()
 end
 --- Cancel button.
@@ -90,10 +90,10 @@ end
 -- Enabled Conditions
 -- ------------------------------------------------------------------------------------------------
 
---- Whether the ItemGUI can be open.
+--- Whether the ItemMenu can be open.
 -- @treturn boolean
 function TitleCommandWindow:loadGameEnabled()
-  return self.GUI.loadWindow
+  return self.menu.loadWindow
 end
 
 -- ------------------------------------------------------------------------------------------------

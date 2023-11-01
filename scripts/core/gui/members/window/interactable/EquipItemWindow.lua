@@ -3,7 +3,7 @@
 
 --- A window that shows the possible items to equip.
 ---------------------------------------------------------------------------------------------------
--- @uimod EquipItemWindow
+-- @windowmod EquipItemWindow
 -- @extend InventoryWindow
 
 -- ================================================================================================
@@ -22,22 +22,22 @@ local EquipItemWindow = class(InventoryWindow)
 -- -------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
+-- @tparam Menu menu Parent Menu.
 -- @tparam number w Window's width in pixels(optional).
 -- @tparam number h Window's height in pixels(optional).
 -- @tparam Vector pos Position of the window's center (optional).
 -- @tparam number rowCount The number of buttons.
 -- @tparam table member The troop unit data of the character.
-function EquipItemWindow:init(gui, w, h, pos, rowCount, member)
-  self.member = member or gui:currentMember()
-  InventoryWindow.init(self, gui, nil, gui.inventory, {}, w, h, pos, rowCount)
+function EquipItemWindow:init(menu, w, h, pos, rowCount, member)
+  self.member = member or menu:currentMember()
+  InventoryWindow.init(self, menu, nil, menu.inventory, {}, w, h, pos, rowCount)
 end
 --- Overrides `ListWindow:createWidgets`. Adds the "unequip" button.
 -- @override
 function EquipItemWindow:createWidgets(...)
   if self.slotKey then
     local button = Button(self)
-    button:createText('unequip', '', 'gui_button')
+    button:createText('unequip', '', 'menu_button')
     button:setEnabled(self.member.equipSet:canUnequip(self.slotKey))
     button.confirmSound = Config.sounds.unequip
     button.clickSound = Config.sounds.unequip
@@ -74,7 +74,7 @@ function EquipItemWindow:setSlot(key, slot)
 end
 --- Refresh item buttons in case the slot changed.
 function EquipItemWindow:refreshItems()
-  local list = self.GUI.inventory:getEquipItems(self.slotType.key, self.member)
+  local list = self.menu.inventory:getEquipItems(self.slotType.key, self.member)
   self:refreshButtons(list)
 end
 
@@ -85,13 +85,13 @@ end
 --- Called when player selects an item button.
 function EquipItemWindow:onButtonSelect(button)
   InventoryWindow.onButtonSelect(self, button)
-  self.GUI.bonusWindow:setEquip(self.slotKey, button.item)
+  self.menu.bonusWindow:setEquip(self.slotKey, button.item)
 end
 --- Called when player chooses an item to equip.
 function EquipItemWindow:onButtonConfirm(button)
   local char = TroopManager:getBattlerCharacter(self.member)
-  self.member.equipSet:setEquip(self.slotKey, button.item, self.GUI.inventory, char)
-  self.GUI:refreshMember()
+  self.member.equipSet:setEquip(self.slotKey, button.item, self.menu.inventory, char)
+  self.menu:refreshMember()
   self:showSlotWindow()
 end
 --- Called when player cancels and returns to the slot window.
@@ -101,8 +101,8 @@ end
 --- Closes this window and shows the previous one (Equip Slot Window).
 function EquipItemWindow:showSlotWindow()
   self:hide()
-  self.GUI.mainWindow:show()
-  self.GUI.mainWindow:activate()
+  self.menu.mainWindow:show()
+  self.menu.mainWindow:activate()
 end
 --- Tells if an item can be used.
 -- @tparam Button button The button to check.

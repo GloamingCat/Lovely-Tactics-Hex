@@ -15,7 +15,7 @@
 
 -- Imports
 local Player = require('core/objects/Player')
-local TextInputGUI = require('core/gui/common/TextInputGUI')
+local TextInputMenu = require('core/gui/common/TextInputMenu')
 
 -- Rewrites
 local Player_checkFieldInput = Player.checkFieldInput
@@ -48,17 +48,17 @@ end
 -- @rewrite
 function Player:checkFieldInput()
   if InputManager:getKey(key):isTriggered() and (not mod or InputManager:getKey(mod):isPressing()) then
-    self:openDebugGUI()
+    self:openDebugMenu()
   else
     Player_checkFieldInput(self)
   end
 end
 --- Show debug text box.
-function Player:openDebugGUI()
+function Player:openDebugMenu()
   self:playIdleAnimation()
   AudioManager:playSFX(Config.sounds.menu)
   print('Debug window open.')
-  local result = GUIManager:showGUIForResult(TextInputGUI(nil, "Type code.", true, true))
+  local result = MenuManager:showMenuForResult(TextInputMenu(nil, "Type code.", true, true))
   if result and result ~= 0 then
     print('Executing: ' .. result)
     local output = nil

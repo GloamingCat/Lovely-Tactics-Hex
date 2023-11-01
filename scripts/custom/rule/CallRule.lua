@@ -47,7 +47,7 @@ function CallRule:onSelect(user)
     self.input.action:onSelect(self.input)
     local validTiles = 0
     for tile in FieldManager.currentField:gridIterator() do
-      if tile.gui.selectable then
+      if tile.ui.selectable then
         validTiles = validTiles + 1
         if love.math.random(validTiles) == 1 then
           self.input.target = tile

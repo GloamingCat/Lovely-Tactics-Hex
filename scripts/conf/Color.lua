@@ -71,11 +71,11 @@ return {
   popup_levelup = yellow,
   popup_exp = white,
   
-  -- GUI
-  gui_text_enabled = white,
-  gui_text_disabled = lightgray,
-  gui_icon_enabled = white,
-  gui_icon_disabled = lightgray,
+  -- Menu
+  menu_text_enabled = white,
+  menu_text_disabled = lightgray,
+  menu_icon_enabled = white,
+  menu_icon_disabled = lightgray,
   barHP = {r = 0.2, g = 1, b = 0.4, a = 1},
   barSP = {r = 0.2, g = 0.4, b = 1, a = 1},
   barEXP = {r = 1, g = 1, b = 0.4, a = 1},

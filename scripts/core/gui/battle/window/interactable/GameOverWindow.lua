@@ -3,7 +3,7 @@
 
 --- A window that contains options after game over.
 ---------------------------------------------------------------------------------------------------
--- @uimod GameOverWindow
+-- @windowmod GameOverWindow
 -- @extend GridWindow
 
 -- ================================================================================================

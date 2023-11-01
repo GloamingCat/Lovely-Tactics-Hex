@@ -1,36 +1,36 @@
 
 -- ================================================================================================
 
---- A GUI to selected a target character for an action (usually skill or item).
+--- Menu to select a target character for an action (usually skill or item).
 ---------------------------------------------------------------------------------------------------
--- @uimod MenuTargetGUI
--- @extend GUI
+-- @menumod TargetMenu
+-- @extend Menu
 
 -- ================================================================================================
 
 -- Imports
-local GUI = require('core/gui/GUI')
+local Menu = require('core/gui/Menu')
 local MenuTargetWindow = require('core/gui/common/window/interactable/MenuTargetWindow')
 local Vector = require('core/math/Vector')
 
 -- Class table.
-local MenuTargetGUI = class(GUI)
+local TargetMenu = class(Menu)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `GUI:init`. 
+--- Overrides `Menu:init`. 
 -- @override
-function MenuTargetGUI:init(parent, troop, input)
-  self.name = 'Menu Target GUI'
+function TargetMenu:init(parent, troop, input)
+  self.name = 'Menu Target Menu'
   self.troop = troop
   self.input = input
-  GUI.init(self, parent)
+  Menu.init(self, parent)
 end
---- Overrides `GUI:createWindows`. 
+--- Overrides `Menu:createWindows`. 
 -- @override
-function MenuTargetGUI:createWindows()
+function TargetMenu:createWindows()
   self.partyWindow = MenuTargetWindow(self, self.troop)
   if self.position then
     self.partyWindow:setPosition(self.position)
@@ -45,7 +45,7 @@ end
 
 --- Sets the button as enabled according to the skill.
 -- @tparam ActionInput input
-function MenuTargetGUI:refreshEnabled()
+function TargetMenu:refreshEnabled()
   local action = self.input.action
   local enabled = action:canMenuUse(self.input.user)
   local buttons = self.partyWindow.matrix
@@ -60,4 +60,4 @@ function MenuTargetGUI:refreshEnabled()
   end
 end
 
-return MenuTargetGUI
+return TargetMenu

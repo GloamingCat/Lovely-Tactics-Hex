@@ -3,20 +3,20 @@
 
 --- Window that is shown in the beginning of the battle.
 ---------------------------------------------------------------------------------------------------
--- @uimod IntroWindow
+-- @windowmod IntroWindow
 -- @extend FieldCommandWindow
 -- @extend ActionWindow
 
 -- ================================================================================================
 
 -- Imports
-local ActionGUI = require('core/gui/battle/ActionGUI')
+local ActionMenu = require('core/gui/battle/ActionMenu')
 local ActionInput = require('core/battle/action/ActionInput')
 local ActionWindow = require('core/gui/battle/window/interactable/ActionWindow')
 local FieldCommandWindow = require('core/gui/menu/window/interactable/FieldCommandWindow')
 local Button = require('core/gui/widget/control/Button')
 local FormationAction = require('core/battle/action/FormationAction')
-local MemberGUI = require('core/gui/members/MemberGUI')
+local MemberMenu = require('core/gui/members/MemberMenu')
 local VisualizeAction = require('core/battle/action/VisualizeAction')
 
 -- Class table.
@@ -58,7 +58,7 @@ function IntroWindow:formationConfirm(button)
   local x, y, z = math.field.pixel2Tile(center.x, center.y, center.z)
   x, y, z = math.round(x), math.round(y), math.round(z)
   local target = FieldManager.currentField:getObjectTile(x, y, z)
-  local input = ActionInput(self.formationAction, nil, target, self.GUI)
+  local input = ActionInput(self.formationAction, nil, target, self.menu)
   input.party = TroopManager.playerParty
   self:selectAction(self.formationAction, input)
   FieldManager.renderer:moveToPoint(center.x, center.y)
@@ -71,7 +71,7 @@ function IntroWindow:inspectConfirm()
   local x, y, z = math.field.pixel2Tile(center.x, center.y, center.z)
   x, y, z = math.round(x), math.round(y), math.round(z)
   local target = FieldManager.currentField:getObjectTile(x, y, z)
-  local input = ActionInput(self.visualizeAction, nil, target, self.GUI)
+  local input = ActionInput(self.visualizeAction, nil, target, self.menu)
   self:selectAction(self.visualizeAction, input)
   FieldManager.renderer:moveToPoint(center.x, center.y)
   self.result = nil
@@ -79,7 +79,7 @@ end
 --- "Options" button callback. Opens save window.
 function IntroWindow:optionsConfirm(button)
   self:hide()
-  self.GUI:showWindowForResult(self.GUI.optionsWindow)
+  self.menu:showWindowForResult(self.menu.optionsWindow)
   self:show()
 end
 --- Overrides `GridWindow:onCancel`. 

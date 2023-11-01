@@ -10,7 +10,7 @@
 
 -- Imports
 local List = require('core/datastruct/List')
-local TileGUI = require('core/field/TileGUI')
+local TileUI = require('core/field/TileUI')
 local Vector = require('core/math/Vector')
 
 -- Class table.
@@ -51,8 +51,8 @@ function ObjectTile:createNeighborList()
   end
 end
 --- Creates the graphics for menu interaction.
-function ObjectTile:initializeGUI()
-  self.gui = TileGUI(self, true, true)
+function ObjectTile:initializeUI()
+  self.ui = TileUI(self, true, true)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -79,8 +79,8 @@ function ObjectTile:getMoveCost(char)
 end
 --- Updates graphics animation.
 function ObjectTile:update(dt)
-  if self.gui then
-    self.gui:update(dt)
+  if self.ui then
+    self.ui:update(dt)
   end
   for i = 1, #self.obstacleList do
     if self.obstacleList[i].animation then
@@ -90,8 +90,8 @@ function ObjectTile:update(dt)
 end
 --- Destroy graphics and obstacles.
 function ObjectTile:destroy()
-  if self.gui then
-    self.gui:destroy()
+  if self.ui then
+    self.ui:destroy()
   end
   for i = #self.obstacleList, 1, -1 do
     self.obstacleList[i]:destroy()

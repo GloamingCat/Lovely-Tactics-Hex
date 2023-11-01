@@ -8,7 +8,7 @@
 -- ================================================================================================
 
 -- Imports
-local TitleGUI = require ('core/gui/menu/TitleGUI')
+local TitleMenu = require ('core/gui/menu/TitleMenu')
 
 -- Alias
 local deltaTime = love.timer.getDelta
@@ -70,7 +70,7 @@ function GameManager:start()
   if self.editor then
     EditorManager:start()
   else
-    GUIManager.fiberList:fork(GUIManager.showGUIForResult, GUIManager, TitleGUI(nil))
+    MenuManager.fiberList:fork(MenuManager.showMenuForResult, MenuManager, TitleMenu(nil))
   end
   print('Game started.')
 end
@@ -96,9 +96,9 @@ end
 function GameManager:setConfig(config)
   AudioManager:setBGMVolume(config.volumeBGM or 100)
   AudioManager:setSFXVolume(config.volumeSFX or 100)
-  GUIManager.fieldScroll = config.fieldScroll or 50
-  GUIManager.windowScroll = config.windowScroll or 50
-  GUIManager.windowColor = config.windowColor or 100
+  MenuManager.fieldScroll = config.fieldScroll or 50
+  MenuManager.windowScroll = config.windowScroll or 50
+  MenuManager.windowColor = config.windowColor or 100
   InputManager.autoDash = config.autoDash
   InputManager.mouseEnabled = config.useMouse
   InputManager:setArrowMap(config.wasd)
@@ -169,11 +169,11 @@ function GameManager:checkRequests()
     self.loadRequested = nil
   end
 end
---- Updates GUIManager, FieldManager, AudioManager and InputManager.
+--- Updates MenuManager, FieldManager, AudioManager and InputManager.
 function GameManager:updateManagers(dt)
   if not self.paused then
-    if not GUIManager.paused then 
-      GUIManager:update(self:frameTime())
+    if not MenuManager.paused then 
+      MenuManager:update(self:frameTime())
     end
     if not FieldManager.paused then 
       FieldManager:update(self:frameTime()) 
@@ -295,12 +295,12 @@ end
 -- Quit
 -- ------------------------------------------------------------------------------------------------
 
---- Restarts the game from the TitleGUI.
+--- Restarts the game from the TitleMenu.
 -- @tparam table save Save data to be loaded (optional, starts from title menu if nil).
 function GameManager:restart(save)
   ScreenManager:clear()
   FieldManager = require('core/field/FieldManager')()
-  GUIManager = require('core/gui/GUIManager')()
+  MenuManager = require('core/gui/MenuManager')()
   BattleManager = require('core/battle/BattleManager')()
   ScreenManager:refreshRenderers()
   self:setConfig(SaveManager.config)

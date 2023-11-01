@@ -1,9 +1,9 @@
 
 -- ================================================================================================
 
---- Window with the initial commands of the shop GUI (buy, sell, cancel).
+--- Window with the initial commands of the shop Menu (buy, sell, cancel).
 ---------------------------------------------------------------------------------------------------
--- @uimod ShopCommandWindow
+-- @windowmod ShopCommandWindow
 -- @extend GridWindow
 
 -- ================================================================================================
@@ -20,13 +20,13 @@ local ShopCommandWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
+-- @tparam Menu menu Parent Menu.
 -- @tparam boolean buy True if "buy" option if enabled.
 -- @tparam boolean sell True if "sell" option if enabled.
-function ShopCommandWindow:init(gui, buy, sell)
+function ShopCommandWindow:init(menu, buy, sell)
   self.buy = buy
   self.sell = sell
-  GridWindow.init(self, gui)
+  GridWindow.init(self, menu)
 end
 --- Overrides `GridWindow:setProperties`. 
 -- @override
@@ -49,17 +49,17 @@ end
 
 --- Shows the windows to buy.
 function ShopCommandWindow:buyConfirm()
-  self.GUI.countWindow:setBuyMode()
-  self.GUI.listWindow:setBuyMode()
-  self.GUI:showShopGUI()
+  self.menu.countWindow:setBuyMode()
+  self.menu.listWindow:setBuyMode()
+  self.menu:showShopMenu()
 end
 --- Shows the windows to sell.
 function ShopCommandWindow:sellConfirm()
-  self.GUI.countWindow:setSellMode()
-  self.GUI.listWindow:setSellMode()
-  self.GUI:showShopGUI()
+  self.menu.countWindow:setSellMode()
+  self.menu.listWindow:setSellMode()
+  self.menu:showShopMenu()
 end
---- Closes shop GUI.
+--- Closes shop Menu.
 function ShopCommandWindow:cancelConfirm()
   self.result = 0
 end

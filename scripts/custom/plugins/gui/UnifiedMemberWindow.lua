@@ -10,18 +10,18 @@
   
 -- Imports
 local Button = require('core/gui/widget/control/Button')
-local EquipGUI = require('core/gui/members/EquipGUI')
+local EquipMenu = require('core/gui/members/EquipMenu')
 local FieldCommandWindow = require('core/gui/menu/window/interactable/FieldCommandWindow')
 local GridWindow = require('core/gui/GridWindow')
-local ItemGUI = require('core/gui/members/ItemGUI')
+local ItemMenu = require('core/gui/members/ItemMenu')
 local MemberCommandWindow = require('core/gui/members/window/interactable/MemberCommandWindow')
-local MemberGUI = require('core/gui/members/MemberGUI')
-local SkillGUI = require('core/gui/members/SkillGUI')
+local MemberMenu = require('core/gui/members/MemberMenu')
+local SkillMenu = require('core/gui/members/SkillMenu')
 
 -- Rewrites
-local MemberGUI_createWindows = MemberGUI.createWindows
-local MemberGUI_createInfoWindow = MemberGUI.createInfoWindow
-local MemberGUI_refreshMember = MemberGUI.refreshMember
+local MemberMenu_createWindows = MemberMenu.createWindows
+local MemberMenu_createInfoWindow = MemberMenu.createInfoWindow
+local MemberMenu_refreshMember = MemberMenu.refreshMember
 local FieldCommandWindow_setProperties = FieldCommandWindow.setProperties
 
 -- Parameters
@@ -48,17 +48,17 @@ end
 --- Rewrites `MemberCommandWindow:itemsConfirm`.
 -- @rewrite
 function MemberCommandWindow:itemsConfirm()
-  self.GUI:showSubGUI(ItemGUI)
+  self.menu:showSubMenu(ItemMenu)
 end
 --- Rewrites `MemberCommandWindow:skillsConfirm`.
 -- @rewrite
 function MemberCommandWindow:skillsConfirm()
-  self.GUI:showSubGUI(SkillGUI)
+  self.menu:showSubMenu(SkillMenu)
 end
 --- Rewrites `MemberCommandWindow:equipsConfirm`.
 -- @rewrite
 function MemberCommandWindow:equipsConfirm()
-  self.GUI:showSubGUI(EquipGUI)
+  self.menu:showSubMenu(EquipMenu)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -72,12 +72,12 @@ function MemberCommandWindow:rowCount()
 end
 
 -- ------------------------------------------------------------------------------------------------
--- MemberGUI
+-- MemberMenu
 -- ------------------------------------------------------------------------------------------------
 
---- Rewrites `MemberGUI:createWindows`. Creates the window with the commands for the chosen member.
+--- Rewrites `MemberMenu:createWindows`. Creates the window with the commands for the chosen member.
 -- @rewrite
-function MemberGUI:createWindows(...)
+function MemberMenu:createWindows(...)
   -- Creates command window
   local window = MemberCommandWindow(self)
   window:setXYZ((window.width - ScreenManager.width) / 2 + self:windowMargin(), 
@@ -87,60 +87,60 @@ function MemberGUI:createWindows(...)
   self.infoWindowWidth = ScreenManager.width - window.width - self:windowMargin() * 3
   self.infoWindowHeight = window.height
   -- Creates other windows
-  MemberGUI_createWindows(self, ...)
+  MemberMenu_createWindows(self, ...)
   -- Update info window position
   local x = window.width + self:windowMargin() * 2 + (self.infoWindowWidth - ScreenManager.width) / 2
   self.infoWindow:setXYZ(x, nil)
   -- Changes active window
   self:setActiveWindow(window)
 end
---- Rewrites `MemberGUI:createInfoWindow`.
+--- Rewrites `MemberMenu:createInfoWindow`.
 -- @rewrite
-function MemberGUI:createInfoWindow()
+function MemberMenu:createInfoWindow()
   if self.parent and self.parent.createInfoWindow then
-    -- Is sub GUI
+    -- Is sub Menu
     self.initY = self.parent.initY
   else
-    -- Parent GUI
-    MemberGUI_createInfoWindow(self)
+    -- Parent Menu
+    MemberMenu_createInfoWindow(self)
   end
 end
---- Rewrites `MemberGUI:refreshMember`. Refreshes current member of command window.
+--- Rewrites `MemberMenu:refreshMember`. Refreshes current member of command window.
 -- @rewrite
-function MemberGUI:refreshMember(member)
-  MemberGUI_refreshMember(self, member)
+function MemberMenu:refreshMember(member)
+  MemberMenu_refreshMember(self, member)
   if self.parent and self.parent.refreshMember then
-    -- Is sub GUI
+    -- Is sub Menu
     self.parent.memberID = self.memberID
     self.parent:refreshMember()
   else
-    -- Is parent GUI
+    -- Is parent Menu
     member = member or self:currentMember()
     self.commandWindow:setBattler(member)
   end
 end
---- Rewrites `MemberGUI:memberEnabled`.
+--- Rewrites `MemberMenu:memberEnabled`.
 -- @rewrite
-function MemberGUI:memberEnabled(member)
-  return not self.subGUI or self.subGUI:memberEnabled(self:currentMember())
+function MemberMenu:memberEnabled(member)
+  return not self.subMenu or self.subMenu:memberEnabled(self:currentMember())
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Sub GUI
+-- Sub Menu
 -- ------------------------------------------------------------------------------------------------
 
---- Shows a sub GUI under the command window.
--- @tparam class GUI The class of the GUI to be open.
-function MemberGUI:showSubGUI(GUI)
+--- Shows a sub Menu under the command window.
+-- @tparam class Menu The class of the Menu to be open.
+function MemberMenu:showSubMenu(Menu)
   self.commandWindow.cursor:hide()
   self.mainWindow:hide()
-  local gui = GUI(self, self.troop, self.members, self.memberID)
-  self.subGUI = gui
-  gui.memberID = self.memberID
-  gui:refreshMember()
+  local menu = Menu(self, self.troop, self.members, self.memberID)
+  self.subMenu = menu
+  menu.memberID = self.memberID
+  menu:refreshMember()
   self:setActiveWindow(nil)
-  GUIManager:showGUIForResult(gui)
-  self.subGUI = nil
+  MenuManager:showMenuForResult(menu)
+  self.subMenu = nil
   self.mainWindow:show()
   self.mainWindow:setBattler(self:currentMember())
   self:setActiveWindow(self.commandWindow)

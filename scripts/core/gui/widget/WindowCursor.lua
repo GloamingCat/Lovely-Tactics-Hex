@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- A cursor for button windows.
+--- A cursor for `GridWindow`s.
 ---------------------------------------------------------------------------------------------------
 -- @uimod WindowCursor
 -- @extend Component
@@ -30,7 +30,7 @@ end
 --- Overrides `Component:createContent`. Creates cursor sprite.
 -- @override
 function WindowCursor:createContent()
-  self.anim = ResourceManager:loadAnimation(Config.animations.cursor, GUIManager.renderer)
+  self.anim = ResourceManager:loadAnimation(Config.animations.cursor, MenuManager.renderer)
   self.anim.sprite:setTransformation(self.anim.data.transform)
   self.anim.sprite:setVisible(false)
   self.hideOnDeactive = true

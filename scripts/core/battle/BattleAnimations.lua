@@ -15,7 +15,7 @@ local BattleAnimations = {}
 
 --- Plays a battle animation.
 -- @coroutine play
--- @tparam GUIManager|FieldManager manager The manager that will be responsible for the animation's object.
+-- @tparam MenuManager|FieldManager manager The manager that will be responsible for the animation's object.
 -- @tparam number animID The animation's ID from database.
 -- @tparam number x Pixel x of the animation.
 -- @tparam number y Pixel y of the animation.
@@ -45,9 +45,9 @@ end
 function BattleAnimations.playOnField(animID, x, y, z, mirror, wait)
   return BattleAnimations.play(FieldManager, animID, x, y, z, mirror, wait)
 end
---- Play animation in GUI.
+--- Play animation in Menu.
 function BattleAnimations.playOnMenu(animID, x, y, z, wait)
-  return BattleAnimations.play(GUIManager, animID, x or 0, y or 0, z or -50, false, wait)
+  return BattleAnimations.play(MenuManager, animID, x or 0, y or 0, z or -50, false, wait)
 end
 
 -- ------------------------------------------------------------------------------------------------

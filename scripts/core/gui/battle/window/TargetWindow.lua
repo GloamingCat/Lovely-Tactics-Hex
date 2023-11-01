@@ -3,7 +3,7 @@
 
 --- Window that shows when the battle cursor is over a character.
 ---------------------------------------------------------------------------------------------------
--- @uimod TargetWindow
+-- @windowmod TargetWindow
 -- @extend Window
 
 -- ================================================================================================
@@ -11,7 +11,7 @@
 -- Imports
 local Gauge = require('core/gui/widget/Gauge')
 local IconList = require('core/gui/widget/data/IconList')
-local SimpleText = require('core/gui/widget/SimpleText')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Sprite = require('core/graphics/Sprite')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
@@ -25,31 +25,31 @@ local TargetWindow = class(Window)
 
 --- Overrides `Window:init`. 
 -- @override
-function TargetWindow:init(GUI)
+function TargetWindow:init(Menu)
   local w = 120
   local h = self:computeHeight()
-  local margin = GUI:windowMargin()
-  Window.init(self, GUI, w, h, Vector(ScreenManager.width / 2 - w / 2 - margin, 
+  local margin = Menu:windowMargin()
+  Window.init(self, Menu, w, h, Vector(ScreenManager.width / 2 - w / 2 - margin, 
       -ScreenManager.height / 2 + h / 2 + margin))
 end
 --- Initializes name and status texts.
 function TargetWindow:createContent(width, height)
   Window.createContent(self, width, height)
-  local font = Fonts.gui_small
+  local font = Fonts.menu_small
   -- Top-left position
   local x = -self.width / 2 + self:paddingX()
   local y = -self.height / 2 + self:paddingY()
   local w = self.width - self:paddingX() * 2
   -- Name text
   local posName = Vector(x, y - 1)
-  self.textName = SimpleText('', posName, w, 'center')
+  self.textName = TextComponent('', posName, w, 'center')
   self.content:add(self.textName)
   -- Class text
   local posJob = Vector(x, y + 15)
-  self.txtJob = SimpleText('', posJob, w, 'right', font)
+  self.txtJob = TextComponent('', posJob, w, 'right', font)
   self.content:add(self.txtJob)
   -- Level text
-  self.txtLevel = SimpleText('', posJob, w, 'left', font)
+  self.txtLevel = TextComponent('', posJob, w, 'left', font)
   self.content:add(self.txtLevel)
   -- State values texts
   local posHP = Vector(x, y + 25, -2)
@@ -68,7 +68,7 @@ end
 -- @tparam width w The max width of the text.
 -- @tparam table barColor The RGBA table for the bar color.
 function TargetWindow:addStateVariable(name, pos, w, barColor)
-  local textName = SimpleText('', pos, w, 'left', Fonts.gui_small)
+  local textName = TextComponent('', pos, w, 'left', Fonts.menu_small)
   textName:setTerm(name, name)
   textName:redraw()
   self.content:add(textName)

@@ -27,16 +27,16 @@ local log_font = { 'Roboto', 'ttf', 5 }
 return  {
 
 	-- Fonts
-	gui_title = huge_font,
-	gui_default = default_font,
-	gui_button = default_font,
-	gui_dialogue = medium_font,
-	gui_tiny = tiny_font,
-	gui_small = small_font,
-	gui_medium = medium_font,
-	gui_big = big_font,
-	gui_huge = huge_font,
-  gui_tooltip = medium_font,
+	menu_title = huge_font,
+	menu_default = default_font,
+	menu_button = default_font,
+	menu_dialogue = medium_font,
+	menu_tiny = tiny_font,
+	menu_small = small_font,
+	menu_medium = medium_font,
+	menu_big = big_font,
+	menu_huge = huge_font,
+	menu_tooltip = medium_font,
 
 	popup_dmghp = default_font,
 	popup_dmgsp = default_font,
@@ -54,6 +54,6 @@ return  {
 	popup_exp = medium_font,
 
 	log = log_font,
-  pause = medium_font
+	pause = medium_font
 
 }
