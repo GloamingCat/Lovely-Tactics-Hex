@@ -7,6 +7,10 @@
 
 -- ================================================================================================
 
+-- Rewrites
+local old_require = require
+local old_loadstring = loadstring
+
 -- ------------------------------------------------------------------------------------------------
 -- String
 -- ------------------------------------------------------------------------------------------------
@@ -50,8 +54,8 @@ end
 -- Require
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides Lua's default require function to ignore ".lua" extension.
-local old_require = require
+--- Rewrites `require`. Changes Lua's default require function to ignore ".lua" extension.
+-- @rewrite
 require = function(path)
   return old_require(string.gsub(path, '.lua', ''))
 end
@@ -62,11 +66,7 @@ end
 
 local FunctionCache = {}
 
---- Overrides Lua's native function to store string in cache if already compiled.
--- @tparam string str The string chunk.
--- @param ...  Any other parameters to the original loadstring function.
--- @treturn function The function that executes the chunk in the string.
-local old_loadstring = loadstring
+--- Rewrites `loadstring`. Changes Lua's native function to store string in cache if already compiled.
 function loadstring(str, ...)
   local func = FunctionCache[str]
   if func then

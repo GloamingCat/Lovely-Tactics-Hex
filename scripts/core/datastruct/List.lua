@@ -147,11 +147,17 @@ end
 -- Sort
 -- ------------------------------------------------------------------------------------------------
 
--- Default compare function for ascending orders
+--- Default compare function for ascending orders.
+-- @tparam table a First pair.
+-- @tparam table b Second pair.
+-- @treturn boolean True if a should come before b.
 function List.ascending(a, b)
   return a[2] < b[2]
 end
--- Default compare function for descending orders
+--- Default compare function for descending orders.
+-- @tparam table a First pair.
+-- @tparam table b Second pair.
+-- @treturn boolean True if a should come before b.
 function List.descending(a, b)
   return a[2] > b[2]
 end

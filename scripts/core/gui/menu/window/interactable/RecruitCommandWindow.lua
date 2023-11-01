@@ -20,13 +20,13 @@ local RecruitCommandWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI GUI Parent GUI.
+-- @tparam GUI gui Parent GUI.
 -- @tparam boolean hire True if "hire" option if enabled.
 -- @tparam boolean dismiss True if "dismiss" option if enabled.
-function RecruitCommandWindow:init(GUI, hire, dismiss)
+function RecruitCommandWindow:init(gui, hire, dismiss)
   self.hire = hire
   self.dismiss = dismiss
-  GridWindow.init(self, GUI)
+  GridWindow.init(self, gui)
 end
 --- Overrides `GridWindow:setProperties`. 
 -- @override

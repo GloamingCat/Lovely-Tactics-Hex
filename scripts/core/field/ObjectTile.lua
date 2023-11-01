@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- An ObjectTile stores a list of static obstacles and a list of dynamic characters.
+--- Stores a list of static `Obstacle`s and a list of dynamic `Interactable`s.
 -- There's only one ObjectTile for each (i, j, height) in the field.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod ObjectTile
@@ -50,7 +50,7 @@ function ObjectTile:createNeighborList()
     self.neighborList:add(n)
   end
 end
--- Creates the graphics for menu interaction.
+--- Creates the graphics for menu interaction.
 function ObjectTile:initializeGUI()
   self.gui = TileGUI(self, true, true)
 end

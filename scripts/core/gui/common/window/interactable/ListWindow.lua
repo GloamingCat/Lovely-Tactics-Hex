@@ -1,7 +1,8 @@
 
 -- ================================================================================================
 
---- A Button Window that has its buttons generated automatically given a list of arbitrary elements.
+--- A `GridWindow` that has its `Button`s generated dinamically.
+-- The buttons are created from a given list of arbitrary elements.
 ---------------------------------------------------------------------------------------------------
 -- @uimod ListWindow
 -- @extend GridWindow
@@ -20,11 +21,11 @@ local ListWindow = class(GridWindow)
 
 --- Overrides `Window:init`. 
 -- @override
--- @tparam GUI parent Parent GUI.
+-- @tparam GUI gui Parent GUI.
 -- @tparam table list Array of data used to create each button.
-function ListWindow:init(parent, list, ...)
+function ListWindow:init(gui, list, ...)
   self.list = list
-  GridWindow.init(self, parent, ...)
+  GridWindow.init(self, gui, ...)
 end
 --- Implements `GridWindow:createWidgets`. 
 -- @implement

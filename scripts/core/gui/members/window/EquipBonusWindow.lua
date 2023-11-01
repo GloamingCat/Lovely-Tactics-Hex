@@ -28,15 +28,15 @@ local EquipBonusWindow = class(Window)
 
 --- Overrides `Window:init`. 
 -- @override
--- @tparam GUI parent Parent GUI.
+-- @tparam GUI gui Parent GUI.
 -- @tparam number w Window's width in pixels.
 -- @tparam number h Window's height in pixels.
 -- @tparam Vector pos The position of the window's center.
 -- @tparam table member The troop unit data of the character.
-function EquipBonusWindow:init(parent, w, h, pos, member)
-  self.member = member or parent:currentMember()
+function EquipBonusWindow:init(gui, w, h, pos, member)
+  self.member = member or gui:currentMember()
   self.bonus = List()
-  Window.init(self, parent, w, h, pos)
+  Window.init(self, gui, w, h, pos)
 end
 --- Prints a list of attributes to receive a bonus.
 -- @tparam table att Array of attributes bonus (with key, oldValue and newValue).
@@ -125,11 +125,6 @@ function EquipBonusWindow:setBattler(battler)
   self.member = battler
   self:setEquip(self.slotKey, battler.equipSet:getEquip(self.slotKey))
 end
-
--- -------------------------------------------------------------------------------------------------
--- Properties
--- -------------------------------------------------------------------------------------------------
-
 -- For debugging.
 function EquipBonusWindow:__tostring()
   return 'Equip Bonus Window'

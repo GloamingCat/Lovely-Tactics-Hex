@@ -1,7 +1,8 @@
 
 -- ================================================================================================
 
---- The BattleAction that is executed when players chooses "Formation" in the intro GUI.
+--- Changes the initial formation of the battlers.
+-- It is executed when players chooses "Formation" in the intro GUI.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod FormationAction
 -- @extend CallAction

@@ -4,6 +4,7 @@
 --- Base methods for objects with start/collision/interaction scripts.
 -- It is created from a instance data table, which contains (x, y, h) coordinates, scripts, and 
 -- passable and persistent properties.
+-- The `Player` may also interact with this.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod Interactable
 

@@ -133,7 +133,8 @@ end
 function KeyMapWindow:rowCount()
   return 7
 end
--- Overrides `GridWindow:cellWidth`.
+--- Overrides `GridWindow:cellWidth`.
+-- @override
 function KeyMapWindow:cellWidth()
   return 140
 end

@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- Rule to attack the closest ally character.
+--- Attack the closest ally character.
 -- It changes the battler' party to the status caster's party.
 -- If no caster is found, then this rule is the same as RushRule.
 ---------------------------------------------------------------------------------------------------

@@ -24,13 +24,13 @@ local ActionItemWindow = class(ActionWindow, InventoryWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI parent Parent GUI.
+-- @tparam GUI gui Parent GUI.
 -- @tparam Inventory inventory Troop's inventory.
 -- @tparam table itemList List of available items (optional, gets from inventory by default).
 -- @tparam number maxHeight The height of the space available for the window (in pixels).
-function ActionItemWindow:init(parent, inventory, itemList, maxHeight)
-  local y = self:fitOnTop(maxHeight) + parent:windowMargin()
-  InventoryWindow.init(self, parent, nil, inventory, itemList, nil, nil, Vector(0, y, 0))
+function ActionItemWindow:init(gui, inventory, itemList, maxHeight)
+  local y = self:fitOnTop(maxHeight) + gui:windowMargin()
+  InventoryWindow.init(self, gui, nil, inventory, itemList, nil, nil, Vector(0, y, 0))
 end
 --- Creates a button from an item ID.
 -- @tparam table itemSlot The item slot with ID and quantity.

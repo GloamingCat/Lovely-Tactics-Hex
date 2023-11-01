@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- A special kind of list that provides functions to manage battler's list of status effects.
+--- Provides functions to manage a battler's list of status effects.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod StatusList
 -- @extend List

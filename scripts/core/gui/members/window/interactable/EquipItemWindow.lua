@@ -22,15 +22,15 @@ local EquipItemWindow = class(InventoryWindow)
 -- -------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI parent Parent GUI.
+-- @tparam GUI gui Parent GUI.
 -- @tparam number w Window's width in pixels(optional).
 -- @tparam number h Window's height in pixels(optional).
 -- @tparam Vector pos Position of the window's center (optional).
 -- @tparam number rowCount The number of buttons.
 -- @tparam table member The troop unit data of the character.
-function EquipItemWindow:init(parent, w, h, pos, rowCount, member)
-  self.member = member or parent:currentMember()
-  InventoryWindow.init(self, parent, nil, gui.inventory, {}, w, h, pos, rowCount)
+function EquipItemWindow:init(gui, w, h, pos, rowCount, member)
+  self.member = member or gui:currentMember()
+  InventoryWindow.init(self, gui, nil, gui.inventory, {}, w, h, pos, rowCount)
 end
 --- Overrides `ListWindow:createWidgets`. Adds the "unequip" button.
 -- @override

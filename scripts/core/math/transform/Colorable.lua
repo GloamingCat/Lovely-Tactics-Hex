@@ -76,7 +76,7 @@ function Colorable:setHSV(h, s, v)
   self.hsv.v = v or self.hsv.v
 end
 --- Sets color's RGBA. If a component parameter is nil, it will not be changed.
--- @tparam Color.RGBA color A color table containing `r`, `g`, `b` and `a` components (optional).
+-- @tparam Color.RGBA rgba A color table containing `r`, `g`, `b` and `a` components (optional).
 -- @tparam Color.HSV hsv A color table containing `h`, `s`, and `v` components (optional).
 function Colorable:setColor(rgba, hsv)
   if rgba then

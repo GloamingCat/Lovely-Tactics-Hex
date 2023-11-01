@@ -19,6 +19,8 @@ local RecruitListWindow = class(ListWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
+-- @tparam GUI gui Parent GUI.
 function RecruitListWindow:init(gui)
   self.visibleRowCount = 4
   ListWindow.init(self, gui, {})

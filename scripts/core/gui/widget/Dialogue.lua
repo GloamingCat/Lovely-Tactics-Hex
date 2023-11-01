@@ -1,8 +1,9 @@
 
 -- ================================================================================================
 
---- A GUI text that is written character by character and interacts with text events and player
--- input. See `TextParser.Codes` for the codes to be used in the text.
+--- A `SimpleText` that shows in a `DialogueWindow`. 
+-- The text written character by character when the window is open. It may contain text events.
+-- See `TextParser.Codes` for the event codes to be used in the text.
 ---------------------------------------------------------------------------------------------------
 -- @uimod Dialogue
 -- @extend SimpleText

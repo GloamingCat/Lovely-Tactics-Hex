@@ -1,7 +1,8 @@
 
 -- ================================================================================================
 
---- The BattleAction that is executed when players chooses a skill to use.
+--- Makes the current character use a skill.
+-- It is executed when players chooses the "Attack" or Skill" buttons during battle.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod SkillAction
 -- @extend BattleAction

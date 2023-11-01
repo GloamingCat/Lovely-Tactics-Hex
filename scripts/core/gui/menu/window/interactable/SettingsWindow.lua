@@ -85,6 +85,7 @@ end
 -- Switches
 -- ------------------------------------------------------------------------------------------------
 
+--- Change the language.
 function SettingsWindow:languageChange(button)
   GameManager.language = button.value
   Database.loadVocabFiles(GameManager.language)

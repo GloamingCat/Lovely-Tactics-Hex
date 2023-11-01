@@ -14,6 +14,9 @@ local round = math.round
 local min = math.min
 local rotate = math.rotate
 
+-- Rewrites
+local old_draw = love.graphics.draw
+
 -- Class table.
 local ScreenManager = class()
 
@@ -72,8 +75,8 @@ end
 -- Draw
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides love draw to count the calls.
-local old_draw = love.graphics.draw
+--- Rewrites `love.graphics.draw`. Counts the calls for debugging reasons.
+-- @rewrite
 function love.graphics.draw(...)
   old_draw(...)
   _G.ScreenManager.drawCalls = _G.ScreenManager.drawCalls + 1

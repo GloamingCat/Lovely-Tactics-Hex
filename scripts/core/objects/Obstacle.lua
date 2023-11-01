@@ -133,11 +133,6 @@ function Obstacle:getTopTile(tile)
   return FieldManager.currentField:getObjectTile(tile.x, tile.y, 
     self.collisionHeight + tile.layer.height)
 end
-
--- ------------------------------------------------------------------------------------------------
--- General
--- ------------------------------------------------------------------------------------------------
-
 -- For debugging.
 function Obstacle:__tostring()
   return 'Obstacle ' .. self.name .. ' ' .. tostring(self.position)

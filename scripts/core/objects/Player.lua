@@ -1,7 +1,8 @@
 
 -- ================================================================================================
 
---- This is a special character that can me controlled by the player with keyboard or mouse.
+--- A character freely controlled by the player.
+-- This is a special character that can me controlled directly with keyboard or mouse.
 -- It only exists in exploration fields, not in battle fields.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod Player

@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- Implements a FieldMath specially to isometric and hexagonal fields.
+--- Implements FieldMath methods to hexagonal fields in which the tiles are connected horizontally.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod HexHMath
 -- @extend FieldMath

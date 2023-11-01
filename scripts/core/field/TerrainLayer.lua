@@ -1,8 +1,8 @@
 
 -- ================================================================================================
 
---- A TerrainLayer is a matrix of TerrainTiles.
--- There may be more then one TerrainLayer in the field per height.
+--- A matrix of `TerrainTile`s.
+-- There may be more than one TerrainLayer in the field per height.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod TerrainLayer
 

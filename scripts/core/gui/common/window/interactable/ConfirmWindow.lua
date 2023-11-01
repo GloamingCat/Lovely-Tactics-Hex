@@ -19,12 +19,20 @@ local ConfirmWindow = class(GridWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
-function ConfirmWindow:init(GUI, confirmTerm, cancelTerm, ...)
+--- Constructor.
+-- @tparam GUI gui Parent GUI.
+-- @tparam string confirmTerm Term for the confirm button, from the `Vocab` table
+--  (optional, "``confirm`" by default).
+-- @tparam string cancelTerm Term for the cancel button, from the `Vocab` table.
+--  (optional, "``cancel`" by default).
+-- @param ... Other parameters from `Window:init`.
+function ConfirmWindow:init(gui, confirmTerm, cancelTerm, ...)
   self.confirmTerm = confirmTerm or 'confirm'
   self.cancelTerm = cancelTerm or 'cancel'
-  GridWindow.init(self, GUI, ...)
+  GridWindow.init(self, gui, ...)
 end
---- Constructor.
+--- Implements `GridWindow:createWidgets`.
+-- @implement
 function ConfirmWindow:createWidgets()
   local confirmButton = Button:fromKey(self, self.confirmTerm)
   local cancelButton = Button:fromKey(self, self.cancelTerm)

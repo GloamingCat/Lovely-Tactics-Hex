@@ -57,12 +57,13 @@ end
 function math.mod(x, y)
   return ((x % y) + y) % y
 end
+-- Alias
+local old_mod = math.mod
 --- Returns a number between 1 and y.
 -- @tparam number x The value possiblity out of the interval.
 -- @tparam number y The max value.
-local mod = math.mod
 function math.mod1(x, y)
-  return mod(x - 1, y) + 1
+  return old_mod(x - 1, y) + 1
 end
 --- Rotates a point.
 -- @tparam number x The point's x.

@@ -139,6 +139,7 @@ end
 -- Confirm Callbacks
 -- ------------------------------------------------------------------------------------------------
 
+--- Confirms the buy action.
 function ShopCountWindow:onButtonConfirm(button)
   self:apply()
 end

@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- The rule for an AI that moves to the tile with less close enemies.
+--- Moves to the tile with less close enemies.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod HideRule
 -- @extend AIRule

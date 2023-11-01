@@ -35,7 +35,7 @@ GameKey.State = {
 -- General
 -- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function GameKey:init()
   self.previousPressTime = 0
   self.pressTime = 0

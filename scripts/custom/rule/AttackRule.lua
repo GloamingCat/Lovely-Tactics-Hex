@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- The rule for an AI that attacks the character with the highest chance of KO.
+--- Attacks the character with the highest chance of KO.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod AttackRule
 -- @extend SkillRule

@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- An ObjectLayer is a matrix of ObjectTiles.
+--- A matrix of `ObjectTile`s.
 -- There's only one ObjectLayer in the field per height.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod ObjectLayer

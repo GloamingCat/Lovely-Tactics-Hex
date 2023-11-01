@@ -1,7 +1,8 @@
 
 -- ================================================================================================
 
---- The BattleAction that is executed when players cancels in the Turn Window.
+--- Navigates around the field to check battlers' attributes.
+-- It is executed when players chooses the "Inspect" button during battle.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod VisualizeAction
 -- @extend BattleAction

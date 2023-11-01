@@ -1,8 +1,7 @@
 
 -- ================================================================================================
 
---- Responsible for drawing and updating the current field, and also loading and storing fields from 
--- game's data.
+--- Draws, updates and stores field objects.
 ---------------------------------------------------------------------------------------------------
 -- @manager FieldManager
 
@@ -223,7 +222,7 @@ end
 -- Auxiliary Functions
 -- ------------------------------------------------------------------------------------------------
 
--- Search for a character with the given key
+--- Search for a character with the given key
 -- @tparam string key The key of the character.
 -- @treturn Character The first character found with the given key (nil if none was found).
 function FieldManager:search(key)
@@ -233,7 +232,7 @@ function FieldManager:search(key)
     end
   end
 end
--- Searchs for characters with the given key
+--- Searchs for characters with the given key
 -- @tparam string key The key of the character(s).
 -- @treturn List List of all characters with the given key.
 function FieldManager:searchAll(key)
@@ -258,6 +257,7 @@ function FieldManager:hideGrid()
   end
 end
 --- Tells if the field was loaded from save instead of from a field transition.
+-- @treturn boolean
 function FieldManager:loadedFromSave()
   if self.player then
     return self.player.saveData ~= nil

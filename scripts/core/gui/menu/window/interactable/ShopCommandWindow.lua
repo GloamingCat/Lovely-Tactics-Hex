@@ -20,13 +20,13 @@ local ShopCommandWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI GUI Parent GUI.
+-- @tparam GUI gui Parent GUI.
 -- @tparam boolean buy True if "buy" option if enabled.
 -- @tparam boolean sell True if "sell" option if enabled.
-function ShopCommandWindow:init(GUI, buy, sell)
+function ShopCommandWindow:init(gui, buy, sell)
   self.buy = buy
   self.sell = sell
-  GridWindow.init(self, GUI)
+  GridWindow.init(self, gui)
 end
 --- Overrides `GridWindow:setProperties`. 
 -- @override

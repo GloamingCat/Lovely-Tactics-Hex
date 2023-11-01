@@ -70,11 +70,6 @@ function Stack:removeElement(e)
   end
   return false
 end
-
--- ------------------------------------------------------------------------------------------------
--- Convertion
--- ------------------------------------------------------------------------------------------------
-
 -- For debugging.
 function Stack:__tostring()
   local i = self.size

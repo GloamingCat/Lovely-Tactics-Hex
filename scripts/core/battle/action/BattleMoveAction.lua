@@ -2,6 +2,7 @@
 -- ================================================================================================
 
 --- A move action that considers information from the battle state.
+-- It is executed when players chooses the "Move" button.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod BattleMoveAction
 -- @extend MoveAction

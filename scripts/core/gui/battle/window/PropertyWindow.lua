@@ -1,7 +1,8 @@
 
 -- ================================================================================================
 
---- Window that opens in Action GUI to show a property of the current character.
+--- Show a property of the current character.
+--- It opens in `ActionGUI` to show number of steps.
 ---------------------------------------------------------------------------------------------------
 -- @uimod PropertyWindow
 -- @extend Window

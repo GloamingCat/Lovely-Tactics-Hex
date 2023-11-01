@@ -1,9 +1,9 @@
 
 -- ================================================================================================
 
---- A module that provides basic field math operations, like tile-pixel coordinate convertion, neighbor 
--- shift, autotile rows, grid navigation/iteration, etc.
--- This module implements only the common operations. The abstract methods must be implemented by
+--- A module that provides basic field math operations. This includes tile-pixel coordinate
+-- convertion, neighbor shift, autotile rows, grid navigation/iteration, etc.
+-- This file implements only the common operations. The abstract methods must be implemented by
 -- specific field math modules for each grid type.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod FieldMath

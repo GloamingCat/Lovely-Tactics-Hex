@@ -1,9 +1,9 @@
 
 -- ================================================================================================
 
---- A Character is a dynamic object stored in the tile. It may be passable or not, and have an image 
--- or not. Player may also interact with this.
--- A CharacterBase provides very basic functions that are necessary for every character.
+--- An instance of a character from `Database`. It may be passable or not, and have an image 
+-- or not.
+-- It provides very basic functions that are necessary for every `Character`.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod CharacterBase
 -- @extend JumpingObject

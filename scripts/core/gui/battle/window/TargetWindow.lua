@@ -118,6 +118,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Calculates the height given the shown variables.
+-- @tparam boolean showStatus Flag to draw the character's statuses.
 function TargetWindow:computeHeight(showStatus)
   -- Margin + name + job/level + HP + SP
   local h = self:paddingY() * 2 + 15 + 10 + 10 + 10

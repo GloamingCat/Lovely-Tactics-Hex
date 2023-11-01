@@ -19,10 +19,14 @@ local ConfirmGUI = class(GUI)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
-function ConfirmGUI:init(parent, confirmTerm, cancelTerm, ...)
+--- Constructor.
+-- @tparam GUI parent Parent GUI.
+-- @tparam string confirmTerm Term for the confirm button, from the `Vocab` table.
+-- @tparam string cancelTerm Term for the cancel button, from the `Vocab` table.
+function ConfirmGUI:init(parent, confirmTerm, cancelTerm)
   self.confirmTerm = confirmTerm
   self.cancelTerm = cancelTerm
-  GUI.init(self, parent, ...)
+  GUI.init(self, parent)
 end
 --- Overrides `GUI:createWindows`. 
 -- @override

@@ -25,11 +25,14 @@ Swap type and name
 @tparam \2 \1
 
 Change header lines
-\-\-\-(\-+)
-\-\- \1
+\n\-\-\-(\-+)(\n\-\- [\w\s]*)\n\-\-\-(\-+)
+\n-- \1\2\n-- \3
+
+Add plugin/script tags
+--\[\[(=+\n\n)(\w+\n)---(-*\n)([^=]*)\n=(=*)\]\]
 
 Change summary lines
---\[\[(=+\n\n)(@(?:script|classmod|module|table|plugin) \w+\n)---(-*\n)([^=]*)\n=(=*)\]\]
+--\[\[(=+\n\n)(@(?:script|classmod|module|table|plugin|event|animmod) \w+\n)---(-*\n)([^=]*)\n=(=*)\]\]
 -- =\1-\4-- \3-- \2\n-- \5
 
 Add comments on missing lines (post summary change)

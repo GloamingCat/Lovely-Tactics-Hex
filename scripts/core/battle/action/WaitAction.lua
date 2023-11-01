@@ -1,7 +1,8 @@
 
 -- ================================================================================================
 
---- The BattleAction that is executed when players chooses the "Wait" button.
+--- Ends the current turn.
+-- It is executed when players chooses the "Wait" button.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod WaitAction
 -- @extend BattleAction

@@ -24,13 +24,13 @@ local PartyWindow = class(ListWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor. Gets the member list from the troop.
--- @tparam GUI parent Parent GUI.
+-- @tparam GUI gui Parent GUI.
 -- @tparam Troop troop
-function PartyWindow:init(parent, troop)
+function PartyWindow:init(gui, troop)
   self.visibleRowCount = GameManager:isMobile() and 3 or 4
   local list = troop:visibleBattlers()
   self.troop = troop
-  ListWindow.init(self, parent, list)
+  ListWindow.init(self, gui, list)
 end
 --- Overrides `GridWindow:setProperties`. Initialized tooltip.
 -- @override

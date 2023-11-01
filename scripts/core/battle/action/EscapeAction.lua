@@ -1,7 +1,8 @@
 
 -- ================================================================================================
 
---- The BattleAction that is executed when players chooses the "Escape" button.
+--- Removes the current turn's character from the field.
+-- It is executed when players chooses the "Escape" button.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod EscapeAction
 -- @extend BattleAction

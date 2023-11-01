@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- The GUI that is shown when the player chooses a troop member to manage.
+--- The GUI always visible when the `Player` explores the field.
 ---------------------------------------------------------------------------------------------------
 -- @uimod FieldHUD
 -- @extend GUI

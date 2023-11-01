@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- The rule for an AI that calls another character to the battle field.
+--- Calls another character to the battle field.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod CallRule
 -- @extend AIRule

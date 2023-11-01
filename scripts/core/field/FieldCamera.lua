@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- The FieldCamera is a renderer with transform properties.
+--- A `Renderer` with some general methods for camera effects.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod FieldCamera
 -- @extend Renderer

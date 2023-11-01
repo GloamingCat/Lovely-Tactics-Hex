@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- The rule for an AI that removes character from battle field. If not possible to execute,
+--- Removes character from battle field. If not possible to execute,
 -- it moves the character to the closest party tile.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod EscapeRule

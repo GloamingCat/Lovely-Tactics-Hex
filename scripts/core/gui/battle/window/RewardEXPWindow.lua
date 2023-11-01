@@ -141,11 +141,6 @@ end
 function RewardEXPWindow:onCancel()
   self:onConfirm()
 end
-
--- ------------------------------------------------------------------------------------------------
--- Properties
--- ------------------------------------------------------------------------------------------------
-
 -- For debugging.
 function RewardEXPWindow:__tostring()
   return 'EXP Reward Window'

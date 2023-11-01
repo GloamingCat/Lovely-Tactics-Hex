@@ -24,7 +24,7 @@ local InventoryWindow = class(ListWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI parent Parent GUI.
+-- @tparam GUI gui Parent GUI.
 -- @tparam Battler user The user of the items.
 -- @tparam Inventory inventory Inventory with the list of items.
 -- @tparam table itemList Array with item slots that are going to be shown
@@ -34,13 +34,13 @@ local InventoryWindow = class(ListWindow)
 -- @tparam Vector pos Position of the window's center (screen center by default).
 -- @tparam number rowCount The number of visible button rows
 --  (maximum possible rows by default - needs h to be non-nil).
-function InventoryWindow:init(parent, user, inventory, itemList, w, h, pos, rowCount)
+function InventoryWindow:init(gui, user, inventory, itemList, w, h, pos, rowCount)
   self.member = user
-  self.leader = parent.troop:currentBattlers()[1]
+  self.leader = gui.troop:currentBattlers()[1]
   assert(self.leader, 'Empty party!')
   self.inventory = inventory
   self.visibleRowCount = self.visibleRowCount or rowCount or self:computeRowCount(h)
-  ListWindow.init(self, parent, itemList or inventory, w, h, pos)
+  ListWindow.init(self, gui, itemList or inventory, w, h, pos)
 end
 --- Creates a button from an item ID.
 -- @tparam table itemSlot A slot from the inventory (with item's ID and count).

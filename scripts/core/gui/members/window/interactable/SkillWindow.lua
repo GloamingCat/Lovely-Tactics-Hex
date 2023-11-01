@@ -23,11 +23,11 @@ local SkillWindow = class(ListWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI gui Parent GUI.
-function SkillWindow:init(gui)
+-- @tparam GUI parent Parent GUI.
+function SkillWindow:init(parent)
   self.visibleRowCount = 4
-  self.member = gui:currentMember()
-  ListWindow.init(self, gui, self.member:getSkillList())
+  self.member = parent:currentMember()
+  ListWindow.init(self, parent, self.member:getSkillList())
 end
 --- Overrides `ListWindow:createWidgets`. 
 -- @override

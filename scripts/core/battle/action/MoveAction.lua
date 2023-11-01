@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- The BattleAction that is executed when players chooses the "Move" button.
+--- Moves the character to the selected target.
 -- Any action used in PathFinder must inherit from this.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod MoveAction

@@ -1,7 +1,8 @@
 
 -- ================================================================================================
 
---- Manipulates the matrix of battler IDs to the instatiated in the beginning of the battle.
+--- Contains information about the units and their respective `Battler`s.
+-- It manipulates the matrix of units to be instatiated in the beginning of the battle.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod Troop
 

@@ -59,11 +59,6 @@ function MemberInfoWindow:setBattler(battler)
     self.info:hide()
   end
 end
-
--- ------------------------------------------------------------------------------------------------
--- Properties
--- ------------------------------------------------------------------------------------------------
-
 -- For debugging.
 function MemberInfoWindow:__tostring()
   return 'Member Info Window'

@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- Show a dialogue.
+--- A window that shows a `Dialogue`.
 ---------------------------------------------------------------------------------------------------
 -- @uimod DialogueWindow
 -- @extend Window
@@ -22,18 +22,18 @@ local DialogueWindow = class(Window)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam GUI parent Parent GUI.
+-- @tparam GUI gui Parent GUI.
 -- @tparam number w Width of the window.
 -- @tparam number h Height of the window.
 -- @tparam number x Pixel x of the window.
 -- @tparam number y Pixel y of the window.
-function DialogueWindow:init(parent, w, h, x, y)
+function DialogueWindow:init(gui, w, h, x, y)
   self:initProperties()
-  w = w or ScreenManager.width - parent:windowMargin()
+  w = w or ScreenManager.width - gui:windowMargin()
   h = h or ScreenManager.height / 4
-  x = x or (w - ScreenManager.width) / 2 + parent:windowMargin()
-  y = y or (ScreenManager.height - h) / 2 - parent:windowMargin()
-  Window.init(self, parent, w, h, Vector(x, y))
+  x = x or (w - ScreenManager.width) / 2 + gui:windowMargin()
+  y = y or (ScreenManager.height - h) / 2 - gui:windowMargin()
+  Window.init(self, gui, w, h, Vector(x, y))
 end
 --- Sets window's properties.
 function DialogueWindow:initProperties()

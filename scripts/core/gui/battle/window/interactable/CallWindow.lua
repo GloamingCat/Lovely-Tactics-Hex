@@ -109,7 +109,7 @@ end
 function CallWindow:rowCount()
   return 4
 end
-
+-- For debugging.
 function CallWindow:__tostring()
   return 'Call Window'
 end

@@ -371,16 +371,24 @@ function Window:onCancel()
     AudioManager:playSFX(self.cancelSound)
   end
 end
+--- Called when the player inserts a key while `InputManager.readingText` is true.
+-- @tparam string c The inserted text.
 function Window:onTextInput(c)
+  -- Abstract.
 end
 --- Called when player presses arrows.
+-- @tparam number dx Movement direction in the x axis (-1 to 1).
+-- @tparam number dy Movement direction in the y axis (-1 to 1).
 function Window:onMove(dx, dy)
+  -- Abstract.
 end
 --- Called when player presses "next" key.
 function Window:onNext()
+  -- Abstract.
 end
 --- Called when player presses "prev" key.
 function Window:onPrev()
+  -- Abstract.
 end
 --- Called when player presses a mouse button or touches screen.
 -- @tparam number button Button type ID (1-3 for mouse, 4-5 for touch).

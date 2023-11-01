@@ -1,7 +1,9 @@
 
 -- ================================================================================================
 
---- A type of SkillAction that gets its effect from item data.
+--- Uses an item from the inventory.
+-- It is executed when players chooses the "Item" button during battle.
+-- It is a type of SkillAction that gets its effect from item data.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod ItemAction
 -- @extend SkillAction

@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- This class provides general functions to be called by fibers. 
+--- A `CharacterBase` with general movement/animation methods. 
 -- The coroutine functions must ONLY be called from a fiber.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod Character
