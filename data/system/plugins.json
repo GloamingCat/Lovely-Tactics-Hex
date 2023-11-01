@@ -60,7 +60,12 @@
   {
     "on": true,
     "name": "plugins/graphics/TextOutline.lua",
-    "tags": [],
+    "tags": [
+      {
+        "key": "shader",
+        "value": "\"Text.glsl\""
+      }
+    ],
     "key": ""
   },
   {
