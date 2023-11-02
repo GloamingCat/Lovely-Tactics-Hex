@@ -29,6 +29,7 @@ function ConfirmButtonWindow:init(menu, confirmTerm, cancelTerm, ...)
   self.confirmTerm = confirmTerm or 'confirm'
   self.cancelTerm = cancelTerm or 'cancel'
   ButtonWindow.init(self, menu, {self.confirmTerm, self.cancelTerm}, ...)
+  self.matrix[2].clickSound = Config.sounds.buttonCancel
 end
 
 -- ------------------------------------------------------------------------------------------------

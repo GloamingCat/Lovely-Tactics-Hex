@@ -13,6 +13,10 @@ local Menu = require('core/gui/Menu')
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
 local TitleCommandWindow = require('core/gui/menu/window/interactable/TitleCommandWindow')
 
+-- Rewrites
+local TitleCommandWindow_createWidgets = TitleCommandWindow.createWidgets
+local TitleCommandWindow_rowCount = TitleCommandWindow.rowCount
+
 -- Parameters
 local width = args.width
 local height = args.height
@@ -25,13 +29,9 @@ local texts = args.text:split()
 --- Rewrites `TitleCommandWindow:createWidgets`.
 -- @rewrite
 function TitleCommandWindow:createWidgets()
-  Button:fromKey(self, 'newGame')
-  Button:fromKey(self, 'loadGame')
-  Button:fromKey(self, 'config')
-  Button:fromKey(self, 'tutorial')
-  if GameManager:isDesktop() then
-    Button:fromKey(self, 'quit')
-  end
+  TitleCommandWindow_createWidgets(self)
+  local button = Button:fromKey(self, 'tutorial')
+  self:moveWidget(button, button.index - 1)
 end
 --- Settings button.
 function TitleCommandWindow:tutorialConfirm()
@@ -60,5 +60,5 @@ end
 --- Rewrites `TitleCommandWindow:rowCount`.
 -- @rewrite
 function TitleCommandWindow:rowCount()
-  return GameManager:isDesktop() and 5 or 4
+  return TitleCommandWindow_rowCount(self) + 1
 end

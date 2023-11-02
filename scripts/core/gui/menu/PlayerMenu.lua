@@ -48,6 +48,7 @@ end
 function PlayerMenu:createButtonWindow()
   local window = ButtonWindow(self, 'menu', 'center', 60)
   window:setXYZ((ScreenManager.width - window.width) / 2, (window.height - ScreenManager.height) / 2)
+  window.matrix[1].clickSound = nil
   self.buttonWindow = window
 end
 

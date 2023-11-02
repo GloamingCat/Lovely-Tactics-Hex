@@ -24,7 +24,7 @@ local QuitWindow = class(OptionsWindow)
 function QuitWindow:createWidgets()
   Button:fromKey(self, 'cancel')
   Button:fromKey(self, 'title')
-  if GameManager:isDesktop() then
+  if not GameManager:isWeb() then
     Button:fromKey(self, 'close')
   end
 end
@@ -45,7 +45,7 @@ end
 --- Overrides `GridWindow:rowCount`. 
 -- @override
 function QuitWindow:rowCount()
-  return GameManager:isDesktop() and 3 or 2
+  return GameManager:isWeb() and 2 or 3
 end
 -- For debugging.
 function QuitWindow:__tostring()

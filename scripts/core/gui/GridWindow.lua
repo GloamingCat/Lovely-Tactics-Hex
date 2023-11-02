@@ -12,6 +12,7 @@
 local GridScroll = require('core/gui/widget/GridScroll')
 local Highlight = require('core/gui/widget/Highlight')
 local Matrix2 = require('core/math/Matrix2')
+local Tooltip = require('core/gui/widget/Tooltip')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 local WindowCursor = require('core/gui/widget/WindowCursor')
@@ -30,6 +31,7 @@ function GridWindow:setProperties()
   self.loopVertical = true
   self.loopHorizontal = true
   self.tooltipTerm = nil
+  self.fixedTooltip = false
 end
 --- Overrides `Window:createContent`. 
 -- @override
@@ -45,6 +47,10 @@ function GridWindow:createContent(width, height)
   end
   if not self.noHighlight then
     self.highlight = Highlight(self)
+  end
+  if self.tooltipTerm then
+    self.tooltip = Tooltip(self, self.tooltipTerm, self.tooltipAlign)
+    self.content:add(self.tooltip)
   end
   Window.createContent(self, width or self:computeWidth(), height or self:computeHeight())
   self:packWidgets()
@@ -196,11 +202,9 @@ function GridWindow:insertWidget(widget, i)
   for w = last + 1, i + 1, -1 do
     self.matrix[w] = self.matrix[w - 1]
     self.matrix[w]:setIndex(w)
-    self.matrix[w]:updatePosition(self.position)
   end
   self.matrix[i] = widget
   widget:setIndex(i)
-  widget:updatePosition(self.position)
 end
 --- Removes widget at the given index.
 -- @tparam number i The index of the widget.
@@ -211,12 +215,33 @@ function GridWindow:removeWidget(i)
   local widget = self.matrix[i]
   widget:destroy()
   for w = i, last - 1 do
-    self.matrix[w] = self.matrix[w+1]
+    self.matrix[w] = self.matrix[w + 1]
     self.matrix[w]:setIndex(w)
-    self.matrix[w]:updatePosition(self.position)
   end
   self.matrix[last] = nil
   return widget
+end
+--- Moves a widget.
+-- @tparam GridWidget widget The widget to be moved.
+-- @tparam number i The widget's new position.
+function GridWindow:moveWidget(widget, i)
+  local last = #self.matrix
+  for w = widget.index, last - 1 do
+    self.matrix[w] = self.matrix[w + 1]
+    self.matrix[w]:setIndex(w)
+  end
+  self.matrix[last] = nil
+  self:insertWidget(widget, i)
+end
+--- Finds widget by its key.
+-- @tparam string key Widget's key.
+-- @treturn GridWidget The widget with the given key, or nil if not found.
+function GridWindow:findWidget(key)
+  for i = 1, #self.matrix do
+    if self.matrix[i].key == key then
+      return self.matrix[i]
+    end
+  end
 end
 --- Removes all widgets.
 function GridWindow:clearWidgets()
@@ -284,7 +309,7 @@ end
 --- Gets the tooltip term according to gven widget.
 -- @tparam GridWidget|string widget The new term or the widget with the new term.
 function GridWindow:setWidgetTooltip(widget)
-  if not self.tooltip then
+  if not self.tooltip or self.fixedTooltip then
     return
   end
   if type(widget) == 'string' then
@@ -393,6 +418,9 @@ function GridWindow:onClick(button, x, y, triggerPoint)
   if button == 1 and self.scroll and self.scroll:onClick(x, y) then
     return
   else
+    if self.tooltip then
+      self.tooltip:onMove(x, y)
+    end
     Window.onClick(self, button, x, y, triggerPoint)
   end
 end
@@ -424,6 +452,9 @@ end
 -- @tparam number y Mouse y.
 -- @treturn boolean True if the pointer is over a selectablt widget, false otherwise.
 function GridWindow:onMouseMove(x, y)
+  if self.tooltip then
+    self.tooltip:onMove(x, y)
+  end
   if self:isInside(x, y) then
     if self.scroll then
       self.scroll:onMouseMove(x, y)

@@ -23,6 +23,7 @@ local LoadWindow = class(SaveWindow)
 function LoadWindow:setProperties()
   SaveWindow.setProperties(self)
   self.tooltipTerm = 'loadSlot'
+  self.fixedTooltip = true
 end
 --- Overrides `SaveWindow:createSaveButton`. 
 -- @override

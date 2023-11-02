@@ -33,7 +33,7 @@ function TitleCommandWindow:createWidgets()
   Button:fromKey(self, 'newGame')
   Button:fromKey(self, 'loadGame')
   Button:fromKey(self, 'config')
-  if GameManager:isDesktop() then
+  if not GameManager:isWeb() then
     Button:fromKey(self, 'quit')
   end
 end
@@ -108,7 +108,7 @@ end
 --- Overrides `GridWindow:rowCount`. 
 -- @override
 function TitleCommandWindow:rowCount()
-  return GameManager:isDesktop() and 4 or 3
+  return GameManager:isWeb() and 3 or 4
 end
 -- For debugging.
 function TitleCommandWindow:__tostring()

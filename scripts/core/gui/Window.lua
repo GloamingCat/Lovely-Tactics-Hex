@@ -14,7 +14,6 @@
 local Component = require('core/gui/Component')
 local List = require('core/datastruct/List')
 local SpriteGrid = require('core/graphics/SpriteGrid')
-local TextComponent = require('core/gui/widget/TextComponent')
 local Transformable = require('core/math/transform/Transformable')
 local Vector = require('core/math/Vector')
 
@@ -70,15 +69,6 @@ function Window:createContent(width, height)
   if self.frame then
     self.frame:createGrid(MenuManager.renderer, width, height)
   end
-  if self.tooltipTerm then
-    local w = ScreenManager.width - self.menu:windowMargin() * 2
-    local h = ScreenManager.height - self.menu:windowMargin() * 2
-    self.tooltip = TextComponent('', Vector(-w/2, -h/2, -50), w, 'left', Fonts.menu_tooltip)
-    self.tooltip:setTerm('manual.' .. self.tooltipTerm, '')
-    self.tooltip:setAlign('left', self.tooltipAlign or 'bottom')
-    self.tooltip:setMaxHeight(h)
-    self.tooltip:redraw()
-  end
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -122,9 +112,6 @@ function Window:destroy()
   if self.frame then
     self.frame:destroy()
   end
-  if self.tooltip then
-    self.tooltip:destroy()
-  end
   Component.destroy(self)
 end
 --- Sets this window as the active one.
@@ -141,9 +128,6 @@ end
 -- @tparam boolean value True to activate, false to deactivate.
 function Window:setActive(value)
   self.active = value
-  if self.tooltip then
-    self.tooltip:setVisible(value and not MenuManager.disableTooltips)
-  end
 end
 --- Checks in a screen point is within window's bounds.
 -- @tparam number x Pixel x of point.
@@ -290,17 +274,11 @@ function Window:showContent(...)
     end
     c:show(...)
   end
-  if self.tooltip and self.active and not MenuManager.disableTooltips then
-    self.tooltip:show(...)
-  end
 end
 --- Hides all content elements.
 function Window:hideContent(...)
   for c in self.content:iterator() do
     c:hide(...)
-  end
-  if self.tooltip then
-    self.tooltip:hide(...)
   end
 end
 
@@ -400,13 +378,13 @@ function Window:onClick(button, x, y, triggerPoint)
     if self:isInside(x, y) then
       self:onMouseConfirm(x, y, triggerPoint)
     elseif self.offBoundsCancel then
-      self:onMouseCancel(triggerPoint)
+      self:onMouseCancel(x, y)
     end
   elseif button == 2 then
     self:onCancel()
   elseif button == 4 then
     if self.offBoundsCancel and not self:isInside(x, y) then
-      self:onMouseCancel(triggerPoint)
+      self:onMouseCancel(x, y)
     end
   elseif button == 5 then
     self:onMouseConfirm(x, y, triggerPoint)

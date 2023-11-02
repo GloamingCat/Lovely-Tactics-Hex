@@ -24,6 +24,7 @@ local MenuTargetWindow = class(PartyWindow)
 function MenuTargetWindow:setProperties()
   PartyWindow.setProperties(self)
   self.tooltipTerm = 'target'
+  self.fixedTooltip = true
 end
 --- When player selects a character from the member list window.
 function MenuTargetWindow:onButtonConfirm(button)
