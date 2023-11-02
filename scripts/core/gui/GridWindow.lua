@@ -11,6 +11,7 @@ Provides the base for windows with widgets in a matrix.
 local GridScroll = require('core/gui/widget/GridScroll')
 local Highlight = require('core/gui/widget/Highlight')
 local Matrix2 = require('core/math/Matrix2')
+local Tooltip = require('core/gui/widget/Tooltip')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 local WindowCursor = require('core/gui/widget/WindowCursor')
@@ -27,6 +28,7 @@ function GridWindow:setProperties()
   self.loopVertical = true
   self.loopHorizontal = true
   self.tooltipTerm = nil
+  self.fixedTooltip = false
 end
 -- Overrides Window:createContent.
 function GridWindow:createContent(width, height)
@@ -41,6 +43,10 @@ function GridWindow:createContent(width, height)
   end
   if not self.noHighlight then
     self.highlight = Highlight(self)
+  end
+  if self.tooltipTerm then
+    self.tooltip = Tooltip(self, self.tooltipTerm, self.tooltipAlign)
+    self.content:add(self.tooltip)
   end
   Window.createContent(self, width or self:computeWidth(), height or self:computeHeight())
   self:packWidgets()
@@ -299,7 +305,7 @@ end
 -- Gets the tooltip term according to gven widget.
 -- @param(widget : GridWidget : string) The new term or the widget with the new term.
 function GridWindow:setWidgetTooltip(widget)
-  if not self.tooltip then
+  if not self.tooltip or self.fixedTooltip then
     return
   end
   if type(widget) == 'string' then
@@ -401,6 +407,9 @@ function GridWindow:onClick(button, x, y, triggerPoint)
   if button == 1 and self.scroll and self.scroll:onClick(x, y) then
     return
   else
+    if self.tooltip then
+      self.tooltip:onMove(x, y)
+    end
     Window.onClick(self, button, x, y, triggerPoint)
   end
 end
@@ -432,6 +441,9 @@ end
 -- @param(y : number) Mouse y.
 -- @ret(boolean) True if the pointer is over a selectablt widget, false otherwise.
 function GridWindow:onMouseMove(x, y)
+  if self.tooltip then
+    self.tooltip:onMove(x, y)
+  end
   if self:isInside(x, y) then
     if self.scroll then
       self.scroll:onMouseMove(x, y)

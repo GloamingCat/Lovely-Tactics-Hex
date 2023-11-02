@@ -33,6 +33,7 @@ end
 function SaveWindow:setProperties()
   GridWindow.setProperties(self)
   self.tooltipTerm = 'saveSlot'
+  self.fixedTooltip = true
 end
 -- Overrides GridWindow:createWidgets.
 function SaveWindow:createWidgets()
