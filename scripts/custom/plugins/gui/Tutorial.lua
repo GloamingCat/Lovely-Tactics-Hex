@@ -23,14 +23,11 @@ local texts = args.text:split()
 ---------------------------------------------------------------------------------------------------
 
 -- Overrides TitleCommandWindow:createWidgets.
+local TitleCommandWindow_createWidgets = TitleCommandWindow.createWidgets
 function TitleCommandWindow:createWidgets()
-  Button:fromKey(self, 'newGame')
-  Button:fromKey(self, 'loadGame')
-  Button:fromKey(self, 'config')
-  Button:fromKey(self, 'tutorial')
-  if GameManager:isDesktop() then
-    Button:fromKey(self, 'quit')
-  end
+  TitleCommandWindow_createWidgets(self)
+  local button = Button:fromKey(self, 'tutorial')
+  self:moveWidget(button, button.index - 1)
 end
 -- Settings button.
 function TitleCommandWindow:tutorialConfirm()
@@ -57,6 +54,7 @@ function TitleCommandWindow:tutorialConfirm()
   self:show()
 end
 -- Overrides TitleCommandWindow:rowCount.
+local TitleCommandWindow_rowCount = TitleCommandWindow.rowCount
 function TitleCommandWindow:rowCount()
-  return GameManager:isDesktop() and 5 or 4
+  return TitleCommandWindow_rowCount(self) + 1
 end

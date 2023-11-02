@@ -34,7 +34,7 @@ function OptionsWindow:createWidgets()
     Button:fromKey(self, 'quit')
   else
     Button:fromKey(self, 'title')
-    if GameManager:isDesktop() then
+    if not GameManager:isWeb() then
       Button:fromKey(self, 'close')
     end
   end
@@ -94,7 +94,7 @@ function OptionsWindow:rowCount()
   if self.GUI.quitWindow then
     return 4
   else
-    return GameManager:isDesktop() and 5 or 4
+    return GameManager:isWeb() and 4 or 5
   end
 end
 -- @ret(string) String representation (for debugging).

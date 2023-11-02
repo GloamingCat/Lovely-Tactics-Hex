@@ -192,11 +192,9 @@ function GridWindow:insertWidget(widget, i)
   for w = last + 1, i + 1, -1 do
     self.matrix[w] = self.matrix[w - 1]
     self.matrix[w]:setIndex(w)
-    self.matrix[w]:updatePosition(self.position)
   end
   self.matrix[i] = widget
   widget:setIndex(i)
-  widget:updatePosition(self.position)
 end
 -- Removes widget at the given index.
 -- @param(i : number) The index of the widget.
@@ -207,12 +205,33 @@ function GridWindow:removeWidget(i)
   local widget = self.matrix[i]
   widget:destroy()
   for w = i, last - 1 do
-    self.matrix[w] = self.matrix[w+1]
+    self.matrix[w] = self.matrix[w + 1]
     self.matrix[w]:setIndex(w)
-    self.matrix[w]:updatePosition(self.position)
   end
   self.matrix[last] = nil
   return widget
+end
+-- Moves a widget.
+-- @param(widget : GridWidget) The widget to be moved.
+-- @param(i : number) The widget's new position.
+function GridWindow:moveWidget(widget, j)
+  local last = #self.matrix
+  for w = widget.index, last - 1 do
+    self.matrix[w] = self.matrix[w + 1]
+    self.matrix[w]:setIndex(w)
+  end
+  self.matrix[last] = nil
+  self:insertWidget(widget, j)
+end
+-- Find widget by its key.
+-- @param(key : string) Widget's key.
+-- @ret(GridWidget) The widget with the given key, or nil if not found.
+function GridWindow:findWidget(key)
+  for i = 1, #self.matrix do
+    if self.matrix[i].key == key then
+      return self.matrix[i]
+    end
+  end
 end
 -- Removes all widgets.
 function GridWindow:clearWidgets()
