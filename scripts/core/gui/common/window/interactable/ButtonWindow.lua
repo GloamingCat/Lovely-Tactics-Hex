@@ -42,7 +42,6 @@ function ButtonWindow:createWidgets()
     button.confirmSound = nil
     button.selectSound = nil
     button.cancelSound = nil
-    button.clickSound = nil
   end
 end
 
