@@ -63,7 +63,7 @@ function Fiber:update()
     if not state then
       -- Output error message
       print(result:gsub(".*ore%/", "scripts/core/"))
-      print('Coroutine ' .. tostring(debug.traceback(self.coroutine)):gsub(".*ore%/", "scripts/core/"))
+      print('Coroutine ' .. tostring(debug.traceback(self.coroutine)):gsub("%.%.%.ore%/", "scripts/core/"))
       print('Origin ' .. tostring(self.traceback))
       error("Error updating coroutine.")
       if GameManager:isMobile() and not GameManager:isWeb() then

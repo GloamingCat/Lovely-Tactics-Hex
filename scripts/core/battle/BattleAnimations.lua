@@ -105,9 +105,9 @@ end
 -- @tparam Character char Target character.
 -- @treturn number The duration of the animation.
 function BattleAnimations.dieEffect(char)
-  if char.data.koAnimID and char.data.koAnimID >= 0 then
+  if char.charData.koAnimID and char.charData.koAnimID >= 0 then
     local x, y, z = char.position:coordinates()
-    local anim = BattleAnimations.playOnField(char.data.koAnimID, x, y, z)
+    local anim = BattleAnimations.playOnField(char.charData.koAnimID, x, y, z)
     return anim.duration
   end
   return 0

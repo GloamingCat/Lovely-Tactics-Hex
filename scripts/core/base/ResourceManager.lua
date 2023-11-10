@@ -71,37 +71,38 @@ function ResourceManager:loadQuad(data, texture, cols, rows, col, row)
   return quad, texture
 end
 --- Creates an animation from an animation data table.
--- @tparam table|string|number data Animation's data or its ID or its image path.
+-- @tparam table|string|number anim Animation's data or its ID or its key or its image path.
 -- @tparam Renderer|Sprite dest Where animation will be shown.
 -- @treturn Animation Animation object created from given data.
-function ResourceManager:loadAnimation(data, dest)
-  assert(data, 'Null animation')
-  if type(data) == 'string' then
+function ResourceManager:loadAnimation(anim, dest)
+  assert(anim, 'Null animation')
+  if Database.animations[anim] then
+    anim = Database.animations[anim]
+  elseif type(anim) == 'string' then
+    assert(dest, 'Second argument must be a Sprite or a Renderer. Path: ' .. anim)
     if not dest.renderer then -- If dest is a Renderer
-      local texture = self:loadTexture(data)
+      local texture = self:loadTexture(anim)
       local w, h = texture:getWidth(), texture:getHeight()
       local quad = newQuad(0, 0, w, h, w, h)
       dest = Sprite(dest, texture, quad)
     end
     return Static(dest)
-  elseif type(data) == 'number' then
-    assert(Database.animations[data], 'Animation does not exist: ' .. data)
-    data = Database.animations[data]
   end
+  assert(anim.quad, 'Invalid animation data: ' .. tostring(anim))
   if not dest.renderer then -- If dest is a Renderer
-    if data.quad.path == '' then
+    if anim.quad.path == '' then
       dest = nil
     else
-      local quad, texture = self:loadQuad(data.quad, nil, data.cols, data.rows)
+      local quad, texture = self:loadQuad(anim.quad, nil, anim.cols, anim.rows)
       dest = Sprite(dest, texture, quad)
-      dest:setTransformation(data.transform)
+      dest:setTransformation(anim.transform)
     end
   end
   local AnimClass = Animation
-  if data.script ~= '' then
-    AnimClass = require('custom/' .. data.script)
+  if anim.script ~= '' then
+    AnimClass = require('custom/' .. anim.script)
   end
-  return AnimClass(dest, data)
+  return AnimClass(dest, anim)
 end
 --- Loads a sprite.
 -- @tparam table|number|string data Animation's data or id, or path to texture.

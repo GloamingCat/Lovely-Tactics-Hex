@@ -439,8 +439,8 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
         else
           targetChar:damage(self.data, originTile, results)
           BattleAnimations.dieEffect(targetChar)
-          if targetChar.data.koFadeout and targetChar.data.koFadeout >= 0 then
-            targetChar:colorizeTo(nil, nil, nil, 0, 60 / targetChar.data.koFadeout, true)
+          if targetChar.charData.koFadeout and targetChar.charData.koFadeout >= 0 then
+            targetChar:colorizeTo(nil, nil, nil, 0, 60 / targetChar.charData.koFadeout, true)
             local troop = TroopManager.troops[targetChar.party]
             local member = troop:moveMember(targetChar.key, 1)
             TroopManager:deleteCharacter(targetChar)

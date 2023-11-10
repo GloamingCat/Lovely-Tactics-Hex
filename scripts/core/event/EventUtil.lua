@@ -29,7 +29,7 @@ local EventUtil = class()
 -- @treturn Character Character with given key, nil if optional and not found.
 function EventUtil:findCharacter(key, optional)
   if key == 'self' then
-    key = self.char.key
+    return self.char
   end
   local char = FieldManager:search(key)
   assert(char or optional, 'Character not found: ' .. tostring(key))

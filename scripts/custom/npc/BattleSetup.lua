@@ -25,7 +25,7 @@ return function(script)
     script:deleteChar { permanent = script.args.permanent, key = 'self' }
   elseif script.args.resetPos == 'true' and not FieldManager:loadedFromSave() then
     -- Reset position otherwise.
-    local data = script.char.instData
+    local data = script.char.data
     script.char:transferTile(data.x, data.y, data.h)
   end
   

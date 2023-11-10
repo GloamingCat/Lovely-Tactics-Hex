@@ -50,10 +50,10 @@ function Player:init(transition, save)
   Character.init(self, data, save)
   self.waitList = List()
 end
---- Overrides `AnimatedInteractable:initProperties`. 
+--- Overrides `Character:initProperties`. 
 -- @override
-function Player:initProperties(instData, name, collisionTiles, colliderHeight)
-  Character.initProperties(self, instData, name, collisionTiles, colliderHeight)
+function Player:initProperties(...)
+  Character.initProperties(self, ...)
   self.inputDelay = 6 / 60
   self.walkSpeed = Config.player.walkSpeed
   self.dashSpeed = self.walkSpeed * Config.player.dashSpeed / 100

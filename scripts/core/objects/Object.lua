@@ -34,7 +34,7 @@ local Object = class(Transformable)
 function Object:init(data, pos)
   Transformable.init(self, pos)
   self.data = data
-  self.name = data.name
+  self.name = data.name or data.key
   if data.tags then
     self.tags = Database.loadTags(data.tags)
   end

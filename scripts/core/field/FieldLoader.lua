@@ -8,6 +8,7 @@
 -- ================================================================================================
 
 -- Imports
+local AnimatedInteractable = require('core/objects/AnimatedInteractable')
 local Character = require('core/objects/Character')
 local Field = require('core/field/Field')
 local Interactable = require('core/objects/Interactable')
@@ -87,18 +88,19 @@ end
 
 --- Creates field's characters.
 -- @tparam Field field Current field.
--- @tparam table characters Array of character instances.
+-- @tparam table instances Array of character instances.
 -- @tparam table save Field's save data.
-function FieldLoader.loadCharacters(field, characters, save)
+function FieldLoader.loadCharacters(field, instances, save)
   local persistentData = save or FieldManager:getFieldSave(field.id)
-  for i, char in ipairs(characters) do
-    local save = persistentData.chars[char.key]
+  for i, inst in ipairs(instances) do
+    local save = persistentData.chars[inst.key]
     if not (save and save.deleted) then
-      if (save and save.charID or char.charID) >= 0 then
-        Character(char, save)
+      if (save and save.charID or inst.charID) >= 0 then
+        Character(inst, save)
+      elseif inst.animation and inst.animation ~= '' then
+        AnimatedInteractable(inst, save)
       else
-        char.passable = true
-        Interactable(char, save)
+        Interactable(inst, save)
       end
     end
   end
@@ -135,6 +137,7 @@ function FieldLoader.createTransitions(field, transitions)
         transition = args } }
       for _, tile in ipairs(t.origin) do
         local instData = { key = 'Transition',
+          passable = false,
           scripts = scripts,
           x = tile.dx, y = tile.dy, h = tile.height }
         Interactable(instData)

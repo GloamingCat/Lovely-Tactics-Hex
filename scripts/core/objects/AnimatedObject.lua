@@ -11,6 +11,7 @@
 -- ================================================================================================
 
 -- Imports
+local Affine = require('core/math/Affine')
 local Sprite = require('core/graphics/Sprite')
 local Object = require('core/objects/Object')
 
@@ -21,14 +22,14 @@ local AnimatedObject = class(Object)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Creates sprite and animation list.
+--- Creates sprite and animation sets.
 -- @tparam table animations An array of animation data.
--- @tparam number initAnim The initial animation's name.
--- @tparam Affine.Transform transform The graphic's affine transformation.
--- @tparam boolean sets True if animations are separated in sets.
+-- @tparam[opt] number initAnim The initial animation's name.
+-- @tparam[opt] Affine.Transform transform The graphic's affine transformation.
+-- @tparam[opt] boolean sets Flag to separate animation names in the form of `setname:animname`.
 function AnimatedObject:initGraphics(animations, initAnim, transform, sets)
   self.animName = nil
-  self.transform = transform
+  self.transform = transform or Affine.neutralTransform
   self.sprite = Sprite(FieldManager.renderer)
   if sets then
     self:initAnimationSets(animations)
@@ -73,7 +74,7 @@ function AnimatedObject:initAnimationSets(animations)
 end
 --- Creates a new animation from the database.
 -- @tparam string name The name of the animation for the character.
--- @tparam number id The animation's ID in the database.
+-- @tparam number|string id The animation's ID or key in the database.
 function AnimatedObject:addAnimation(name, id)
   local animation = ResourceManager:loadAnimation(id, self.sprite)
   local data = animation.data

@@ -1,9 +1,10 @@
 
 -- ================================================================================================
 
---- An instance of a character from `Database`. It may be passable or not, and have an image 
--- or not.
--- It provides very basic functions that are necessary for every `Character`.
+--- An `Interactable` with graphics and animation. It's any field object instance that does not
+-- contain a `charID`, but contains an animation.  
+-- Optional additional fields in the instance data include: `name`, `collisionTiles`, `transform`,
+-- `shadowID`. These fields need code to be defined (see CharacterEvents:setup).
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod AnimatedInteractable
 -- @extend JumpingObject
@@ -30,9 +31,7 @@ local AnimatedInteractable = class(JumpingObject, Interactable)
 -- @tparam table instData The character's instance data from field file.
 -- @tparam table save The instance's save data.
 function AnimatedInteractable:init(instData, save)
-  assert(not (save and save.deleted), 'Deleted character.')
-  -- Character data
-  local data = Database.characters[instData.charID]
+  assert(not (save and save.deleted), 'Deleted object.')
   -- Position
   local pos = Vector(0, 0, 0)
   if save then
@@ -41,61 +40,50 @@ function AnimatedInteractable:init(instData, save)
     pos.x, pos.y, pos.z = tile2Pixel(instData.x, instData.y, instData.h)
   end
   -- Object:init
-  JumpingObject.init(self, data, pos)
-  -- Battle info
-  self.id = data.id
+  JumpingObject.init(self, instData, pos)
   self.key = instData.key or ''
-  self.party = instData.party or -1
-  self.battlerID = instData.battlerID or -1
-  if self.battlerID == -1 then
-    self.battlerID = data.battlerID or -1
-  end  
-  self.instData = instData
+  self.name = instData.name or self.key
   self.saveData = save
-  FieldManager.characterList:add(self)
   FieldManager.updateList:add(self)
-  FieldManager.characterList[self.key] = self
   -- Initialize properties
   self.persistent = instData.persistent
-  self:initProperties(instData, data.name, data.tiles, data.collider, save)
-  self:initGraphics(instData, data.animations, data.portraits, data.transform, data.shadowID, save)
+  self:initProperties(instData, save)
+  self:initGraphics(instData, save)
   self:initScripts(instData, save)
   -- Initial position
   self:setPosition(pos)
   self:addToTiles()
 end
---- Sets generic properties.
--- @tparam table instData The info about the character's instance.
--- @tparam string name The name of the character.
--- @tparam table tiles A list of collision tiles.
--- @tparam number colliderHeight Collider's height in height units.
--- @tparam table save The instance's save data.
-function AnimatedInteractable:initProperties(instData, name, tiles, colliderHeight, save)
-  self.name = name
-  self.collisionTiles = tiles
-  self.passable = false
-  self.damageAnim = 'Damage'
-  self.koAnim = 'KO'
+--- Sets generic properties, like collision, speed, and other properties from `JumpingObject:initProperties`.
+-- @tparam table instData The info about the object's instance.
+-- @tparam[opt] table save The instance's save data.
+function AnimatedInteractable:initProperties(instData, save)
+  self.passable = save and save.passable or instData.passable
+  self.collisionTiles = instData.collisionTiles or {{ dx = 0, dy = 0, height = 1 }}
   JumpingObject.initProperties(self)
   self.speed = instData.defaultSpeed / 100 * Config.player.walkSpeed
   if save then
     self.speed = save.speed or (save.defaultSpeed or 100) * Config.player.walkSpeed / 100
   end
 end
---- Overrides `DirectedObject:initGraphics`. Creates the animation sets.
--- @override
-function AnimatedInteractable:initGraphics(instData, animations, portraits, transform, shadowID, save)
+--- Sets shadow, visibility and other graphic properties from `AnimatedObject:initGraphics`.
+-- @tparam table instData The info about the object's instance.
+-- @tparam[opt] table save The instance's save data.
+function AnimatedInteractable:initGraphics(instData, save)
+  local shadowID = save and save.shadowID or instData.shadowID
   if shadowID and shadowID >= 0 then
     local shadowData = Database.animations[shadowID]
     self.shadow = ResourceManager:loadSprite(shadowData, FieldManager.renderer)
   end
-  self.portraits = {}
-  for i = 1, #portraits do
-    self.portraits[portraits[i].name] = portraits[i]
-  end
   local animName = save and save.animName or instData.animation
   local direction = save and save.direction or instData.direction
-  JumpingObject.initGraphics(self, direction, animations, animName, transform, true)
+  local transform = save and save.transform or instData.transform
+  if instData.animations then
+    JumpingObject.initGraphics(self, direction, instData.animations, animName, transform, true)
+  else
+    local animations = {{ name = animName, id = animName }}
+    JumpingObject.initGraphics(self, direction, animations, animName, transform, false)
+  end
   if instData.visible == false then
     self:setVisible(false)
   end
@@ -262,7 +250,7 @@ function AnimatedInteractable:getPersistentData()
 end
 -- For debugging.
 function AnimatedInteractable:__tostring()
-  return 'Character ' .. self.name .. ' (' .. self.key .. ')'
+  return 'AnimatedInteractable ' .. self.name .. ' (' .. self.key .. ')'
 end
 
 return AnimatedInteractable

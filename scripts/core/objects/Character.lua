@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- A `AnimatedInteractable` with general movement/animation methods. 
+--- An instance of a character from `Database`. It may be passable or not, and have an image or not.
 -- The coroutine functions must ONLY be called from a fiber.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod Character
@@ -21,6 +21,54 @@ local max = math.max
 
 -- Class table.
 local Character = class(AnimatedInteractable)
+
+-- ------------------------------------------------------------------------------------------------
+-- Initialization
+-- ------------------------------------------------------------------------------------------------
+
+--- Constructor. Overrides `AnimatecInteractable:init`.
+-- @tparam table instData The character's instance data from field file.
+-- @tparam table save The instance's save data.
+function Character:init(instData, save)
+  -- Character data
+  local charID = save and save.charID or instData.charID
+  local charData = Database.characters[charID]
+  assert(charData, "Character data not found: " .. tostring(charID))
+  -- General properties from character data
+  instData.name = charData.name
+  instData.collisionTiles = charData.tiles
+  instData.animations = charData.animations
+  instData.shadowID = charData.shadowID
+  instData.transform = charData.transform
+  self.id = charData.id
+  self.charData = charData
+  AnimatedInteractable.init(self, instData, save)
+  -- Add to character list
+  FieldManager.characterList:add(self)
+  FieldManager.characterList[self.key] = self
+  -- Battle info
+  self.party = instData.party or -1
+  self.battlerID = instData.battlerID or -1
+  if self.battlerID == -1 then
+    self.battlerID = charData.battlerID or -1
+  end
+end
+--- Overrides `AnimatedInteractable:initGraphics`. Creates the portrait list.
+-- @override
+function Character:initGraphics(instData, save)
+  self.portraits = {}
+  for _, p in ipairs(self.charData.portraits) do
+    self.portraits[p.name] = p
+  end
+  AnimatedInteractable.initGraphics(self, instData, save)
+end
+--- Overrides `AnimatedInteractable:initProperties`. Sets damage/KO animation names.
+-- @override
+function Character:initProperties(instData, save)
+  AnimatedInteractable.initProperties(self, instData, save)
+  self.damageAnim = 'Damage'
+  self.koAnim = 'KO'
+end
 
 -- ------------------------------------------------------------------------------------------------
 -- Animation
@@ -247,6 +295,10 @@ function Character:damage(skill, origin, results)
   else
     self:playKOAnimation()
   end
+end
+-- For debugging.
+function Character:__tostring()
+  return 'Character ' .. self.name .. ' (' .. self.key .. ')'
 end
 
 return Character

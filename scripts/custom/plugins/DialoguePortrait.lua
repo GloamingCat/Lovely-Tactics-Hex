@@ -46,7 +46,7 @@ function DialogueWindow:setPortrait(icon)
     local portrait = ResourceManager:loadIcon(icon, MenuManager.renderer)
     portrait.texture:setFilter('linear', 'linear')
     if char then
-      portrait:applyTransformation(char.data.transform)
+      portrait:applyTransformation(char.transform)
     end
     local ox, oy = portrait.offsetX, portrait.offsetY
     portrait:setOffset(0, 0)
