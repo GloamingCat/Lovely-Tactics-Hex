@@ -231,7 +231,7 @@ function Troop:getLevel()
   for i = 1, #list do
     level = level + list[i].job.level
   end
-  return level / #level
+  return level / #list
 end
 --- Computes the higher level among visible members.
 -- @treturn number

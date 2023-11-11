@@ -261,9 +261,9 @@ function Player:openMenu()
   FieldManager.playerInput = false
   AudioManager:playSFX(Config.sounds.menu)
   FieldManager.hud:hide()
-  self.openMenu = FieldMenu(nil)
-  MenuManager:showMenuForResult(self.openMenu)
-  self.openMenu = nil
+  self.menu = FieldMenu(nil)
+  MenuManager:showMenuForResult(self.menu)
+  self.menu = nil
   FieldManager.hud:show()
   FieldManager.playerInput = true
 end

@@ -19,8 +19,8 @@ local old_loadstring = loadstring
 -- @tparam number time Time in seconds.
 function string.time(time)
   local sec = time % 60
-  local min = (time - sec) / 60
-  local hour = (time - 60 * min - sec) / 60 
+  local min = ((time - sec) / 60) % 60
+  local hour = (time - 60 * min - sec) / 3600
   return string.format("%02d:%02d:%02d", hour, min, sec)
 end
 --- Splits a string in substring by the given separator.

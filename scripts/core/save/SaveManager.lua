@@ -122,6 +122,8 @@ function SaveManager:loadSave(file)
     current = file
   elseif fileInfo('saves/' .. file .. '.json') then
     current = Serializer.load('saves/' .. file .. '.json')
+  elseif fileInfo('saves/' .. file .. '.save') then
+    current = Serializer.load('saves/' .. file .. '.save')
   else
     print('No such save file: ' .. file .. '.json')
     current = self:newSave()

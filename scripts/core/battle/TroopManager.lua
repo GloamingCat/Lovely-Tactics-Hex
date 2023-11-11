@@ -93,9 +93,9 @@ end
 function TroopManager:getRandomTroop(troops, playerTroop)
   local n = 0
   local id = -1
-  local level = playerTroop:getMaxLevel()
+  local level = playerTroop:getLevel()
   for _, t in ipairs(troops) do
-    if level <= t.maxLevel and level >= t.minLevel then
+    if level >= t.minLevel and level < t.maxLevel + 1 then
       n = n + 1
       if rand(n) == 1 then
         id = t.id
