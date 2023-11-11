@@ -82,6 +82,7 @@ function SaveManager:currentSaveData()
   save.playerTroopID = TroopManager.playerTroopID
   save.playerState = copyTable(FieldManager.playerState)
   save.renderer = FieldManager.renderer:getState()
+  save.battleResult = BattleManager.result
   if BattleManager.onBattle then
     save.battleState = BattleManager:getState()
   end
