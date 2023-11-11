@@ -58,9 +58,8 @@ function RewardItemWindow:colCount()
 end
 --- Overrides `ListWindow:cellWidth`. 
 -- @override
-function RewardItemWindow:cellWidth(width)
-  local w = (ScreenManager.width - self.menu:windowMargin() * 3) / 2
-  return self:computeCellWidth(w)
+function RewardItemWindow:cellWidth()
+  return self:computeCellWidth(self.width)
 end
 -- For debugging.
 function RewardItemWindow:__tostring()

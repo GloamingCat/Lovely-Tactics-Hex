@@ -83,6 +83,7 @@ function GameManager:setSave(save)
   TroopManager.playerTroopID = save.playerTroopID
   FieldManager.fieldData = copyTable(save.fields)
   FieldManager.playerState = copyTable(save.playerState)
+  BattleManager.result = save.battleResult
   if save.battleState then
     -- Load mid-battle.
     BattleManager.params = save.battleState.params
