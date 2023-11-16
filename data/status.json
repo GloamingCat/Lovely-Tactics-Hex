@@ -23,9 +23,10 @@
       "drainValue": 0,
       "percentage": true,
       "attributes": [],
+      "bonuses": [],
+      "cancel": [],
       "elements": [],
       "statusDef": [],
-      "cancel": [],
       "name": "Debuff",
       "tags": [],
       "key": ""
@@ -62,9 +63,10 @@
           "drainValue": 10,
           "percentage": true,
           "attributes": [],
+          "bonuses": [],
+          "cancel": [],
           "elements": [],
           "statusDef": [],
-          "cancel": [],
           "name": "Poison",
           "tags": [],
           "key": "poison"
@@ -96,9 +98,10 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
+          "bonuses": [],
+          "cancel": [],
           "elements": [],
           "statusDef": [],
-          "cancel": [],
           "name": "Sleep",
           "tags": [],
           "key": "sleep"
@@ -136,9 +139,10 @@
               "mul": -90
             }
           ],
+          "bonuses": [],
+          "cancel": [],
           "elements": [],
           "statusDef": [],
-          "cancel": [],
           "name": "Blindness",
           "tags": [],
           "key": "blind"
@@ -177,9 +181,10 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
+          "bonuses": [],
+          "cancel": [],
           "elements": [],
           "statusDef": [],
-          "cancel": [],
           "name": "Charm",
           "tags": [
             {
@@ -223,9 +228,10 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
+          "bonuses": [],
+          "cancel": [],
           "elements": [],
           "statusDef": [],
-          "cancel": [],
           "name": "Panic",
           "tags": [],
           "key": "panic"
@@ -263,11 +269,12 @@
               "mul": -50
             }
           ],
-          "elements": [],
-          "statusDef": [],
+          "bonuses": [],
           "cancel": [
             5
           ],
+          "elements": [],
+          "statusDef": [],
           "name": "ATK-",
           "tags": [],
           "key": "atk-"
@@ -305,11 +312,12 @@
               "mul": -50
             }
           ],
-          "elements": [],
-          "statusDef": [],
+          "bonuses": [],
           "cancel": [
             6
           ],
+          "elements": [],
+          "statusDef": [],
           "name": "DEF-",
           "tags": [],
           "key": "def-"
@@ -343,9 +351,10 @@
       "drainValue": 0,
       "percentage": true,
       "attributes": [],
+      "bonuses": [],
+      "cancel": [],
       "elements": [],
       "statusDef": [],
-      "cancel": [],
       "name": "Buff",
       "tags": [],
       "key": ""
@@ -382,9 +391,10 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
+          "bonuses": [],
+          "cancel": [],
           "elements": [],
           "statusDef": [],
-          "cancel": [],
           "name": "Reflect",
           "tags": [
             {
@@ -425,9 +435,10 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
+          "bonuses": [],
+          "cancel": [],
           "elements": [],
           "statusDef": [],
-          "cancel": [],
           "name": "Counter",
           "tags": [
             {
@@ -464,12 +475,21 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
-          "elements": [],
-          "statusDef": [
-            0,
-            1
+          "bonuses": [
+            {
+              "type": 3,
+              "id": 0,
+              "value": 100
+            },
+            {
+              "type": 3,
+              "id": 1,
+              "value": 100
+            }
           ],
           "cancel": [],
+          "elements": [],
+          "statusDef": [],
           "name": "Protect",
           "tags": [],
           "key": "protect"
@@ -507,11 +527,12 @@
               "mul": 50
             }
           ],
-          "elements": [],
-          "statusDef": [],
+          "bonuses": [],
           "cancel": [
             15
           ],
+          "elements": [],
+          "statusDef": [],
           "name": "ATK+",
           "tags": [],
           "key": "atk+"
@@ -549,11 +570,12 @@
               "mul": 50
             }
           ],
-          "elements": [],
-          "statusDef": [],
+          "bonuses": [],
           "cancel": [
             16
           ],
+          "elements": [],
+          "statusDef": [],
           "name": "DEF+",
           "tags": [],
           "key": "def+"
@@ -587,9 +609,10 @@
       "drainValue": 0,
       "percentage": true,
       "attributes": [],
+      "bonuses": [],
+      "cancel": [],
       "elements": [],
       "statusDef": [],
-      "cancel": [],
       "name": "Elements",
       "tags": [],
       "key": ""
@@ -636,7 +659,7 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
-          "elements": [
+          "bonuses": [
             {
               "type": 0,
               "id": 5,
@@ -648,11 +671,12 @@
               "value": 100
             }
           ],
-          "statusDef": [],
           "cancel": [
             10,
             11
           ],
+          "elements": [],
+          "statusDef": [],
           "name": "Fire Elemental",
           "tags": [],
           "key": "fire"
@@ -690,7 +714,7 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
-          "elements": [
+          "bonuses": [
             {
               "type": 0,
               "id": 6,
@@ -702,11 +726,12 @@
               "value": 100
             }
           ],
-          "statusDef": [],
           "cancel": [
             9,
             11
           ],
+          "elements": [],
+          "statusDef": [],
           "name": "Ice Elemental",
           "tags": [],
           "key": "ice"
@@ -744,7 +769,7 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
-          "elements": [
+          "bonuses": [
             {
               "type": 0,
               "id": 7,
@@ -756,11 +781,12 @@
               "value": 100
             }
           ],
-          "statusDef": [],
           "cancel": [
             9,
             10
           ],
+          "elements": [],
+          "statusDef": [],
           "name": "Thunder Elemental",
           "tags": [],
           "key": "thunder"
@@ -792,15 +818,16 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
-          "elements": [
+          "bonuses": [
             {
               "type": 2,
               "id": 5,
               "value": 200
             }
           ],
-          "statusDef": [],
           "cancel": [],
+          "elements": [],
+          "statusDef": [],
           "name": "Fire Amplifier",
           "tags": [],
           "key": "fire+"
@@ -832,15 +859,16 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
-          "elements": [
+          "bonuses": [
             {
               "type": 2,
               "id": 6,
               "value": 200
             }
           ],
-          "statusDef": [],
           "cancel": [],
+          "elements": [],
+          "statusDef": [],
           "name": "Ice Amplifier",
           "tags": [],
           "key": "ice+"
@@ -872,15 +900,16 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
-          "elements": [
+          "bonuses": [
             {
               "type": 2,
               "id": 7,
               "value": 200
             }
           ],
-          "statusDef": [],
           "cancel": [],
+          "elements": [],
+          "statusDef": [],
           "name": "Thunder Amplifier",
           "tags": [],
           "key": "thunder+"
@@ -914,9 +943,10 @@
       "drainValue": 0,
       "percentage": true,
       "attributes": [],
+      "bonuses": [],
+      "cancel": [],
       "elements": [],
       "statusDef": [],
-      "cancel": [],
       "name": "Hidden Properties",
       "tags": [],
       "key": ""
@@ -947,13 +977,26 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
-          "elements": [],
-          "statusDef": [
-            1,
-            18,
-            19
+          "bonuses": [
+            {
+              "type": 3,
+              "id": 1,
+              "value": 100
+            },
+            {
+              "type": 3,
+              "id": 18,
+              "value": 100
+            },
+            {
+              "type": 3,
+              "id": 19,
+              "value": 100
+            }
           ],
           "cancel": [],
+          "elements": [],
+          "statusDef": [],
           "name": "Debuff Immunity",
           "tags": [],
           "key": ""
@@ -985,7 +1028,7 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
-          "elements": [
+          "bonuses": [
             {
               "type": 0,
               "id": 5,
@@ -995,14 +1038,26 @@
               "type": 1,
               "id": 5,
               "value": 100
+            },
+            {
+              "type": 3,
+              "id": 9,
+              "value": 100
+            },
+            {
+              "type": 3,
+              "id": 10,
+              "value": 100
+            },
+            {
+              "type": 3,
+              "id": 11,
+              "value": 100
             }
           ],
-          "statusDef": [
-            9,
-            10,
-            11
-          ],
           "cancel": [],
+          "elements": [],
+          "statusDef": [],
           "name": "Fire Elemental (Hidden)",
           "tags": [],
           "key": ""
@@ -1034,7 +1089,7 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
-          "elements": [
+          "bonuses": [
             {
               "type": 0,
               "id": 6,
@@ -1044,14 +1099,26 @@
               "type": 1,
               "id": 6,
               "value": 100
+            },
+            {
+              "type": 3,
+              "id": 9,
+              "value": 100
+            },
+            {
+              "type": 3,
+              "id": 10,
+              "value": 100
+            },
+            {
+              "type": 3,
+              "id": 11,
+              "value": 100
             }
           ],
-          "statusDef": [
-            9,
-            10,
-            11
-          ],
           "cancel": [],
+          "elements": [],
+          "statusDef": [],
           "name": "Ice Elemental (Hidden)",
           "tags": [],
           "key": ""
@@ -1083,7 +1150,7 @@
           "drainValue": 0,
           "percentage": true,
           "attributes": [],
-          "elements": [
+          "bonuses": [
             {
               "type": 0,
               "id": 7,
@@ -1093,14 +1160,26 @@
               "type": 1,
               "id": 7,
               "value": 100
+            },
+            {
+              "type": 3,
+              "id": 9,
+              "value": 100
+            },
+            {
+              "type": 3,
+              "id": 10,
+              "value": 100
+            },
+            {
+              "type": 3,
+              "id": 11,
+              "value": 100
             }
           ],
-          "statusDef": [
-            9,
-            10,
-            11
-          ],
           "cancel": [],
+          "elements": [],
+          "statusDef": [],
           "name": "Thunder Elemental (Hidden)",
           "tags": [],
           "key": ""

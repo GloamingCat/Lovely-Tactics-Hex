@@ -46,13 +46,13 @@ function Status:init(data, list, caster, state)
     self.attAdd[bonus.key] = (bonus.add or 0) / 100
     self.attMul[bonus.key] = (bonus.mul or 0) / 100
   end
-  -- Element bonus
-  self.elementAtk, self.elementDef, self.elementBuff = self:statusElements(data)
-  -- Status
-  self.statusDef = {}
-  self.statusBuff = {}
-  for _, id in ipairs(data.statusDef) do
-    self.statusDef[id] = 0
+  -- Element and status bonuses
+  self.elementAtk, self.elementDef, self.elementBuff,
+    self.statusDef, self.statusBuff = self:statusBonuses(data)
+  if data.statusDef then
+    for _, id in ipairs(data.statusDef) do
+      self.statusDef[id] = 0
+    end
   end
   -- AI
   if data.behavior and #data.behavior > 0 then
@@ -99,19 +99,24 @@ end
 -- @treturn table Array for attack elements.
 -- @treturn table Array for element immunity.
 -- @treturn table Array for element damage.
-function Status:statusElements(data)
-  local atk, def, buff = {}, {}, {}
-  for i = 1, #data.elements do
-    local b = data.elements[i]
+function Status:statusBonuses(data)
+  local eatk, edef, ebuff, sdef, sbuff = {}, {}, {}, {}, {}
+  local list = data.bonuses or data.elements
+  for i = 1, #list do
+    local b = list[i]
     if b.type == 0 then
-      def[b.id + 1] = b.value / 100 - 1
+      edef[b.id + 1] = b.value / 100 - 1
     elseif b.type == 1 then
-      atk[b.id + 1] = b.value / 100
-    else
-      buff[b.id + 1] = b.value / 100 - 1
+      eatk[b.id + 1] = b.value / 100
+    elseif b.type == 2 then
+      ebuff[b.id + 1] = b.value / 100 - 1
+    elseif b.type == 3 then
+      sdef[b.id] = 1 - b.value / 100
+    elseif b.type == 4 then
+      sbuff[b.id] = b.value / 100 - 1
     end
   end
-  return atk, def, buff
+  return eatk, edef, ebuff, sdef, sbuff
 end
 
 -- ------------------------------------------------------------------------------------------------

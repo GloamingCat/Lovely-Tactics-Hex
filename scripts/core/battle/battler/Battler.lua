@@ -250,7 +250,7 @@ end
 --- Gets the status immunity. This is a multiplicative factor (1 is neutral).
 -- @tparam number id The status ID.
 function Battler:statusDef(id)
-  return self.statusList:statusDef(id)
+  return self.statusList:statusDef(id) * self.equipSet:statusDef(id)
 end
 --- Gets the status cast chance bonus. This is a multiplicative factor (1 is neutral).
 -- @tparam number id The status ID.

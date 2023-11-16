@@ -344,6 +344,26 @@ function EquipSet:elementBuff(id)
   end
   return e
 end
+--- Gets the total status immunity given by the equipment.
+-- @tparam number id The status's ID.
+-- @treturn number Status immunity.
+function EquipSet:statusDef(id)
+  local e = 1
+  for _, slot in pairs(self.bonus) do
+    e = e * (slot.statusDef[id] or 1)
+  end
+  return e
+end
+--- Gets the total element damage bonus given by the equipment.
+-- @tparam number id The element's ID (position in the elements database).
+-- @treturn number Element bonus.
+function EquipSet:statusBuff(id)
+  local e = 1
+  for _, slot in pairs(self.bonus) do
+    e = e * (slot.statusBuff[id] or 1)
+  end
+  return e
+end
 
 -- ------------------------------------------------------------------------------------------------
 -- Equip Bonus
@@ -360,7 +380,8 @@ function EquipSet:updateSlotBonus(key)
   local slot = self.slots[key]
   local data = slot.id >= 0 and Database.items[slot.id]
   bonus.attAdd, bonus.attMul = self:equipAttributes(data)
-  bonus.elementAtk, bonus.elementDef, bonus.elementBuff = self:equipElements(data)
+  bonus.elementAtk, bonus.elementDef, bonus.elementBuff,
+    bonus.statusDef, bonus.statusBuff = self:equipBonuses(data)
 end
 --- Gets the table of equipment attribute bonus.
 -- @tparam table equip Item's equip data.
@@ -382,21 +403,26 @@ end
 -- @treturn table Array for attack elements.
 -- @treturn table Array for element immunity.
 -- @treturn table Array for element damage.
-function EquipSet:equipElements(equip)
-  local atk, def, buff = {}, {}, {}
+function EquipSet:equipBonuses(equip)
+  local eatk, edef, ebuff, sdef, sbuff = {}, {}, {}, {}, {}
   if equip then
-    for i = 1, #equip.elements do
-      local b = equip.elements[i]
+    local list = equip.bonuses or equip.elements
+    for i = 1, #list do
+      local b = list[i]
       if b.type == 0 then
-        def[b.id + 1] = b.value / 100 - 1
+        edef[b.id + 1] = b.value / 100 - 1
       elseif b.type == 1 then
-        atk[b.id + 1] = b.value / 100
-      else
-        buff[b.id + 1] = b.value / 100 - 1
+        eatk[b.id + 1] = b.value / 100
+      elseif b.type == 2 then
+        ebuff[b.id + 1] = b.value / 100 - 1
+      elseif b.type == 3 then
+        sdef[b.id] = 1 - b.value / 100
+      elseif b.type == 4 then
+        sbuff[b.id] = b.value / 100 - 1
       end
     end
   end
-  return atk, def, buff
+  return eatk, edef, ebuff, sdef, sbuff
 end
 
 -- ------------------------------------------------------------------------------------------------
