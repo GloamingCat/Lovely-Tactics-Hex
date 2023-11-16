@@ -23,6 +23,8 @@
       },
       "portraits": [],
       "animations": [],
+      "scripts": [],
+      "repeatCollisions": false,
       "name": "Humans",
       "tags": [],
       "key": ""
@@ -129,6 +131,8 @@
               "id": 57
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Arthur",
           "tags": [],
           "key": "arthur"
@@ -224,6 +228,8 @@
               "id": 63
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Merlin",
           "tags": [],
           "key": "merlin"
@@ -283,6 +289,8 @@
               "id": 54
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Lancelot",
           "tags": [],
           "key": "lancelot"
@@ -316,6 +324,8 @@
       },
       "portraits": [],
       "animations": [],
+      "scripts": [],
+      "repeatCollisions": false,
       "name": "Slime",
       "tags": [],
       "key": ""
@@ -389,6 +399,8 @@
               "id": 161
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Green Slime",
           "tags": [],
           "key": "slime1"
@@ -463,6 +475,8 @@
               "id": 161
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Purple Slime",
           "tags": [],
           "key": "slime2"
@@ -537,6 +551,8 @@
               "id": 161
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Yellow Slime",
           "tags": [],
           "key": "slime3"
@@ -611,6 +627,8 @@
               "id": 161
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Red Slime",
           "tags": [],
           "key": "slime4"
@@ -689,6 +707,8 @@
               "id": 161
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Cyan Slime",
           "tags": [],
           "key": "slime5"
@@ -782,6 +802,8 @@
               "id": 161
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Giant Slime",
           "tags": [],
           "key": "slime6"
@@ -856,6 +878,8 @@
               "id": 161
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Ally Slime",
           "tags": [],
           "key": "slime0"
@@ -900,6 +924,8 @@
           "id": 0
         }
       ],
+      "scripts": [],
+      "repeatCollisions": false,
       "name": "Objects",
       "tags": [],
       "key": ""
@@ -945,6 +971,8 @@
               "id": 32
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Loot",
           "tags": [],
           "key": ""
@@ -989,12 +1017,137 @@
           "id": 0
         }
       ],
+      "scripts": [],
+      "repeatCollisions": false,
       "name": "Test",
       "tags": [],
       "key": ""
     },
     "id": 15,
     "children": [
+      {
+        "data": {
+          "battlerID": 6,
+          "shadowID": 200,
+          "koAnimID": -1,
+          "koFadeout": 45,
+          "tiles": [
+            {
+              "dx": 0,
+              "dy": 0,
+              "height": 1
+            }
+          ],
+          "transform": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetDepth": 0,
+            "scaleX": 100,
+            "scaleY": 100,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 190,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "portraits": [],
+          "animations": [
+            {
+              "name": "Idle",
+              "id": 77
+            },
+            {
+              "name": "Walk",
+              "id": 78
+            },
+            {
+              "name": "Dash",
+              "id": 79
+            },
+            {
+              "name": "Battle:Idle",
+              "id": 77
+            },
+            {
+              "name": "Battle:Dash",
+              "id": 79
+            },
+            {
+              "name": "Battle:Damage",
+              "id": 81
+            },
+            {
+              "name": "Battle:Skill1",
+              "id": 68
+            },
+            {
+              "name": "Battle:KO",
+              "id": 82
+            },
+            {
+              "name": "Sleep:Idle",
+              "id": 161
+            }
+          ],
+          "scripts": [
+            {
+              "global": false,
+              "block": false,
+              "wait": false,
+              "onLoad": true,
+              "onInteract": false,
+              "onCollide": false,
+              "description": "Move Routine",
+              "name": "npc/Stalker.lua",
+              "tags": [],
+              "key": ""
+            },
+            {
+              "global": false,
+              "block": false,
+              "wait": false,
+              "onLoad": true,
+              "onInteract": false,
+              "onCollide": false,
+              "description": "Spawn Verification",
+              "name": "npc/BattleSetup.lua",
+              "tags": [
+                {
+                  "key": "resetPos",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "global": false,
+              "block": true,
+              "wait": true,
+              "onLoad": false,
+              "onInteract": false,
+              "onCollide": true,
+              "description": "Battle on Collision",
+              "name": "npc/Battle.lua",
+              "tags": [
+                {
+                  "key": "fieldID",
+                  "value": "0"
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "repeatCollisions": false,
+          "name": "Field Slime",
+          "tags": [],
+          "key": "slime1"
+        },
+        "id": 10,
+        "children": []
+      },
       {
         "data": {
           "battlerID": 10,
@@ -1083,6 +1236,8 @@
               "id": 63
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Test Guy",
           "tags": [],
           "key": ""
@@ -1153,6 +1308,8 @@
               "id": 161
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Neutral Slime",
           "tags": [],
           "key": "slime7"
@@ -1231,6 +1388,8 @@
               "id": 161
             }
           ],
+          "scripts": [],
+          "repeatCollisions": false,
           "name": "Fire Slime",
           "tags": [],
           "key": "slime8"

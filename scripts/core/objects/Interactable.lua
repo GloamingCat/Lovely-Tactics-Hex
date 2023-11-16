@@ -40,7 +40,7 @@ function Interactable:init(instData, save)
   self.tile.characterList:add(self)
   FieldManager.updateList:add(self)
 end
---- Creates listeners from instance data.
+--- Initializes the script lists from instance data or save data.
 -- @tparam table instData Instance data from field file.
 -- @tparam[opt] table save Persistent data from save file.
 function Interactable:initScripts(instData, save)
@@ -57,23 +57,35 @@ function Interactable:initScripts(instData, save)
     self.loadScripts = {}
     self.collideScripts = {}
     self.interactScripts = {}
-    for _, script in ipairs(instData.scripts) do
-      script = copyTable(script)
-      script.vars = script.vars or {}
-      if script.onLoad then
-        self.loadScripts[#self.loadScripts + 1] = script
-      end
-      if script.onCollide then
-        self.collideScripts[#self.collideScripts + 1] = script
-      end
-      if script.onInteract then
-        self.interactScripts[#self.interactScripts + 1] = script
-      end
-    end
+    self:addScripts(instData.scripts, instData.repeatCollisions)
     self.vars = {}
   end
   self.faceToInteract = false
   self.approachToInteract = true
+end
+--- Creates listeners from instance data.
+-- @tparam table scripts Array of script data.
+-- @tparam[opt] boolean repeatCollisions Flag to call the collision scripts regardless if the
+--  character is already running the collision scripts or not. 
+function  Interactable:addScripts(scripts, repeatCollisions)
+  for _, script in ipairs(scripts) do
+    if script.onLoad then
+      script = copyTable(script)
+      script.vars = script.vars or {}
+      self.loadScripts[#self.loadScripts + 1] = script
+    end
+    if script.onCollide then
+      script = copyTable(script)
+      script.vars = script.vars or {}
+      script.repeatCollisions = repeatCollisions
+      self.collideScripts[#self.collideScripts + 1] = script
+    end
+    if script.onInteract then
+      script = copyTable(script)
+      script.vars = script.vars or {}
+      self.interactScripts[#self.interactScripts + 1] = script
+    end
+  end
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -150,15 +162,27 @@ end
 -- @tparam boolean repeating Whether the script collision scripts of this character are already running.
 -- @treturn boolean Whether the collision script were executed or not.
 function Interactable:onCollide(collided, collider, repeating)
-  if self.deleted or #self.collideScripts == 0 or repeating and not self.repeatCollisions then
+  if self.deleted or #self.collideScripts == 0 then
+    return false
+  end
+  local repeats = false
+  for _, script in ipairs(self.collideScripts) do
+    if script.repeatCollisions then
+      repeats = true
+      break
+    end
+  end
+  if repeating and not repeats then
     return false
   end
   self.collided = collided
   self.collider = collider
   for _, script in ipairs(self.collideScripts) do
-    self:runScript(script)
-    if self.deleted then
-      return true
+    if not repeating or script.repeatCollisions then
+      self:runScript(script)
+      if self.deleted then
+        return true
+      end
     end
   end
   self.collided = nil

@@ -1215,60 +1215,13 @@
       "y": 9,
       "h": 1,
       "party": -1,
-      "charID": 0,
+      "charID": 10,
       "battlerID": -1,
       "animation": "Idle",
       "frame": 1,
       "direction": 225,
       "defaultSpeed": 60,
-      "scripts": [
-        {
-          "global": false,
-          "block": false,
-          "wait": false,
-          "onLoad": true,
-          "onInteract": false,
-          "onCollide": false,
-          "description": "Move Routine",
-          "name": "npc/Stalker.lua",
-          "tags": [],
-          "key": ""
-        },
-        {
-          "global": false,
-          "block": false,
-          "wait": false,
-          "onLoad": true,
-          "onInteract": false,
-          "onCollide": false,
-          "description": "Spawn Verification",
-          "name": "npc/BattleSetup.lua",
-          "tags": [
-            {
-              "key": "resetPos",
-              "value": "true"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "global": false,
-          "block": true,
-          "wait": true,
-          "onLoad": false,
-          "onInteract": false,
-          "onCollide": true,
-          "description": "Battle on Collision",
-          "name": "npc/Battle.lua",
-          "tags": [
-            {
-              "key": "fieldID",
-              "value": "0"
-            }
-          ],
-          "key": ""
-        }
-      ],
+      "scripts": [],
       "repeatCollisions": false
     }
   ],
