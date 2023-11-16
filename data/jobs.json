@@ -1,6 +1,7 @@
 [
   {
     "data": {
+      "expCurve": "lvl * (lvl + 1) * 4",
       "build": [
         "4 * lvl",
         "5 * lvl",
@@ -21,7 +22,7 @@
         "10",
         "0"
       ],
-      "expCurve": "lvl * (lvl + 1) * 4",
+      "attackID": 31,
       "skills": [
         {
           "id": 22,
@@ -44,7 +45,7 @@
           "level": 9
         }
       ],
-      "attackID": 31,
+      "statuses": [],
       "name": "Knight",
       "tags": [
         {
@@ -67,6 +68,7 @@
   },
   {
     "data": {
+      "expCurve": "lvl * (lvl + 1) * 4",
       "build": [
         "3 * lvl",
         "2 * lvl",
@@ -87,7 +89,7 @@
         "10",
         "0"
       ],
-      "expCurve": "lvl * (lvl + 1) * 4",
+      "attackID": 6,
       "skills": [
         {
           "id": 14,
@@ -122,7 +124,7 @@
           "level": 10
         }
       ],
-      "attackID": 6,
+      "statuses": [],
       "name": "Mage",
       "tags": [
         {
@@ -141,6 +143,7 @@
   },
   {
     "data": {
+      "expCurve": "lvl * (lvl + 1) * 4",
       "build": [
         "5 * lvl",
         "4 * lvl",
@@ -161,9 +164,9 @@
         "5",
         "0"
       ],
-      "expCurve": "lvl * (lvl + 1) * 4",
-      "skills": [],
       "attackID": 15,
+      "skills": [],
+      "statuses": [],
       "name": "Slime",
       "tags": [
         {
@@ -178,6 +181,7 @@
   },
   {
     "data": {
+      "expCurve": "0",
       "build": [
         "5 * lvl",
         "3 * lvl",
@@ -198,9 +202,9 @@
         "5",
         "0"
       ],
-      "expCurve": "0",
-      "skills": [],
       "attackID": 6,
+      "skills": [],
+      "statuses": [],
       "name": "Magic Slime",
       "tags": [
         {
@@ -215,6 +219,7 @@
   },
   {
     "data": {
+      "expCurve": "0",
       "build": [
         "5 * lvl",
         "4 * lvl",
@@ -235,9 +240,9 @@
         "5",
         "0"
       ],
-      "expCurve": "0",
-      "skills": [],
       "attackID": 18,
+      "skills": [],
+      "statuses": [],
       "name": "Poison Slime",
       "tags": [
         {
@@ -252,6 +257,7 @@
   },
   {
     "data": {
+      "expCurve": "0",
       "build": [
         "5 * lvl",
         "4 * lvl",
@@ -272,9 +278,9 @@
         "5",
         "0"
       ],
-      "expCurve": "0",
-      "skills": [],
       "attackID": 6,
+      "skills": [],
+      "statuses": [],
       "name": "Giant Slime",
       "tags": [
         {

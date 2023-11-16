@@ -110,7 +110,7 @@ function SkillAction:allTargetsEffect(input, originTile)
       popText:addLine('+' .. tostring(maxGain) .. ' ' .. Vocab.exp, 'popup_exp', 'popup_exp')
       wait = popText:popUp()
     end
-    input.user.battler.job:addExperience(maxGain)
+    input.user.battler.job:addExperience(maxGain, input.user)
     if nextLevel then
       _G.Fiber:wait(wait)
       local popText = PopText(pos.x, pos.y - 10, FieldManager.renderer)
@@ -153,7 +153,7 @@ function SkillAction:menuTargetsEffect(input, targets)
         AudioManager:playSFX(Config.sounds.levelup)
       end
     end
-    input.user.job:addExperience(maxGain)
+    input.user.job:addExperience(maxGain, input.user)
     if popText then
       popText:popUp()
     end

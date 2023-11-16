@@ -36,6 +36,8 @@ function Job:init(battler, save)
   self.attackSkill = SkillAction:fromData(jobData.attackID)
   self.allSkills = List(jobData.skills)
   self.allSkills:sort(function(a, b) return a.level < b.level end)
+  self.allStatuses = List(jobData.statuses)
+  self.allStatuses:sort(function(a, b) return a.level < b.level end)
   if save then
     self.level = save.level
     self.exp = save.exp
@@ -53,14 +55,16 @@ end
 
 --- Increments experience and learns skill if leveled up.
 -- @tparam number exp The quantity of EXP to be added.
-function Job:addExperience(exp)
+-- @param[opt] Character character The current battle character of the battler.
+function Job:addExperience(exp, character)
   if self.level == Config.battle.maxLevel then
     return
   end
   self.exp = self.exp + exp
   while self.exp >= self.expCurve(self.level + 1) do
     self.level = self.level + 1
-    self:learnSkills(self.level)
+    self:learnSkills()
+    self:applyStatuses(character)
     if self.level == Config.battle.maxLevel then
       self.exp = self.expCurve(self.level)
       return
@@ -73,6 +77,16 @@ function Job:learnSkills()
     local skill = self.allSkills[i]
     if self.level >= skill.level then
       self.skillList:learn(skill.id)
+    end
+  end
+end
+--- Apply all statuses up to current level.
+-- @param[opt] Character character The current battle character of the battler.
+function Job:applyStatuses(character)
+  for i = 1, #self.allStatuses do
+    local status = self.allStatuses[i]
+    if self.level >= status.level then
+      self.statusList:addStatus(status.id, character)
     end
   end
 end
