@@ -67,7 +67,7 @@ end
 -- @tparam table scripts Array of script data.
 -- @tparam[opt] boolean repeatCollisions Flag to call the collision scripts regardless if the
 --  character is already running the collision scripts or not. 
-function  Interactable:addScripts(scripts, repeatCollisions)
+function Interactable:addScripts(scripts, repeatCollisions)
   for _, script in ipairs(scripts) do
     if script.onLoad then
       script = copyTable(script)
@@ -165,15 +165,17 @@ function Interactable:onCollide(collided, collider, repeating)
   if self.deleted or #self.collideScripts == 0 then
     return false
   end
-  local repeats = false
-  for _, script in ipairs(self.collideScripts) do
-    if script.repeatCollisions then
-      repeats = true
-      break
+  if repeating then
+    local skip = true
+    for _, script in ipairs(self.collideScripts) do
+      if script.repeatCollisions then
+        skip = false
+        break
+      end
     end
-  end
-  if repeating and not repeats then
-    return false
+    if not skip then
+      return false
+    end
   end
   self.collided = collided
   self.collider = collider

@@ -22,8 +22,8 @@ return function(script)
   local pauseVar = tonumber(script.args.pauseVar) or 0
   while true do
     if not FieldManager.player:isBusy() and FieldManager.playerInput then
-      if script.char.cooldown and script.char.cooldown > 0 then
-        script.char.cooldown = script.char.cooldown - GameManager:frameTime() * 60
+      if script.char.vars.cooldown and script.char.vars.cooldown > 0 then
+        script.char.vars.cooldown = script.char.vars.cooldown - GameManager:frameTime() * 60
       else
         if script.char:tryPathMovement(FieldManager.player:getTile(), vision) and script.char:consumePath() then
           script.char:playIdleAnimation()

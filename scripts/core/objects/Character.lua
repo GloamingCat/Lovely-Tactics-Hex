@@ -43,7 +43,9 @@ function Character:init(instData, save)
   self.id = charData.id
   self.charData = charData
   AnimatedInteractable.init(self, instData, save)
-  self:addScripts(charData.scripts, charData.repeatCollisions)
+  if not save then
+    self:addScripts(charData.scripts, charData.repeatCollisions)
+  end
   -- Add to character list
   FieldManager.characterList:add(self)
   FieldManager.characterList[self.key] = self

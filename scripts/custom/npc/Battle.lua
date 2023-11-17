@@ -18,9 +18,12 @@
 
 return function(script)
 
+  local fade = script.args.fade or 60
+  local lastBattleTime = GameManager.frame - (GameManager.vars.lastBattle or -fade)
+
   -- Event 1: start battle
   script:addEvent(function()
-    if FieldManager.playerInput and script:collidedWith('player') then
+    if FieldManager.playerInput and script:collidedWith('player') and lastBattleTime > fade then
       FieldManager.player:playIdleAnimation()
       script:turnCharTile { key = 'self', other = 'player' }
       script:turnCharTile { key = 'player', other = 'self' }
@@ -31,22 +34,23 @@ return function(script)
         disableEscape = false,
         gameOverCondition = script.args.gameOverCondition or 'survive',
         fieldID = script.args.fieldID or 0,
-        fade = 60
+        fade = fade
       }
     else
-      script:skip(1)
+      script:skipEvents(1)
     end
   end)
 
   -- Event 2: aftermath
   script:addEvent(function()
+    GameManager.vars.lastBattle = GameManager.frame
     local escaped = BattleManager:playerEscaped()
     if escaped then
-      script.char.cooldown = script.args.cooldown or 180
+      script.char.vars.cooldown = script.args.cooldown or 180
     else
       script:hideChar { deactivate = script.args.deactivate, key = 'self' }
     end
-    script:finishBattle { fade = 60, wait = true }
+    script:finishBattle { fade = fade, wait = true }
     print(script.battleLog)
     if not escaped then
       script.char.vars.defeated = true
