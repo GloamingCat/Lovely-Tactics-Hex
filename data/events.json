@@ -195,5 +195,241 @@
     },
     "id": 0,
     "children": []
+  },
+  {
+    "data": {
+      "events": [
+        {
+          "condition": "",
+          "name": "print(script.char.vars.cooldown)",
+          "tags": [],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "script.vars.deltaBattleTime = GameManager.frame - (GameManager.vars.lastBattleTime or -60)",
+          "tags": [],
+          "key": ""
+        },
+        {
+          "condition": "not FieldManager.playerInput or not script:collidedWith('player') or script.vars.deltaBattleTime <= 60",
+          "name": "jumpTo",
+          "tags": [
+            {
+              "key": "name",
+              "value": "\"end\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "FieldManager.player:playIdleAnimation()",
+          "tags": [],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "turnCharTile",
+          "tags": [
+            {
+              "key": "key",
+              "value": "\"player\""
+            },
+            {
+              "key": "other",
+              "value": "\"self\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "turnCharTile",
+          "tags": [
+            {
+              "key": "key",
+              "value": "\"self\""
+            },
+            {
+              "key": "other",
+              "value": "\"player\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "script.char.collided ~= \"player\"",
+          "name": "showEmotionBalloon",
+          "tags": [
+            {
+              "key": "key",
+              "value": "\"self\""
+            },
+            {
+              "key": "emotion",
+              "value": "\"!\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "script.char.collided == \"player\"",
+          "name": "showEmotionBalloon",
+          "tags": [
+            {
+              "key": "key",
+              "value": "\"player\""
+            },
+            {
+              "key": "emotion",
+              "value": "\"!\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "wait",
+          "tags": [
+            {
+              "key": "time",
+              "value": "30"
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "startBattle",
+          "tags": [
+            {
+              "key": "skipIntro",
+              "value": "false"
+            },
+            {
+              "key": "disableEscape",
+              "value": "false"
+            },
+            {
+              "key": "gameOverCondition",
+              "value": "\"survive\""
+            },
+            {
+              "key": "fieldID",
+              "value": "0"
+            },
+            {
+              "key": "fade",
+              "value": "60"
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "GameManager.vars.lastBattleTime = GameManager.frame",
+          "tags": [],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "script.vars.escaped = BattleManager:playerEscaped()",
+          "tags": [],
+          "key": ""
+        },
+        {
+          "condition": "script.vars.escaped",
+          "name": "script.char.vars.cooldown = 180",
+          "tags": [],
+          "key": ""
+        },
+        {
+          "condition": "not script.vars.escaped",
+          "name": "hideChar",
+          "tags": [
+            {
+              "key": "key",
+              "value": "\"self\""
+            },
+            {
+              "key": "deactivate",
+              "value": "false"
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "finishBattle",
+          "tags": [
+            {
+              "key": "fade",
+              "value": "60"
+            },
+            {
+              "key": "wait",
+              "value": "true"
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "print(script.battleLog)",
+          "tags": [],
+          "key": ""
+        },
+        {
+          "condition": "script.vars.escaped",
+          "name": "jumpTo",
+          "tags": [
+            {
+              "key": "name",
+              "value": "\"end\""
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "script.char.vars.defeated = true",
+          "tags": [],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "deleteChar",
+          "tags": [
+            {
+              "key": "key",
+              "value": "\"self\""
+            },
+            {
+              "key": "permanent",
+              "value": "false"
+            }
+          ],
+          "key": ""
+        },
+        {
+          "condition": "",
+          "name": "setLabel",
+          "tags": [
+            {
+              "key": "name",
+              "value": "\"end\""
+            }
+          ],
+          "key": ""
+        }
+      ],
+      "description": "Starts a battle encounter.",
+      "name": "Battle",
+      "tags": [],
+      "key": "Battle"
+    },
+    "id": 1,
+    "children": []
   }
 ]

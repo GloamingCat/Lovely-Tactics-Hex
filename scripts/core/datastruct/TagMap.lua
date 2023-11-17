@@ -81,7 +81,10 @@ function TagMap:addAll(tags)
     end
     local value = Serializer.decode(str)
     if value == nil then
-      value = str
+      if value[1] == '{' and value[2] == '%' then
+        value = GameManager.vars[value:sub(3, -2)]
+      end
+      value = value or str
     end
     arr[#arr + 1] = value
     self[name] = self[name] or value

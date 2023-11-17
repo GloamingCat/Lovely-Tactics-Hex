@@ -1130,8 +1130,12 @@
               "onInteract": false,
               "onCollide": true,
               "description": "Battle on Collision",
-              "name": "npc/Battle.lua",
+              "name": "EventSheet.lua",
               "tags": [
+                {
+                  "key": "sheet",
+                  "value": "\"Battle\""
+                },
                 {
                   "key": "fieldID",
                   "value": "0"

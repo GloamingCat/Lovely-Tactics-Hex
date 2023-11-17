@@ -29,6 +29,8 @@ return function (script)
         args = args.index
       elseif e.name == 'jumpTo' then
         args = args.name
+      elseif e.name == 'wait' then
+        args = args.time
       end
       script:addEvent(e.name, condition or nil, args)
     end
