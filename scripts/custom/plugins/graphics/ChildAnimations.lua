@@ -26,6 +26,7 @@ local Animation_destroy = Animation.destroy
 local Animation_reset = Animation.reset
 local Animation_setOneshot = Animation.setOneshot
 local Animation_setXYZ = Animation.setXYZ
+local Animation_isVisible = Animation.isVisible
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -50,12 +51,27 @@ end
 -- is created from the it data in the database.
 -- @tparam string|number|Animation anim The animation to be added, or its ID or key.
 function Animation:addChild(anim)
+  if anim.parent then
+    anim.parent:removeChilnd(anim)
+  end
+  anim.parent = self
   self.children = self.children or List()
   if type(anim) == 'number' or type(anim) == 'string' then
     anim = ResourceManager:loadAnimation(Database.animations[anim], self.sprite.renderer)
   end
   anim:setXYZ(self.sprite.position:coordinates())
   self.children:add(anim)
+end
+--- Remove an animation from the children list.
+-- @param Animation anim The animation to be removed.
+-- @ret boolean Whether `anim` was actually a child of this animation or not.
+function Animation:removeChild(anim)
+  if self.children and self.children:removeElement(anim) then
+    anim.parent = nil
+    return true
+  else
+    return false
+  end
 end
 --- Rewrites `Animation:callEvents`.
 -- @rewrite
@@ -101,6 +117,9 @@ function Animation:destroy()
       self.children[i]:destroy()
     end
   end
+  if self.parent then
+    self.parent:removeChild(self)
+  end
 end
 --- Rewrites `Animation:reset`.
 -- @rewrite
@@ -136,4 +155,14 @@ function Animation:setXYZ(...)
       self.children[i]:setXYZ(...)
     end
   end
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Visibility
+-- ------------------------------------------------------------------------------------------------
+
+--- Rewrites `Animation:isVisible`. Returns false if parent is invisible.
+-- @rewrite
+function Animation:isVisible()
+  return Animation_isVisible(self) and (self.parent == nil or self.parent:isVisible())
 end

@@ -273,7 +273,8 @@ end
 -- Visibility
 -- ------------------------------------------------------------------------------------------------
 
---- Sets the sprite's visibility.
+--- Sets animation's visibility. If a sprite is present, sets the sprite's visibility. Otherwise,
+-- does nothing.
 -- @tparam boolean value
 function Animation:setVisible(value)
   if self.sprite then
@@ -282,14 +283,19 @@ function Animation:setVisible(value)
 end
 --- Sets this animation as visible.
 function Animation:show()
-  if self.sprite then
-    self.sprite:setVisible(true)
-  end
+  self:setVisible(true)
 end
 --- Sets this animation as invisible.
 function Animation:hide()
+  self:setVisible(false)
+end
+--- Tells if the animation is visible. If it does not have a sprite, returns true by default.
+-- @ret boolean `sprite:isVisible` is a sprite is present, true otherwise.
+function Animation:isVisible()
   if self.sprite then
-    self.sprite:setVisible(false)
+    return self.sprite:isVisible()
+  else
+    return true
   end
 end
 
