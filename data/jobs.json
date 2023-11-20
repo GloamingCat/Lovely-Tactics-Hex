@@ -45,7 +45,12 @@
           "level": 9
         }
       ],
-      "statuses": [],
+      "statuses": [
+        {
+          "id": 7,
+          "level": 5
+        }
+      ],
       "name": "Knight",
       "tags": [
         {
