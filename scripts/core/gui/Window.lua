@@ -41,7 +41,6 @@ function Window:init(menu, width, height, position)
     self.background = SpriteGrid(self:getBG())
     self.frame = SpriteGrid(self:getFrame())
   end
-  self.offsetDepth = 3
   self.width = width
   self.height = height
   self.active = false
@@ -53,6 +52,7 @@ function Window:init(menu, width, height, position)
 end
 --- Sets general properties.
 function Window:setProperties()
+  self.offsetDepth = 3
   self.noSkin = false
   self.maxTouchHoldTime = 1
   self.speed = 10

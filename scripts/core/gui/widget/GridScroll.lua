@@ -23,10 +23,14 @@ local GridScroll = class(Component)
 --- Constructor.
 -- @tparam GridWindow window Parent window.
 function GridScroll:init(window)
-  self.margin = 12
   Component.init(self, nil, window)
   window.content:add(self)
   self:setVisible(false)
+end
+--- Implements `Component:setProperties`.
+-- @implement
+function GridScroll:setProperties()
+  self.margin = 12
 end
 --- Creates the scroll arrows, one for each direction.
 function GridScroll:createContent(window)
@@ -36,12 +40,8 @@ function GridScroll:createContent(window)
   local h = self.window.height / 2 - self.window:paddingY()
   local pos = { Vector(w, 0, 0), Vector(0, h, 0), 
                 Vector(0, -h, 0), Vector(-w, 0, 0) }
-  local icon = {id = Config.animations.arrow}
   for i = 1, 4 do
-    icon.col = (i - 1) % 2
-    icon.row = (i - 1 - icon.col) / 2
-    local sprite = ResourceManager:loadIcon(icon, MenuManager.renderer)
-    self.arrows[i] = ImageComponent(sprite, pos[i])
+    self.arrows[i] = self:createArrow(i, pos[i])
     self.arrows[i].dx = 0
     self.arrows[i].dy = 0
     self.content:add(self.arrows[i])
@@ -54,6 +54,16 @@ function GridScroll:createContent(window)
   self.up.dy = -1
   self.left = self.arrows[4]
   self.left.dx = -1
+end
+--- Creates a component for an arrow.
+-- @tparam number i Arrow index.
+-- @tparam Vector pos Component's position.
+function GridScroll:createArrow(i, pos)
+  local icon = {id = Config.animations.arrow}
+  icon.col = (i - 1) % 2
+  icon.row = (i - 1 - icon.col) / 2
+  local sprite = ResourceManager:loadIcon(icon, MenuManager.renderer)
+  return ImageComponent(sprite, pos)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -128,6 +138,7 @@ function GridScroll:onClick(px, py)
       local x1, y1, x2, y2 = self.arrows[i].sprite:getBoundingBox()
       if px >= x1 and px <= x2 and py >= y1 and py <= y2 then
         self.window:nextPage(self.arrows[i].dx)
+        self:setVisible(self.visible)
         return true
       end
     end

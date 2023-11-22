@@ -32,6 +32,8 @@ function GridWindow:setProperties()
   self.loopHorizontal = true
   self.tooltipTerm = nil
   self.fixedTooltip = false
+  self.noHighlight = false
+  self.noCursor = false
 end
 --- Overrides `Window:createContent`. 
 -- @override

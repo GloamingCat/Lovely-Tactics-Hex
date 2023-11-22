@@ -34,14 +34,21 @@ function Gauge:init(topLeft, width, color, x)
   end
   Component.init(self, topLeft, width, color)
 end
+--- Implements `Component:setProperties`.
+-- @impleent
+function Gauge:setProperties()
+  self.barHeight = 6
+  self.barY = 3
+  self.alignment = 'right'
+  self.percentage = false
+end
 --- Overrides `Component:createContent`. 
 -- @override
 function Gauge:createContent(width, color)
   self.width = width
-  self.bar = Bar(Vector(0, 3, 1), width, 6, 1)
+  self.bar = Bar(Vector(0, self.barY, 1), width, self.barHeight, 1)
   self.bar:setColor(color)
-  self.text = TextComponent('', Vector(0, 0, 0), width, 'right', Fonts.menu_tiny)
-  self.percentage = false
+  self.text = TextComponent('', Vector(0, 0, 0), width, self.alignment, Fonts.menu_tiny)
   self.content:add(self.text)
   self.content:add(self.bar)
 end

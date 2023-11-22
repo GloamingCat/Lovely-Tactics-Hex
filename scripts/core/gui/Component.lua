@@ -25,7 +25,12 @@ function Component:init(position, ...)
   self.visible = true
   self.content = List()
   self.position = position or Vector(0, 0, 0)
+  self:setProperties()
   self:createContent(...)
+end
+--- Sets general properties.
+function Component:setProperties(...)
+  -- Abstract.
 end
 --- Creates child content.
 function Component:createContent(...)

@@ -24,10 +24,15 @@ local Dialogue = class(TextComponent)
 -- @override
 function Dialogue:init(...)
   TextComponent.init(self, ...)
-  self.sprite.wrap = true
+  self.sprite.wrap = self.wrap
+end
+--- Implements `Component:setProperties`.
+-- @implement
+function Dialogue:setProperties()
   self.soundFrequence = 4
   self.textSpeed = 40
   self.textSound = Config.sounds.text
+  self.wrap = true
 end
 
 -- ------------------------------------------------------------------------------------------------

@@ -24,11 +24,19 @@ local SaveInfo = class(Component)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `Component:createContent`. 
--- @override
+--- Implements `Component:setProperties`. 
+-- @implement
+function SaveInfo:setProperties()
+  self.paddingX = 2
+  self.paddingY = 3
+  self.iconSize = 20
+  self.lineHeight = 10
+  self.iconBorder = 2
+end
+--- Implements `Component:createContent`. 
+-- @implement
 function SaveInfo:createContent(w, h)
-  local margin = 4
-  local x, y, z = 2, 0, -2
+  local x, y, z = self.paddingX, 0, -2
   local small = Fonts.menu_small
   local tiny = Fonts.menu_tiny
   local medium = Fonts.medium
@@ -39,21 +47,22 @@ function SaveInfo:createContent(w, h)
   txtName.sprite.maxHeight = h
   self.content:add(txtName)
   -- PlayTime
-  local topRight = Vector(x, y + 3, z)
-  local txtTime = TextComponent('', topRight, w, 'right', small)
+  local top = Vector(x, y + self.paddingY, z)
+  local txtTime = TextComponent('', top, w, 'right', small)
   self.content:add(txtTime)
   -- Gold
-  local middleLeft = Vector(x, y + 13, z)
-  local txtGold = TextComponent('', middleLeft, w , 'right', small)
+  local middle = Vector(x, top.y + self.lineHeight, z)
+  local txtGold = TextComponent('', middle, w , 'right', small)
   self.content:add(txtGold)
   -- Location
-  local bottomLeft = Vector(middleLeft.x, middleLeft.y + 10, middleLeft.z)
-  local txtLocal = TextComponent('', bottomLeft, w, 'left', small)
+  local bottom = Vector(x, middle.y + self.lineHeight, middle.z)
+  local txtLocal = TextComponent('', bottom, w, 'left', small)
   self.content:add(txtLocal)
   -- Chars
-  local iconList = IconList(Vector(x + 10, y + 12), w, 20, 20, 20)
-  iconList.iconWidth = 18
-  iconList.iconHeight = 18
+  local iconPos = Vector(x + self.iconSize / 2, y + self.iconSize / 2 + self.paddingX, z)
+  local iconList = IconList(iconPos, w, self.iconSize, self.iconSize, self.iconSize)
+  iconList.iconWidth = self.iconSize - self.iconBorder
+  iconList.iconHeight = self.iconSize - self.iconBorder
   self.content:add(iconList)
 end
 

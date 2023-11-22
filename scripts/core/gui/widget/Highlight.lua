@@ -30,11 +30,11 @@ local Highlight = class(Component, Transformable)
 --  window parent is nil, otherwise the position is calculated from `window`.
 function Highlight:init(window, width, height, pos)
   if window then
-    local mx = window:colMargin() / 2 + 6
-    local my = window:rowMargin() / 2 + 4
-    width = width or window:cellWidth() + mx
-    height = height or window:cellHeight() + my
-    self.displacement = Vector(width / 2 - mx / 2, height / 2 - my / 2, 2)
+    local mx = window:colMargin() / 4 + self:paddingX()
+    local my = window:rowMargin() / 4 + self:paddingY()
+    width = width or window:cellWidth() + mx * 2
+    height = height or window:cellHeight() + my * 2
+    self.displacement = Vector(width / 2 - mx, height / 2 - my, 2)
     self.window = window
     window.content:add(self)
   else
@@ -50,10 +50,25 @@ function Highlight:createContent(width, height)
   self.spriteGrid:createGrid(MenuManager.renderer, width, height)
   self.spriteGrid:updateTransform(self)
 end
+
+-- ------------------------------------------------------------------------------------------------
+-- Properties
+-- ------------------------------------------------------------------------------------------------
+
 --- Window's skin.
 -- @treturn table Animation data.
 function Highlight:getSkin()
   return Database.animations[Config.animations.highlight]
+end
+--- Distance between the highlight border and the neighbor column.
+-- @treturn number Padding in pixels.
+function Highlight:paddingX()
+  return 3
+end
+--- Distance between the highlight border and the neighbor row.
+-- @treturn number Padding in pixels.
+function Highlight:paddingY()
+  return 2
 end
 
 -- ------------------------------------------------------------------------------------------------

@@ -30,16 +30,23 @@ local Bar = class(Component)
 -- @tparam number value Initial width of the bar (multiplier of frame width).
 function Bar:init(topLeft, width, height, value)
   Component.init(self, topLeft, width, height)
-  self.width = width - self:padding() * 2
-  self.height = height - self:padding() * 2
+  self.width = width - self.margin * 2
+  self.height = height - self.margin * 2
   self:setValue(value or 1)
+end
+--- Implements `Component:setProperties`.
+-- @implement
+function Bar:setProperties()
+  self.frameAnim = Database.animations[Config.animations.gaugeFrame]
+  self.barAnim = Database.animations[Config.animations.gaugeBar]
+  self.margin = 1
 end
 --- Overrides `Component:createContent`. 
 -- @override
 function Bar:createContent(width, height)
-  self.frame = SpriteGrid(self:getFrame())
+  self.frame = SpriteGrid(self.frameAnim)
   self.frame:createGrid(MenuManager.renderer, width, height)
-  self.bar = ResourceManager:loadAnimation(self:getBar(), MenuManager.renderer)
+  self.bar = ResourceManager:loadAnimation(self.barAnim, MenuManager.renderer)
   self.bar.sprite.texture:setFilter('linear', 'linear')
   local x, y, w, h = self.bar.sprite:getQuadBox()
   self.quadWidth, self.quadHeight = w, h
@@ -60,8 +67,9 @@ end
 --- Overrides `Component:updatePosition`. 
 -- @override
 function Bar:updatePosition(pos)
-  local x = round(pos.x + self.position.x + self:padding())
-  local y = round(pos.y + self.position.y + self:padding())
+  Component.updatePosition(self, pos)
+  local x = round(pos.x + self.position.x + self.margin)
+  local y = round(pos.y + self.position.y + self.margin)
   local z = pos.z + self.position.z
   self.bar.sprite:setXYZ(x, y, z)
   self.frame:setXYZ(x + self.width / 2, y + self.height / 2, z + 1)
@@ -69,39 +77,33 @@ end
 --- Overrides `Component:update`. 
 -- @override
 function Bar:update(dt)
+  Component.update(self, dt)
   self.bar:update(dt)
   self.frame:update(dt)
 end
 --- Overrides `Component:setVisible`. 
 -- @override
 function Bar:setVisible(value)
+  Component.setVisible(self, value)
   self.bar.sprite:setVisible(value)
   self.frame:setVisible(value)
 end
+--- Overrides `Component:destroy`.
+-- @override
+function Bar:destroy()
+  Component.destroy(self)
+  self.bar:destroy()
+  self.frame:destroy()
+end
 
 -- ------------------------------------------------------------------------------------------------
--- Graphics
+-- Color
 -- ------------------------------------------------------------------------------------------------
 
 --- Sets the color of the bar.
 -- @tparam Color.RGBA color New color.
 function Bar:setColor(color)
   self.bar.sprite:setColor(color)
-end
---- The frame padding.
--- @treturn number
-function Bar:padding()
-  return 1
-end
---- The frame spritesheet from Database.
--- @treturn table
-function Bar:getFrame()
-  return Database.animations[Config.animations.gaugeFrame]
-end
---- The bar spritesheet from Database.
--- @treturn table
-function Bar:getBar()
-  return Database.animations[Config.animations.gaugeBar]
 end
 
 return Bar

@@ -53,16 +53,15 @@ end
 -- is created from the it data in the database.
 -- @tparam string|number|Animation anim The animation to be added, or its ID or key.
 function Animation:addChild(anim)
-  if anim.parent then
+  if type(anim) == 'number' or type(anim) == 'string' then
+    anim = ResourceManager:loadAnimation(Database.animations[anim], self.sprite.renderer)
+  elseif anim.parent then
     anim.parent:removeChild(anim)
   end
   anim.parent = self
-  if type(anim) == 'number' or type(anim) == 'string' then
-    anim = ResourceManager:loadAnimation(Database.animations[anim], self.sprite.renderer)
-  end
   self.children = self.children or List()
   self.children:add(anim)
-  if self.sprite then
+  if self.sprite and anim.sprite then
     self.sprite.children = self.sprite.children or List()
     self.sprite.children:add(anim.sprite)
     anim.sprite.parent = self.sprite

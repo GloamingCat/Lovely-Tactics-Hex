@@ -34,19 +34,25 @@ function IconList:init(topLeft, width, height, frameWidth, frameHeight)
   self.frames = {}
   self.width = width
   self.height = height
-  self.frameWidth = frameWidth or 16
-  self.frameHeight = frameHeight or 16
+  self.frameWidth = frameWidth or self.defaultFrameWidth
+  self.frameHeight = frameHeight or self.defaultFrameHeight
   self.iconWidth = self.frameWidth
   self.iconHeight = self.frameHeight
-  self.frameID = Config.animations.frame
   self.visible = true
   self:setVisible(false)
+end
+--- Implements `Component:setProperties`.
+-- @implement
+function IconList:setProperties()
+  self.defaultFrameWidth = 16
+  self.defaultFrameHeight = 16
+  self.frameId = Config.animations.frame
 end
 --- Sets the content of this list.
 -- @tparam table icons Array of sprites.
 function IconList:setSprites(icons)
   self:destroy()
-  local frameSkin = self.frameID >= 0 and Database.animations[self.frameID]
+  local frameSkin = self.frameId >= 0 and Database.animations[self.frameId]
   self.icons = {}
   self.frames = frameSkin and {}
   if not icons then

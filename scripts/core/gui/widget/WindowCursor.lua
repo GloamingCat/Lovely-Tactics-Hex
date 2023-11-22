@@ -27,13 +27,17 @@ function WindowCursor:init(window)
   Component.init(self, Vector(0, window:cellHeight() / 2))
   window.content:add(self)
 end
+--- Implements `Component:setProperties`.
+-- @implement
+function WindowCursor:setProperties()
+  self.hideOnDeactive = true
+end
 --- Overrides `Component:createContent`. Creates cursor sprite.
 -- @override
 function WindowCursor:createContent()
   self.anim = ResourceManager:loadAnimation(Config.animations.cursor, MenuManager.renderer)
   self.anim.sprite:setTransformation(self.anim.data.transform)
   self.anim.sprite:setVisible(false)
-  self.hideOnDeactive = true
   local x, y, w, h = self.anim.sprite.quad:getViewport()
   self.position.x = -w / 2
   self.content:add(self.anim)

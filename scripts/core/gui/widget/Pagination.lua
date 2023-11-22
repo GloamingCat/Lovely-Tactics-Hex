@@ -29,10 +29,30 @@ function Pagination:init(window, halign, valign)
   if valign == 'top' then
     pos.y = -window.height / 2 + window:paddingY()
   else
-    pos.y = window.height / 2 - window:paddingY() - 6
+    pos.y = window.height / 2 - window:paddingY() - self:getHeight()
   end
-  TextComponent.init(self, '', pos, window.width - window:paddingX() * 2, halign, Fonts.menu_tiny)
+  TextComponent.init(self, '', pos, window.width - window:paddingX() * 2, halign, self:getFont())
 end
+
+-- ------------------------------------------------------------------------------------------------
+-- Properties
+-- ------------------------------------------------------------------------------------------------
+
+--- Font of the page number.
+-- @treturn Font.Info Font from `Fonts` table.
+function Pagination:getFont()
+  return Fonts.menu_tiny
+end
+--- The height of the component.
+-- @treturn number Height in pixels.
+function Pagination:getHeight()
+  return 6
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Page
+-- ------------------------------------------------------------------------------------------------
+
 --- Sets the current page and the total number of pages and updates the text accordingly.
 -- @tparam number current Current page.
 -- @tparam number max Total number of pages.

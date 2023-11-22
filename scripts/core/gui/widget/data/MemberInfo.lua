@@ -32,9 +32,17 @@ local MemberInfo = class(Component)
 -- @tparam number height Height of the container.
 -- @tparam Vector topLeft The position of the top left corner of the container.
 function MemberInfo:init(battler, width, height, topLeft)
-  self.margin = 4
   Component.init(self, topLeft, width, height, battler)
   self.battler = battler
+end
+--- Implements `Component:setProperties`.
+-- @implement
+function MemberInfo:setProperties()
+  self.margin = 4
+  self.nameHeight = 17
+  self.barHeight = 11
+  self.statusMargin = 8
+  self.statusHeight = 20
 end
 --- Overrides `Component:createContent`. 
 -- @override
@@ -54,7 +62,7 @@ function MemberInfo:createContent(w, h, battler)
     w = w - iconW - self.margin
     self.content:add(self.icon)
   end
-  local rw = (w - self.margin) / 2
+  local rw = w / 2 - self.margin
   local small = Fonts.menu_small
   local tiny = Fonts.menu_tiny
   local medium = Fonts.menu_medium
@@ -64,13 +72,13 @@ function MemberInfo:createContent(w, h, battler)
   txtName:redraw()
   self.content:add(txtName)
   -- HP
-  local middleLeft = Vector(topLeft.x, topLeft.y + 17, topLeft.z)
+  local middleLeft = Vector(topLeft.x, topLeft.y + self.nameHeight, topLeft.z)
   local txtHP = TextComponent(Vocab.hp, middleLeft, rw, 'left', small)
   txtHP:setTerm('hp', '') 
   txtHP:redraw()
   self.content:add(txtHP)
   -- SP
-  local bottomLeft = Vector(middleLeft.x, middleLeft.y + 11, middleLeft.z)
+  local bottomLeft = Vector(middleLeft.x, middleLeft.y + self.barHeight, middleLeft.z)
   local txtSP = TextComponent(Vocab.sp, bottomLeft, rw, 'left', small)
   txtSP:setTerm('sp', '') 
   txtSP:redraw()
@@ -84,13 +92,8 @@ function MemberInfo:createContent(w, h, battler)
   local gaugeSP = Gauge(bottomLeft, rw, Color.barSP, gaugeX)
   gaugeSP:setValues(battler.state.sp, battler.msp())
   self.content:add(gaugeSP)
-  -- Status
-  local topRight = Vector(topLeft.x + rw + self.margin + 8, topLeft.y + 8, topLeft.z - 20)
-  local status = IconList(topRight, rw, 20)
-  status:setIcons(battler.statusList:getIcons())
-  self.content:add(status)
   -- Level / Class
-  local middleRight = Vector(topRight.x - 7, topRight.y + 8, topRight.z)
+  local middleRight = Vector(middleLeft.x + rw + self.margin, middleLeft.y, middleLeft.z)
   local job = battler.job.data
   local txtLevel = TextComponent('', middleRight, rw, 'left', small)
   txtLevel:setTerm('{%level} ' .. battler.job.level)
@@ -101,7 +104,7 @@ function MemberInfo:createContent(w, h, battler)
   self.content:add(txtLevel)
   self.content:add(txtJob)
   -- EXP
-  local bottomRight = Vector(middleRight.x, middleRight.y + 11, middleRight.z)
+  local bottomRight = Vector(middleRight.x, middleRight.y + self.barHeight, middleRight.z)
   local txtEXP = TextComponent('', bottomRight, rw, 'left', small)
   txtEXP:setTerm('exp', '')
   txtEXP:redraw()
@@ -110,6 +113,11 @@ function MemberInfo:createContent(w, h, battler)
   local gaugeEXP = Gauge(bottomRight, rw, Color.barEXP, 2 + txtEXP.sprite:getWidth())
   gaugeEXP:setValues(battler.job:nextLevelEXP())
   self.content:add(gaugeEXP)
+  -- Status
+  local topRight = Vector(topLeft.x + rw + self.margin + self.statusMargin, topLeft.y + self.statusMargin, topLeft.z - 20)
+  local status = IconList(topRight, rw, self.statusHeight)
+  status:setIcons(battler.statusList:getIcons())
+  self.content:add(status)
 end
 
 return MemberInfo

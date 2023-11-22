@@ -89,7 +89,7 @@ end
 function ImageComponent:destroy()
   Component.destroy(self)
   if self.anim then
-    self.anim:destroy(dt)
+    self.anim:destroy()
   elseif self.sprite then
     self.sprite:destroy()
   end
