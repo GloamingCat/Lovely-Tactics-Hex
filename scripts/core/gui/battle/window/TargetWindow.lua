@@ -49,7 +49,7 @@ function TargetWindow:createContent(width, height)
   self.txtJob = TextComponent('', posJob, w, 'right', font)
   self.content:add(self.txtJob)
   -- Level text
-  self.txtLevel = TextComponent('', posJob, w, 'left', font)
+  self.txtLevel = TextComponent('', posJob:clone(), w, 'left', font)
   self.content:add(self.txtLevel)
   -- State values texts
   local posHP = Vector(x, y + 25, -2)
@@ -87,10 +87,14 @@ function TargetWindow:setBattler(battler)
   local icons = battler.statusList:getIcons()
   local height = self:computeHeight(#icons > 0)
   local job = battler.job.data
-  local y = (height - self.height) / 2
-  self.background.position.y = self.background.position.y + y
-  self.frame.position.y = self.frame.position.y + y
-  self:resize(nil, height)
+  local y = (height - self.height) / 2 -- Displacement
+  if y ~= 0 then
+    self:resize(nil, height)
+    self:setXYZ(nil, self.position.y + y)
+    for c in self.content:iterator() do
+      c.position.y = c.position.y - y
+    end
+  end
   -- Name text
   self.textName:setTerm('data.battler.' .. battler.data.key, battler.name)
   self.textName:redraw()
@@ -106,7 +110,7 @@ function TargetWindow:setBattler(battler)
   self.gaugeSP:setValues(battler.state.sp, battler.msp())
   -- Status icons
   self.iconList:setIcons(icons)
-  self.iconList:updatePosition(self.position)
+  self:updatePosition(self.position)
   if not self.open then
     self.iconList:hide()
   end

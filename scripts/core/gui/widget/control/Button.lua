@@ -9,11 +9,12 @@
 -- ================================================================================================
 
 -- Imports
-local Vector = require('core/math/Vector')
-local Sprite = require('core/graphics/Sprite')
 local Animation = require('core/graphics/Animation')
-local TextComponent = require('core/gui/widget/TextComponent')
 local GridWidget = require('core/gui/widget/control/GridWidget')
+local ImageComponent = require('core/gui/widget/ImageComponent')
+local Sprite = require('core/graphics/Sprite')
+local TextComponent = require('core/gui/widget/TextComponent')
+local Vector = require('core/math/Vector')
 
 -- Class table.
 local Button = class(GridWidget)
@@ -95,8 +96,10 @@ function Button:createInfoText(term, fallback, fontName, align, w, pos)
   end
   w = (w or self.window:cellWidth()) - self:iconWidth()
   if self.iconPos > 0.5 then
+    -- Icon on the right.
     pos = pos or Vector(self.window:cellWidth() - w - self:iconWidth(), 0, 0)
   else
+    -- Icon on the left.
     pos = pos or Vector(self.window:cellWidth() - w, 0, 0)
   end
   fontName = fontName or 'menu_button'
@@ -119,8 +122,8 @@ end
 -- @treturn number
 function Button:iconWidth()
   if self.icon then
-    local x, y, w, h = self.icon.sprite:totalBounds()
-    return w
+    local x1, y1, x2, y2 = self.icon.sprite:getBoundingBox()
+    return x2 - x1
   else
     return 0
   end
@@ -154,7 +157,6 @@ end
 function Button:setIcon(icon)
   if self.icon then
     self.icon:destroy()
-    self.content:removeElement(self.icon)
     self.icon = nil
   end
   if not icon then
@@ -166,9 +168,17 @@ function Button:setIcon(icon)
     end
     icon = ResourceManager:loadIconAnimation(icon, MenuManager.renderer)
   end
-  icon.sprite:setColor(Color.menu_icon_enabled)
-  self.icon = icon
-  self.content:add(icon)
+  icon.sprite:setXYZ(0, 0)
+  local x, y, x2, y2 = icon.sprite:getBoundingBox()
+  x = -x + (self.window:cellWidth() - (x2 - x)) * self.iconPos
+  if self.text then
+    _, y = self.text:getTextCenter()
+  else
+    y = self.window:cellHeight() / 2
+  end
+  self.icon = ImageComponent(icon, Vector(x, y))
+  self.icon:setColor(Color.menu_icon_enabled)
+  self.content:add(self.icon)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -197,7 +207,7 @@ function Button:refreshColor()
   end
   if self.icon then
     local color = Color['menu_icon_' .. name]
-    self.icon.sprite:setColor(color)
+    self.icon:setColor(color)
   end
 end
 --- Updates enabled state based on the enable condition function.
@@ -226,32 +236,15 @@ function Button:setSelected(value)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Position
+-- Visibility
 -- ------------------------------------------------------------------------------------------------
 
---- Updates position based on window's position.
-function Button:updatePosition(windowPos)
-  local pos = self:relativePosition()
-  pos:add(windowPos)
-  for i = 1, #self.content do
-    local c = self.content[i]
-    if c.updatePosition then
-      c:updatePosition(pos)
-    end
-  end
+function Button:setVisible(value)
   if self.icon then
-    self.icon.sprite:setXYZ(0, 0)
-    local x, y, w, h, _ = self.icon.sprite:totalBounds()
-    x = -x + (self.window:cellWidth() - w) * self.iconPos
-    _, y = self.text:getCenter()
-    self.icon.sprite:setXYZ(pos.x + x, pos.y + y, pos.z)
+    self.icon:setVisible(value)
   end
+  Component.setVisible(self, value)
 end
-
--- ------------------------------------------------------------------------------------------------
--- Show/hide
--- ------------------------------------------------------------------------------------------------
-
 --- Shows button's text and icon.
 function Button:show()
   if self.col < self.window.offsetCol + 1 then

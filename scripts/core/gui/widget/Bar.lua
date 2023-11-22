@@ -37,15 +37,12 @@ end
 --- Overrides `Component:createContent`. 
 -- @override
 function Bar:createContent(width, height)
-  local pos = Vector(width / 2, height / 2, 1)
-  pos:add(self.position)
-  self.frame = SpriteGrid(self:getFrame(), pos)
+  self.frame = SpriteGrid(self:getFrame())
   self.frame:createGrid(MenuManager.renderer, width, height)
   self.bar = ResourceManager:loadAnimation(self:getBar(), MenuManager.renderer)
   self.bar.sprite.texture:setFilter('linear', 'linear')
-  self.quadWidth, self.quadHeight = self.bar.sprite:quadBounds()
-  self.content:add(self.frame)
-  self.content:add(self.bar)
+  local x, y, w, h = self.bar.sprite:getQuadBox()
+  self.quadWidth, self.quadHeight = w, h
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -63,10 +60,23 @@ end
 --- Overrides `Component:updatePosition`. 
 -- @override
 function Bar:updatePosition(pos)
-  self.bar.sprite:setXYZ(round(pos.x + self.position.x + self:padding()),
-    round(pos.y + self.position.y + self:padding()),
-    pos.z + self.position.z)
-  self.frame:updatePosition(pos)
+  local x = round(pos.x + self.position.x + self:padding())
+  local y = round(pos.y + self.position.y + self:padding())
+  local z = pos.z + self.position.z
+  self.bar.sprite:setXYZ(x, y, z)
+  self.frame:setXYZ(x + self.width / 2, y + self.height / 2, z + 1)
+end
+--- Overrides `Component:update`. 
+-- @override
+function Bar:update(dt)
+  self.bar:update(dt)
+  self.frame:update(dt)
+end
+--- Overrides `Component:setVisible`. 
+-- @override
+function Bar:setVisible(value)
+  self.bar.sprite:setVisible(value)
+  self.frame:setVisible(value)
 end
 
 -- ------------------------------------------------------------------------------------------------

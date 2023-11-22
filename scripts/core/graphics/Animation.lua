@@ -9,13 +9,9 @@
 
 -- ================================================================================================
 
--- Imports
-local Sprite = require('core/graphics/Sprite')
-
 -- Alias
 local mod = math.mod
 local mod1 = math.mod1
-local Quad = love.graphics.newQuad
 
 -- Class table.
 local Animation = class()
@@ -267,63 +263,6 @@ function Animation:destroy()
     self.sprite:destroy()
   end
   self.destroyed = true
-end
-
--- ------------------------------------------------------------------------------------------------
--- Visibility
--- ------------------------------------------------------------------------------------------------
-
---- Sets animation's visibility. If a sprite is present, sets the sprite's visibility. Otherwise,
--- does nothing.
--- @tparam boolean value
-function Animation:setVisible(value)
-  if self.sprite then
-    self.sprite:setVisible(value)
-  end
-end
---- Sets this animation as visible.
-function Animation:show()
-  self:setVisible(true)
-end
---- Sets this animation as invisible.
-function Animation:hide()
-  self:setVisible(false)
-end
---- Tells if the animation is visible. If it does not have a sprite, returns true by default.
--- @ret boolean `sprite:isVisible` is a sprite is present, true otherwise.
-function Animation:isVisible()
-  if self.sprite then
-    return self.sprite:isVisible()
-  else
-    return true
-  end
-end
-
--- ------------------------------------------------------------------------------------------------
--- Transform
--- ------------------------------------------------------------------------------------------------
-
---- Sets the sprite's pixel position the update's its position in the sprite list.
--- @tparam number x The pixel x of the image.
--- @tparam number y The pixel y of the image.
--- @tparam number z The pixel depth of the image.
-function Animation:setXYZ(x, y, z)
-  if self.sprite then
-    self.sprite:setXYZ(x, y, z)
-  end
-end
---- Sets sprite's transformation.
-function Animation:setTransformation(data)
-  if self.sprite then
-    self.sprite:setTransformation(data)
-  end
-end
---- Apply transformation to sprite.
--- @tparam Affine.Transform data Transformation data.
-function Animation:applyTransformation(data)
-  if self.sprite then
-    self.sprite:applyTransformation(data)
-  end
 end
 -- For debugging.
 function Animation:__tostring()

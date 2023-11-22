@@ -32,6 +32,7 @@ local MemberInfo = class(Component)
 -- @tparam number height Height of the container.
 -- @tparam Vector topLeft The position of the top left corner of the container.
 function MemberInfo:init(battler, width, height, topLeft)
+  self.margin = 4
   Component.init(self, topLeft, width, height, battler)
   self.battler = battler
 end
@@ -39,7 +40,6 @@ end
 -- @override
 function MemberInfo:createContent(w, h, battler)
   local topLeft = Vector(0, 1, -2)
-  local margin = 4
   -- Icon
   local charData = Database.characters[battler.charID]
   local icon = findByName(charData.portraits, "SmallIcon")
@@ -47,13 +47,14 @@ function MemberInfo:createContent(w, h, battler)
     local sprite = ResourceManager:loadIcon(icon, MenuManager.renderer)
     sprite.texture:setFilter('linear', 'linear')
     sprite:applyTransformation(charData.transform)
-    self.icon = ImageComponent(sprite, topLeft.x, topLeft.y, topLeft.z, nil, h)   
-    local ix, iy, iw, ih = sprite:totalBounds()
-    topLeft.x = topLeft.x + iw + margin
-    w = w - iw - margin
+    local x1, y1, x2, y2 = sprite:getBoundingBox()
+    local iconW = x2 - x1
+    self.icon = ImageComponent(sprite, Vector(0, 0, -2), iconW, h)   
+    topLeft.x = topLeft.x + iconW + self.margin
+    w = w - iconW - self.margin
     self.content:add(self.icon)
   end
-  local rw = (w - margin) / 2
+  local rw = (w - self.margin) / 2
   local small = Fonts.menu_small
   local tiny = Fonts.menu_tiny
   local medium = Fonts.menu_medium
@@ -84,7 +85,7 @@ function MemberInfo:createContent(w, h, battler)
   gaugeSP:setValues(battler.state.sp, battler.msp())
   self.content:add(gaugeSP)
   -- Status
-  local topRight = Vector(topLeft.x + rw + margin + 8, topLeft.y + 8, topLeft.z - 20)
+  local topRight = Vector(topLeft.x + rw + self.margin + 8, topLeft.y + 8, topLeft.z - 20)
   local status = IconList(topRight, rw, 20)
   status:setIcons(battler.statusList:getIcons())
   self.content:add(status)

@@ -84,6 +84,6 @@ end
 -- @tparam Balloon balloon Character's balloon.
 function BattleCursor:addBalloonHeight(balloon)
   local sprite = self.anim.sprite
-  local _, by = balloon.sprite:totalBounds()
-  sprite:setXYZ(nil, math.min(sprite.position.y, by + 8))
+  local _, y1, _, y2 = balloon.sprite:getBoundingBox()
+  sprite:setXYZ(nil, math.min(sprite.position.y, y2 - y1 + 8))
 end

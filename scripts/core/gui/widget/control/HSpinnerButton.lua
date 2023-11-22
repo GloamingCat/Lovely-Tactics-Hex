@@ -33,6 +33,7 @@ function HSpinnerButton:init(window, minValue, maxValue, initValue, x)
   self.clickSound = nil
   x = x or 0.3
   local w = self.window:cellWidth()
+  self.margin = 2
   self:initContent(initValue or 0, w * x, self.window:cellHeight(), w * (1 - x))
 end
 --- Creates a button for the action represented by the given key.
@@ -43,7 +44,7 @@ end
 -- @tparam number initValue Initial value.
 -- @treturn HSpinnerButton
 function HSpinnerButton:fromKey(window, key, minValue, maxValue, initValue)
-  local button = self(window, maxValue, minValue, initValue)
+  local button = self(window, minValue, maxValue, initValue)
   button:setIcon(Config.icons[key])
   if key and Vocab[key] then
     button:createText(key, key, window.buttonFont, 'left')

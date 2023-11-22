@@ -113,6 +113,28 @@ function Text:rescale(renderer)
 end
 
 -- ------------------------------------------------------------------------------------------------
+-- Quad
+-- ------------------------------------------------------------------------------------------------
+
+--- Overrides `Sprite:setQuad`.
+-- @override
+function Sprite:setQuad(x, y, w, h)
+  self.renderer.needsRedraw = true
+  self.needsRecalcBox = true
+  if type(x) == 'userdata' then
+    self.quad = x
+    return
+  end
+  if self.quad then
+    self.quad:setViewport(x or 0, y or 0, 
+      w or self:getWidth(), h or self:getHeight())
+  else
+    local tw, th = self:getWidth(), self:getHeight()
+    self.quad = Quad(x or 0, y or 0, w or tw, h or th, tw, th)
+  end
+end
+
+-- ------------------------------------------------------------------------------------------------
 -- Visibility
 -- ------------------------------------------------------------------------------------------------
 
@@ -150,11 +172,9 @@ function Text:getHeight()
   end
   return h
 end
---- Total bounds in world coordinates.
--- @treturn number Width.
--- @treturn number Height.
-function Text:quadBounds()
-  return self:getWidth(), self:getHeight()
+--- Overrides `Sprite:getQuadBox`. Combines the quads of all lines.
+function Text:getQuadBox()
+  return 0, 0, self:getWidth(), self:getHeight()
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -212,7 +232,7 @@ function Text:alignOffsetX(w)
   end
   return 0
 end
---- Gets the text box offset in y according to the alingment.
+--- Gets the text box offset in y according to the alignment.
 -- @tparam[opt] number h Text's height in menu pixels. If nil, uses total height.
 -- @treturn number The y offset in Menu pixels.
 function Text:alignOffsetY(h)
@@ -256,20 +276,32 @@ end
 -- @tparam number sx Scale x.
 -- @tparam number sy Scale y.
 function Text:drawLines(sx, sy)
-  local w, h = self:quadBounds()
+  local _, _, _, h = self:getQuadBox()
   local y = self:alignOffsetY(h) * sy
-  local shrink = 1
+  if not self.wrap and self.maxHeight and h > self.maxHeight then
+    lgraphics.scale(1, self.maxHeight / h)
+  end
   for i, line in ipairs(self.lines) do
     y = y + line.height
+    if self.maxHeight and y > self.maxHeight then
+      break
+    end
+    local w = line.width
     local x = 0
+    local shrink = false
     if self.maxWidth and w > self.maxWidth then
-      shrink = self.maxWidth / w
+      shrink = true
+      lgraphics.push()
+      lgraphics.scale(self.maxWidth / w, 1)
     else
       shrink = 1
       x = self:alignOffsetX(w) * sx
     end
     local drawCalls = TextRenderer.drawLine(line, x, y, self.color)
     self.renderer.textDraws = self.renderer.textDraws + drawCalls
+    if shrink then
+      lgraphics.pop()
+    end
   end
 end
 

@@ -15,6 +15,7 @@
 local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')
 local MenuEvents = require('core/event/MenuEvents')
 local ImageComponent = require('core/gui/widget/ImageComponent')
+local Vector = require('core/math/Vector')
 
 -- Rewrites
 local DialogueWindow_showDialogue = DialogueWindow.showDialogue
@@ -48,13 +49,12 @@ function DialogueWindow:setPortrait(icon)
     if char then
       portrait:applyTransformation(char.transform)
     end
-    local ox, oy = portrait.offsetX, portrait.offsetY
-    portrait:setOffset(0, 0)
-    local x, y, w, h = portrait:totalBounds()
-    x = -self.width / 2 + x + w / 2 + self:paddingX() - ox
-    y = self.height / 2 - h / 2 - self:paddingY() - oy
-    portrait:setOffset(ox, oy)
-    self.portrait = ImageComponent(portrait, x - w / 2, y - h / 2, 1)
+    local x1, y1, x2, y2 = portrait:getBoundingBox()
+    local w = x2 - x1
+    local h = y2 - y1
+    local x = -self.width / 2 + w / 2 + self:paddingX()
+    local y = self.height / 2 - h / 2 - self:paddingY()
+    self.portrait = ImageComponent(portrait, Vector(x, y))
     self.portrait:updatePosition(self.position)
     self.content:add(self.portrait)
     self.indent = (indent or w) / self.width * 2

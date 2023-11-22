@@ -62,7 +62,7 @@ function ShopCountWindow:createIcon()
   local h = self:cellHeight()
   local x = self:cellWidth() + self:paddingX() - self.width / 2
   local y = self:paddingY() - self.height / 2
-  self.icon = ImageComponent(nil, x, y, -1, w, h)
+  self.icon = ImageComponent(nil, Vector(x, y, -1), w, h)
   self.content:add(self.icon)
 end
 --- Creates the texts for the inventory stats (owned and equipped).

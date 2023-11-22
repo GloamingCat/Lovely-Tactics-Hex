@@ -86,7 +86,10 @@ local original_init = ldoc.Item._init
 function ldoc.Item._init(self, ...)
   original_init(self, ...)
   if self.tags.class == "rewrite_func" then
-    self.tags.name = 'rewrite_' .. self.tags.name
+    local file = self.file.filename:gsub("%w+:", "") -- Remove disk name
+    file = file:gsub("%w+/", ""):gsub("%w+\\", "") -- Remone directory names
+    file = file:gsub("/", ""):gsub("\\", "") -- Remove remaining bars
+    self.tags.name = file:gsub(".lua", "") .. ':' .. self.tags.name:gsub(":", "_")
     if self.formal_args then self.formal_args:clear() end
   elseif self.tags.class == "override_func" then
     if self.formal_args then self.formal_args:clear() end

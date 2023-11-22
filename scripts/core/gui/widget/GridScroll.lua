@@ -10,6 +10,8 @@
 
 -- Imports
 local Component = require('core/gui/Component')
+local ImageComponent = require('core/gui/widget/ImageComponent')
+local Vector = require('core/math/Vector')
 
 -- Class table.
 local GridScroll = class(Component)
@@ -21,52 +23,37 @@ local GridScroll = class(Component)
 --- Constructor.
 -- @tparam GridWindow window Parent window.
 function GridScroll:init(window)
-  Component.init(self)
-  window.content:add(self)
   self.margin = 12
-  --self.speed = 5
-  self.window = window
-  self:createArrows()
+  Component.init(self, nil, window)
+  window.content:add(self)
+  self:setVisible(false)
 end
 --- Creates the scroll arrows, one for each direction.
-function GridScroll:createArrows()
+function GridScroll:createContent(window)
+  self.window = window
   self.arrows = {}
+  local w = self.window.width / 2 + self.margin
+  local h = self.window.height / 2 - self.window:paddingY()
+  local pos = { Vector(w, 0, 0), Vector(0, h, 0), 
+                Vector(0, -h, 0), Vector(-w, 0, 0) }
   local icon = {id = Config.animations.arrow}
-  icon.col, icon.row = 0, 1
   for i = 1, 4 do
     icon.col = (i - 1) % 2
     icon.row = (i - 1 - icon.col) / 2
-    self.arrows[i] = ResourceManager:loadIcon(icon, MenuManager.renderer)
+    local sprite = ResourceManager:loadIcon(icon, MenuManager.renderer)
+    self.arrows[i] = ImageComponent(sprite, pos[i])
     self.arrows[i].dx = 0
     self.arrows[i].dy = 0
-    self.arrows[i]:setVisible(false)
     self.content:add(self.arrows[i])
   end
   self.right = self.arrows[1]
   self.right.dx = 1
   self.down = self.arrows[2]
   self.down.dy = 1
-  self.left = self.arrows[4]
-  self.left.dx = -1
   self.up = self.arrows[3]
   self.up.dy = -1
-end
-
--- ------------------------------------------------------------------------------------------------
--- Position
--- ------------------------------------------------------------------------------------------------
-
---- Overrides `Component:updatePosition`. 
--- @override
--- @tparam Vector pos The position of the window.
-function GridScroll:updatePosition(pos)
-  local w = self.window.width / 2 + self.margin
-  local h = self.window.height / 2 - self.window:paddingY()
-  self.up:setXYZ(pos.x, pos.y - h, pos.z)
-  self.down:setXYZ(pos.x, pos.y + h, pos.z)
-  self.left:setXYZ(pos.x - w, pos.y, pos.z)
-  self.right:setXYZ(pos.x + w, pos.y, pos.z)
-  self:setVisible(self.visible)
+  self.left = self.arrows[4]
+  self.left.dx = -1
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -76,6 +63,7 @@ end
 --- Overrides `Component:update`. Updates scroll count.
 -- @override
 function GridScroll:update(dt)
+  Component.update(self, dt)
   if self.horizontal then
     if InputManager.usingKeyboard then
       -- Use up-down arrows
@@ -137,8 +125,8 @@ function GridScroll:onClick(px, py)
   py = py + self.window.position.y
   for i = 1, #self.arrows do
     if self.arrows[i]:isVisible() then
-      local x, y, w, h = self.arrows[i]:totalBounds()
-      if px >= x and px <= x + w and py >= y and py <= y + h then
+      local x1, y1, x2, y2 = self.arrows[i].sprite:getBoundingBox()
+      if px >= x1 and px <= x2 and py >= y1 and py <= y2 then
         self.window:nextPage(self.arrows[i].dx)
         return true
       end
@@ -148,7 +136,7 @@ function GridScroll:onClick(px, py)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Content methods
+-- Visibility
 -- ------------------------------------------------------------------------------------------------
 
 --- Overrides `Component:setVisible`. 

@@ -13,8 +13,8 @@
 
 -- Imports
 local Affine = require('core/math/Affine')
-local Vector = require('core/math/Vector')
 local Colorable = require('core/math/transform/Colorable')
+local Vector = require('core/math/Vector')
 
 -- Alias
 local abs = math.abs
@@ -67,24 +67,6 @@ function Sprite:clone(renderer)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Visibility
--- ------------------------------------------------------------------------------------------------
-
---- Checks if sprite is visible on screen.
--- @treturn boolean
-function Sprite:isVisible()
-  return self.visible and self.quad and self.texture
-end
---- Sets sprite's visibility.
--- @tparam boolean value
-function Sprite:setVisible(value)
-  if value ~= self.visible then
-    self.renderer.needsRedraw = true
-  end
-  self.visible = value
-end
-
--- ------------------------------------------------------------------------------------------------
 -- Quad and Texture
 -- ------------------------------------------------------------------------------------------------
 
@@ -100,10 +82,10 @@ function Sprite:setTexture(texture)
   end
 end
 --- Sets the quad based on texture.
--- @tparam number x Quad's new x.
--- @tparam number y Quad's new y.
--- @tparam number w Quad's new width.
--- @tparam number h Quad's new height.
+-- @tparam number|Quad x Quad's new x, or a quad user data.
+-- @tparam[opt] number y Quad's new y.
+-- @tparam[opt] number w Quad's new width.
+-- @tparam[opt] number h Quad's new height.
 function Sprite:setQuad(x, y, w, h)
   self.renderer.needsRedraw = true
   self.needsRecalcBox = true
@@ -118,6 +100,74 @@ function Sprite:setQuad(x, y, w, h)
     local tw, th = self.texture:getWidth(), self.texture:getHeight()
     self.quad = Quad(x or 0, y or 0, w or tw, h or th, tw, th)
   end
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Bounding box
+-- ------------------------------------------------------------------------------------------------
+
+--- Updates bound diagonal.
+function Sprite:recalculateBox()
+  local x, y, w, h = self:getQuadBox()
+  local dx = abs(self.offsetX * self.scaleX - w / 2)
+  local dy = abs(self.offsetY * self.scaleY - h / 2)
+  self.diag = dx + dy
+  self.needsRecalcBox = false
+end
+--- Gets the extreme values for the bounding box.
+-- @treturn number Transformed min x.
+-- @treturn number Transformed min y.
+-- @treturn number Transformed width.
+-- @treturn number Transformed height.
+function Sprite:getBoundingBox()
+  local _, _, w, h = self:getQuadBox()
+  return Affine.getBoundingBox(self, w, h)
+end
+--- Gets the bounds of the texture quad, in the coordinates of the texture.
+-- @treturn number Quad's x.
+-- @treturn number Quad's y.
+-- @treturn number Quad's width.
+-- @treturn number Quad's height.
+function Sprite:getQuadBox()
+  if self.quad then
+    return self.quad:getViewport()
+  else
+    return 0, 0, 0, 0
+  end
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Visibility
+-- ------------------------------------------------------------------------------------------------
+
+--- Checks for visiblity flag.
+-- @treturn boolean
+function Sprite:isVisible()
+  return self.visible and self.quad and self.texture
+end
+--- Sets sprite's visibility flag.
+-- @tparam boolean value
+function Sprite:setVisible(value)
+  if value ~= self.visible then
+    self.renderer.needsRedraw = true
+  end
+  self.visible = value
+end
+--- Checks for an intersection with a rectangle. Uses `position` and `diag` fields
+-- to calculate bounds both in world coordinates.
+-- @tparam number minx Rectangle's minimum x.
+-- @tparam number miny Rectangle's minimum y.
+-- @tparam number maxx Rectangle's maximum x.
+-- @tparam number maxy Rectangle's maximum y.
+-- @treturn boolean Whether the sprite intersects a given rectangle
+function Sprite:intersects(minx, miny, maxx, maxy)
+  if self.needsRecalcBox then
+    self:recalculateBox()
+  end
+  return self.position.x - self.diag <= maxx and 
+      self.position.x + self.diag >= minx and
+      self.position.y - self.diag <= maxy and 
+      self.position.y + self.diag >= miny
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -169,45 +219,6 @@ function Sprite:setRotation(angle)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Bounding box
--- ------------------------------------------------------------------------------------------------
-
---- Updates bound diagonal.
-function Sprite:recalculateBox()
-  local w, h = self:quadBounds()
-  local dx = (abs(w / 2 - self.offsetX) + w / 2) * self.scaleX
-  local dy = (abs(h / 2 - self.offsetY) + h / 2) * self.scaleY
-  self.diag = dx + dy
-  self.needsRecalcBox = false
-end
---- Gets the bounds of the texture quad.
--- @treturn number Quad's width.
--- @treturn number Quad's height.
-function Sprite:quadBounds()
-  if not self.quad then
-    return 0, 0
-  end
-  local _, _, w, h = self.quad:getViewport()
-  return w, h
-end
---- Gets the quad bounds considering the scale.
--- @treturn number Quad's scaled width.
--- @treturn number Quad's scaled height.
-function Sprite:scaledBounds()
-  local w, h = self:quadBounds()
-  return w * self.scaleX, h * self.scaleY
-end
---- Gets the extreme values for the bounding box.
--- @treturn number Transformed min x.
--- @treturn number Transformed min y.
--- @treturn number Transformed width.
--- @treturn number Transformed height.
-function Sprite:totalBounds()
-  local w, h = self:quadBounds()
-  return Affine.getBoundingBox(self, w, h)
-end
-
--- ------------------------------------------------------------------------------------------------
 -- Offset
 -- ------------------------------------------------------------------------------------------------
 
@@ -219,10 +230,12 @@ end
 function Sprite:setOffset(ox, oy, depth)
   if ox ~= nil and ox ~= self.offsetX then
     self.offsetX = ox
+    self.needsRecalcBox = true
     self.renderer.needsRedraw = true
   end
   if oy ~= nil and oy ~= self.offsetY then
     self.offsetY = oy
+    self.needsRecalcBox = true
     self.renderer.needsRedraw = true
   end
   depth = math.round(depth or self.offsetDepth)
@@ -309,23 +322,23 @@ end
 -- @tparam number i The position in the list.
 function Sprite:insertSelf(i)
   i = (i or self.position.z) + self.offsetDepth
-  if self.renderer.spriteList[i] then
-    insert(self.renderer.spriteList[i], self)
+  if self.renderer.layers[i] then
+    insert(self.renderer.layers[i], self)
   else
-    self.renderer.spriteList[i] = {}
-    self.renderer.spriteList[i][1] = self
+    self.renderer.layers[i] = {}
+    self.renderer.layers[i][1] = self
   end
   self.renderer.needsRedraw = true
 end
 --- Removes sprite from its list.
 function Sprite:removeSelf()
   local depth = self.position.z + self.offsetDepth
-  local list = self.renderer.spriteList[depth]
+  local list = self.renderer.layers[depth]
   local n = #list
   for i = 1, n do
     if list[i] == self then
       if n == 1 then
-        self.renderer.spriteList[depth] = nil
+        self.renderer.layers[depth] = nil
       else
         remove(list, i)
       end

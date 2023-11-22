@@ -10,11 +10,11 @@
 
 -- Imports
 local Sprite = require('core/graphics/Sprite')
-local Vector = require('core/math/Vector')
 
 -- Alias
 local Quad = love.graphics.newQuad
 local floor = math.floor
+local rotate = math.rotate
 
 -- Class table.
 local SpriteGrid = class()
@@ -25,10 +25,8 @@ local SpriteGrid = class()
 
 --- Constructor.
 -- @tparam table skin Skin's animation data.
--- @tparam Vector relativePos The position of the grid relative to its parent.
-function SpriteGrid:init(skin, relativePos)
+function SpriteGrid:init(skin)
   self.skin = skin
-  self.position = relativePos or Vector(0, 0)
 end
 --- Creates sprites and skinData.
 -- @tparam Renderer renderer The renderer of the sprites.
@@ -40,6 +38,11 @@ function SpriteGrid:createGrid(renderer, width, height)
   local h = skin.height / 3
   local mw = width - 2 * w
   local mh = height - 2 * h
+  if self.skinData then
+    self:destroy()
+  end
+  self.width = width
+  self.height = height
   self.skinData = {}
   local texture = ResourceManager:loadTexture(skin.path)
   local x, y, ox, oy, sx, sy
@@ -102,15 +105,49 @@ function SpriteGrid:update(dt)
     self.slices[i]:update(dt)
   end
 end
+--- Destroys all slices.
+function SpriteGrid:destroy()
+  for i = 1, 9 do
+    self.slices[i]:destroy()
+  end
+end
+--- Sets each slice visibility.
+-- @tparam boolean value True to show, false to hide.
+function SpriteGrid:setVisible(value)
+  self.visible = value
+  for i = 1, 9 do
+    self.slices[i].sprite:setVisible(value)
+  end
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Transform
+-- ------------------------------------------------------------------------------------------------
+
 --- Updates position and scale according to the given parent transformable.
 -- @tparam Transformable t
+-- @tparam[opt] number offsetDepth
 function SpriteGrid:updateTransform(t)
-  local pos = t.position + self.position
   for i = 1, 9 do
     local sprite = self.slices[i].sprite
-    sprite:setPosition(pos)
+    sprite:setXYZ(t.position.x - t.offsetX * t.scaleX, 
+                  t.position.y - t.offsetY * t.scaleY,
+                  t.position.z + t.offsetDepth)
     sprite:setOffset(self.skinData[i].x, self.skinData[i].y)
     sprite:setScale(self.skinData[i].sx * t.scaleX, self.skinData[i].sy * t.scaleY)
+    if t.rotation ~= 0 then
+      local x, y, ox, oy, r = Affine.rotateAround(sprite, t.position.x, t.position.y, t.rotation)
+      sprite:setXYZ(x, y)
+      sprite:setOffset(x, y)
+      sprite:setRotation(r)
+    end
+  end
+end
+--- Updates each slice position.
+-- @tparam Vector pos Parent position.
+function SpriteGrid:setXYZ(x, y, z)
+  for i = 1, 9 do
+    self.slices[i].sprite:setXYZ(x, y, z)
   end
 end
 --- Sets the RGBA values of each slice.
@@ -134,36 +171,17 @@ function SpriteGrid:setHSV(h, s, v)
     self.slices[i].sprite:setHSV(h, s, v)
   end
 end
---- Destroys all slices.
-function SpriteGrid:destroy()
-  for i = 1, 9 do
-    self.slices[i]:destroy()
-  end
+
+-- ------------------------------------------------------------------------------------------------
+-- Bounds
+-- ------------------------------------------------------------------------------------------------
+
+function SpriteGrid:getQuadBox(...)
+  return 0, 0, self.width, self.height
 end
---- Sets each slice visibility.
--- @tparam boolean value True to show, false to hide.
-function SpriteGrid:setVisible(value)
-  self.visible = value
-  for i = 1, 9 do
-    self.slices[i]:setVisible(value)
-  end
-end
---- Makes visible.
-function SpriteGrid:show()
-  self:setVisible(true)
-end
---- Makes invisible.
-function SpriteGrid:hide()
-  self:setVisible(false)
-end
---- Updates each slice position.
--- @tparam Vector pos Parent position.
-function SpriteGrid:updatePosition(pos)
-  pos = pos + self.position
-  for i = 1, 9 do
-    local sprite = self.slices[i].sprite
-    sprite:setPosition(pos)
-  end
+
+function SpriteGrid:setQuad(...)
+  -- TODO
 end
 
 return SpriteGrid

@@ -52,12 +52,12 @@ end
 --- Gets the text the is being shown in the window.
 -- @treturn string The text currently being shown in the window.
 function DescriptionWindow:getText()
-  return self.text.sprite.text
+  return self.text:getText()
 end
 --- Resizes the window to the minimum size that includes the text.
 function DescriptionWindow:packText()
-  local w, h = self.text.sprite:quadBounds()
-  w, h = round(w), round(h)
+  local x1, y1, x2, y2 = self.text.sprite:getBoundingBox()
+  w, h = round(x2 - x1), round(y2 - y1)
   self.text.position = Vector(-w / 2, -h / 2, -1)
   self:resize(w + self:paddingX() * 2, h + self:paddingY() * 2)
 end

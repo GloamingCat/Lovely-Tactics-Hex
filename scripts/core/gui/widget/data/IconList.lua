@@ -40,6 +40,7 @@ function IconList:init(topLeft, width, height, frameWidth, frameHeight)
   self.iconHeight = self.frameHeight
   self.frameID = Config.animations.frame
   self.visible = true
+  self:setVisible(false)
 end
 --- Sets the content of this list.
 -- @tparam table icons Array of sprites.
@@ -67,17 +68,20 @@ function IconList:setSprites(icons)
       end
     end
     if sprite then
-      sprite:setVisible(self.visible)
-      self.icons[i] = ImageComponent(sprite, x - self.iconWidth / 2, y - self.iconHeight / 2, -1, 
+      self.icons[i] = ImageComponent(sprite, Vector(x - self.iconWidth / 2, y - self.iconHeight / 2), 
         self.iconWidth, self.iconHeight)
     else
-      self.icons[i] = ImageComponent(nil, x, y, -1, self.iconWidth, self.iconHeight)
+      self.icons[i] = ImageComponent(nil, Vector(x, y), self.iconWidth, self.iconHeight)
     end
     self.content:add(self.icons[i])
+    self.icons[i]:setVisible(self.visible)
     if frameSkin then
-      self.frames[i] = SpriteGrid(frameSkin, Vector(x, y, -2))
-      self.frames[i]:createGrid(MenuManager.renderer, self.frameWidth, self.frameHeight)
+      local frame = SpriteGrid(frameSkin)
+      frame:createGrid(MenuManager.renderer, self.frameWidth, self.frameHeight)
+      self.frames[i] = ImageComponent(frame, Vector(x - self.iconWidth / 2, y - self.iconHeight / 2, -1),
+        self.iconWidth, self.iconHeight)
       self.content:add(self.frames[i])
+      self.frames[i]:setVisible(self.visible)
     end
     x = x + self.frameWidth - 1
   end

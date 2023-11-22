@@ -34,7 +34,7 @@ function Highlight:init(window, width, height, pos)
     local my = window:rowMargin() / 2 + 4
     width = width or window:cellWidth() + mx
     height = height or window:cellHeight() + my
-    self.displacement = Vector(width / 2 - mx / 2, height / 2 - my / 2)
+    self.displacement = Vector(width / 2 - mx / 2, height / 2 - my / 2, 2)
     self.window = window
     window.content:add(self)
   else
@@ -43,13 +43,12 @@ function Highlight:init(window, width, height, pos)
   Transformable.init(self, self.displacement:clone())
   Component.init(self, self.position, width, height)
 end
---- Overrides `Component:createContent`. 
--- @override
+--- Implements `Component:createContent`. 
+-- @implement
 function Highlight:createContent(width, height)
-  self.spriteGrid = SpriteGrid(self:getSkin(), Vector(0, 0, 1))
+  self.spriteGrid = SpriteGrid(self:getSkin())
   self.spriteGrid:createGrid(MenuManager.renderer, width, height)
   self.spriteGrid:updateTransform(self)
-  self.content:add(self.spriteGrid)
 end
 --- Window's skin.
 -- @treturn table Animation data.
@@ -85,7 +84,9 @@ end
 -- @override
 function Highlight:setVisible(value)
   local active = (not self.hideOnDeactive or self.window.active)
-  Component.setVisible(self, value and active and (not self.window or #self.window.matrix > 0))
+  local visible = value and active and (not self.window or #self.window.matrix > 0)
+  Component.setVisible(self, visible)
+  self.spriteGrid:setVisible(visible)
 end
 
 return Highlight

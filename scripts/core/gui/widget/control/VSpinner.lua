@@ -15,9 +15,6 @@ local TextComponent = require('core/gui/widget/TextComponent')
 local ImageComponent = require('core/gui/widget/ImageComponent')
 local GridWidget = require('core/gui/widget/control/GridWidget')
 
--- Alias
-local Image = love.graphics.newImage
-
 -- Class table.
 local VSpinner = class(GridWidget)
 
@@ -47,12 +44,10 @@ function VSpinner:initContent(initValue, w, h, x, y)
   local animID = Config.animations.arrow
   -- Left arrow
   local downArrowSprite = ResourceManager:loadIcon({id = animID, col = 1, row = 0}, MenuManager.renderer)
-  local dw, dh = downArrowSprite:quadBounds()
-  self.downArrow = ImageComponent(downArrowSprite, x + (w - dw) / 2, y + h - dh)
+  self.downArrow = ImageComponent(downArrowSprite, Vector(x + w / 2, y))
   -- Right arrow
   local upArrowSprite = ResourceManager:loadIcon({id = animID, col = 0, row = 1}, MenuManager.renderer)
-  local uw, uh = upArrowSprite:quadBounds()
-  self.upArrow = ImageComponent(upArrowSprite, x + (w - uw) / 2, y)
+  self.upArrow = ImageComponent(upArrowSprite, Vector(x + w / 2, y + h))
   -- Value text in the middle
   self.value = initValue
   local textPos = Vector(x, y)

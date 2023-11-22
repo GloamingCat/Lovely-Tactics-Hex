@@ -27,13 +27,14 @@ function LocationWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local icon = Config.icons.location
   local sprite = icon and icon.id >= 0 and ResourceManager:loadIcon(icon, MenuManager.renderer)
-  icon = ImageComponent(sprite, -width / 2 + 4, -height / 2, -1, nil, height)
-  self.content:add(icon)
   local pos = Vector(self:paddingX() - width / 2, self:paddingY() - height / 2, -1)
   if sprite then
-    pos.x = pos.x + self:paddingX() * 2
+    local x1, _, x2, _ = sprite:getBoundingBox()
+    local imgPos = Vector(pos.x + (x2 - x1) / 2, 0)
+    icon = ImageComponent(sprite, imgPos, nil, nil)
+    self.content:add(icon)
   end
-  local text = TextComponent('', pos, width - self:paddingX() * 2, 'left', Fonts.menu_medium)
+  local text = TextComponent('', pos, width - self:paddingX() * 2, 'right', Fonts.menu_medium)
   text.sprite.alignY = 'center'
   text.sprite.maxHeight = height - self:paddingY() * 2
   self.content:add(text)

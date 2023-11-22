@@ -64,7 +64,9 @@ end
 --- Shows sprite.
 function WindowCursor:setVisible(value)
   local active = not self.hideOnDeactive or self.window.active
-  Component.setVisible(self, value and active and #self.window.matrix > 0)
+  local visible = value and active and #self.window.matrix > 0
+  Component.setVisible(self, visible)
+  self.anim.sprite:setVisible(visible)
 end
 
 return WindowCursor

@@ -68,6 +68,11 @@ function Component:setVisible(value, ...)
   end
   self.visible = value
 end
+--- Checks for visibility.
+-- @treturn boolean
+function Component:isVisible()
+  return self.visible
+end
 --- Shows child content.
 -- @coroutine show
 function Component:show(...)
@@ -85,6 +90,21 @@ function Component:refresh()
       child:refresh()
     end
   end
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Position
+-- ------------------------------------------------------------------------------------------------
+
+--- Sets the position relative to window's center.
+-- @tparam number x Pixel x.
+-- @tparam number y Pixel y.
+-- @tparam number z Depth.
+function Component:setRelativeXYZ(x, y, z)
+  local pos = self.position
+  pos.x = pos.x or x
+  pos.y = pos.y or y
+  pos.z = pos.z or z
 end
 --- Updates child content position.
 function Component:updatePosition(parentPosition, ...)

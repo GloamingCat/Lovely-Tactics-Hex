@@ -27,7 +27,7 @@ function BattleAnimations.play(manager, animID, x, y, z, mirror, wait)
   local data = Database.animations[animID]
   local animation = ResourceManager:loadAnimation(data, manager.renderer)
   if animation.sprite then
-    animation:setXYZ(x, y, z - 10)    
+    animation.sprite:setXYZ(x, y, z - 10)    
     if mirror then
       animation.sprite:setScale(-animation.sprite.scaleX)
     end

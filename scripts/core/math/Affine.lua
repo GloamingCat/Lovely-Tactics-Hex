@@ -96,7 +96,7 @@ function Affine.getBoundingBox(t, w, h)
     miny = min(miny, p[i + 1])
     maxy = max(maxy, p[i + 1])
   end
-  return minx, miny, maxx - minx, maxy - miny
+  return minx, miny, maxx, maxy
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -150,6 +150,25 @@ function Affine.combineTransforms(t1, t2)
     brightness = t1.brightness * t2.brightness / 100
   }
   return t
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Rotation
+-- ------------------------------------------------------------------------------------------------
+
+--- Rotates a transformable around a point.
+-- @tparam Transformable t
+-- @tparam number x Target point x.
+-- @tparam number y Target point y.
+-- @tparam number r Rotation angle in degrees.
+-- @treturn number The transformable's new position x.
+-- @treturn number The transformable's new position y.
+-- @treturn number The transformable's new offset x.
+-- @treturn number The transformable's new offset y.
+-- @treturn number The transformable's new rotation.
+function Affine.rotateAround(t, x, y, r)
+  -- TODO
+  return t.position.x, t.position.y, t.offsetX, t.offsetY, t.rotation
 end
 
 return Affine

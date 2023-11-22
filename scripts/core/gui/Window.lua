@@ -38,15 +38,16 @@ function Window:init(menu, width, height, position)
   self.menu = menu
   self:setProperties()
   if not self.noSkin then
-    self.background = SpriteGrid(self:getBG(), Vector(0, 0, 1))
-    self.frame = SpriteGrid(self:getFrame(), Vector(0, 0, 1))
+    self.background = SpriteGrid(self:getBG())
+    self.frame = SpriteGrid(self:getFrame())
   end
+  self.offsetDepth = 3
   self.width = width
   self.height = height
   self.active = false
   self:insertSelf()
   Component.init(self, position, width, height)
-  self:setPosition(position or Vector(0, 0, 0))
+  self:setPosition(position or self.position)
   self:setVisible(false)
   self.lastOpen = true
 end
@@ -89,10 +90,12 @@ end
 --- Updates all content element's position.
 function Window:updatePosition()
   if self.background then
-    self.background:updatePosition(self.position)
+    self.background:updateTransform(self)
+    self.background:setXYZ(nil, nil, self.position.z + 1)
   end
   if self.frame then
-    self.frame:updatePosition(self.position)
+    self.frame:updateTransform(self)
+    self.frame:setXYZ(nil, nil, self.position.z + 1)
   end
   Component.updatePosition(self)
 end
@@ -172,10 +175,10 @@ end
 function Window:setScale(sx, sy)
   Transformable.setScale(self, sx, sy)
   if self.background then
-    self.background:updateTransform(self)
+    self.background:updateTransform(self, 1)
   end
   if self.frame then
-    self.frame:updateTransform(self)
+    self.frame:updateTransform(self, 1)
   end
 end
 --- Changes the window's size.

@@ -30,6 +30,9 @@ function Transformable:init(initPos, initScaleX, initScaleY, initRot, initColor)
   self:initScale(initScaleX, initScaleY)
   self:initRotation(initRot)
   self:initColor(initColor)
+  self.offsetX = 0
+  self.offsetY = 0
+  self.offsetDepth = 0
 end
 --- Called each frame.
 function Transformable:update(dt)

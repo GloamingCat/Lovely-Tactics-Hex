@@ -10,12 +10,11 @@
 -- ================================================================================================
 
 -- Imports
-local Component = require('core/gui/Component')
-local Sprite = require('core/graphics/Sprite')
+local ImageComponent = require('core/gui/widget/ImageComponent')
 local Text = require('core/graphics/Text')
 
 -- Class table.
-local TextComponent = class(Component)
+local TextComponent = class(ImageComponent)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -31,52 +30,16 @@ local TextComponent = class(Component)
 function TextComponent:init(text, position, width, align, font, plainText)
   assert(text, 'Nil text')
   local properties = { width, align or 'left', font or Fonts.menu_default, plainText}
-  Component.init(self, position, text, properties)
+  ImageComponent.init(self, text, position, nil, nil, properties)
 end
---- Implements `Component:createContent`.
+--- Overrides `ImageComponent:createContent`.
 -- @implement
 -- @tparam string text Initial text, in raw form.
 -- @tparam Text.Properties properties Array with text properties.
 function TextComponent:createContent(text, properties)
   self.sprite = Text(text .. '', properties, MenuManager.renderer)
   self.text = text
-  self.content:add(self.sprite)
   self:updatePosition()
-end
-
--- ------------------------------------------------------------------------------------------------
--- Position
--- ------------------------------------------------------------------------------------------------
-
---- Sets the position relative to window's center.
--- @tparam number x Pixel x.
--- @tparam number y Pixel y.
--- @tparam number z Depth.
-function TextComponent:setRelativeXYZ(x, y, z)
-  local pos = self.position
-  pos.x = pos.x or x
-  pos.y = pos.y or y
-  pos.z = pos.z or z
-end
---- Overrides `Component:updatePosition`. 
--- @override
--- @tparam Vector pos Window position.
-function TextComponent:updatePosition(pos)
-  local rpos = self.position
-  if pos then
-    self.sprite:setXYZ(pos.x + rpos.x, pos.y + rpos.y, pos.z + rpos.z)
-  else
-    self.sprite:setXYZ(rpos.x, rpos.y, rpos.z)
-  end
-end
---- Gets the center of the text sprite, considering alignment.
--- @treturn number Pixel x of the center.
--- @treturn number Pixel y of the center.
-function TextComponent:getCenter()
-  local w, h = self.sprite:quadBounds()
-  local x = self.sprite:alignOffsetX(w)
-  local y = self.sprite:alignOffsetY(h)
-  return self.position.x + x + w / 2, self.position.y + y + h / 2
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -89,6 +52,11 @@ function TextComponent:setText(text)
   self.term = nil
   self.fallback = nil
   self.text = text
+end
+--- Gets the current sprite's text.
+-- @treturn string
+function TextComponent:getText()
+  return self.sprite.text
 end
 --- Changes text content from a given localization term (must be redrawn later).
 -- @tparam string term The localization term.
@@ -115,6 +83,15 @@ end
 function TextComponent:setMaxHeight(h)
   self.sprite.maxHeight = h
 end
+--- Gets the center of the text sprite, considering alignment.
+-- @treturn number Pixel x of the center.
+-- @treturn number Pixel y of the center.
+function TextComponent:getTextCenter()
+  local _, _, w, h = self.sprite:getQuadBox()
+  local x = self.sprite:alignOffsetX(w)
+  local y = self.sprite:alignOffsetY(h)
+  return self.position.x + x + w / 2, self.position.y + y + h / 2
+end
 --- Sets text alignment (must be redrawn later).
 -- @tparam string h Horizontal alignment.
 -- @tparam string v Vertical alignment.
@@ -137,7 +114,7 @@ function TextComponent:redraw()
 end
 --- Redraws text buffer.
 function TextComponent:refresh()
-  Component.refresh(self)
+  ImageComponent.refresh(self)
   if self.term then
     self:redraw()
   end

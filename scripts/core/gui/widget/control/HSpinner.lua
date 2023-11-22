@@ -15,9 +15,6 @@ local TextComponent = require('core/gui/widget/TextComponent')
 local ImageComponent = require('core/gui/widget/ImageComponent')
 local GridWidget = require('core/gui/widget/control/GridWidget')
 
--- Alias
-local Image = love.graphics.newImage
-
 -- Class table.
 local HSpinner = class(GridWidget)
 
@@ -32,6 +29,7 @@ local HSpinner = class(GridWidget)
 -- @tparam number initValue Initial value.
 function HSpinner:init(window, minValue, maxValue, initValue)
   self.enabled = true
+  self.margin = 2
   GridWidget.init(self, window)
   self.clickSound = nil
   self.onConfirm = self.onConfirm or window.onSpinnerConfirm
@@ -44,19 +42,18 @@ end
 --- Creates arrows and value test.
 function HSpinner:initContent(initValue, w, h, x, y)
   x, y = x or 0, y or 0
+  x = x + self.margin
+  w = w - self.margin * 2
   local animID = Config.animations.arrow
   -- Left arrow
   local leftArrowSprite = ResourceManager:loadIcon({id = animID, col = 1, row = 1}, MenuManager.renderer)
-  local lw, lh = leftArrowSprite:quadBounds()
-  self.leftArrow = ImageComponent(leftArrowSprite, x, y + (h - lh) / 2)
+  self.leftArrow = ImageComponent(leftArrowSprite, Vector(x, y + h / 2))
   -- Right arrow
   local rightArrowSprite = ResourceManager:loadIcon({id = animID, col = 0, row = 0}, MenuManager.renderer)
-  local rw, rh = rightArrowSprite:quadBounds()
-  self.rightArrow = ImageComponent(rightArrowSprite, x + w - rw, y + (h - rh) / 2)
+  self.rightArrow = ImageComponent(rightArrowSprite, Vector(x + w, y + h / 2))
   -- Value text in the middle
   self.value = initValue
-  local textPos = Vector(x, y)
-  self.valueText = TextComponent(tostring(initValue), textPos, w, 'center', Fonts.menu_button)
+  self.valueText = TextComponent(tostring(initValue), Vector(x, y), w, 'center', Fonts.menu_button)
   self.valueText.sprite.maxHeight = h
   self.valueText.sprite.alignY = 'center'
   -- Add to content list
@@ -64,10 +61,10 @@ function HSpinner:initContent(initValue, w, h, x, y)
   self.content:add(self.rightArrow)
   self.content:add(self.valueText)
   -- Bounds
-  self.width = w
+  self.width = w + self.margin * 2
   self.height = h
-  self.x = x
-  self.y = y
+  self.x = x - self.margin
+  self.y = y 
 end
 
 -- ------------------------------------------------------------------------------------------------

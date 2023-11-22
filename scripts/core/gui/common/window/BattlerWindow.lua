@@ -67,8 +67,10 @@ end
 function BattlerWindow:createContent(width, height)
   Window.createContent(self, width, height)
   -- Portrait
-  self.portrait = ImageComponent(nil, self:paddingX() - self.width / 2, self:paddingY() - self.height / 2, 
-      nil, round(self.width / 3) - self:paddingX(), self.height - self:paddingY() * 2)
+  local portraitPos = Vector(self:paddingX() - self.width / 2, self:paddingY() - self.height / 2, -1)
+  self.portrait = ImageComponent(nil, portraitPos, 
+    round(self.width / 3) - self:paddingX(), 
+    self.height - self:paddingY() * 2)
   self.content:add(self.portrait)
   -- Content pos
   local x = round(self.width / 3 - self.width / 2 + self:paddingX())
@@ -116,8 +118,10 @@ function BattlerWindow:createElements(list, x, y, w)
   for i, e in ipairs(list) do
     -- Element icon
     local icon = ResourceManager:loadIcon(e[2], MenuManager.renderer)
-    local iw, ih = icon:scaledBounds()
-    local imgIcon = ImageComponent(icon, x, y + h, 0)
+    local x1, y1, x2, y2 = icon:getBoundingBox()
+    local iw = x2 - x1
+    local ih = y2 - y1
+    local imgIcon = ImageComponent(icon, Vector(x, y + h + ih / 2))
     h = h + ih
     -- Attribute value
     local posValue = Vector(x + iw, y + h - ih / 2 - 5)
@@ -193,8 +197,8 @@ function BattlerWindow:setPortrait(battler)
       findByName(charData.animations, "Battle:Idle")
     self.portraitAnim = ResourceManager:loadAnimation(anim.id, MenuManager.renderer)
     self.portraitAnim:setRow(6)
-    self.portraitAnim:setXYZ(0, 0, 0)
-    self.portraitAnim:applyTransformation(charData.transform)
+    self.portraitAnim.sprite:setXYZ(0, 0, 0)
+    self.portraitAnim.sprite:applyTransformation(charData.transform)
     self.portrait:setSprite(self.portraitAnim.sprite)
   end
   self.portrait:updatePosition(self.position)

@@ -11,7 +11,6 @@
 -- Imports
 local Component = require('core/gui/Component')
 local IconList = require('core/gui/widget/data/IconList')
-local ImageComponent = require('core/gui/widget/ImageComponent')
 local TextComponent = require('core/gui/widget/TextComponent')
 local Vector = require('core/math/Vector')
 

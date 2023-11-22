@@ -41,7 +41,7 @@ function Renderer:init(minDepth, maxDepth, batchSize)
   self.minDepth = minDepth
   self.maxDepth = maxDepth
   self.batchSize = batchSize
-  self.spriteList = {}
+  self.layers = {}
   self.batch = lgraphics.newSpriteBatch(blankTexture, batchSize, 'dynamic')
   self.canvas = lgraphics.newCanvas(1, 1)
   self.batchHSV = {0, 1, 1}
@@ -62,7 +62,7 @@ function Renderer:resizeCanvas(newW, newH)
     self.needsRedraw = true
   end
   for i = self.minDepth, self.maxDepth do
-    local list = self.spriteList[i]
+    local list = self.layers[i]
     if list then
       for j = 1, #list do
         list[j]:rescale(self)
@@ -159,25 +159,17 @@ end
 function Renderer:drawLists()
   local started = false
   for i = self.maxDepth, self.minDepth, -1 do
-    local list = self.spriteList[i]
-    if list then
+    local layer = self.layers[i]
+    if layer then
       if not started then
         self.batchTexture = blankTexture
         self.batch:setTexture(blankTexture)
         started = true
       end
       local drawList = List()
-      for _, sprite in ipairs(list) do
-        if sprite:isVisible() then
-          if sprite.needsRecalcBox then
-            sprite:recalculateBox()
-          end
-          if sprite.position.x - sprite.diag < self.maxx and 
-              sprite.position.x + sprite.diag > self.minx and
-              sprite.position.y - sprite.diag < self.maxy and 
-              sprite.position.y + sprite.diag > self.miny then
-            drawList:add(sprite)
-          end
+      for _, sprite in ipairs(layer) do
+        if sprite:isVisible() and sprite:intersects(self.minx, self.miny, self.maxx, self.maxy) then
+          drawList:add(sprite)
         end
       end
       self:drawSortedList(drawList)
@@ -185,7 +177,7 @@ function Renderer:drawLists()
   end
 end
 --- Draws all sprites in the same depth, sorting by texture.
--- @tparam Sprite list Table The list of sprites to be drawn.
+-- @tparam List list The list of sprites to be drawn.
 function Renderer:drawSortedList(list)
   local last = 1
   while last <= list.size do
@@ -207,8 +199,8 @@ end
 function Renderer:spriteCount()
   local count = 0
   for i = self.minDepth, self.maxDepth do
-    if self.spriteList[i] then
-      count = count + #self.spriteList[i]
+    if self.layers[i] then
+      count = count + #self.layers[i]
     end
   end
   return count
