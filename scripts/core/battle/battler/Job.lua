@@ -11,6 +11,7 @@
 local List = require('core/datastruct/List')
 local SkillAction = require('core/battle/action/SkillAction')
 local SkillList = require('core/battle/battler/SkillList')
+local StatusList = require('core/battle/battler/StatusList')
 
 -- Class table.
 local Job = class()
@@ -46,7 +47,10 @@ function Job:init(battler, save)
     self.exp = battler.data.exp + self.expCurve(self.level)
   end
   self.skillList = SkillList()
+  self.statusList = StatusList()
+  self.statusList.battler = self.battler
   self:learnSkills()
+  self:applyStatuses()
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -55,7 +59,7 @@ end
 
 --- Increments experience and learns skill if leveled up.
 -- @tparam number exp The quantity of EXP to be added.
--- @param[opt] Character character The current battle character of the battler.
+-- @tparam[opt] Character character The current battle character of the battler.
 function Job:addExperience(exp, character)
   if self.level == Config.battle.maxLevel then
     return
@@ -81,7 +85,7 @@ function Job:learnSkills()
   end
 end
 --- Apply all statuses up to current level.
--- @param[opt] Character character The current battle character of the battler.
+-- @tparam[opt] Character character The current battle character of the battler.
 function Job:applyStatuses(character)
   for i = 1, #self.allStatuses do
     local status = self.allStatuses[i]

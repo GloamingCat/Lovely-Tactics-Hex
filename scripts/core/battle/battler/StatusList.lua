@@ -36,7 +36,7 @@ function StatusList:init(battler, save)
       local s = status[i]
       self:addStatus(s.id, s)
     end
-  else
+  elseif battler then
     status = battler.data.status
     if status then
       for i = 1, #status do
