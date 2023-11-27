@@ -28,13 +28,20 @@ local ButtonWindow = class(GridWindow)
 function ButtonWindow:init(menu, names, align, ...)
   if type(names) == 'string' then
     self.buttonNames = {names}
-    self.noCursor = true
-    self.noHighlight = true
   else
     self.buttonNames = names
   end
-  self.align = align or 'center'
   GridWindow.init(self, menu, ...)
+end
+--- Overrides `GridWindow:setProperties`.
+-- @override
+function ButtonWindow:setProperties()
+  GridWindow.setProperties(self)
+  if #self.buttonNames == 1 then
+    self.noHighlight = true
+    self.noCursor = true
+  end
+  self.align = align or 'center'
   self.offBoundsCancel = false
   self.active = true
 end
