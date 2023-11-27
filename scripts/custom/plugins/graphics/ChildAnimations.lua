@@ -108,7 +108,7 @@ function Animation:update(dt)
     return
   end
   if self.children then
-    for i = 1, #self.children do
+    for i = 1, self.children.size do
       self.children[i]:update(dt)
     end
   end
@@ -123,7 +123,7 @@ end
 function Animation:reset()
   Animation_reset(self)
   if self.children then
-    for i = 1, #self.children do
+    for i = 1, self.children.size do
       self.children[i]:reset()
     end
   end
@@ -133,7 +133,7 @@ end
 function Animation:setOneshot(value)
   Animation_setOneshot(self, value)
   if self.children then
-    for i = 1, #self.children do
+    for i = 1, self.children.size do
       self.children[i]:setOneshot(value)
     end
   end
@@ -142,13 +142,13 @@ end
 -- @rewrite
 function Animation:destroy()
   Animation_destroy(self)
+  if self.children then
+    for child in self.children:iterator() do
+      child:destroy()
+    end
+  end
   if self.parent then
     self.parent:removeChild(self)
-  end
-  if self.children then
-    for i = 1, #self.children do
-      self.children[i]:destroy()
-    end
   end
 end
 
@@ -161,7 +161,7 @@ end
 function Sprite:setXYZ(...)
   Sprite_setXYZ(self, ...)
   if self.children then
-    for i = 1, #self.children do
+    for i = 1, self.children.size do
       self.children[i]:setParentXYZ(...)
     end
   end
