@@ -113,6 +113,18 @@ end
 function math.almostEquals(x, y, e)
   return abs(x - y) < (e or E)
 end
+--- Returns a default value if the value of x is invalid.
+-- @tparam unknown x The value of the compared.
+-- @tparam unknown default The value returned if `x` equals to `invalid`.
+-- @tparam[opt] unknown invalid The value representing an invalid value.
+-- @treturn unknown `x` if `x` is valid, `default` otherwise.
+function math.replace(x, default, invalid)
+  if x == invalid then
+    return default
+  else
+    return x
+  end
+end
 
 -- ------------------------------------------------------------------------------------------------
 -- Vector / Matrix

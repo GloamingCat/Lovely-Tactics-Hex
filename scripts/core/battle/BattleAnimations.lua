@@ -61,9 +61,9 @@ end
 -- @treturn number The duration of the animation.
 function BattleAnimations.loadEffect(skill, pos, dir)
   -- Load animation (effect on tile)
-  if skill.loadAnimID >= 0 then
-    local mirror = skill.mirror and dir > 90 and dir <= 270
-    local anim = BattleAnimations.playOnField(skill.loadAnimID, 
+  if skill.animInfo.loadID >= 0 then
+    local mirror = skill.animInfo.mirror and dir > 90 and dir <= 270
+    local anim = BattleAnimations.playOnField(skill.animInfo.loadID, 
       pos.x, pos.y, pos.z - 1, mirror)
     return anim.duration
   end
@@ -76,10 +76,10 @@ end
 -- @treturn number The duration of the animation.
 function BattleAnimations.castEffect(skill, tile, dir)
   -- Cast animation (effect on tile)
-  if skill.castAnimID >= 0 then
-    local mirror = skill.mirror and dir > 90 and dir <= 270
+  if skill.animInfo.castID >= 0 then
+    local mirror = skill.animInfo.mirror and dir > 90 and dir <= 270
     local x, y, z = tile.center:coordinates()
-    local anim = BattleAnimations.playOnField(skill.castAnimID,
+    local anim = BattleAnimations.playOnField(skill.animInfo.castID,
       x, y, z - 1, mirror)
     return anim.duration
   end
@@ -91,11 +91,11 @@ end
 -- @tparam ObjectTile tile Skill's origin tile.
 -- @treturn number The duration of the animation.
 function BattleAnimations.targetEffect(skill, char, tile)
-  if skill.individualAnimID >= 0 then
+  if skill.animInfo.individualID >= 0 then
     local dir = char:tileToAngle(tile.x, tile.y)
     local mirror = dir > 90 and dir <= 270
     local pos = char.position
-    local anim = BattleAnimations.playOnField(skill.individualAnimID,
+    local anim = BattleAnimations.playOnField(skill.animInfo.individualID,
       pos.x, pos.y, pos.z - 10, mirror)
     return anim.duration
   end
@@ -119,15 +119,15 @@ end
 -- @treturn number The duration of the animation.
 function BattleAnimations.menuTargetEffect(skill, x, y)
   local t = 0
-  if skill.castAnimID >= 0 then
-    if skill.individualAnimID >= 0 then
-      t = BattleAnimations.playOnMenu(skill.castAnimID, 0, 0, -50, false).duration
+  if skill.animInfo.castID >= 0 then
+    if skill.animInfo.individualID >= 0 then
+      t = BattleAnimations.playOnMenu(skill.animInfo.castID, 0, 0, -50, false).duration
     else
-      t = BattleAnimations.playOnMenu(skill.castAnimID, x, y, -50, false).duration
+      t = BattleAnimations.playOnMenu(skill.animInfo.castID, x, y, -50, false).duration
     end
   end
-  if skill.individualAnimID >= 0 then
-    t = math.max(BattleAnimations.playOnMenu(skill.individualAnimID, x, y, -50, false).duration, t)
+  if skill.animInfo.individualID >= 0 then
+    t = math.max(BattleAnimations.playOnMenu(skill.animInfo.individualID, x, y, -50, false).duration, t)
   end
   return t
 end

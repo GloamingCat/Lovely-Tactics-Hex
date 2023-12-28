@@ -72,14 +72,14 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
         FieldManager.renderer:moveToTile(targetChar:getTile())
         if anim then
           local dir = targetChar:tileToAngle(originTile.x, originTile.y)
-          local mirror = self.data.mirror and dir > 90 and dir <= 270
+          local mirror = self.data.animInfo.mirror and dir > 90 and dir <= 270
           local x, y, z = targetChar.position:coordinates()
           BattleAnimations.playOnField(anim, x, y, z, mirror, true)
         end
         -- Original skill's animation
         FieldManager.renderer:moveToTile(input.user:getTile())
-        if self.data.castAnimID >= 0 and self.data.individualAnimID < 0 then
-          minTime = BattleAnimations.playOnField(self.data.castAnimID,
+        if self.data.animInfo.castID >= 0 and self.data.animInfo.individualID < 0 then
+          minTime = BattleAnimations.playOnField(self.data.animInfo.castID,
             input.user.position:coordinates()).duration + GameManager.frame
           _G.Fiber:wait(self.centerTime)
         end

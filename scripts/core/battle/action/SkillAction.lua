@@ -57,15 +57,15 @@ function SkillAction:init(skillID)
     loadformula(data.effectCondition, 'action, user, target')
   self:setType(data.type)
   -- Time before initial animation starts.
-  self.introTime = tonumber(data.introTime) or 20
+  self.introTime = math.replace(data.animInfo.introTime, 20, -1)
   -- Time after cast animation starts and before user steps back to tile.
-  self.castTime = tonumber(data.castTime) or 15
+  self.castTime = math.replace(data.animInfo.castTime, 15, -1)
   -- Time after cast animation starts and before starting individual target animations.
-  self.centerTime = tonumber(data.centerTime) or 5
+  self.centerTime = math.replace(data.animInfo.centerTime, 5, -1)
   -- Time between start of each individual target animation.
-  self.targetTime = tonumber(data.targetTime) or 0
+  self.targetTime = math.replace(data.animInfo.targetTime, 0, -1)
   -- Time after all animations finished.
-  self.finishTime = tonumber(data.finishTime) or 20
+  self.finishTime = math.replace(data.animInfo.finishTime, 20, -1)
   -- Cost formulas
   self.costs = {}
   for i = 1, #data.costs do
@@ -437,7 +437,7 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
         if targetChar.battler:isAlive() then
           _G.Fiber:fork(targetChar.damage, targetChar, self.data, originTile, results)
         else
-          targetChar:damage(self.data, originTile, results)
+          targetChar:skillDamage(self.data, originTile, results)
           BattleAnimations.dieEffect(targetChar)
           if targetChar.charData.koFadeout and targetChar.charData.koFadeout >= 0 then
             targetChar:colorizeTo(nil, nil, nil, 0, 60 / targetChar.charData.koFadeout, true)

@@ -218,8 +218,8 @@ end
 function Character:loadSkill(skill)
   -- Load animation (user)
   local minTime = 0
-  if skill.userLoadAnim ~= '' then
-    local anim = self:playAnimation(skill.userLoadAnim)
+  if skill.animInfo.userLoad ~= '' then
+    local anim = self:playAnimation(skill.animInfo.userLoad)
     anim:reset()
     local waitTime = tonumber(anim.tags and anim.tags.skillTime)
     if waitTime then
@@ -237,15 +237,15 @@ end
 -- @treturn number The duration of the animation.
 function Character:castSkill(skill, dir, target)
   -- Forward step
-  if skill.stepOnCast then
+  if skill.animInfo.stepOnCast then
     self:playMoveAnimation()
     self:walkInAngle(self.castStep or 6, dir)
     self:playIdleAnimation()
   end
   -- Cast animation (user)
   local minTime = 0
-  if skill.userCastAnim ~= '' then
-    local anim = self:playAnimation(skill.userCastAnim)
+  if skill.animInfo.userCast ~= '' then
+    local anim = self:playAnimation(skill.animInfo.userCast)
     anim:reset()
     local waitTime = tonumber(anim.tags and anim.tags.skillTime)
     if waitTime then
@@ -260,7 +260,7 @@ end
 -- @tparam ObjectTile origin The original tile of the character.
 -- @tparam table skill Skill data from database.
 function Character:finishSkill(origin, skill)
-  if skill.stepOnCast then
+  if skill.animInfo.stepOnCast then
     local x, y, z = origin.center:coordinates()
     if self.position:almostEquals(x, y, z) then
       return
@@ -285,7 +285,7 @@ end
 -- @tparam Skill skill The skill used.
 -- @tparam ObjectTile origin The tile of the skill user.
 -- @tparam table results Results of the skill.
-function Character:damage(skill, origin, results)
+function Character:skillDamage(skill, origin, results)
   local currentTile = self:getTile()
   if currentTile ~= origin then
     self:turnToTile(origin.x, origin.y)
