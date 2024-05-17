@@ -164,10 +164,12 @@ function Sprite:intersects(minx, miny, maxx, maxy)
   if self.needsRecalcBox then
     self:recalculateBox()
   end
-  return self.position.x - self.diag <= maxx and 
-      self.position.x + self.diag >= minx and
-      self.position.y - self.diag <= maxy and 
-      self.position.y + self.diag >= miny
+  local diagX = self.diag + self.offsetX * self.scaleX
+  local diagY = self.diag + self.offsetY * self.scaleY
+  return self.position.x - diagX <= maxx and 
+      self.position.x + diagX >= minx and
+      self.position.y - diagY <= maxy and 
+      self.position.y + diagY >= miny
 end
 
 -- ------------------------------------------------------------------------------------------------

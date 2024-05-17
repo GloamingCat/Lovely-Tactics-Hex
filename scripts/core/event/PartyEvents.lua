@@ -179,9 +179,27 @@ function PartyEvents:setEquip(args)
   assert(item.slot:contains(args.slot), "Item " .. Database.toString(item)
     .. " is not of slot type " .. args.slot)
   if args.store then
-    battler.equipSet.setEquip(args.slot, item, troop.inventory)
+    battler.equipSet:setEquip(args.slot, item, troop.inventory)
   else
-    battler.equipSet.setEquip(args.slot, item)
+    battler.equipSet:setEquip(args.slot, item)
+  end
+  TroopManager:saveTroop(troop)
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
+end
+--- Adds or remove a status effect to the given member.
+-- @tparam MemberArguments args
+function PartyEvents:setStatus(args)
+  local troop = Troop()
+  local battler = troop.battlers[args.key]
+  assert(battler, "No battler with key: " .. tostring(args.key))
+  local status = Database.status[args.id]
+  assert(status, "Status does not exist: " .. tostring(args.id))
+  if args.remove then
+    battler.statusList:removeStatus(status)
+  else
+    battler.statusList:addStatus(status)
   end
   TroopManager:saveTroop(troop)
   if FieldManager.hud then

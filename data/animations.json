@@ -3931,11 +3931,11 @@
     "data": {
       "script": "",
       "quad": {
-        "path": "",
+        "path": "Terrain/HexV.png",
         "x": 0,
         "y": 0,
-        "width": 0,
-        "height": 0
+        "width": 468,
+        "height": 198
       },
       "rows": 0,
       "cols": 0,
@@ -4283,11 +4283,11 @@
     "data": {
       "script": "",
       "quad": {
-        "path": "",
+        "path": "Terrain/HexH.png",
         "x": 0,
         "y": 0,
-        "width": 0,
-        "height": 0
+        "width": 360,
+        "height": 234
       },
       "rows": 0,
       "cols": 0,
@@ -4635,11 +4635,11 @@
     "data": {
       "script": "",
       "quad": {
-        "path": "",
+        "path": "Terrain/ort.png",
         "x": 0,
         "y": 0,
-        "width": 0,
-        "height": 0
+        "width": 384,
+        "height": 144
       },
       "rows": 0,
       "cols": 0,
@@ -4987,11 +4987,11 @@
     "data": {
       "script": "",
       "quad": {
-        "path": "",
+        "path": "Terrain/iso.png",
         "x": 0,
         "y": 0,
-        "width": 0,
-        "height": 0
+        "width": 432,
+        "height": 108
       },
       "rows": 0,
       "cols": 0,

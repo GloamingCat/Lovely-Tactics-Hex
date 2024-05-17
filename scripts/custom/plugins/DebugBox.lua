@@ -3,6 +3,7 @@
 
 --- Shows a text box to enter any executable Lua script. If the script has any outputs, it will be
 -- shown at the console.
+-- To call an event function, type "event('functionName', 'param1', arg1, 'param2', arg2...)"
 ---------------------------------------------------------------------------------------------------
 -- @plugin DebugBox
 
@@ -35,7 +36,7 @@ local function debugEvent(funcName, ...)
     args[entries[i]] = entries[i+1]
   end
   local function func(script) 
-      script[funcName](script, args)
+    script[funcName](script, args)
   end
   return FieldManager.fiberList:forkFromScript { func = func, vars = {} }
 end

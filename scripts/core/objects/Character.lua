@@ -297,6 +297,13 @@ function Character:skillDamage(skill, origin, results)
     self:playIdleAnimation()
   else
     self:playKOAnimation()
+    BattleAnimations.dieEffect(self)
+    if self.charData.koFadeout and self.charData.koFadeout >= 0 then
+      self:colorizeTo(nil, nil, nil, 0, 60 / self.charData.koFadeout, true)
+      local troop = TroopManager.troops[self.party]
+      local member = troop:moveMember(self.key, 1)
+      TroopManager:deleteCharacter(self)
+    end
   end
 end
 -- For debugging.

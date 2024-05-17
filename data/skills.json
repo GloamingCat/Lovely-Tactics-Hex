@@ -1478,9 +1478,9 @@
     "data": {
       "description": "",
       "icon": {
-        "id": -1,
+        "id": 33,
         "col": 0,
-        "row": 0
+        "row": 1
       },
       "script": "",
       "type": 0,

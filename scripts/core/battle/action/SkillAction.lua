@@ -411,45 +411,38 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
   local targetChar = originTile and TroopManager:getBattlerCharacter(target)
   target:onSkillEffect(input, results, targetChar)
   local wasAlive = target.state.hp > 0
-  local popText = nil
   if #results.points == 0 and #results.status == 0 then
     -- Miss
     if wasAlive then
-      local pos = targetChar and targetChar.position
-      popText = pos and
+      local pos = char and char.position
+      local popText = pos and
         PopText(pos.x, pos.y - 10, FieldManager.renderer) or
         PopText(input.targetX or 0, input.targetY or 0, MenuManager.renderer)
       popText:addLine(Vocab.miss, 'popup_miss', 'popup_miss')
       popText:popUp()
     end
-  elseif wasAlive or not results.damage then
-    local pos = targetChar and targetChar.position
-    popText = pos and
-      PopText(pos.x, pos.y - 10, FieldManager.renderer) or
-      PopText(input.targetX or 0, input.targetY or 0, MenuManager.renderer)
+  elseif not targetChar then
+    -- Animation on menu
+    local popText = PopText(input.targetX or 0, input.targetY or 0, MenuManager.renderer)
     target:popResults(popText, results, targetChar)
-    if targetChar then
-      BattleAnimations.targetEffect(self.data, targetChar, originTile)
-      if results.damage and self.data.damageAnim and wasAlive then
-        if self:isArea() then
-          originTile = input.target
-        end
-        if targetChar.battler:isAlive() then
-          _G.Fiber:fork(targetChar.damage, targetChar, self.data, originTile, results)
-        else
-          targetChar:skillDamage(self.data, originTile, results)
-          BattleAnimations.dieEffect(targetChar)
-          if targetChar.charData.koFadeout and targetChar.charData.koFadeout >= 0 then
-            targetChar:colorizeTo(nil, nil, nil, 0, 60 / targetChar.charData.koFadeout, true)
-            local troop = TroopManager.troops[targetChar.party]
-            local member = troop:moveMember(targetChar.key, 1)
-            TroopManager:deleteCharacter(targetChar)
-            targetChar = nil
-          end
-        end
+    BattleAnimations.menuTargetEffect(self.data, input.targetX, input.targetY)
+  else
+    -- Popup results
+    local pos = targetChar.position
+    local popText = PopText(pos.x, pos.y - 10, FieldManager.renderer)
+    target:popResults(popText, results, targetChar)
+    BattleAnimations.targetEffect(self.data, targetChar, originTile)
+    if not wasAlive then
+      -- Character revived
+      if targetChar.battler:isAlive() then
+        targetChar:playIdleAnimation()
       end
-    else
-      BattleAnimations.menuTargetEffect(self.data, input.targetX, input.targetY)
+    elseif results.damage and self.data.damageAnim then
+      -- Character damage animation
+      if self:isArea() then
+        originTile = input.target
+      end
+      _G.Fiber:fork(targetChar.skillDamage, targetChar, self.data, originTile, results)
     end
     target:onSkillResult(input, results, targetChar)
   end

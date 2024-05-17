@@ -68,7 +68,7 @@ end
 function StatusList:findPosition(priority)
   for i = #self, 1, -1 do
     if priority >= self[i].data.priority then
-      return i
+      return i + 1
     end
   end
   return 1

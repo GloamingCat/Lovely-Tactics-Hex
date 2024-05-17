@@ -117,6 +117,7 @@ function MemberInfo:createContent(w, h, battler)
   local topRight = Vector(topLeft.x + rw + self.margin + self.statusMargin, topLeft.y + self.statusMargin, topLeft.z - 20)
   local status = IconList(topRight, rw, self.statusHeight)
   status:setIcons(battler.statusList:getIcons())
+  status:setVisible(self.visible)
   self.content:add(status)
 end
 
