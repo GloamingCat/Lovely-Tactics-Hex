@@ -48,6 +48,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Updates graphics.
+-- @tparam number dt The duration of the previous frame.
 function TileUI:update(dt)
   if self.highlightAnim then
     self.highlightAnim:update(dt)

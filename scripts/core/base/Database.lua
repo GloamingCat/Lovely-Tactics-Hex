@@ -82,9 +82,9 @@ function Database.toArray(children, parentID, arr)
   end
   return arr
 end
---- Formats data name to string.
+--- Formats data to string, with its id and name.
 -- @tparam table data Some data table from database.
--- @treturn string
+-- @treturn string The string and id and name.
 function Database.toString(data)
   if data then
     return '[' .. data.id .. '] "' .. data.name .. '"' 
@@ -93,10 +93,9 @@ function Database.toString(data)
   end
 end
 --- Converts from array format to tree (raw format).
+-- @tparam table arr Data collection in array format.
+-- @return table Data collection in original tree format.
 function Database.toTree(arr)
-  if type(arr) == 'string' then
-    arr = Database[arr]
-  end
   -- Create node for each data
   local nodes = {}
   for i, arrnode in pairs(arr) do
@@ -121,13 +120,14 @@ end
 -- Config files
 -- ------------------------------------------------------------------------------------------------
 
---- Folder containing config files.
--- @treturn string
+--- Folder containing configuration files, relative to the project root.
+-- It includes the path to the data folder.
+-- @treturn string Directory with the configuration files.
 function Database.getConfigDirectory()
   return Database.getDataDirectory() .. 'system/'
 end
 --- Array with the names of all config files.
--- @treturn table
+-- @treturn table Directory with the config files.
 function Database.getConfigFileNames()
   return {'attributes', 'variables', 'elements', 'regions', 'equipTypes', 'plugins'}
 end
@@ -168,13 +168,14 @@ end
 -- Vocab files
 -- ------------------------------------------------------------------------------------------------
 
---- Database subfolder containing vocab files.
--- @treturn string
+--- Folder containing localization files, relative to the project root.
+-- It includes the path to the data folder.
+-- @treturn string Directory with the vocab files.
 function Database.getVocabDirectory()
   return Database.getDataDirectory() .. 'vocab/'
 end
 --- Loads config data and store in the Config table.
--- @tparam[opt=1] string lang Selected language.
+-- @tparam[opt=1] number lang Selected language.
 function Database.loadVocabFiles(lang)
   lang = Project.languages[lang or 1]
   local dir = Database.getVocabDirectory()

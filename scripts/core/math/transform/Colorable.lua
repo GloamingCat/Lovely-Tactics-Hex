@@ -94,6 +94,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Applies color speed and updates color.
+-- @tparam number dt The duration of the previous frame.
 function Colorable:updateColor(dt)
   if self.colorTime < 1 then
     self.colorTime = self.colorTime + self.colorSpeed * dt
@@ -110,7 +111,7 @@ function Colorable:updateColor(dt)
   end
 end
 --- Moves to (x, y).
--- @coroutine colorizeTo
+-- @coroutine
 -- @tparam number r Red component.
 -- @tparam number g Green component.
 -- @tparam number b Blue component.
@@ -135,7 +136,7 @@ function Colorable:instantColorizeTo(r, g, b, a)
   return nil
 end
 --- Moves gradually (through updateMovement) to the given point.
--- @coroutine gradualColorizeTo
+-- @coroutine
 -- @tparam number r Red component.
 -- @tparam number g Green component.
 -- @tparam number b Blue component.
@@ -153,7 +154,7 @@ function Colorable:gradualColorizeTo(r, g, b, a, speed, wait)
   end
 end
 --- Waits until the move time is 1.
--- @coroutine waitForColor
+-- @coroutine
 function Colorable:waitForColor()
   local fiber = _G.Fiber
   if self.colorFiber then

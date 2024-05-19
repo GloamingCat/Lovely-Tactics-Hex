@@ -188,7 +188,7 @@ function List:iterator()
   end
 end
 --- Call all items with given arguments (items must be all functions).
--- @param ...  Call arguments.
+-- @param ... Call arguments.
 function List:notify(...)
   for i = 1, self.size do
     self[i](...)

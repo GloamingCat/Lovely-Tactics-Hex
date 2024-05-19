@@ -109,7 +109,7 @@ function Fiber:execAll()
 end
 --- Wait until this fiber's function finishes.
 -- Specially useful when other fiber must wait until this one finishes.
--- @coroutine waitForEnd
+-- @coroutine
 function Fiber:waitForEnd()
   assert(coroutine.running(), 'Called by main thread.')
   while self.coroutine do
@@ -117,7 +117,7 @@ function Fiber:waitForEnd()
   end
 end
 --- Wait for frames.
--- @coroutine wait
+-- @coroutine
 -- @tparam number t The number of frames to wait.
 --  Consider a rate of 60 frames per second.
 function Fiber:wait(t)
@@ -132,7 +132,7 @@ function Fiber:wait(t)
   end
 end
 --- Waits until a given condition returns true.
--- @coroutine waitUntil
+-- @coroutine
 -- @tparam function func A function that returns a boolean.
 -- @param ... Function's parameters.
 function Fiber:waitUntil(func, ...)
@@ -145,7 +145,7 @@ end
 --- Calls a given function after a certain time.
 -- @tparam number time Time in frames.
 -- @tparam function func Function to be called.
--- @param ...  Function's parameters.
+-- @param ... Function's parameters.
 function Fiber:invoke(time, func, ...)
   local args = {...}
   self:fork(function()

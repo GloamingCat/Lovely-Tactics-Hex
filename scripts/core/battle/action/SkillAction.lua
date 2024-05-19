@@ -35,6 +35,36 @@ local elementCount = #Config.elements
 local SkillAction = class(BattleAction)
 
 -- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Info table returned when a skill effect is applied to a target character.
+-- @table EffectResult
+-- @tfield number value The absolute value of the effect.
+-- @tfield string key The key of the attribute that with be damaged/healed. Typically `"hp"` or `"sp"`.
+-- @tfield boolean heal Indicates if the value should be added or substracted from the attribute.
+-- @tfield boolean absorb Indicates if the value should be transfered to/taken from the skill's user.
+SkillAction.emptyEffectResult = {
+  value = 0,
+  key = 'hp',
+  heal = false,
+  absorb = false
+}
+--- Info table returned when the skill is executed on a target character.
+-- @table SkillResult
+-- @tfield boolean damage Indicates if the skills caused damage to the character.
+-- @tfield boolean kill Indicates if the skill killed the character.
+-- @tfield table points Array of `EffectResult` entries.
+-- @tfield table status Array of entries with a number `"id"` indicating the status's ID and
+--  a boolean `"add"` indicating whether the status should be added or removed from the target battler.
+SkillAction.emptySkillResult = {
+  damage = true,
+  kill = false,
+  points = {},
+  status = {}
+}
+
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
@@ -159,7 +189,7 @@ end
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `FieldAction:canExecute`. 
+--- Overrides `FieldAction:canExecute`.
 -- @override
 function SkillAction:canExecute(input)
   return self:canBattleUse(input.user)
@@ -209,7 +239,8 @@ function SkillAction:canBattleUse(user)
 end
 --- The effect applied when the user is prepared to use the skill.
 -- It executes animations and applies damage/heal to the targets.
--- @tparam ActionInput input
+-- @coroutine
+-- @tparam ActionInput input User's input.
 function SkillAction:battleUse(input)
   -- Intro time.
   _G.Fiber:wait(self.introTime)
@@ -223,7 +254,8 @@ function SkillAction:battleUse(input)
   _G.Fiber:wait(max(endFrame - GameManager.frame, 0) + self.finishTime)
 end
 --- Plays user's load and cast animations.
--- @tparam ActionInput input
+-- @coroutine
+-- @tparam ActionInput input User's input.
 function SkillAction:userEffects(input)
   -- Apply costs.
   input.user.battler:damageCosts(self.costs)
@@ -250,7 +282,6 @@ function SkillAction:userEffects(input)
   return minTime
 end
 
-
 -- ------------------------------------------------------------------------------------------------
 -- Menu Use
 -- ------------------------------------------------------------------------------------------------
@@ -262,10 +293,8 @@ function SkillAction:canMenuUse(user)
   return self:canUse(user) and self.support and self.data.restriction % 2 == 0
 end
 --- Executes the skill in the menu, out of the battle field.
--- @tparam ActionInput input
---  input.user (Battler): The user of the skill.
---  input.target (Battler): The target of the skill, if it's a single target.
---  input.targets (table): An array with Battler targets, if there are multiple targets.
+-- @coroutine
+-- @tparam ActionInput input User's input.
 function SkillAction:menuUse(input)
   if input.target then
     self:menuTargetsEffect(input, {input.target})
@@ -279,7 +308,7 @@ function SkillAction:menuUse(input)
   return BattleAction.execute(self, input)
 end
 --- Applies the the skill's effect when used from a menu.
--- @tparam ActionInput input
+-- @tparam ActionInput input User's input.
 -- @tparam table targets Array of Battlers.
 function SkillAction:menuTargetsEffect(input, targets)
   for i = 1, #targets do
@@ -314,9 +343,10 @@ end
 
 --- Calculates the final damage / heal for the target.
 -- It considers all element bonuses provided by the skill data.
--- @tparam Battler user
--- @tparam Battler target
+-- @tparam Battler user The user of the skill.
+-- @tparam Battler target The target of the skill.
 -- @tparam[opt] function rand Random number generator.
+-- @treturn SkillResult Result data.
 function SkillAction:calculateEffectResults(user, target, rand)
   local points = {}
   local status = {}
@@ -360,7 +390,7 @@ end
 -- @tparam Battler user User of the skill.
 -- @tparam Battler target Receiver of the effect.
 -- @tparam[opt] function rand Random number generator.
--- @treturn number Total value of the damage. Nil if miss.
+-- @treturn EffectResult Total value of the damage. Nil if miss.
 function SkillAction:calculateEffectPoints(effect, user, target, rand)
   local result = max(effect.basicResult(self, user, target, user.att, target.att, rand), 0)
   local immunity = 1
@@ -387,7 +417,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Executes individual animation for all the affected tiles.
--- @tparam ActionInput input
+-- @coroutine
+-- @tparam ActionInput input User's input.
 -- @tparam ObjectTile originTile The user's original tile.
 function SkillAction:allTargetsEffect(input, originTile)
   local allTargets = self:getAllAffectedTiles(input)
@@ -401,8 +432,9 @@ function SkillAction:allTargetsEffect(input, originTile)
   return allTargets
 end
 --- Executes individual animation for a single tile.
+-- @coroutine
 -- @tparam table results The results of the skill's effect.
--- @tparam ActionInput input
+-- @tparam ActionInput input User's input.
 -- @tparam Battler target The battler that will be affected.
 -- @tparam ObjectTile originTile The user's original tile.
 -- @treturn PopText The pop-up text to be shown, with skill's results.
@@ -454,7 +486,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Uses random expectation to estimate average effect result.
--- @tparam ActionInput input Input containing the user and the skill.
+-- @tparam ActionInput input User's input.
 -- @tparam Character char Target character.
 -- @tparam[opt] table eff Effect to check validity. If nil, uses the skill's first effect.
 -- @treturn number How close the character is to being killed (0 to 1).
@@ -465,7 +497,7 @@ function SkillAction:estimateEffect(input, char, eff)
   return 1 - (char.battler.state[eff.key] - points * rate / 100) / char.battler['m' .. eff.key]()
 end
 --- Calculates the total damage of a skill in the given tile.
--- @tparam ActionInput input Input containing the user and the skill.
+-- @tparam ActionInput input User's input.
 -- @tparam ObjectTile target Possible target for the skill.
 -- @tparam[opt] table eff Effect to check validity. If nil, uses the skill's first effect.
 -- @treturn number The total damage caused to the character in this tile.

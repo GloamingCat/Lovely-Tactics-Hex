@@ -54,6 +54,7 @@ function TileGraphic:createSprite(y)
   return sprite
 end
 --- Updates each animation.
+-- @tparam number dt The duration of the previous frame.
 function TileGraphic:update(dt)
   self.topAnim:update(dt)
   self.bottomAnim:update(dt)

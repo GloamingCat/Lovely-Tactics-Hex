@@ -22,6 +22,23 @@ local pixelBounds = math.field.pixelBounds
 local Field = class()
 
 -- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Collision types.
+-- @enum Collision
+-- @field BORDER Code for when a character collides with the field's borders. Equals to 0.
+-- @field TERRAIN Code for when a character collides with a non-passable terrain. Equals to 1.
+-- @field OBSTACLE Code for when a character collides with a non-passable object. Equals to 2.
+-- @field CHARACTER Code for when a character collides with another character. Equals to 3.
+Field.Collision = {
+  BORDER = 0,
+  TERRAIN = 1,
+  OBSTACLE = 2,
+  CHARACTER = 3
+}
+
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
@@ -53,8 +70,9 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Updates all ObjectTiles and TerrainTiles in field's layers.
+-- @tparam number dt The duration of the previous frame.
 function Field:update(dt)
-  self.fiberList:update()
+  self.fiberList:update(dt)
   for l = self.minh, self.maxh do
     local layer = self.objectLayers[l]
     for i = 1, self.sizeX do
@@ -74,7 +92,8 @@ function Field:update(dt)
   end
 end
 --- Gets field prefs data that are saved.
--- @treturn table
+-- No deep copy is made.
+-- @treturn table A new table containing the field's persistent data.
 function Field:getPersistentData()
   local script = self.loadScript
   if script then
@@ -100,7 +119,7 @@ end
 function Field:getSize()
   return self.sizeX, self.sizeY, self.maxh
 end
---- Destrous fiber list and tiles.
+--- Destroys fiber list and tiles.
 function Field:destroy()
   self.fiberList:destroy()
   for l = self.minh, self.maxh do
@@ -169,7 +188,7 @@ function Field:gridIterator()
   end
 end
 --- Gets the tile that the mouse is over.
--- @treturn ObjectTile
+-- @treturn ObjectTile The tile which the mouse cursor is over.
 function Field:getHoveredTile()
   for l = self.maxh, self.minh, -1 do
     local x, y = InputManager.mouse:fieldCoord(l)
@@ -251,8 +270,7 @@ end
 -- @tparam number destX The destination x in tiles.
 -- @tparam number destY The destination y in tiles.
 -- @tparam number destH The destination height in tiles.
--- @treturn number The collision type: 
---  nil => none, 0 => border, 1 => terrain, 2 => obstacle, 3 => character.
+-- @treturn Collision The collision type, if any.
 function Field:collisionXYZ(obj, origX, origY, origH, destX, destY, destH)
   if self:exceedsBorder(destX, destY) then
     return 0
@@ -277,8 +295,7 @@ end
 -- @tparam Object object The object to check.
 -- @tparam Vector origCoord The origin coordinates in tiles.
 -- @tparam Vector destCoord The destination coordinates in tiles.
--- @treturn number The collision type:
---  nil => none, 0 => border, 1 => terrain, 2 => obstacle, 3 => character.
+-- @treturn Collision The collision type, if any.
 function Field:collision(object, origCoord, destCoord)
   local ox, oy, oh = origCoord:coordinates()
   return self:collisionXYZ(object, ox, oy, oh, destCoord:coordinates())

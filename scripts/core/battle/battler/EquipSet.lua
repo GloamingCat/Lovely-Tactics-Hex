@@ -15,6 +15,25 @@ local findByKey = util.array.findByKey
 local EquipSet = class()
 
 -- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- The state of the slot's permissions.
+-- @enum SlotState
+-- @field FREE The slot has no restrictions. Equals to 0.
+-- @field EQUIPPED The slot can be changed but at least one of the slots of the equip type must be
+--  equipped. Equals to 1.
+-- @field ALLEQUIPPED The slots can be changed but none of the slots of the equip type can be empty.
+--  Equals to 2.
+-- @field LOCKED The slot cannot be changed. Equals to 3.
+EquipSet.SlotState = {
+  FREE = 0,
+  EQUIPPED = 1,
+  ALLEQUIPPED = 2,
+  LOCKED = 3
+}
+
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
@@ -60,10 +79,11 @@ end
 --- Gets the state of the current slot.
 -- @tparam table slotType Slot type data.
 -- @tparam string key Specific slot key.
--- @treturn number
+-- @treturn SlotState The lock state of the slot.
 function EquipSet:slotState(slotType, key)
-  if self.slots[key] and self.slots[key].state ~= nil and self.slots[key].state > 0 then
-    return self.slots[key].state
+  local state = self.slots[key] and self.slots[key].state
+  if state ~= nil and state ~= self.SlotState.FREE then
+    return state
   else
     return slotType.state
   end
@@ -174,7 +194,7 @@ function EquipSet:unequip(key, inventory, character)
 end
 --- Sets the block of all slots from the given type to the given value.
 -- @tparam string key The type of slot (includes a number if it's a specific slot).
--- @tparam string block The name of the slot that it blocking, or nil to unblock.
+-- @tparam[opt] string block The name of the slot that is blocking this equip type, or nil to unblock.
 function EquipSet:setBlock(key, block)
   if self.types[key] then
     for i = 1, self.types[key].count do
@@ -193,7 +213,7 @@ function EquipSet:canEquip(key, item)
   local slotType = self.types[item.slot]
   assert(slotType, 'Slot does not exist: ' .. tostring(item.slot))
   local state = self:slotState(slotType, key)
-  if state >= 3 then
+  if state >= self.SlotState.LOCKED then
     return false
   end
   local currentItem = self:getEquip(key)
@@ -206,7 +226,7 @@ function EquipSet:canEquip(key, item)
     end
   end
   if item.allSlots then
-    if slotType.count > 1 and state == 2 then
+    if slotType.count > 1 and state == self.SlotState.ALLEQUIPPED then
       return false
     end
   end
@@ -244,9 +264,9 @@ function EquipSet:canUnequip(key)
   if currentItem then
     local slot = self.types[currentItem.slot]
     local state = self:slotState(slot, key)
-    if state == 2 then
+    if state == self.SlotState.ALLEQUIPPED then
       return false
-    elseif state == 1 then
+    elseif state == self.SlotState.EQUIPPED then
       for i = 1, slot.count do
         local key2 = currentItem.slot .. i
         if key2 ~= key and self:getEquip(key2) then
@@ -430,7 +450,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Persistent state.
--- @treturn table
+-- @treturn table A table containing the info about each equip type and what's equipped on their slots.
 function EquipSet:getState()
   return {
     slots = deepCopyTable(self.slots),

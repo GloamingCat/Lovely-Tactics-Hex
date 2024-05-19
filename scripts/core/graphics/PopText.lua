@@ -96,7 +96,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Show the text lines.
--- @coroutine pop
+-- @coroutine
 -- @tparam number dir 1 to pop up, -1 to pop down.
 function PopText:pop(dir)
   local p = {self.width, self.align}
@@ -119,7 +119,7 @@ function PopText:pop(dir)
   sprite:destroy()
 end
 --- Show the text lines.
--- @coroutine popUp
+-- @coroutine
 -- @tparam[opt] boolean wait Flag to wait until the animation finishes.
 -- @treturn number The duration in frames.
 function PopText:popUp(wait)
@@ -135,7 +135,7 @@ function PopText:popUp(wait)
   end
 end
 --- Show the text lines.
--- @coroutine popDown
+-- @coroutine
 -- @tparam[opt] boolean wait Flag to wait until the animation finishes.
 -- @treturn number The duration in frames.
 function PopText:popDown(wait)

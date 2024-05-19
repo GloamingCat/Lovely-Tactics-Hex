@@ -71,6 +71,7 @@ function Knockback:update(dt)
   self:updatePosition()
 end
 --- Increments time.
+-- @tparam number dt The duration of the previous frame.
 function Knockback:updateTime(dt)
   self.knockTime = self.knockTime + dt * self.knockSpeed
 end

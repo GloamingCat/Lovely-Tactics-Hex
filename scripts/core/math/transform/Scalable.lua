@@ -45,6 +45,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Applies speed and updates scale.
+-- @tparam number dt The duration of the previous frame.
 function Scalable:updateScaling(dt)
   if self.scaleTime < 1 then
     self.scaleTime = self.scaleTime + self.scaleSpeed * dt
@@ -59,7 +60,7 @@ function Scalable:updateScaling(dt)
   end
 end
 --- Scales to (sx, sy).
--- @coroutine scaleTo
+-- @coroutine
 -- @tparam number sx Initial axis-x scale.
 -- @tparam number sy Initial axis-y scale.
 -- @tparam[opt] number speed The speed of the scaling.
@@ -80,7 +81,7 @@ function Scalable:instantScaleTo(sx, sy)
   return nil
 end
 --- Scales to (sx, sy).
--- @coroutine gradualScaleTo
+-- @coroutine
 -- @tparam number sx Initial axis-x scale.
 -- @tparam number sy Initial axis-y scale.
 -- @tparam[opt] number speed the speed of the scaling.
@@ -95,7 +96,7 @@ function Scalable:gradualScaleTo(sx, sy, speed, wait)
   end
 end
 --- Waits until the scale time is 1.
--- @coroutine waitForScaling
+-- @coroutine
 function Scalable:waitForScaling()
   local fiber = _G.Fiber
   if self.scaleFiber then

@@ -67,7 +67,7 @@ end
 --- Adds a new transformation key point.
 -- @tparam number|string t Time in frames.
 -- @tparam string field Transformation field (see instructions above).
--- @param ...  Target values.
+-- @param ... Target values.
 function KeyPoint:addKeyPoint(t, field, ...)
   local params = {...}
   for i = 1, #params do

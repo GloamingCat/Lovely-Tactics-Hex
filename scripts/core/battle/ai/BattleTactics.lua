@@ -51,8 +51,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Finds the best tile given the evaluators.
--- @tparam Character user
--- @tparam ActionInput input
+-- @tparam Character user Current character.
+-- @tparam ActionInput input Input data with the action.
 -- @tparam function isValid Checks if a tile is valid (can be put in the queue).
 -- @tparam function evaluate Gets the evaluation of a tile.
 -- @tparam[opt=ascendig] function order Comparison function to the priority queue.
@@ -81,8 +81,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Finds the closest reachable valid tiles for the given character.
--- @tparam Character user
--- @tparam ActionInput input
+-- @tparam Character user The turn's character.
+-- @tparam ActionInput input Input data with the action.
 -- @tparam function isValid Checks if a tile is valid (can be put in the queue).
 function BattleTactics.closestMovableTiles(user, input, isValid)
   local x, y = user:tileCoordinates()
@@ -99,8 +99,8 @@ function BattleTactics.closestMovableTiles(user, input, isValid)
     isValidAndPotential, evaluate, PriorityQueue.descending)
 end
 --- Finds the best distance given the order and the distance calculator.
--- @tparam Character user
--- @tparam ActionInput input
+-- @tparam Character user The turn's character.
+-- @tparam ActionInput input Input data with the action.
 -- @tparam function getDistance The distance calculator given the party and the tile.
 -- @tparam[opt=descending] function order The comparison function for distances.
 -- @treturn PriorityQueue
@@ -113,11 +113,14 @@ function BattleTactics.bestDistance(user, input, getDistance, order)
     evaluate,
     order or PriorityQueue.descending)
 end
---- Checkes if the given tile is reachable by given character.
--- @tparam ObjectTile tile
--- @tparam Character user
--- @tparam ActionInput input
--- @treturn boolean
+--- Checks if the given tile is reachable by given character and it reaches a target.
+-- If the input was a predefined target, it checks if the target is reachable by the given tile.
+-- Else, it checks if there are any possible targets within the given tile's reach.
+-- @tparam ObjectTile tile The tile to check.
+-- @tparam Character user The turn's character.
+-- @tparam[opt] ActionInput input Input data with the action.
+--  If nil, it just checks if the tile is reachable or not.
+-- @treturn boolean True if the tile is possible destination tile.
 function BattleTactics.isPotentialMoveTarget(tile, user, input)
   if not tile.ui.movable then
     return false
@@ -134,14 +137,14 @@ function BattleTactics.isPotentialMoveTarget(tile, user, input)
 end
 --- Find the best tile to stay away from enemy characters (mininum distance).
 -- @tparam Character user The turn's character.
--- @tparam ActionInput input
+-- @tparam ActionInput input Input data with the action.
 -- @treturn PriorityQueue Queue of tiles sorted by minimum distance from enemies.
 function BattleTactics.runAway(user, input)
   return BattleTactics.bestDistance(user, input, BattleTactics.minEnemyDistance)
 end
 --- Find the best tile to stay close to ally characters.
 -- @tparam Character user The turn's character.
--- @tparam ActionInput input
+-- @tparam ActionInput input Input data with the action.
 -- @treturn PriorityQueue queue of tiles sorted by proximity from allies (sum of distances).
 function BattleTactics.runToAllies(user, input)
   return BattleTactics.bestDistance(user, input, BattleTactics.allyDistance, 
@@ -149,21 +152,21 @@ function BattleTactics.runToAllies(user, input)
 end
 --- Find the best tile to stay away from enemy characters (sum of distances).
 -- @tparam Character user The turn's character.
--- @tparam ActionInput input
+-- @tparam ActionInput input Input data with the action.
 -- @treturn PriorityQueue queue of tiles sorted by distance from enemies.
 function BattleTactics.runFromEnemies(user, input)
   return BattleTactics.bestDistance(user, input, BattleTactics.enemyDistance)
 end
 --- Find the best tile to balance distance from enemies and proximity to allies (sum of distances).
 -- @tparam Character user The turn's character.
--- @tparam ActionInput input
+-- @tparam ActionInput input Input data with the action.
 -- @treturn PriorityQueue queue of tiles sorted by distance from enemies plus proximity to allies.
 function BattleTactics.runFromEnemiesToAllies(user, input)
   return BattleTactics.bestDistance(user, input, BattleTactics.partyDistance)
 end
---- Find the best tile to
+--- Find the best tile to reach a escapable tile (a tile owned by the user's party).
 -- @tparam Character user The turn's character.
--- @tparam ActionInput input
+-- @tparam ActionInput input Input data with the action.
 -- @treturn PriorityQueue queue of tiles sorted by distance from enemies.
 function BattleTactics.runToParty(user, input)
   return BattleTactics.bestDistance(user, input, BattleTactics.escapeDistance)

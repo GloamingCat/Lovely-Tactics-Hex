@@ -24,8 +24,8 @@ local BattleMoveAction = class(MoveAction)
 -- Initalization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `BattleAction:init`. 
--- @override
+--- Constructor.
+-- @param ... Any arguments passed to `MoveAction:init`.
 function BattleMoveAction:init(...)
   MoveAction.init(self, ...)
   self.freeNavigation = true

@@ -110,7 +110,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Moves camera to the given tile.
--- @coroutine moveToTile
+-- @coroutine
 -- @tparam ObjectTile tile The destionation tile.
 -- @tparam[opt=cameraSpeed] number speed The speed of the movement.
 -- @tparam[opt] boolean wait Flag to wait until the move finishes.
@@ -119,7 +119,7 @@ function FieldCamera:moveToTile(tile, speed, wait)
   self:moveToPoint(x, y, speed, wait)
 end
 --- Movec camera to the given object.
--- @coroutine moveToObject
+-- @coroutine
 -- @tparam Object obj The destination object.
 -- @tparam[opt=cameraSpeed] number speed The speed of the movement.
 -- @tparam[opt] boolean wait Flag to wait until the move finishes.

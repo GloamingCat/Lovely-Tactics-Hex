@@ -38,6 +38,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Applies speed and updates rotation.
+-- @tparam number dt The duration of the previous frame.
 function Rotatable:updateRotation(dt)
   if self.rotationTime < 1 then
     self.rotationTime = self.rotationTime + self.rotationSpeed * dt
@@ -51,7 +52,7 @@ function Rotatable:updateRotation(dt)
   end
 end
 --- Rotates to (sx, sy).
--- @coroutine rotateTo
+-- @coroutine
 -- @tparam number r Initial rotation.
 -- @tparam[opt] number speed The speed of the scaling.
 -- @tparam[opt] boolean wait flag to wait until the scaling finishes.
@@ -70,7 +71,7 @@ function Rotatable:instantRotateTo(r)
   return nil
 end
 --- Rotates to (sx, sy).
--- @coroutine gradualRotateTo
+-- @coroutine
 -- @tparam number r Initial rotation.
 -- @tparam[opt] number speed The speed of the scaling.
 -- @tparam[opt] boolean wait Flag to wait until the scaling finishes.
@@ -84,7 +85,7 @@ function Rotatable:gradualRotateTo(r, speed, wait)
   end
 end
 --- Waits until the rotation time is 1.
--- @coroutine waitForRotation
+-- @coroutine
 function Rotatable:waitForRotation()
   local fiber = _G.Fiber
   if self.rotationFiber then

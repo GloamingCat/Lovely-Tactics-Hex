@@ -76,7 +76,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Show EXP gain.
--- @coroutine addEXP
+-- @coroutine
 function RewardEXPWindow:addEXP()
   local done, levelup, changed
   local soundTime = self.soundPeriod

@@ -26,18 +26,17 @@ local StatusList = class(List)
 
 --- Constructor.
 -- @tparam Battler battler The battler whose this list belongs to.
--- @tparam table save The status list's save data.
+-- @tparam[opt] table save The array of status data from the battler's save.
 function StatusList:init(battler, save)
   List.init(self)
   self.battler = battler
-  local status = save and save.status
-  if status then
-    for i = 1, #status do
-      local s = status[i]
+  if save then
+    for i = 1, #save do
+      local s = save[i]
       self:addStatus(s.id, s)
     end
   elseif battler then
-    status = battler.data.status
+    local status = battler.data.status
     if status then
       for i = 1, #status do
         self:addStatus(status[i])
@@ -277,7 +276,7 @@ function StatusList:isDead()
   return false
 end
 --- Gets predominant status behavior.
--- @treturn BattlerAI
+-- @treturn BattlerAI The AI of the status, if any.
 function StatusList:getAI()
   for i = #self, 1, -1 do
     if self[i].AI then
@@ -292,7 +291,7 @@ end
 
 --- Called when the turn of the character starts.
 -- @tparam[opt] Character char The Character associated with this StatusList.
--- @param ...  Other parameters to the callback.
+-- @param ... Other parameters to the callback.
 function StatusList:onTurnStart(char, ...)
   local i = 1
   while i <= self.size do
@@ -312,7 +311,7 @@ end
 
 --- Calls a certain function in all statuses in the list.
 -- @tparam string name The name of the event.
--- @param ...  Other parameters to the callback.
+-- @param ... Other parameters to the callback.
 function StatusList:callback(name, ...)
   local i = 1
   name = 'on' .. name
@@ -329,6 +328,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Gets the states of all the statuses.
+-- It doesn't include statuses that come from an equipment.
 -- @treturn table An array with the state tables.
 function StatusList:getState()
   local status = {}

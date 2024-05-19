@@ -60,6 +60,8 @@ function Status:init(data, list, caster, state)
   end
 end
 --- Loads Status class from data.
+-- @tparam table Status data from database file.
+-- @param ... Any arguments passed to the constructor.
 -- @treturn Status New status.
 function Status:fromData(data, ...)
   local class = self
@@ -175,7 +177,8 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Gets status's persistent data. Must include its ID.
+--- Gets status's persistent data.
+-- Includes its ID, its remaining life time, and the key of the original caster (if any).
 -- @treturn table State data.
 function Status:getState()
   return { id = self.data.id,

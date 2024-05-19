@@ -32,8 +32,8 @@ local Battler = class()
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam Troop troop
--- @tparam table save
+-- @tparam Troop troop The troop this battler is part of.
+-- @tparam[opt] table save The battler's save data. 
 function Battler:init(troop, save)
   self.troop = troop
   local id = save and save.battlerID or -1
@@ -51,7 +51,7 @@ function Battler:init(troop, save)
 end
 --- Initializes general battler information.
 -- @tparam table data The battler's data from database.
--- @tparam table save The data from save.
+-- @tparam[opt] table save The battler's save data. 
 function Battler:initProperties(data, save)
   self.key = save.key
   self.charID = save.charID
@@ -61,12 +61,12 @@ function Battler:initProperties(data, save)
 end
 --- Initializes battle state.
 -- @tparam table data The battler's data from database.
--- @tparam table save The state data from save.
+-- @tparam[opt] table save The battler's save data. 
 function Battler:initState(data, save)
   self.skillList = SkillList(self, save and save.skills)
   self.job = Job(self, save and save.job)
   self.inventory = Inventory(save and save.items or data.items or {})
-  self.statusList = StatusList(self, save)
+  self.statusList = StatusList(self, save and save.status)
   self.equipSet = EquipSet(self, save)
   -- Elements
   self.elementBase = save and save.elements and copyArray(save.elements)
@@ -100,14 +100,14 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Gets all skills available for this character.
--- @treturn SkillList
+-- @treturn SkillList A list containing all skills of this battler and this battler's job.
 function Battler:getSkillList()
   local list = self.skillList:clone()
   list:learnAll(self.job.skillList)
   return list
 end
 --- Gets current default attack skill.
--- @treturn SkillAction
+-- @treturn SkillAction The attack skill of this battler's job.
 function Battler:getAttackSkill()
   return self.job.attackSkill
 end
@@ -116,8 +116,8 @@ end
 -- HP and SP damage
 -- ------------------------------------------------------------------------------------------------
 
---- Damages HP.
--- @tparam number value The number of the damage.
+--- Subtracts a value from the battler's current HP.
+-- @tparam number value The number of the damage (negativ if healing).
 -- @treturn boolean True if reached 0, otherwise.
 function Battler:damageHP(value)
   value = self.state.hp - value
@@ -129,8 +129,8 @@ function Battler:damageHP(value)
     return false
   end
 end
---- Damages SP.
--- @tparam number value The number of the damage.
+--- Subtracts a value from the battler's current SP.
+-- @tparam number value The number of the damage (negativ if healing).
 -- @treturn boolean True if reached 0, otherwise.
 function Battler:damageSP(value)
   value = self.state.sp - value
@@ -145,11 +145,12 @@ end
 --- Decreases the points given by the key.
 -- @tparam string key HP, SP or other designer-defined point type.
 -- @tparam number value Value to be decreased.
+-- @treturn boolean True if the value reached zero, false otherwise.
 function Battler:damage(key, value)
   if key == Config.battle.attHP then
-    self:damageHP(value)
+    return self:damageHP(value)
   elseif key == Config.battle.attSP then
-    self:damageSP(value)
+    return self:damageSP(value)
   else
     return false
   end
@@ -222,7 +223,8 @@ end
 -- State
 -- ------------------------------------------------------------------------------------------------
 
---- Checks if battler is seen as defeated, either by no remaining HP or by a KO-like status effect.
+--- Checks if battler is seen as defeated.
+-- This is caused either by no remaining HP or by a KO-like status effect.
 -- @treturn boolean True if battler is considered alive, false otherwise.
 function Battler:isAlive()
   return self.state.hp > 0 and not self.statusList:isDead()

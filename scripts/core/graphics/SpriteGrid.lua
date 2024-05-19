@@ -100,6 +100,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Updates each slice animation.
+-- @tparam number dt The duration of the previous frame.
 function SpriteGrid:update(dt)
   for i = 1, 9 do
     self.slices[i]:update(dt)
@@ -126,7 +127,6 @@ end
 
 --- Updates position and scale according to the given parent transformable.
 -- @tparam Transformable t
--- @tparam[opt] number offsetDepth
 function SpriteGrid:updateTransform(t)
   for i = 1, 9 do
     local sprite = self.slices[i].sprite
@@ -144,7 +144,9 @@ function SpriteGrid:updateTransform(t)
   end
 end
 --- Updates each slice position.
--- @tparam Vector pos Parent position.
+-- @tparam[opt] number x The pixel x of the center of the rectangle.
+-- @tparam[opt] number y The pixel y of the center of the rectangle.
+-- @tparam[opt] number z The pixel depth of the rectangle.
 function SpriteGrid:setXYZ(x, y, z)
   for i = 1, 9 do
     self.slices[i].sprite:setXYZ(x, y, z)

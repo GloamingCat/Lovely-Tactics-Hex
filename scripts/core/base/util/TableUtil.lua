@@ -80,7 +80,7 @@ function util.sortedIterator(t)
   end
 end
 --- Prints each (key, value) entry on the table.
--- @tparam table t
+-- @tparam table t The table to print.
 function util.printEntries(t)
   for k, v in pairs(t) do
     print(k, v)

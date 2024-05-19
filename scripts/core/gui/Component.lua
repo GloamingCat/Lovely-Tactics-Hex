@@ -20,7 +20,7 @@ local Component = class()
 
 --- Constructor.
 -- @tparam Vector position The component's position relative to its parent.
--- @param ...  Aditional arguments passed to Component:createContent.
+-- @param ... Aditional arguments passed to Component:createContent.
 function Component:init(position, ...)
   self.visible = true
   self.content = List()
@@ -79,12 +79,12 @@ function Component:isVisible()
   return self.visible
 end
 --- Shows child content.
--- @coroutine show
+-- @coroutine
 function Component:show(...)
   self:setVisible(true, ...)
 end
 --- Hides child content.
--- @coroutine hide
+-- @coroutine
 function Component:hide(...)
   self:setVisible(false, ...)
 end

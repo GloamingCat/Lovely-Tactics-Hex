@@ -36,7 +36,7 @@ end
 --- Creates an AIRule from the given rule data.
 -- @tparam table data Rule data with path, param and condition fields.
 -- @tparam Battler battler The battler executing this rule.
--- @treturn AIRule
+-- @treturn AIRule The AI rule defined by the given data.
 function AIRule:fromData(data, battler)
   local class = self
   if data.name and data.name ~= '' then
@@ -49,13 +49,14 @@ end
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
---- Checks if a rule can be executed.
--- @treturn boolean
+--- Checks whether a rule can be executed.
+-- By default, it delegates to `ActionInput:canExecute`.
+-- @treturn boolean True if there's an input and it can be executed.
 function AIRule:canExecute()
   return self.input and self.input:canExecute()
 end
 --- Executes the rule.
--- @treturn table The action result table.
+-- @treturn TurnManager.ActionResult The action result table.
 function AIRule:execute()
   return self.input and self.input:execute()
 end
@@ -66,9 +67,9 @@ end
 
 --- Randomly returns true with a given chance.
 -- @tparam number percent Chance from 0 to 100.
--- @treturn boolean
+-- @treturn boolean True if the random value is less than or equal the given percentage.
 function AIRule:chance(percent)
-  return rand() * 100 < percent 
+  return rand() * 100 <= percent 
 end
 
 -- ------------------------------------------------------------------------------------------------

@@ -28,7 +28,7 @@ local SkillRule = class(AIRule)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @param ...  AIRule constructor arguments.
+-- @param ... AIRule constructor arguments.
 function SkillRule:init(...)
   AIRule.init(self, ...)
   local id = self.tags and tonumber(self.tags.id)

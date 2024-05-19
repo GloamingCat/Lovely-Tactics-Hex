@@ -55,6 +55,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Applies move speed and updates position.
+-- @tparam number dt The duration of the previous frame.
 function Movable:updateMovement(dt)
   if self.moveTime < 1 then
     self.moveTime = self.moveTime + self.moveSpeed * dt
@@ -75,7 +76,7 @@ function Movable:moving()
   return self.moveTime < 1
 end
 --- Moves to (x, y, z).
--- @coroutine moveTo
+-- @coroutine
 -- @tparam number x The pixel x.
 -- @tparam number y The pixel y.
 -- @tparam number z The pixel depth.
@@ -98,7 +99,7 @@ function Movable:instantMoveTo(x, y, z)
   return false
 end
 --- Moves gradativaly (through updateMovement) to the given point.
--- @coroutine gradualMoveTo
+-- @coroutine
 -- @tparam number x The pixel x.
 -- @tparam number y The pixel y.
 -- @tparam number z The pixel depth.
@@ -114,7 +115,7 @@ function Movable:gradualMoveTo(x, y, z, speed, wait)
   end
 end
 --- Waits until the move time is 1.
--- @coroutine waitForMovement
+-- @coroutine
 function Movable:waitForMovement()
   local fiber = _G.Fiber
   if self.moveFiber then

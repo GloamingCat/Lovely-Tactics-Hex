@@ -165,7 +165,7 @@ end
 -- @tparam number dx The grid displacement in x axis.
 -- @tparam number dy The grid displaciment in y axis.
 -- @tparam number dh The grid height displacement.
--- @treturn number The collision type.
+-- @treturn Field.Collision The collision type.
 function Object:collision(tile, dx, dy, dh)
   local orig = Vector(tile:coordinates())
   local dest = Vector(dx, dy, dh)

@@ -14,7 +14,7 @@ local BattleAnimations = {}
 -- ------------------------------------------------------------------------------------------------
 
 --- Plays a battle animation.
--- @coroutine play
+-- @coroutine
 -- @tparam MenuManager|FieldManager manager The manager that will be responsible for the animation's object.
 -- @tparam number animID The animation's ID from database.
 -- @tparam number x Pixel x of the animation.
@@ -42,10 +42,24 @@ function BattleAnimations.play(manager, animID, x, y, z, mirror, wait)
   return animation
 end
 --- Play animation in field.
+-- @tparam number animID The animation's ID from database.
+-- @tparam number x Pixel x of the animation.
+-- @tparam number y Pixel y of the animation.
+-- @tparam number z Pixel depth of the animation.
+-- @tparam boolean mirror mirror the sprite in x-axis.
+-- @tparam[opt] boolean wait True to wait until first loop finishes.
+-- @treturn Animation The newly created animation.
 function BattleAnimations.playOnField(animID, x, y, z, mirror, wait)
   return BattleAnimations.play(FieldManager, animID, x, y, z, mirror, wait)
 end
 --- Play animation in Menu.
+--- Play animation in field.
+-- @tparam number animID The animation's ID from database.
+-- @tparam number x Pixel x of the animation.
+-- @tparam number y Pixel y of the animation.
+-- @tparam number z Pixel depth of the animation.
+-- @tparam[opt] boolean wait True to wait until first loop finishes.
+-- @treturn Animation The newly created animation.
 function BattleAnimations.playOnMenu(animID, x, y, z, wait)
   return BattleAnimations.play(MenuManager, animID, x or 0, y or 0, z or -50, false, wait)
 end

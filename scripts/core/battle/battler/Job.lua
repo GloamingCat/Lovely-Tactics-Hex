@@ -22,7 +22,7 @@ local Job = class()
 
 --- Constructor.
 -- @tparam Battler battler The battler with this class.
--- @tparam table save Persitent data from save.
+-- @tparam[opt] table save Job's save data with its ID and the current level and experience points.
 function Job:init(battler, save)
   self.id = save and save.id or battler.data.jobID
   self.battler = battler
@@ -129,7 +129,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Gets the persistent data.
--- @treturn table
+-- @treturn table Job's save data with its ID and the current level and experience points.
 function Job:getState()
   local state = {}
   state.id = self.id

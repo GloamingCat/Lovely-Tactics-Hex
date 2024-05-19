@@ -97,7 +97,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Tries to move in a given angle.
--- @coroutine tryAngleMovement
+-- @coroutine
 -- @tparam number angle The angle in degrees to move.
 -- @treturn boolean Returns false if the next angle must be tried, a number to stop trying.
 --  If 0, then the path was free. If 1, there was a character in this tile.
@@ -115,7 +115,7 @@ function Character:tryAngleMovement(angle)
   return false
 end
 --- Tries to move to the given tile.
--- @coroutine tryTileMovement
+-- @coroutine
 -- @tparam ObjectTile tile The destination tile.
 -- @treturn number Returns false if the next angle must be tried, a number to stop trying.
 --  If 0, then the path was free. If 1, there was a character in this tile.
@@ -148,7 +148,7 @@ function Character:tryTileMovement(tile)
   return false
 end
 --- Tries to walk a path to the given tile.
--- @coroutine tryPathMovement
+-- @coroutine
 -- @tparam ObjectTile tile Destination tile.
 -- @tparam number pathLength Maximum length of path.
 -- @treturn boolean True if the character walked the full path.
@@ -162,7 +162,7 @@ function Character:tryPathMovement(tile, pathLength)
   return true
 end
 --- Moves to the given tile.
--- @coroutine applyTileMovement
+-- @coroutine
 -- @tparam ObjectTile tile The destination tile.
 -- @treturn number Returns false if path was blocked, true otherwise.
 function Character:applyTileMovement(tile)
@@ -189,7 +189,7 @@ function Character:applyTileMovement(tile)
   return false
 end
 --- Walks the next tile of the path.
--- @coroutine consumePath
+-- @coroutine
 -- @treturn boolean True if character walked to the next tile, false if collided.
 -- @treturn ObjectTile The next tile in the path:
 --  If passable, it's the current tile;
@@ -212,7 +212,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Play load animation.
--- @coroutine loadSkill
+-- @coroutine
 -- @tparam table skill Skill data from database.
 -- @treturn number The duration of the animation.
 function Character:loadSkill(skill)
@@ -230,7 +230,7 @@ function Character:loadSkill(skill)
   return 0
 end
 --- Plays cast animation.
--- @coroutine castSkill
+-- @coroutine
 -- @tparam table skill Skill's data.
 -- @tparam number dir The direction of the cast.
 -- @tparam ObjectTile target Target of the skill.
@@ -256,7 +256,7 @@ function Character:castSkill(skill, dir, target)
   return minTime
 end
 --- Returns to original tile and stays idle.
--- @coroutine finishSkill
+-- @coroutine
 -- @tparam ObjectTile origin The original tile of the character.
 -- @tparam table skill Skill data from database.
 function Character:finishSkill(origin, skill)
@@ -281,7 +281,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Plays damage and KO (if died) animation.
--- @coroutine damage
+-- @coroutine
 -- @tparam Skill skill The skill used.
 -- @tparam ObjectTile origin The tile of the skill user.
 -- @tparam table results Results of the skill.

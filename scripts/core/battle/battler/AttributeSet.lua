@@ -96,7 +96,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Persistent state of the battler's attributes.
--- @treturn table 
+-- @treturn table Array with the base values of each attribute.
 function AttributeSet:getState()
   return copyTable(self.battlerBase)
 end

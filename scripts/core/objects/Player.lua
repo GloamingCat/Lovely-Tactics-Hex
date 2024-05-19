@@ -165,7 +165,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Moves player to the mouse coordinate.
--- @coroutine moveByMouse
+-- @coroutine
 -- @tparam string button Key of the button used to move (mouse1 or touch).
 function Player:moveByMouse(button)
   local tile = FieldManager.currentField:getHoveredTile()
@@ -196,7 +196,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Moves player depending on input.
--- @coroutine moveByKeyboard
+-- @coroutine
 -- @tparam number dx The x-axis input.
 -- @tparam number dy The x-axis input.
 -- @tparam boolean move False if character is just turning to the given direction, true if it
@@ -235,6 +235,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Plays terrain step sound.
+-- @tparam number dt The duration of the previous frame.
 function Player:updateStepCount(dt)
   self.stepCount = self.stepCount + self.speed / Config.player.walkSpeed * 60 * dt
   if self.stepCount > self.freq then
@@ -273,7 +274,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Interacts with whoever is the player looking at (if any).
--- @coroutine interact
+-- @coroutine
 -- @treturn boolean True if the character interacted with someone, false otherwise.
 function Player:interact()
   self:playIdleAnimation()

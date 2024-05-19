@@ -60,7 +60,7 @@ new_type("override_func","Overrides",false)
 new_type("rewrite_func","Rewrites",false)
 
 custom_tags = { 
-  { "coroutine", hidden = false }
+  { "coroutine", hidden = true }
 }
 
 alias('override',{'class',value='override_func'})

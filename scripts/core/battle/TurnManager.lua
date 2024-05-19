@@ -89,14 +89,17 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Gets the current selected character.
+-- @treturn Character Current character.
 function TurnManager:currentCharacter()
   return self.turnCharacters and self.turnCharacters[self.characterIndex]
 end
 --- Gets the current turn's troop.
+-- @treturn Troop Current troop.
 function TurnManager:currentTroop()
   return TroopManager.troops and TroopManager.troops[self.party]
 end
 --- Gets the path matrix of the current character.
+-- @treturn Matrix3 Current character's path matrix.
 function TurnManager:pathMatrix()
   return self.pathMatrixes and self.pathMatrixes[self.characterIndex]
 end
@@ -128,7 +131,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Executes turn and returns when the turn finishes.
--- @coroutine runTurn
+-- @coroutine
+-- @tparam boolean skipStart True to skip any `onTurnStart` callbacks.
 -- @treturn number Result code (nil if battle is still running).
 -- @treturn number The party that won or escaped (nil if battle is still running).
 function TurnManager:runTurn(skipStart)
@@ -166,7 +170,7 @@ function TurnManager:runTurn(skipStart)
   self.turns = self.turns + 1
 end
 --- Runs the player's turn.
--- @coroutine runPlayerTurn
+-- @coroutine
 -- @treturn ActionResult result Result info for the current turn.
 function TurnManager:runPlayerTurn()
   while true do
@@ -283,7 +287,7 @@ function TurnManager:characterTurnStart()
   self:updatePathMatrix()
   FieldManager.renderer:moveToObject(char, nil, true)
 end
--- Called the character's turn ended
+--- Called the character's turn ended
 -- @tparam ActionResult result Result info for the current turn.
 function TurnManager:characterTurnEnd(result)
   local char = self:currentCharacter()

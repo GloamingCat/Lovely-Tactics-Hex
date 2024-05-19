@@ -34,6 +34,7 @@ function BattleCursor:init()
   end
 end
 --- Updates animation.
+-- @tparam number dt The duration of the previous frame.
 function BattleCursor:update(dt)
   if self.anim then
     self.anim:update(dt)

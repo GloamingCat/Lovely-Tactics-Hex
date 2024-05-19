@@ -50,7 +50,7 @@ function Animation:setTarget(target)
   return self.sprite.position:distance2DTo(self.target:coordinates())
 end
 --- Starts the movement towards the target tile.
--- @coroutine throw
+-- @coroutine
 -- @tparam Character user
 -- @tparam ObjectTile target The target tile.
 -- @tparam[opt] number speed Speed in pixels per second. If nil, gets speed from tags).

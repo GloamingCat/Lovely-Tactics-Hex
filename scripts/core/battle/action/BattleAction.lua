@@ -66,8 +66,8 @@ end
 -- Event handlers
 -- ------------------------------------------------------------------------------------------------
 
---- Called when this action has been chosen.
--- @tparam ActionInput input
+--- Overrides `FieldAction:onSelect`.
+-- @override
 function BattleAction:onSelect(input)
   FieldAction.onSelect(self, input)
   if input.menu and not self.freeNavigation then
@@ -85,9 +85,8 @@ function BattleAction:onSelect(input)
   end
   input.moveAction = self.moveAction
 end
---- Called when the ActionMenu is open.
--- By default, just updates the "selectable" field in all tiles for grid selecting.
--- @tparam ActionInput input
+--- Overrides `FieldAction:onActionMenu`.
+-- @override
 function BattleAction:onActionMenu(input)
   self:resetTileColors()
   if self.showTargetWindow then
@@ -109,7 +108,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Sets tile colors according to its properties (movable, reachable and selectable).
--- @tparam ActionInput input
+-- @tparam ActionInput input User's input.
 function BattleAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
     if tile.ui.movable then
@@ -129,7 +128,7 @@ function BattleAction:resetTileProperties(input)
   FieldAction.resetTileProperties(self, input)
 end
 --- Sets all movable tiles as selectable or not and resets color to default.
--- @tparam ActionInput input
+-- @tparam ActionInput input User's input.
 function BattleAction:resetMovableTiles(input)
   if self.autoPath then
     local matrix = TurnManager:pathMatrix()
@@ -149,7 +148,7 @@ end
 --- Paints and resets properties for the target tiles.
 -- By default, paints all movable tile with movable color, and non-movable but reachable (within
 -- skill's range) tiles with the skill's type color.
--- @tparam ActionInput input
+-- @tparam ActionInput input User's input.
 function BattleAction:resetReachableTiles(input)
   local matrix = TurnManager:pathMatrix()
   local borderTiles = List()
@@ -198,7 +197,7 @@ function BattleAction:isTileAffected(input, tile)
   return false
 end
 --- Verifies if the given character receives any effect by the action.
--- @tparam ActionInput input
+-- @tparam ActionInput input User's input.
 -- @tparam Character char The target character.
 -- @treturn boolean True if character is affected, false otherwise.
 function BattleAction:isCharacterAffected(input, char)
@@ -310,7 +309,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Creates a queue of the closest selectable tiles.
--- @tparam ActionInput input
+-- @tparam ActionInput input User's input.
 -- @treturn PriorityQueue A list of {tile, path} tuples sorted by cost.
 function BattleAction:closestSelectableTiles(input)
   local pathMatrix = TurnManager:pathMatrix()
@@ -340,7 +339,7 @@ function BattleAction:closestSelectableTiles(input)
   return tempQueue
 end
 --- Used for AI. Gets all tiles that may be a target from the target tile in the input.
--- @tparam ActionInput input
+-- @tparam ActionInput input User's input.
 -- @tparam ObjectTile tile Target tile.
 -- @treturn table An array of tiles.
 function BattleAction:getAllAccessedTiles(input, tile)
@@ -356,10 +355,10 @@ function BattleAction:getAllAccessedTiles(input, tile)
   end
   return tiles
 end
---- Checks if a certain tile is with given input target's range.
--- @tparam ActionInput input
+--- Checks if a certain tile is with given input target's range, without moving.
+-- @tparam ActionInput input User's input.
 -- @tparam ObjectTile tile Target tile.
--- @treturn boolean
+-- @treturn boolean True if the tile if within action's range.
 function BattleAction:isWithinRange(input, tile)
   for x, y, h in mathf.maskIterator(self.range, input.target:coordinates()) do
     if tile.x == x and tile.y == y and tile.h == h then
@@ -369,7 +368,7 @@ function BattleAction:isWithinRange(input, tile)
   return false
 end
 --- Checks if a certain tile is with given input target's effect area.
--- @tparam ActionInput input
+-- @tparam ActionInput input User's input.
 -- @tparam ObjectTile tile Target tile.
 -- @treturn boolean
 function BattleAction:isWithinArea(input, tile)
@@ -381,7 +380,7 @@ function BattleAction:isWithinArea(input, tile)
   return false
 end
 --- Rotation targets, in clockwise order, starting from user's current direction.
--- @tparam ActionInput input
+-- @tparam ActionInput input User's input.
 -- @treturn List A List of ObjectTiles.
 function BattleAction:rotationTiles(input)
   local list = List()

@@ -128,6 +128,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Increments the frame count and automatically changes que sprite.
+-- @tparam number dt The duration of the previous frame.
 function Animation:update(dt)
   if self.paused or not self.duration or not self.timing or self.destroyed then
     return

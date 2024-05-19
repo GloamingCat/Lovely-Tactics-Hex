@@ -35,6 +35,7 @@ function Transformable:init(initPos, initScaleX, initScaleY, initRot, initColor)
   self.offsetDepth = 0
 end
 --- Called each frame.
+-- @tparam number dt The duration of the previous frame.
 function Transformable:update(dt)
   self:updateMovement(dt)
   self:updateScaling(dt)

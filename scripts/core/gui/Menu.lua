@@ -43,6 +43,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Updates all windows.
+-- @tparam number dt The duration of the previous frame.
 function Menu:update(dt)
   for window in self.windowList:iterator() do
     window:update(dt)
@@ -77,7 +78,7 @@ function Menu:setActiveWindow(window)
   end
 end
 --- Waits until Menu closes and returns a result.
--- @coroutine waitForResult
+-- @coroutine
 -- @treturn The result of Menu (will never be nil).
 function Menu:waitForResult()
   if self.activeWindow then
@@ -94,7 +95,7 @@ function Menu:waitForResult()
   return result
 end
 --- Waits until window closes and returns a result.
--- @coroutine showWindowForResult
+-- @coroutine
 -- @tparam Window window The new active window.
 -- @treturn The result of window (will never be nil).
 function Menu:showWindowForResult(window)
@@ -119,7 +120,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Shows all windows.
--- @coroutine show
+-- @coroutine
 function Menu:show()
   if self.open then
     return
@@ -149,7 +150,7 @@ function Menu:show()
   self.open = true
 end
 --- Hides all windows.
--- @coroutine hide
+-- @coroutine
 function Menu:hide()
   if self.closed then
     return

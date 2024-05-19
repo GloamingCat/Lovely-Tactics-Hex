@@ -32,6 +32,16 @@ BattleManager.GameOverCondition = {
   LOSE = 1,
   NOWIN = 2
 }
+--- Options for when the player loses.
+-- @enum PostDefeatChoice
+-- @field CONTINUE Continue the game after defeat (only if defeat is allowed). Equals to 1.
+-- @field LOSE Return to pre-battle state and start battle again. Equals to 2.
+-- @field EXIT Return to title screen. Equals to 3.
+BattleManager.PostDefeatChoice = {
+  CONTINUE = 1,
+  RETRY = 2,
+  EXIT = 3
+}
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -64,8 +74,7 @@ function BattleManager:getState()
   return {
     params = self.params,
     troops = TroopManager:getAllPartyData(),
-    turn = TurnManager:getState()
-  }
+    turn = TurnManager:getState() }
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -74,7 +83,8 @@ end
 
 --- Loads a battle field and waits for the battle to finish.
 -- It MUST be called from a fiber in FieldManager's fiber list, or else the fiber will be 
---- lost in the field transition. At the end of the battle, it reloads the previous field.
+-- lost in the field transition. At the end of the battle, it reloads the previous field.
+-- @coroutine
 -- @tparam[opt] table state Data about battle state for when the game is loaded mid-battle.
 function BattleManager:loadBattle(state)
   self.saveData = state
@@ -86,12 +96,12 @@ function BattleManager:loadBattle(state)
     self:setUp(self.saveData)
     local result = self:runBattle(self.saveData and self.saveData.turn ~= nil)
     self:clear()
-    if result == 1 then -- Continue
+    if result == self.PostDefeatChoice.CONTINUE then
       break
-    elseif result == 2 then -- Retry
+    elseif result == self.PostDefeatChoice.RETRY then
       FieldManager:loadField(self.params.fieldID or self.currentField.id)
       self.saveData = nil
-    elseif result == 3 then -- Title Screen
+    elseif result == self.PostDefeatChoice.EXIT then
       GameManager.restartRequested = true
       return
     end
@@ -100,6 +110,9 @@ function BattleManager:loadBattle(state)
   FieldManager:loadTransition(FieldManager.playerState.transition, FieldManager.playerState.field)
 end
 --- Runs until battle finishes.
+-- @coroutine
+-- @tparam boolean skipIntro If true, the camera does not present the parties
+--  and the field's load scripts are not executed.
 -- @treturn number The result of the end Menu.
 function BattleManager:runBattle(skipIntro)
   self.result = nil
@@ -116,6 +129,9 @@ function BattleManager:runBattle(skipIntro)
   return self:battleEnd()
 end
 --- Runs before battle loop.
+-- @coroutine
+-- @tparam boolean skipIntro If true, the camera does not present the parties
+--  and the field's load scripts are not executed.
 function BattleManager:battleStart(skipIntro)
   self.onBattle = true
   if self.params.fade then
@@ -131,6 +147,7 @@ function BattleManager:battleStart(skipIntro)
   FieldManager:runLoadScripts()
 end
 --- Player intro animation, to show each party.
+-- @coroutine
 function BattleManager:battleIntro()
   local speed = 50
   for i = 1, #TroopManager.centers do
@@ -145,7 +162,8 @@ function BattleManager:battleIntro()
   _G.Fiber:wait(15)
 end
 --- Runs after winner was determined and battle loop ends.
--- @treturn number The result code: 1 -> continue; 2 -> retry; 3 -> title screen.
+-- @coroutine
+-- @treturn PostDefeatChoice The code dictating what to do next.
 function BattleManager:battleEnd()
   local result = 1
   if self:playerWon() then
@@ -180,32 +198,33 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Whether the player party won the battle.
--- @treturn boolean
+-- @treturn boolean Whether the player party won the battle.
 function BattleManager:playerWon()
   return self.result >= TurnManager.BattleResult.WIN 
 end
 --- Whether the player party escaped.
--- @treturn boolean
+-- @treturn boolean Whether the player party escaped.
 function BattleManager:playerEscaped()
   return self.result == TurnManager.BattleResult.ESCAPE
 end
 --- Whether the enemy party won battle.
--- @treturn boolean
+-- @treturn boolean Whether the enemy party won battle.
 function BattleManager:enemyWon()
   return self.result == TurnManager.BattleResult.LOSE
 end
 --- Whether the enemy party escaped.
--- @treturn boolean
+-- @treturn boolean Whether the enemy party escaped.
 function BattleManager:enemyEscaped()
   return self.result == TurnManager.BattleResult.WALKOVER
 end
 --- Whether both parties lost.
--- @treturn boolean
+-- @treturn boolean Whether both parties lost.
 function BattleManager:drawed()
   return self.result == TurnManager.BattleResult.DRAW
 end
---- Checks if the player received a game over.
--- @treturn boolean
+--- Checks if the player received a game over or is allowed to continue,
+-- according to the battle's game over conditions.
+-- @treturn boolean True if the player must retry, false if it's possible to continue.
 function BattleManager:isGameOver()
   if self:drawed() then
     return self.params.gameOverCondition >= self.GameOverCondition.NOWIN

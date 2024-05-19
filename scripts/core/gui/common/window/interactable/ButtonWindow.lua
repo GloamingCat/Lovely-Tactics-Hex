@@ -61,7 +61,8 @@ end
 -- Input Callbacks
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `Window:update`. Opens or closes automatically depending if the player is using the mouse or not.
+--- Overrides `Window:update`.
+-- Opens or closes automatically depending if the player is using the mouse or not.
 -- @override
 function ButtonWindow:update(dt)
   if self.menu.open and self.active then

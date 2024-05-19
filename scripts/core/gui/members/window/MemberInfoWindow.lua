@@ -24,7 +24,7 @@ local MemberInfoWindow = class(Window)
 
 --- Constructor.
 -- @tparam Battler member The initial member.
--- @param ...  Other default parameters from Window:init.
+-- @param ... Other default parameters from Window:init.
 function MemberInfoWindow:init(member, ...)
   self.member = member
   Window.init(self, ...)

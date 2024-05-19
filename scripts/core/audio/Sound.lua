@@ -49,7 +49,7 @@ end
 -- @tparam[opt="seconds"] string unit Either "seconds" or "samples".
 -- @treturn number The duration in the given unit.
 function Sound:getDuration(unit)
-  return self.source:getDuration()
+  return self.source:getDuration(unit)
 end
 
 -- ------------------------------------------------------------------------------------------------

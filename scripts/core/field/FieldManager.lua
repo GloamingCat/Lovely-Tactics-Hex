@@ -37,6 +37,7 @@ function FieldManager:init()
   self.playerState = {}
 end
 --- Calls all the update functions.
+-- @tparam number dt The duration of the previous frame.
 function FieldManager:update(dt)
   self.fiberList:update()
   if self.currentField then

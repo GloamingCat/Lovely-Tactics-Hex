@@ -78,6 +78,7 @@ function ObjectTile:getMoveCost(char)
   return FieldManager.currentField:getMoveCost(char, self:coordinates())
 end
 --- Updates graphics animation.
+-- @tparam number dt The duration of the previous frame.
 function ObjectTile:update(dt)
   if self.ui then
     self.ui:update(dt)

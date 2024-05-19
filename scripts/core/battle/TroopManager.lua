@@ -186,7 +186,8 @@ function TroopManager:createCharacter(tile, dir, member, party)
   charData.x, charData.y, charData.h = tile:coordinates()
   return Character(charData)
 end
---- Removes the given character.
+--- Removes and deletes the given character.
+-- @tparam Character char The character to be removed.
 function TroopManager:deleteCharacter(char)
   self.characterList:removeElement(char)
   self.characterList[char.key] = nil

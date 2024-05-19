@@ -2,12 +2,23 @@
 -- ================================================================================================
 
 --- Represents the decision for the turn (action and target).
--- It contains the user character, an optional MoveAction, the decided BattleAction and the
--- target ObjectTile.  
--- Depending on the context, the information might change its type, e. g. `user` might be a
--- `Battler` or a `Character` depending if it's called from the menu or from the battle field, as
--- well as the `target`.
+-- The input can contain missing information that will be filled during the interactions with the
+-- UI or the calculations of the AI.
+--
+-- The information that the input can contain:
+-- 
+-- * action: The selected `FieldAction`.
+-- * user: The user of the action.
+--  A `Battler` when used on a menu, or a `Character` when used on a field. 
+-- * target: The target of the skill, if it's a single target.
+--  A `Battler` when used on a menu, or an `ObjectTile` when used on a field.
+-- * targets: An array with `Battler` targets, if there are multiple targets. Only used on menu.
+-- * moveAction: An optional `MoveAction` to be performed before the execution of the action.
+-- * menu: The currently active `ActionMenu` when it's called on a field.
+-- @see FieldAction
 -- @see BattleAction
+-- @see ActionMenu
+-- @see AIRule
 ---------------------------------------------------------------------------------------------------
 -- @battlemod ActionInput
 
@@ -27,7 +38,7 @@ local ActionInput = class()
 -- @tparam BattleAction action
 -- @tparam Character|Battler user
 -- @tparam[opt] ObjectTile target Action target.
--- @tparam[opt] ActionMenu Menu Aurrent ActionMenu, if any.
+-- @tparam[opt] ActionMenu Menu Current `ActionMenu`, if any.
 function ActionInput:init(action, user, target, Menu)
   self.action = action
   self.user = user
@@ -40,8 +51,9 @@ end
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
---- Checks if the action can be executed in this turn.
--- @treturn boolean
+--- Checks whether the action can be executed in this turn.
+-- It delegates to `FieldAction:canExecute`.
+-- @treturn boolean True if there's an action and it can be executed.
 function ActionInput:canExecute()
   return self.action and self.action:canExecute(self)
 end

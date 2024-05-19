@@ -118,17 +118,18 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Checks if game is running on a standalone desktop version.
--- @treturn boolean
+-- Returns false if it's on mobile or browser mode.
+-- @treturn boolean Whether the current platform is desktop.
 function GameManager:isDesktop()
   return Config.platform == 0 and not self.webMode and not self.mobileMode
 end
 --- Checks if game is running on a mobile device (browser or not).
--- @treturn boolean
+-- @treturn boolean Whether the current platform is mobile.
 function GameManager:isMobile()
   return Config.platform % 2 == 1 or self.mobileMode
 end
 --- Checks if game is running on a web browser (mobile or not).
--- @treturn boolean
+-- @treturn boolean Whether the current platform is web.
 function GameManager:isWeb()
   return Config.platform >= 2 or self.webMode
 end
@@ -171,6 +172,7 @@ function GameManager:checkRequests()
   end
 end
 --- Updates MenuManager, FieldManager, AudioManager and InputManager.
+-- @tparam number dt The duration of the previous frame.
 function GameManager:updateManagers(dt)
   if not self.paused then
     if not MenuManager.paused then 
@@ -312,9 +314,12 @@ function GameManager:restart(save)
   end
 end
 --- Closes game from internal game functions.
-function GameManager:quit()
+-- @tparam[opt=15] number delay The time in frames to wait before closing the window.
+-- @coroutine
+function GameManager:quit(delay)
+  delay = delay or 15
   if _G.Fiber then
-    _G.Fiber:wait(15)
+    _G.Fiber:wait(delay)
   end
   love.event.quit()
 end

@@ -84,7 +84,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Shows a message and waits until player presses the confirm button.
--- @coroutine showDialogue
+-- @coroutine
 -- @tparam string text The message.
 -- @tparam string align The text's horizontal alignment ('left', 'right' or 'center').
 -- @tparam[opt] table speaker The speaker's name and position of name box.

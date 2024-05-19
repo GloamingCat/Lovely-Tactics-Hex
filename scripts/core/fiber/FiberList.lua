@@ -53,7 +53,7 @@ end
 
 --- Creates new Fiber from function.
 -- @tparam function func The function of the Fiber.
--- @param ...  Any arguments to the function.
+-- @param ... Any arguments to the function.
 -- @treturn Fiber The newly created Fiber.
 function FiberList:fork(func, ...)
   return Fiber(self, func, ...)

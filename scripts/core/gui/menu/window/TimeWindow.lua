@@ -50,7 +50,8 @@ function TimeWindow:setTime(time)
     self.text:redraw()
   end
 end
---- Updates play time.
+--- Overrides `Window:update`. Updates play time.
+-- @override
 function TimeWindow:update(dt)
   Window.update(self, dt)
   if self.open then

@@ -52,6 +52,7 @@ function JumpingObject:jump(duration, gravity)
   self.gravity = gravity * 60
 end
 --- Updates position and velocity when jumping.
+-- @tparam number dt The duration of the previous frame.
 function JumpingObject:updateJump(dt)
   if self.gravity == 0 then
     return
@@ -86,7 +87,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Jumps to the given pixel point (x, y, d).
--- @coroutine jumpToPoint
+-- @coroutine
 -- @tparam number x Coordinate x of the point.
 -- @tparam number y Coordinate y of the point.
 -- @tparam number z The depth of the point.
@@ -102,7 +103,7 @@ function JumpingObject:jumpToPoint(x, y, z, gravity)
   return self.position:almostEquals(x, y, z, 0.2)
 end
 --- Jumps a given distance in each axis.
--- @coroutine jumpDistance
+-- @coroutine
 -- @tparam number dx The distance in axis x (in pixels).
 -- @tparam number dy The distance in axis y (in pixels).
 -- @tparam number dz The distance in depth (in pixels).
@@ -113,7 +114,7 @@ function JumpingObject:jumpDistance(dx, dy, dz, gravity)
   return self:jumpToPoint(pos.x + dx, pos.y + dy, pos.z + dz, gravity)
 end
 --- Walks the given distance in the given direction.
--- @coroutine jumpInAngle
+-- @coroutine
 -- @tparam number d The distance to be walked.
 -- @tparam number angle The direction angle.
 -- @tparam number dz The distance in depth.
@@ -130,7 +131,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Jumps to the center of the tile (x, y).
--- @coroutine jumpToTile
+-- @coroutine
 -- @tparam number x Coordinate x of the tile.
 -- @tparam number y Coordinate y of the tile.
 -- @tparam number h The height of the tile.
@@ -141,7 +142,7 @@ function JumpingObject:jumpToTile(x, y, h, gravity)
   return self:jumpToPoint(x, y, h, gravity)
 end
 --- Jumps a distance in tiles defined by (dx, dy, dh).
--- @coroutine jumpTiles
+-- @coroutine
 -- @tparam number dx The x-axis distance.
 -- @tparam number dy The y-axis distance.
 -- @tparam number dh The height difference.

@@ -35,7 +35,7 @@ function Gauge:init(topLeft, width, color, x)
   Component.init(self, topLeft, width, color)
 end
 --- Implements `Component:setProperties`.
--- @impleent
+-- @implement
 function Gauge:setProperties()
   self.barHeight = 6
   self.barY = 3

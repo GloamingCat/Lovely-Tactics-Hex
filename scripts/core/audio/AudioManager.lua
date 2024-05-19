@@ -80,7 +80,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Volume multiplier for current BGM.
--- @treturn number
+-- @treturn number Volume (0-1).
 function AudioManager:getBGMVolume()
   return self.volumeBGM
 end
@@ -93,7 +93,7 @@ function AudioManager:setBGMVolume(v)
   end
 end
 --- Volume multiplier for current SFX.
--- @treturn number
+-- @treturn number Volume (0-1).
 function AudioManager:getSFXVolume()
   return self.volumeSFX
 end
@@ -120,7 +120,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Pitch multiplier for current BGM.
--- @treturn number
+-- @treturn number Pitch (0-1).
 function AudioManager:getBGMPitch()
   return self.pitchBGM
 end
@@ -133,7 +133,7 @@ function AudioManager:setBGMPitch(p)
   end
 end
 --- Pitch multiplier for current SFX.
--- @treturn number
+-- @treturn number Pitch (0-1).
 function AudioManager:getSFXPitch()
   return self.pitchSFX
 end
@@ -236,7 +236,7 @@ function AudioManager:resumeBGM(time, wait)
   end
 end
 --- Pauses current BGM.
--- @coroutine pauseBGM
+-- @coroutine
 -- @tparam[opt=0] number time Fade-out time.
 -- @tparam[opt] boolean wait Flag to wait until the end of the fading.
 -- @treturn Music Current playing BGM (if any).
@@ -270,7 +270,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Decreases the BGM volume slowly.
--- @coroutine fadeout
+-- @coroutine
 -- @tparam[opt=0] number time The duration of the fading.
 -- @tparam[opt] boolean wait Flag to only return when the fading finishes.
 function AudioManager:fadeout(time, wait)
@@ -289,7 +289,7 @@ function AudioManager:fadeout(time, wait)
   end
 end
 --- Increases the BGM volume slowly.
--- @coroutine fadein
+-- @coroutine
 -- @tparam[opt=0] number time The duration of the fading.
 -- @tparam[opt] boolean wait Flag to only return when the fading finishes.
 function AudioManager:fadein(time, wait)

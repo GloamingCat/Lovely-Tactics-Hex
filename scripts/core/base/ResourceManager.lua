@@ -248,8 +248,9 @@ function ResourceManager:loadBGM(name, intro, loop)
   return intro, loop
 end
 --- Loads source for the given sound's name.
+-- New sound data is loaded only if necessary.
 -- @tparam string name Name of the file from the audio folder.
--- @treturn Source
+-- @treturn Source The source object of the sound.
 function ResourceManager:loadSFX(name)
   if AudioCache[name] then
     return newSource(AudioCache[name])

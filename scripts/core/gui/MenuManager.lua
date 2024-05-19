@@ -34,6 +34,7 @@ function MenuManager:init()
   ScreenManager:setRenderer(self.renderer, 2)
 end
 --- Calls all the update functions.
+-- @tparam number dt The duration of the previous frame.
 function MenuManager:update(dt)
   for i = 1, #self.stack do
     self.stack[i]:update(dt)
@@ -65,7 +66,7 @@ function MenuManager:isWaitingInput()
   return self.current and self.current.activeWindow ~= nil
 end
 --- Shows Menu and waits until returns a result.
--- @coroutine showMenuForResult
+-- @coroutine
 -- @tparam Menu newMenu The Menu object to be added and shown.
 -- @treturn unknown Any result returned by the Menu after it's closed.
 function MenuManager:showMenuForResult(newMenu)
@@ -75,7 +76,7 @@ function MenuManager:showMenuForResult(newMenu)
   return result
 end
 --- Shows Menu and adds to the stack.
--- @coroutine showMenu
+-- @coroutine
 -- @tparam Menu newMenu The Menu object to be added and shown.
 function MenuManager:showMenu(newMenu)
   if self.current then
@@ -85,7 +86,7 @@ function MenuManager:showMenu(newMenu)
   newMenu:show()
 end
 --- Closes current Menu and returns to the previous.
--- @coroutine returnMenu
+-- @coroutine
 function MenuManager:returnMenu()
   local lastMenu = self.current
   lastMenu:hide()

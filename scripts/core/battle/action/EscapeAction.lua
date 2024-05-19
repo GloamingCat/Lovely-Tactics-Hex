@@ -22,8 +22,9 @@ local EscapeAction = class(BattleAction)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `BattleAction:init`. Sets animation speed.
--- @override
+--- Constructor.
+-- @tparam boolean move Flag to allow the usar to move to a party tile.
+-- @param ... Any arguments passed to `BattleAction:init`.
 function EscapeAction:init(move, ...)
   BattleAction.init(self, ...)
   self.animSpeed = 2
@@ -77,6 +78,8 @@ function EscapeAction:execute(input)
   end
 end
 --- Removes character from field.
+-- @coroutine
+-- @tparam ActionInput input User's input.
 function EscapeAction:escape(input)
   local char = input.user
   local party = char.party

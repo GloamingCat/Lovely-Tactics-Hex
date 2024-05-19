@@ -2,6 +2,7 @@
 -- ================================================================================================
 
 --- A special kind of list that provides functions to manage battler's list of skills.
+-- Each element of this list is a `SkillAction`.
 ---------------------------------------------------------------------------------------------------
 -- @battlemod SkillList
 -- @extend List
@@ -26,7 +27,7 @@ local SkillList = class(List)
 --- Overrides `List:init`. 
 -- @override
 -- @tparam Battler battler
--- @tparam table save
+-- @tparam[opt] table save Array with `SkillAction`s or skill IDs from save data.
 function SkillList:init(battler, save)
   List.init(self)
   self.battler = battler
@@ -85,7 +86,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Gets the persistent data.
--- @treturn table Array with skills' IDs.
+-- @treturn table Array with skill IDs.
 function SkillList:getState()
   local state = {}
   for i = 1, self.size do
@@ -93,13 +94,13 @@ function SkillList:getState()
   end
   return state
 end
---- Creates a copy of this list.
--- @treturn SkillList
+--- Creates a shallow copy of this list, with the same battler.
+-- @treturn SkillList A copy of the list.
 function SkillList:clone()
   return SkillList(self.battler, self)
 end
 --- Creates a copy of this list as a List type.
--- @treturn List
+-- @treturn List A list of `SkillAction`s.
 function SkillList:toList()
   return List(self)
 end

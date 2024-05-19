@@ -77,6 +77,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Updates all content elements.
+-- @tparam number dt The duration of the previous frame.
 function Window:update(dt)
   Transformable.update(self, dt)
   if self.background then

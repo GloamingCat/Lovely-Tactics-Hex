@@ -21,20 +21,19 @@ local Affine = {}
 
 --- A transform table.
 -- @table Transform
--- @tfield number offsetX Center pixel x of the quad, relative to top left corner.
--- @tfield number offsetY Center pixel y of the quad, relative to top left corner.
--- @tfield number offsetDepth Value added to sprite's depth;
--- @tfield number scaleX Scale multiplier for the X axis (neutral is 100).
--- @tfield number scaleY Scale multiplier for the Y axis (neutral is 100).
--- @tfield number rotation Angle in degrees (from 0 to 360).
--- @tfield number red Red color component (from 0 to 255).
--- @tfield number green Green color component (from 0 to 255).
--- @tfield number blue Blue color component (from 0 to 255).
--- @tfield number alpha Alpha color component (from 0 to 255).
--- @tfield number hue Hue offset (from 0 to 360).
--- @tfield number saturation Saturation multiplier (neutral is 100).
--- @tfield number brightness Color value multiplier (neutral is 100).
-
+-- @tfield[opt=0] number offsetX Center pixel x of the quad, relative to top left corner.
+-- @tfield[opt=0] number offsetY Center pixel y of the quad, relative to top left corner.
+-- @tfield[opt=0] number offsetDepth Value added to sprite's depth;
+-- @tfield[opt=100] number scaleX Scale multiplier for the X axis (in percentage).
+-- @tfield[opt=100] number scaleY Scale multiplier for the Y axis (in percentage).
+-- @tfield[opt=0] number rotation Angle in degrees (from 0 to 360).
+-- @tfield[opt=255] number red Red color component (from 0 to 255).
+-- @tfield[opt=255] number green Green color component (from 0 to 255).
+-- @tfield[opt=255] number blue Blue color component (from 0 to 255).
+-- @tfield[opt=255] number alpha Alpha color component (from 0 to 255).
+-- @tfield[opt=0] number hue Hue offset (from 0 to 360).
+-- @tfield[opt=100] number saturation Saturation multiplier (in percentage).
+-- @tfield[opt=100] number brightness Color value multiplier (in percentage).
 Affine.neutralTransform = {
   -- Space
   offsetX = 0,
@@ -115,13 +114,13 @@ function Affine.createTransform(t, transformations)
       local field = fields[ti.type + 1]
       if ti.type <= 2 or ti.type == 5 or ti.type == 10 then
         -- Offset, rotation, hue
-        t[field] = ti.value + (ti.override and 0 or t[field])
+        t[field] = ti.value + (ti.override and 0 or t[field] or 0)
       elseif ti.type > 5 and ti.type < 10 then
         -- RGBA
-        t[field] = ti.value / 255 * (ti.override and 255 or t[field])
+        t[field] = ti.value / 255 * (ti.override and 255 or t[field] or 255)
       else
         -- Scale, saturation, brightness
-        t[field] = ti.value / 100 * (ti.override and 100 or t[field])
+        t[field] = ti.value / 100 * (ti.override and 100 or t[field] or 100)
       end
     end
   end

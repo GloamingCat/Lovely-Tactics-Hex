@@ -66,7 +66,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Walks to the given pixel point (x, y, d).
--- @coroutine walkToPoint
+-- @coroutine
 -- @tparam number x Coordinate x of the point.
 -- @tparam number y Coordinate y of the point.
 -- @tparam number z The depth of the point.
@@ -79,7 +79,7 @@ function WalkingObject:walkToPoint(x, y, z)
   return self.position:almostEquals(x, y, z, 0.2)
 end
 --- Walks a given distance in each axis.
--- @coroutine walkDistance
+-- @coroutine
 -- @tparam number dx The distance in axis x (in pixels).
 -- @tparam number dy The distance in axis y (in pixels).
 -- @tparam number dz The distance in depth (in pixels).
@@ -89,7 +89,7 @@ function WalkingObject:walkDistance(dx, dy, dz)
   return self:walkToPoint(pos.x + dx, pos.y + dy, pos.z + dz)
 end
 --- Walks the given distance in the given direction.
--- @coroutine walkInAngle
+-- @coroutine
 -- @tparam number d The distance to be walked.
 -- @tparam number angle The direction angle.
 -- @tparam number dz The distance in depth.
@@ -105,7 +105,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Walks to the center of the tile (x, y).
--- @coroutine walkToTile
+-- @coroutine
 -- @tparam number x Coordinate x of the tile.
 -- @tparam number y Coordinate y of the tile.
 -- @tparam number h The height of the tile.
@@ -115,7 +115,7 @@ function WalkingObject:walkToTile(x, y, h)
   return self:walkToPoint(x, y, h)
 end
 --- Walks a distance in tiles defined by (dx, dy, dh).
--- @coroutine walkTiles
+-- @coroutine
 -- @tparam number dx The x-axis distance.
 -- @tparam number dy The y-axis distance.
 -- @tparam number dh The height difference.

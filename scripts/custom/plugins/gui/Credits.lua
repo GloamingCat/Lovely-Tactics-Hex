@@ -90,7 +90,7 @@ local function showCredits(titleText, bodyText)
   end
 end
 --- Shows credits animation and listens to player input.
--- @coroutine showCredits
+-- @coroutine
 function MenuEvents:showCredits(args)
   self:createMenu()
   local titleText = createText(self.menu:windowMargin() * 2)

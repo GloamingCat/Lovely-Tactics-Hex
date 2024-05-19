@@ -33,7 +33,7 @@ end
 
 --- Executes next action of the current character, when it's the character's turn.
 -- By default, just skips turn, with no time loss.
--- @treturn number The action result table.
+-- @treturn TurnManager.ActionResult The action result table.
 function BattlerAI:runTurn()
   local char = TurnManager:currentCharacter()
   self:showCursor(char)
@@ -41,7 +41,9 @@ function BattlerAI:runTurn()
   return result
 end
 --- Executes the rules in order until one of them produces a result.
+-- If none of the rules can be executed, it returns a result equivalent of a "wait" action.
 -- @tparam Character char The battle character executing the rules.
+-- @treturn TurnManager.ActionResult The action result table.
 function BattlerAI:applyRules(char)
   for i = 1, #self.rules do
     local rule = AIRule:fromData(self.rules[i], self.battler)
@@ -71,19 +73,18 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Shows the cursor over the current character.
-function BattlerAI:showCursor(char)
+--- Shows the cursor over a character.
+-- @coroutine
+-- @tparam Character char The character the cursor will point to.
+-- @tparam[opt=30] The time in frames to wait.
+function BattlerAI:showCursor(char, time)
   FieldManager.renderer:moveToObject(char, nil, true)
   local cursor = BattleCursor()
   cursor:setTile(char:getTile())
   cursor:show()
-  local t = 0.5
-  while t > 0 do
-    local dt = GameManager:frameTime()
-    t = t - dt
-    cursor:update(dt)
-    Fiber:wait()
-  end
+  FieldManager.updateList:add(cursor)
+  Fiber:wait(30)
+  FieldManager.updateList:removeElement(cursor)
   cursor:destroy()
 end
 -- For debugging.

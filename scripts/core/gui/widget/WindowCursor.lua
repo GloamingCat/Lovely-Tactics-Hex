@@ -48,6 +48,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Updates animation.
+-- @tparam number dt The duration of the previous frame.
 function WindowCursor:update(dt)
   if self.window.active and not self.paused then
     self.anim:update(dt)

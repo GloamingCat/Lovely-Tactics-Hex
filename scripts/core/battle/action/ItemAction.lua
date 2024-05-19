@@ -20,8 +20,7 @@ local ItemAction = class(SkillAction)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `SkillAction:init`. Adds item effects.
--- @override
+--- Constructor.
 -- @tparam number skillID Item's skill ID.
 -- @tparam table item Item data.
 function ItemAction:init(skillID, item)

@@ -54,6 +54,7 @@ function TerrainTile:coordinates()
   return self.x, self.y, self.layer.height
 end
 --- Updates each animation.
+-- @tparam number dt The duration of the previous frame.
 function TerrainTile:update(dt)
   if self.animations then
     for i = 1, 4 do
