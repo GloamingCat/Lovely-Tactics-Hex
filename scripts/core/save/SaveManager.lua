@@ -148,7 +148,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Whether there are saves or not.
--- @treturn boolean
+-- @treturn boolean True if there at least one save with the current version.
 function SaveManager:hasSaves()
   for k, v in pairs(self.saves) do
     if v.version == saveVersion then

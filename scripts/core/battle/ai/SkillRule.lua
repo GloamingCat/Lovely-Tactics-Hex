@@ -52,7 +52,7 @@ end
 --- Character if user is a valid target.
 -- @tparam Character char Target candidate.
 -- @tparam[opt] table eff Effect to check validity. If nil, uses the skill's first effect.
--- @treturn boolean
+-- @treturn boolean True if `char` is affected somehow by `eff`.
 function SkillRule:isValidTarget(char, eff)
   local support = eff and eff.heal or self.skill.support
   eff = eff or self.skill.effects[1]

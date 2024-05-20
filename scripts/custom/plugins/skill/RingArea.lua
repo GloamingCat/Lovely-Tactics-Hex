@@ -113,7 +113,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Checks whether the skill's area represents whole field or not.
--- @treturn boolean
+-- @treturn boolean True if it should affect the whole field.
 function FieldAction:wholeField()
   return self.area == nil
 end

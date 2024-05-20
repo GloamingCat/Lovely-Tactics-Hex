@@ -20,8 +20,8 @@ local List = class()
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam table content An array of initial elements, 
---  indexed continously starting from 1 (optional).
+-- @tparam[opt] table content An array with the initial elements, 
+--  indexed continously starting from 1.
 function List:init(content)
   if content then
     self.size = #content

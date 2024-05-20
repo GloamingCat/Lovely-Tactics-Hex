@@ -40,7 +40,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Whether the player pressed the button to pass the dialogue.
--- @treturn boolean
+-- @treturn boolean True if at least one of the valid keys were pressed in this frame.
 function Dialogue:buttonPressed()
   return InputManager.keys['confirm']:isTriggered() or InputManager.keys['cancel']:isTriggered() 
     or InputManager.keys['mouse1']:isTriggered() or InputManager.keys['mouse2']:isTriggered()

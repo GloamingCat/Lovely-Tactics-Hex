@@ -69,8 +69,10 @@ end
 -- Enable Conditions
 -- ------------------------------------------------------------------------------------------------
 
---- True if at least one item of this type can be bought.
--- @treturn boolean 
+--- In buy mode, checks if at least one item of this type can be bought.
+-- In sell mode, checks if the item is sellable. 
+-- @tparam Button button Button to check, containing the item's information.
+-- @treturn boolean Whether the buy/sell button should be enabled.
 function ShopListWindow:buttonEnabled(button)
   if self.buy then
     return self.menu.troop.money >= button.price
@@ -84,6 +86,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Shows the window to select the quantity.
+-- @tparam Button button Selected button.
 function ShopListWindow:onButtonConfirm(button)
   local w = self.menu.countWindow
   self:hide()
@@ -92,10 +95,12 @@ function ShopListWindow:onButtonConfirm(button)
   w:activate()
 end
 --- Closes buy Menu.
+-- @tparam Button button Selected button.
 function ShopListWindow:onButtonCancel(button)
   self.menu:hideShopMenu()
 end
 --- Updates item description.
+-- @tparam Button button Selected button.
 function ShopListWindow:onButtonSelect(button)
   self.menu.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
 end

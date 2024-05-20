@@ -169,7 +169,7 @@ function Colorable:waitForColor()
   end
 end
 --- Whether the color animation is still on going.
--- @treturn boolean
+-- @treturn boolean False if it stopped changing color.
 function Colorable:colorizing()
   return self.colorTime < 1
 end

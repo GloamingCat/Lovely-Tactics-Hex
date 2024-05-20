@@ -258,7 +258,7 @@ function FieldManager:hideGrid()
   end
 end
 --- Tells if the field was loaded from save instead of from a field transition.
--- @treturn boolean
+-- @treturn boolean True if loaded directly from save.
 function FieldManager:loadedFromSave()
   if self.player then
     return self.player.saveData ~= nil

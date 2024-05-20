@@ -222,7 +222,7 @@ function TurnManager:nextCharacterIndex(i, controllable)
   return index
 end
 --- Whether there are characters on battle that can act, either by input or AI.
--- @treturn boolean
+-- @treturn boolean True if there's at least one active character that hasn't made an action yet.
 function TurnManager:hasActiveCharacters()
   for i = 1, #self.turnCharacters do
     if self.turnCharacters[i].battler:isActive() then

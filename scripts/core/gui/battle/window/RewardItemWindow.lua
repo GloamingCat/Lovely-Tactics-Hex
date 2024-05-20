@@ -40,9 +40,9 @@ function RewardItemWindow:createWidgets()
   button:createInfoText(self.money .. '{%g}', '', 'menu_button')
   InventoryWindow.createWidgets(self)
 end
---- Tells if an item can be used.
+--- Tells if a button should be enabled.
 -- @tparam Button button The button to check.
--- @treturn boolean
+-- @treturn boolean Always true, by default.
 function RewardItemWindow:buttonEnabled(button)
   return true
 end

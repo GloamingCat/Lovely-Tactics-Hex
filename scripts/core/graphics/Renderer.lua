@@ -195,7 +195,7 @@ function Renderer:drawSortedList(list)
   end
 end
 --- Gets the number of sprites (visible or not).
--- @treturn number 
+-- @treturn number The number of sprites in this Renderer.
 function Renderer:spriteCount()
   local count = 0
   for i = self.minDepth, self.maxDepth do
@@ -231,8 +231,8 @@ function Renderer:clearBatch()
   end
 end
 --- Checks if sprite may be added to the current batch.
--- @tparam Sprite sprite
--- @treturn boolean
+-- @tparam Sprite sprite Sprite to check.
+-- @treturn boolean True if the sprite has the same texture and HSV as the batch.
 function Renderer:batchPossible(sprite)
   if sprite.texture ~= self.batchTexture then
     return false

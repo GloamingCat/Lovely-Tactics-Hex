@@ -36,8 +36,9 @@ function EventUtil:findCharacter(key, optional)
   return char
 end
 --- Checks if the script's character (if any) collided with given character.
+-- This will return true during the entire executions of the characters' collision scripts, if any.
 -- @tparam string key Character's key.
--- @treturn boolean
+-- @treturn boolean True if the characters collided.
 function EventUtil:collidedWith(key)
   return self.char and (self.char.collided == key or self.char.collider == key)
 end
@@ -47,7 +48,7 @@ end
 --  If it's a string, ignores parameters `j` and `h`.
 -- @tparam[opt] number j Tile y position.
 -- @tparam[opt] number h Tile height.
--- @treturn boolean
+-- @treturn boolean True if the character with given key is in the given tile position.
 function EventUtil:checkTile(key, i, j, h)
   local char = FieldManager:search(key)
   if type(i) == 'string' then
@@ -76,7 +77,7 @@ end
 --  For 1: top of the screen, full width;  
 --  For 2: bottom of the screen, full width;  
 --  For 3+: middle of the screen, 3/4 width.  
--- @treturn DescriptionWindow
+-- @treturn DescriptionWindow The new window.
 function EventUtil:createDefaultMessageWindow(id)
   local x, y = 0, 0
   local w, h = ScreenManager.width, ScreenManager.height / 3
@@ -90,7 +91,7 @@ function EventUtil:createDefaultMessageWindow(id)
   return DescriptionWindow(self.menu, w, h, Vector(x, y))
 end
 --- Opens a new message window and stores in the given ID.
--- @tparam WindowArguments args
+-- @tparam WindowArguments args Argument table.
 function EventUtil:openMessageWindow(args)
   self:createMenu()
   local msgs = self.menu.messages
@@ -112,7 +113,7 @@ end
 --  For 1: bottom of the screen, full width;  
 --  For 2: top of the screen, full width;  
 --  For 3+: middle of the screen, 3/4 width.  
--- @treturn DialogueWindow
+-- @treturn DialogueWindow New window.
 function EventUtil:createDefaultDialogueWindow(id)
   local x, y = 0, 0
   local w, h = ScreenManager.width, ScreenManager.height / 3
@@ -126,7 +127,7 @@ function EventUtil:createDefaultDialogueWindow(id)
   return DialogueWindow(self.menu, w, h, x, y)
 end
 --- Opens a new dialogue window and stores in the given ID.
--- @tparam WindowArguments args
+-- @tparam WindowArguments args Argument table.
 function EventUtil:openDialogueWindow(args)
   self:createMenu()
   local dialogues = self.menu.dialogues

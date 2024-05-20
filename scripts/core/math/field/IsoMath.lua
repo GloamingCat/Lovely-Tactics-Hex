@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- Implements FieldMath methods for isometric fields.
+--- Implements `FieldMath` methods for isometric fields.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod IsoMath
 -- @extend FieldMath

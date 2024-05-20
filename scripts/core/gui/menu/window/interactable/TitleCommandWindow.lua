@@ -91,7 +91,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Whether the ItemMenu can be open.
--- @treturn boolean
+-- @treturn boolean True if there's a load window in the menu.
 function TitleCommandWindow:loadGameEnabled()
   return self.menu.loadWindow
 end

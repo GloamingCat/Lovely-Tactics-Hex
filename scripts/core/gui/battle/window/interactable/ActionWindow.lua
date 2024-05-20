@@ -47,9 +47,9 @@ function ActionWindow:selectAction(action, input)
     self.menu:show()
   end
 end
---- Checks if a given skill action is enabled to use.
--- @tparam SkillAction skill
--- @treturn boolean
+--- Checks if a given skill action can be used by the current user.
+-- @tparam SkillAction skill The skill to check.
+-- @treturn boolean True if the skill can be used.
 function ActionWindow:skillActionEnabled(skill)
   if skill.freeNavigation then
     return true

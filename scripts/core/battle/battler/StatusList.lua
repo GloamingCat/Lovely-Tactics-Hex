@@ -51,7 +51,7 @@ end
 
 --- Gets the statuses with the given ID (the first created).
 -- @tparam number|string id The status's ID or key in the database.
--- @treturn Status
+-- @treturn Status The `Status` with the given then id/key, or nil if not found.
 function StatusList:findStatus(id)
   local data = Database.status[id]
   for status in self:iterator() do
@@ -62,8 +62,8 @@ function StatusList:findStatus(id)
   return nil
 end
 --- Finds a position in the list for a status with the given priority.
--- @tparam number priority
--- @treturn number
+-- @tparam number priority The priority of the status to be inserted.
+-- @treturn number An index in the list to insert the status at.
 function StatusList:findPosition(priority)
   for i = #self, 1, -1 do
     if priority >= self[i].data.priority then
@@ -73,7 +73,7 @@ function StatusList:findPosition(priority)
   return 1
 end
 --- Creates an array with the all statuses' icons, sorted by priority, with no repetition.
--- @treturn table
+-- @treturn table An array with icon data (`id`, `col` and `row`).
 function StatusList:getIcons()
   local addedIcons = {}
   local icons = {}
@@ -257,7 +257,7 @@ function StatusList:statusBuff(id)
   return e
 end
 --- Checks if there's a deactivating status (like sleep or paralizis).
--- @treturn boolean
+-- @treturn boolean True if at least on of the statuses has a `deactivate` flag.
 function StatusList:isDeactive()
   for i = 1, #self do
     if self[i].data.deactivate then
@@ -267,6 +267,7 @@ function StatusList:isDeactive()
   return false
 end
 --- Checks if there's a status that is equivalent to KO.
+-- @treturn boolean True if at least on of the statuses has a `ko` flag.
 function StatusList:isDead()
   for i = 1, #self do
     if self[i].data.ko then

@@ -41,7 +41,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Tells if the sound already ended.
--- @treturn boolean
+-- @treturn boolean True if it stopped playing (but it's not paused).
 function Sound:isFinished()
   return not self.source:isPlaying() and not self.paused
 end

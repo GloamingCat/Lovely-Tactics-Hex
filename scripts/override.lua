@@ -42,10 +42,10 @@ end
 function string.trim(inputstr)
   return inputstr:gsub("^%s+", ""):gsub("%s+$", "")
 end
---- Checks if first string ends with the second.
+--- Checks if the first string ends with the second.
 -- @tparam string inputstr String to be verified.
 -- @tparam string suffix Suffix to be looked for.
--- @treturn boolean
+-- @treturn boolean True if `suffix` is found at the end of `inputstr`. 
 function string.endswith(inputstr, suffix)
   return inputstr:sub(-string.len(suffix)) == suffix
 end

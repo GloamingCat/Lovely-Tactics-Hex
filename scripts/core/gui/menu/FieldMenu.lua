@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- Opens when player presses the menu button when they're navigating the field.
+--- Menu that can be opened when the player is navigating the field.
 ---------------------------------------------------------------------------------------------------
 -- @menumod FieldMenu
 -- @extend Menu

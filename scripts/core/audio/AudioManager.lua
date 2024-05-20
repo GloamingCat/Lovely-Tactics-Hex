@@ -53,6 +53,24 @@ function AudioManager:update()
   self:updateBGM()
   self:updateSFX()
 end
+--- Updates fading and BGMs.
+function AudioManager:updateBGM()
+  if self.BGM then
+    self.BGM:update()
+  else
+    return
+  end
+  if self.fadingSpeed > 0 and self.fading < 1 or self.fadingSpeed < 0 and self.fading > 0 then
+    self.fading = min(1, max(0, self.fading + GameManager:frameTime() * self.fadingSpeed))
+    self.BGM:refreshVolume()
+  end
+end
+--- Updates SFX list (remove all finished SFX).
+function AudioManager:updateSFX()
+  if self.sfx[1] then
+    self.sfx:conditionalRemove(self.sfx[1].isFinished)
+  end
+end
 --- Pauses/resumes all Config.sounds.
 -- @tparam boolean paused True to paused, false to resume.
 function AudioManager:setPaused(paused)
@@ -180,15 +198,9 @@ function AudioManager:playSFX(sfx)
     print("Missing SFX: " ..  Project.audioPath .. sfx.name)
   end
 end
---- Updates SFX list (remove all finished SFX).
-function AudioManager:updateSFX()
-  if self.sfx[1] then
-    self.sfx:conditionalRemove(self.sfx[1].isFinished)
-  end
-end
 
 -- ------------------------------------------------------------------------------------------------
--- BGM - General
+-- BGM
 -- ------------------------------------------------------------------------------------------------
 
 --- Stops current playing BGM (if any) and starts a new one.
@@ -224,6 +236,7 @@ function AudioManager:playBGM(bgm, time, wait)
   end
 end
 --- Resumes current paused BGM (if any).
+-- @coroutine
 -- @tparam[opt=0] number time The duration of the fading transition.
 -- @tparam[opt] boolean wait Flag to yield until the fading animation concludes.
 function AudioManager:resumeBGM(time, wait)
@@ -245,23 +258,6 @@ function AudioManager:pauseBGM(time, wait)
     self.pausedBGM = true
     self:fadeout(time, wait)
     return self.BGM
-  end
-end
-
--- ------------------------------------------------------------------------------------------------
--- BGM - Update
--- ------------------------------------------------------------------------------------------------
-
---- Updates fading and BGMs.
-function AudioManager:updateBGM()
-  if self.BGM then
-    self.BGM:update()
-  else
-    return
-  end
-  if self.fadingSpeed > 0 and self.fading < 1 or self.fadingSpeed < 0 and self.fading > 0 then
-    self.fading = min(1, max(0, self.fading + GameManager:frameTime() * self.fadingSpeed))
-    self.BGM:refreshVolume()
   end
 end
 

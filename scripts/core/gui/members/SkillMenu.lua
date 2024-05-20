@@ -53,9 +53,9 @@ end
 -- Member
 -- ------------------------------------------------------------------------------------------------
 
---- Verifies if a member can use an item.
+--- Checks if a member has skills, usable or not.
 -- @tparam Battler member Member to check.
--- @treturn boolean True if the member is active, false otherwise.
+-- @treturn boolean True if the member has at least one skill.
 function SkillMenu:memberEnabled(member)
   return not member:getSkillList():isEmpty()
 end

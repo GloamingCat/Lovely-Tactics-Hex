@@ -106,7 +106,7 @@ function EquipItemWindow:showSlotWindow()
 end
 --- Tells if an item can be used.
 -- @tparam Button button The button to check.
--- @treturn boolean
+-- @treturn boolean Whether the button is enabled.
 function EquipItemWindow:buttonEnabled(button)
   return button.enabled
 end

@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- Implements FieldMath methods for orthogonal fields.
+--- Implements `FieldMath` methods for orthogonal fields.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod OrtMath
 -- @extend FieldMath

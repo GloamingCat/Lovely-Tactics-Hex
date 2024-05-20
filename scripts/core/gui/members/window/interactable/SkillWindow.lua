@@ -76,7 +76,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Open target selector for the chosen skill.
--- @tparam Button button
+-- @tparam Button button Selected button.
 function SkillWindow:onButtonConfirm(button)
   local input = ActionInput(button.skill, self.member)
   if button.skill:isArea() then
@@ -103,7 +103,7 @@ function SkillWindow:onButtonConfirm(button)
   end
 end
 --- Updates description when button is selected.
--- @tparam Button button
+-- @tparam Button button Selected button.
 function SkillWindow:onButtonSelect(button)
   if self.menu.descriptionWindow then
     if button.skill then
@@ -127,9 +127,9 @@ function SkillWindow:onPrev()
     self.menu:prevMember()
   end
 end
---- Tells the selected skill can be used.
--- @tparam Button button
--- @treturn boolean
+--- Tells the selected skill can be executed.
+-- @tparam Button button Button to check, containing the skill's information.
+-- @treturn boolean Whether the skill button should be enabled.
 function SkillWindow:buttonEnabled(button)
   return not self.member or self.member:isActive() and button.skill
     and button.skill:canMenuUse(self.member)

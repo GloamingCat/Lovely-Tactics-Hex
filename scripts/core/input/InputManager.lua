@@ -117,7 +117,8 @@ function InputManager:setKeyConfiguration(conf)
   end
 end
 --- Whether the player can use keys to play.
--- @treturn boolean
+-- When false, the interaction should be done purely with touch/mouse.
+-- @treturn boolean True if there's a keyboard, virtual or not.
 function InputManager:hasKeyboard()
   return not GameManager:isMobile()
 end

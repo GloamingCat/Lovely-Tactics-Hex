@@ -105,8 +105,9 @@ function MemberMenu:show(...)
   self:refreshMember()
   Menu.show(self, ...)
 end
---- True if the member is active, false otherwise.
--- @treturn boolean
+--- Checks if a member can be selected for this menu.
+-- By default, it's always enabled.
+-- @treturn boolean True if the member is selectable.
 function MemberMenu:memberEnabled(member)
   return true
 end

@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- Makes the PartyWindow in the FieldMenu visible alongside the FieldCommandWindow.
+--- Makes the `PartyWindow` in the `FieldMenu` visible alongside the `FieldCommandWindow`.
 -- 
 -- Use this together with the `UnifiedMemberWindow` script for better fit.
 ---------------------------------------------------------------------------------------------------

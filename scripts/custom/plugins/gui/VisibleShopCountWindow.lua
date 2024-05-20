@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- Makes the ShopCountWindow in the ShopMenu visible alongside the ShopListWindow.
+--- Makes the `ShopCountWindow` in the `ShopMenu` visible alongside the `ShopListWindow`.
 ---------------------------------------------------------------------------------------------------
 -- @plugin VisibleShopCountWindow
 

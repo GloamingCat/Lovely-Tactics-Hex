@@ -355,7 +355,7 @@ function BattleAction:getAllAccessedTiles(input, tile)
   end
   return tiles
 end
---- Checks if a certain tile is with given input target's range, without moving.
+--- Checks if a certain tile is within given input target's range, without moving.
 -- @tparam ActionInput input User's input.
 -- @tparam ObjectTile tile Target tile.
 -- @treturn boolean True if the tile if within action's range.
@@ -367,10 +367,10 @@ function BattleAction:isWithinRange(input, tile)
   end
   return false
 end
---- Checks if a certain tile is with given input target's effect area.
+--- Checks if a certain tile is within given input target's effect area.
 -- @tparam ActionInput input User's input.
 -- @tparam ObjectTile tile Target tile.
--- @treturn boolean
+-- @treturn boolean True if `tile` is included in the area around the target. 
 function BattleAction:isWithinArea(input, tile)
   for x, y, h in mathf.maskIterator(self.area, input.target:coordinates()) do
     if tile.x == x and tile.y == y and tile.h == h then

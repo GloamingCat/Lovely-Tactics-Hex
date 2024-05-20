@@ -55,8 +55,8 @@ function ActionItemWindow:onButtonCancel(button)
   self:changeWindow(self.menu.turnWindow)
 end
 --- Tells if an item can be used.
--- @tparam Button button
--- @treturn boolean
+-- @tparam Button button Button to check, with the item's information.
+-- @treturn boolean True if the item button should be enabled.
 function ActionItemWindow:buttonEnabled(button)
   local user = TurnManager:currentCharacter()
   return button.skill:canBattleUse(user) and self:skillActionEnabled(button.skill)

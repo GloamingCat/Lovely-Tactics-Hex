@@ -43,7 +43,7 @@ function InventoryWindow:init(menu, user, inventory, itemList, w, h, pos, rowCou
 end
 --- Creates a button from an item ID.
 -- @tparam table itemSlot A slot from the inventory (with item's ID and count).
--- @treturn Button
+-- @treturn Button A button with the item's information.
 function InventoryWindow:createListButton(itemSlot)
   local item = Database.items[itemSlot.id]
   local button = Button(self)
@@ -67,7 +67,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Executes item's skill when player confirms an item.
--- @tparam Button button
+-- @tparam Button button Selected button.
 function InventoryWindow:onButtonConfirm(button)
   local input = ActionInput(button.skill, self.member or self.leader)
   if input.action:isArea() then
@@ -79,7 +79,7 @@ function InventoryWindow:onButtonConfirm(button)
   end
 end
 --- Updates description when button is selected.
--- @tparam Button button
+-- @tparam Button button Selected button.
 function InventoryWindow:onButtonSelect(button)
   if self.menu.descriptionWindow then
     if button.item then
@@ -90,8 +90,8 @@ function InventoryWindow:onButtonSelect(button)
   end
 end
 --- Tells if an item can be used.
--- @tparam Button button
--- @treturn boolean Either item does not need a user, or the user can execute the item's skill.
+-- @tparam Button button Button to check, with the item's information.
+-- @treturn boolean True if either item does not need a user, or the user can execute the item's skill.
 function InventoryWindow:buttonEnabled(button)
   if not self.member and (not button.item or button.item.needsUser) then
     return false

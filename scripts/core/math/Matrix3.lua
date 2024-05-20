@@ -64,8 +64,8 @@ function Matrix3:iterator()
     return self[i]
   end
 end
---- Checks if matrix is empty.
--- @treturn boolean
+--- Checks if matrix is empty (all elements are `nil`)
+-- @treturn boolean False if at least one element is not `nil`.
 function Matrix3:isEmpty()
   local size = self.width * self.height * self.depth
   for i = 1, size do

@@ -74,7 +74,7 @@ function Component:setVisible(value, ...)
   self.visible = value
 end
 --- Checks for visibility.
--- @treturn boolean
+-- @treturn boolean True if it's currently visible.
 function Component:isVisible()
   return self.visible
 end

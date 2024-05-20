@@ -33,15 +33,15 @@ end
 -- Confirm Callbacks
 -- ------------------------------------------------------------------------------------------------
 
---- Items button.
+--- Items button. Opens a new `ItemMenu`.
 function MemberCommandWindow:itemsConfirm()
   self:showMenu(ItemMenu)
 end
---- Skills button.
+--- Skills button. Opens a new `SkillMenu`.
 function MemberCommandWindow:skillsConfirm()
   self:showMenu(SkillMenu)
 end
---- Equips button.
+--- Equips button. Open a new `EquipMenu`.
 function MemberCommandWindow:equipsConfirm()
   self:showMenu(EquipMenu)
 end
@@ -50,13 +50,13 @@ end
 -- Enabled Conditions
 -- ------------------------------------------------------------------------------------------------
 
---- Whether the ItemMenu can be open.
--- @treturn boolean
+--- Checks if the ItemMenu can be open.
+-- @treturn boolean Whether the item button should be enabled for the current battler.
 function MemberCommandWindow:itemsEnabled()
   return ItemMenu:memberEnabled(self.menu:currentMember())
 end
---- Whether the SkillMenu can be open.
--- @treturn boolean
+--- Checks if the SkillMenu can be open.
+-- @treturn boolean Whether the skill button should be enabled for the current battler.
 function MemberCommandWindow:skillsEnabled()
   return SkillMenu:memberEnabled(self.menu:currentMember())
 end
@@ -66,7 +66,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Shows a sub Menu for the current member.
--- @tparam class Menu
+-- @tparam class Menu A subclass of the `Menu` class that will be instantiated.
 function MemberCommandWindow:showMenu(Menu)
   self.cursor:hide()
   self.menu:showSubMenu(Menu)

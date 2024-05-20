@@ -139,7 +139,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Checks if sprite is visible on screen.
--- @treturn boolean
+-- @treturn boolean True if it's currently visible.
 function Text:isVisible()
   return self.lines and self.visible
 end

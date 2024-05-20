@@ -72,8 +72,8 @@ function ActionSkillWindow:onButtonCancel(button)
   self:changeWindow(self.menu.turnWindow)
 end
 --- Tells if a skill can be used.
--- @tparam Button button
--- @treturn boolean
+-- @tparam Button button Button to check, with the skill's information.
+-- @treturn boolean True if the skill button should be enabled.
 function ActionSkillWindow:buttonEnabled(button)
   local user = TurnManager:currentCharacter()
   return button.skill:canBattleUse(user) and self:skillActionEnabled(button.skill)

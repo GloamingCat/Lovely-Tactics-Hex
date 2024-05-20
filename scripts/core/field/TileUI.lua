@@ -71,7 +71,7 @@ end
 -- Graphics
 -- ------------------------------------------------------------------------------------------------
 
---- Updates graphics pixel depth according to the terrains' depth in this tile's coordinates.
+--- Refreshes the relative pixel depths of the sprites.
 function TileUI:updateDepth()
   if not self.grounded then
     return

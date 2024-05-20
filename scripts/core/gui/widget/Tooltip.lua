@@ -62,7 +62,7 @@ function Tooltip:onMove(x, y)
 end
 --- Checks if the tooltip should be visible.
 -- @tparam boolean insideWindow Whether the cursor in inside the window or not.
--- @treturn boolean
+-- @treturn boolean True if this tooltip is active.
 function Tooltip:isActive(insideWindow)
   if MenuManager.disableTooltips then
     return false

@@ -110,7 +110,7 @@ function ButtonWindow:checkInput()
   end
 end
 --- Checks input and returns whether the player clicked the button or not.
--- @treturn boolean
+-- @treturn boolean True if the player clicked on it in this frame.
 function ButtonWindow:checkClick()
   self:checkInput()
   if self.result then

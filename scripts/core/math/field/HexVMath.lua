@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- Implements FieldMath methods to hexagonal fields in which the tiles are connected vertically.
+--- Implements `FieldMath` methods for hexagonal fields with vertically-linked tiles.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod HexVMath
 -- @extend FieldMath

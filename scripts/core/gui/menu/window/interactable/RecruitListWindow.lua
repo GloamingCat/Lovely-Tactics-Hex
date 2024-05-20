@@ -78,8 +78,10 @@ end
 -- Enable Conditions
 -- ------------------------------------------------------------------------------------------------
 
---- True if at least one battler of this type can be recruited.
--- @treturn boolean 
+--- In hire mode, checks if at least one battler of this type can be recruited.
+-- In dismiss mode, checks if the battler is dismissable.
+-- @tparam Button button Button to check, containing the battler's information.
+-- @treturn boolean Whether the hire/dismiss button should be enabled.
 function RecruitListWindow:buttonEnabled(button)
   if self.hire then
     return self.menu.troop.money >= button.price
@@ -93,6 +95,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Shows the window to select the quantity.
+-- @tparam Button button Selected button.
 function RecruitListWindow:onButtonConfirm(button)
   local w = self.menu.countWindow
   local w2 = self.menu.descriptionWindow
@@ -107,10 +110,12 @@ function RecruitListWindow:onButtonConfirm(button)
   w:activate()
 end
 --- Closes hire Menu.
+-- @tparam Button button Selected button.
 function RecruitListWindow:onButtonCancel(button)
   self.menu:hideRecruitMenu()
 end
 --- Updates item description.
+-- @tparam Button button Selected button.
 function RecruitListWindow:onButtonSelect(button)
   self.menu.descriptionWindow:updateTerm('data.battler.' .. button.battler.key .. '_desc', button.battler.description)
 end

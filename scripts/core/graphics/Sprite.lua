@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- A Sprite is a group of information the determines the way an image should be rendered. 
+--- A texture with position, transformation information. 
 -- The image may be scaled, rotated, translated and coloured.
 -- Its position determines where on the screen it's going to be rendered (x and y axis, relative to 
 -- the world's coordinate system) and the depth/render order (z axis).
@@ -140,8 +140,8 @@ end
 -- Visibility
 -- ------------------------------------------------------------------------------------------------
 
---- Checks for visiblity flag.
--- @treturn boolean
+--- Checks for visiblity.
+-- @treturn boolean True if the visibility flag is on and there's a texture and quad for the sprite.
 function Sprite:isVisible()
   return self.visible and self.quad and self.texture
 end

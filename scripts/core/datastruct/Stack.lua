@@ -58,8 +58,8 @@ function Stack:isEmpty()
   return self.size == 0
 end
 --- Removes the especified element from the stack.
--- @tparam unknown e
--- @treturn boolean Wether the element was present or not.
+-- @tparam unknown e The element to be removed.
+-- @treturn boolean Whether the element was present or not.
 function Stack:removeElement(e)
   for i = 1, self.size do
     if self[i] == e then

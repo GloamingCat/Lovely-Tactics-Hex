@@ -60,8 +60,8 @@ function Status:init(data, list, caster, state)
   end
 end
 --- Loads Status class from data.
--- @tparam table Status data from database file.
--- @param ... Any arguments passed to the constructor.
+-- @tparam table data Status data from database file.
+-- @param ... Any arguments passed to the `Status` constructor.
 -- @treturn Status New status.
 function Status:fromData(data, ...)
   local class = self
