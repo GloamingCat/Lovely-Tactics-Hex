@@ -35,13 +35,11 @@ local TerrainTile = class()
 -- @tparam Layer layer The layer that the tile is in.
 -- @tparam number x The x coordinate of the tile.
 -- @tparam number y The x coordinate of the tile.
--- @tparam number order The rendering order for the layer.
 -- @tparam number initialID The initial terrain ID from data file.
-function TerrainTile:init(layer, x, y, order, initialID)
+function TerrainTile:init(layer, x, y, initialID)
   self.layer = layer
   self.x = x
   self.y = y
-  self.order = order
   self.data = Database.terrains[initialID]
   self.moveCost = 0
   self.center = Vector(math.field.tile2Pixel(self:coordinates()))
@@ -110,7 +108,7 @@ function TerrainTile:updateGraphics()
   if self.data.animID >= 0 then
     local rows = mathf.autoTileRows(self.layer, self.x, self.y, self.layer.sameType)
     local imageData = Database.animations[self.data.animID]
-    local depth = self.order + imageData.transform.offsetDepth
+    local depth = self.layer.depth + imageData.transform.offsetDepth
     self.quarters = self:createQuarters(imageData, rows, depth)
     -- Create animation.
     if imageData.cols > 1 then
@@ -172,7 +170,7 @@ function TerrainTile:setMoveCost(data)
 end
 -- For debugging.
 function TerrainTile:__tostring()
-  return 'TerrainTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ', ' .. self.layer.order .. ')' 
+  return 'TerrainTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ', ' .. self.layer.depth .. ')' 
 end
 
 return TerrainTile

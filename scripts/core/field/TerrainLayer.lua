@@ -22,11 +22,11 @@ local TerrainLayer = class()
 -- @tparam table data The layer's data from field's file.
 -- @tparam number sizeX The field's grid width.
 -- @tparam number sizeY The field's grid height.
--- @tparam number order The rendering order for the layer
+-- @tparam number depth The rendering depth for the layer.
 --  (used for correct depth when there are more than one layer with same height).
-function TerrainLayer:init(data, sizeX, sizeY, order)
+function TerrainLayer:init(data, sizeX, sizeY, depth)
   self.grid = {}
-  self.order = order
+  self.depth = depth
   self.height = data.info.height
   self.sizeX = sizeX
   self.sizeY = sizeY
@@ -36,7 +36,7 @@ function TerrainLayer:init(data, sizeX, sizeY, order)
     self.grid[i] = {}
     for j = 1, sizeY do
       local id = data.grid[i][j]
-      self.grid[i][j] = TerrainTile(self, i, j, order, id)
+      self.grid[i][j] = TerrainTile(self, i, j, id)
     end
   end
   -- Sets tiles' terrains

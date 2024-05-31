@@ -84,7 +84,7 @@ function AnimatedInteractable:initGraphics(instData, save)
     local animations = {{ name = animName, id = animName }}
     JumpingObject.initGraphics(self, direction, animations, animName, transform, false)
   end
-  if instData.visible == false then
+  if save and save.visible == false or (not save or save.visible == nil) and instData.visible == false then
     self:setVisible(false)
   end
   local frame = save and save.animIndex or instData.frame
@@ -246,6 +246,7 @@ function AnimatedInteractable:getPersistentData()
   data.direction = self.direction
   data.animName = self.animName
   data.speed = self.speed
+  data.visible = self.visible
   return data
 end
 -- For debugging.

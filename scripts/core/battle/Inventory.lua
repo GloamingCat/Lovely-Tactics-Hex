@@ -61,18 +61,19 @@ function Inventory:getState()
   return t
 end
 --- Gets the number of items of given ID.
--- @tparam number id Item's ID in databse.
+-- @tparam number|string id Item's ID or key in the database.
 -- @treturn number The item's count.
 function Inventory:getCount(id)
   local slot = self:getSlot(id)
   return slot and slot.count or 0
 end
 --- Gets the slot of the given item.
--- @tparam number id Item's ID in database.
+-- @tparam number|string id Item's ID or key in the database.
 -- @treturn Slot The item's slot, if found.
 function Inventory:getSlot(id)
+  local item = Database.items[id]
   for i = 1, self.size do
-    if self[i].id == id then
+    if Database.items[self[i].id] == item then
       return self[i]
     end
   end

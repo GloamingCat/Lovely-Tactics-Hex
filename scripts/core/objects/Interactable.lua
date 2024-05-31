@@ -29,7 +29,11 @@ local Interactable = class()
 function Interactable:init(instData, save)
   self:initScripts(instData)
   self.key = instData.key
-  self.passable = instData.passable
+  if save and save.passable ~= nil then
+    self.passable = save.passable
+  else
+    self.passable = instData.passable
+  end
   self.persistent = instData.persistent
   local layer = FieldManager.currentField.objectLayers[instData.h]
   assert(layer, 'height out of bounds: ' .. instData.h)
@@ -126,6 +130,7 @@ function Interactable:getPersistentData()
   return {
     vars = copyTable(self.vars),
     deleted = self.deleted,
+    passable = self.passable,
     loadScripts = copyScripts(self.loadScripts),
     collideScripts = copyScripts(self.collideScripts),
     interactScripts = copyScripts(self.interactScripts),

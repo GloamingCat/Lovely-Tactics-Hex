@@ -15,7 +15,7 @@ local GeneralEvents = {}
 
 --- Arguments for field transition.
 -- @table TransitionArguments
--- @tfield number fieldID Field to loaded's ID.
+-- @tfield[opt] number fieldID Field to loaded's ID. When nil, stays in the same field.
 -- @tfield number fade Duration of the fading in frames.
 -- @tfield number x Player's destination x.
 -- @tfield number y Player's destination y.

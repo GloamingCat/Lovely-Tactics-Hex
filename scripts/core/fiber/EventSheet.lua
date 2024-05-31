@@ -27,6 +27,9 @@ local EventSheet = class(Fiber, EventUtil)
 function EventSheet:init(root, data, char)
   if data.func then
     self.commands = data.func
+  elseif tonumber(data.name) or Database.events[data.name] then
+    self.commands = self.processSheet
+    self.sheet = Database.events[tonumber(data.name) or data.name]
   else
     local func = require('custom/' .. data.name)
     assert(func, "Could not load event sheet file: " .. tostring(data.name))
@@ -127,6 +130,28 @@ function EventSheet:runCurrentEvent()
   local event = self.events[self.vars.runningIndex]
   if not event.condition or event.condition(self) then
     event.execute(self, unpack(event.args))
+  end
+end
+function EventSheet:processSheet()  
+  for _, e in ipairs(self.sheet.events) do
+    local args = Database.loadTags(e.tags)
+    local condition = e.condition ~= '' and loadformula(e.condition, 'script')
+    if e.name == 'setLabel' then
+      if not condition or condition(self) then
+        self:setLabel(args.name, args.index)
+      end
+    else
+      if e.name == 'skipEvents' then
+        args = args.events
+      elseif e.name == 'setEvent' then
+        args = args.index
+      elseif e.name == 'jumpTo' then
+        args = args.name
+      elseif e.name == 'wait' then
+        args = args.time
+      end
+      self:addEvent(e.name, condition or nil, args)
+    end
   end
 end
 --- Sets any variable needed to indicate that this script is running.
