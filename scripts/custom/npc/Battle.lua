@@ -19,7 +19,10 @@
 return function(script)
 
   local fade = script.args.fade or 60
-  local lastBattleTime = GameManager.frame - (GameManager.vars.lastBattle or -fade)
+  local lastBattleTime = fade + 1
+  if not FieldManager:loadedFromSave() and GameManager.vars.lastBattle then
+    lastBattleTime = GameManager.frame - GameManager.vars.lastBattle
+  end
 
   -- Event 1: start battle
   script:addEvent(function()
