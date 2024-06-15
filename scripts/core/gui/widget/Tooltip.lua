@@ -18,19 +18,30 @@ local Tooltip = class(TextComponent)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam Window window Parent window.
+-- @tparam Window|Menu parent Parent window or menu.
 -- @tparam string term Term key in the `Vocab` table.
 -- @tparam[opt="left"] string valign The vertical alignment of the text.
-function Tooltip:init(window, term, valign)
-  self.window = window
-  local w = ScreenManager.width - window.menu:windowMargin() * 2
-  local h = ScreenManager.height - window.menu:windowMargin() * 2
-  TextComponent.init(self, '', Vector(-w/2, -h/2, -50), w, 'left', Fonts.menu_tooltip)
+-- @tparam[opt=0] number voffset The vertical offset from the alignment reference.
+function Tooltip:init(parent, term, valign, voffset)
+  if parent.menu then
+    self.window = parent
+    self.menu = parent.menu
+  else
+    self.menu = parent
+  end
+  valign = valign or 'bottom'
+  voffset = voffset or 0
+  local w = ScreenManager.width - self.menu:windowMargin() * 2
+  local h = ScreenManager.height - self.menu:windowMargin() * 2
+  local pos = Vector(-w/2, -h/2, -50)
+  if valign ~= 'bottom' then
+    pos.y = pos.y + voffset
+  end
+  TextComponent.init(self, '', pos, w, 'left', Fonts.menu_tooltip)
   self:setTerm('manual.' .. term, '')
-  self:setAlign('left', valign or 'bottom')
-  self:setMaxHeight(h)
+  self:setAlign('left', valign)
+  self:setMaxHeight(h - voffset)
   self:redraw()
-  TextComponent.updatePosition(self)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -40,7 +51,10 @@ end
 --- Overrides `Component:update`.
 -- @override
 function Tooltip:update(dt)
-  if GameManager:isMobile() and InputManager.keys["touch"]:isReleased() and self.window.open then
+  if self.window and not self.window.open then
+    return
+  end
+  if GameManager:isMobile() and InputManager.keys["touch"]:isReleased() then
     self.visible = self:isActive(false)
     self.sprite:setVisible(self.visible)
   end
@@ -55,6 +69,9 @@ end
 -- @tparam number x Cursor x relative to window's center.
 -- @tparam number y Cursor y relative to window's center.
 function Tooltip:onMove(x, y)
+  if not self.window then
+    return
+  end
   if self.window.active then
     self.visible = self:isActive(self.window:isInside(x, y))
     self.sprite:setVisible(self.visible)
@@ -64,6 +81,9 @@ end
 -- @tparam boolean insideWindow Whether the cursor in inside the window or not.
 -- @treturn boolean True if this tooltip is active.
 function Tooltip:isActive(insideWindow)
+  if not self.window then
+    return true
+  end
   if MenuManager.disableTooltips then
     return false
   elseif GameManager:isMobile() then
@@ -76,9 +96,10 @@ function Tooltip:isActive(insideWindow)
     return true
   end
 end
---- Overrides `Component:updatePosition`. Ignores window position.
+--- Overrides `ImageComponent:updatePosition`. Ignores window position.
 -- @override
 function Tooltip:updatePosition(pos)
+  TextComponent.updatePosition(self, nil)
 end
 
 return Tooltip
