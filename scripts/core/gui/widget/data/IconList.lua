@@ -44,6 +44,7 @@ end
 --- Implements `Component:setProperties`.
 -- @implement
 function IconList:setProperties()
+  self.horizontal = true
   self.defaultFrameWidth = 16
   self.defaultFrameHeight = 16
   self.frameId = Config.animations.frame
@@ -58,19 +59,35 @@ function IconList:setSprites(icons)
   if not icons then
     return
   end
+  local v = not self.horizontal
   local x, y = 0, 0
   for i = 1, #icons do
     local sprite = icons[i]
-    if x + self.frameWidth > self.width then
-      if y + self.frameHeight > self.height then
-        for j = i, icons do
-          icons[j]:destroy()
+    if self.horizontal then
+      if self.width and x + self.frameWidth > self.width then
+        if y + self.frameHeight > self.height then
+          for j = i, icons do
+            icons[j]:destroy()
+          end
+          break
         end
-        break
+        if x > 0 then
+          x = 0
+          y = y + self.frameHeight - 1
+        end
       end
-      if x > 0 then
-        x = 0
-        y = y + self.frameHeight - 1
+    else
+      if self.height and y + self.frameHeight > self.height then
+        if x + self.frameWidth > self.width then
+          for j = i, icons do
+            icons[j]:destroy()
+          end
+          break
+        end
+        if y > 0 then
+          y = 0
+          x = x + self.frameWidth - 1
+        end
       end
     end
     if sprite then
@@ -89,7 +106,11 @@ function IconList:setSprites(icons)
       self.content:add(self.frames[i])
       self.frames[i]:setVisible(self.visible)
     end
-    x = x + self.frameWidth - 1
+    if self.horizontal then
+      x = x + self.frameWidth - 1
+    else
+      y = y + self.frameHeight - 1
+    end
   end
 end
 --- Sets the content of this list.
