@@ -155,17 +155,11 @@ function BattleAction:resetReachableTiles(input)
   -- Find all border tiles
   for tile in self.field:gridIterator() do
     tile.ui.reachable = false
+    tile.ui.distance = nil
   end
   for tile in self.field:gridIterator() do
     if tile.ui.movable then
-      for n = 1, #tile.neighborList do
-        local neighbor = tile.neighborList[n]
-        -- If this tile has any non-reachable neighbors, it's a border tile
-        if matrix:get(neighbor:coordinates()) then
-          borderTiles:add(tile)
-          break
-        end
-      end
+      borderTiles:add(tile)
     end
   end
   if borderTiles:isEmpty() and input.user then
@@ -173,10 +167,12 @@ function BattleAction:resetReachableTiles(input)
   end
   -- Paint border tiles
   for tile in borderTiles:iterator() do
+    local steps = matrix:get(tile:coordinates()).totalCost
     for x, y, h in mathf.maskIterator(self.range, tile:coordinates()) do
       local n = self.field:getObjectTile(x, y, h) 
       if n then
         n.ui.reachable = true
+        n.ui.distance = n.ui.distance and math.min(n.ui.distance, steps) or steps
       end
     end
   end

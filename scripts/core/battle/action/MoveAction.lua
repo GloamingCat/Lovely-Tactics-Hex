@@ -40,8 +40,14 @@ end
 --- Overrides `BattleAction:resetReachableTiles`. 
 -- @override
 function MoveAction:resetReachableTiles(input)
+  local matrix = TurnManager:pathMatrix()
   for tile in self.field:gridIterator() do
     tile.ui.reachable = tile.ui.movable
+    if tile.ui.movable then
+      tile.ui.distance = matrix:get(tile:coordinates()).totalCost
+    else
+      tile.ui.distance = nil
+    end
   end
 end
 
