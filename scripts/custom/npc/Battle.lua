@@ -51,7 +51,7 @@ return function(script)
     if escaped then
       script.char.vars.cooldown = script.args.cooldown or 180
     else
-      script:hideChar { deactivate = script.args.deactivate, key = 'self' }
+      script:setupChar { visible = false, deactivate = script.args.deactivate, key = 'self' }
     end
     script:finishBattle { fade = fade, wait = true }
     print(script.battleLog)
