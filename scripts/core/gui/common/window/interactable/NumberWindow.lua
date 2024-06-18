@@ -21,15 +21,20 @@ local NumberWindow = class(GridWindow)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `Window:init`. 
--- @override
-function NumberWindow:init(Menu, args)
+--- Constructor.
+-- @tparam number length Number of digits for number input.
+-- @tparam[opt] number cancelValue The value returned when the player cancels.
+--  If nil, the player can't cancel.
+-- @tparam[opt] Vector pos Center position of the window.
+-- @tparam[opt] number width Width of the window.
+-- @tparam[opt="center"] string align Horizontal alignment of the button text.
+function NumberWindow:init(menu, length, cancelValue, pos, width, align)
   self.noCursor = true
-  self.length = args.length
-  self.width = args.width
-  self.align = args.align
-  self.cancelValue = args.cancel
-  GridWindow.init(self, Menu, self.width, nil, args.pos)
+  self.length = length
+  self.width = width
+  self.align = align or 'center'
+  self.cancelValue = cancelValue
+  GridWindow.init(self, menu, self.width, nil, pos)
 end
 --- Implements `GridWindow:createWidgets`.
 -- @implement
@@ -37,7 +42,7 @@ function NumberWindow:createWidgets()
   for i = 1, self.length do
     VSpinner(self, 0, 9, 0)
   end
-  Button:fromKey(self, 'ok').text.sprite.alignX = 'center'
+  Button:fromKey(self, 'ok').text.sprite.alignX = self.align
 end
 
 -- ------------------------------------------------------------------------------------------------

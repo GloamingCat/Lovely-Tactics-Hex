@@ -10,11 +10,7 @@
 -- Imports
 local ChoiceWindow = require('core/gui/common/window/interactable/ChoiceWindow')
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
-local FieldMenu = require('core/gui/menu/FieldMenu')
 local NumberWindow = require('core/gui/common/window/interactable/NumberWindow')
-local SaveMenu = require('core/gui/menu/SaveMenu')
-local ShopMenu = require('core/gui/menu/ShopMenu')
-local RecruitMenu = require('core/gui/menu/RecruitMenu')
 local TextInputWindow = require('core/gui/common/window/interactable/TextInputWindow')
 local Vector = require('core/math/Vector')
 
@@ -36,6 +32,7 @@ local MenuEvents = {}
 
 --- Arguments for opening a Menu.
 -- @table MenuArguments
+-- @tfield EventUtil.MenuType Which menu will be opened.
 -- @tfield table items Array of items/battlers (with their IDs or keys), for `openShopMenu` and `openRecruitMenu`.
 -- @tfield boolean sell Enables sell/dismiss option, for `openShopMenu` and `openRecruitMenu`.
 
@@ -54,7 +51,7 @@ local MenuEvents = {}
 --- Arguments for choice/number/input commands. Extends `WindowArguments`.
 -- @table InputCommands
 -- @tfield table choices Array with the name of each choice, for `openChoiceWindow`.
--- @tfield number length Number of digits for number input, for `openNumberWindow`
+-- @tfield number length Number of digits for number input, for `openNumberWindow`.
 -- @tfield boolean emptyAllowed Whether it is allowed to leave the text empty, for `openStringWindow`
 -- @tfield unknown cancelValue Value/index returned when player presses a cancel button.
 
@@ -62,34 +59,28 @@ local MenuEvents = {}
 -- Menu
 -- ------------------------------------------------------------------------------------------------
 
---- Opens the FieldMenu.
+--- Opens a menu.
 -- @tparam MenuArguments args
 function MenuEvents:openFieldMenu(args)
-  MenuManager:showMenuForResult(FieldMenu(nil))
+  self:openMenu(args.menu)
 end
---- Opens the SaveMenu.
--- @tparam MenuArguments args
-function MenuEvents:openSaveMenu(args)
-  MenuManager:showMenuForResult(SaveMenu(nil))
-end
---- Opens the ShopMenu.
+--- Opens the Shop Menu.
 -- @tparam MenuArguments args
 function MenuEvents:openShopMenu(args)
-  self.vars.hudOpen = FieldManager.hud.visible
-  FieldManager.hud:hide()
-  MenuManager:showMenuForResult(ShopMenu(nil, args.items, args.sell))
-  if self.vars.hudOpen then
-    FieldManager.hud:show()
-  end
+  self:openMenu(self.MenuType.shop, args.items, args.sell)
 end
---- Opens the RecruitMenu.
+--- Opens the Recruit Menu.
 -- @tparam MenuArguments args
 function MenuEvents:openRecruitMenu(args)
-  self.vars.hudOpen = FieldManager.hud.visible
-  FieldManager.hud:hide()
-  MenuManager:showMenuForResult(RecruitMenu(nil, args.items, args.sell))
-  if self.vars.hudOpen then
+  self:openMenu(self.MenuType.recruit, args.items, args.sell)
+end
+--- Changes the visibility of the field's HUD.
+-- @tparam table args Table with the boolean field `visible`.
+function MenuEvents:setHudVisibility(args)
+  if args.visible then
     FieldManager.hud:show()
+  else
+    FieldManager.hud:hide()
   end
 end
 
@@ -98,7 +89,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Opens a basic window with the given text. By default, it's a single-line window.
--- @tparam WindowArguments args
+-- @tparam MessageArguments args
 function MenuEvents:openTitleWindow(args)
   self:createMenu()
   local w = args.width or ScreenManager.width / 4
@@ -200,7 +191,8 @@ end
 -- @tparam InputArguments args
 function MenuEvents:openChoiceWindow(args)
   self:createMenu()
-  local window = ChoiceWindow(self.menu, args)
+  local window = ChoiceWindow(self.menu, args.choice, args.cancel,
+    args.pos, args.width, args.align)
   window:setXYZ(args.x, args.y, -5)
   window:show()
   self.menu:setActiveWindow(window)
@@ -218,7 +210,9 @@ end
 -- @tparam InputArguments args
 function MenuEvents:openNumberWindow(args)
   self:createMenu()
-  local window = NumberWindow(self.menu, args)
+  local window = NumberWindow(self.menu, args.length, args.cancel,
+    args.pos, args.width, args.align)
+  window:setXYZ(args.x, args.y, -5)
   window:show()
   self.menu:setActiveWindow(window)
   local result = self.menu:waitForResult()
@@ -234,7 +228,7 @@ end
 -- @tparam InputArguments args
 function MenuEvents:openStringWindow(args)
   self:createMenu()
-  local window = TextInputWindow(self.menu, args.emptyAllowed, args.cancelValue ~= nil)
+  local window = TextInputWindow(self.menu, args.min, args.max, args.cancelValue ~= nil)
   window:show()
   self.menu:setActiveWindow(window)
   local result = self.menu:waitForResult()

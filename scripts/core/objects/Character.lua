@@ -1,8 +1,8 @@
 
 -- ================================================================================================
 
---- An instance of a character from `Database`. It may be passable or not, and have an image or not.
--- The coroutine functions must ONLY be called from a fiber.
+--- An instance of a character from `Database`.
+-- The instance details are defined by the character instance in a field.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod Character
 -- @extend AnimatedInteractable
@@ -69,8 +69,66 @@ end
 -- @override
 function Character:initProperties(instData, save)
   AnimatedInteractable.initProperties(self, instData, save)
+  self.collisionTiles = save and save.collisionTiles or instData.collisionTiles 
+    or {{ dx = 0, dy = 0, height = 1 }}
   self.damageAnim = 'Damage'
   self.koAnim = 'KO'
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Collision
+-- ------------------------------------------------------------------------------------------------
+
+--- Overrides `Object:getHeight`. 
+-- @override
+function Character:getHeight(dx, dy)
+  dx, dy = dx or 0, dy or 0
+  for i = 1, #self.collisionTiles do
+    local tile = self.collisionTiles[i]
+    if tile.dx == dx and tile.dy == dy then
+      return tile.height
+    end
+  end
+  return 0
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Tiles
+-- ------------------------------------------------------------------------------------------------
+
+--- Gets all tiles this object is occuping.
+-- @treturn table The list of tiles.
+function Character:getAllTiles(i, j, h)
+  if not (i and j and h) then
+    i, j, h = self:tileCoordinates()
+  end
+  local tiles = { }
+  local last = 0
+  for t = #self.collisionTiles, 1, -1 do
+    local n = self.collisionTiles[t]
+    local tile = FieldManager.currentField:getObjectTile(i + n.dx, j + n.dy, h)
+    if tile ~= nil then
+      last = last + 1
+      tiles[last] = tile
+    end
+  end
+  return tiles
+end
+--- Adds this object from to tiles it's occuping.
+-- @tparam[opt] table tiles The list of occuped tiles.
+function Character:addToTiles(tiles)
+  tiles = tiles or self:getAllTiles()
+  for i = #tiles, 1, -1 do
+    tiles[i].characterList:add(self)
+  end
+end
+--- Removes this object from the tiles it's occuping.
+-- @tparam[opt] table tiles The list of occuped tiles.
+function Character:removeFromTiles(tiles)
+  tiles = tiles or self:getAllTiles()
+  for i = #tiles, 1, -1 do
+    tiles[i].characterList:removeElement(self)
+  end
 end
 
 -- ------------------------------------------------------------------------------------------------

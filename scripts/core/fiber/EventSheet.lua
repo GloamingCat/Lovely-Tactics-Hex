@@ -88,9 +88,11 @@ function EventSheet:setEvent(i)
 end
 --- Stores a label name.
 -- @tparam string name Name of the label.
--- @tparam[opt] number i The index that the label points to. If nil, sets as the last event.
+-- @tparam[opt=-1] number i The index that the label points to. If -1, sets as the last event.
 function EventSheet:setLabel(name, i)
-  i = i or #self.events + 1
+  if not i or i == -1 then
+    i = #self.events + 1
+  end
   self.labels[name] = i
 end
 --- Sets the next event to the one pointed by the given label.

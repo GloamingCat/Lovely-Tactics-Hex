@@ -20,18 +20,22 @@ local TargetMenu = class(Menu)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `Menu:init`. 
--- @override
-function TargetMenu:init(parent, troop, input)
+--- Constructor.
+-- @tparam Menu parent Parent menu.
+-- @tparam Troop troop Troop with possible targets.
+-- @tparam ActionInput Input with action and user.
+-- @tparam boolean backup Flag to include backup members in the target list.
+function TargetMenu:init(parent, troop, input, backup)
   self.name = 'Menu Target Menu'
   self.troop = troop
   self.input = input
+  self.backup = backup
   Menu.init(self, parent)
 end
 --- Overrides `Menu:createWindows`. 
 -- @override
 function TargetMenu:createWindows()
-  self.partyWindow = MenuTargetWindow(self, self.troop)
+  self.partyWindow = MenuTargetWindow(self, self.troop, self.backup)
   if self.position then
     self.partyWindow:setPosition(self.position)
   end

@@ -32,14 +32,29 @@ local CharacterEvents = {}
 -- @tfield[opt] string other Key of a character in the target tile. If nil, uses `x`, `y` and `h`.
 -- @tfield[opt=inf] number limit The maxium length of the path to be calculated.
 
+--- Common arguments for jump commands towards a tile.
+-- @table JumpArguments
+-- @tfield string key The key of the character.
+-- @tfield number duration To total duration of the jump animation, in frames.
+-- @tfield[opt] number height The height of the jump, in pixels.
+--  If not specified, if uses that value of gravity instead.
+-- @tfield[opt=30] number gravity The deceleration, in pixels/frame².
+
 --- Common arguments for delete/hide commands.
--- @table HideArguments
+-- @table DeleteArguments
 -- @tfield string key They key of the character.
--- @tfield[opt] boolean optional Flag to raise an error when the character is not found.
+-- @tfield[opt] boolean optional Flag to not raise an error when the character is not found.
 -- @tfield[opt] boolean permanent Flag to create the character again when field if reloaded.
--- @tfield[opt] number fade Duration of fading animation.
--- @tfield[opt] boolean deactive Flag to erase the character's scripts.
+
+--- Common arguments for character setup.
+-- @table SetupArguments
+-- @tfield string key They key of the character.
+-- @tfield[opt] boolean optional Flag to not raise an error when the character is not found.
+-- @tfield[opt] boolean deactivate Flag to erase the character's scripts.
 -- @tfield[opt] boolean passable Flag to make the character passable during the fading animation.
+-- @tfield[opt] boolean visible Character's visibility.
+-- @tfield[opt] number speed Character's speed.
+-- @tfield[opt] number fade Duration of fading animation.
 
 --- Common arguments for animation commands.
 -- @table AnimArguments
@@ -51,7 +66,7 @@ local CharacterEvents = {}
 -- ------------------------------------------------------------------------------------------------
 
 --- Destroys and removes a character from the field.
--- @tparam HideArguments args
+-- @tparam DeleteArguments args
 function CharacterEvents:deleteChar(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
@@ -59,9 +74,9 @@ function CharacterEvents:deleteChar(args)
   end
   char:destroy(args.permanent)
 end
---- Hides a character without deleting it.
--- @tparam HideArguments args
-function CharacterEvents:hideChar(args)
+--- Changes a character's properties.
+-- @tparam SetupArguments args
+function CharacterEvents:setupChar(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
     return
@@ -70,17 +85,38 @@ function CharacterEvents:hideChar(args)
     char.interactScripts = {}
     char.collideScripts = {}
     char.loadScripts = {}
+  elseif args.deactivate ~= nil then
+    char:resetScripts()
   end
-  if args.passable then
-    char:removeFromTiles()
-    char.collisionTiles = {}
+  if args.passable ~= nil then
+    char.passable = args.passable
   end
-  if args.fade and args.fade > 0 then
-    local speed = 60 / args.fade
-    char:colorizeTo(nil, nil, nil, 0, speed)
-    char:waitForColor()
-  else
-    char:setRGBA(nil, nil, nil, 0)
+  if args.speed ~= nil then
+    char.speed = args.speed / 100 * Config.player.walkSpeed
+  end
+  if args.visible ~= nil and args.vibible ~= char.visible then
+    local fade = args.visible and char.sprite.fadein or char.sprite.fadeout
+    if args.wait then
+      fade(char.sprite, args.fade)
+    else
+      self:fork(fade, char.sprite, args.fade)
+    end
+  end
+end
+--- Changes the properties of a character's shadow graphics.
+-- @tparam SetupArguments args Ignores field `deactivate`, `passable` and `speed`.
+function CharacterEvents:setupShadow(args)
+  local char = self:findCharacter(args.key, args.optional)
+  if not char then
+    return
+  end
+  if args.visible ~= nil and args.vibible ~= char.visible then
+    local fade = args.visible and char.shadow.fadein or char.shadow.fadeout
+    if args.wait then
+      fade(char.shadow, args.fade)
+    else
+      self:fork(fade, char.shadow, args.fade)
+    end
   end
 end
 
@@ -140,6 +176,22 @@ function CharacterEvents:moveCharPath(args)
   action.pathLimit = args.limit or math.huge
   local input = ActionInput(action, char, tile)
   input.action:execute(input)
+end
+--- Makes character jump in place.
+-- @tparam JumpArguments args
+function CharacterEvents:jumpChar(args)
+  local char = self:findCharacter(args.key)
+  if args.height then
+    local t = duration / 2 -- frames
+    local h = args.height -- pixels
+    -- h = (-g * t) * t + g * t * t / 2
+    -- 0 = v0 + g * t
+    -- h = g * t * t / 2
+    local g = 2 * h / t / t
+    char:jump(args.duration, g)
+  else
+    char:jump(args.duration, args.gravity)
+  end
 end
 
 -- ------------------------------------------------------------------------------------------------

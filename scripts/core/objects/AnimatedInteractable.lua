@@ -3,8 +3,8 @@
 
 --- An `Interactable` with graphics and animation. It's any field object instance that does not
 -- contain a `charID`, but contains an animation.  
--- Optional additional fields in the instance data include: `name`, `collisionTiles`, `transform`,
--- `shadowID`. These fields need code to be defined (see CharacterEvents:setup).
+-- Optional additional fields in the instance data include: `name`, `transform`,
+-- `shadowID`. These fields need code to be defined.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod AnimatedInteractable
 -- @extend JumpingObject
@@ -59,7 +59,6 @@ end
 -- @tparam[opt] table save The instance's save data.
 function AnimatedInteractable:initProperties(instData, save)
   self.passable = save and save.passable or instData.passable
-  self.collisionTiles = instData.collisionTiles or {{ dx = 0, dy = 0, height = 1 }}
   JumpingObject.initProperties(self)
   self.speed = instData.defaultSpeed / 100 * Config.player.walkSpeed
   if save then
@@ -156,23 +155,6 @@ function AnimatedInteractable:setKey(key)
   FieldManager.characterList[key] = self
   self.key = key
 end
-
--- ------------------------------------------------------------------------------------------------
--- Collision
--- ------------------------------------------------------------------------------------------------
-
---- Overrides `Object:getHeight`. 
--- @override
-function AnimatedInteractable:getHeight(dx, dy)
-  dx, dy = dx or 0, dy or 0
-  for i = 1, #self.collisionTiles do
-    local tile = self.collisionTiles[i]
-    if tile.dx == dx and tile.dy == dy then
-      return tile.height
-    end
-  end
-  return 0
-end
 --- Looks for collisions with characters in the given tile.
 -- @tparam ObjectTile tile The tile that the player is in or is trying to go.
 -- @treturn boolean True if there was any blocking collision, false otherwise.
@@ -194,45 +176,6 @@ function AnimatedInteractable:collideTile(tile)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Tiles
--- ------------------------------------------------------------------------------------------------
-
---- Gets all tiles this object is occuping.
--- @treturn table The list of tiles.
-function AnimatedInteractable:getAllTiles(i, j, h)
-  if not (i and j and h) then
-    i, j, h = self:tileCoordinates()
-  end
-  local tiles = { }
-  local last = 0
-  for t = #self.collisionTiles, 1, -1 do
-    local n = self.collisionTiles[t]
-    local tile = FieldManager.currentField:getObjectTile(i + n.dx, j + n.dy, h)
-    if tile ~= nil then
-      last = last + 1
-      tiles[last] = tile
-    end
-  end
-  return tiles
-end
---- Adds this object from to tiles it's occuping.
--- @tparam[opt] table tiles The list of occuped tiles.
-function AnimatedInteractable:addToTiles(tiles)
-  tiles = tiles or self:getAllTiles()
-  for i = #tiles, 1, -1 do
-    tiles[i].characterList:add(self)
-  end
-end
---- Removes this object from the tiles it's occuping.
--- @tparam[opt] table tiles The list of occuped tiles.
-function AnimatedInteractable:removeFromTiles(tiles)
-  tiles = tiles or self:getAllTiles()
-  for i = #tiles, 1, -1 do
-    tiles[i].characterList:removeElement(self)
-  end
-end
-
--- ------------------------------------------------------------------------------------------------
 -- Persistent Data
 -- ------------------------------------------------------------------------------------------------
 
@@ -247,6 +190,7 @@ function AnimatedInteractable:getPersistentData()
   data.animName = self.animName
   data.speed = self.speed
   data.visible = self.visible
+  data.passable = self.passable
   return data
 end
 -- For debugging.

@@ -21,7 +21,7 @@ local pixel2Tile = math.field.pixel2Tile
 local tile2Pixel = math.field.tile2Pixel
 
 -- Constants
-local defaultGravity = 30
+local defaultGravity = 0.5
 
 -- Class table.
 local JumpingObject = class(WalkingObject)
@@ -44,12 +44,12 @@ end
 
 --- Jumps in place.
 -- @tparam number duration Duration of the jump in frames.
--- @tparam number gravity Deceleration of the jump.
+-- @tparam number gravity Deceleration of the jump, in pixels/frame².
 function JumpingObject:jump(duration, gravity)
-  duration = duration / 2
-  gravity = gravity or defaultGravity
-  self.jumpVelocity = duration * (gravity / 2)
-  self.gravity = gravity * 60
+  duration = duration / 60 -- seconds
+  gravity = gravity or defaultGravity -- pixels / frame^2
+  self.gravity = gravity * 60 * 60 -- pixels / second^2
+  self.jumpVelocity = self.gravity * duration / 2 -- pixels / second
 end
 --- Updates position and velocity when jumping.
 -- @tparam number dt The duration of the previous frame.

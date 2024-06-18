@@ -72,7 +72,7 @@ function InventoryWindow:onButtonConfirm(button)
   local input = ActionInput(button.skill, self.member or self.leader)
   if input.action:isArea() then
     self:areaTargetItem(input)
-  elseif input.action:isRanged() then
+  elseif input.action:isRanged() or not input.user then
     self:singleTargetItem(input)
   else
     self:userOnlyItem(input)

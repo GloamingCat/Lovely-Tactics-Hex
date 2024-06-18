@@ -1,0 +1,34 @@
+-- Added parameters dt in update methods.
+-- Added enums.
+-- Changed the format of arguments of the JobEquips plugin.
+-- openRecruitMenu now uses the same arguments as openShopMenu.
+-- escapeEnabled -> not disableEscape
+-- intro -> not skipIntro
+-- Job.statuses
+-- Character.scripts
+-- Equip statusDef/statusBuff
+-- Animation:isVisible
+-- When a tag's value is "{%var}", its value on the TagMap is automatically set as GameManager.vars["var"]
+-- Removing animation's Component methods and accessing sprite directly instead
+-- Fix ChildAnimations
+
+Method/field renaming
+-- Merged Button:changeIcon and Button:setIcon.
+-- Changed Troop:getLevel to Troop:getMaxLevel.
+-- initializeGUI -> initializeUI
+-- ObjectTile.gui -> ObjectTile.ui
+-- setKeyMap -> setKeyConfiguration
+-- Color.RGBA (red, green, blue, alpha) -> (r, g, b, a)
+-- status.elements -> status.bonuses
+-- item.elements -> item.bonuses
+-- Skill.[user*Anim, *animID, *Time, mirror, stepOnCast] moved to Skill.animInfo
+
+Class renaming
+-- FieldHUD -> PlayerMenu
+-- MenuTargetGUI -> TargetMenu
+-- BattleGUI -> TurnMenu
+-- TileGUI -> TileUI
+-- *GUI* -> *Menu*
+-- CharacterBase -> AnimatedInteractable
+-- SimpleText -> TextComponent
+-- SimpleImage -> ImageComponent

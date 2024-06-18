@@ -177,7 +177,7 @@ end
 -- @tparam number dy The y of the tile of check the height, relative to the object's position.
 -- @treturn number Height in grid units.
 function Object:getHeight(dx, dy)
-  return 0
+  return 1
 end
 --- Gets the collider's height in pixels.
 -- @tparam number dx The x of the tile of check the height, relative to the object's position.

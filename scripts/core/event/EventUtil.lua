@@ -13,11 +13,30 @@
 -- Imports
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
 local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')
+local FieldMenu = require('core/gui/menu/FieldMenu')
 local Menu = require('core/gui/Menu')
+local SaveMenu = require('core/gui/menu/SaveMenu')
+local ShopMenu = require('core/gui/menu/ShopMenu')
+local RecruitMenu = require('core/gui/menu/RecruitMenu')
 local Vector = require('core/math/Vector')
 
 -- Class table.
 local EventUtil = class()
+
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Types of menu that can be called.
+-- @enum MenuType
+-- @field field Field menu.
+-- @field save Save menu.
+EventUtil.MenuType = {
+  field = 0,
+  save = 1,
+  shop = 2,
+  recruit = 3
+}
 
 -- ------------------------------------------------------------------------------------------------
 -- General
@@ -143,6 +162,27 @@ function EventUtil:openDialogueWindow(args)
     window:show()
   end
   self.menu:setActiveWindow(window)
+end
+--- Opens the a menu.
+-- @tparam MenuType menu The menu type (field, save, shop, recruit).
+-- @tparam[opt] table items An array of {id, price} entries.
+-- @tparam[opt] boolean sell Flag to indicaque that the player can also dismiss/sell in this menu.
+function EventUtil:openMenu(menu, items, sell)
+  self.vars.hudOpen = FieldManager.hud.visible
+  FieldManager.hud:hide()
+  menu = self.MenuType[menu] or menu
+  if menu == self.MenuType.field then
+    MenuManager:showMenuForResult(FieldMenu(nil))
+  elseif menu == self.MenuType.save then
+    MenuManager:showMenuForResult(SaveMenu(nil))
+  elseif menu == self.MenuType.shop then
+    MenuManager:showMenuForResult(ShopMenu(nil, items, sell))
+  elseif menu == self.MenuType.recruit then
+    MenuManager:showMenuForResult(RecruitMenu(nil, items, sell))
+  end
+  if self.vars.hudOpen then
+    FieldManager.hud:show()
+  end
 end
 
 return EventUtil

@@ -13,6 +13,12 @@ local GeneralEvents = {}
 -- Tables
 -- ------------------------------------------------------------------------------------------------
 
+--- Arguments for variable controlling.
+-- @table VariableAguments
+-- @tfield string key The key of the variable.
+-- @tfield number VarScope The scope of the variable (global/local/object).
+-- @field value The new value of the variable.
+
 --- Arguments for field transition.
 -- @table TransitionArguments
 -- @tfield[opt] number fieldID Field to loaded's ID. When nil, stays in the same field.
@@ -30,7 +36,7 @@ local GeneralEvents = {}
 -- @tfield[opt] boolean disableEscape Flag to disable the escape action for the player.
 -- @tfield[opt=NONE] GameOverCondition|VictoryCondition gameOverCondition The condition to block the
 --  "Continue" option from the Game Over screen. Either a number value from
---  `BattleManager.GameOverCondition` or a string value from `EventUtil.VictoryCondition`.
+--  `BattleManager.GameOverCondition` or a string value from `VictoryCondition`.
 
 --- The conditions to enable the "Continue" button on the `GameOverWindow`.
 -- @enum VictoryCondition
@@ -42,6 +48,40 @@ GeneralEvents.VictoryCondition = {
   SURVIVE = 'survive',
   KILL = 'kill'
 }
+
+--- Types of scope for script variables.
+-- @enum VarScope
+-- @field global Global variables.
+-- @field script Variables that are only accessible within the same script.
+-- @field object Variables associated with the script's object/character.
+GeneralEvents.VarScope = {
+  global = 0,
+  script = 1,
+  object = 2,
+  field = 3
+}
+
+-- ------------------------------------------------------------------------------------------------
+-- Variable
+-- ------------------------------------------------------------------------------------------------
+
+--- Sets the value of a variable.
+-- @tparam VariableArguments args
+function GeneralEvents:setVariable(args)
+  local scope = self.VarScope[args.scope] or args.scope
+  if scope == self.VarScope.global then
+    scope = GameManager.vars
+  elseif scope == self.VarScope.script then
+    scope = self.vars
+  elseif scope == self.VarScope.field then
+    scope = FieldManager.currentField.vars
+  elseif self.char then
+    scope = self.char.vars
+  else
+    return
+  end
+  scope[args.key] = args.value
+end
 
 -- ------------------------------------------------------------------------------------------------
 -- Field

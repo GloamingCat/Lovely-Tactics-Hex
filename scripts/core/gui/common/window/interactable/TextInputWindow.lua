@@ -23,13 +23,20 @@ local TextInputWindow = class(GridWindow)
 
 --- Constructor.
 -- @tparam Menu menu Parent Menu.
--- @tparam boolean emptyAllowed Flag to allow empty text.
--- @tparam boolean cancelAllowed Flag to allow the player to cancel.
+-- @tparam[opt=0]  number min The minimum length of the input text.
+-- @tparam[opt] number max The maximum length of the input text.
+-- @tparam[opt] number cancelValue The value returned when the player cancels.
+--  If nil, the player can't cancel.
 -- @param ... Other parameters from `Window:init`. 
-function TextInputWindow:init(menu, emptyAllowed, cancelAllowed, ...)
+function TextInputWindow:init(menu, min, max, cancelValue, ...)
   self.emptyAllowed = emptyAllowed
-  self.cancelAllowed = cancelAllowed
-  self.maxLength = math.huge
+  self.cancelValue = cancelValue
+  self.minLength = min or 0
+  if max == nil or max == -1 then
+    self.maxLength = math.huge
+  else
+    self.maxLength = max
+  end
   GridWindow.init(self, menu, ...)
 end
 --- Implements `GridWindow:createWidgets`. Creates confirm and cancel buttons.
@@ -80,7 +87,7 @@ end
 --- Overrides `GridWindow:onCancel`. If no button is selected, then choose cancel button.
 -- @override
 function TextInputWindow:onCancel()
-  if self.cancelAllowed then
+  if self.cancelValue then
     local widget = self:currentWidget() or self.cancelButton
     GridWindow.onCancel(self, widget)
   end
@@ -90,18 +97,18 @@ function TextInputWindow:confirmConfirm(button)
   self.result = self.textBox.input
   InputManager:endTextInput()
 end
---- Cancels and returns invalid input.
+--- Cancels and returns default value.
 function TextInputWindow:cancelConfirm(button)
-  self.result = 0
+  self.result = self.cancelValue
   InputManager:endTextInput()
 end
 --- Confirm button enabled only if text input is valid.
 function TextInputWindow:confirmEnabled(button)
-  return self.emptyAllowed or self.textBox.input ~= ''
+  return #self.textBox.input >= self.minLength
 end
 --- Cancel button enabled only if text input is optional.
 function TextInputWindow:cancelEnabled(button)
-  return self.cancelAllowed
+  return self.cancelValue ~= nil
 end
 
 -- ------------------------------------------------------------------------------------------------

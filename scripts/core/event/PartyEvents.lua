@@ -8,7 +8,10 @@
 -- ================================================================================================
 
 -- Imports
+local ActionInput = require('core/battle/action/ActionInput')
 local Battler = require('core/battle/battler/Battler')
+local SkillAction = require('core/battle/action/SkillAction')
+local TargetMenu = require('core/gui/common/TargetMenu')
 local Troop = require('core/battle/Troop')
 
 local PartyEvents = {}
@@ -20,7 +23,8 @@ local PartyEvents = {}
 --- Common arguments.
 -- @table PartyArguments
 -- @tfield number value Value to be added/subtracted.
--- @tfield number|string id ID or key of the item to be added, for `increaseItem`.
+-- @tfield number|string id ID or key of the item to be added, for `increaseItem`, or the skill to
+--  be used, for `useSkill`.
 -- @tfield boolean onlyCurrent True to ignore backup and members, for `increaseExp`
 --  or `healAll`.
 
@@ -78,6 +82,30 @@ end
 function PartyEvents:increaseItem(args)
   local troop = Troop()
   troop.inventory:addItem(args.id, args.value)
+  TroopManager:saveTroop(troop)
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
+end
+--- Apply a skill on a party. If the party is not defined, apply it on the player troop.
+-- @tparam PartyArguments args
+function PartyEvents:useSkill(args)
+  local troop = TroopManager:getTroop(args.party)
+  local input = ActionInput(SkillAction(arg.id))
+  input.user = args.user and troop.battlers[args.user]
+  input.target = args.target and troop.battlers[args.target]
+  if not input.target then
+    if input.action:isArea() then
+      -- All members
+      input.targets = args.backup and troop:visibleBattlers() or troop:currentBattlers()
+      input.action:menuUse(input)
+    elseif input.action:isRanged() or not input.user then
+      local menu = TargetMenu(self.menu, troop, input, args.backup)
+      MenuManager:showMenuForResult(menu)
+    else
+      input.target = input.user
+      input.action:menuUse(input)
+    end
   TroopManager:saveTroop(troop)
   if FieldManager.hud then
     FieldManager.hud:refreshSave(true)

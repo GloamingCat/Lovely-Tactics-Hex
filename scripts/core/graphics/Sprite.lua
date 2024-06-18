@@ -308,6 +308,42 @@ function Sprite:setPosition(pos)
 end
 
 -- ------------------------------------------------------------------------------------------------
+-- Effects
+-- ------------------------------------------------------------------------------------------------
+
+--- Fades the sprite's transparency.
+-- @tparam[opt] number time The duration of the fading in frames.
+--  If nil, uses default fading speed.
+function Sprite:fadeout(time, wait)
+  if time and time > 0 then
+    local speed = 60 / time
+    local alpha = self.sprite.color.a
+    self:setVisible(true)
+    self:colorizeTo(nil, nil, nil, 0, speed)
+    self:waitForColor()
+    self:setVisible(false)
+    self:setRGBA(nil, nil, nil, alpha)
+  else
+    self:setVisible(false)
+  end
+end
+--- Fades the sprite's transparency.
+-- @tparam[opt] number time The duration of the fading in frames.
+--  If nil, uses default fading speed.
+function Sprite:fadein(time, wait)
+  if time and time > 0 then
+    local speed = 60 / time
+    local alpha = self.sprite.color.a
+    self:setVisible(true)
+    self:setRGBA(nil, nil, nil, 0)
+    self:colorizeTo(nil, nil, nil, alpha, speed)
+    self:waitForColor()
+  else
+    self:setVisible(true)
+  end
+end
+
+-- ------------------------------------------------------------------------------------------------
 -- Renderer
 -- ------------------------------------------------------------------------------------------------
 

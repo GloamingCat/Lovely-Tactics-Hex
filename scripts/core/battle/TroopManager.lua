@@ -317,6 +317,13 @@ function TroopManager:setPartyTiles()
     end
   end
 end
+-- Gets a party's troop in the current battle if on battle, 
+---  or player's troop if party is not found.
+-- @tparam number party The ID of the party.
+-- @treturn Troop The troop associated with the given party slot.
+function TroopManager:getTroop(party)
+  return self.troops and self.troops[party] or self:getPlayerTroop()
+end
 -- Gets player party's troop in the current battle if on battle, 
 ---  or player's troop from current save's data otherwise.
 -- @treturn Troop The troop controlled by the player.

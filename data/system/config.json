@@ -10,11 +10,11 @@
     "dashSpeed": 200,
     "diagThreshold": 15,
     "startPos": {
-      "fieldID": 6,
-      "x": 7,
-      "y": 2,
+      "fieldID": 8,
+      "x": 9,
+      "y": 1,
       "h": 1,
-      "direction": 315
+      "direction": -1
     }
   },
   "battle": {

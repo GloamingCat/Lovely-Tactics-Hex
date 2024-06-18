@@ -24,11 +24,12 @@ local PartyWindow = class(ListWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor. Gets the member list from the troop.
--- @tparam Menu menu Parent Menu.
--- @tparam Troop troop
-function PartyWindow:init(menu, troop)
+-- @tparam Menu menu Parent menu.
+-- @tparam Troop troop Troop with possible targets.
+-- @tparam boolean backup Flag to include backup members in the target list.
+function PartyWindow:init(menu, troop, backup)
   self.visibleRowCount = GameManager:isMobile() and 3 or 4
-  local list = troop:visibleBattlers()
+  local list = backup and troop:visibleBattlers() or troop:currentBattlers()
   self.troop = troop
   ListWindow.init(self, menu, list)
 end

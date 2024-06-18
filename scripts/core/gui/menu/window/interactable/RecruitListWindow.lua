@@ -34,7 +34,7 @@ function RecruitListWindow:createListButton(entry)
     assert(char, 'Character does not exist: ' .. tostring(entry.id))
     battler = Database.battlers[char.battlerID]
     assert(battler, 'Character does not have a battler: ' .. tostring(char.id))
-    price = entry.price or battler.money
+    price = entry.value or battler.money
   else
     member = self.menu.troop.members[entry.key]
     assert(member, 'Member not in troop: ' .. entry.key)

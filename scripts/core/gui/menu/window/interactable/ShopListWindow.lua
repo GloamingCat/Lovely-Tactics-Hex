@@ -28,12 +28,12 @@ end
 --- Implements `ListWindow:createListButton`.
 -- @implement
 function ShopListWindow:createListButton(item)
-  local price = item.price
+  local price = item.value
   item = Database.items[item.id]
   local id = item.id
   assert(item, 'Item does not exist: ' .. tostring(id))
   if not price or price < 0 then
-    price = item.price
+    price = item.value
   end
   local button = Button(self)
   button:setIcon(item.icon)

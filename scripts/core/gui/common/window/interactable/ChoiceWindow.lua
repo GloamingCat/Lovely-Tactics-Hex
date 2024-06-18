@@ -22,13 +22,18 @@ local ChoiceWindow = class(GridWindow)
 
 --- Constructor.
 -- @tparam Menu menu Parent Menu.
--- @tparam table args Table of arguments, including choies, width, align and cancel choice ID.
-function ChoiceWindow:init(menu, args)
-  self.choices = List(args.choices)
-  self.width = args.width
-  self.align = args.align
-  self.cancelChoice = args.cancel
-  GridWindow.init(self, menu, self.width, nil, args.pos)
+-- @tparam table choices Array of strings containing the text of each choice.
+-- @tparam[opt] number cancelChoice The number of the choice returned when the player cancels.
+--  If nil, the player can't cancel.
+-- @tparam[opt] Vector pos Center position of the window.
+-- @tparam[opt] number width Width of the window.
+-- @tparam[opt="left"] string align Horizontal alignment of the button text.
+function ChoiceWindow:init(menu, choices, cancelChoice, pos, width, align)
+  self.choices = List(choices)
+  self.width = width
+  self.align = align or 'left'
+  self.cancelChoice = cancelChoice
+  GridWindow.init(self, menu, self.width, nil, pos)
 end
 --- Implements `GridWindow:creatwWidgets`. Creates a button for each choice.
 -- @implement

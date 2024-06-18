@@ -38,12 +38,12 @@ local ActionInput = class()
 -- @tparam BattleAction action
 -- @tparam Character|Battler user
 -- @tparam[opt] ObjectTile target Action target.
--- @tparam[opt] ActionMenu Menu Current `ActionMenu`, if any.
-function ActionInput:init(action, user, target, Menu)
+-- @tparam[opt] ActionMenu menu Current `ActionMenu`, if any.
+function ActionInput:init(action, user, target, menu)
   self.action = action
   self.user = user
   self.target = target
-  self.menu = Menu
+  self.menu = menu
   self.skipAnimations = BattleManager.params.skipAnimations
 end
 
