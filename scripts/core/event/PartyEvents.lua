@@ -106,6 +106,7 @@ function PartyEvents:useSkill(args)
       input.target = input.user
       input.action:menuUse(input)
     end
+  end
   TroopManager:saveTroop(troop)
   if FieldManager.hud then
     FieldManager.hud:refreshSave(true)

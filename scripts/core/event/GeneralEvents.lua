@@ -70,17 +70,38 @@ GeneralEvents.VarScope = {
 function GeneralEvents:setVariable(args)
   local scope = self.VarScope[args.scope] or args.scope
   if scope == self.VarScope.global then
-    scope = GameManager.vars
+    scope = GameManager
   elseif scope == self.VarScope.script then
-    scope = self.vars
+    scope = self
   elseif scope == self.VarScope.field then
-    scope = FieldManager.currentField.vars
+    scope = FieldManager.currentField
   elseif self.char then
-    scope = self.char.vars
+    scope = self.char
   else
     return
   end
-  scope[args.key] = args.value
+  scope.vars[args.key] = args.value
+end
+--- Sets the value of a local (script) variable.
+-- @tparam VariableArguments args
+function GeneralEvents:setLocalVar(args)
+  self.vars[args.key] = args.value
+end
+--- Sets the value of a global variable.
+-- @tparam VariableArguments args
+function GeneralEvents:setGlobalVar(args)
+  GameManager.vars[args.key] = args.value
+end
+--- Sets the value of a global variable.
+-- @tparam VariableArguments args
+function GeneralEvents:setFieldVar(args)
+  FieldManager.currentField.vars[args.key] = args.value
+end
+--- Sets the value of a global variable.
+-- @tparam VariableArguments args
+function GeneralEvents:setCharVar(args)
+  assert(self.char, "Script was not called from a character")
+  self.char.vars[args.key] = args.value
 end
 
 -- ------------------------------------------------------------------------------------------------

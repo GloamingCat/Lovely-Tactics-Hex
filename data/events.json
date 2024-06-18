@@ -207,8 +207,17 @@
         },
         {
           "condition": "",
-          "name": "script.vars.deltaBattleTime = GameManager.frame - (GameManager.vars.lastBattleTime or -60)",
-          "tags": [],
+          "name": "setLocalVar",
+          "tags": [
+            { 
+              "key": "name",
+              "value": "deltaBattleTime"
+            },
+            {
+              "key": "value",
+              "value": "GameManager.frame - (GameManager.vars.lastBattleTime or -60)",
+            }
+          ],
           "key": ""
         },
         {
@@ -346,11 +355,15 @@
         },
         {
           "condition": "not script.vars.escaped",
-          "name": "hideChar",
+          "name": "setupChar",
           "tags": [
             {
               "key": "key",
               "value": "\"self\""
+            },
+            {
+              "key": "visible",
+              "value": "false"
             },
             {
               "key": "deactivate",

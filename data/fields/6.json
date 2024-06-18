@@ -834,13 +834,8 @@
           "onInteract": true,
           "onCollide": false,
           "description": "",
-          "name": "EventSheet.lua",
-          "tags": [
-            {
-              "key": "sheet",
-              "value": "\"Merlin\""
-            }
-          ],
+          "name": "0",
+          "tags": [],
           "key": ""
         }
       ],

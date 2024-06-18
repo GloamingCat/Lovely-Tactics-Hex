@@ -1169,17 +1169,8 @@
               "onInteract": false,
               "onCollide": true,
               "description": "Battle on Collision",
-              "name": "EventSheet.lua",
-              "tags": [
-                {
-                  "key": "sheet",
-                  "value": "\"Battle\""
-                },
-                {
-                  "key": "fieldID",
-                  "value": "0"
-                }
-              ],
+              "name": "1",
+              "tags": [],
               "key": ""
             }
           ],
