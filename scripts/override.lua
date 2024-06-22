@@ -67,6 +67,7 @@ end
 local FunctionCache = {}
 
 --- Rewrites `loadstring`. Changes Lua's native function to store string in cache if already compiled.
+-- @rewrite
 function loadstring(str, ...)
   local func = FunctionCache[str]
   if func then
@@ -74,32 +75,41 @@ function loadstring(str, ...)
   else
     local err
     func, err = old_loadstring(str, ...)
-    assert(func, err)
     FunctionCache[str] = func
-    return func
+    return func, err
   end
 end
 --- Creates a function with the given body and the given parameters.
 -- @tparam string body The code of the body.
 -- @tparam string param The list of parameters separated by comma (without parens).
-function loadfunction(body, param)
+-- @tparam[opt] boolean unsafe Flag to indice that the text is not always a Lua expression,
+--  and in case it isn't, return nil.
+function loadfunction(body, param, unsafe)
+  local func, err
   if param and param ~= '' then
     local funcString = 
       'function(' .. param .. ') ' ..
         body ..
       ' end'
-    return loadstring('return ' .. funcString)()
+    func, err = loadstring('return ' .. funcString)
+    if func then
+      func = func()
+    end
   else
-    return loadstring(body)
+    func, err = loadstring(body)
   end
+  assert(func or unsafe, err)
+  return func
 end
 --- Generates a function from a formula in string.
 -- @tparam string formula The formula expression.
 -- @tparam[opt] string param The param needed for the function.
+-- @tparam[opt] boolean unsafe Flag to indice that the text is not always a Lua expression,
+--  and in case it isn't, return nil.
 -- @treturn function The function that evaluates the formula.
-function loadformula(formula, param)
+function loadformula(formula, param, unsafe)
   if formula == '' or not formula then
     formula = 'nil'
   end
-  return loadfunction('return ' .. formula, param)
+  return loadfunction('return ' .. formula, param, unsafe)
 end

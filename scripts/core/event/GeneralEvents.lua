@@ -15,7 +15,7 @@ local GeneralEvents = {}
 
 --- Arguments for variable controlling.
 -- @table VariableAguments
--- @tfield string key The key of the variable.
+-- @tfield string name The key of the variable.
 -- @tfield number VarScope The scope of the variable (global/local/object).
 -- @field value The new value of the variable.
 
@@ -27,6 +27,7 @@ local GeneralEvents = {}
 -- @tfield number y Player's destination y.
 -- @tfield number h Player's destination height.
 -- @tfield number direction Player's destination direction (in degrees).
+-- @tfield boolean movePlayer Flag to move player to the event's tile while fading.
 
 --- Arguments for battle commands.
 -- @table BattleArguments
@@ -67,6 +68,25 @@ GeneralEvents.VarScope = {
 
 --- Sets the value of a variable.
 -- @tparam VariableArguments args
+-- @return The value of the variable (nil if not found).
+function GeneralEvents:getVariable(args)
+  local scope = self.VarScope[args.scope] or args.scope
+  if scope == self.VarScope.global then
+    scope = GameManager
+  elseif scope == self.VarScope.script then
+    scope = self
+  elseif scope == self.VarScope.field then
+    scope = FieldManager.currentField
+  elseif scope == self.VarScope.object then
+    assert(self.char, "Script was not called from a character")
+    scope = self.char
+  else
+    return nil
+  end
+  return scope.vars[args.key]
+end
+--- Sets the value of a variable.
+-- @tparam VariableArguments args
 function GeneralEvents:setVariable(args)
   local scope = self.VarScope[args.scope] or args.scope
   if scope == self.VarScope.global then
@@ -75,33 +95,35 @@ function GeneralEvents:setVariable(args)
     scope = self
   elseif scope == self.VarScope.field then
     scope = FieldManager.currentField
-  elseif self.char then
+  elseif scope == self.VarScope.object then
+    assert(self.char, "Script was not called from a character")
     scope = self.char
   else
     return
   end
-  scope.vars[args.key] = args.value
+  scope.vars[args.key] = self:evaluate(args.value)
 end
 --- Sets the value of a local (script) variable.
 -- @tparam VariableArguments args
 function GeneralEvents:setLocalVar(args)
-  self.vars[args.key] = args.value
+  self.vars[args.key] = self:evaluate(args.value)
+  print(args.key, self.vars[args.key])
 end
 --- Sets the value of a global variable.
 -- @tparam VariableArguments args
 function GeneralEvents:setGlobalVar(args)
-  GameManager.vars[args.key] = args.value
+  GameManager.vars[args.key] = self:evaluate(args.value)
 end
 --- Sets the value of a global variable.
 -- @tparam VariableArguments args
 function GeneralEvents:setFieldVar(args)
-  FieldManager.currentField.vars[args.key] = args.value
+  FieldManager.currentField.vars[args.key] = self:evaluate(args.value)
 end
 --- Sets the value of a global variable.
 -- @tparam VariableArguments args
 function GeneralEvents:setCharVar(args)
   assert(self.char, "Script was not called from a character")
-  self.char.vars[args.key] = args.value
+  self.char.vars[args.key] = self:evaluate(args.value)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -109,10 +131,11 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Teleports player to other field.
+-- @coroutine
 -- @tparam TransitionArguments args
 function GeneralEvents:moveToField(args)
   FieldManager.playerInput = false
-  if args.fade then
+  if args.fade and args.movePlayer then
     if self.char.tile and self.char.tile ~= FieldManager.player:getTile() then
       FieldManager.player.fiberList:fork(function()
         -- Character
@@ -129,6 +152,7 @@ function GeneralEvents:moveToField(args)
   FieldManager.playerInput = true
 end
 --- Loads battle field.
+-- @coroutine
 -- @tparam BattleArguments args
 function GeneralEvents:startBattle(args)
   args.gameOverCondition = args.gameOverCondition or 1
@@ -164,20 +188,21 @@ function GeneralEvents:startBattle(args)
   fiber:waitForEnd()
 end
 --- Loads battle field.
+-- @coroutine
 -- @tparam BattleArguments args
 function GeneralEvents:finishBattle(args)
   if BattleManager:playerEscaped() then
-    self.battleLog = 'You escaped!'
+    self.vars.battleLog = 'You escaped!'
   elseif BattleManager:enemyEscaped() then
-    self.battleLog = 'The enemy escaped...'
+    self.vars.battleLog = 'The enemy escaped...'
   elseif BattleManager:enemyWon() then
     assert(BattleManager.params.gameOverCondition < 2, "Player shouldn't have the option to continue.")
-    self.battleLog = 'You lost...'
+    self.vars.battleLog = 'You lost...'
   elseif BattleManager:drawed() then
     assert(BattleManager.params.gameOverCondition < 1, "Player shouldn't have the option to continue.")
-    self.battleLog = 'Draw.'
+    self.vars.battleLog = 'Draw.'
   elseif BattleManager:playerWon() then
-    self.battleLog = 'You won!'
+    self.vars.battleLog = 'You won!'
   end
   if args.fade then
     FieldManager.renderer:fadein(args.fade, args.wait)

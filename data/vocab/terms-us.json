@@ -22,6 +22,7 @@
   "quit": "Quit",
   
   // Settings
+  "language": "Language",
   "volumeBGM": "BGM Volume",
   "volumeSFX": "SFX Volume",
   "windowColor": "Window Color",
@@ -132,11 +133,6 @@
   
   // Messages
   "loot": "You gained {%lootq}x {%loot}!",
-  "rest": "Do you want to rest?",
-  
-  // Languages
-  "language": "Language",
-  "us": "English (US)",
-  "br": "Português (BR)"
+  "rest": "Do you want to rest?"
   
 }

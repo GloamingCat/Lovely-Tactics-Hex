@@ -96,11 +96,17 @@ function FieldManager:loadTransition(transition, save)
   self:runLoadScripts()
 end
 --- Plays current field's BGM, if not already playing.
-function FieldManager:playFieldBGM()
+-- @tparam[opt] number time The duration of the fading transition.
+-- @tparam[opt] boolean wait Flag to yield until the fading animation concludes.
+function FieldManager:playFieldBGM(time, wait)
   local bgm = self.currentField.bgm
   if bgm and bgm.name ~= '' then
-    if AudioManager.BGM == nil or AudioManager.BGM.name ~= bgm.name then
-      AudioManager:playBGM(bgm, bgm.time or 0)
+    if AudioManager.BGM == nil then
+      if AudioManager.BGM.name ~= bgm.name then
+        AudioManager:playBGM(bgm, time or bgm.time, wait)
+      elseif AudioManager.pausedBGM then
+        AudioManager:resumeBGM(time or bgm.time, wait)
+      end
     end
   end
 end

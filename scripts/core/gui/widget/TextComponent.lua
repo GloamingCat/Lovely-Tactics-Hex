@@ -64,10 +64,11 @@ end
 function TextComponent:setTerm(term, fallback)
   if fallback then
     self.fallback = fallback
-    if not term:find("%%") then    
-      self.term = "{%" .. term .. "}"
-    else
+    if term and term:find("%%") then    
       self.term = term
+    else
+      print('% not found: ' .. term)
+      self.term = "{%" .. term .. "}"
     end
   else
     self:setText(term)
@@ -105,6 +106,7 @@ function TextComponent:redraw()
     if pcall(self.sprite.setText, self.sprite, self.term) then
       self.text = self.term
     else
+      print('Term not found: ' .. self.term)
       self.text = self.fallback
       self.sprite:setText(self.fallback)
     end

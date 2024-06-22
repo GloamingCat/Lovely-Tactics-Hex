@@ -54,13 +54,27 @@ TextParser.Code = {
 -- Fragments
 -- ------------------------------------------------------------------------------------------------
 
+--- Replaces all in-text variables by their values.
+-- The variables are evaluated recursively.
+-- @tparam string text Raw text.
+-- @treturn string Modified text.
+function TextParser.evaluate(text)
+  local str = ""
+  for textFragment, code in text:gmatch('([^{%%]*){(.-)}') do
+    local key = code:sub(1)
+    local value = GameManager:getVariable(key, _G.Fiber, FieldManager.currentField)
+    assert(value, 'Text variable or term ' .. tostring(key) .. ' not found.')
+    local f = tostring(value)
+    str = str .. textFragment .. TextParser.evaluate(f)
+  end
+  return str
+end
 --- Split raw text into an array of fragments.
 -- @tparam string text Raw text.
 -- @tparam[opt] boolean plainText Flag to not parse commands.
 -- @tparam[opt={}] table fragments Array of raw fragments.
 -- @treturn table Array of fragments.
 function TextParser.parse(text, plainText, fragments)
-  local vars = Config.variables
   fragments = fragments or {}
 	if text ~= '' then 
     if plainText then
@@ -69,7 +83,7 @@ function TextParser.parse(text, plainText, fragments)
     end
 		for textFragment, code in text:gmatch('([^{]*){(.-)}') do
       TextParser.parseFragment(fragments, textFragment)
-      TextParser.parseCode(fragments, code, vars)
+      TextParser.parseCode(fragments, code)
 		end
     text = text:match('[^}]+$')
     if text then
@@ -95,8 +109,7 @@ end
 --- Parse and insert new fragment(s) according to code.
 -- @tparam table fragments Array of parsed fragments.
 -- @tparam string code The next code inside braces.
--- @tparam table vars The table of variables to be referenced in the text.
-function TextParser.parseCode(fragments, code, vars)
+function TextParser.parseCode(fragments, code)
   local t = code:sub(1, 1)
   if not TextParser.Code[t] then
     TextParser.parseFragment(fragments, '{' .. code .. '}')
@@ -105,14 +118,9 @@ function TextParser.parseCode(fragments, code, vars)
   end
   if t == '%' then
     local key = code:sub(2)
-    local f
-    if vars[key] then
-      f = tostring(vars[key].value)
-    else
-      local value = util.table.access(Vocab, key)
-      assert(value, 'Text variable or term ' .. tostring(key) .. ' not found.')
-      f = tostring(value)
-    end
+    local value = GameManager:getVariable(key, _G.Fiber, FieldManager.currentField)
+    assert(value, 'Text variable or term ' .. tostring(key) .. ' not found.')
+    local f = tostring(value)
     if plainText then
       TextParser.parseFragment(fragments, f)
     else

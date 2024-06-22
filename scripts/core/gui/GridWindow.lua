@@ -315,11 +315,11 @@ function GridWindow:setWidgetTooltip(widget)
     return
   end
   if type(widget) == 'string' then
-    self.tooltip:setTerm('manual.' .. widget, self.tooltipTerm)
+    self.tooltip:setTerm(widget, self.tooltipTerm)
   elseif widget and widget.tooltipTerm then
-    self.tooltip:setTerm('manual.' .. widget.tooltipTerm, widget.tooltipTerm)
+    self.tooltip:setTerm(widget.tooltipTerm, widget.tooltipTerm)
   else
-    self.tooltip:setTerm('manual.' .. self.tooltipTerm, self.tooltipTerm)
+    self.tooltip:setTerm(self.tooltipTerm, self.tooltipTerm)
   end
   self.tooltip:redraw()
 end

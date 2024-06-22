@@ -27,9 +27,9 @@ function LoadWindow:setProperties()
 end
 --- Overrides `SaveWindow:createSaveButton`. 
 -- @override
-function LoadWindow:createSaveButton(file, name)
+function LoadWindow:createSaveButton(file)
   if SaveManager:getHeader(file) then
-    return SaveWindow.createSaveButton(self, file, name)
+    return SaveWindow.createSaveButton(self, file)
   end
 end
 

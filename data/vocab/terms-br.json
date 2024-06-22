@@ -22,6 +22,7 @@
   "quit": "Sair",
   
   // Settings
+  "language": "Idioma",
   "volumeBGM": "Vol. de Música",
   "volumeSFX": "Vol. de Sons",
   "windowColor": "Cor da Janela",
@@ -131,11 +132,6 @@
   
   // Messages
   "loot": "Você ganhou {%lootq}x {%loot}!",
-  "rest": "Quer descançar?",
-  
-  // Languages
-  "language": "Idioma",
-  "us": "English (US)",
-  "br": "Português (BR)"
+  "rest": "Quer descançar?"
   
 }

@@ -15,16 +15,16 @@
 local rand = love.math.random
 
 return function(script)
-
   local id = tonumber(script.args.id) or script.args.id
   local item = Database.items[id]
   local count = tonumber(script.args.count) or 1
   local name = "{%data.item." .. item.key .. "}"
-  Config.variables["loot"].value = name
-  Config.variables["lootq"].value = count
+  script.vars.loot = name
+  script.vars.lootq = count
+  FieldManager.player:playIdleAnimation()
   -- Translate
   if not pcall(script.showDialogue, script, { id = 1, message = Vocab.loot }) then   
-    Config.variables["loot"].value = item.name
+    script.vars.loot = item.name
     script:showDialogue { id = 1, message = Vocab.loot }
   end
   script:increaseItem { id = item.id, value = count }

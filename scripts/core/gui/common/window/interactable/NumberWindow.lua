@@ -22,6 +22,7 @@ local NumberWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
+-- @tparam Menu menu Parent menu.
 -- @tparam number length Number of digits for number input.
 -- @tparam[opt] number cancelValue The value returned when the player cancels.
 --  If nil, the player can't cancel.

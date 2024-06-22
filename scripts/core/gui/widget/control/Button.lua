@@ -47,7 +47,7 @@ function Button:fromKey(window, key)
   local button = self(window, window[key .. 'Confirm'], window[key .. 'Enabled'])
   button:setIcon(Config.icons[key])
   if key and Vocab[key] then
-    button:createText(key, key, window.buttonFont, window.buttonAlign)
+    button:createText("{%" .. key .. "}", key, window.buttonFont, window.buttonAlign)
     if Vocab.manual[key] then
       button.tooltipTerm = key
     end

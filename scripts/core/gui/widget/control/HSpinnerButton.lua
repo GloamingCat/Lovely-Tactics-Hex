@@ -47,7 +47,7 @@ function HSpinnerButton:fromKey(window, key, minValue, maxValue, initValue)
   local button = self(window, minValue, maxValue, initValue)
   button:setIcon(Config.icons[key])
   if key and Vocab[key] then
-    button:createText(key, key, window.buttonFont, 'left')
+    button:createText("{%" .. key .. "}", key, window.buttonFont, 'left')
     if Vocab.manual[key] then
       button.tooltipTerm = key
     end

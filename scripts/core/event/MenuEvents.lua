@@ -36,20 +36,23 @@ local MenuEvents = {}
 -- @tfield table items Array of items/battlers (with their IDs or keys), for `openShopMenu` and `openRecruitMenu`.
 -- @tfield boolean sell Enables sell/dismiss option, for `openShopMenu` and `openRecruitMenu`.
 
---- Arguments for dialogue commands. Extends `WindowArguments`.
+--- Arguments for dialogue commands.
 -- @table DialogueArguments
+-- @extend WindowArguments
 -- @tfield string message Dialogue text.
 -- @tfield[opt] string name Speaker name.
 -- @tfield[opt] number nameX Speaker window X in relation to the main window, from -1 to 1.
 -- @tfield[opt] number nameY Speaker window Y in relation to the main window, from -1 to 1.
 
---- Arguments for title/message commands. Extends `WindowArguments`.
+--- Arguments for title/message commands.
 -- @table MessageArguments
+-- @extend WindowArguments
 -- @tfield string text Text inside window.
 -- @tfield boolean wait Flag to wait for player input.
 
---- Arguments for choice/number/input commands. Extends `WindowArguments`.
+--- Arguments for choice/number/input commands.
 -- @table InputCommands
+-- @extend WindowArguments
 -- @tfield table choices Array with the name of each choice, for `openChoiceWindow`.
 -- @tfield number length Number of digits for number input, for `openNumberWindow`.
 -- @tfield boolean emptyAllowed Whether it is allowed to leave the text empty, for `openStringWindow`
@@ -191,7 +194,7 @@ end
 -- @tparam InputArguments args
 function MenuEvents:openChoiceWindow(args)
   self:createMenu()
-  local window = ChoiceWindow(self.menu, args.choice, args.cancel,
+  local window = ChoiceWindow(self.menu, args.choices, args.cancel,
     args.pos, args.width, args.align)
   window:setXYZ(args.x, args.y, -5)
   window:show()
@@ -201,9 +204,10 @@ function MenuEvents:openChoiceWindow(args)
   window:removeSelf()
   window:destroy()
   self.menu.activeWindow = nil
-  self.vars.choiceInput = result
+  local var = args.variable or 'choiceInput'
+  self.vars[var] = result
   if self.char then
-    self.char.vars.choiceInput = result
+    self.char.vars[var] = result
   end
 end
 --- Opens a password window and waits for player choice before closing and deleting.
@@ -219,9 +223,11 @@ function MenuEvents:openNumberWindow(args)
   window:hide()
   window:removeSelf()
   window:destroy()
-  self.vars.numberInput = result
+  self.menu.activeWindow = nil
+  local var = args.variable or 'numberInput'
+  self.vars[var] = result
   if self.char then
-    self.char.vars.numberInput = result
+    self.char.vars[var] = result
   end
 end
 --- Opens a text window and waits for player choice before closing and deleting.
@@ -235,9 +241,11 @@ function MenuEvents:openStringWindow(args)
   window:hide()
   window:removeSelf()
   window:destroy()
-  self.vars.textInput = result ~= 0 and result
+  self.menu.activeWindow = nil
+  local var = args.variable or 'textInput'
+  self.vars[var] = result ~= 0 and result
   if self.char then
-    self.char.vars.textInput = result
+    self.char.vars[var] = result ~= 0 and result
   end
 end
 

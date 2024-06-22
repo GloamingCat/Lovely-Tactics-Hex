@@ -313,7 +313,7 @@ end
 
 --- Fades the sprite's transparency.
 -- @tparam[opt] number time The duration of the fading in frames.
---  If nil, uses default fading speed.
+-- @tparam[opt] boolean wait Flag to wait until the fading finishes.
 function Sprite:fadeout(time, wait)
   if time and time > 0 then
     local speed = 60 / time
@@ -329,7 +329,7 @@ function Sprite:fadeout(time, wait)
 end
 --- Fades the sprite's transparency.
 -- @tparam[opt] number time The duration of the fading in frames.
---  If nil, uses default fading speed.
+-- @tparam[opt] boolean wait Flag to wait until the fading finishes.
 function Sprite:fadein(time, wait)
   if time and time > 0 then
     local speed = 60 / time

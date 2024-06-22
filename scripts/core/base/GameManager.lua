@@ -13,6 +13,7 @@ local TitleMenu = require ('core/gui/menu/TitleMenu')
 -- Alias
 local deltaTime = love.timer.getDelta
 local copyTable = util.table.deepCopy
+local pathAccess = util.table.access
 local now = love.timer.getTime
 
 -- Class table.
@@ -74,6 +75,11 @@ function GameManager:start()
   end
   print('Game started.')
 end
+
+-- ------------------------------------------------------------------------------------------------
+-- Data
+-- ------------------------------------------------------------------------------------------------
+
 --- Sets current save.
 -- @tparam table save A save table loaded by SaveManager.
 function GameManager:setSave(save)
@@ -111,6 +117,39 @@ function GameManager:setConfig(config)
     self.language = config.language or 1
     Database.loadVocabFiles(self.language)
   end
+end
+--- Gets the value of a variable considering the scope of execution.
+-- The scope of the variable is searched in order:
+-- script (local), script's character, field, game (global).
+-- If still not found, it searches in the Vocab terms, using the `TableUtil.access` method.
+-- @tparam string key The name of the variable.
+-- @tparam Field field The current loaded field.
+-- @tparam Fiber script The current executing script.
+-- @return The value of the variable. 
+function GameManager:getVariable(key, field, script)
+  local value = nil
+  if script and script.vars then
+    -- Local
+    value = script.vars[key]
+    if value == nil and script.char and script.char.vars then
+      -- Object
+      value = script.char.vars[key]
+    end
+    if value == nil then
+      -- Field
+      if field and field.vars then
+        value = field.vars[key]
+      end
+      -- Global
+      if value == nil then
+        value = self.vars[key]
+      end
+    end
+  end
+  if value == nil then
+    value = pathAccess(Vocab, key)
+  end
+  return value
 end
 
 -- ------------------------------------------------------------------------------------------------

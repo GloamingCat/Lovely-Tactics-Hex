@@ -39,7 +39,7 @@ function SwitchButton:fromKey(window, key, ...)
   local button = self(window, ...)
   button:setIcon(Config.icons[key])
   if key and Vocab[key] then
-    button:createText(key, key, window.buttonFont, 'left')
+    button:createText("{%" .. key .. "}", key, window.buttonFont, 'left')
     if Vocab.manual[key] then
       button.tooltipTerm = key
     end
@@ -54,11 +54,7 @@ end
 -- @tparam boolean|number initValue Initial value.
 function SwitchButton:initContent(initValue)
   self.value = initValue
-  if self.values then
-    self:createInfoText(self.values[self.value], '')
-  else
-    self:createInfoText(self.value and 'on' or 'off', '')
-  end
+  self:createInfoText(self:currentValueText())
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -108,12 +104,20 @@ end
 -- @tparam boolean value New value.
 function SwitchButton:setValue(value)
   self.value = value
-  if self.values then
-    self.infoText:setTerm(self.values[self.value], tostring(self.value))
-  else
-    self.infoText:setTerm(self.value and 'on' or 'off', tostring(self.value))
-  end
+  self.infoText:setTerm(self:currentValueText())
   self.infoText:redraw()
+end
+--- Gets the display text according to the current selected value.
+-- @treturn string The button's term text.
+-- @treturn string The button's fallback text.
+function SwitchButton:currentValueText()
+  local text
+  if self.values then
+    text = self.values[self.value]
+  else
+    text = self.value and 'on' or 'off'
+  end
+  return "{%" .. text .. "}", text
 end
 
 return SwitchButton

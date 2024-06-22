@@ -58,7 +58,11 @@ end
 -- @tparam table instData The info about the object's instance.
 -- @tparam[opt] table save The instance's save data.
 function AnimatedInteractable:initProperties(instData, save)
-  self.passable = save and save.passable or instData.passable
+  if save and save.passable ~= nil then
+    self.passable = save.passable
+  else
+    self.passable = instData.passable
+  end
   JumpingObject.initProperties(self)
   self.speed = instData.defaultSpeed / 100 * Config.player.walkSpeed
   if save then

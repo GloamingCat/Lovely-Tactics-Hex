@@ -102,7 +102,7 @@ function TargetWindow:setBattler(battler)
   self.txtJob:setTerm('data.job.' .. job.key, job.name)
   self.txtJob:redraw()
   -- Level text
-  self.txtLevel:setTerm('{%level} ' .. battler.job.level, battler.job.level)
+  self.txtLevel:setTerm('{%level} ' .. battler.job.level, tostring(battler.job.level))
   self.txtLevel:redraw()
   -- HP Gauge
   self.gaugeHP:setValues(battler.state.hp, battler.mhp())

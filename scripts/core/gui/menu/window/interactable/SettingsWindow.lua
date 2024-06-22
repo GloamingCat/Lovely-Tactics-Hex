@@ -30,8 +30,12 @@ end
 --- Implements `GridWindow:createWidgets`.
 -- @implement
 function SettingsWindow:createWidgets()
-  if #Project.languages > 1 then
-    SwitchButton:fromKey(self, 'language', GameManager.language, nil, Project.languages)
+  if #Config.languages > 1 then
+    local langs = {}
+    for i, lang in ipairs(Config.languages) do
+      langs[i] = lang.name
+    end
+    SwitchButton:fromKey(self, 'language', GameManager.language, nil, langs)
   end
   SwitchButton:fromKey(self, 'tooltips', not MenuManager.disableTooltips)
   HSpinnerButton:fromKey(self, 'windowColor', 0, 100, MenuManager.windowColor).bigIncrement = 10
@@ -168,7 +172,7 @@ end
 function SettingsWindow:rowCount()
   --local n = GameManager:isMobile() and 5 or GameManager:isWeb() and 8 or 9
   local n = 5
-  return #Project.languages > 1 and n + 1 or n 
+  return #Config.languages > 1 and n + 1 or n 
 end
 --- Overrides `GridWindow:cellWidth`. 
 -- @override

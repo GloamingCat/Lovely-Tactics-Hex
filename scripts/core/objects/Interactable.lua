@@ -90,7 +90,7 @@ function Interactable:addScripts(scripts, repeatCollisions)
 	end
 end
 --- Sets the scripts according to instance data.
--- @tparam table instData Instance data from field file.
+-- @tparam table data Instance data from field file.
 function Interactable:resetScripts(data) 
   data = data or self.data
 	self.loadScripts = {}

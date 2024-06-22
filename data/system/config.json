@@ -2,7 +2,7 @@
   "name": "Example Project",
   "fpsMax": 120,
   "fpsMin": 15,
-  "coverID": -1,
+  "coverID": 116,
   "logoID": -1,
   "platform": 0,
   "player": {
@@ -10,11 +10,11 @@
     "dashSpeed": 200,
     "diagThreshold": 15,
     "startPos": {
-      "fieldID": 8,
-      "x": 9,
-      "y": 1,
+      "fieldID": 6,
+      "x": 7,
+      "y": 3,
       "h": 1,
-      "direction": -1
+      "direction": 315
     }
   },
   "battle": {

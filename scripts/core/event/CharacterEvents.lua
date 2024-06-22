@@ -40,26 +40,25 @@ local CharacterEvents = {}
 --  If not specified, if uses that value of gravity instead.
 -- @tfield[opt=30] number gravity The deceleration, in pixels/frame².
 
---- Common arguments for delete/hide commands.
+--- Arguments for delete commands.
 -- @table DeleteArguments
 -- @tfield string key They key of the character.
 -- @tfield[opt] boolean optional Flag to not raise an error when the character is not found.
 -- @tfield[opt] boolean permanent Flag to create the character again when field if reloaded.
 
---- Common arguments for character setup.
+--- Arguments for character setup.
 -- @table SetupArguments
--- @tfield string key They key of the character.
+-- @extend EventUtil.VisibilityArguments
 -- @tfield[opt] boolean optional Flag to not raise an error when the character is not found.
 -- @tfield[opt] boolean deactivate Flag to erase the character's scripts.
 -- @tfield[opt] boolean passable Flag to make the character passable during the fading animation.
--- @tfield[opt] boolean visible Character's visibility.
 -- @tfield[opt] number speed Character's speed.
--- @tfield[opt] number fade Duration of fading animation.
 
 --- Common arguments for animation commands.
 -- @table AnimArguments
 -- @tfield string key They key of the character.
--- @tfield string name Name of specific animation of a default animation for the character.
+-- @tfield[opt="Idle"] string name Name of specific animation of a default animation for the character.
+-- @tfield[opt] boolean wait Flag to wait for the animation to finish (ignores looping parts).
 
 -- ------------------------------------------------------------------------------------------------
 -- General
@@ -94,29 +93,19 @@ function CharacterEvents:setupChar(args)
   if args.speed ~= nil then
     char.speed = args.speed / 100 * Config.player.walkSpeed
   end
-  if args.visible ~= nil and args.vibible ~= char.visible then
-    local fade = args.visible and char.sprite.fadein or char.sprite.fadeout
-    if args.wait then
-      fade(char.sprite, args.fade)
-    else
-      self:fork(fade, char.sprite, args.fade)
-    end
+  if args.visible ~= nil then
+    self:fadeSprite(char.sprite, args.visible, args.fade or args.time, args.wait)
   end
 end
 --- Changes the properties of a character's shadow graphics.
--- @tparam SetupArguments args Ignores field `deactivate`, `passable` and `speed`.
+-- @tparam EventUtil.VisibilityArguments args
 function CharacterEvents:setupShadow(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
     return
   end
-  if args.visible ~= nil and args.vibible ~= char.visible then
-    local fade = args.visible and char.shadow.fadein or char.shadow.fadeout
-    if args.wait then
-      fade(char.shadow, args.fade)
-    else
-      self:fork(fade, char.shadow, args.fade)
-    end
+  if args.visible ~= nil then
+    self:fadeSprite(char.shadow, args.visible, args.fade or args.time, args.wait)
   end
 end
 
@@ -225,16 +214,23 @@ end
 -- @tparam AnimArguments args
 function CharacterEvents:stopChar(args)
   local char = self:findCharacter(args.key)
-  char:playIdleAnimation()
+  local animation = char:playIdleAnimation()
+  if args.wait and not animation.loop then
+    self:wait(animation.duration)
+  end
 end
 --- Plays the specified animation.
 -- @tparam AnimArguments args
 function CharacterEvents:playCharAnim(args)
   local char = self:findCharacter(args.key)
+  local animation
   if args.name:find('Anim') then
-    char:playAnimation(char[args.name])
+    animation = char:playAnimation(char[args.name])
   else
-    char:playAnimation(args.name)
+    animation = char:playAnimation(args.name)
+  end
+  if args.wait and not animation.loop then
+    self:wait(animation.duration)
   end
 end
 

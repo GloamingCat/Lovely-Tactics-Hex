@@ -129,7 +129,7 @@ end
 --- Array with the names of all config files.
 -- @treturn table Directory with the config files.
 function Database.getConfigFileNames()
-  return {'attributes', 'variables', 'elements', 'regions', 'equipTypes', 'plugins'}
+  return {'attributes', 'languages', 'elements', 'regions', 'equipTypes', 'plugins'}
 end
 --- Loads config data and store in the Config table.
 function Database.loadConfigFiles()
@@ -150,8 +150,8 @@ function Database.loadConfigFiles()
     Config.icons[icons[i].name] = icons[i]
   end
   Database.insertKeys(Config.sounds)
-  Database.insertKeys(Config.variables)
   Database.insertKeys(Config.attributes)
+  Database.insertKeys(Config.languages)
   Database.insertKeys(Config.equipTypes)
 end
 --- Creates alternate keys for the data elements in the given array.
@@ -177,12 +177,12 @@ end
 --- Loads config data and store in the Config table.
 -- @tparam[opt=1] number lang Selected language.
 function Database.loadVocabFiles(lang)
-  lang = Project.languages[lang or 1]
+  lang = Config.languages[lang or 1]
   local dir = Database.getVocabDirectory()
-  Vocab = Serializer.load(dir .. 'terms-' .. lang .. '.json')
-  Vocab.dialogues = Serializer.load(dir .. 'dialogues-' .. lang.. '.json')
-  Vocab.data = Serializer.load(dir .. 'data-' .. lang.. '.json')
-  Vocab.manual = Serializer.load(dir .. 'manual-' .. lang.. '.json')
+  Vocab = Serializer.load(dir .. 'terms-' .. lang.key .. '.json')
+  Vocab.dialogues = Serializer.load(dir .. 'dialogues-' .. lang.key .. '.json')
+  Vocab.data = Serializer.load(dir .. 'data-' .. lang.key .. '.json')
+  Vocab.manual = Serializer.load(dir .. 'manual-' .. lang.key .. '.json')
 end
 
 -- ------------------------------------------------------------------------------------------------

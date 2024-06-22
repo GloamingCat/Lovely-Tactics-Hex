@@ -37,9 +37,15 @@ EventUtil.MenuType = {
   shop = 2,
   recruit = 3
 }
+--- Common arguments for character setup.
+-- @table VisibilityArguments
+-- @tfield string key They key of the object.
+-- @tfield boolean visible Object's new visibility.
+-- @tfield[opt] number time Duration of fading animation.
+-- @tparam[opt] boolean wait Flag to wait until the change finishes.
 
 -- ------------------------------------------------------------------------------------------------
--- General
+-- Character
 -- ------------------------------------------------------------------------------------------------
 
 --- Searches for the character with the given key.
@@ -76,12 +82,29 @@ function EventUtil:checkTile(key, i, j, h)
   local i2, j2, h2 = char:getTile():coordinates()
   return i == i2 and j == j2 and h == h2
 end
+--- Fades in/out a sprite.
+-- @coroutine
+-- @tparam Sprite sprite Sprite to change.
+-- @tparam boolean visible The sprite's new visibility.
+-- @tparam[opt] number time Duration of fading animation.
+-- @tparam[opt] boolean wait Flag to wait until the change finishes.
+function EventUtil:fadeSprite(sprite, visible, time, wait)
+  if (vibible or false) ~= (sprite.visible or false) then
+    local fade = visible and sprite.fadein or sprite.fadeout
+    if wait then
+      fade(sprite, time)
+    else
+      self:fork(fade, sprite, time)
+    end
+  end
+end
 
 -- ------------------------------------------------------------------------------------------------
 -- Menu
 -- ------------------------------------------------------------------------------------------------
 
 --- Creates an empty Menu for the sheet if not already created.
+-- @coroutine
 function EventUtil:createMenu()
   if not self.menu then
     self.menu = Menu()
@@ -110,6 +133,7 @@ function EventUtil:createDefaultMessageWindow(id)
   return DescriptionWindow(self.menu, w, h, Vector(x, y))
 end
 --- Opens a new message window and stores in the given ID.
+-- @coroutine
 -- @tparam WindowArguments args Argument table.
 function EventUtil:openMessageWindow(args)
   self:createMenu()
@@ -146,6 +170,7 @@ function EventUtil:createDefaultDialogueWindow(id)
   return DialogueWindow(self.menu, w, h, x, y)
 end
 --- Opens a new dialogue window and stores in the given ID.
+-- @coroutine
 -- @tparam WindowArguments args Argument table.
 function EventUtil:openDialogueWindow(args)
   self:createMenu()
@@ -164,6 +189,7 @@ function EventUtil:openDialogueWindow(args)
   self.menu:setActiveWindow(window)
 end
 --- Opens the a menu.
+-- @coroutine
 -- @tparam MenuType menu The menu type (field, save, shop, recruit).
 -- @tparam[opt] table items An array of {id, price} entries.
 -- @tparam[opt] boolean sell Flag to indicaque that the player can also dismiss/sell in this menu.

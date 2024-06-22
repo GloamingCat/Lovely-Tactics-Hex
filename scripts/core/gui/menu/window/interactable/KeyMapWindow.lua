@@ -42,7 +42,7 @@ end
 -- @tparam string key Key type code.
 function KeyMapWindow:createKeyButtons(key)
   local button1 = Button(self)
-  button1:createText(key, key)
+  button1:createText("{%" .. key .. "}", key)
   button1.key = key
   button1.map = 'main'
   button1.tooltipTerm = self.tooltipTerm

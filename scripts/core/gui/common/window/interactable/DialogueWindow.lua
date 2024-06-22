@@ -39,6 +39,8 @@ end
 function DialogueWindow:initProperties()
   self.nameWidth = 80
   self.nameHeight = 24
+  self.nameX = -0.70
+  self.nameY = -1.25
 end
 --- Overrides `Window:createContent`. Creates a simple text for dialogue.
 -- @override
@@ -106,16 +108,18 @@ end
 
 --- Shows the name of the speaker.
 -- @tparam string text The text that will appear in the window. Pass nil or empty to hide the window.
--- @tparam number x The window's x position relative to the parent DialogueWindow's position (from 0 to 1).
--- @tparam number y The window's y position relative to the parent DialogueWindow's position (from 0 to 1).
+-- @tparam[opt=0] number x The window's x position relative to the parent DialogueWindow's position, in percentage.
+-- @tparam[opt=0] number y The window's y position relative to the parent DialogueWindow's position, in percentage.
 function DialogueWindow:setName(text, x, y)
-  x = (x or -0.70) * self.width / 2
-  y = (y or -1.25) * self.height / 2
   if text and text ~= '' then
+    x = (x or 0) / 100
+    y = (y or 0) / 100
+    local nx = (x + self.nameX) * self.width / 2
+    local ny = (y + self.nameY) * self.height / 2
     self.nameWindow:updateText(text)
     self.nameWindow:packText()
-    local nameX = x and (self.position.x + x) or self.nameWindow.position.x
-    local nameY = y and (self.position.y + y) or self.nameWindow.position.y
+    local nameX = self.position.x + nx or self.nameWindow.position.x
+    local nameY = self.position.y + ny or self.nameWindow.position.y
     self.nameWindow:setVisible(true)
     self.nameWindow:setXYZ(nameX, nameY, -5)
   else

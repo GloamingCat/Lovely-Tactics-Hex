@@ -121,7 +121,8 @@ function FieldLoader.createTransitions(field, transitions)
       y = t.destination.y,
       h = t.destination.h,
       direction = t.destination.direction,
-      fade = t.fade }
+      fade = t.fade,
+      movePlayer = true }
     field.transitions[i] = args
     if not t.noSource then
       local func = function(script)

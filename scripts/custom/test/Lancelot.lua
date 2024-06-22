@@ -14,15 +14,15 @@ return function(script)
     script:stopChar { key = 'player' }
     script:turnCharTile { key = 'self', other = 'player' }
     script:turnCharTile { key = 'player', other = 'self' }
-    script:showDialogue { id = 1, character = 'self', portrait = 'BigIcon', nameX = -0.85, message = 
-      Vocab.dialogues.npc.WhatDoYou
+    script:showDialogue { id = 1, character = 'self', portrait = 'BigIcon', nameX = -85, message = 
+      "{%dialogues.npc.WhatDoYou}"
     }
     script:openChoiceWindow { width = 70, y = -20,
       choices = {
-        'dialogues.npc.Shop',
-        'dialogues.npc.Recruit',
-        'dialogues.npc.Battle',
-        'dialogues.npc.Nothing'
+        '{%dialogues.npc.Shop}',
+        '{%dialogues.npc.Recruit}',
+        '{%dialogues.npc.Battle}',
+        '{%dialogues.npc.Nothing}'
       }
     }
     script:closeDialogueWindow { id = 1 }

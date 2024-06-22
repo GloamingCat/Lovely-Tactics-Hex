@@ -129,11 +129,11 @@ end
 --- Moves camera to the given pixel point.
 -- @tparam number x The pixel x.
 -- @tparam nubmer y The pixel y.
--- @tparam[opt=cameraSpeed] number speed The speed of the movement.
+-- @tparam[opt=cameraSpeed] number speed The speed of the movement, in pixels per second.
 -- @tparam[opt] boolean wait Flag to wait until the move finishes.
 function FieldCamera:moveToPoint(x, y, speed, wait)
   self.focusObject = nil
-  if speed == 0 then
+  if speed and speed <= 0 then
     speed = nil
   else
     local dx = self.position.x - x
@@ -156,7 +156,7 @@ function FieldCamera:fadeout(time, wait)
   if time then
     speed = (time > 0) and (60 / time) or nil
   end
-  self:colorizeTo(0, 0, 0, 0, speed, wait)
+  self:colorizeTo(0, 0, 0, 1, speed, wait)
 end
 --- Fades the screen in (changes color multiplier to white). 
 -- @tparam[opt] number time The duration of the fading in frames. If nil, uses default fading speed.

@@ -231,6 +231,45 @@
         },
         "id": 191,
         "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "icon.png",
+            "x": 0,
+            "y": 0,
+            "width": 24,
+            "height": 24
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 12,
+            "offsetY": 12,
+            "offsetDepth": 0,
+            "scaleX": 400,
+            "scaleY": 400,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Cover",
+          "tags": [],
+          "key": ""
+        },
+        "id": 116,
+        "children": []
       }
     ]
   },

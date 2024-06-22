@@ -59,12 +59,17 @@ function Fiber:update()
   else
     local previous = _G.Fiber
     _G.Fiber = self
-    local state, result = coroutine.resume(self.coroutine)
+    local state, msg = coroutine.resume(self.coroutine)
     if not state then
       -- Output error message
-      print(result:gsub(".*ore%/", "scripts/core/"))
-      print('Coroutine ' .. tostring(debug.traceback(self.coroutine)):gsub("%.%.%.ore%/", "scripts/core/"))
-      print('Origin ' .. tostring(self.traceback))
+      msg = msg:gsub("%.%.%.%w*ore%/", "scripts/core/"):gsub("%.%.%.%w*s%/", "scripts/")
+      print(msg)
+      local traceback = debug.traceback(self.coroutine)
+      traceback = traceback:gsub("%.%.%.%w*ore%/", "scripts/core/"):gsub("%.%.%.%w*s%/", "scripts/")
+      print('Coroutine ' .. tostring(traceback))
+      local origintraceback = self.traceback
+      origintraceback = origintraceback:gsub("%.%.%.%w*ore%/", "scripts/core/"):gsub("%.%.%.%w*s%/", "scripts/")
+      print('Origin ' .. tostring(origintraceback))
       error("Error updating coroutine.")
       if GameManager:isMobile() and not GameManager:isWeb() then
         love.window.showMessageBox("Error", tostring(result))

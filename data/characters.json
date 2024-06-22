@@ -22,7 +22,9 @@
         "brightness": 100
       },
       "portraits": [],
+      "transformPortraits": true,
       "animations": [],
+      "transformAnimations": true,
       "scripts": [],
       "repeatCollisions": false,
       "name": "Humans",
@@ -73,6 +75,7 @@
               "row": 0
             }
           ],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -131,6 +134,7 @@
               "id": 57
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Arthur",
@@ -182,6 +186,7 @@
               "row": 0
             }
           ],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -228,6 +233,7 @@
               "id": 63
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Merlin",
@@ -279,6 +285,7 @@
               "row": 0
             }
           ],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -289,6 +296,7 @@
               "id": 54
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Lancelot",
@@ -323,7 +331,9 @@
         "brightness": 100
       },
       "portraits": [],
+      "transformPortraits": true,
       "animations": [],
+      "transformAnimations": true,
       "scripts": [],
       "repeatCollisions": false,
       "name": "Slime",
@@ -361,6 +371,7 @@
             "brightness": 100
           },
           "portraits": [],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -399,6 +410,7 @@
               "id": 161
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Green Slime",
@@ -437,6 +449,7 @@
             "brightness": 100
           },
           "portraits": [],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -475,6 +488,7 @@
               "id": 161
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Purple Slime",
@@ -513,6 +527,7 @@
             "brightness": 100
           },
           "portraits": [],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -551,6 +566,7 @@
               "id": 161
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Yellow Slime",
@@ -589,6 +605,7 @@
             "brightness": 100
           },
           "portraits": [],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -627,6 +644,7 @@
               "id": 161
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Red Slime",
@@ -665,6 +683,7 @@
             "brightness": 100
           },
           "portraits": [],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -707,6 +726,7 @@
               "id": 161
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Cyan Slime",
@@ -760,6 +780,7 @@
             "brightness": 100
           },
           "portraits": [],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -802,6 +823,7 @@
               "id": 161
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Giant Slime",
@@ -840,6 +862,7 @@
             "brightness": 100
           },
           "portraits": [],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -878,6 +901,7 @@
               "id": 161
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Ally Slime",
@@ -918,12 +942,14 @@
         "brightness": 100
       },
       "portraits": [],
+      "transformPortraits": true,
       "animations": [
         {
           "name": "New",
           "id": 0
         }
       ],
+      "transformAnimations": true,
       "scripts": [],
       "repeatCollisions": false,
       "name": "Objects",
@@ -961,7 +987,9 @@
             "brightness": 100
           },
           "portraits": [],
+          "transformPortraits": true,
           "animations": [],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Interactable",
@@ -1000,6 +1028,7 @@
             "brightness": 100
           },
           "portraits": [],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Equip",
@@ -1010,6 +1039,7 @@
               "id": 32
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Loot",
@@ -1050,12 +1080,14 @@
         "brightness": 100
       },
       "portraits": [],
+      "transformPortraits": true,
       "animations": [
         {
           "name": "New",
           "id": 0
         }
       ],
+      "transformAnimations": true,
       "scripts": [],
       "repeatCollisions": false,
       "name": "Test",
@@ -1093,6 +1125,7 @@
             "brightness": 100
           },
           "portraits": [],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -1131,6 +1164,7 @@
               "id": 161
             }
           ],
+          "transformAnimations": true,
           "scripts": [
             {
               "global": false,
@@ -1224,6 +1258,7 @@
               "row": 0
             }
           ],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -1270,6 +1305,7 @@
               "id": 63
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Test Guy",
@@ -1308,6 +1344,7 @@
             "brightness": 100
           },
           "portraits": [],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -1342,6 +1379,7 @@
               "id": 161
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Neutral Slime",
@@ -1380,6 +1418,7 @@
             "brightness": 100
           },
           "portraits": [],
+          "transformPortraits": true,
           "animations": [
             {
               "name": "Idle",
@@ -1422,6 +1461,7 @@
               "id": 161
             }
           ],
+          "transformAnimations": true,
           "scripts": [],
           "repeatCollisions": false,
           "name": "Fire Slime",

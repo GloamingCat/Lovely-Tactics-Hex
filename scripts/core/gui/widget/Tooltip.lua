@@ -38,10 +38,19 @@ function Tooltip:init(parent, term, valign, voffset)
     pos.y = pos.y + voffset
   end
   TextComponent.init(self, '', pos, w, 'left', Fonts.menu_tooltip)
-  self:setTerm('manual.' .. term, '')
+  self:setTerm(term, nil)
   self:setAlign('left', valign)
   self:setMaxHeight(h - voffset)
   self:redraw()
+end
+--- Overrides `TextComponent:setTerm`.
+-- @override
+function Tooltip:setTerm(term, fb)
+  if not term or term == '' then
+    TextComponent.setText(self, "")
+  else
+    TextComponent.setTerm(self, '{%manual.' .. term .. '}', fb or term)
+  end
 end
 
 -- ------------------------------------------------------------------------------------------------

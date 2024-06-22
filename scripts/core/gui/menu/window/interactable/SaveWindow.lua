@@ -44,14 +44,13 @@ end
 -- @implement
 function SaveWindow:createWidgets()
   for i = 1, SaveManager.maxSaves do
-    self:createSaveButton(i .. '', Vocab.saveName .. ' ' .. i)
+    self:createSaveButton(i .. '')
   end
 end
 --- Creates a button for the given save file.
 -- @tparam string file Name of the file (without .save extension).
--- @tparam string name Name of the button that will be shown.
 -- @treturn Button Newly created button.
-function SaveWindow:createSaveButton(file, name)
+function SaveWindow:createSaveButton(file)
   local button = Button(self)
   local w, h = self:cellWidth(), self:cellHeight()
   button.saveInfo = SaveInfo(nil, w - self:paddingX(), h)

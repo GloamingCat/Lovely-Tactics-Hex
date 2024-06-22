@@ -23,7 +23,7 @@ local TargetMenu = class(Menu)
 --- Constructor.
 -- @tparam Menu parent Parent menu.
 -- @tparam Troop troop Troop with possible targets.
--- @tparam ActionInput Input with action and user.
+-- @tparam ActionInput input Input with action and user.
 -- @tparam boolean backup Flag to include backup members in the target list.
 function TargetMenu:init(parent, troop, input, backup)
   self.name = 'Menu Target Menu'

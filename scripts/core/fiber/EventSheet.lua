@@ -12,6 +12,7 @@
 -- Imports
 local EventUtil = require('core/event/EventUtil')
 local Fiber = require('core/fiber/Fiber')
+local TextParser = require('core/graphics/TextParser')
 
 -- Class table.
 local EventSheet = class(Fiber, EventUtil)
@@ -137,7 +138,7 @@ end
 function EventSheet:processSheet()  
   for _, e in ipairs(self.sheet.events) do
     local args = Database.loadTags(e.tags)
-    local condition = e.condition ~= '' and loadformula(e.condition, 'script')
+    local condition = e.condition ~= '' and self:evaluate(e.condition)
     if e.name == 'setLabel' then
       if not condition or condition(self) then
         self:setLabel(args.name, args.index)
@@ -182,6 +183,18 @@ end
 function EventSheet:finish()
   Fiber.finish(self)
   self:clear()
+end
+--- Evaluates a raw string, replacing variable occurences and then parsing it as a Lua expression.
+-- @tparam string str The raw string.
+-- @return The evaluated expression.
+function EventSheet:evaluate(value)
+  if type(value) == 'function' then
+    return value(self)
+  elseif type(value) ~= 'string' then
+    return value
+  else
+    return loadformula(TextParser.evaluate(value), "script")(self)
+  end
 end
 --- Creates a new fiber in from the same root that executes given script.
 -- @tparam table script Table with name (or func) and tags.
