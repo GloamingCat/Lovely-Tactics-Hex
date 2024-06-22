@@ -109,8 +109,32 @@
           "name": "openChoiceWindow",
           "tags": [
             {
+              "key": "alignX",
+              "value": "0"
+            },
+            {
+              "key": "alignY",
+              "value": "0"
+            },
+            {
+              "key": "cancel",
+              "value": "-1"
+            },
+            {
+              "key": "height",
+              "value": "-1"
+            },
+            {
+              "key": "variable",
+              "value": "\"choiceInput\""
+            },
+            {
               "key": "width",
               "value": "50"
+            },
+            {
+              "key": "x",
+              "value": "0"
             },
             {
               "key": "y",
@@ -118,13 +142,13 @@
             },
             {
               "key": "choices",
-              "value": "[\"{%yes}\", \"{%no}\"]"
+              "value": "[\"{%yes}\",\"{%no}\"]"
             }
           ],
           "key": ""
         },
         {
-          "condition": "script.vars.choiceInput == 1",
+          "condition": "{%choiceInput} == 1",
           "name": "showDialogue",
           "tags": [
             {
@@ -147,7 +171,7 @@
           "key": ""
         },
         {
-          "condition": "script.vars.choiceInput == 1",
+          "condition": "{%choiceInput} == 1",
           "name": "addMember",
           "tags": [
             {
@@ -158,7 +182,7 @@
           "key": ""
         },
         {
-          "condition": "script.vars.choiceInput == 2",
+          "condition": "{%choiceInput} == 2",
           "name": "showDialogue",
           "tags": [
             {

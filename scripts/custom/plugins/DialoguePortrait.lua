@@ -19,6 +19,7 @@ local Vector = require('core/math/Vector')
 
 -- Rewrites
 local DialogueWindow_showDialogue = DialogueWindow.showDialogue
+local DialogueWindow_setName = DialogueWindow.setName
 local MenuEvents_showDialogue = MenuEvents.showDialogue
 
 -- Parameters
@@ -69,11 +70,12 @@ function DialogueWindow:showDialogue(...)
   self.dialogue:updatePosition(self.position)
   DialogueWindow_showDialogue(self, ...)
 end
-local DialogueWindow_setName = DialogueWindow.setName
 --- Rewrites `DialogueWindow:setName`.
 -- @rewrite
 function DialogueWindow:setName(text, x, ...)
-  x = (x or -0.7) + (self.indent or 0)
+  if self.indent then
+    x = (x or 0) + self.indent * 100
+  end
   DialogueWindow_setName(self, text, x, ...)
 end
 

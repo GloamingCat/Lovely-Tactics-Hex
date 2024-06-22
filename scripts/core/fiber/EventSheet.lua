@@ -29,8 +29,8 @@ function EventSheet:init(root, data, char)
   if data.func then
     self.commands = data.func
   elseif tonumber(data.name) or Database.events[data.name] then
-    self.commands = self.processSheet
     self.sheet = Database.events[tonumber(data.name) or data.name]
+    self.commands = self.processSheet
   else
     local func = require('custom/' .. data.name)
     assert(func, "Could not load event sheet file: " .. tostring(data.name))
@@ -62,7 +62,10 @@ end
 function EventSheet:addEvent(func, condition, ...)
   if condition ~= nil and type(condition) ~= 'function' then
     local value = condition
-    condition = function() return value end
+    condition = function()
+      local val = self:evaluate(value)
+      return val
+    end
   end
   if type(func) == 'string' then
     if self[func] then
@@ -76,6 +79,29 @@ function EventSheet:addEvent(func, condition, ...)
     args = {...},
     condition = condition
   }
+end
+--- Adds each event in the event sheet.
+-- The events `setLabel`, `skipEvents`, `setEvent`, `jumpTo` and `wait` are treated
+-- differently.
+function EventSheet:processSheet()
+  for _, e in ipairs(self.sheet.events) do
+    local args = Database.loadTags(e.tags)
+    local condition = e.condition ~= '' and e.condition or nil
+    if e.name == 'setLabel' then
+      self:setLabel(args.name, args.index)
+    else
+      if e.name == 'skipEvents' then
+        args = args.events
+      elseif e.name == 'setEvent' then
+        args = args.index
+      elseif e.name == 'jumpTo' then
+        args = args.name
+      elseif e.name == 'wait' then
+        args = args.time
+      end
+      self:addEvent(e.name, condition, args)
+    end
+  end
 end
 --- Changes the running index to skip a number of events.
 -- @tparam number n Number of events to skip.
@@ -135,28 +161,6 @@ function EventSheet:runCurrentEvent()
     event.execute(self, unpack(event.args))
   end
 end
-function EventSheet:processSheet()  
-  for _, e in ipairs(self.sheet.events) do
-    local args = Database.loadTags(e.tags)
-    local condition = e.condition ~= '' and self:evaluate(e.condition)
-    if e.name == 'setLabel' then
-      if not condition or condition(self) then
-        self:setLabel(args.name, args.index)
-      end
-    else
-      if e.name == 'skipEvents' then
-        args = args.events
-      elseif e.name == 'setEvent' then
-        args = args.index
-      elseif e.name == 'jumpTo' then
-        args = args.name
-      elseif e.name == 'wait' then
-        args = args.time
-      end
-      self:addEvent(e.name, condition or nil, args)
-    end
-  end
-end
 --- Sets any variable needed to indicate that this script is running.
 function EventSheet:setUp()
   if self.data then
@@ -185,7 +189,7 @@ function EventSheet:finish()
   self:clear()
 end
 --- Evaluates a raw string, replacing variable occurences and then parsing it as a Lua expression.
--- @tparam string str The raw string.
+-- @tparam string value The raw string.
 -- @return The evaluated expression.
 function EventSheet:evaluate(value)
   if type(value) == 'function' then

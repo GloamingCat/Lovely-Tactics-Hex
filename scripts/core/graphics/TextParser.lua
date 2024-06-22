@@ -61,11 +61,15 @@ TextParser.Code = {
 function TextParser.evaluate(text)
   local str = ""
   for textFragment, code in text:gmatch('([^{%%]*){(.-)}') do
-    local key = code:sub(1)
+    local key = code:sub(2)
     local value = GameManager:getVariable(key, _G.Fiber, FieldManager.currentField)
     assert(value, 'Text variable or term ' .. tostring(key) .. ' not found.')
     local f = tostring(value)
     str = str .. textFragment .. TextParser.evaluate(f)
+  end
+  local lastText = text:match('[^}]+$')
+  if lastText then
+    str = str .. lastText
   end
   return str
 end
@@ -85,9 +89,9 @@ function TextParser.parse(text, plainText, fragments)
       TextParser.parseFragment(fragments, textFragment)
       TextParser.parseCode(fragments, code)
 		end
-    text = text:match('[^}]+$')
-    if text then
-      TextParser.parseFragment(fragments, text)
+    local lastText = text:match('[^}]+$')
+    if lastText then
+      TextParser.parseFragment(fragments, lastText)
     end
 	end
   return fragments
