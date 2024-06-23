@@ -59,12 +59,12 @@ function Player:openDebugMenu()
   self:playIdleAnimation()
   AudioManager:playSFX(Config.sounds.menu)
   print('Debug window open.')
-  local result = MenuManager:showMenuForResult(TextInputMenu(nil, "Type code.", true, true))
+  local result = MenuManager:showMenuForResult(TextInputMenu(nil, "Type code.", 0))
   if result and result ~= 0 then
     print('Executing: ' .. result)
     local output = nil
     local status, err = pcall(
-      function() 
+      function()
         output = loadfunction(result, 'event')(debugEvent)
       end)
     if err then

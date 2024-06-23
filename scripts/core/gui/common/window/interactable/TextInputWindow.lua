@@ -29,7 +29,6 @@ local TextInputWindow = class(GridWindow)
 --  If nil, the player can't cancel.
 -- @param ... Other parameters from `Window:init`. 
 function TextInputWindow:init(menu, min, max, cancelValue, ...)
-  self.emptyAllowed = emptyAllowed
   self.cancelValue = cancelValue
   self.minLength = min or 0
   if max == nil or max == -1 then

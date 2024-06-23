@@ -87,7 +87,7 @@ end
 --- Gets the aproximate tile coordinates of this object.
 -- @treturn number Tile x.
 -- @treturn number Tile y.
--- @treturn number Tile height.
+-- @treturn number Tile layer.
 function Object:tileCoordinates()
   local i, j, h = pixel2Tile(self.position:coordinates())
   i = round(i)
@@ -121,7 +121,7 @@ end
 -- If any argument is nil, the center is set as the object's current tile.
 -- @tparam[opt] number i Center tile x.
 -- @tparam[opt] number j Center tile y.
--- @tparam[opt] number h Center tile height.
+-- @tparam[opt] number h Center tile layer.
 -- @treturn table The list of tiles.
 function Object:getAllTiles(i, j, h)
   if i and j and h then
@@ -147,13 +147,24 @@ end
 -- If an argument is nil, the field is left unchanged.
 -- @tparam[opt] number i Tile x.
 -- @tparam[opt] number j Tile y.
--- @tparam[opt] number h Tile height.
+-- @tparam[opt] number h Tile layer.
 function Object:transferTile(i, j, h)
   local tile = self:getTile()
   local x, y, z = tile2Pixel(i or tile.x, j or tile.y, h or tile.layer.height)
   self:removeFromTiles()
   self:setXYZ(x, y, z)
   self:addToTiles()
+end
+--- Instantly moves the object to its original tile.
+function Object:resetTile()
+  self:transferTile(self:originalCoordinates())
+end
+--- Gets the coordinates of the original tile.
+-- @treturn number Tile x.
+-- @treturn number Tile y.
+-- @treturn number Tile layer.
+function Object:originalCoordinates()
+  return self.data.x, self.data.y, self.data.h
 end
 
 -- ------------------------------------------------------------------------------------------------

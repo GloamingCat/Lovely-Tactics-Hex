@@ -3,8 +3,8 @@
   "sizeX": 9,
   "sizeY": 9,
   "prefs": {
-    "persistent": false,
-    "defaultRegion": -1,
+    "persistent": true,
+    "defaultRegion": 0,
     "maxHeight": 2,
     "bgm": {
       "name": "fieldsTheme",
@@ -758,6 +758,7 @@
       "persistent": true,
       "passable": false,
       "visible": true,
+      "active": true,
       "x": 6,
       "y": 5,
       "h": 1,
@@ -776,6 +777,7 @@
       "persistent": true,
       "passable": true,
       "visible": true,
+      "active": true,
       "x": 6,
       "y": 2,
       "h": 1,

@@ -1,890 +1,1057 @@
 [
   {
     "data": {
-      "events": [
-        {
-          "condition": "",
-          "name": "playCharAnim",
-          "tags": [
-            {
-              "key": "key",
-              "value": "player"
-            },
-            {
-              "key": "name",
-              "value": "Idle"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "turnCharTile",
-          "tags": [
-            {
-              "key": "key",
-              "value": "\"player\""
-            },
-            {
-              "key": "other",
-              "value": "\"self\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "turnCharTile",
-          "tags": [
-            {
-              "key": "key",
-              "value": "\"self\""
-            },
-            {
-              "key": "other",
-              "value": "\"player\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "showDialogue",
-          "tags": [
-            {
-              "key": "id",
-              "value": "1"
-            },
-            {
-              "key": "character",
-              "value": "\"self\""
-            },
-            {
-              "key": "portrait",
-              "value": "\"BigIcon\""
-            },
-            {
-              "key": "message",
-              "value": "\"{%dialogues.npc.Hi}\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "TroopManager:getPlayerTroop():hasMember('Merlin')",
-          "name": "jumpTo",
-          "tags": [
-            {
-              "key": "name",
-              "value": "\"dialogueEnd\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "showDialogue",
-          "tags": [
-            {
-              "key": "id",
-              "value": "1"
-            },
-            {
-              "key": "character",
-              "value": "\"self\""
-            },
-            {
-              "key": "portrait",
-              "value": "\"BigIcon\""
-            },
-            {
-              "key": "message",
-              "value": "\"{%dialogues.npc.CanIJoin}\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "openChoiceWindow",
-          "tags": [
-            {
-              "key": "alignX",
-              "value": "0"
-            },
-            {
-              "key": "alignY",
-              "value": "0"
-            },
-            {
-              "key": "cancel",
-              "value": "-1"
-            },
-            {
-              "key": "height",
-              "value": "-1"
-            },
-            {
-              "key": "variable",
-              "value": "\"choiceInput\""
-            },
-            {
-              "key": "width",
-              "value": "50"
-            },
-            {
-              "key": "x",
-              "value": "0"
-            },
-            {
-              "key": "y",
-              "value": "-20"
-            },
-            {
-              "key": "choices",
-              "value": "[\"{%yes}\",\"{%no}\"]"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "{%choiceInput} == 1",
-          "name": "showDialogue",
-          "tags": [
-            {
-              "key": "id",
-              "value": "1"
-            },
-            {
-              "key": "character",
-              "value": "\"self\""
-            },
-            {
-              "key": "portrait",
-              "value": "\"BigIcon\""
-            },
-            {
-              "key": "message",
-              "value": "\"{%dialogues.npc.ThatsGood}\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "{%choiceInput} == 1",
-          "name": "addMember",
-          "tags": [
-            {
-              "key": "key",
-              "value": "\"Merlin\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "{%choiceInput} == 2",
-          "name": "showDialogue",
-          "tags": [
-            {
-              "key": "id",
-              "value": "1"
-            },
-            {
-              "key": "character",
-              "value": "\"self\""
-            },
-            {
-              "key": "portrait",
-              "value": "\"BigIcon\""
-            },
-            {
-              "key": "message",
-              "value": "\"{%dialogues.npc.ThatsBad}\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "setLabel",
-          "tags": [
-            {
-              "key": "name",
-              "value": "\"dialogueEnd\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "closeDialogueWindow",
-          "tags": [
-            {
-              "key": "id",
-              "value": "1"
-            }
-          ],
-          "key": ""
-        }
-      ],
-      "description": "Merlins asks if he can join the party.",
-      "name": "Merlin",
-      "tags": [],
-      "key": "Merlin"
-    },
-    "id": 0,
-    "children": []
-  },
-  {
-    "data": {
-      "events": [
-        {
-          "condition": "",
-          "name": "print(script.char.vars.cooldown)",
-          "tags": [],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "setLocalVar",
-          "tags": [
-            {
-              "key": "key",
-              "value": "\"deltaBattleTime\""
-            },
-            {
-              "key": "value",
-              "value": "GameManager.frame - ({%lastBattleTime} or -60)"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "not FieldManager.playerInput or not script:collidedWith('player') or {%deltaBattleTime} <= 60",
-          "name": "jumpTo",
-          "tags": [
-            {
-              "key": "name",
-              "value": "\"end\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "playCharAnim",
-          "tags": [
-            {
-              "key": "key",
-              "value": "\"player\""
-            },
-            {
-              "key": "name",
-              "value": "\"Idle\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "turnCharTile",
-          "tags": [
-            {
-              "key": "key",
-              "value": "\"player\""
-            },
-            {
-              "key": "other",
-              "value": "\"self\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "turnCharTile",
-          "tags": [
-            {
-              "key": "key",
-              "value": "\"self\""
-            },
-            {
-              "key": "other",
-              "value": "\"player\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "script.char.collided ~= \"player\"",
-          "name": "showEmotionBalloon",
-          "tags": [
-            {
-              "key": "key",
-              "value": "\"self\""
-            },
-            {
-              "key": "emotion",
-              "value": "\"!\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "script.char.collided == \"player\"",
-          "name": "showEmotionBalloon",
-          "tags": [
-            {
-              "key": "key",
-              "value": "\"player\""
-            },
-            {
-              "key": "emotion",
-              "value": "\"!\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "wait",
-          "tags": [
-            {
-              "key": "time",
-              "value": "30"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "startBattle",
-          "tags": [
-            {
-              "key": "skipIntro",
-              "value": "false"
-            },
-            {
-              "key": "disableEscape",
-              "value": "false"
-            },
-            {
-              "key": "gameOverCondition",
-              "value": "\"survive\""
-            },
-            {
-              "key": "fieldID",
-              "value": "0"
-            },
-            {
-              "key": "fade",
-              "value": "60"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "setGlobalVar",
-          "tags": [
-            {
-              "key": "key",
-              "value": "lastBattleTime"
-            },
-            {
-              "key": "value",
-              "value": "GameManager.frame"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "setLocalVar",
-          "tags": [
-            {
-              "key": "key",
-              "value": "escaped"
-            },
-            {
-              "key": "value",
-              "value": "BattleManager:playerEscaped()"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "script.vars.escaped",
-          "name": "setCharVar",
-          "tags": [
-            {
-              "key": "key",
-              "value": "\"cooldown\""
-            },
-            {
-              "key": "value",
-              "value": "180"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "not script.vars.escaped",
-          "name": "setupChar",
-          "tags": [
-            {
-              "key": "key",
-              "value": "\"self\""
-            },
-            {
-              "key": "visible",
-              "value": "false"
-            },
-            {
-              "key": "deactivate",
-              "value": "false"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "finishBattle",
-          "tags": [
-            {
-              "key": "fade",
-              "value": "60"
-            },
-            {
-              "key": "wait",
-              "value": "true"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "print(script.battleLog)",
-          "tags": [],
-          "key": ""
-        },
-        {
-          "condition": "script.vars.escaped",
-          "name": "jumpTo",
-          "tags": [
-            {
-              "key": "name",
-              "value": "\"end\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "setCharVar",
-          "tags": [
-            {
-              "key": "key",
-              "value": "defeated"
-            },
-            {
-              "key": "value",
-              "value": "true"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "setupChar",
-          "tags": [
-            {
-              "key": "deactivate",
-              "value": "true"
-            },
-            {
-              "key": "fade",
-              "value": "30"
-            },
-            {
-              "key": "key",
-              "value": "\"self\""
-            },
-            {
-              "key": "optional",
-              "value": "false"
-            },
-            {
-              "key": "passable",
-              "value": "false"
-            },
-            {
-              "key": "permanent",
-              "value": "false"
-            },
-            {
-              "key": "visible",
-              "value": "false"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "setLabel",
-          "tags": [
-            {
-              "key": "name",
-              "value": "\"end\""
-            }
-          ],
-          "key": ""
-        }
-      ],
-      "description": "Starts a battle encounter.",
-      "name": "Battle",
-      "tags": [],
-      "key": "Battle"
-    },
-    "id": 1,
-    "children": []
-  },
-  {
-    "data": {
-      "events": [
-        {
-          "condition": "",
-          "name": "playCharAnim",
-          "tags": [
-            {
-              "key": "key",
-              "value": "\"player\""
-            },
-            {
-              "key": "name",
-              "value": "\"Idle\""
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "turnCharTile",
-          "tags": [
-            {
-              "key": "h",
-              "value": "0"
-            },
-            {
-              "key": "key",
-              "value": "\"player\""
-            },
-            {
-              "key": "other",
-              "value": "\"self\""
-            },
-            {
-              "key": "x",
-              "value": "0"
-            },
-            {
-              "key": "y",
-              "value": "0"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "turnCharTile",
-          "tags": [
-            {
-              "key": "h",
-              "value": "0"
-            },
-            {
-              "key": "key",
-              "value": "\"self\""
-            },
-            {
-              "key": "other",
-              "value": "\"player\""
-            },
-            {
-              "key": "x",
-              "value": "0"
-            },
-            {
-              "key": "y",
-              "value": "0"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "showDialogue",
-          "tags": [
-            {
-              "key": "alignX",
-              "value": "0"
-            },
-            {
-              "key": "alignY",
-              "value": "0"
-            },
-            {
-              "key": "height",
-              "value": "-1"
-            },
-            {
-              "key": "id",
-              "value": "1"
-            },
-            {
-              "key": "message",
-              "value": "\"{%dialogues.npc.WhatDoYou}\""
-            },
-            {
-              "key": "name",
-              "value": "\"\""
-            },
-            {
-              "key": "nameX",
-              "value": "0"
-            },
-            {
-              "key": "nameY",
-              "value": "0"
-            },
-            {
-              "key": "width",
-              "value": "-1"
-            },
-            {
-              "key": "x",
-              "value": "0"
-            },
-            {
-              "key": "y",
-              "value": "0"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "openChoiceWindow",
-          "tags": [
-            {
-              "key": "alignX",
-              "value": "0"
-            },
-            {
-              "key": "alignY",
-              "value": "0"
-            },
-            {
-              "key": "cancel",
-              "value": "3"
-            },
-            {
-              "key": "height",
-              "value": "-1"
-            },
-            {
-              "key": "variable",
-              "value": "\"inputResult\""
-            },
-            {
-              "key": "width",
-              "value": "70"
-            },
-            {
-              "key": "x",
-              "value": "-1"
-            },
-            {
-              "key": "y",
-              "value": "-1"
-            },
-            {
-              "key": "choices",
-              "value": "[\"{%dialogues.npc.Shop}\",\"{%dialogues.npc.Recruit}\",\"{%dialogues.npc.Battle}\",\"{%dialogues.npc.Nothing}\"]"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "closeDialogueWindow",
-          "tags": [
-            {
-              "key": "id",
-              "value": "1"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "script.char.vars.choiceInput == 1",
-          "name": "openShopMenu",
-          "tags": [
-            {
-              "key": "sell",
-              "value": "true"
-            },
-            {
-              "key": "items",
-              "value": "[{\"id\":2,\"value\":-1},{\"id\":3,\"value\":-1},{\"id\":8,\"value\":-1},{\"id\":4,\"value\":-1},{\"id\":5,\"value\":-1},{\"id\":6,\"value\":-1},{\"id\":7,\"value\":-1}]"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "jumpTo",
-          "tags": [
-            {
-              "key": "name",
-              "value": "end"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "script.char.vars.choiceInput == 2",
-          "name": "openRecruitMenu",
-          "tags": [
-            {
-              "key": "sell",
-              "value": "true"
-            },
-            {
-              "key": "items",
-              "value": "[{\"id\":14,\"value\":-1}]"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "jumpTo",
-          "tags": [
-            {
-              "key": "name",
-              "value": "end"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "startBattle",
-          "tags": [
-            {
-              "key": "fade",
-              "value": "60"
-            },
-            {
-              "key": "fieldID",
-              "value": "2"
-            },
-            {
-              "key": "gameOverCondition",
-              "value": "0"
-            },
-            {
-              "key": "skipIntro",
-              "value": "false"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "finishBattle",
-          "tags": [
-            {
-              "key": "time",
-              "value": "60"
-            },
-            {
-              "key": "wait",
-              "value": "true"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "showDialogue",
-          "tags": [
-            {
-              "key": "alignX",
-              "value": "0"
-            },
-            {
-              "key": "alignY",
-              "value": "0"
-            },
-            {
-              "key": "height",
-              "value": "-1"
-            },
-            {
-              "key": "id",
-              "value": "1"
-            },
-            {
-              "key": "message",
-              "value": "\"{%battleLog}\""
-            },
-            {
-              "key": "name",
-              "value": "\"\""
-            },
-            {
-              "key": "nameX",
-              "value": "0"
-            },
-            {
-              "key": "nameY",
-              "value": "0"
-            },
-            {
-              "key": "width",
-              "value": "-1"
-            },
-            {
-              "key": "x",
-              "value": "0"
-            },
-            {
-              "key": "y",
-              "value": "0"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "condition": "",
-          "name": "setLabel",
-          "tags": [
-            {
-              "key": "name",
-              "value": "end"
-            }
-          ],
-          "key": ""
-        }
-      ],
-      "description": "Lancelot asks if the player wants to battle or shop.",
-      "name": "Lancelot",
+      "events": [],
+      "description": "",
+      "name": "NPC",
       "tags": [],
       "key": ""
     },
-    "id": 2,
-    "children": []
+    "id": 4,
+    "children": [
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "",
+              "name": "playCharAnim",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "player"
+                },
+                {
+                  "key": "name",
+                  "value": "Idle"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharTile",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"self\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharTile",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"player\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "showDialogue",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "character",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "portrait",
+                  "value": "\"BigIcon\""
+                },
+                {
+                  "key": "message",
+                  "value": "\"{%dialogues.npc.Hi}\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "TroopManager:getPlayerTroop():hasMember('Merlin')",
+              "name": "jumpTo",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "\"dialogueEnd\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "showDialogue",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "character",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "portrait",
+                  "value": "\"BigIcon\""
+                },
+                {
+                  "key": "message",
+                  "value": "\"{%dialogues.npc.CanIJoin}\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "openChoiceWindow",
+              "tags": [
+                {
+                  "key": "alignX",
+                  "value": "0"
+                },
+                {
+                  "key": "alignY",
+                  "value": "0"
+                },
+                {
+                  "key": "cancel",
+                  "value": "-1"
+                },
+                {
+                  "key": "height",
+                  "value": "-1"
+                },
+                {
+                  "key": "variable",
+                  "value": "\"choiceInput\""
+                },
+                {
+                  "key": "width",
+                  "value": "50"
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "-20"
+                },
+                {
+                  "key": "choices",
+                  "value": "[\"{%yes}\",\"{%no}\"]"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%choiceInput} == 1",
+              "name": "showDialogue",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "character",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "portrait",
+                  "value": "\"BigIcon\""
+                },
+                {
+                  "key": "message",
+                  "value": "\"{%dialogues.npc.ThatsGood}\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%choiceInput} == 1",
+              "name": "addMember",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"Merlin\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%choiceInput} == 2",
+              "name": "showDialogue",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "character",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "portrait",
+                  "value": "\"BigIcon\""
+                },
+                {
+                  "key": "message",
+                  "value": "\"{%dialogues.npc.ThatsBad}\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setLabel",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "\"dialogueEnd\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "closeDialogueWindow",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "Merlins asks if he can join the party.",
+          "name": "Merlin",
+          "tags": [],
+          "key": "Merlin"
+        },
+        "id": 0,
+        "children": []
+      },
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "",
+              "name": "playCharAnim",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "name",
+                  "value": "\"Idle\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharTile",
+              "tags": [
+                {
+                  "key": "h",
+                  "value": "0"
+                },
+                {
+                  "key": "key",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "0"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharTile",
+              "tags": [
+                {
+                  "key": "h",
+                  "value": "0"
+                },
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "0"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "showDialogue",
+              "tags": [
+                {
+                  "key": "alignX",
+                  "value": "0"
+                },
+                {
+                  "key": "alignY",
+                  "value": "0"
+                },
+                {
+                  "key": "height",
+                  "value": "-1"
+                },
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "message",
+                  "value": "\"{%dialogues.npc.WhatDoYou}\""
+                },
+                {
+                  "key": "name",
+                  "value": "\"\""
+                },
+                {
+                  "key": "nameX",
+                  "value": "0"
+                },
+                {
+                  "key": "nameY",
+                  "value": "0"
+                },
+                {
+                  "key": "width",
+                  "value": "-1"
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "0"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "openChoiceWindow",
+              "tags": [
+                {
+                  "key": "alignX",
+                  "value": "0"
+                },
+                {
+                  "key": "alignY",
+                  "value": "0"
+                },
+                {
+                  "key": "cancel",
+                  "value": "3"
+                },
+                {
+                  "key": "height",
+                  "value": "-1"
+                },
+                {
+                  "key": "variable",
+                  "value": "\"inputResult\""
+                },
+                {
+                  "key": "width",
+                  "value": "70"
+                },
+                {
+                  "key": "x",
+                  "value": "-1"
+                },
+                {
+                  "key": "y",
+                  "value": "-1"
+                },
+                {
+                  "key": "choices",
+                  "value": "[\"{%dialogues.npc.Shop}\",\"{%dialogues.npc.Recruit}\",\"{%dialogues.npc.Battle}\",\"{%dialogues.npc.Nothing}\"]"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "closeDialogueWindow",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "script.char.vars.choiceInput == 1",
+              "name": "openShopMenu",
+              "tags": [
+                {
+                  "key": "sell",
+                  "value": "true"
+                },
+                {
+                  "key": "items",
+                  "value": "[{\"id\":2,\"value\":-1},{\"id\":3,\"value\":-1},{\"id\":8,\"value\":-1},{\"id\":4,\"value\":-1},{\"id\":5,\"value\":-1},{\"id\":6,\"value\":-1},{\"id\":7,\"value\":-1}]"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "jumpTo",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "end"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "script.char.vars.choiceInput == 2",
+              "name": "openRecruitMenu",
+              "tags": [
+                {
+                  "key": "sell",
+                  "value": "true"
+                },
+                {
+                  "key": "items",
+                  "value": "[{\"id\":14,\"value\":-1}]"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "jumpTo",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "end"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "startBattle",
+              "tags": [
+                {
+                  "key": "fade",
+                  "value": "60"
+                },
+                {
+                  "key": "fieldID",
+                  "value": "2"
+                },
+                {
+                  "key": "gameOverCondition",
+                  "value": "0"
+                },
+                {
+                  "key": "skipIntro",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "finishBattle",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "60"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "showDialogue",
+              "tags": [
+                {
+                  "key": "alignX",
+                  "value": "0"
+                },
+                {
+                  "key": "alignY",
+                  "value": "0"
+                },
+                {
+                  "key": "height",
+                  "value": "-1"
+                },
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "message",
+                  "value": "\"{%battleLog}\""
+                },
+                {
+                  "key": "name",
+                  "value": "\"\""
+                },
+                {
+                  "key": "nameX",
+                  "value": "0"
+                },
+                {
+                  "key": "nameY",
+                  "value": "0"
+                },
+                {
+                  "key": "width",
+                  "value": "-1"
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "0"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setLabel",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "end"
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "Lancelot asks if the player wants to battle or shop.",
+          "name": "Lancelot",
+          "tags": [],
+          "key": "Lancelot"
+        },
+        "id": 2,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "events": [],
+      "description": "",
+      "name": "System",
+      "tags": [],
+      "key": ""
+    },
+    "id": 5,
+    "children": [
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "not FieldManager:loadedFromSave()",
+              "name": "setCharVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "defeated"
+                },
+                {
+                  "key": "value",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%defeated}",
+              "name": "deleteChar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "optional",
+                  "value": "false"
+                },
+                {
+                  "key": "permanent",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": " {%defeated}",
+              "name": "setEvent",
+              "tags": [
+                {
+                  "key": "index",
+                  "value": "-1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "resetChar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "props",
+                  "value": "false"
+                },
+                {
+                  "key": "tile",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "Deletes the character if already defeated.",
+          "name": "Spawn Check",
+          "tags": [],
+          "key": "Spawn"
+        },
+        "id": 3,
+        "children": []
+      },
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "",
+              "name": "print('Defeated: ' .. tostring(script.char.vars.defeated))",
+              "tags": [],
+              "key": ""
+            },
+            {
+              "condition": "{%defeated}",
+              "name": "setEvent",
+              "tags": [
+                {
+                  "key": "index",
+                  "value": "-1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "print('Cooldown: ' .. tostring(script.char.vars.cooldown))",
+              "tags": [],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setLocalVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"deltaBattleTime\""
+                },
+                {
+                  "key": "value",
+                  "value": "GameManager.frame - ({%lastBattleTime} or -60)"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "not FieldManager.playerInput or not script:collidedWith('player') or {%deltaBattleTime} <= 60",
+              "name": "setEvent",
+              "tags": [
+                {
+                  "key": "index",
+                  "value": "-1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "playCharAnim",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "name",
+                  "value": "\"Idle\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharTile",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"self\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharTile",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"player\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "script.char.collided ~= \"player\"",
+              "name": "showEmotionBalloon",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "emotion",
+                  "value": "\"!\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "script.char.collided == \"player\"",
+              "name": "showEmotionBalloon",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "emotion",
+                  "value": "\"!\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "wait",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "30"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "playSFX",
+              "tags": [
+                {
+                  "key": "volume",
+                  "value": "100"
+                },
+                {
+                  "key": "name",
+                  "value": "\"battleIntro\""
+                },
+                {
+                  "key": "pitch",
+                  "value": "100"
+                },
+                {
+                  "key": "time",
+                  "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "fadeout",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "60"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setHudVisibility",
+              "tags": [
+                {
+                  "key": "visible",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "runBattle",
+              "tags": [
+                {
+                  "key": "fade",
+                  "value": "30"
+                },
+                {
+                  "key": "fieldID",
+                  "value": "0"
+                },
+                {
+                  "key": "gameOverCondition",
+                  "value": "2"
+                },
+                {
+                  "key": "skipIntro",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setLocalVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "escaped"
+                },
+                {
+                  "key": "value",
+                  "value": "BattleManager:playerEscaped()"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%escaped}",
+              "name": "setCharVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"cooldown\""
+                },
+                {
+                  "key": "value",
+                  "value": "180"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%escaped}",
+              "name": "jumpTo",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "\"fade\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setCharVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "defeated"
+                },
+                {
+                  "key": "value",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setCharVisibility",
+              "tags": [
+                {
+                  "key": "fade",
+                  "value": "0"
+                },
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "visible",
+                  "value": "false"
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setLabel",
+              "tags": [
+                {
+                  "key": "index",
+                  "value": "-1"
+                },
+                {
+                  "key": "name",
+                  "value": "\"fade\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "fadein",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "60"
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setGlobalVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "lastBattleTime"
+                },
+                {
+                  "key": "value",
+                  "value": "GameManager.frame"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setHudVisibility",
+              "tags": [
+                {
+                  "key": "visible",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%defeated}",
+              "name": "deleteChar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "optional",
+                  "value": "false"
+                },
+                {
+                  "key": "permanent",
+                  "value": "false"
+                },
+                {
+                  "key": "time",
+                  "value": "1"
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "Starts a battle encounter.",
+          "name": "Normal Battle",
+          "tags": [],
+          "key": "Battle"
+        },
+        "id": 1,
+        "children": []
+      }
+    ]
   }
 ]

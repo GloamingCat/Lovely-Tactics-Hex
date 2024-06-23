@@ -15,6 +15,18 @@
       "y": 3,
       "h": 1,
       "direction": 315
+    },
+    "loadScript": {
+      "global": false,
+      "block": false,
+      "wait": true,
+      "onLoad": true,
+      "onInteract": false,
+      "onCollide": false,
+      "description": "",
+      "name": "LoadPlayer.lua",
+      "tags": [],
+      "key": ""
     }
   },
   "battle": {

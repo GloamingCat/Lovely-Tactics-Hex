@@ -87,6 +87,8 @@ end
 -- @coroutine
 -- @tparam[opt] table state Data about battle state for when the game is loaded mid-battle.
 function BattleManager:loadBattle(state)
+  assert(not self.battleFiber, "Two battle instances running at once.")
+  self.battleFiber = _G.Fiber
   self.saveData = state
   TroopManager:reset()
   FieldManager:loadField(self.params.fieldID or self.currentField.id)
@@ -108,6 +110,7 @@ function BattleManager:loadBattle(state)
   end
   self.saveData = nil
   FieldManager:loadTransition(FieldManager.playerState.transition, FieldManager.playerState.field)
+  self.battleFiber = nil
 end
 --- Runs until battle finishes.
 -- @coroutine

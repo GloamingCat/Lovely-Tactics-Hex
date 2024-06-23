@@ -41,12 +41,9 @@ function AnimatedInteractable:init(instData, save)
   end
   -- Object:init
   JumpingObject.init(self, instData, pos)
-  self.key = instData.key or ''
-  self.name = instData.name or self.key
   self.saveData = save
   FieldManager.updateList:add(self)
   -- Initialize properties
-  self.persistent = instData.persistent
   self:initProperties(instData, save)
   self:initGraphics(instData, save)
   self:initScripts(instData, save)
@@ -58,13 +55,10 @@ end
 -- @tparam table instData The info about the object's instance.
 -- @tparam[opt] table save The instance's save data.
 function AnimatedInteractable:initProperties(instData, save)
-  if save and save.passable ~= nil then
-    self.passable = save.passable
-  else
-    self.passable = instData.passable
-  end
+  Interactable.initProperties(self, instData, save)
   JumpingObject.initProperties(self)
-  self.speed = instData.defaultSpeed / 100 * Config.player.walkSpeed
+  self.name = instData.name or self.key
+  self.speed = (instData.defaultSpeed or 100) / 100 * Config.player.walkSpeed
   if save then
     self.speed = save.speed or (save.defaultSpeed or 100) * Config.player.walkSpeed / 100
   end
@@ -169,8 +163,10 @@ function AnimatedInteractable:collideTile(tile)
   local blocking = false
   for char in tile.characterList:iterator() do
     if char ~= self  then
-      self:onCollide(char.key, self.key, self.collided ~= nil)
-      char:onCollide(char.key, self.key, char.collided ~= nil)
+      local selfFiber = FieldManager.currentField.fiberList:fork(self.onCollide, self, char.key, self.key, self.collided ~= nil)
+      local charFiber = FieldManager.currentField.fiberList:fork(char.onCollide, char, char.key, self.key, char.collided ~= nil)
+      selfFiber:waitForEnd()
+      charFiber:waitForEnd()
       if not char.passable then
         blocking = true
       end

@@ -8,9 +8,16 @@
 -- Character.scripts
 -- Equip statusDef/statusBuff
 -- Animation:isVisible
--- When a tag's value is "{%var}", its value on the TagMap is automatically set as GameManager.vars["var"]
+-- When a tag's value is "{%var}", its value on the TagMap is automatically set as GameManager:getVariable("var")
 -- Removing animation's Component methods and accessing sprite directly instead
 -- Fix ChildAnimations
+-- hideChar -> setCharVisibility
+-- GameManager:getVariable
+-- EventSheet:evaluate
+-- Merged GeneralEvents:startBattle and GeneralEvents:finishBattle.
+-- Moved the code from custom/EventSheet.lua to EventSheet:processSheet.
+-- Config.player.loadScript
+-- Interactable.active
 
 Method/field renaming
 -- Merged Button:changeIcon and Button:setIcon.
@@ -22,6 +29,7 @@ Method/field renaming
 -- status.elements -> status.bonuses
 -- item.elements -> item.bonuses
 -- Skill.[user*Anim, *animID, *Time, mirror, stepOnCast] moved to Skill.animInfo
+-- TextInputWindow.emptyAllowed -> minLength, maxLength
 
 Class renaming
 -- FieldHUD -> PlayerMenu

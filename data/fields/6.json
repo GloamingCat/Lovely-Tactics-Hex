@@ -4,7 +4,7 @@
   "sizeY": 8,
   "prefs": {
     "persistent": true,
-    "defaultRegion": -1,
+    "defaultRegion": 0,
     "maxHeight": 1,
     "bgm": {
       "name": "fieldsTheme",
@@ -803,6 +803,7 @@
       "persistent": false,
       "passable": false,
       "visible": true,
+      "active": true,
       "x": 6,
       "y": 5,
       "h": 1,
@@ -817,7 +818,7 @@
         {
           "global": false,
           "block": false,
-          "wait": false,
+          "wait": true,
           "onLoad": true,
           "onInteract": false,
           "onCollide": false,

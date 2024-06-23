@@ -123,31 +123,32 @@ end
 -- script (local), script's character, field, game (global).
 -- If still not found, it searches in the Vocab terms, using the `TableUtil.access` method.
 -- @tparam string key The name of the variable.
--- @tparam Field field The current loaded field.
 -- @tparam Fiber script The current executing script.
+-- @tparam Field field The current loaded field.
 -- @return The value of the variable. 
-function GameManager:getVariable(key, field, script)
-  local value = nil
-  if script and script.vars then
-    -- Local
-    value = script.vars[key]
+function GameManager:getVariable(key, script, field)
+  local value = pathAccess(Vocab, key)
+  if value == nil and script then
+    if script.args then
+      -- Params
+      value = script.args[key]
+    end
+    if value == nil then
+      -- Local
+      value = script.vars[key]
+    end
     if value == nil and script.char and script.char.vars then
       -- Object
       value = script.char.vars[key]
     end
-    if value == nil then
-      -- Field
-      if field and field.vars then
-        value = field.vars[key]
-      end
-      -- Global
-      if value == nil then
-        value = self.vars[key]
-      end
-    end
   end
-  if value == nil then
-    value = pathAccess(Vocab, key)
+  if value == nil and field and field.vars then
+    -- Field
+    value = field.vars[key]
+  end
+  if value == nil and self.vars then
+    -- Global
+    value = self.vars[key]
   end
   return value
 end

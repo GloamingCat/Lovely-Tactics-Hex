@@ -15,12 +15,11 @@
 local rand = love.math.random
 
 return function(script)
-
   script.char.approachToInteract = false
   local pause = tonumber(script.args.pause) or 60
   local pauseVar = tonumber(script.args.pauseVar) or 0
   while true do
-    Fiber:wait()
+    script:wait()
     if not (FieldManager.player:isBusy() or script.char.interacting) then
       local shift = math.field.neighborShift[rand(#math.field.neighborShift)]
       local angle = script.char:shiftToRow(shift.x, shift.y) * 45

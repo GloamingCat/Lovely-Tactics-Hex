@@ -112,10 +112,16 @@ function FieldManager:playFieldBGM(time, wait)
 end
 --- Execute current field's load script and characters' load scripts.
 function FieldManager:runLoadScripts()
-  self.playerInput = false
-  for char in self.characterList:iterator() do
-    char:onLoad()
+  if self:loadedFromSave() then
+    for char in self.characterList:iterator() do
+      self.currentField.fiberList:fork(char.resumeScripts, char)
+    end
+  else
+    for char in self.characterList:iterator() do
+      self.currentField.fiberList:fork(char.onLoad, char)
+    end
   end
+  self.currentField.loading = true
   local script = self.currentField.loadScript
   if script and script.name ~= '' then
     local fiberList = (script.global and self or self.currentField).fiberList
@@ -124,10 +130,7 @@ function FieldManager:runLoadScripts()
       fiber:waitForEnd()
     end
   end
-  self.playerInput = true
-  for char in self.characterList:iterator() do
-    self.currentField.fiberList:fork(char.resumeScripts, char)
-  end
+  self.currentField.loading = false
 end
 
 -- ------------------------------------------------------------------------------------------------

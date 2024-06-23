@@ -44,9 +44,11 @@ function Player:init(transition, save)
     y = transition.y,
     h = transition.h,
     defaultSpeed = 100,
+    active = true,
     direction = transition.direction,
     animation = 'Idle',
-    scripts = {} }
+    scripts = { Config.player.loadScript }
+  }
   Character.init(self, data, save)
   self.waitList = List()
 end
@@ -78,19 +80,6 @@ function Player:update(dt)
   Character.update(self, dt)
   if self:moving() then
     self:updateStepCount(dt)
-  end
-end
---- Coroutine that runs in non-battle fields.
-function Player:resumeScripts()
-  Character.resumeScripts(self)
-  while true do
-    Fiber:wait()
-    for script in self.waitList:iterator() do
-      script:waitForEnd()
-    end
-    if FieldManager.playerInput and not self:isBusy() then
-      self:checkFieldInput()
-    end
   end
 end
 --- Checks movement and interaction inputs.

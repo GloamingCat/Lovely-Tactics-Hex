@@ -44,7 +44,7 @@ function Character:init(instData, save)
   self.charData = charData
   AnimatedInteractable.init(self, instData, save)
   if not save then
-    self:addScripts(charData.scripts, charData.repeatCollisions)
+    self:addScripts(charData.scripts)
   end
   -- Add to character list
   FieldManager.characterList:add(self)

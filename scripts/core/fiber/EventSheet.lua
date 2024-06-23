@@ -111,7 +111,12 @@ end
 --- Directly sets the running index.
 -- @tparam number i Index of the next event.
 function EventSheet:setEvent(i)
-  self.vars.runningIndex = i - 1
+  if i == -1 then
+    self.vars.runningIndex = #self.events
+    print("skip to end")
+  else
+    self.vars.runningIndex = i - 1
+  end
 end
 --- Stores a label name.
 -- @tparam string name Name of the label.

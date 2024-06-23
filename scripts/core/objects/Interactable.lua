@@ -27,15 +27,8 @@ local Interactable = class()
 -- @tparam table instData Instance data from field file.
 -- @tparam[opt] table save Persistent data from save file.
 function Interactable:init(instData, save)
-	self.data = instData
+	self:initProperties(instData)
 	self:initScripts(instData)
-	self.key = instData.key
-	if save and save.passable ~= nil then
-		self.passable = save.passable
-	else
-		self.passable = instData.passable
-	end
-	self.persistent = instData.persistent
 	local layer = FieldManager.currentField.objectLayers[instData.h]
 	assert(layer, 'height out of bounds: ' .. instData.h)
 	layer = layer.grid[instData.x]
@@ -45,6 +38,24 @@ function Interactable:init(instData, save)
 	self.tile.characterList:add(self)
 	FieldManager.updateList:add(self)
 end
+--- Sets generic properties, like key, passability, activeness, and persistency.
+-- @tparam table instData The info about the object's instance.
+-- @tparam[opt] table save The instance's save data.
+function Interactable:initProperties(instData, save)
+	self.key = instData.key or ''
+	self.data = instData
+	if save and save.passable ~= nil then
+		self.passable = save.passable
+	else
+		self.passable = instData.passable
+	end
+	if save and save.active ~= nil then
+		self.active = save.active
+	else
+		self.active = instData.active
+	end
+	self.persistent = instData.persistent
+end
 --- Initializes the script lists from instance data or save data.
 -- @tparam table instData Instance data from field file.
 -- @tparam[opt] table save Persistent data from save file.
@@ -53,13 +64,17 @@ function Interactable:initScripts(instData, save)
 	self.collider = save and save.collider
 	self.collided = save and save.collided
 	self.interacting = save and save.interacting
+	self.loading = save and save.loading
 	if save then
-		self.loadScripts = save.loadScripts or {}
-		self.collideScripts = save.collideScripts or {}
-		self.interactScripts = save.interactScripts or {}
+		self.loadScripts = copyTable(save.loadScripts or {})
+		self.collideScripts = copyTable(save.collideScripts or {})
+		self.interactScripts = copyTable(save.interactScripts or {})
 		self.vars = copyTable(save.vars or {})
 	else
-		self:resetScripts(instData)
+		self.loadScripts = {}
+		self.collideScripts = {}
+		self.interactScripts = {}
+		self:addScripts(instData.scripts)
 		self.vars = {}
 	end
 	self.faceToInteract = false
@@ -67,9 +82,7 @@ function Interactable:initScripts(instData, save)
 end
 --- Creates listeners from instance data.
 -- @tparam table scripts Array of script data.
--- @tparam[opt] boolean repeatCollisions Flag to call the collision scripts regardless if the
---	character is already running the collision scripts or not. 
-function Interactable:addScripts(scripts, repeatCollisions)
+function Interactable:addScripts(scripts)
 	for _, script in ipairs(scripts) do
 		if script.onLoad then
 			script = copyTable(script)
@@ -79,7 +92,6 @@ function Interactable:addScripts(scripts, repeatCollisions)
 		if script.onCollide then
 			script = copyTable(script)
 			script.vars = script.vars or {}
-			script.repeatCollisions = repeatCollisions
 			self.collideScripts[#self.collideScripts + 1] = script
 		end
 		if script.onInteract then
@@ -88,15 +100,6 @@ function Interactable:addScripts(scripts, repeatCollisions)
 			self.interactScripts[#self.interactScripts + 1] = script
 		end
 	end
-end
---- Sets the scripts according to instance data.
--- @tparam table data Instance data from field file.
-function Interactable:resetScripts(data) 
-  data = data or self.data
-	self.loadScripts = {}
-	self.collideScripts = {}
-	self.interactScripts = {}
-	self:addScripts(data.scripts, data.repeatCollisions)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -130,7 +133,7 @@ function Interactable:getPersistentData()
 				block = scripts[i].block,
 				wait = scripts[i].wait,
 				tags = scripts[i].tags,
-				vars = scripts[i].vars }
+				vars = copyTable(scripts[i].vars) }
 		end
 		return copy
 	end
@@ -138,10 +141,12 @@ function Interactable:getPersistentData()
 		vars = copyTable(self.vars),
 		deleted = self.deleted,
 		passable = self.passable,
+		active = self.active,
 		loadScripts = copyScripts(self.loadScripts),
 		collideScripts = copyScripts(self.collideScripts),
 		interactScripts = copyScripts(self.interactScripts),
 		interacting = self.interacting,
+		loading = self.loading,
 		collider = self.collider,
 		collided = self.collided }
 end
@@ -154,7 +159,7 @@ end
 -- @coroutine
 -- @treturn boolean Whether the interact script were executed or not.
 function Interactable:onInteract()
-	if self.deleted or #self.interactScripts == 0 then
+	if self.deleted or not self.active or #self.interactScripts == 0 then
 		return false
 	end
 	self.interacting = true
@@ -174,29 +179,16 @@ end
 -- @tparam boolean repeating Whether the script collision scripts of this character are already running.
 -- @treturn boolean Whether the collision script were executed or not.
 function Interactable:onCollide(collided, collider, repeating)
-	if self.deleted or #self.collideScripts == 0 then
+	if self.deleted or not self.active or #self.collideScripts == 0 or repeating then
 		return false
 	end
-	if repeating then
-		local skip = true
-		for _, script in ipairs(self.collideScripts) do
-			if script.repeatCollisions then
-				skip = false
-				break
-			end
-		end
-		if not skip then
-			return false
-		end
-	end
+	print('onCollide', self)
 	self.collided = collided
 	self.collider = collider
 	for _, script in ipairs(self.collideScripts) do
-		if not repeating or script.repeatCollisions then
-			self:runScript(script)
-			if self.deleted then
-				return true
-			end
+		self:runScript(script)
+		if self.deleted then
+			return true
 		end
 	end
 	self.collided = nil
@@ -207,15 +199,17 @@ end
 -- @coroutine
 -- @treturn boolean Whether the load scripts were executed or not.
 function Interactable:onLoad()
-	if self.deleted or #self.loadScripts == 0 then
+	if self.deleted or not self.active or #self.loadScripts == 0 then
 		return false
 	end
+	self.loading = true
 	for _, script in ipairs(self.loadScripts) do
 		self:runScript(script)
 		if self.deleted then
 			return true
 		end
 	end
+	self.loading = nil
 	return true
 end
 --- Creates a new event sheet from the given script data.
@@ -239,6 +233,9 @@ function Interactable:resumeScripts()
 	end
 	if self.interacting then
 		self:onInteract()
+	end
+	if self.loading then
+		self:onLoad()
 	end
 	self:collideTile(self:getTile())
 end

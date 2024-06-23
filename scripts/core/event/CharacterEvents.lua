@@ -45,20 +45,36 @@ local CharacterEvents = {}
 -- @tfield string key They key of the character.
 -- @tfield[opt] boolean optional Flag to not raise an error when the character is not found.
 -- @tfield[opt] boolean permanent Flag to create the character again when field if reloaded.
+-- @tfield[opt=0] number time Number of frames to wait before destroying the character.
+
+--- Common arguments for animation commands.
+-- @table PropArguments
+-- @tfield string key They key of the character.
+-- @tfield PropType prop The code of the property to change.
+-- @tfield string value The expression for the value of the property.
 
 --- Arguments for character setup.
--- @table SetupArguments
--- @extend EventUtil.VisibilityArguments
--- @tfield[opt] boolean optional Flag to not raise an error when the character is not found.
--- @tfield[opt] boolean deactivate Flag to erase the character's scripts.
--- @tfield[opt] boolean passable Flag to make the character passable during the fading animation.
--- @tfield[opt] number speed Character's speed.
+-- @table ResetArguments
+-- @tfield string key They key of the character.
+-- @tfield[opt] boolean props Flag to reset character's properties.
+-- @tfield[opt] boolean tile Flag to reset character to its original tile.
 
 --- Common arguments for animation commands.
 -- @table AnimArguments
 -- @tfield string key They key of the character.
 -- @tfield[opt="Idle"] string name Name of specific animation of a default animation for the character.
 -- @tfield[opt] boolean wait Flag to wait for the animation to finish (ignores looping parts).
+
+--- Types of scope for script variables.
+-- @enum PropType
+-- @field global Global variables.
+-- @field script Variables that are only accessible within the same script.
+-- @field object Variables associated with the script's object/character.
+CharacterEvents.PropType = {
+  passable = 0,
+  active = 1,
+  speed = 2
+}
 
 -- ------------------------------------------------------------------------------------------------
 -- General
@@ -71,41 +87,102 @@ function CharacterEvents:deleteChar(args)
   if not char then
     return
   end
-  char:destroy(args.permanent)
+  if args.time and args.time > 0 then
+    FieldManager.currentField.fiberList:fork(function()
+      self:wait(args.time)
+      char:destroy(args.permanent)
+    end)
+  else
+    char:destroy(args.permanent)
+  end
 end
 --- Changes a character's properties.
--- @tparam SetupArguments args
-function CharacterEvents:setupChar(args)
+-- @tparam ResetArguments args
+function CharacterEvents:resetChar(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
     return
   end
-  if args.deactivate then
-    char.interactScripts = {}
-    char.collideScripts = {}
-    char.loadScripts = {}
-  elseif args.deactivate ~= nil then
-    char:resetScripts()
+  if args.tile then
+    char:transferTile(char:originalCoordinates())
   end
-  if args.passable ~= nil then
-    char.passable = args.passable
+  if args.props then
+    char:initProperties(self.data)
   end
-  if args.speed ~= nil then
-    char.speed = args.speed / 100 * Config.player.walkSpeed
+end
+--- Changes a character's properties.
+-- @tparam PropArguments args
+function CharacterEvents:setCharProperty(args)
+  local char = self:findCharacter(args.key, args.optional)
+  if not char then
+    return
   end
-  if args.visible ~= nil then
-    self:fadeSprite(char.sprite, args.visible, args.fade or args.time, args.wait)
+  local prop = self.PropType[args.prop] or args.prop
+  if prop == self.PropType.speed then
+    char.speed = self:evaluate(args.value)
+  elseif prop == self.PropType.passable then
+    char.passable = self:evaluate(args.value)
+  elseif prop == self.PropType.active then
+    char.active = self:evaluate(args.value)
   end
+end
+--- Changes a character's properties.
+-- @tparam EventUtil.VisibilityArguments args
+function CharacterEvents:setCharVisibility(args)
+  local char = self:findCharacter(args.key, args.optional)
+  if not char then
+    return
+  end
+  if char.shadow then
+    self:fadeSprite(char.shadow, args.visible, args.fade or args.time, false)
+  end
+  self:fadeSprite(char.sprite, args.visible, args.fade or args.time, args.wait)
 end
 --- Changes the properties of a character's shadow graphics.
 -- @tparam EventUtil.VisibilityArguments args
-function CharacterEvents:setupShadow(args)
+function CharacterEvents:setShadowVisibility(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
     return
   end
-  if args.visible ~= nil then
-    self:fadeSprite(char.shadow, args.visible, args.fade or args.time, args.wait)
+  self:fadeSprite(char.shadow, args.visible, args.fade or args.time, args.wait)
+end
+function CharacterEvents:logProperties(args)
+  local char = self:findCharacter(args.key, true)
+  if not char then
+    print("Character not found: " .. args.key)
+    return
+  end
+  print("Active", char.active)
+  print("Passable", char.passable)
+  print("Persistent", char.persistent)
+  print("Variables:")
+  for k, v in pairs(char.vars) do
+    print("", k, v)
+  end
+  print("Load scripts:")
+  for _, s in pairs(char.loadScripts) do
+    print("", s.name, s.runningIndex)
+    print("", "Script Variables:")
+    for k, v in pairs(s.vars) do
+      print("", "", k, v)
+    end
+  end
+  print("Interact scripts:")
+  for _, s in pairs(char.interactScripts) do
+    print("", s.name, s.runningIndex)
+    print("", "Script Variables:")
+    for k, v in pairs(s.vars) do
+      print("", "", k, v)
+    end
+  end
+  print("Collide scripts:")
+  for _, s in pairs(char.collideScripts) do
+    print("", s.name, s.runningIndex)
+    print("", "Script Variables:")
+    for k, v in pairs(s.vars) do
+      print("", "", k, v)
+    end
   end
 end
 

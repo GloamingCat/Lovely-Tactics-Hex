@@ -840,7 +840,7 @@
       },
       {
         "info": {
-          "name": "New Layer",
+          "name": "Road",
           "height": 1,
           "noAuto": false,
           "tags": []
@@ -1211,6 +1211,7 @@
       "persistent": true,
       "passable": false,
       "visible": true,
+      "active": true,
       "x": 6,
       "y": 9,
       "h": 1,

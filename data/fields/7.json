@@ -829,6 +829,7 @@
       "persistent": false,
       "passable": false,
       "visible": true,
+      "active": true,
       "x": 6,
       "y": 7,
       "h": 1,

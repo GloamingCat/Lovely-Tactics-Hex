@@ -18,7 +18,7 @@ local TagMap = class()
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam table tags Array with (name, value) tags.
+-- @tparam table tags Array with (key, value) tags.
 function TagMap:init(tags)
   self.tags = {}
   if tags then
@@ -69,7 +69,7 @@ function TagMap:add(name, str)
   self[name] = self[name] or value
 end
 --- Inserts a set of tag pairs.
--- @tparam table tags Array with (name, value) tags.
+-- @tparam table tags Array with (key, value) tags.
 function TagMap:addAll(tags)
   for i = 1, #tags do
     local name = tags[i].key
@@ -110,7 +110,7 @@ function TagMap:toArray()
   local list = {}
   for k, v in pairs(self.tags) do
     for i = 1, #v do
-      list[#list + 1] = { key = k, v = v[i] }
+      list[#list + 1] = { key = k, value = tostring(v[i]) }
     end
   end
   return list

@@ -63,7 +63,9 @@ function TextParser.evaluate(text)
   for textFragment, code in text:gmatch('([^{%%]*){(.-)}') do
     local key = code:sub(2)
     local value = GameManager:getVariable(key, _G.Fiber, FieldManager.currentField)
-    assert(value, 'Text variable or term ' .. tostring(key) .. ' not found.')
+    if value == nil then
+      print('Text variable or term not found: ' .. tostring(key))
+    end
     local f = tostring(value)
     str = str .. textFragment .. TextParser.evaluate(f)
   end
@@ -123,7 +125,7 @@ function TextParser.parseCode(fragments, code)
   if t == '%' then
     local key = code:sub(2)
     local value = GameManager:getVariable(key, _G.Fiber, FieldManager.currentField)
-    assert(value, 'Text variable or term ' .. tostring(key) .. ' not found.')
+    assert(value ~= nil, 'Text variable or term not found: ' .. tostring(key))
     local f = tostring(value)
     if plainText then
       TextParser.parseFragment(fragments, f)

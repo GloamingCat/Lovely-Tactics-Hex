@@ -139,6 +139,7 @@ function FieldLoader.createTransitions(field, transitions)
       for _, tile in ipairs(t.origin) do
         local instData = { key = 'Transition',
           passable = false,
+          active = true,
           scripts = scripts,
           x = tile.dx, y = tile.dy, h = tile.height }
         Interactable(instData)
