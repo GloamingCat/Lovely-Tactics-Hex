@@ -18,6 +18,7 @@ local Menu = require('core/gui/Menu')
 local SaveMenu = require('core/gui/menu/SaveMenu')
 local ShopMenu = require('core/gui/menu/ShopMenu')
 local RecruitMenu = require('core/gui/menu/RecruitMenu')
+local TextParser = require('core/graphics/TextParser')
 local Vector = require('core/math/Vector')
 
 -- Class table.
@@ -56,6 +57,7 @@ function EventUtil:findCharacter(key, optional)
   if key == 'self' then
     return self.char
   end
+  key = TextParser.evaluate(key)
   local char = FieldManager:search(key)
   assert(char or optional, 'Character not found: ' .. tostring(key))
   return char
@@ -180,7 +182,9 @@ function EventUtil:openDialogueWindow(args)
     window = self:createDefaultDialogueWindow(args.id)
     dialogues[args.id] = window
   end
-  window:resize(args.width, args.height)
+  local w = args.width and args.width > 0
+  local h = args.height and args.height > 0
+  window:resize(w and args.width, h and args.height)
   window:setXYZ(args.x, args.y)
   if window.closed then
     window:setVisible(false)

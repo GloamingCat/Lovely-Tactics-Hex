@@ -16,7 +16,8 @@
   },
   
   "scene": {
-    "ThisIsA": "Isso é uma cena de teste."
+    "ThisIsA": "Isso é uma cena de teste.",
+    "DidYouLike": "Gostou?"
   },
   
   "tutorial": {

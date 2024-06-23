@@ -1211,7 +1211,6 @@
       "persistent": true,
       "passable": false,
       "visible": true,
-      "active": true,
       "x": 6,
       "y": 9,
       "h": 1,
@@ -1223,7 +1222,8 @@
       "direction": 225,
       "defaultSpeed": 60,
       "scripts": [],
-      "repeatCollisions": false
+      "replaceScripts": false,
+      "active": true
     }
   ],
   "parties": [],

@@ -182,7 +182,7 @@
             "brightness": 100
           },
           "introPattern": "1 2 3 2 1 0",
-          "introDuration": "4 4 24 4 4 24",
+          "introDuration": "4 4 40 4 4 40",
           "loopPattern": "",
           "loopDuration": "",
           "audio": [],
@@ -221,7 +221,7 @@
             "brightness": 100
           },
           "introPattern": "0 1 2 3 4 0",
-          "introDuration": "12 4 4 4 8 32",
+          "introDuration": "12 4 4 4 24 48",
           "loopPattern": "",
           "loopDuration": "",
           "audio": [],

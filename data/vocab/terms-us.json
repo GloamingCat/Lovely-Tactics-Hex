@@ -11,7 +11,7 @@
   "overwrite": "Overwrite",
   
   // Main Window
-  "menu": "Menu",
+  "mainMenu": "Menu",
   "inventory": "Inventory",
   "members": "Characters",
   "options": "Options",

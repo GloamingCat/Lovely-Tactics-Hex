@@ -58,9 +58,15 @@ function AnimatedInteractable:initProperties(instData, save)
   Interactable.initProperties(self, instData, save)
   JumpingObject.initProperties(self)
   self.name = instData.name or self.key
+  self.autoAnim = not instData.fixedAnimation
+  self.autoTurn = not instData.fixedDirection
   self.speed = (instData.defaultSpeed or 100) / 100 * Config.player.walkSpeed
   if save then
     self.speed = save.speed or (save.defaultSpeed or 100) * Config.player.walkSpeed / 100
+    if save.autoAnim ~= nil then
+      self.autoAnim = save.autoAnim
+      self.autoTurn = save.autoTurn
+    end
   end
 end
 --- Sets shadow, visibility and other graphic properties from `AnimatedObject:initGraphics`.
@@ -153,6 +159,16 @@ function AnimatedInteractable:setKey(key)
   FieldManager.characterList[key] = self
   self.key = key
 end
+--- Overrides `Object:addToTiles`.
+-- @override
+function AnimatedInteractable:addToTiles()
+  self:getTile().characterList:add(self)
+end
+--- Overrides `Object:removeFromTiles`.
+-- @override
+function AnimatedInteractable:removeFromTiles()
+  self:getTile().characterList:removeElement(self)
+end
 --- Looks for collisions with characters in the given tile.
 -- @tparam ObjectTile tile The tile that the player is in or is trying to go.
 -- @treturn boolean True if there was any blocking collision, false otherwise.
@@ -191,6 +207,8 @@ function AnimatedInteractable:getPersistentData()
   data.speed = self.speed
   data.visible = self.visible
   data.passable = self.passable
+  data.autoTurn = self.autoTurn
+  data.autoAnim = self.autoAnim
   return data
 end
 -- For debugging.

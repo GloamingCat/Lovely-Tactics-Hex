@@ -95,10 +95,12 @@ end
 -- @tparam MessageArguments args
 function MenuEvents:openTitleWindow(args)
   self:createMenu()
-  local w = args.width or ScreenManager.width / 4
-  local h = args.height or 24
+  local w = args.width and args.width > 0
+  local h = args.height and args.height > 0
+  w = w and args.width or ScreenManager.width / 4
+  h = h and args.height or 24
   local x = args.x or 0
-  local y = args.y or -ScreenManager.height / 2 + h / 2 + 8
+  local y = (args.y or 0) + -ScreenManager.height / 2 + h / 2 + 8
   if self.menu.titleWindow then
     self.menu.titleWindow:resize(w, h)
     self.menu.titleWindow:setXYZ(x, y, 10)
@@ -194,8 +196,9 @@ end
 -- @tparam InputArguments args
 function MenuEvents:openChoiceWindow(args)
   self:createMenu()
+  local w = args.width and args.width > 0
   local window = ChoiceWindow(self.menu, args.choices, args.cancel,
-    args.pos, args.width, args.align)
+    args.pos, w and args.width, args.align)
   window:setXYZ(args.x, args.y, -5)
   window:show()
   self.menu:setActiveWindow(window)
@@ -214,8 +217,9 @@ end
 -- @tparam InputArguments args
 function MenuEvents:openNumberWindow(args)
   self:createMenu()
+  local w = args.width and args.width > 0
   local window = NumberWindow(self.menu, args.length, args.cancel,
-    args.pos, args.width, args.align)
+    args.pos, w and args.width, args.align)
   window:setXYZ(args.x, args.y, -5)
   window:show()
   self.menu:setActiveWindow(window)
@@ -234,7 +238,10 @@ end
 -- @tparam InputArguments args
 function MenuEvents:openStringWindow(args)
   self:createMenu()
-  local window = TextInputWindow(self.menu, args.min, args.max, args.cancelValue ~= nil)
+  local w = args.width and args.width > 0
+  local window = TextInputWindow(self.menu, args.min, args.max, 
+    args.cancelValue ~= nil, w and args.width)
+  window:setXYZ(args.x, args.y, -5)
   window:show()
   self.menu:setActiveWindow(window)
   local result = self.menu:waitForResult()

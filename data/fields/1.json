@@ -1578,7 +1578,6 @@
       "persistent": false,
       "passable": false,
       "visible": true,
-      "active": true,
       "x": 7,
       "y": 4,
       "h": 1,
@@ -1620,14 +1619,14 @@
           "key": ""
         }
       ],
-      "repeatCollisions": false
+      "replaceScripts": false,
+      "active": true
     },
     {
       "key": "Firepit",
       "persistent": false,
       "passable": false,
       "visible": true,
-      "active": true,
       "x": 9,
       "y": 4,
       "h": 1,
@@ -1652,7 +1651,8 @@
           "key": ""
         }
       ],
-      "repeatCollisions": false
+      "replaceScripts": false,
+      "active": true
     }
   ],
   "parties": [],

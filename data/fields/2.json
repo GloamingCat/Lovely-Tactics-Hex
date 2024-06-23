@@ -4,7 +4,7 @@
   "sizeY": 10,
   "prefs": {
     "persistent": false,
-    "defaultRegion": -1,
+    "defaultRegion": 0,
     "maxHeight": 4,
     "bgm": {
       "name": "bossTheme",
@@ -20,8 +20,13 @@
       "onInteract": false,
       "onCollide": false,
       "description": "",
-      "name": "test/Scene.lua",
-      "tags": [],
+      "name": "7",
+      "tags": [
+        {
+          "key": "char",
+          "value": "Arthur"
+        }
+      ],
       "key": ""
     },
     "images": [],

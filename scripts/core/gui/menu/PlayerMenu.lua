@@ -46,7 +46,7 @@ function PlayerMenu:createSaveInfoWindow()
 end
 --- Creates the window with the menu button, for mobile.
 function PlayerMenu:createButtonWindow()
-  local window = ButtonWindow(self, 'menu', 'center', 60)
+  local window = ButtonWindow(self, 'mainMenu', 'center', 60)
   window:setXYZ((ScreenManager.width - window.width) / 2, (window.height - ScreenManager.height) / 2)
   window.matrix[1].clickSound = nil
   self.buttonWindow = window

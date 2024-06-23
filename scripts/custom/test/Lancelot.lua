@@ -53,7 +53,7 @@ return function(script)
   function() return script.char.vars.choiceInput == 2 end)
   
   -- Event 4: battle
-  script:addEvent(script.startBattle,
+  script:addEvent(script.runBattle,
   function() return script.char.vars.choiceInput == 3 end,
   { 
     skipIntro = false,
@@ -64,10 +64,8 @@ return function(script)
   })
 
   -- Event 5: aftermath
-  script:addEvent(function()
-    script:finishBattle { fade = 60, wait = true }
-    script:showDialogue { id = 1, character = 'self', portrait = 'BigIcon', message = script.battleLog }
-  end,
-  function() return script.char.vars.choiceInput == 3 end)
+  script:addEvent(script.showDialogue,
+  function() return script.char.vars.choiceInput == 3 end,
+  { id = 1, character = 'self', portrait = 'BigIcon', message = script.battleLog })
 
 end

@@ -19,7 +19,7 @@ return function(script)
     script:hideMember { key = 'Arthur' }
   end)
 
-  script:addEvent(script.startBattle, nil, {
+  script:addEvent(script.runBattle, nil, {
     skipIntro = false,
     disableEscape = false,
     gameOverCondition = script.args.gameOverCondition or 'survive',
@@ -27,8 +27,6 @@ return function(script)
     fade = 60
   })
 
-  script:addEvent(script.finishBattle, nil, { fade = 60, wait = true })
-  
   script:addEvent(function()
     script:hideMember { key = 'Test' }
     script:addMember { key = 'Arthur' }

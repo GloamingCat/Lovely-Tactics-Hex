@@ -4,7 +4,7 @@
   "sizeY": 10,
   "prefs": {
     "persistent": false,
-    "defaultRegion": -1,
+    "defaultRegion": 0,
     "maxHeight": 4,
     "bgm": {
       "name": "bossTheme",
@@ -20,8 +20,13 @@
       "onInteract": false,
       "onCollide": false,
       "description": "",
-      "name": "",
-      "tags": [],
+      "name": "7",
+      "tags": [
+        {
+          "key": "char",
+          "value": "Test"
+        }
+      ],
       "key": ""
     },
     "images": [],
@@ -829,7 +834,6 @@
       "persistent": false,
       "passable": false,
       "visible": true,
-      "active": true,
       "x": 6,
       "y": 7,
       "h": 1,
@@ -841,7 +845,8 @@
       "direction": 135,
       "defaultSpeed": 150,
       "scripts": [],
-      "repeatCollisions": false
+      "replaceScripts": false,
+      "active": true
     }
   ],
   "parties": [

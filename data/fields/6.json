@@ -803,7 +803,6 @@
       "persistent": false,
       "passable": false,
       "visible": true,
-      "active": true,
       "x": 6,
       "y": 5,
       "h": 1,
@@ -840,7 +839,8 @@
           "key": ""
         }
       ],
-      "repeatCollisions": false
+      "replaceScripts": false,
+      "active": true
     }
   ],
   "parties": [],

@@ -59,6 +59,29 @@
             },
             {
               "condition": "",
+              "name": "jumpChar",
+              "tags": [
+                {
+                  "key": "height",
+                  "value": "12"
+                },
+                {
+                  "key": "key",
+                  "value": "self"
+                },
+                {
+                  "key": "time",
+                  "value": "30"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
               "name": "showDialogue",
               "tags": [
                 {
@@ -322,18 +345,6 @@
               "name": "showDialogue",
               "tags": [
                 {
-                  "key": "alignX",
-                  "value": "0"
-                },
-                {
-                  "key": "alignY",
-                  "value": "0"
-                },
-                {
-                  "key": "height",
-                  "value": "-1"
-                },
-                {
                   "key": "id",
                   "value": "1"
                 },
@@ -342,28 +353,12 @@
                   "value": "\"{%dialogues.npc.WhatDoYou}\""
                 },
                 {
-                  "key": "name",
-                  "value": "\"\""
+                  "key": "character",
+                  "value": "\"self\""
                 },
                 {
-                  "key": "nameX",
-                  "value": "0"
-                },
-                {
-                  "key": "nameY",
-                  "value": "0"
-                },
-                {
-                  "key": "width",
-                  "value": "-1"
-                },
-                {
-                  "key": "x",
-                  "value": "0"
-                },
-                {
-                  "key": "y",
-                  "value": "0"
+                  "key": "portrait",
+                  "value": "\"BigIcon\""
                 }
               ],
               "key": ""
@@ -390,7 +385,7 @@
                 },
                 {
                   "key": "variable",
-                  "value": "\"inputResult\""
+                  "value": "\"choiceInput\""
                 },
                 {
                   "key": "width",
@@ -402,7 +397,7 @@
                 },
                 {
                   "key": "y",
-                  "value": "-1"
+                  "value": "-30"
                 },
                 {
                   "key": "choices",
@@ -423,7 +418,7 @@
               "key": ""
             },
             {
-              "condition": "script.char.vars.choiceInput == 1",
+              "condition": "{%choiceInput} == 1",
               "name": "openShopMenu",
               "tags": [
                 {
@@ -438,18 +433,7 @@
               "key": ""
             },
             {
-              "condition": "",
-              "name": "jumpTo",
-              "tags": [
-                {
-                  "key": "name",
-                  "value": "end"
-                }
-              ],
-              "key": ""
-            },
-            {
-              "condition": "script.char.vars.choiceInput == 2",
+              "condition": "{%choiceInput} == 2",
               "name": "openRecruitMenu",
               "tags": [
                 {
@@ -464,19 +448,45 @@
               "key": ""
             },
             {
-              "condition": "",
-              "name": "jumpTo",
+              "condition": "{%choiceInput} ~= 3",
+              "name": "setEvent",
               "tags": [
                 {
-                  "key": "name",
-                  "value": "end"
+                  "key": "index",
+                  "value": "-1"
                 }
               ],
               "key": ""
             },
             {
               "condition": "",
-              "name": "startBattle",
+              "name": "setHudVisibility",
+              "tags": [
+                {
+                  "key": "visible",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "fadeout",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "15"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "runBattle",
               "tags": [
                 {
                   "key": "fade",
@@ -499,14 +509,25 @@
             },
             {
               "condition": "",
-              "name": "finishBattle",
+              "name": "fadein",
               "tags": [
                 {
                   "key": "time",
-                  "value": "60"
+                  "value": "15"
                 },
                 {
                   "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setHudVisibility",
+              "tags": [
+                {
+                  "key": "visible",
                   "value": "true"
                 }
               ],
@@ -517,18 +538,6 @@
               "name": "showDialogue",
               "tags": [
                 {
-                  "key": "alignX",
-                  "value": "0"
-                },
-                {
-                  "key": "alignY",
-                  "value": "0"
-                },
-                {
-                  "key": "height",
-                  "value": "-1"
-                },
-                {
                   "key": "id",
                   "value": "1"
                 },
@@ -537,39 +546,23 @@
                   "value": "\"{%battleLog}\""
                 },
                 {
-                  "key": "name",
-                  "value": "\"\""
+                  "key": "character",
+                  "value": "\"self\""
                 },
                 {
-                  "key": "nameX",
-                  "value": "0"
-                },
-                {
-                  "key": "nameY",
-                  "value": "0"
-                },
-                {
-                  "key": "width",
-                  "value": "-1"
-                },
-                {
-                  "key": "x",
-                  "value": "0"
-                },
-                {
-                  "key": "y",
-                  "value": "0"
+                  "key": "portrait",
+                  "value": "\"BigIcon\""
                 }
               ],
               "key": ""
             },
             {
               "condition": "",
-              "name": "setLabel",
+              "name": "closeDialogueWindow",
               "tags": [
                 {
-                  "key": "name",
-                  "value": "end"
+                  "key": "id",
+                  "value": "1"
                 }
               ],
               "key": ""
@@ -1050,6 +1043,669 @@
           "key": "Battle"
         },
         "id": 1,
+        "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "events": [],
+      "description": "",
+      "name": "Scenes",
+      "tags": [],
+      "key": ""
+    },
+    "id": 6,
+    "children": [
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "",
+              "name": "showDialogue",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "message",
+                  "value": "\"{%dialogues.scene.ThisIsA}\""
+                },
+                {
+                  "key": "character",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "portrait",
+                  "value": "\"BigIcon\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "closeDialogueWindow",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "jumpChar",
+              "tags": [
+                {
+                  "key": "height",
+                  "value": "15"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "speed",
+                  "value": "-1"
+                },
+                {
+                  "key": "time",
+                  "value": "30"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setCharProperty",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "prop",
+                  "value": "3"
+                },
+                {
+                  "key": "value",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "playCharAnim",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "name",
+                  "value": "Dash"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "moveCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "0"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "distance",
+                  "value": "1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "45"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": ""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "moveCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "0"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "distance",
+                  "value": "1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "315"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": ""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "moveCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "0"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "distance",
+                  "value": "1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "270"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": ""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "moveCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "0"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "distance",
+                  "value": "1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "225"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": ""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "moveCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "0"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "distance",
+                  "value": "1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "135"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": ""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "moveCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "0"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "distance",
+                  "value": "1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "moveCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "90"
+                },
+                {
+                  "key": "distance",
+                  "value": "1"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": ""
+                },
+                {
+                  "key": "speed",
+                  "value": "-1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "moveCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "225"
+                },
+                {
+                  "key": "distance",
+                  "value": "1"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "speed",
+                  "value": "-1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharDir",
+              "tags": [
+                {
+                  "key": "angle",
+                  "value": "135"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "other",
+                  "value": ""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "playCharAnim",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "name",
+                  "value": "Idle"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setCharProperty",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "prop",
+                  "value": "3"
+                },
+                {
+                  "key": "value",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "jumpChar",
+              "tags": [
+                {
+                  "key": "height",
+                  "value": "15"
+                },
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "speed",
+                  "value": "-1"
+                },
+                {
+                  "key": "time",
+                  "value": "30"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "showDialogue",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "message",
+                  "value": "\"{%dialogues.scene.DidYouLike}\""
+                },
+                {
+                  "key": "character",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "portrait",
+                  "value": "\"BigIcon\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "openChoiceWindow",
+              "tags": [
+                {
+                  "key": "alignX",
+                  "value": "0"
+                },
+                {
+                  "key": "alignY",
+                  "value": "0"
+                },
+                {
+                  "key": "cancel",
+                  "value": "-1"
+                },
+                {
+                  "key": "height",
+                  "value": "-1"
+                },
+                {
+                  "key": "variable",
+                  "value": "inputResult"
+                },
+                {
+                  "key": "width",
+                  "value": "50"
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "-20"
+                },
+                {
+                  "key": "choices",
+                  "value": "[\"{%yes}\",\"{%no}\"]"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "closeDialogueWindow",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "playSFX",
+              "tags": [
+                {
+                  "key": "volume",
+                  "value": "100"
+                },
+                {
+                  "key": "name",
+                  "value": "\"?\""
+                },
+                {
+                  "key": "pitch",
+                  "value": "100"
+                },
+                {
+                  "key": "time",
+                  "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%inputResult} == 1",
+              "name": "showEmotionBalloon",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "emotion",
+                  "value": "\"<3\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%inputResult} == 2",
+              "name": "showEmotionBalloon",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"{%char}\""
+                },
+                {
+                  "key": "emotion",
+                  "value": "\"@\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "wait",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "90"
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "Tests scene execution before battle.",
+          "name": "BattleScene",
+          "tags": [],
+          "key": "BattleScene"
+        },
+        "id": 7,
         "children": []
       }
     ]

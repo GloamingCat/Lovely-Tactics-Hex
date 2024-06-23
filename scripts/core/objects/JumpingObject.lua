@@ -20,9 +20,6 @@ local round = math.round
 local pixel2Tile = math.field.pixel2Tile
 local tile2Pixel = math.field.tile2Pixel
 
--- Constants
-local defaultGravity = 0.5
-
 -- Class table.
 local JumpingObject = class(WalkingObject)
 
@@ -33,6 +30,7 @@ local JumpingObject = class(WalkingObject)
 --- Initializes movement / animation properties.
 function JumpingObject:initProperties()
   WalkingObject.initProperties(self)
+  self.defaultGravity = 0.5
   self.jumpHeight = 0
   self.jumpVelocity = 0
   self.gravity = 0
@@ -47,7 +45,7 @@ end
 -- @tparam number gravity Deceleration of the jump, in pixels/frame².
 function JumpingObject:jump(duration, gravity)
   duration = duration / 60 -- seconds
-  gravity = gravity or defaultGravity -- pixels / frame^2
+  gravity = gravity or self.defaultGravity -- pixels / frame^2
   self.gravity = gravity * 60 * 60 -- pixels / second^2
   self.jumpVelocity = self.gravity * duration / 2 -- pixels / second
 end
@@ -94,7 +92,7 @@ end
 -- @tparam number gravity Deceleration of the jump.
 -- @treturn boolean True if the movement was completed, false otherwise.
 function JumpingObject:jumpToPoint(x, y, z, gravity)
-  gravity = gravity or defaultGravity
+  gravity = gravity or self.defaultGravity
   z = z or self.position.z
   x, y, z = round(x), round(y), round(z)
   local distance = len(self.position.x - x, self.position.y - y, self.position.z - z)

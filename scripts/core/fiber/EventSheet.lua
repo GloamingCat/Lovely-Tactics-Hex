@@ -73,6 +73,8 @@ function EventSheet:addEvent(func, condition, ...)
     else
       func = loadfunction(func, 'script, args')
     end
+  else
+    assert(func, "nil event function")
   end
   self.events[#self.events + 1] = {
     execute = func,
@@ -113,7 +115,6 @@ end
 function EventSheet:setEvent(i)
   if i == -1 then
     self.vars.runningIndex = #self.events
-    print("skip to end")
   else
     self.vars.runningIndex = i - 1
   end

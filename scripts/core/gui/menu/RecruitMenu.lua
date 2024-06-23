@@ -28,10 +28,12 @@ local RecruitMenu = class(Menu)
 --- Constructor.
 -- @tparam Menu parent Parent Menu.
 -- @tparam table chars Array of characters to be hired/dismissed.
+-- @tparam boolean dismiss Allow to dismiss battler in the same menu.
 -- @tparam Troop troop The troop recruiting new battlers.
-function RecruitMenu:init(parent, chars, troop)
+function RecruitMenu:init(parent, chars, dismiss, troop)
   self.troop = troop or Troop()
   self.chars = chars
+  self.dismiss = dismiss
   Menu.init(self, parent)
 end
 --- Implements `Menu:createWindow`.
@@ -46,7 +48,7 @@ function RecruitMenu:createWindows()
 end
 --- Creates the window with the main "hire" and "dismiss" commands.
 function RecruitMenu:createCommandWindow()
-  local window = RecruitCommandWindow(self, #self.chars > 0, true)
+  local window = RecruitCommandWindow(self, #self.chars > 0, self.dismiss)
   local x = window.width / 2 - ScreenManager.width / 2 + self:windowMargin()
   local y = window.height / 2 - ScreenManager.height / 2 + self:windowMargin()
   window:setXYZ(x, y)

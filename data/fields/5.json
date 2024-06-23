@@ -758,7 +758,6 @@
       "persistent": true,
       "passable": false,
       "visible": true,
-      "active": true,
       "x": 6,
       "y": 5,
       "h": 1,
@@ -770,14 +769,14 @@
       "direction": 225,
       "defaultSpeed": 60,
       "scripts": [],
-      "repeatCollisions": false
+      "replaceScripts": false,
+      "active": true
     },
     {
       "key": "Apple",
       "persistent": true,
       "passable": true,
       "visible": true,
-      "active": true,
       "x": 6,
       "y": 2,
       "h": 1,
@@ -807,7 +806,8 @@
           "key": ""
         }
       ],
-      "repeatCollisions": false
+      "replaceScripts": false,
+      "active": true
     }
   ],
   "parties": [],
