@@ -6,17 +6,17 @@
 -- format: `setName:animationName`.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod AnimatedObject
--- @extend Object
+-- @extend TransformableObject
 
 -- ================================================================================================
 
 -- Imports
 local Affine = require('core/math/Affine')
 local Sprite = require('core/graphics/Sprite')
-local Object = require('core/objects/Object')
+local TransformableObject = require('core/objects/TransformableObject')
 
 -- Class table.
-local AnimatedObject = class(Object)
+local AnimatedObject = class(TransformableObject)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -138,10 +138,10 @@ function AnimatedObject:replayAnimation(name, row, index)
   self.sprite.renderer.needsRedraw = true
   return anim
 end
---- Overrides `Transformable:update`. Updates animation.
+--- Overrides `TransformableObject:update`. Updates animation.
 -- @override
 function AnimatedObject:update(dt)
-  Object.update(self, dt)
+  TransformableObject.update(self, dt)
   if self.animation then
     self.animation:update(dt)
   end

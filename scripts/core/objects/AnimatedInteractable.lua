@@ -21,7 +21,7 @@ local Vector = require('core/math/Vector')
 local tile2Pixel = math.field.tile2Pixel
 
 -- Class table.
-local AnimatedInteractable = class(JumpingObject, Interactable)
+local AnimatedInteractable = class(Interactable, JumpingObject)
 
 -- ------------------------------------------------------------------------------------------------
 -- Inititialization
@@ -158,37 +158,6 @@ function AnimatedInteractable:setKey(key)
   FieldManager.characterList[self.key] = nil
   FieldManager.characterList[key] = self
   self.key = key
-end
---- Overrides `Object:addToTiles`.
--- @override
-function AnimatedInteractable:addToTiles()
-  self:getTile().characterList:add(self)
-end
---- Overrides `Object:removeFromTiles`.
--- @override
-function AnimatedInteractable:removeFromTiles()
-  self:getTile().characterList:removeElement(self)
-end
---- Looks for collisions with characters in the given tile.
--- @tparam ObjectTile tile The tile that the player is in or is trying to go.
--- @treturn boolean True if there was any blocking collision, false otherwise.
-function AnimatedInteractable:collideTile(tile)
-  if not tile then
-    return false
-  end
-  local blocking = false
-  for char in tile.characterList:iterator() do
-    if char ~= self  then
-      local selfFiber = FieldManager.currentField.fiberList:fork(self.onCollide, self, char.key, self.key, self.collided ~= nil)
-      local charFiber = FieldManager.currentField.fiberList:fork(char.onCollide, char, char.key, self.key, char.collided ~= nil)
-      selfFiber:waitForEnd()
-      charFiber:waitForEnd()
-      if not char.passable then
-        blocking = true
-      end
-    end
-  end
-  return blocking
 end
 
 -- ------------------------------------------------------------------------------------------------

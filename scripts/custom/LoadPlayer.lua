@@ -10,7 +10,7 @@
 return function(script)
   while true do
     script:wait()
-    for fiber in script.char.waitList:iterator() do
+    for fiber in FieldManager.currentField.blockingFibers:iterator() do
       fiber:waitForEnd()
     end
     if FieldManager.playerInput and not script.char:isBusy() then

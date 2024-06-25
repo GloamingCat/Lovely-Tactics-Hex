@@ -9,6 +9,7 @@
 
 -- Imports
 local FiberList = require('core/fiber/FiberList')
+local List = require('core/datastruct/List')
 local ObjectLayer = require('core/field/ObjectLayer')
 
 -- Alias
@@ -63,6 +64,50 @@ function Field:init(id, name, sizeX, sizeY, maxH)
   self.centerX, self.centerY = pixelCenter(sizeX, sizeY)
   self.minx, self.miny, self.maxx, self.maxy = pixelBounds(self)
   self.fiberList = FiberList()
+  self.blockingFibers = List()
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- General
+-- ------------------------------------------------------------------------------------------------
+
+--- Called when this interactable is created.
+-- @coroutine
+-- @tparam boolean loading True if the field was loaded now, false if loaded from save.
+-- @treturn boolean Whether the load scripts were executed or not.
+function Field:onLoad(loading)
+  local script = self.loadScript
+  if not script or script.name == '' then
+    return false
+  end
+  if script.vars.loading or loading then
+    script.vars.loading = script.vars.loading or loading
+    local fiberList = (script.global and FieldManager or self).fiberList
+    local fiber = fiberList:forkFromScript(script)
+    if script.wait then
+      fiber:waitForEnd()
+    end
+  end
+  return true
+end
+--- Called when this interactable is created.
+-- @coroutine
+-- @tparam[opt] string exit The key of the object that originated the exit transition.
+-- @treturn boolean Whether the exit scripts were executed or not.
+function Field:onExit(exit)
+  local script = self.exitScript
+  if not script or script.name == '' then
+    return false
+  end
+  if script.vars.exit or exit then
+    local fiberList = (script.global and FieldManager or self).fiberList
+    local fiber = fiberList:forkFromScript(script)
+    script.vars.exit = script.vars.exit or exit
+    if script.wait then
+      fiber:waitForEnd()
+    end
+  end
+  return true
 end
 
 -- ------------------------------------------------------------------------------------------------

@@ -31,7 +31,7 @@ local CharacterEvents = {}
 -- @tfield[opt=0] number x Tile x difference.
 -- @tfield[opt=0] number y Tile y difference.
 -- @tfield[opt=0] number h Tile height difference.
--- @tfield[opt] string other Key of a character in the target tile. If nil, uses `x`, `y` and `h`.
+-- @tfield[opt] string other Key of a character in the tile that will be used as "origin" (added to x, y and h).
 -- @tfield[opt=inf] number limit The maxium length of the path to be calculated.
 -- @tfield[opt] boolean wait Flag to wait for the movement to finish.
 
@@ -182,7 +182,7 @@ function CharacterEvents:logProperties(args)
   if args.scripts then
     local function printScripts(scripts)
       for _, s in pairs(scripts) do
-        print("", "- " .. s.name, s.runningIndex)
+        print("", "- " .. s.name)
         print("", "- Script Variables:")
         for k, v in pairs(s.vars) do
           print("", "", k, v)
@@ -211,16 +211,22 @@ end
 -- @tparam TileArguments args
 function CharacterEvents:moveCharTile(args)
   local char = self:findCharacter(args.key)
+  local x, y, h = args.x or 0, args.y or 0, args.h or 0
+  if args.other and args.other ~= '' then
+    local other = self:findCharacter(args.other)
+    local x2, y2, h2 = other:tileCoordinates()
+    x, y, h = x + x2, y + y2, h + h2
+  end
   if char.autoTurn then
     local charTile = char:getTile()
-    char:turnToTile(charTile.x + (args.x or 0), charTile.y + (args.y or 0))
+    char:turnToTile(x, y)
   end
   local fiber = self:fork(function()
     if char.autoAnim then
       char:playMoveAnimation()
     end
     char:removeFromTiles()
-    char:walkTiles(args.x or 0, args.y or 0, args.h or 0)
+    char:walkToTile(x, y, h)
     char:addToTiles()
     if char.autoAnim then
       char:playIdleAnimation()
@@ -236,8 +242,13 @@ function CharacterEvents:moveCharDir(args)
   local char = self:findCharacter(args.key)
   local angle = args.angle or 0
   if args.other and args.other ~= '' then
-    local other = self:findCharacter(args.other)
-    angle = angle + other.direction
+    if args.other == 'self' then
+      angle = angle + self.char.direction
+    else
+      local other = self:findCharacter(args.other)
+      local x, y, h = other:tileCoordinates()
+      angle = angle + char:tileToAngle((args.x or 0) + x, (args.y or 0) + y, (args.h or 0) + h)
+    end
   end
   local nextTile = char:getFrontTiles(angle)[1]
   if nextTile then

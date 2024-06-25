@@ -30,7 +30,7 @@ return function(script)
       FieldManager.player:playIdleAnimation()
       script:turnCharTile { key = 'self', other = 'player' }
       script:turnCharTile { key = 'player', other = 'self' }
-      script:showEmotionBalloon { key = script.char.collided, emotion = '!' }
+      script:showEmotionBalloon { key = script.vars.collided, emotion = '!' }
       Fiber:wait(30)
       script:startBattle {
         skipIntro = false,

@@ -19,8 +19,22 @@
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
+      "onExit": false,
       "description": "",
-      "name": "Load.lua",
+      "name": "9",
+      "tags": [],
+      "key": ""
+    },
+    "exitScript": {
+      "global": false,
+      "block": false,
+      "wait": true,
+      "onLoad": true,
+      "onInteract": false,
+      "onCollide": false,
+      "onExit": false,
+      "description": "",
+      "name": "10",
       "tags": [],
       "key": ""
     },
@@ -41,7 +55,7 @@
             "height": 4
           }
         ],
-        "fade": 30
+        "condition": ""
       },
       {
         "destination": {
@@ -58,7 +72,7 @@
             "height": 1
           }
         ],
-        "fade": 30
+        "condition": ""
       }
     ],
     "name": "PathFinder Test",

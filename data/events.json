@@ -71,7 +71,7 @@
                 },
                 {
                   "key": "time",
-                  "value": "30"
+                  "value": "10"
                 },
                 {
                   "key": "wait",
@@ -534,7 +534,7 @@
               "key": ""
             },
             {
-              "condition": "",
+              "condition": "BattleManager:playerWon()",
               "name": "showDialogue",
               "tags": [
                 {
@@ -543,7 +543,99 @@
                 },
                 {
                   "key": "message",
-                  "value": "\"{%battleLog}\""
+                  "value": "\"{%dialogues.battle.Won}\""
+                },
+                {
+                  "key": "character",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "portrait",
+                  "value": "\"BigIcon\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "BattleManager:enemyWon()",
+              "name": "showDialogue",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "message",
+                  "value": "\"{%dialogues.battle.Lost}\""
+                },
+                {
+                  "key": "character",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "portrait",
+                  "value": "\"BigIcon\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "BattleManager:drawed()",
+              "name": "showDialogue",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "message",
+                  "value": "\"{%dialogues.battle.Draw}\""
+                },
+                {
+                  "key": "character",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "portrait",
+                  "value": "\"BigIcon\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "BattleManager:playerEscaped()",
+              "name": "showDialogue",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "message",
+                  "value": "\"{%dialogues.battle.Escape}\""
+                },
+                {
+                  "key": "character",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "portrait",
+                  "value": "\"BigIcon\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "BattleManager:enemyEscaped()",
+              "name": "showDialogue",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "message",
+                  "value": "\"{%dialogues.battle.Walkover}\""
                 },
                 {
                   "key": "character",
@@ -592,7 +684,39 @@
         "data": {
           "events": [
             {
-              "condition": "not FieldManager:loadedFromSave()",
+              "condition": "",
+              "name": "print(GameManager.frame, {%spawns}, {%minSpawns}, {%defeated}, FieldManager:loadedFromSave())",
+              "tags": [],
+              "key": ""
+            },
+            {
+              "condition": "FieldManager:loadedFromSave()",
+              "name": "setEvent",
+              "tags": [
+                {
+                  "key": "index",
+                  "value": "-1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setCharVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "spawns"
+                },
+                {
+                  "key": "value",
+                  "value": "({%spawns} or 0) + 1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%spawns} > {%minSpawns}",
               "name": "setCharVar",
               "tags": [
                 {
@@ -604,6 +728,12 @@
                   "value": "false"
                 }
               ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "print({%spawns}, {%minSpawns}, {%defeated})",
+              "tags": [],
               "key": ""
             },
             {
@@ -626,7 +756,7 @@
               "key": ""
             },
             {
-              "condition": " {%defeated}",
+              "condition": "{%defeated}",
               "name": "setEvent",
               "tags": [
                 {
@@ -654,9 +784,24 @@
                 }
               ],
               "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setCharVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "spawns"
+                },
+                {
+                  "key": "value",
+                  "value": "0"
+                }
+              ],
+              "key": ""
             }
           ],
-          "description": "Deletes the character if already defeated.",
+          "description": "Deletes the character if already defeated.\nSet the argument \"minSpawns\" to the number of times\nthe player should enter the field before the enemy shows up again.",
           "name": "Spawn Check",
           "tags": [],
           "key": "Spawn"
@@ -669,7 +814,18 @@
           "events": [
             {
               "condition": "",
-              "name": "print('Defeated: ' .. tostring(script.char.vars.defeated))",
+              "name": "wait",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "print(GameManager.frame, 'Defeated: ' .. tostring(script.char.vars.defeated))",
               "tags": [],
               "key": ""
             },
@@ -762,27 +918,12 @@
               "key": ""
             },
             {
-              "condition": "script.char.collided ~= \"player\"",
+              "condition": "",
               "name": "showEmotionBalloon",
               "tags": [
                 {
                   "key": "key",
-                  "value": "\"self\""
-                },
-                {
-                  "key": "emotion",
-                  "value": "\"!\""
-                }
-              ],
-              "key": ""
-            },
-            {
-              "condition": "script.char.collided == \"player\"",
-              "name": "showEmotionBalloon",
-              "tags": [
-                {
-                  "key": "key",
-                  "value": "\"player\""
+                  "value": "{%collided}"
                 },
                 {
                   "key": "emotion",
@@ -1051,7 +1192,7 @@
     "data": {
       "events": [],
       "description": "",
-      "name": "Scenes",
+      "name": "Field",
       "tags": [],
       "key": ""
     },
@@ -1060,6 +1201,285 @@
       {
         "data": {
           "events": [
+            {
+              "condition": "",
+              "name": "fadeout",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "fadein",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "60"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setHudVisibility",
+              "tags": [
+                {
+                  "key": "visible",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "",
+          "name": "Field Load",
+          "tags": [],
+          "key": ""
+        },
+        "id": 9,
+        "children": []
+      },
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "FieldManager.player:isBusy() and FieldManager:loadedFromSave()",
+              "name": "setEvent",
+              "tags": [
+                {
+                  "key": "index",
+                  "value": "-1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharTile",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"{%exit}\""
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "0"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "moveCharTile",
+              "tags": [
+                {
+                  "key": "h",
+                  "value": "0"
+                },
+                {
+                  "key": "key",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "limit",
+                  "value": "-1"
+                },
+                {
+                  "key": "other",
+                  "value": "\"{%exit}\""
+                },
+                {
+                  "key": "speed",
+                  "value": "-1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "0"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "fadein",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "fadeout",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "30"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "",
+          "name": "Field Exit",
+          "tags": [],
+          "key": ""
+        },
+        "id": 10,
+        "children": []
+      },
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "",
+              "name": "fadeout",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "fadein",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "60"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%skipParties} or BattleManager.saveData ~= nil",
+              "name": "setEvent",
+              "tags": [
+                {
+                  "key": "index",
+                  "value": "-1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "FieldManager.renderer:showParties(50, 30)",
+              "tags": [],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "wait",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "15"
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "Default battle intro.",
+          "name": "Battle Load",
+          "tags": [],
+          "key": "NormalBattl"
+        },
+        "id": 7,
+        "children": []
+      },
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "",
+              "name": "fadeout",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "fadein",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "60"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "BattleManager.saveData ~= nil",
+              "name": "setEvent",
+              "tags": [
+                {
+                  "key": "index",
+                  "value": "-1"
+                }
+              ],
+              "key": ""
+            },
             {
               "condition": "",
               "name": "showDialogue",
@@ -1112,7 +1532,7 @@
                 },
                 {
                   "key": "time",
-                  "value": "30"
+                  "value": "15"
                 },
                 {
                   "key": "wait",
@@ -1545,7 +1965,7 @@
                 },
                 {
                   "key": "time",
-                  "value": "30"
+                  "value": "15"
                 },
                 {
                   "key": "wait",
@@ -1701,11 +2121,11 @@
             }
           ],
           "description": "Tests scene execution before battle.",
-          "name": "BattleScene",
+          "name": "Battle Load 2",
           "tags": [],
-          "key": "BattleScene"
+          "key": "TestBattle"
         },
-        "id": 7,
+        "id": 8,
         "children": []
       }
     ]

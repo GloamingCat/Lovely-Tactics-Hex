@@ -19,7 +19,15 @@
     "ThisIsA": "Isso é uma cena de teste.",
     "DidYouLike": "Gostou?"
   },
-  
+
+  "battle": {
+    "Won": "Você ganhou!",
+    "Lost": "Você perdeu...",
+    "Draw": "Deu empate.",
+    "Escape": "Você escapou!",
+    "Walkover": "O inimigo escapou..."
+  },
+
   "tutorial": {
     "Arrows": "Use o {cbabypink}mouse{cwhite} ou {cbabypink}setas{cwhite} (ou {cbabypink}WASD{cwhite} se ativado) para {cbabyblue}navegar{cwhite} pelo campo ou nas opções no menu. Segure {cbabypink}[Shift]{cwhite} para {cbabyblue}correr{cwhite}.",
     "Z": "Use {cbabypink}[Z]{cwhite}, {cbabypink}[Enter]{cwhite} ou o {cbabypink}botão esquerdo do mouse{cwhite} para {cbabyblue}interagir{cwhite} com NPCs ou {cbabyblue}selecionar{cwhite} uma opção no menu.",

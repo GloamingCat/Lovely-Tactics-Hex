@@ -23,6 +23,7 @@
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
+      "onExit": false,
       "description": "",
       "name": "LoadPlayer.lua",
       "tags": [],

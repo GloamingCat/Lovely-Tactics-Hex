@@ -10,12 +10,12 @@
 -- Animation:isVisible
 -- When a tag's value is "{%var}", its value on the TagMap is automatically set as GameManager:getVariable("var")
 -- Removing animation's Component methods and accessing sprite directly instead
+-- Moved the code from custom/EventSheet.lua to EventSheet:processSheet.
 -- Fix ChildAnimations
 -- hideChar -> setCharVisibility
 -- GameManager:getVariable
--- EventSheet:evaluate
--- Merged GeneralEvents:startBattle and GeneralEvents:finishBattle.
--- Moved the code from custom/EventSheet.lua to EventSheet:processSheet.
+-- TextParser.evaluate and EventSheet:evaluate
+-- Merged startBattle and finishBattle into runBattle (GeneralEvents).
 -- Config.player.loadScript
 -- Interactable.active
 

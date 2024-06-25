@@ -51,12 +51,12 @@ BattleManager.PostDefeatChoice = {
 function BattleManager:init()
   self.onBattle = false
   self.defaultParams = {
-    fade = 60,
-    skipIntro = true,
-    disableEscape = false,
-    gameOverCondition = self.GameOverCondition.NONE, 
+    { key = "fade", value = 60 },
+    { key = "disableEscape", value = false },
+    { key = "gameOverCondition", value = self.GameOverCondition.NONE }, 
+    { key = "skipRewards", value = false }
   }
-  self.params = self.defaultParams
+  self.params = Database.loadTags(self.defaultParams)
 end
 --- Creates battle elements (Menu, characters, party tiles).
 -- @tparam[opt] table state Data about battle state for when the game is loaded mid-battle.
@@ -72,7 +72,7 @@ end
 -- @treturn table Battle state data.
 function BattleManager:getState()
   return {
-    params = self.params,
+    params = self.params:toArray(),
     troops = TroopManager:getAllPartyData(),
     turn = TurnManager:getState() }
 end
@@ -96,7 +96,7 @@ function BattleManager:loadBattle(state)
   while true do
     FieldManager:playFieldBGM()
     self:setUp(self.saveData)
-    local result = self:runBattle(self.saveData and self.saveData.turn ~= nil)
+    local result = self:runBattleTry()
     self:clear()
     if result == self.PostDefeatChoice.CONTINUE then
       break
@@ -117,52 +117,25 @@ end
 -- @tparam boolean skipIntro If true, the camera does not present the parties
 --  and the field's load scripts are not executed.
 -- @treturn number The result of the end Menu.
-function BattleManager:runBattle(skipIntro)
+function BattleManager:runBattleTry()
   self.result = nil
   self.winner = nil
-  self:battleStart(skipIntro)
+  self.onBattle = true
+  FieldManager:runLoadScripts(self.saveData ~= nil)
+  _G.Fiber:wait()
+  for fiber in FieldManager.currentField.blockingFibers:iterator() do
+    fiber:waitForEnd()
+  end
+  local skipIntro = self.saveData and self.saveData.turn
   if not skipIntro then
     MenuManager:showMenuForResult(IntroMenu(nil))
     TroopManager:onBattleStart()
   end
-  repeat
-    self.result, self.winner = TurnManager:runTurn(skipIntro)
-    skipIntro = false
-  until self.result
+  self.result, self.winner = TurnManager:runTurn(skipIntro)
+  while not self.result do
+    self.result, self.winner = TurnManager:runTurn()
+  end
   return self:battleEnd()
-end
---- Runs before battle loop.
--- @coroutine
--- @tparam boolean skipIntro If true, the camera does not present the parties
---  and the field's load scripts are not executed.
-function BattleManager:battleStart(skipIntro)
-  self.onBattle = true
-  if self.params.fade then
-    FieldManager.renderer:fadeout(0)
-    FieldManager.renderer:fadein(self.params.fade, true)
-  end
-  if skipIntro then
-    return
-  end
-  if not self.params.skipIntro then
-    self:battleIntro()
-  end
-  FieldManager:runLoadScripts()
-end
---- Player intro animation, to show each party.
--- @coroutine
-function BattleManager:battleIntro()
-  local speed = 50
-  for i = 1, #TroopManager.centers do
-    if i ~= TroopManager.playerParty then
-      local p = TroopManager.centers[i]
-      FieldManager.renderer:moveToPoint(p.x, p.y, speed, true)
-      _G.Fiber:wait(30)
-    end
-  end
-  local p = TroopManager.centers[TroopManager.playerParty]
-  FieldManager.renderer:moveToPoint(p.x, p.y, speed, true)
-  _G.Fiber:wait(15)
 end
 --- Runs after winner was determined and battle loop ends.
 -- @coroutine
@@ -170,16 +143,15 @@ end
 function BattleManager:battleEnd()
   local result = 1
   if self:playerWon() then
-    MenuManager:showMenuForResult(RewardMenu(nil))
+    if not self.params.skipRewards then
+      MenuManager:showMenuForResult(RewardMenu(nil))
+    end
   elseif self:enemyWon() or self:drawed() then
     result = MenuManager:showMenuForResult(GameOverMenu(nil))
   end
   TroopManager:onBattleEnd()
   if result <= 1 then
     TroopManager:saveTroops()
-  end
-  if self.params.fade then
-    FieldManager.renderer:fadeout(self.params.fade, true)
   end
   self.onBattle = false
   return result

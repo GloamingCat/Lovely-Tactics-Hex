@@ -46,6 +46,7 @@ function EventSheet:init(root, data, char)
   self.events = {}
   self.labels = {}
   Fiber.init(self, root, nil)
+  self:setUp()
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -71,7 +72,10 @@ function EventSheet:addEvent(func, condition, ...)
     if self[func] then
       func = self[func]
     else
-      func = loadfunction(func, 'script, args')
+      local body = func
+      func = function(script)
+        return loadfunction(TextParser.evaluate(body), 'script')(script)
+      end
     end
   else
     assert(func, "nil event function")
@@ -142,7 +146,6 @@ end
 --- Implements `Fiber:execute`. Runs the script commands.
 -- @implement
 function EventSheet:execute()
-  self:setUp()
   self:commands()
   if self.vars then
     self:runEvents()
@@ -159,6 +162,11 @@ function EventSheet:runEvents()
     end
   end
   self.vars.runningIndex = nil
+  self.vars.collider = nil
+  self.vars.collided = nil
+  self.vars.interacting = nil
+  self.vars.loading = nil
+  self.vars.exit = nil
 end
 --- Executes the event indicated by the current running index.
 function EventSheet:runCurrentEvent()
@@ -171,7 +179,7 @@ end
 function EventSheet:setUp()
   if self.data then
     if self.data.block then
-      FieldManager.player.waitList:add(self)
+      FieldManager.currentField.blockingFibers:add(self)
     end
   end
 end
@@ -183,7 +191,7 @@ function EventSheet:clear()
   end
   if self.data then
     if self.data.block then
-      FieldManager.player.waitList:removeElement(self)
+      FieldManager.currentField.blockingFibers:removeElement(self)
     end
     self.data.running = nil
   end

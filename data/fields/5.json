@@ -14,13 +14,27 @@
     },
     "loadScript": {
       "global": false,
+      "block": true,
+      "wait": true,
+      "onLoad": true,
+      "onInteract": false,
+      "onCollide": false,
+      "onExit": false,
+      "description": "",
+      "name": "9",
+      "tags": [],
+      "key": ""
+    },
+    "exitScript": {
+      "global": false,
       "block": false,
       "wait": true,
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
+      "onExit": false,
       "description": "",
-      "name": "Load.lua",
+      "name": "10",
       "tags": [],
       "key": ""
     },
@@ -795,6 +809,7 @@
           "onLoad": false,
           "onInteract": false,
           "onCollide": true,
+          "onExit": false,
           "description": "",
           "name": "npc/Loot.lua",
           "tags": [

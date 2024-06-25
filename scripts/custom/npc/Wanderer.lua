@@ -20,7 +20,7 @@ return function(script)
   local pauseVar = tonumber(script.args.pauseVar) or 0
   while true do
     script:wait()
-    if not (FieldManager.player:isBusy() or script.char.interacting) then
+    if not FieldManager.player:isBusy() and not script.vars.interacting then
       local shift = math.field.neighborShift[rand(#math.field.neighborShift)]
       local angle = script.char:shiftToRow(shift.x, shift.y) * 45
       if script.char:tryAngleMovement(angle) then

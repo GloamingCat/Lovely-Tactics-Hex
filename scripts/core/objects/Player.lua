@@ -13,7 +13,6 @@
 -- Imports
 local Character = require('core/objects/Character')
 local FieldMenu = require('core/gui/menu/FieldMenu')
-local List = require('core/datastruct/List')
 local Vector = require('core/math/Vector')
 
 -- Alias
@@ -50,7 +49,6 @@ function Player:init(transition, save)
     scripts = { Config.player.loadScript }
   }
   Character.init(self, data, save)
-  self.waitList = List()
 end
 --- Overrides `Character:initProperties`. 
 -- @override
@@ -101,9 +99,8 @@ end
 ---  Menu input, battle, or a blocking event.
 -- @treturn boolean True if some action is running.
 function Player:isBusy()
-  return self.collided or self.interacting
-    or BattleManager.onBattle or MenuManager:isWaitingInput()
-    or not self.waitList:isEmpty()
+  return BattleManager.onBattle or MenuManager:isWaitingInput()
+    or not FieldManager.currentField.blockingFibers:isEmpty()
 end
 --- Gets the keyboard move/turn input. 
 -- @treturn number The x-axis input.
@@ -294,7 +291,7 @@ function Player:interactTile(tile, fromPath)
     if char ~= self and 
         not (char.approachToInteract and fromPath) and
         (not char.faceToInteract or isFront) and
-        char:onInteract() then
+        char:onInteract(true) then
       interacted = true
     end
   end

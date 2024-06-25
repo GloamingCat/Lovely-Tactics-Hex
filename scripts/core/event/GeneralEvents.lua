@@ -130,6 +130,7 @@ end
 function GeneralEvents:setCharVar(args)
   assert(self.char, "Script was not called from a character")
   self.char.vars[args.key] = self:evaluate(args.value)
+  print('setCharVar', self.char, args.key, args.value, self.char.vars[args.key])
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -140,22 +141,17 @@ end
 -- @coroutine
 -- @tparam TransitionArguments args
 function GeneralEvents:moveToField(args)
-  FieldManager.playerInput = false
-  if args.fade and args.movePlayer then
-    if self.char.tile and self.char.tile ~= FieldManager.player:getTile() then
-      FieldManager.player.fiberList:fork(function()
-        -- Character
-        if FieldManager.player.autoTurn then
-          FieldManager.player:turnToTile(self.char.tile.x, self.char.tile.y)
-        end
-        FieldManager.player:playMoveAnimation()
-        FieldManager.player:walkToTile(self.char.tile:coordinates())
-      end)
-    end
-    FieldManager.renderer:fadeout(args.fade, true)
+  if self.movePlayer and self.char.tile and self.char.tile ~= FieldManager.player:getTile() then
+    FieldManager.player.fiberList:fork(function()
+      -- Character
+      if FieldManager.player.autoTurn then
+        FieldManager.player:turnToTile(self.char.tile.x, self.char.tile.y)
+      end
+      FieldManager.player:playMoveAnimation()
+      FieldManager.player:walkToTile(self.char.tile:coordinates())
+    end)
   end
-  FieldManager:loadTransition(args)
-  FieldManager.playerInput = true
+  FieldManager:loadTransition(args, nil, args.exit)
 end
 --- Loads battle field.
 -- @coroutine
@@ -180,19 +176,6 @@ function GeneralEvents:runBattle(args)
   -- Openning
   local fiber = FieldManager.fiberList:fork(function()
     BattleManager:loadBattle()
-    if BattleManager:playerEscaped() then
-      self.vars.battleLog = 'You escaped!'
-    elseif BattleManager:enemyEscaped() then
-      self.vars.battleLog = 'The enemy escaped...'
-    elseif BattleManager:enemyWon() then
-      assert(BattleManager.params.gameOverCondition < 2, "Player shouldn't have the option to continue.")
-      self.vars.battleLog = 'You lost...'
-    elseif BattleManager:drawed() then
-      assert(BattleManager.params.gameOverCondition < 1, "Player shouldn't have the option to continue.")
-      self.vars.battleLog = 'Draw.'
-    elseif BattleManager:playerWon() then
-      self.vars.battleLog = 'You won!'
-    end
     FieldManager.currentField.vars.onBattle = false
   end)
   fiber:waitForEnd()

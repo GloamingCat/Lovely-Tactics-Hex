@@ -4,8 +4,8 @@
   "sizeY": 11,
   "prefs": {
     "persistent": true,
-    "defaultRegion": 0,
-    "maxHeight": 4,
+    "defaultRegion": -1,
+    "maxHeight": 1,
     "bgm": {
       "name": "fieldsTheme",
       "volume": 100,
@@ -19,8 +19,22 @@
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
+      "onExit": false,
       "description": "",
-      "name": "Load.lua",
+      "name": "9",
+      "tags": [],
+      "key": ""
+    },
+    "exitScript": {
+      "global": false,
+      "block": false,
+      "wait": true,
+      "onLoad": true,
+      "onInteract": false,
+      "onCollide": false,
+      "onExit": false,
+      "description": "",
+      "name": "10",
       "tags": [],
       "key": ""
     },

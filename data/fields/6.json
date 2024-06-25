@@ -4,7 +4,7 @@
   "sizeY": 8,
   "prefs": {
     "persistent": true,
-    "defaultRegion": 0,
+    "defaultRegion": -1,
     "maxHeight": 1,
     "bgm": {
       "name": "fieldsTheme",
@@ -19,8 +19,22 @@
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
+      "onExit": false,
       "description": "",
-      "name": "Load.lua",
+      "name": "9",
+      "tags": [],
+      "key": ""
+    },
+    "exitScript": {
+      "global": false,
+      "block": false,
+      "wait": true,
+      "onLoad": true,
+      "onInteract": false,
+      "onCollide": false,
+      "onExit": false,
+      "description": "",
+      "name": "10",
       "tags": [],
       "key": ""
     },
@@ -51,7 +65,7 @@
             "height": 1
           }
         ],
-        "fade": 30
+        "fade": 0
       },
       {
         "destination": {
@@ -78,7 +92,7 @@
             "height": 1
           }
         ],
-        "fade": 30
+        "fade": 0
       }
     ],
     "name": "Happy Fields 1",
@@ -821,6 +835,7 @@
           "onLoad": true,
           "onInteract": false,
           "onCollide": false,
+          "onExit": false,
           "description": "Move Routine",
           "name": "npc/Wanderer.lua",
           "tags": [],
@@ -833,6 +848,7 @@
           "onLoad": false,
           "onInteract": true,
           "onCollide": false,
+          "onExit": false,
           "description": "",
           "name": "0",
           "tags": [],

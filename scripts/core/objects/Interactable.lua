@@ -1,23 +1,25 @@
 
 -- ================================================================================================
 
---- Base methods for objects with start/collision/interaction scripts.
+--- Base methods for objects with load/collision/interaction/exit scripts.
 -- It is created from a instance data table, which contains (x, y, h) coordinates, scripts, and 
 -- passable and persistent properties.
 -- The `Player` may also interact with this.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod Interactable
+-- @extend Object
 
 -- ================================================================================================
 
 -- Imports
 local FiberList = require('core/fiber/FiberList')
+local Object = require('core/objects/Object')
 
 -- Alias
 local copyTable = util.table.deepCopy
 
 -- Class table.
-local Interactable = class()
+local Interactable = class(Object)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -27,79 +29,83 @@ local Interactable = class()
 -- @tparam table instData Instance data from field file.
 -- @tparam[opt] table save Persistent data from save file.
 function Interactable:init(instData, save)
-	self:initProperties(instData)
-	self:initScripts(instData)
-	local layer = FieldManager.currentField.objectLayers[instData.h]
-	assert(layer, 'height out of bounds: ' .. instData.h)
-	layer = layer.grid[instData.x]
-	assert(layer, 'x out of bounds: ' .. instData.x)
-	self.tile = layer[instData.y]
-	assert(self.tile, 'y out of bounds: ' .. instData.y)
-	self.tile.characterList:add(self)
-	FieldManager.updateList:add(self)
+  self:initProperties(instData)
+  self:initScripts(instData)
+  local layer = FieldManager.currentField.objectLayers[instData.h]
+  assert(layer, 'height out of bounds: ' .. instData.h)
+  layer = layer.grid[instData.x]
+  assert(layer, 'x out of bounds: ' .. instData.x)
+  self.tile = layer[instData.y]
+  assert(self.tile, 'y out of bounds: ' .. instData.y)
+  self.tile.characterList:add(self)
+  FieldManager.updateList:add(self)
+  FieldManager.characterList:add(self)
 end
 --- Sets generic properties, like key, passability, activeness, and persistency.
 -- @tparam table instData The info about the object's instance.
 -- @tparam[opt] table save The instance's save data.
 function Interactable:initProperties(instData, save)
-	self.key = instData.key or ''
-	self.data = instData
-	if save and save.passable ~= nil then
-		self.passable = save.passable
-	else
-		self.passable = instData.passable
-	end
-	if save and save.active ~= nil then
-		self.active = save.active
-	else
-		self.active = instData.active
-	end
-	self.persistent = instData.persistent
+  self.key = instData.key or ''
+  self.data = instData
+  if save and save.passable ~= nil then
+    self.passable = save.passable
+  else
+    self.passable = instData.passable
+  end
+  if save and save.active ~= nil then
+    self.active = save.active
+  else
+    self.active = instData.active
+  end
+  self.persistent = instData.persistent
 end
 --- Initializes the script lists from instance data or save data.
 -- @tparam table instData Instance data from field file.
 -- @tparam[opt] table save Persistent data from save file.
 function Interactable:initScripts(instData, save)
-	self.fiberList = FiberList(self)
-	self.collider = save and save.collider
-	self.collided = save and save.collided
-	self.interacting = save and save.interacting
-	self.loading = save and save.loading
-	if save then
-		self.loadScripts = copyTable(save.loadScripts or {})
-		self.collideScripts = copyTable(save.collideScripts or {})
-		self.interactScripts = copyTable(save.interactScripts or {})
-		self.vars = copyTable(save.vars or {})
-	else
-		self.loadScripts = {}
-		self.collideScripts = {}
-		self.interactScripts = {}
-		self:addScripts(instData.scripts)
-		self.vars = {}
-	end
-	self.faceToInteract = false
-	self.approachToInteract = true
+  self.fiberList = FiberList(self)
+  if save then
+    self.loadScripts = copyTable(save.loadScripts or {})
+    self.collideScripts = copyTable(save.collideScripts or {})
+    self.interactScripts = copyTable(save.interactScripts or {})
+    self.exitScripts = copyTable(save.interactScripts or {})
+    self.vars = copyTable(save.vars or {})
+  else
+    self.loadScripts = {}
+    self.collideScripts = {}
+    self.interactScripts = {}
+    self.exitScripts = {}
+    self:addScripts(instData.scripts)
+    self.vars = {}
+  end
+  self.faceToInteract = false
+  self.approachToInteract = true
 end
 --- Creates listeners from instance data.
 -- @tparam table scripts Array of script data.
 function Interactable:addScripts(scripts)
-	for _, script in ipairs(scripts) do
-		if script.onLoad then
-			script = copyTable(script)
-			script.vars = script.vars or {}
-			self.loadScripts[#self.loadScripts + 1] = script
-		end
-		if script.onCollide then
-			script = copyTable(script)
-			script.vars = script.vars or {}
-			self.collideScripts[#self.collideScripts + 1] = script
-		end
-		if script.onInteract then
-			script = copyTable(script)
-			script.vars = script.vars or {}
-			self.interactScripts[#self.interactScripts + 1] = script
-		end
-	end
+  for _, script in ipairs(scripts) do
+    if script.onLoad then
+      script = copyTable(script)
+      script.vars = script.vars or {}
+      self.loadScripts[#self.loadScripts + 1] = script
+    end
+    if script.onCollide then
+      script = copyTable(script)
+      script.vars = script.vars or {}
+      self.collideScripts[#self.collideScripts + 1] = script
+    end
+    if script.onInteract then
+      script = copyTable(script)
+      script.vars = script.vars or {}
+      self.interactScripts[#self.interactScripts + 1] = script
+    end
+    if script.onExit then
+      script = copyTable(script)
+      script.vars = script.vars or {}
+      self.exitScripts[#self.exitScripts + 1] = script
+    end
+  end
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -108,138 +114,184 @@ end
 
 --- Updates fiber list.
 function Interactable:update()
-	self.fiberList:update()
+  self.fiberList:update()
 end
---- Removes from FieldManager.
+--- Overrides `Object:destroy`.
+-- @override
 function Interactable:destroy(permanent)
-	if permanent then
-		self.deleted = true
-	end
-	FieldManager.updateList:removeElement(self)
-	self.fiberList:destroy()
-	if self.persistent then
-		FieldManager:storeCharData(FieldManager.currentField.id, self)
-	end
+  Object.destroy(self)
+  if permanent then
+    self.deleted = true
+  end
+  FieldManager.updateList:removeElement(self)
+  FieldManager.characterList:removeElement(self)
+  self.fiberList:destroy()
+  if self.persistent then
+    FieldManager:storeCharData(FieldManager.currentField.id, self)
+  end
 end
 --- Gets data with fiber list's state and local variables.
 -- @treturn table State data to be saved.
 function Interactable:getPersistentData()
-	local function copyScripts(scripts)
-		local copy = {}
-		for i = 1, #scripts do
-			copy[i] = {
-				name = scripts[i].name,
-				global = scripts[i].global,
-				block = scripts[i].block,
-				wait = scripts[i].wait,
-				tags = scripts[i].tags,
-				vars = copyTable(scripts[i].vars) }
-		end
-		return copy
-	end
-	return {
-		vars = copyTable(self.vars),
-		deleted = self.deleted,
-		passable = self.passable,
-		active = self.active,
-		loadScripts = copyScripts(self.loadScripts),
-		collideScripts = copyScripts(self.collideScripts),
-		interactScripts = copyScripts(self.interactScripts),
-		interacting = self.interacting,
-		loading = self.loading,
-		collider = self.collider,
-		collided = self.collided }
+  local function copyScripts(scripts)
+    local copy = {}
+    for i = 1, #scripts do
+      copy[i] = {
+        name = scripts[i].name,
+        global = scripts[i].global,
+        block = scripts[i].block,
+        wait = scripts[i].wait,
+        tags = scripts[i].tags,
+        vars = copyTable(scripts[i].vars) }
+    end
+    return copy
+  end
+  return {
+    vars = copyTable(self.vars),
+    deleted = self.deleted,
+    passable = self.passable,
+    active = self.active,
+    loadScripts = copyScripts(self.loadScripts),
+    collideScripts = copyScripts(self.collideScripts),
+    interactScripts = copyScripts(self.interactScripts),
+    exitScripts = copyScripts(self.exitScripts) }
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Callbacks
+-- Tile
+-- ------------------------------------------------------------------------------------------------
+
+--- Looks for collisions with characters in the given tile.
+-- @tparam ObjectTile tile The tile that the player is in or is trying to go.
+-- @treturn boolean True if there was any blocking collision, false otherwise.
+function Interactable:collideTile(tile)
+  if not tile then
+    return false
+  end
+  local blocking = false
+  for char in tile.characterList:iterator() do
+    if char ~= self  then
+      local fiberList = FieldManager.currentField.fiberList
+      local selfFiber = fiberList:fork(self.onCollide, self, char.key, self.key, true)
+      local charFiber = fiberList:fork(char.onCollide, char, char.key, self.key, true)
+      selfFiber:waitForEnd()
+      charFiber:waitForEnd()
+      if not char.passable then
+        blocking = true
+      end
+    end
+  end
+  return blocking
+end
+--- Overrides `Object:addToTiles`.
+-- @override
+function Interactable:addToTiles()
+  self:getTile().characterList:add(self)
+end
+--- Overrides `Object:removeFromTiles`.
+-- @overrides
+function Interactable:removeFromTiles()
+  self:getTile().characterList:removeElement(self)
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Scripts
 -- ------------------------------------------------------------------------------------------------
 
 --- Called when a character interacts with this object.
 -- @coroutine
+-- @tparam boolean interacting True if the interaction occured now, false if loaded from save.
 -- @treturn boolean Whether the interact script were executed or not.
-function Interactable:onInteract()
-	if self.deleted or not self.active or #self.interactScripts == 0 then
-		return false
-	end
-	self.interacting = true
-	for _, script in ipairs(self.interactScripts) do
-		self:runScript(script)
-		if self.deleted then
-			return true
-		end
-	end
-	self.interacting = nil
-	return true
+function Interactable:onInteract(interacting)
+  if self.deleted or not self.active or #self.interactScripts == 0 then
+    return false
+  end
+  for _, script in ipairs(self.interactScripts) do
+    if script.vars.interacting or interacting then
+      script.vars.interacting = script.vars.interacting or interacting
+      self:runScript(script)
+      if self.deleted then
+        break
+      end
+    end
+  end
+  return true
 end
 --- Called when a character collides with this object.
 -- @coroutine
 -- @tparam string collided Key of the character who was collided with.
+--  Nil if loaded from save.
 -- @tparam string collider Key of the character who started the collision.
--- @tparam boolean repeating Whether the script collision scripts of this character are already running.
+--  Nil if loaded from save.
 -- @treturn boolean Whether the collision script were executed or not.
-function Interactable:onCollide(collided, collider, repeating)
-	if self.deleted or not self.active or #self.collideScripts == 0 or repeating then
-		return false
-	end
-	print('onCollide', self)
-	self.collided = collided
-	self.collider = collider
-	for _, script in ipairs(self.collideScripts) do
-		self:runScript(script)
-		if self.deleted then
-			return true
-		end
-	end
-	self.collided = nil
-	self.collider = nil
-	return true
+function Interactable:onCollide(collided, collider)
+  if self.deleted or not self.active or #self.collideScripts == 0 then
+    return false
+  end
+  for _, script in ipairs(self.collideScripts) do
+    if script.vars.collider or collider then
+      script.vars.collided = script.vars.collided or collided
+      script.vars.collider = script.vars.collider or collider
+      self:runScript(script)
+      if self.deleted then
+        break
+      end
+    end
+  end
+  return true
 end
---- Called when this interactable is created.
+--- Called when the field is loaded.
 -- @coroutine
+-- @tparam boolean loading True if the field was loaded now, false if loaded from save.
 -- @treturn boolean Whether the load scripts were executed or not.
-function Interactable:onLoad()
-	if self.deleted or not self.active or #self.loadScripts == 0 then
-		return false
-	end
-	self.loading = true
-	for _, script in ipairs(self.loadScripts) do
-		self:runScript(script)
-		if self.deleted then
-			return true
-		end
-	end
-	self.loading = nil
-	return true
+function Interactable:onLoad(loading)
+  if self.deleted or not self.active or #self.loadScripts == 0 then
+    return false
+  end
+  for _, script in ipairs(self.loadScripts) do
+    if script.vars.loading or loading then
+      script.vars.loading = script.vars.loading or loading
+      self:runScript(script)
+      if self.deleted then
+        break
+      end
+    end
+  end
+  return true
+end
+--- Called when the field is unloaded.
+-- @coroutine
+-- @tparam string exit The key of the object that originated the exit transition.
+-- @treturn boolean Whether the load scripts were executed or not.
+function Interactable:onExit(exit)
+  if self.deleted or not self.active or #self.exitScripts == 0 then
+    return false
+  end
+  for _, script in ipairs(self.exitScripts) do
+    if script.vars.exit or exit then
+      script.vars.exit = script.vars.exit or exit
+      self:runScript(script)
+      if self.deleted then
+        break
+      end
+    end
+  end
+  return true
 end
 --- Creates a new event sheet from the given script data.
 -- @coroutine
 -- @tparam table script Script initialization info.
 function Interactable:runScript(script)
-	if script.running then
-		return
-	end
-	local fiberList = script.global and FieldManager.fiberList or self.fiberList
-	local fiber = fiberList:forkFromScript(script, self)
-	if script.wait then
-		fiber:waitForEnd()
-	end
-end
---- Runs scripts according to object's state (colliding or interacting).
--- @coroutine
-function Interactable:resumeScripts()
-	if self.collided then
-		self:onCollide(self.collided, self.collider)
-	end
-	if self.interacting then
-		self:onInteract()
-	end
-	if self.loading then
-		self:onLoad()
-	end
-	self:collideTile(self:getTile())
+  if script.running then
+    return
+  end
+  local fiberList = script.global and FieldManager.fiberList or self.fiberList
+  local fiber = fiberList:forkFromScript(script, self)
+  if script.wait then
+    fiber:waitForEnd()
+  end
 end
 -- For debugging.
 function Interactable:__tostring()
-	return 'Interactable: ' .. self.key
-end	return Interactable
+  return 'Interactable: ' .. self.key
+end  return Interactable

@@ -143,6 +143,22 @@ function FieldCamera:moveToPoint(x, y, speed, wait)
   end
   self:moveTo(x, y, 0, speed, wait)
 end
+--- Moves the camera to each party in the field.
+-- This must be called during battle.
+-- @tparam[opt] number speed The camera speed.
+-- @tparam[opt=30] number time The time to wait at each party.
+function FieldCamera:showParties(speed, time)
+  speed = speed or self.defaultSpeed
+  for i = 1, #TroopManager.centers do
+    if i ~= TroopManager.playerParty then
+      local p = TroopManager.centers[i]
+      FieldManager.renderer:moveToPoint(p.x, p.y, speed, true)
+      _G.Fiber:wait(time or 30)
+    end
+  end
+  local p = TroopManager.centers[TroopManager.playerParty]
+  FieldManager.renderer:moveToPoint(p.x, p.y, speed, true)
+end
 
 -- ------------------------------------------------------------------------------------------------
 -- Camera Color

@@ -25,6 +25,7 @@ local Serializer = {}
 -- @treturn string A string codification of the object.
 function Serializer.encode(data)
   -- TODO: exceptions
+  Serializer.validate('', data)
   return JSON.encode(data)
 end
 --- Parses a serialized string to an object.
@@ -40,6 +41,20 @@ function Serializer.decode(text)
     return nil
   else
     return data
+  end
+end
+--- Verifies that the table can be json-encoded.
+-- @tparam string path The path within the root table.
+-- @tparam table data The table to verify.
+function Serializer.validate(path, data)
+  for k, v in pairs(data) do
+    if type(v) == "function" then
+      error("Functional value: " .. path .. '.' .. k)
+    elseif type(k) ~= "string" and type(k) ~= "number" then
+      error("Non-alphanumeric key: " .. path .. tostring(k))
+    elseif type(v) == "table" then
+      Serializer.validate(path .. "." .. tostring(k), v)
+    end
   end
 end
 

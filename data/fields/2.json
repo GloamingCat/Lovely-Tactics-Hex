@@ -4,8 +4,8 @@
   "sizeY": 10,
   "prefs": {
     "persistent": false,
-    "defaultRegion": 0,
-    "maxHeight": 4,
+    "defaultRegion": -1,
+    "maxHeight": 3,
     "bgm": {
       "name": "bossTheme",
       "volume": 100,
@@ -19,14 +19,28 @@
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
+      "onExit": false,
       "description": "",
-      "name": "7",
+      "name": "8",
       "tags": [
         {
           "key": "char",
           "value": "Arthur"
         }
       ],
+      "key": ""
+    },
+    "exitScript": {
+      "global": false,
+      "block": false,
+      "wait": true,
+      "onLoad": true,
+      "onInteract": false,
+      "onCollide": false,
+      "onExit": false,
+      "description": "",
+      "name": "10",
+      "tags": [],
       "key": ""
     },
     "images": [],

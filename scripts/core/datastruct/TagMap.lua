@@ -120,7 +120,7 @@ function TagMap:__tostring()
   local s = '{'
   for k, v in pairs(self.tags) do
     for i = 1, #v do
-      s = s .. ', ' .. k .. ' = ' .. v[i]
+      s = s .. ', ' .. k .. ' = ' .. tostring(v[i])
     end
   end
   s = s:gsub(', ', '', 1)

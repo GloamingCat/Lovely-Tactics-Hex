@@ -19,14 +19,28 @@
       "onLoad": true,
       "onInteract": false,
       "onCollide": false,
+      "onExit": false,
       "description": "",
       "name": "7",
       "tags": [
         {
-          "key": "char",
-          "value": "Test"
+          "key": "skipParties",
+          "value": "true"
         }
       ],
+      "key": ""
+    },
+    "exitScript": {
+      "global": false,
+      "block": true,
+      "wait": true,
+      "onLoad": true,
+      "onInteract": false,
+      "onCollide": false,
+      "onExit": false,
+      "description": "",
+      "name": "Exit.lua",
+      "tags": [],
       "key": ""
     },
     "images": [],

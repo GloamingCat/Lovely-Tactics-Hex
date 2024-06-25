@@ -20,6 +20,14 @@
     "DidYouLike": "Did you like it?"
   },
   
+  "battle": {
+    "Won": "You won!",
+    "Lost": "You lost...",
+    "Draw": "Draw.",
+    "Escape": "You escaped!",
+    "Walkover": "The enemy escaped..."
+  },
+
   "tutorial": {
     "Arrows": "Use {cbabypink}mouse{cwhite} or {cbabypink}arrows{cwhite} (or {cbabypink}WASD{cwhite} if enabled) to {cbabyblue}navigate{cwhite} the around field or menu options. Hold {cbabypink}[Shift]{cwhite} to walk {cbabyblue}faster{cwhite}.",
     "Z": "Use {cbabypink}[Z]{cwhite}, {cbabypink}[Enter]{cwhite} or the {cbabypink}left mouse button{cwhite} to {cbabyblue}interact{cwhite} with an NPC or {cbabyblue}select{cwhite} an option in a menu.",

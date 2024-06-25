@@ -5,19 +5,19 @@
 -- It may be passable or not, and have an image or not.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod Obstacle
--- @extend Object
+-- @extend TransformableObject
 
 -- ================================================================================================
 
 -- Imports
 local Vector = require('core/math/Vector')
-local Object = require('core/objects/Object')
+local TransformableObject = require('core/objects/TransformableObject')
 
 -- Constants
 local neighborShift = math.field.fullNeighborShift
 
 -- Class table.
-local Obstacle = class(Object)
+local Obstacle = class(TransformableObject)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -31,7 +31,7 @@ local Obstacle = class(Object)
 -- @tparam table group The group this obstacle is part of.
 function Obstacle:init(data, tileData, initTile, sprite, group)
   local x, y, z = initTile.center:coordinates()
-  Object.init(self, data, Vector(x, y, z))
+  TransformableObject.init(self, data, Vector(x, y, z))
   self.type = 'obstacle'
   self.group = group
   self.sprite = sprite
@@ -82,7 +82,7 @@ end
 -- Tiles
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `Object:addToTiles`. 
+--- Overrides `TransformableObject:addToTiles`. 
 -- @override
 function Obstacle:addToTiles(tiles)
   local tile = tiles and tiles[1] or self:getTile()
@@ -97,7 +97,7 @@ function Obstacle:addToTiles(tiles)
     layerNeighbors[r].rampNeighbors:add(topTile)
   end
 end
---- Overrides `Object:removeFromTiles`. 
+--- Overrides `TransformableObject:removeFromTiles`. 
 -- @override
 function Obstacle:removeFromTiles(tiles)
   local tile = tiles and tiles[1] or self:getTile()

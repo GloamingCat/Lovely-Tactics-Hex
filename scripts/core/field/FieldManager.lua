@@ -61,6 +61,7 @@ end
 -- @tparam[opt] table save Field's save data.
 function FieldManager:loadField(fieldID, save)
   if self.currentField then
+    self:runExitScripts(exit)
     self.currentField:destroy()
     while not self.characterList:isEmpty() do
       self.characterList[self.characterList.size]:destroy()
@@ -84,16 +85,22 @@ end
 -- Don't use this function if you just want to move the player to another tile in the same field.
 -- @tparam table transition The transition data.
 -- @tparam[opt] table save Field's save data.
-function FieldManager:loadTransition(transition, save)
+-- @tparam[opt] string exit The key of the object that originated the exit transition.
+function FieldManager:loadTransition(transition, save, exit)
   if self.currentField then
     self:storeFieldData()
   end
   local fieldData = self:loadField(transition.fieldID, save)
-  FieldLoader.createTransitions(self.currentField, fieldData.prefs.transitions)
+  FieldLoader.createTransitions(fieldData.prefs.transitions)
   self.hud = self.hud or PlayerMenu()
   self:playFieldBGM()
+  for fiber in self.fiberList:iterator() do
+    if fiber.data and fiber.data.block then
+      self.currentField.blockingFibers:add(fiber)
+    end
+  end
   self:initializePlayer(transition, save)
-  self:runLoadScripts()
+  self:runLoadScripts(save ~= nil)
 end
 --- Plays current field's BGM, if not already playing.
 -- @tparam[opt] number time The duration of the fading transition.
@@ -111,26 +118,42 @@ function FieldManager:playFieldBGM(time, wait)
   end
 end
 --- Execute current field's load script and characters' load scripts.
-function FieldManager:runLoadScripts()
-  if self:loadedFromSave() then
-    for char in self.characterList:iterator() do
-      self.currentField.fiberList:fork(char.resumeScripts, char)
-    end
-  else
-    for char in self.characterList:iterator() do
-      self.currentField.fiberList:fork(char.onLoad, char)
-    end
+-- @tparam boolean fromSave Whether the field was load from save
+--  instead of entered from a field transition.
+function FieldManager:runLoadScripts(fromSave)
+  local fibers = {}
+  -- Init character
+  for char in self.characterList:iterator() do
+    fibers[#fibers + 1] = self.currentField.fiberList:fork(char.onLoad, char, not fromSave)
   end
-  self.currentField.loading = true
-  local script = self.currentField.loadScript
-  if script and script.name ~= '' then
-    local fiberList = (script.global and self or self.currentField).fiberList
-    local fiber = fiberList:forkFromScript(script)
-    if script.wait then
-      fiber:waitForEnd()
-    end
+  -- Field script
+  fibers[#fibers + 1] = self.currentField.fiberList:fork(self.currentField.onLoad, self.currentField, not fromSave)
+  -- Resume interact scripts
+  for char in self.characterList:iterator() do
+    fibers[#fibers + 1] = self.currentField.fiberList:fork(char.onInteract, char)
   end
-  self.currentField.loading = false
+  -- Resume collider scripts
+  for char in self.characterList:iterator() do
+    if not fromSave then
+      char:collideTile(char:getTile())
+    end
+    fibers[#fibers + 1] = self.currentField.fiberList:fork(char.onCollide, char)
+  end
+end
+--- Execute current field's load script and characters' load scripts.
+-- @tparam[opt] string exit The key of the object that originated the exit transition.
+function FieldManager:runExitScripts(exit)
+  local fibers = {}
+  -- Characters
+  for char in self.characterList:iterator() do
+    fibers[#fibers + 1] = self.currentField.fiberList:fork(char.onExit, char, exit)
+  end
+  -- Field script
+  fibers[#fibers + 1] = self.currentField.fiberList:fork(self.currentField.onExit, self.currentField, exit)
+  -- Wait
+  for _, fiber in ipairs(fibers) do
+    fiber:waitForEnd()
+  end
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -145,11 +168,6 @@ function FieldManager:initializePlayer(transition, save)
   self.renderer.focusObject = player
   self.renderer:setPosition(player.position)
   self.player = player
-  for fiber in self.fiberList:iterator() do
-    if fiber.data and fiber.data.block then
-      player.waitList:add(fiber)
-    end
-  end
 end
 --- Create new field camera.
 -- @tparam table data Field data.
@@ -218,7 +236,8 @@ function FieldManager:storePlayerState()
     return
   end
   self.playerState.transition = { fieldID = self.currentField.id }
-  local fieldData = self:getFieldSave(self.currentField.id)
+  local fieldData = self.currentField.persistent and self:getFieldSave(self.currentField.id)
+    or { chars = {}, vars = {} }
   fieldData.chars = util.table.deepCopy(fieldData.chars)
   for char in self.characterList:iterator() do
     fieldData.chars[char.key] = char:getPersistentData()

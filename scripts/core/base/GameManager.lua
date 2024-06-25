@@ -92,7 +92,7 @@ function GameManager:setSave(save)
   BattleManager.result = save.battleResult
   if save.battleState then
     -- Load mid-battle.
-    BattleManager.params = save.battleState.params
+    BattleManager.params = Database.loadTags(save.battleState.params)
     FieldManager.fiberList:fork(BattleManager.loadBattle, BattleManager, save.battleState)
   else
     FieldManager.fiberList:fork(FieldManager.loadTransition, FieldManager, save.playerState.transition, save.playerState.field)

@@ -42,6 +42,11 @@ function FieldLoader.loadField(id, save)
     field.loadScript = util.table.deepCopy(field.loadScript)
     field.loadScript.vars = field.loadScript.vars or {}
   end
+  field.exitScript = prefs.exitScript or data.prefs.exitScript
+  if field.exitScript then
+    field.exitScript = util.table.deepCopy(field.exitScript)
+    field.exitScript.vars = field.exitScript.vars or {}
+  end
   field.bgm = prefs.bgm
   -- Battle info
   field.playerParty = prefs.playerParty or data.playerParty
@@ -111,41 +116,45 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Creates interactables for field's transitions.
--- @tparam Field field Current field.
 -- @tparam table transitions Array of field's transitions.
-function FieldLoader.createTransitions(field, transitions)
-  field.transitions = {}
-  for i, t in ipairs(transitions) do
-    local args = { fieldID = t.destination.fieldID,
-      x = t.destination.x,
-      y = t.destination.y,
-      h = t.destination.h,
-      direction = t.destination.direction,
-      fade = t.fade,
-      movePlayer = true }
-    field.transitions[i] = args
-    if not t.noSource then
-      local func = function(script)
-        if script.char.collider == 'player' then
-          script:moveToField(args)
-        end
-      end
-      local scripts = { { func = func, 
-        block = true, 
-        global = true,
-        wait = true,
-        onCollide = true,
-        transition = args } }
-      for _, tile in ipairs(t.origin) do
-        local instData = { key = 'Transition',
-          passable = false,
-          active = true,
-          scripts = scripts,
-          x = tile.dx, y = tile.dy, h = tile.height }
-        Interactable(instData)
-      end
+function FieldLoader.createTransitions(transitions)
+  local id = 0
+  for _, t in ipairs(transitions) do
+    for _, tile in ipairs(t.origin) do
+      FieldLoader.createTransitionTile(tile, t.destination, id)
+      id = id + 1
     end
   end
+end
+--- Creates the interactable for a transition tile.
+-- @tparam table origin The coordinates of the origin tile (x, y, h).
+-- @tparam table destination The destination with coordinates, direction and field ID.
+-- @return Interactable The transition object.
+function FieldLoader.createTransitionTile(origin, destination, i)
+  local key = "Transition" .. tostring(i)
+  local args = { fieldID = destination.fieldID,
+    x = destination.x,
+    y = destination.y,
+    h = destination.h,
+    direction = destination.direction,
+    exit = key }
+  local func = function(script)
+    if script:collidedWith('player') then
+      script:moveToField(args)
+    end
+  end
+  local script = { func = func,
+    block = true, 
+    global = true,
+    wait = true,
+    onCollide = true,
+    vars = {} }
+  local instData = { key = key,
+    passable = false,
+    active = true,
+    x = origin.dx, y = origin.dy, h = origin.height,
+    scripts = { script } }
+  return Interactable(instData)
 end
 
 return FieldLoader

@@ -67,7 +67,7 @@ end
 -- @tparam string key Character's key.
 -- @treturn boolean True if the characters collided.
 function EventUtil:collidedWith(key)
-  return self.char and (self.char.collided == key or self.char.collider == key)
+  return self.vars and (self.vars.collided == key or self.vars.collider == key)
 end
 --- Checks the position of given character.
 -- @tparam string key Character's key.

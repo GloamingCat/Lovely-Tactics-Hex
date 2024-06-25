@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- A common class for obstacles and characters.
+--- A common class for interactable and transformable objects.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod Object
 -- @extend Transformable
@@ -9,14 +9,7 @@
 -- ================================================================================================
 
 -- Imports
-local Sprite = require('core/graphics/Sprite')
-local Transformable = require('core/math/transform/Transformable')
 local Vector = require('core/math/Vector')
-
--- Alias
-local round = math.round
-local pixel2Tile = math.field.pixel2Tile
-local tile2Pixel = math.field.tile2Pixel
 
 -- Constants
 local pph = Config.grid.pixelsPerHeight
@@ -30,54 +23,14 @@ local Object = class(Transformable)
 
 --- Constructor.
 -- @tparam table data Data from file (obstacle or character).
--- @tparam Vector pos The position of the object in world coordinates.
-function Object:init(data, pos)
-  Transformable.init(self, pos)
+-- @tparam ObjectTile tile The tile of the object.
+function Object:init(data, tile)
   self.data = data
   self.name = data.name or data.key
   if data.tags then
     self.tags = Database.loadTags(data.tags)
   end
-end
-
--- ------------------------------------------------------------------------------------------------
--- General
--- ------------------------------------------------------------------------------------------------
-
---- Dispose sprite and remove from tiles' object lists.
-function Object:destroy()
-  if self.sprite then
-    self.sprite:destroy()
-  end
-  self:removeFromTiles()
-end
-
--- ------------------------------------------------------------------------------------------------
--- Sprite
--- ------------------------------------------------------------------------------------------------
-
---- Shows or hides sprite.
--- @tparam boolean value
-function Object:setVisible(value)
-  if self.sprite then
-    self.sprite:setVisible(value)
-  end
-end
---- Overrides `Movable:setXYZ`. Updates sprite's position.
--- @override
-function Object:setXYZ(...)
-  Transformable.setXYZ(self, ...)
-  if self.sprite then
-    self.sprite:setXYZ(...)
-  end
-end
---- Overrides `Colorable:setRGBA`. Updates sprite's color.
--- @override
-function Object:setRGBA(...)
-  Transformable.setRGBA(self, ...)
-  if self.sprite then
-    self.sprite:setRGBA(...)
-  end
+  self.tile = tile
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -89,33 +42,17 @@ end
 -- @treturn number Tile y.
 -- @treturn number Tile layer.
 function Object:tileCoordinates()
-  local i, j, h = pixel2Tile(self.position:coordinates())
-  i = round(i)
-  j = round(j)
-  h = round(h)
-  return i, j, h
+  return self.tile:coordinates()
 end
 --- Converts current pixel position to tile.
 -- @treturn ObjectTile Current tile.
 function Object:getTile()
-  local x, y, h = self:tileCoordinates()
-  local layer = FieldManager.currentField.objectLayers[h]
-  assert(layer, 'height out of bounds: ' .. h)
-  layer = layer.grid[x]
-  assert(layer, 'x out of bounds: ' .. x)
-  return layer[y]
+  return self.tile
 end
 --- Sets object's current position to the given tile.
 -- @tparam ObjectTile tile Destination tile.
 function Object:setTile(tile)
-  local x, y, z = tile.center:coordinates()
-  self:setXYZ(x, y, z)
-end
---- Move to the given tile.
--- @tparam ObjectTile tile Destination tile.
-function Object:moveToTile(tile, ...)
-  local x, y, z = tile.center:coordinates()
-  self:moveTo(x, y, z, ...)
+  self.tile = tile
 end
 --- Gets all tiles this object is occuping around a center tile.
 -- If any argument is nil, the center is set as the object's current tile.
@@ -138,21 +75,16 @@ end
 function Object:removeFromTiles()
   -- Abstract.
 end
---- Sets this object to the center of its current tile.
-function Object:adjustToTile()
-  local x, y, z = tile2Pixel(self:tileCoordinates())
-  self:setXYZ(x, y, z)
-end
 --- Instantly moves this object to another tile.
 -- If an argument is nil, the field is left unchanged.
 -- @tparam[opt] number i Tile x.
 -- @tparam[opt] number j Tile y.
 -- @tparam[opt] number h Tile layer.
 function Object:transferTile(i, j, h)
-  local tile = self:getTile()
-  local x, y, z = tile2Pixel(i or tile.x, j or tile.y, h or tile.layer.height)
+  local x, y, z = self:tileCoordinates()
+  local tile = FieldManager.currentField:getObjectTile(i + x, j + y, h + z)
   self:removeFromTiles()
-  self:setXYZ(x, y, z)
+  self:setTile(tile)
   self:addToTiles()
 end
 --- Instantly moves the object to its original tile.
@@ -165,6 +97,10 @@ end
 -- @treturn number Tile layer.
 function Object:originalCoordinates()
   return self.data.x, self.data.y, self.data.h
+end
+--- Dispose sprite and remove from tiles' object lists.
+function Object:destroy()
+  self:removeFromTiles()
 end
 
 -- ------------------------------------------------------------------------------------------------
