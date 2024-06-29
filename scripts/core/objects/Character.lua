@@ -11,7 +11,6 @@
 
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
-local BattleAnimations = require('core/battle/BattleAnimations')
 local AnimatedInteractable = require('core/objects/AnimatedInteractable')
 local MoveAction = require('core/battle/action/MoveAction')
 
@@ -26,9 +25,9 @@ local Character = class(AnimatedInteractable)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Constructor. Overrides `AnimatecInteractable:init`.
--- @tparam table instData The character's instance data from field file.
--- @tparam table save The instance's save data.
+--- Constructor. Overrides `AnimatedInteractable:init`.
+-- Stores id, character data and adds character-specific properties to the instance data.
+-- @override
 function Character:init(instData, save)
   -- Character data
   local charID = save and save.charID or instData.charID
@@ -43,43 +42,38 @@ function Character:init(instData, save)
   self.id = charData.id
   self.charData = charData
   AnimatedInteractable.init(self, instData, save)
-  if not save then
-    self:addScripts(charData.scripts)
-  end
-  -- Add to character list
-  FieldManager.characterList:add(self)
-  FieldManager.characterList[self.key] = self
-  -- Battle info
-  self.party = instData.party or -1
-  self.battlerID = instData.battlerID or -1
-  if self.battlerID == -1 then
-    self.battlerID = charData.battlerID or -1
-  end
+  self:addScripts(charData.scripts)
 end
---- Overrides `AnimatedInteractable:initGraphics`. Creates the portrait list.
+--- Overrides `AnimatedInteractable:initGraphics`. Creates the portrait list and shadow.
 -- @override
 function Character:initGraphics(instData, save)
   self.portraits = {}
   for _, p in ipairs(self.charData.portraits) do
     self.portraits[p.name] = p
   end
+  local shadowID = save and save.shadowID or instData.shadowID
+  if shadowID and shadowID >= 0 then
+    local shadowData = Database.animations[shadowID]
+    self.shadow = ResourceManager:loadSprite(shadowData, FieldManager.renderer)
+    self.shadow:setXYZ(self.position:coordinates())
+  end
   AnimatedInteractable.initGraphics(self, instData, save)
 end
---- Overrides `AnimatedInteractable:initProperties`. Sets damage/KO animation names.
+--- Overrides `AnimatedInteractable:initProperties`.
+-- Sets collision tiles and autoanim/autoturn properties.
 -- @override
 function Character:initProperties(instData, save)
   AnimatedInteractable.initProperties(self, instData, save)
-  self.collisionTiles = save and save.collisionTiles or instData.collisionTiles 
-    or {{ dx = 0, dy = 0, height = 1 }}
-  self.damageAnim = 'Damage'
-  self.koAnim = 'KO'
+  self.autoAnim = not instData.fixedAnimation
+  self.autoTurn = not instData.fixedDirection
+  self.collisionTiles = instData.collisionTiles
 end
 
 -- ------------------------------------------------------------------------------------------------
 -- Collision
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `Object:getHeight`. 
+--- Overrides `TransformableObject:getHeight`. 
 -- @override
 function Character:getHeight(dx, dy)
   dx, dy = dx or 0, dy or 0
@@ -90,6 +84,44 @@ function Character:getHeight(dx, dy)
     end
   end
   return 0
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Shadow
+-- ------------------------------------------------------------------------------------------------
+
+--- Overrides `AnimatedInteractable:setXYZ`. Updates shadow's position.
+-- @override
+function Character:setXYZ(x, y, z)
+  z = z or self.position.z
+  AnimatedInteractable.setXYZ(self, x, y, z)
+  if self.shadow then
+    self.shadow:setXYZ(x, y, z + 1)
+  end
+end
+--- Overrides `AnimatedInteractable:setVisible`. Updates shadow's visibility.
+-- @override
+function Character:setVisible(value)
+  AnimatedInteractable.setVisible(self, value)
+  if self.shadow then
+    self.shadow:setVisible(value)
+  end
+end
+--- Overrides `AnimatedInteractable:setRGBA`. Updates shadow's color.
+-- @override
+function Character:setRGBA(...)
+  AnimatedInteractable.setRGBA(self, ...)
+  if self.shadow then
+    self.shadow:setRGBA(nil, nil, nil, self.color.a)
+  end
+end
+--- Overrides `AnimatedInteractable:destroy`. Destroys shadow.
+-- @override
+function Character:destroy(permanent)
+  if self.shadow then
+    self.shadow:destroy()
+  end
+  AnimatedInteractable.destroy(self, permanent)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -129,25 +161,6 @@ function Character:removeFromTiles(tiles)
   for i = #tiles, 1, -1 do
     tiles[i].characterList:removeElement(self)
   end
-end
-
--- ------------------------------------------------------------------------------------------------
--- Animation
--- ------------------------------------------------------------------------------------------------
-
---- Plays animation for when character is knocked out.
--- @treturn Animation The animation that started playing.
-function Character:playKOAnimation()
-  if self.party == TroopManager.playerParty then
-    if Config.sounds.allyKO then
-      AudioManager:playSFX(Config.sounds.allyKO)
-    end
-  else
-    if Config.sounds.enemyKO then
-      AudioManager:playSFX(Config.sounds.enemyKO)
-    end
-  end
-  return self:playAnimation(self.koAnim)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -266,103 +279,16 @@ function Character:consumePath()
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Skill (user)
+-- Persistent Data
 -- ------------------------------------------------------------------------------------------------
 
---- Play load animation.
--- @coroutine
--- @tparam table skill Skill data from database.
--- @treturn number The duration of the animation.
-function Character:loadSkill(skill)
-  -- Load animation (user)
-  local minTime = 0
-  if skill.animInfo.userLoad ~= '' then
-    local anim = self:playAnimation(skill.animInfo.userLoad)
-    anim:reset()
-    local waitTime = tonumber(anim.tags and anim.tags.skillTime)
-    if waitTime then
-      _G.Fiber:wait(waitTime)
-      return math.max(anim.duration, waitTime) - waitTime
-    end
-  end
-  return 0
-end
---- Plays cast animation.
--- @coroutine
--- @tparam table skill Skill's data.
--- @tparam number dir The direction of the cast.
--- @tparam ObjectTile target Target of the skill.
--- @treturn number The duration of the animation.
-function Character:castSkill(skill, dir, target)
-  -- Forward step
-  if skill.animInfo.stepOnCast then
-    self:playMoveAnimation()
-    self:walkInAngle(self.castStep or 6, dir)
-    self:playIdleAnimation()
-  end
-  -- Cast animation (user)
-  local minTime = 0
-  if skill.animInfo.userCast ~= '' then
-    local anim = self:playAnimation(skill.animInfo.userCast)
-    anim:reset()
-    local waitTime = tonumber(anim.tags and anim.tags.skillTime)
-    if waitTime then
-      minTime = math.max(anim.duration, waitTime) - waitTime
-    end
-    _G.Fiber:wait(waitTime)
-  end
-  return minTime
-end
---- Returns to original tile and stays idle.
--- @coroutine
--- @tparam ObjectTile origin The original tile of the character.
--- @tparam table skill Skill data from database.
-function Character:finishSkill(origin, skill)
-  if skill.animInfo.stepOnCast then
-    local x, y, z = origin.center:coordinates()
-    if self.position:almostEquals(x, y, z) then
-      return
-    end
-    if self.autoAnim then
-      self:playMoveAnimation()
-    end
-    self:walkToPoint(x, y, z)
-    self:setXYZ(x, y, z)
-  end
-  if self.autoAnim then
-    self:playIdleAnimation()
-  end
-end
-
--- ------------------------------------------------------------------------------------------------
--- Skill (target)
--- ------------------------------------------------------------------------------------------------
-
---- Plays damage and KO (if died) animation.
--- @coroutine
--- @tparam Skill skill The skill used.
--- @tparam ObjectTile origin The tile of the skill user.
--- @tparam table results Results of the skill.
-function Character:skillDamage(skill, origin, results)
-  local currentTile = self:getTile()
-  if currentTile ~= origin then
-    self:turnToTile(origin.x, origin.y)
-  end
-  local anim = self:playAnimation(self.damageAnim)
-  anim:reset()
-  _G.Fiber:wait(anim.duration)
-  if self.battler:isAlive() then
-    self:playIdleAnimation()
-  else
-    self:playKOAnimation()
-    BattleAnimations.dieEffect(self)
-    if self.charData.koFadeout and self.charData.koFadeout >= 0 then
-      self:colorizeTo(nil, nil, nil, 0, 60 / self.charData.koFadeout, true)
-      local troop = TroopManager.troops[self.party]
-      local member = troop:moveMember(self.key, 1)
-      TroopManager:deleteCharacter(self)
-    end
-  end
+--- Overrides `AnimatedInteractable:getPersistentData`. Includes autoturn/autoanim.
+-- @override
+function Character:getPersistentData()
+  local data = AnimatedInteractable.getPersistentData(self)
+  data.autoTurn = self.autoTurn
+  data.autoAnim = self.autoAnim
+  return data
 end
 -- For debugging.
 function Character:__tostring()

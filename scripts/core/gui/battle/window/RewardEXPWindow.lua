@@ -134,7 +134,7 @@ function RewardEXPWindow:onConfirm()
     return
   end
   self.done = true
-  self.fiber = MenuManager.fiberList:fork(self.addEXP, self)
+  self.fiber = MenuManager.fiberList:forkMethod(self, 'addEXP')
 end
 --- Overrides `Window:onCancel`. 
 -- @override

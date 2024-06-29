@@ -95,14 +95,14 @@ end
 
 --- Shows shop windows.
 function RecruitMenu:showRecruitMenu()
-  MenuManager.fiberList:fork(self.descriptionWindow.show, self.descriptionWindow)
+  MenuManager.fiberList:forkMethod(self.descriptionWindow, 'show')
   Fiber:wait()
   self.listWindow:show()
   self.listWindow:activate()
 end
 --- Hides shop windows.
 function RecruitMenu:hideRecruitMenu()
-  MenuManager.fiberList:fork(self.descriptionWindow.hide, self.descriptionWindow)
+  MenuManager.fiberList:forkMethod(self.descriptionWindow, 'hide')
   Fiber:wait()
   self.listWindow:hide()
   self.commandWindow:activate()

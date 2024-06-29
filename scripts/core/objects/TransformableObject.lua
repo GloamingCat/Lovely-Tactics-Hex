@@ -1,7 +1,8 @@
 
 -- ================================================================================================
 
---- A common class for obstacles and characters.
+--- Common funcionality for obstacles and characters/animated interactables.
+-- This is an abstract class and shouldn't be instantiated directly.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod TransformableObject
 -- @extend Transformable
@@ -13,11 +14,15 @@
 local Sprite = require('core/graphics/Sprite')
 local Transformable = require('core/math/transform/Transformable')
 local Object = require('core/objects/Object')
+local Vector = require('core/math/Vector')
 
 -- Alias
 local round = math.round
 local pixel2Tile = math.field.pixel2Tile
 local tile2Pixel = math.field.tile2Pixel
+
+-- Constants
+local pph = Config.grid.pixelsPerHeight
 
 -- Class table.
 local TransformableObject = class(Transformable, Object)
@@ -26,12 +31,23 @@ local TransformableObject = class(Transformable, Object)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Constructor.
+--- Calls `Transformable:init` with the initial position computed from the object's data.
+-- The position should be either the tile, or pixel coordinates in the save,
+-- or tile coordinates in the instance data.
+-- The call to `Object:init` should be made by sub-classes constructors.
 -- @tparam table data Data from file (obstacle or character).
--- @tparam Vector pos The position of the object in world coordinates.
-function TransformableObject:init(data, pos)
+-- @tparam[opt] ObjectTile tile The tile of the object.
+-- @tparam[opt] table save Save data.
+function TransformableObject:init(data, tile, save)
+  local pos = Vector(0, 0, 0)
+  if save then
+    pos.x, pos.y, pos.z = save.x, save.y, save.z
+  elseif tile then
+    pos.x, pos.y, pos.z = tile2Pixel(tile:coordinates())
+  else
+    pos.x, pos.y, pos.z = tile2Pixel(data.x, data.y, data.h)
+  end
   Transformable.init(self, pos)
-  Object.init(self, data)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -123,6 +139,26 @@ function TransformableObject:transferTile(i, j, h)
   self:removeFromTiles()
   self:setXYZ(x, y, z)
   self:addToTiles()
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Height
+-- ------------------------------------------------------------------------------------------------
+
+--- Gets the collider's height in grid units.
+-- @tparam number dx The x of the tile of which to check the height, relative to the object's position.
+-- @tparam number dy The y of the tile of which to check the height, relative to the object's position.
+-- @treturn number Height in grid units.
+function TransformableObject:getHeight(dx, dy)
+  return 1
+end
+--- Gets the collider's height in pixels.
+-- @tparam number dx The x of the tile of which to check the height, relative to the object's position.
+-- @tparam number dy The y of the tile of which to check the height, relative to the object's position.
+-- @treturn number Height in pixels.
+function TransformableObject:getPixelHeight(dx, dy)
+  local h = self:getHeight(dx, dy)
+  return h * pph
 end
 
 return TransformableObject

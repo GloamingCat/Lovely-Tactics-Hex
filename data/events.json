@@ -82,7 +82,7 @@
             },
             {
               "condition": "",
-              "name": "showDialogue",
+              "name": "openDialogueWindow",
               "tags": [
                 {
                   "key": "id",
@@ -99,6 +99,10 @@
                 {
                   "key": "message",
                   "value": "\"{%dialogues.npc.Hi}\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
@@ -116,7 +120,7 @@
             },
             {
               "condition": "",
-              "name": "showDialogue",
+              "name": "openDialogueWindow",
               "tags": [
                 {
                   "key": "id",
@@ -133,6 +137,10 @@
                 {
                   "key": "message",
                   "value": "\"{%dialogues.npc.CanIJoin}\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
@@ -182,7 +190,7 @@
             },
             {
               "condition": "{%choiceInput} == 1",
-              "name": "showDialogue",
+              "name": "openDialogueWindow",
               "tags": [
                 {
                   "key": "id",
@@ -199,6 +207,10 @@
                 {
                   "key": "message",
                   "value": "\"{%dialogues.npc.ThatsGood}\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
@@ -216,7 +228,7 @@
             },
             {
               "condition": "{%choiceInput} == 2",
-              "name": "showDialogue",
+              "name": "openDialogueWindow",
               "tags": [
                 {
                   "key": "id",
@@ -233,6 +245,10 @@
                 {
                   "key": "message",
                   "value": "\"{%dialogues.npc.ThatsBad}\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
@@ -342,7 +358,7 @@
             },
             {
               "condition": "",
-              "name": "showDialogue",
+              "name": "openDialogueWindow",
               "tags": [
                 {
                   "key": "id",
@@ -359,6 +375,10 @@
                 {
                   "key": "portrait",
                   "value": "\"BigIcon\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
@@ -413,6 +433,10 @@
                 {
                   "key": "id",
                   "value": "1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
@@ -535,7 +559,7 @@
             },
             {
               "condition": "BattleManager:playerWon()",
-              "name": "showDialogue",
+              "name": "openDialogueWindow",
               "tags": [
                 {
                   "key": "id",
@@ -552,13 +576,17 @@
                 {
                   "key": "portrait",
                   "value": "\"BigIcon\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
             },
             {
               "condition": "BattleManager:enemyWon()",
-              "name": "showDialogue",
+              "name": "openDialogueWindow",
               "tags": [
                 {
                   "key": "id",
@@ -575,13 +603,17 @@
                 {
                   "key": "portrait",
                   "value": "\"BigIcon\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
             },
             {
               "condition": "BattleManager:drawed()",
-              "name": "showDialogue",
+              "name": "openDialogueWindow",
               "tags": [
                 {
                   "key": "id",
@@ -598,13 +630,17 @@
                 {
                   "key": "portrait",
                   "value": "\"BigIcon\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
             },
             {
               "condition": "BattleManager:playerEscaped()",
-              "name": "showDialogue",
+              "name": "openDialogueWindow",
               "tags": [
                 {
                   "key": "id",
@@ -621,13 +657,17 @@
                 {
                   "key": "portrait",
                   "value": "\"BigIcon\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
             },
             {
               "condition": "BattleManager:enemyEscaped()",
-              "name": "showDialogue",
+              "name": "openDialogueWindow",
               "tags": [
                 {
                   "key": "id",
@@ -644,6 +684,10 @@
                 {
                   "key": "portrait",
                   "value": "\"BigIcon\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
@@ -655,6 +699,10 @@
                 {
                   "key": "id",
                   "value": "1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
@@ -685,8 +733,79 @@
           "events": [
             {
               "condition": "",
+              "name": "setLabel",
+              "tags": [
+                {
+                  "key": "index",
+                  "value": "-1"
+                },
+                {
+                  "key": "name",
+                  "value": "repeat"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "wait",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "FieldManager.renderer.color.r > 0.005",
+              "name": "jumpTo",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "repeat"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "not {%onBattle}",
+              "name": "deleteChar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "Resets the character's position when the field is unloaded.",
+          "name": "Exit Pos Reset",
+          "tags": [],
+          "key": "ExitPosReset"
+        },
+        "id": 11,
+        "children": []
+      },
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "",
               "name": "print(GameManager.frame, {%spawns}, {%minSpawns}, {%defeated}, FieldManager:loadedFromSave())",
               "tags": [],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "stopChar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                }
+              ],
               "key": ""
             },
             {
@@ -751,6 +870,18 @@
                 {
                   "key": "permanent",
                   "value": "false"
+                },
+                {
+                  "key": "reset",
+                  "value": "true"
+                },
+                {
+                  "key": "time",
+                  "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
                 }
               ],
               "key": ""
@@ -762,25 +893,6 @@
                 {
                   "key": "index",
                   "value": "-1"
-                }
-              ],
-              "key": ""
-            },
-            {
-              "condition": "",
-              "name": "resetChar",
-              "tags": [
-                {
-                  "key": "key",
-                  "value": "\"self\""
-                },
-                {
-                  "key": "props",
-                  "value": "false"
-                },
-                {
-                  "key": "tile",
-                  "value": "true"
                 }
               ],
               "key": ""
@@ -945,6 +1057,17 @@
             },
             {
               "condition": "",
+              "name": "setHudVisibility",
+              "tags": [
+                {
+                  "key": "visible",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
               "name": "playSFX",
               "tags": [
                 {
@@ -981,17 +1104,6 @@
                 {
                   "key": "wait",
                   "value": "true"
-                }
-              ],
-              "key": ""
-            },
-            {
-              "condition": "",
-              "name": "setHudVisibility",
-              "tags": [
-                {
-                  "key": "visible",
-                  "value": "false"
                 }
               ],
               "key": ""
@@ -1171,15 +1283,29 @@
                   "value": "false"
                 },
                 {
+                  "key": "reset",
+                  "value": "true"
+                },
+                {
                   "key": "time",
                   "value": "1"
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
                 }
               ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "print('Battle finished', BattleManager.result)",
+              "tags": [],
               "key": ""
             }
           ],
           "description": "Starts a battle encounter.",
-          "name": "Normal Battle",
+          "name": "Mob Battle",
           "tags": [],
           "key": "Battle"
         },
@@ -1246,7 +1372,7 @@
           "description": "",
           "name": "Field Load",
           "tags": [],
-          "key": ""
+          "key": "FieldLoad"
         },
         "id": 9,
         "children": []
@@ -1266,7 +1392,7 @@
               "key": ""
             },
             {
-              "condition": "",
+              "condition": "\"{%exit}\" ~= \"\"",
               "name": "turnCharTile",
               "tags": [
                 {
@@ -1289,7 +1415,7 @@
               "key": ""
             },
             {
-              "condition": "",
+              "condition": "\"{%exit}\" ~= \"\"",
               "name": "moveCharTile",
               "tags": [
                 {
@@ -1361,7 +1487,7 @@
           "description": "",
           "name": "Field Exit",
           "tags": [],
-          "key": ""
+          "key": "FieldExit"
         },
         "id": 10,
         "children": []
@@ -1412,8 +1538,17 @@
             },
             {
               "condition": "",
-              "name": "FieldManager.renderer:showParties(50, 30)",
-              "tags": [],
+              "name": "focusParties",
+              "tags": [
+                {
+                  "key": "speed",
+                  "value": "50"
+                },
+                {
+                  "key": "time",
+                  "value": "30"
+                }
+              ],
               "key": ""
             },
             {
@@ -1431,7 +1566,7 @@
           "description": "Default battle intro.",
           "name": "Battle Load",
           "tags": [],
-          "key": "NormalBattl"
+          "key": "NormalBattle"
         },
         "id": 7,
         "children": []
@@ -1482,7 +1617,7 @@
             },
             {
               "condition": "",
-              "name": "showDialogue",
+              "name": "openDialogueWindow",
               "tags": [
                 {
                   "key": "id",
@@ -1499,6 +1634,10 @@
                 {
                   "key": "portrait",
                   "value": "\"BigIcon\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
@@ -1510,6 +1649,10 @@
                 {
                   "key": "id",
                   "value": "1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
@@ -1976,7 +2119,7 @@
             },
             {
               "condition": "",
-              "name": "showDialogue",
+              "name": "openDialogueWindow",
               "tags": [
                 {
                   "key": "id",
@@ -1993,6 +2136,10 @@
                 {
                   "key": "portrait",
                   "value": "\"BigIcon\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
@@ -2047,6 +2194,10 @@
                 {
                   "key": "id",
                   "value": "1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""

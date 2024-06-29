@@ -474,7 +474,7 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
       if self:isArea() then
         originTile = input.target
       end
-      _G.Fiber:fork(targetChar.skillDamage, targetChar, self.data, originTile, results)
+      _G.Fiber:forkMethod(targetChar, 'skillDamage', self.data, originTile, results)
     end
     target:onSkillResult(input, results, targetChar)
   end

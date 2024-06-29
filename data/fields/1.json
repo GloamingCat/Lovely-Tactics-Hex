@@ -65,7 +65,7 @@
             "height": 1
           }
         ],
-        "fade": 30
+        "condition": ""
       }
     ],
     "name": "Happy Fields 5",

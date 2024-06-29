@@ -98,7 +98,7 @@ function TurnMenu:showDescriptionWindow(window)
       self.descriptionWindow:updateText('')
     end
     self.descriptionWindow:insertSelf()
-    MenuManager.fiberList:fork(self.descriptionWindow.show, self.descriptionWindow)
+    MenuManager.fiberList:forkMethod(self.descriptionWindow, 'show')
   end
 end
 --- Hides the description window.

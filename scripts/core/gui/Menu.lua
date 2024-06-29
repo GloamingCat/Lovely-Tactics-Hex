@@ -19,6 +19,7 @@ local Menu = class()
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
+-- @tparam Menu parent Parent menu.
 function Menu:init(parent)
   self.parent = parent
   self.windowList = List()
@@ -133,7 +134,7 @@ function Menu:show()
   self.animationFibers = { Fiber }
   for window in self.windowList:iterator() do
     if window.lastOpen then
-      self.animationFibers[#self.animationFibers + 1] = MenuManager.fiberList:fork(window.show, window)
+      self.animationFibers[#self.animationFibers + 1] = MenuManager.fiberList:forkMethod(window, 'show')
     end
   end
   local done
@@ -162,7 +163,7 @@ function Menu:hide()
   end
   self.animationFibers = { Fiber }
   for window in self.windowList:iterator() do
-    self.animationFibers[#self.animationFibers + 1] =MenuManager.fiberList:fork(window.hide, window, true)
+    self.animationFibers[#self.animationFibers + 1] =MenuManager.fiberList:forkMethod(window, 'hide', true)
   end
   local done
   repeat

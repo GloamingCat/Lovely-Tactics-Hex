@@ -69,11 +69,11 @@ function ButtonWindow:update(dt)
     self:refreshLastOpen()
     if not self.lastOpen then
       if self.open then
-        MenuManager.fiberList:fork(self.hide, self)
+        MenuManager.fiberList:forkMethod(self, 'hide')
       end
     else
       if self.closed then
-        MenuManager.fiberList:fork(self.show, self)
+        MenuManager.fiberList:forkMethod(self, 'show')
       end
     end
   end

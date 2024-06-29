@@ -26,26 +26,34 @@ local EventSheet = class(Fiber, EventUtil)
 -- @tparam table data Table with name (or func) and tags.
 -- @tparam[opt] Character char Character associated with this fiber.
 function EventSheet:init(root, data, char)
+  local name
   if data.func then
     self.commands = data.func
+    name = data.name
   elseif tonumber(data.name) or Database.events[data.name] then
     self.sheet = Database.events[tonumber(data.name) or data.name]
     self.commands = self.processSheet
+    name = self.sheet.name
   else
     local func = require('custom/' .. data.name)
     assert(func, "Could not load event sheet file: " .. tostring(data.name))
     self.commands = func
+    name = data.name
   end
   self.data = data
   self.vars = data and data.vars
   self.args = Database.loadTags(data.tags)
   self.char = char
+  if self.char then
+    self.vars.char = self.char.key
+  end
   if self.data then
     self.data.running = true
   end
   self.events = {}
   self.labels = {}
   Fiber.init(self, root, nil)
+  self.name = name or self.name
   self:setUp()
 end
 
@@ -153,6 +161,10 @@ function EventSheet:execute()
 end
 --- Runs the event created from the command execution.
 function EventSheet:runEvents()
+  if self.vars.runningIndex and not FieldManager:loadedFromSave() then
+    local char = self.char and ' of character ' .. self.char.name or ''
+    error('Script ' .. tostring(self.data.name) .. char .. " shouldn't be running.")
+  end
   self.vars.runningIndex = self.vars.runningIndex or 0
   while self.vars.runningIndex < #self.events do
     self.vars.runningIndex = self.vars.runningIndex + 1
@@ -214,17 +226,13 @@ function EventSheet:evaluate(value)
     return loadformula(TextParser.evaluate(value), "script")(self)
   end
 end
---- Creates a new fiber in from the same root that executes given script.
--- @tparam table script Table with name (or func) and tags.
--- @treturn Fiber Newly created Fiber.
-function EventSheet:forkFromScript(script, ...)
-  return self.root:forkFromScript(script, self.char, ...)
-end
 -- For debugging.
 function EventSheet:__tostring()
-  local name = self.data and self.data.name
-  name = name and (' ' .. name) or ''
-  return 'EventSheet' .. name ..  ' from ' .. tostring(self.origin.name)
+  if self.char then
+    return 'EventSheet: ' .. self.char.key .. ':' .. tostring(self.name)
+  else
+    return 'EventSheet: ' .. tostring(self.name)
+  end
 end
 
 return EventSheet

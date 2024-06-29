@@ -57,7 +57,7 @@ end
 --- Rewrites `require`. Changes Lua's default require function to ignore ".lua" extension.
 -- @rewrite
 require = function(path)
-  return old_require(string.gsub(path, '.lua', ''))
+  return old_require(string.gsub(path, '%.lua', ''))
 end
 
 -- ------------------------------------------------------------------------------------------------

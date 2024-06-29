@@ -18,7 +18,7 @@
 io.stdout:setvbuf("no")
 
 -- Makes it not necessary to include the `scripts/` folder in a file's path.
-love.filesystem.setRequirePath('scripts/?.lua;/?.lua')
+love.filesystem.setRequirePath('scripts/?.lua;/?.lua;scripts/?/init.lua;/?/init.lua')
 
 -- Loads independent modules.
 require('override')

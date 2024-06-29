@@ -359,12 +359,16 @@ end
 --- Inserts sprite from its list.
 -- @tparam number i The position in the list.
 function Sprite:insertSelf(i)
-  i = (i or self.position.z) + self.offsetDepth
-  if self.renderer.layers[i] then
-    insert(self.renderer.layers[i], self)
+  local d = (i or self.position.z) + self.offsetDepth
+  if math.isnan(d) then
+    print("Nan depth", i, self.position.z, self.offsetDepth)
+    return
+  end
+  if self.renderer.layers[d] then
+    insert(self.renderer.layers[d], self)
   else
-    self.renderer.layers[i] = {}
-    self.renderer.layers[i][1] = self
+    self.renderer.layers[d] = {}
+    self.renderer.layers[d][1] = self
   end
   self.renderer.needsRedraw = true
 end

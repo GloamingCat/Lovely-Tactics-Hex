@@ -99,7 +99,7 @@ function RecruitConfirmWindow:returnWindow()
   local w = self.menu.listWindow
   local w2 = self.menu.descriptionWindow
   self:hide()
-  _G.Fiber:fork(w2.show, w2)
+  _G.Fiber:forkMethod(w2, 'show')
   w:show()
   w:refreshButtons()
   w:activate()

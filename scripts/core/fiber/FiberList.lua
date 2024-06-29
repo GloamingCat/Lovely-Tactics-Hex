@@ -58,11 +58,22 @@ end
 function FiberList:fork(func, ...)
   return Fiber(self, func, ...)
 end
+--- Creates new Fiber from function.
+-- @tparam table obj The object containing the method.
+-- @tparam string method Name of the method.
+-- @param ... Any arguments to the method (not including the object).
+-- @treturn Fiber The newly created Fiber.
+function FiberList:forkMethod(obj, method, ...)
+  local fiber = Fiber(self, obj[method], obj, ...)
+  fiber.name = tostring(obj) .. ":" .. method .. '(' .. util.array.concat({...}) .. ')'
+  return fiber
+end
 --- Creates new EventSheet from a script table.
 -- @tparam table script Table with script's name and param.
+-- @tparam Interactable char The interactable object associated with the event sheet.
 -- @treturn EventSheet The newly created Fiber.
-function FiberList:forkFromScript(script, ...)
-  return EventSheet(self, script, ...)
+function FiberList:forkFromScript(script, char)
+  return EventSheet(self, script, char)
 end
 
 return FiberList

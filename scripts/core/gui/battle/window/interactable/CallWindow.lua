@@ -85,7 +85,7 @@ function CallWindow:onButtonSelect(button)
           self.menu.targetWindow:setBattler(button.battler)
         end)
     else
-      MenuManager.fiberList:fork(self.menu.targetWindow.hide, self.menu.targetWindow)
+      MenuManager.fiberList:forkMethod(self.menu.targetWindow, 'hide')
     end
   end
 end

@@ -68,13 +68,13 @@ end
 --- Rewrites `ShopMenu:showShopMenu`.
 -- @rewrite
 function ShopMenu:showShopMenu()
-  MenuManager.fiberList:fork(self.countWindow.show, self.countWindow)
+  MenuManager.fiberList:forkMethod(self.countWindow, 'show')
   ShopMenu_showShopMenu(self)
 end
 --- Rewrites `ShopMenu:hideShopMenu`.
 -- @rewrite
 function ShopMenu:hideShopMenu()
-  MenuManager.fiberList:fork(self.countWindow.hide, self.countWindow)
+  MenuManager.fiberList:forkMethod(self.countWindow, 'hide')
   ShopMenu_hideShopMenu(self)
 end
 --- Rewrites `ShopMenu:createListWindow`.

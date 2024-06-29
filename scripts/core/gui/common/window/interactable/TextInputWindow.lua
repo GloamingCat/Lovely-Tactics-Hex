@@ -22,7 +22,7 @@ local TextInputWindow = class(GridWindow)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam Menu menu Parent Menu.
+-- @tparam Menu menu Parent menu.
 -- @tparam[opt=0]  number min The minimum length of the input text.
 -- @tparam[opt] number max The maximum length of the input text.
 -- @tparam[opt] number cancelValue The value returned when the player cancels.
@@ -205,6 +205,11 @@ end
 -- Properties
 -- ------------------------------------------------------------------------------------------------
 
+--- Grid y-axis displacement in pixels.
+-- @treturn number
+function TextInputWindow:cellWidth()
+  return ScreenManager.width / 2 - self.menu:windowMargin() * 2 - self:colMargin() - self:paddingX() * 2
+end
 --- Grid y-axis displacement in pixels.
 -- @treturn number
 function TextInputWindow:gridY()

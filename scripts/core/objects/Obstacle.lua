@@ -11,6 +11,7 @@
 
 -- Imports
 local Vector = require('core/math/Vector')
+local Object = require('core/objects/Object')
 local TransformableObject = require('core/objects/TransformableObject')
 
 -- Constants
@@ -23,15 +24,15 @@ local Obstacle = class(TransformableObject)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Constructor.
+--- Constructor. Extends `Object:init`. Combines with `TransformableObject:init`.
 -- @tparam table data The obstacle's data from tileset file.
 -- @tparam table tileData The data about ramp and collision.
 -- @tparam ObjectTile initTile The object this tile is in.
 -- @tparam Sprite sprite The obstacle's sprite.
 -- @tparam table group The group this obstacle is part of.
 function Obstacle:init(data, tileData, initTile, sprite, group)
-  local x, y, z = initTile.center:coordinates()
-  TransformableObject.init(self, data, Vector(x, y, z))
+  TransformableObject.init(self, data, initTile)
+  Object.init(self, data, initTile)
   self.type = 'obstacle'
   self.group = group
   self.sprite = sprite
@@ -39,7 +40,6 @@ function Obstacle:init(data, tileData, initTile, sprite, group)
   self.ramp = tileData.mode == 1
   self.bridge = tileData.mode == 2
   self:initNeighbors(tileData.neighbors)
-  self:addToTiles()
 end
 --- Creates neighborhood.
 -- @tparam table neighbors The table of booleans indicating passability.
@@ -72,45 +72,10 @@ function Obstacle:isPassable(dx, dy, obj)
   end
   return self.passability[dx][dy] == true
 end
---- Overrides `Object:getHeight`. 
+--- Overrides `TransformableObject:getHeight`. 
 -- @override
 function Obstacle:getHeight(x, y)
   return self.collisionHeight
-end
-
--- ------------------------------------------------------------------------------------------------
--- Tiles
--- ------------------------------------------------------------------------------------------------
-
---- Overrides `TransformableObject:addToTiles`. 
--- @override
-function Obstacle:addToTiles(tiles)
-  local tile = tiles and tiles[1] or self:getTile()
-  tile.obstacleList:add(self)
-  if not self.ramp or self.collisionHeight == 0 then
-    return
-  end
-  local layerNeighbors = self:getPassableNeighbors(tile)
-  local topTile = self:getTopTile(tile)
-  for r = 1, #layerNeighbors do
-    topTile.rampNeighbors:add(layerNeighbors[r])
-    layerNeighbors[r].rampNeighbors:add(topTile)
-  end
-end
---- Overrides `TransformableObject:removeFromTiles`. 
--- @override
-function Obstacle:removeFromTiles(tiles)
-  local tile = tiles and tiles[1] or self:getTile()
-  tile.obstacleList:removeElement(self)
-  if not self.ramp then
-    return
-  end
-  local layerNeighbors = self:getPassableNeighbors(tile)
-  local topTile = self:getTopTile(tile)
-  for r = 1, #layerNeighbors do
-    topTile.rampNeighbors:removeElement(layerNeighbors[r])
-    layerNeighbors[r].rampNeighbors:removeElement(topTile)
-  end
 end
 --- Gets an array of tiles to each the obstacle's ramp transits.
 -- @treturn table Array of tiles if the obstacle is a ramp, nil if it's not.
@@ -132,6 +97,46 @@ end
 function Obstacle:getTopTile(tile)
   return FieldManager.currentField:getObjectTile(tile.x, tile.y, 
     self.collisionHeight + tile.layer.height)
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Tiles
+-- ------------------------------------------------------------------------------------------------
+
+--- Implements `Object:addToTiles`.
+-- @override
+function Obstacle:addToTiles(tiles)
+  local tile = tiles and tiles[1] or self:getTile()
+  tile.obstacleList:add(self)
+  if not self.ramp or self.collisionHeight == 0 then
+    return
+  end
+  local layerNeighbors = self:getPassableNeighbors(tile)
+  local topTile = self:getTopTile(tile)
+  for r = 1, #layerNeighbors do
+    topTile.rampNeighbors:add(layerNeighbors[r])
+    layerNeighbors[r].rampNeighbors:add(topTile)
+  end
+end
+--- Implements `Object:removeFromTiles`.
+-- @override
+function Obstacle:removeFromTiles(tiles)
+  local tile = tiles and tiles[1] or self:getTile()
+  tile.obstacleList:removeElement(self)
+  if not self.ramp then
+    return
+  end
+  local layerNeighbors = self:getPassableNeighbors(tile)
+  local topTile = self:getTopTile(tile)
+  for r = 1, #layerNeighbors do
+    topTile.rampNeighbors:removeElement(layerNeighbors[r])
+    layerNeighbors[r].rampNeighbors:removeElement(topTile)
+  end
+end
+--- Overrides `Object:originalCoordinates`.
+-- @override
+function Obstacle:originalCoordinates(tile)
+  return self.tile:coordinates()
 end
 -- For debugging.
 function Obstacle:__tostring()

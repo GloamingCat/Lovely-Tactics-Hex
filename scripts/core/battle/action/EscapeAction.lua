@@ -27,7 +27,7 @@ local EscapeAction = class(BattleAction)
 -- @param ... Any arguments passed to `BattleAction:init`.
 function EscapeAction:init(move, ...)
   BattleAction.init(self, ...)
-  self.animSpeed = 2
+  self.fadeTime = 30
   self.hide = false
   if move then
     self.moveAction = BattleMoveAction()
@@ -86,10 +86,7 @@ function EscapeAction:escape(input)
   if Config.sounds.escape then
     AudioManager:playSFX(Config.sounds.escape)
   end
-  char:colorizeTo(nil, nil, nil, 0, self.animSpeed, true)
-  local troop = TurnManager:currentTroop()
-  troop:moveMember(char.key, self.hide and 2 or 1)
-  TroopManager:deleteCharacter(char)
+  char:removeFromBattle(self.fadeTime, self.hide)
   if TroopManager:getMemberCount(party) == 0 then
     return { executed = true, endTurn = true, escaped = true }
   else

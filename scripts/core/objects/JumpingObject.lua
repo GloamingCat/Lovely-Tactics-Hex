@@ -27,9 +27,11 @@ local JumpingObject = class(WalkingObject)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Initializes movement / animation properties.
-function JumpingObject:initProperties()
-  WalkingObject.initProperties(self)
+--- Overrides `WalkingObject:initProperties`.
+-- Initializes jump properties.
+-- @override
+function JumpingObject:initProperties(...)
+  WalkingObject.initProperties(self, ...)
   self.defaultGravity = 0.5
   self.jumpHeight = 0
   self.jumpVelocity = 0
@@ -97,6 +99,9 @@ function JumpingObject:jumpToPoint(x, y, z, gravity)
   x, y, z = round(x), round(y), round(z)
   local distance = len(self.position.x - x, self.position.y - y, self.position.z - z)
   self:jump(distance / self.speed, gravity)
+  if distance < 0.2 then
+    return true
+  end
   self:moveTo(x, y, z, self.speed / distance, true)
   return self.position:almostEquals(x, y, z, 0.2)
 end

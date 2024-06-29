@@ -40,6 +40,7 @@ local MenuEvents = {}
 -- @table DialogueArguments
 -- @extend WindowArguments
 -- @tfield string message Dialogue text.
+-- @tfield boolean wait Flag to wait for player input.
 -- @tfield[opt] string name Speaker name.
 -- @tfield[opt] number nameX Speaker window X in relation to the main window, from -1 to 1.
 -- @tfield[opt] number nameY Speaker window Y in relation to the main window, from -1 to 1.
@@ -131,8 +132,8 @@ end
 
 --- Shows a message in the given window.
 -- @tparam MessageArguments args
-function MenuEvents:showMessage(args)
-  self:openMessageWindow(args)
+function MenuEvents:openMessageWindow(args)
+  self:createMessageWindow(args)
   local window = self.menu.messages[args.id]
   window:updateText(args.text)
   if args.wait then
@@ -146,12 +147,17 @@ function MenuEvents:closeMessageWindow(args)
   if self.menu and self.menu.messages then
     local window = self.menu.messages[args.id]
     if window then
-      window:hide()
-      window:removeSelf()
-      window:destroy()
-      self.menu.messages[args.id] = nil
-      if self.menu.activeWindow == window then
-        self.menu:setActiveWindow(nil)
+      local fiber = self:fork(function()
+        window:hide()
+        window:removeSelf()
+        window:destroy()
+        self.menu.messages[args.id] = nil
+        if self.menu.activeWindow == window then
+          self.menu:setActiveWindow(nil)
+        end
+      end)
+      if args.wait then
+        fiber:waitForEnd()
       end
     end
   end
@@ -163,13 +169,21 @@ end
 
 --- Shows a dialogue in the given window.
 -- @tparam DialogueArguments args
-function MenuEvents:showDialogue(args)
-  self:openDialogueWindow(args)
+function MenuEvents:openDialogueWindow(args)
+  self:createDialogueWindow(args)
   local window = self.menu.dialogues[args.id]
+  window.result = nil
   self.menu:setActiveWindow(window)
   local speaker = args.name ~= '' and { name = args.name, 
     x = args.nameX, y = args.nameY }
-  window:showDialogue(args.message, args.align, speaker)
+  if args.wait then
+    window:showDialogue(args.message, args.align, speaker)
+    self.menu:waitForResult()
+    window.result = nil
+    self:wait()
+  else
+    self:forkMethod(window, 'showDialogue', args.message, args.align, speaker)
+  end
 end
 --- Closes and deletes a dialogue window.
 -- @tparam WindowArguments args

@@ -25,28 +25,24 @@ local Interactable = class(Object)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Constructor.
+--- Constructor. Extends `Object:init` and initialize variables, scripts, and adds the object to
+-- `FieldManager`'s `updateList` and `characterList`.
 -- @tparam table instData Instance data from field file.
--- @tparam[opt] table save Persistent data from save file.
+-- @tparam[opt] table save Persistent data from save file. 
 function Interactable:init(instData, save)
-  self:initProperties(instData)
-  self:initScripts(instData)
-  local layer = FieldManager.currentField.objectLayers[instData.h]
-  assert(layer, 'height out of bounds: ' .. instData.h)
-  layer = layer.grid[instData.x]
-  assert(layer, 'x out of bounds: ' .. instData.x)
-  self.tile = layer[instData.y]
-  assert(self.tile, 'y out of bounds: ' .. instData.y)
-  self.tile.characterList:add(self)
+  local tile = FieldManager.currentField:getObjectTile(instData.x, instData.y, instData.h)
+  Object.init(self, instData, tile, save)
+  self:initVariables(save and save.vars)
+  self:initScripts(instData, save)
   FieldManager.updateList:add(self)
   FieldManager.characterList:add(self)
+  FieldManager.characterList[self.key] = self
 end
---- Sets generic properties, like key, passability, activeness, and persistency.
--- @tparam table instData The info about the object's instance.
--- @tparam[opt] table save The instance's save data.
+--- Extends `Object:initProperties`.
+-- Sets generic properties, like key, passability, activeness, and persistency.
+-- @override
 function Interactable:initProperties(instData, save)
-  self.key = instData.key or ''
-  self.data = instData
+  Object.initProperties(self, instData, save)
   if save and save.passable ~= nil then
     self.passable = save.passable
   else
@@ -60,6 +56,11 @@ function Interactable:initProperties(instData, save)
   self.persistent = instData.persistent
 end
 --- Initializes the script lists from instance data or save data.
+-- @tparam[opt] table saveVars Persistent variables from save ftile.
+function Interactable:initVariables(saveVars)
+  self.vars = saveVars and copyTable(saveVars) or {}
+end
+--- Initializes the script lists from instance data or save data.
 -- @tparam table instData Instance data from field file.
 -- @tparam[opt] table save Persistent data from save file.
 function Interactable:initScripts(instData, save)
@@ -69,7 +70,6 @@ function Interactable:initScripts(instData, save)
     self.collideScripts = copyTable(save.collideScripts or {})
     self.interactScripts = copyTable(save.interactScripts or {})
     self.exitScripts = copyTable(save.interactScripts or {})
-    self.vars = copyTable(save.vars or {})
   else
     self.loadScripts = {}
     self.collideScripts = {}
@@ -120,15 +120,22 @@ end
 -- @override
 function Interactable:destroy(permanent)
   Object.destroy(self)
+  self.fiberList:destroy()
+  FieldManager.updateList:removeElement(self)
+  FieldManager.characterList:removeElement(self)
+  FieldManager.characterList[self.key] = false
   if permanent then
     self.deleted = true
   end
-  FieldManager.updateList:removeElement(self)
-  FieldManager.characterList:removeElement(self)
-  self.fiberList:destroy()
   if self.persistent then
     FieldManager:storeCharData(FieldManager.currentField.id, self)
   end
+  print(self, 'destroyed')
+end
+--- Check if the character in still present in the current field's character list.
+-- @treturn boolean Whether this character was removed from the field.
+function Interactable:wasDestroyed()
+  return not FieldManager.characterList:contains(self)
 end
 --- Gets data with fiber list's state and local variables.
 -- @treturn table State data to be saved.
@@ -171,9 +178,8 @@ function Interactable:collideTile(tile)
   local blocking = false
   for char in tile.characterList:iterator() do
     if char ~= self  then
-      local fiberList = FieldManager.currentField.fiberList
-      local selfFiber = fiberList:fork(self.onCollide, self, char.key, self.key, true)
-      local charFiber = fiberList:fork(char.onCollide, char, char.key, self.key, true)
+      local selfFiber = self.fiberList:forkMethod(self, 'onCollide', char.key, self.key)
+      local charFiber = char.fiberList:forkMethod(char, 'onCollide', char.key, self.key)
       selfFiber:waitForEnd()
       charFiber:waitForEnd()
       if not char.passable then
@@ -183,13 +189,13 @@ function Interactable:collideTile(tile)
   end
   return blocking
 end
---- Overrides `Object:addToTiles`.
+--- Implements `Object:addToTiles`.
 -- @override
 function Interactable:addToTiles()
   self:getTile().characterList:add(self)
 end
---- Overrides `Object:removeFromTiles`.
--- @overrides
+--- Implements `Object:removeFromTiles`.
+-- @override
 function Interactable:removeFromTiles()
   self:getTile().characterList:removeElement(self)
 end

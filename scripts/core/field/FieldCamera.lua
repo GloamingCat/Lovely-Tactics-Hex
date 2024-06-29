@@ -140,6 +140,9 @@ function FieldCamera:moveToPoint(x, y, speed, wait)
     local dy = self.position.y - y
     local distance = sqrt(dx * dx + dy * dy)
     speed = ((speed or self.cameraSpeed) + distance * 3) / distance
+    if distance < 0.2 then
+      return
+    end
   end
   self:moveTo(x, y, 0, speed, wait)
 end

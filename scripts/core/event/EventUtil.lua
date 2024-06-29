@@ -92,11 +92,11 @@ end
 -- @tparam[opt] boolean wait Flag to wait until the change finishes.
 function EventUtil:fadeSprite(sprite, visible, time, wait)
   if (vibible or false) ~= (sprite.visible or false) then
-    local fade = visible and sprite.fadein or sprite.fadeout
+    local fade = visible and 'fadein' or 'fadeout'
     if wait then
-      fade(sprite, time)
+      sprite[fade](sprite, time)
     else
-      self:fork(fade, sprite, time)
+      self:forkMethod(sprite, fade, time)
     end
   end
 end
@@ -116,50 +116,15 @@ function EventUtil:createMenu()
     MenuManager:showMenu(self.menu)
   end
 end
---- Creates a message window with default size and position for given ID.
--- @tparam number id Window ID.  
---  For 1: top of the screen, full width;  
---  For 2: bottom of the screen, full width;  
---  For 3+: middle of the screen, 3/4 width.  
--- @treturn DescriptionWindow The new window.
-function EventUtil:createDefaultMessageWindow(id)
-  local x, y = 0, 0
-  local w, h = ScreenManager.width, ScreenManager.height / 3
-  if id == 2 then -- Top.
-    y = ScreenManager.height / 3
-  elseif id == 1 then -- Bottom.
-    y = -ScreenManager.height / 3
-  else -- Center.
-    w = ScreenManager.width * 3 / 4
-  end
-  return DescriptionWindow(self.menu, w, h, Vector(x, y))
-end
---- Opens a new message window and stores in the given ID.
--- @coroutine
--- @tparam WindowArguments args Argument table.
-function EventUtil:openMessageWindow(args)
-  self:createMenu()
-  local msgs = self.menu.messages
-  local window = msgs[args.id]
-  if not window then
-    window = self:createDefaultMessageWindow(args.id)
-    msgs[args.id] = window
-  end
-  window.text:setAlign(args.alignX or 'center', args.alignY or 'center')
-  window:resize(args.width, args.height)
-  window:setXYZ(args.x, args.y)
-  if window.closed then
-    window:setVisible(false)
-    window:show()
-  end
-end
 --- Creates a dialogue window with default size and position for given ID.
 -- @tparam number id Window ID.  
 --  For 1: bottom of the screen, full width;  
 --  For 2: top of the screen, full width;  
 --  For 3+: middle of the screen, 3/4 width.  
--- @treturn DialogueWindow New window.
-function EventUtil:createDefaultDialogueWindow(id)
+-- @treturn number Window width.
+-- @treturn number Window height.
+-- @treturn Vector Window center position.
+function EventUtil:getDefaultWindowArgs(id)
   local x, y = 0, 0
   local w, h = ScreenManager.width, ScreenManager.height / 3
   if id == 1 then -- Bottom.
@@ -169,17 +134,38 @@ function EventUtil:createDefaultDialogueWindow(id)
   else -- Center.
     w = ScreenManager.width * 3 / 4
   end
-  return DialogueWindow(self.menu, w, h, x, y)
+  return w, h, Vector(x, y)
+end
+--- Opens a new message window and stores in the given ID.
+-- @coroutine
+-- @tparam WindowArguments args Argument table.
+function EventUtil:createMessageWindow(args)
+  self:createMenu()
+  local msgs = self.menu.messages
+  local window = msgs[args.id]
+  if not window then
+    window = DescriptionWindow(self.menu, self:getDefaultWindowArgs(args.id))
+    msgs[args.id] = window
+  end
+  window.text:setAlign(args.alignX or 'center', args.alignY or 'center')
+  local w = args.width and args.width > 0
+  local h = args.height and args.height > 0
+  window:resize(w and args.width, h and args.height)
+  window:setXYZ(args.x, args.y)
+  if window.closed then
+    window:setVisible(false)
+    window:show()
+  end
 end
 --- Opens a new dialogue window and stores in the given ID.
 -- @coroutine
 -- @tparam WindowArguments args Argument table.
-function EventUtil:openDialogueWindow(args)
+function EventUtil:createDialogueWindow(args)
   self:createMenu()
   local dialogues = self.menu.dialogues
   local window = dialogues[args.id]
   if not window then
-    window = self:createDefaultDialogueWindow(args.id)
+    window = DialogueWindow(self.menu, self:getDefaultWindowArgs(args.id))
     dialogues[args.id] = window
   end
   local w = args.width and args.width > 0

@@ -20,7 +20,7 @@ local Vector = require('core/math/Vector')
 -- Rewrites
 local DialogueWindow_showDialogue = DialogueWindow.showDialogue
 local DialogueWindow_setName = DialogueWindow.setName
-local MenuEvents_showDialogue = MenuEvents.showDialogue
+local MenuEvents_openDialogueWindow = MenuEvents.openDialogueWindow
 
 -- Parameters
 local indent = args.indent
@@ -83,10 +83,10 @@ end
 -- MenuEvents
 -- ------------------------------------------------------------------------------------------------
 
---- Rewrites `MenuEvents:showDialogue`.
+--- Rewrites `MenuEvents:openDialogueWindow`.
 -- @rewrite
-function MenuEvents:showDialogue(args)
-  self:openDialogueWindow(args)
+function MenuEvents:openDialogueWindow(args)
+  self:createDialogueWindow(args)
   local window = self.menu.dialogues[args.id]
   if args.character then -- Change portrait
     local portrait = nil
@@ -107,5 +107,5 @@ function MenuEvents:showDialogue(args)
     end
     window:setPortrait(portrait)
   end
-  MenuEvents_showDialogue(self, args)
+  MenuEvents_openDialogueWindow(self, args)
 end

@@ -20,6 +20,13 @@
 -- @tfield number s Saturation component (from 0 to 1).
 -- @tfield number v Value/brightness component (from 0 to 1).
 
+--- An `RGBA` color representing white.
+-- @table white
+-- @tfield number r 1.
+-- @tfield number g 1.
+-- @tfield number b 1.
+-- @tfield number a 1.
+
 local black = {r = 0, g = 0, b = 0, a = 1}
 local red = {r = 1, g = 0, b = 0, a = 1}
 local green = {r = 0, g = 1, b = 0, a = 1}

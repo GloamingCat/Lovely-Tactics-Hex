@@ -23,9 +23,9 @@ return function(script)
   script.vars.lootq = count
   FieldManager.player:playIdleAnimation()
   -- Translate
-  if not pcall(script.showDialogue, script, { id = 1, message = Vocab.loot }) then   
+  if not pcall(script.openDialogueWindow, script, { id = 1, message = Vocab.loot }) then   
     script.vars.loot = item.name
-    script:showDialogue { id = 1, message = Vocab.loot }
+    script:openDialogueWindow { id = 1, message = Vocab.loot }
   end
   script:increaseItem { id = item.id, value = count }
   script:closeDialogueWindow { id = 1 }

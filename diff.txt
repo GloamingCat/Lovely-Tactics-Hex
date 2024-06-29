@@ -30,6 +30,8 @@ Method/field renaming
 -- item.elements -> item.bonuses
 -- Skill.[user*Anim, *animID, *Time, mirror, stepOnCast] moved to Skill.animInfo
 -- TextInputWindow.emptyAllowed -> minLength, maxLength
+-- EventUtil.open[Dialogue, Message]Window -> create[Dialogue, Message]Window
+-- MenuEvents.show[Dialogue, Message] -> open[Dialogue, Message]Window
 
 Class renaming
 -- FieldHUD -> PlayerMenu
@@ -37,6 +39,8 @@ Class renaming
 -- BattleGUI -> TurnMenu
 -- TileGUI -> TileUI
 -- *GUI* -> *Menu*
--- CharacterBase -> AnimatedInteractable
 -- SimpleText -> TextComponent
 -- SimpleImage -> ImageComponent
+-- CharacterBase -> AnimatedInteractable
+-- Object split into Object and TransformableObject
+-- Character split into Character and BattleCharacter

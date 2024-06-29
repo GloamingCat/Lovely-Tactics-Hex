@@ -65,7 +65,7 @@
             "height": 1
           }
         ],
-        "fade": 0
+        "condition": ""
       },
       {
         "destination": {
@@ -92,7 +92,7 @@
             "height": 1
           }
         ],
-        "fade": 0
+        "condition": ""
       }
     ],
     "name": "Happy Fields 1",

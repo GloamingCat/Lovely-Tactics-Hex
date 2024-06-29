@@ -187,9 +187,9 @@ function ActionMenu:selectTarget(target)
   if self.targetWindow then
     local char = target:getFirstBattleCharacter()
     if char then
-      MenuManager.fiberList:fork(self.updateTargetWindow, self, char)
+      MenuManager.fiberList:forkMethod(self, 'updateTargetWindow', char)
     else
-      MenuManager.fiberList:fork(self.targetWindow.hide, self.targetWindow)
+      MenuManager.fiberList:forkMethod(self.targetWindow, 'hide')
     end
   end
   if self.buttonWindow and #self.buttonWindow.matrix >= 2 then
@@ -368,12 +368,12 @@ end
 --- Shows grid and cursor.
 function ActionMenu:startGridSelecting(target)
   if self.propertyWindow then
-    MenuManager.fiberList:fork(self.propertyWindow.show, self.propertyWindow)
+    MenuManager.fiberList:forkMethod(self.propertyWindow, "show")
   end
   if self.buttonWindow then
     self.buttonWindow.active = true
     self.buttonWindow.result = nil
-    MenuManager.fiberList:fork(self.buttonWindow.show, self.buttonWindow)
+    MenuManager.fiberList:forkMethod(self.buttonWindow, "show")
   end
   FieldManager:showGrid()
   FieldManager.renderer:moveToTile(target)
@@ -385,13 +385,13 @@ end
 function ActionMenu:endGridSelecting()
   if self.buttonWindow then
     self.buttonWindow.active = false
-    MenuManager.fiberList:fork(self.buttonWindow.hide, self.buttonWindow)
+    MenuManager.fiberList:forkMethod(self.buttonWindow, "hide")
   end
   if self.propertyWindow then
-    MenuManager.fiberList:fork(self.propertyWindow.hide, self.propertyWindow)
+    MenuManager.fiberList:forkMethod(self.propertyWindow, "hide")
   end
   if self.targetWindow then
-    MenuManager.fiberList:fork(self.targetWindow.hide, self.targetWindow)
+    MenuManager.fiberList:forkMethod(self.targetWindow, "hide")
   end
   if self.scrollArrows then
     for i = 1, #self.scrollArrows do

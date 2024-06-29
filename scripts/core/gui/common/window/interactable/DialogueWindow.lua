@@ -23,17 +23,16 @@ local DialogueWindow = class(Window)
 
 --- Constructor.
 -- @tparam Menu menu Parent Menu.
--- @tparam number w Width of the window.
--- @tparam number h Height of the window.
--- @tparam number x Pixel x of the window.
--- @tparam number y Pixel y of the window.
-function DialogueWindow:init(menu, w, h, x, y)
+-- @tparam[opt] number w Width of the window.
+-- @tparam[opt] number h Height of the window.
+-- @tparam[opt] Vector pos The position of the center of the window.
+function DialogueWindow:init(menu, w, h, pos)
   self:initProperties()
   w = w or ScreenManager.width - menu:windowMargin()
   h = h or ScreenManager.height / 4
-  x = x or (w - ScreenManager.width) / 2 + menu:windowMargin()
-  y = y or (ScreenManager.height - h) / 2 - menu:windowMargin()
-  Window.init(self, menu, w, h, Vector(x, y))
+  pos = pos or Vector((w - ScreenManager.width) / 2 + menu:windowMargin(),
+    (ScreenManager.height - h) / 2 - menu:windowMargin())
+  Window.init(self, menu, w, h, pos)
 end
 --- Sets window's properties.
 function DialogueWindow:initProperties()
@@ -97,9 +96,6 @@ function DialogueWindow:showDialogue(text, align, speaker)
   self.dialogue:setAlign(align)
   self.dialogue:show()
   self.dialogue:rollText(text)
-  self.menu:waitForResult()
-  self.result = nil
-  Fiber:wait()
 end
 
 -- ------------------------------------------------------------------------------------------------

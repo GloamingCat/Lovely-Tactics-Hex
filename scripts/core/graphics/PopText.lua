@@ -127,7 +127,7 @@ function PopText:popUp(wait)
     return 0
   end
   if not wait then
-    Fiber:fork(self.pop, self, 1)
+    Fiber:forkMethod(self, 'pop', 1)
     return 60 / self.speed + self.pause + 60 / self.speed * 4
   else
     self:pop(1)
@@ -143,7 +143,7 @@ function PopText:popDown(wait)
     return 0
   end
   if not wait then
-    Fiber:fork(self.pop, self, -1)
+    Fiber:forkMethod(self, 'pop', -1)
     return 60 / self.speed + self.pause + 60 / self.speed * 4
   else
     self:pop(-1)

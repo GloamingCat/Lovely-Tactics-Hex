@@ -27,7 +27,7 @@ local GeneralEvents = {}
 -- @tfield number y Player's destination y.
 -- @tfield number h Player's destination height.
 -- @tfield number direction Player's destination direction (in degrees).
--- @tfield boolean movePlayer Flag to move player to the event's tile while fading.
+-- @tfield boolean wait Flag to wait for all exit scripts to run before continuing.
 
 --- Arguments for battle commands.
 -- @table BattleArguments
@@ -141,17 +141,11 @@ end
 -- @coroutine
 -- @tparam TransitionArguments args
 function GeneralEvents:moveToField(args)
-  if self.movePlayer and self.char.tile and self.char.tile ~= FieldManager.player:getTile() then
-    FieldManager.player.fiberList:fork(function()
-      -- Character
-      if FieldManager.player.autoTurn then
-        FieldManager.player:turnToTile(self.char.tile.x, self.char.tile.y)
-      end
-      FieldManager.player:playMoveAnimation()
-      FieldManager.player:walkToTile(self.char.tile:coordinates())
-    end)
+  print('EXIT VAR', args.exit)
+  local fiber = FieldManager.fiberList:forkMethod(FieldManager, 'loadTransition', args, nil, args.exit)
+  if args.wait then
+    fiber:waitForEnd()
   end
-  FieldManager:loadTransition(args, nil, args.exit)
 end
 --- Loads battle field.
 -- @coroutine

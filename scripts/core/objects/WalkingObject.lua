@@ -30,16 +30,26 @@ local WalkingObject = class(DirectedObject)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
+--- Overrides `Object:initProperties`.
 --- Initializes movement / animation properties.
-function WalkingObject:initProperties()
-  self.speed = Config.player.walkSpeed
-  self.autoAnim = true
-  self.autoTurn = true
+-- @override
+function WalkingObject:initProperties(data, save)
+  DirectedObject.initProperties(self, data, save)
+  self.cropMovement = false
+  self.paused = false
+  self.autoAnim = false
+  self.autoTurn = false
+  self.speed = (data.defaultSpeed or 100) / 100 * Config.player.walkSpeed
   self.walkAnim = 'Walk'
   self.idleAnim = 'Idle'
   self.dashAnim = 'Dash'
-  self.cropMovement = false
-  self.paused = false
+  if save then
+    self.speed = save.speed or (save.defaultSpeed or 100) * Config.player.walkSpeed / 100
+    if save.autoAnim ~= nil then
+      self.autoAnim = save.autoAnim
+      self.autoTurn = save.autoTurn
+    end
+  end
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -75,6 +85,9 @@ function WalkingObject:walkToPoint(x, y, z)
   z = z or self.position.z
   x, y, z = round(x), round(y), round(z)
   local distance = len(self.position.x - x, self.position.y - y, self.position.z - z)
+  if distance < 0.2 then
+    return true
+  end
   self:moveTo(x, y, z, self.speed / distance, true)
   return self.position:almostEquals(x, y, z, 0.2)
 end

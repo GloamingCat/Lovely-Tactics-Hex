@@ -50,6 +50,7 @@ local CharacterEvents = {}
 -- @tfield[opt] boolean optional Flag to not raise an error when the character is not found.
 -- @tfield[opt] boolean permanent Flag to create the character again when field if reloaded.
 -- @tfield[opt=0] number time Number of frames to wait before destroying the character.
+-- @tfield[opt] boolean wait Flag to wait until the character is deleted.
 
 --- Common arguments for animation commands.
 -- @table PropArguments
@@ -94,13 +95,17 @@ function CharacterEvents:deleteChar(args)
   if not char then
     return
   end
-  if args.time and args.time > 0 then
-    FieldManager.currentField.fiberList:fork(function()
+  local fiber = self:fork(function()
+    if args.time and args.time > 0 then
       self:wait(args.time)
-      char:destroy(args.permanent)
-    end)
-  else
+    end
+    char:transferTile(char:originalCoordinates())
+    char:initProperties(char.data)
+    char:initScripts(char.data)
     char:destroy(args.permanent)
+  end)
+  if args.wait then
+    fiber:waitForEnd()
   end
 end
 --- Changes a character's properties.
@@ -114,10 +119,13 @@ function CharacterEvents:resetChar(args)
     char:transferTile(char:originalCoordinates())
   end
   if args.props then
-    char:initProperties(self.data)
+    char:initProperties(char.data)
+  end
+  if args.vars then
+    char:initVariables()
   end
   if args.scripts then
-    char:initScripts(self.data)
+    char:initScripts(char.data)
   end
 end
 --- Changes a character's properties.
@@ -162,7 +170,7 @@ function CharacterEvents:setShadowVisibility(args)
   self:fadeSprite(char.shadow, args.visible, args.fade or args.time, args.wait)
 end
 --- Prints basic properties of a character.
--- @tparam PropClassArguments
+-- @tparam PropClassArguments args
 function CharacterEvents:logProperties(args)
   local char = self:findCharacter(args.key, true)
   if not char then
@@ -284,7 +292,7 @@ function CharacterEvents:moveCharPath(args)
   local action = MoveAction()
   action.pathLimit = args.limit or math.huge
   local input = ActionInput(action, char, tile)
-  local fiber = self:fork(input.action.execute, input.action, input)
+  local fiber = self:forkMethod(input.action, 'execute', input)
   if args.wait then
     fiber:waitForEnd()
   end

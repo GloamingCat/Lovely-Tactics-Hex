@@ -1,21 +1,17 @@
 
 -- ================================================================================================
 
---- A common class for interactable and transformable objects.
+--- Common functionality for interactable and transformable objects.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod Object
--- @extend Transformable
 
 -- ================================================================================================
 
 -- Imports
 local Vector = require('core/math/Vector')
 
--- Constants
-local pph = Config.grid.pixelsPerHeight
-
 -- Class table.
-local Object = class(Transformable)
+local Object = class()
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -23,14 +19,31 @@ local Object = class(Transformable)
 
 --- Constructor.
 -- @tparam table data Data from file (obstacle or character).
--- @tparam ObjectTile tile The tile of the object.
-function Object:init(data, tile)
+-- @tparam[opt] ObjectTile tile The tile of the object.
+-- @tparam[opt] table save Save data.
+function Object:init(data, tile, save)
+  assert(not (save and save.deleted), 'Deleted object: ' .. (data.name or data.key))
+  self:initProperties(data, save)
+  self.tile = tile
+  self:addToTiles()
+end
+--- Initializes data, name, and tags.
+-- @tparam table data The info about the object's instance.
+-- @tparam[opt] table save The instance's save data.
+function Object:initProperties(data, save)
   self.data = data
+  self.saveData = save
   self.name = data.name or data.key
+  self.key = data.key
   if data.tags then
     self.tags = Database.loadTags(data.tags)
   end
-  self.tile = tile
+end
+--- Differentiates characters/animated interactable from obstacle and basic interactables.
+-- The default value is false.
+-- @treturn boolean Whether this object contains walk/jump methods.
+function Object:moves() 
+  return false
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -118,21 +131,6 @@ function Object:collision(tile, dx, dy, dh)
   local dest = Vector(dx, dy, dh)
   dest:add(orig)
   return FieldManager.currentField:collision(self, orig, dest)
-end
---- Gets the collider's height in grid units.
--- @tparam number dx The x of the tile of check the height, relative to the object's position.
--- @tparam number dy The y of the tile of check the height, relative to the object's position.
--- @treturn number Height in grid units.
-function Object:getHeight(dx, dy)
-  return 1
-end
---- Gets the collider's height in pixels.
--- @tparam number dx The x of the tile of check the height, relative to the object's position.
--- @tparam number dy The y of the tile of check the height, relative to the object's position.
--- @treturn number Height in pixels.
-function Object:getPixelHeight(dx, dy)
-  local h = self:getHeight(dx, dy)
-  return h * pph
 end
 
 return Object

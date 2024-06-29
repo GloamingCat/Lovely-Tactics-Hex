@@ -21,21 +21,27 @@ local TextInputMenu = class(Menu)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `Menu:init`. 
--- @override
-function TextInputMenu:init(parent, description, emptyAllowed, cancelAllowed)
+--- Constructor.
+-- @tparam Menu parent Parent menu.
+-- @tparam string description The text shown in the window above the input window.
+-- @tparam[opt=0]  number minLength The minimum length of the input text.
+-- @tparam[opt] number maxLength The maximum length of the input text.
+-- @tparam[opt] number cancelValue The value returned when the player cancels.
+--  If nil, the player can't cancel.
+function TextInputMenu:init(parent, description, minLength, maxLength, cancelValue)
   self.description = description
-  self.emptyAllowed = emptyAllowed
-  self.cancelAllowed = cancelAllowed
+  self.minLength = minLength
+  self.maxLength = maxLength
   Menu.init(self, parent)
 end
 --- Overrides `Menu:createWindows`. 
 -- @override
 function TextInputMenu:createWindows()
   self.name = 'TextInput Menu'
-  local textWindow = TextInputWindow(self, self.emptyAllowed, self.cancelAllowed)
+  local textWindow = TextInputWindow(self, self.minLength, self.maxLength, self.cancelValue,
+    nil, nil, Vector(0, 0, -10))
   if self.description then
-    local descriptionWindow = DescriptionWindow(self, 100, 30, Vector(0, -50, 0))
+    local descriptionWindow = DescriptionWindow(self, 100, 30, Vector(0, -50, -10))
     descriptionWindow.text:setMaxHeight(30 - descriptionWindow:paddingY() * 2)
     descriptionWindow.text:setAlign('center', 'center')
     descriptionWindow:updateText(self.description)

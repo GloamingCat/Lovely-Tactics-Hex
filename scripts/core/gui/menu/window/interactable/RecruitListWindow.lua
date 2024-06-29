@@ -100,7 +100,7 @@ function RecruitListWindow:onButtonConfirm(button)
   local w = self.menu.countWindow
   local w2 = self.menu.descriptionWindow
   self:hide()
-  _G.Fiber:fork(w2.hide, w2)
+  _G.Fiber:forkMethod(w2, 'hide')
   w:show()
   if self.hire then
     w:setChar(button.char, button.price)

@@ -78,7 +78,7 @@ function BattleManager:getState()
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Battle Loop
+-- Load Field
 -- ------------------------------------------------------------------------------------------------
 
 --- Loads a battle field and waits for the battle to finish.
@@ -96,7 +96,7 @@ function BattleManager:loadBattle(state)
   while true do
     FieldManager:playFieldBGM()
     self:setUp(self.saveData)
-    local result = self:runBattleTry()
+    local result = self:battleLoop()
     self:clear()
     if result == self.PostDefeatChoice.CONTINUE then
       break
@@ -109,15 +109,29 @@ function BattleManager:loadBattle(state)
     end
   end
   self.saveData = nil
-  FieldManager:loadTransition(FieldManager.playerState.transition, FieldManager.playerState.field)
+  FieldManager:loadTransition(FieldManager.playerState.transition, FieldManager.playerState.field, '')
   self.battleFiber = nil
 end
---- Runs until battle finishes.
+--- Clears batte information from characters and field.
+function BattleManager:clear()
+  for tile in FieldManager.currentField:gridIterator() do
+    tile.ui:destroy()
+    tile.ui = nil
+  end
+  if self.cursor then
+    self.cursor:destroy()
+  end
+  TroopManager:clear()
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Battle Loop
+-- ------------------------------------------------------------------------------------------------
+
+--- Runs before the first turn.
 -- @coroutine
--- @tparam boolean skipIntro If true, the camera does not present the parties
---  and the field's load scripts are not executed.
--- @treturn number The result of the end Menu.
-function BattleManager:runBattleTry()
+-- @treturn boolean Whether the first turn should [re]initialize the characters.
+function BattleManager:battleStart()
   self.result = nil
   self.winner = nil
   self.onBattle = true
@@ -126,12 +140,21 @@ function BattleManager:runBattleTry()
   for fiber in FieldManager.currentField.blockingFibers:iterator() do
     fiber:waitForEnd()
   end
-  local skipIntro = self.saveData and self.saveData.turn
-  if not skipIntro then
+  local initialize = not self.saveData or not self.saveData.turn
+  if initialize then
     MenuManager:showMenuForResult(IntroMenu(nil))
     TroopManager:onBattleStart()
   end
-  self.result, self.winner = TurnManager:runTurn(skipIntro)
+  return initialize
+end
+--- Runs until battle finishes.
+-- @coroutine
+-- @tparam boolean skipIntro If true, the camera does not present the parties
+--  and the field's load scripts are not executed.
+-- @treturn number The result of the end Menu.
+function BattleManager:battleLoop()
+  local initialize = self:battleStart()
+  self.result, self.winner = TurnManager:runTurn(not initialize)
   while not self.result do
     self.result, self.winner = TurnManager:runTurn()
   end
@@ -155,17 +178,6 @@ function BattleManager:battleEnd()
   end
   self.onBattle = false
   return result
-end
---- Clears batte information from characters and field.
-function BattleManager:clear()
-  for tile in FieldManager.currentField:gridIterator() do
-    tile.ui:destroy()
-    tile.ui = nil
-  end
-  if self.cursor then
-    self.cursor:destroy()
-  end
-  TroopManager:clear()
 end
 
 -- ------------------------------------------------------------------------------------------------

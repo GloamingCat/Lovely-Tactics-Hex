@@ -31,6 +31,9 @@ function AnimatedObject:initGraphics(animations, initAnim, transform, sets)
   self.animName = nil
   self.transform = transform or Affine.neutralTransform
   self.sprite = Sprite(FieldManager.renderer)
+  if self.position then
+    self.sprite:setPosition(self.position)
+  end
   if sets then
     self:initAnimationSets(animations)
   else
@@ -138,7 +141,7 @@ function AnimatedObject:replayAnimation(name, row, index)
   self.sprite.renderer.needsRedraw = true
   return anim
 end
---- Overrides `TransformableObject:update`. Updates animation.
+--- Overrides `Transformable:update`. Updates animation.
 -- @override
 function AnimatedObject:update(dt)
   TransformableObject.update(self, dt)

@@ -71,7 +71,7 @@ function GameManager:start()
   if self.editor then
     EditorManager:start()
   else
-    MenuManager.fiberList:fork(MenuManager.showMenuForResult, MenuManager, TitleMenu(nil))
+    MenuManager.fiberList:forkMethod(MenuManager, 'showMenuForResult', TitleMenu(nil))
   end
   print('Game started.')
 end
@@ -93,9 +93,9 @@ function GameManager:setSave(save)
   if save.battleState then
     -- Load mid-battle.
     BattleManager.params = Database.loadTags(save.battleState.params)
-    FieldManager.fiberList:fork(BattleManager.loadBattle, BattleManager, save.battleState)
+    FieldManager.fiberList:forkMethod(BattleManager, 'loadBattle', save.battleState)
   else
-    FieldManager.fiberList:fork(FieldManager.loadTransition, FieldManager, save.playerState.transition, save.playerState.field)
+    FieldManager.fiberList:forkMethod(FieldManager, 'loadTransition', save.playerState.transition, save.playerState.field)
   end
 end
 --- Sets the system config.

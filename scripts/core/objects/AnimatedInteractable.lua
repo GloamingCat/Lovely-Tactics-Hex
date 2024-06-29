@@ -15,7 +15,6 @@
 -- Imports
 local Interactable = require('core/objects/Interactable')
 local JumpingObject = require('core/objects/JumpingObject')
-local Vector = require('core/math/Vector')
 
 -- Alias
 local tile2Pixel = math.field.tile2Pixel
@@ -27,57 +26,25 @@ local AnimatedInteractable = class(Interactable, JumpingObject)
 -- Inititialization
 -- ------------------------------------------------------------------------------------------------
 
---- Constructor.
+--- Constructor. Extends `Interactable:init`. Combines with `TransformableObject:init` and
+-- `AnimatedObject:initGraphics`
 -- @tparam table instData The character's instance data from field file.
 -- @tparam table save The instance's save data.
 function AnimatedInteractable:init(instData, save)
-  assert(not (save and save.deleted), 'Deleted object.')
-  -- Position
-  local pos = Vector(0, 0, 0)
-  if save then
-    pos.x, pos.y, pos.z = save.x, save.y, save.z
-  else
-    pos.x, pos.y, pos.z = tile2Pixel(instData.x, instData.y, instData.h)
-  end
-  -- Object:init
-  JumpingObject.init(self, instData, pos)
-  self.saveData = save
-  FieldManager.updateList:add(self)
-  -- Initialize properties
-  self:initProperties(instData, save)
+  JumpingObject.init(self, instData, nil, save)
+  Interactable.init(self, instData, save)
   self:initGraphics(instData, save)
-  self:initScripts(instData, save)
-  -- Initial position
-  self:setPosition(pos)
-  self:addToTiles()
 end
---- Sets generic properties, like collision, speed, and other properties from `JumpingObject:initProperties`.
--- @tparam table instData The info about the object's instance.
--- @tparam[opt] table save The instance's save data.
+--- Combines `Interactable:initProperties` and `JumpingObject:initProperties`.
+-- @override
 function AnimatedInteractable:initProperties(instData, save)
   Interactable.initProperties(self, instData, save)
-  JumpingObject.initProperties(self)
-  self.name = instData.name or self.key
-  self.autoAnim = not instData.fixedAnimation
-  self.autoTurn = not instData.fixedDirection
-  self.speed = (instData.defaultSpeed or 100) / 100 * Config.player.walkSpeed
-  if save then
-    self.speed = save.speed or (save.defaultSpeed or 100) * Config.player.walkSpeed / 100
-    if save.autoAnim ~= nil then
-      self.autoAnim = save.autoAnim
-      self.autoTurn = save.autoTurn
-    end
-  end
+  JumpingObject.initProperties(self, instData)
 end
---- Sets shadow, visibility and other graphic properties from `AnimatedObject:initGraphics`.
--- @tparam table instData The info about the object's instance.
--- @tparam[opt] table save The instance's save data.
+--- Overrides `AnimatedObject:initGraphics`.
+-- Sets visibility and other graphic properties from `AnimatedObject:initGraphics`.
+-- @override
 function AnimatedInteractable:initGraphics(instData, save)
-  local shadowID = save and save.shadowID or instData.shadowID
-  if shadowID and shadowID >= 0 then
-    local shadowData = Database.animations[shadowID]
-    self.shadow = ResourceManager:loadSprite(shadowData, FieldManager.renderer)
-  end
   local animName = save and save.animName or instData.animation
   local direction = save and save.direction or instData.direction
   local transform = save and save.transform or instData.transform
@@ -95,69 +62,27 @@ function AnimatedInteractable:initGraphics(instData, save)
     self.animation:setIndex(frame)
   end
 end
-
--- ------------------------------------------------------------------------------------------------
--- Shadow
--- ------------------------------------------------------------------------------------------------
-
---- Overrides `Object:setXYZ`. Updates shadow's position.
+--- Overrides `Object:moves`. Returns true.
 -- @override
-function AnimatedInteractable:setXYZ(x, y, z)
-  z = z or self.position.z
-  JumpingObject.setXYZ(self, x, y, z)
-  if self.shadow then
-    self.shadow:setXYZ(x, y, z + 1)
-  end
-end
---- Overrides `Object:setVisible`. Updates shadow's visibility.
--- @override
-function AnimatedInteractable:setVisible(value)
-  JumpingObject.setVisible(self, value)
-  if self.shadow then
-    self.shadow:setVisible(value)
-  end
-end
---- Overrides `Object:setRGBA`. Updates shadow's color.
--- @override
-function AnimatedInteractable:setRGBA(...)
-  JumpingObject.setRGBA(self, ...)
-  if self.sprite then
-    self.sprite:setRGBA(...)
-  end
-  if self.shadow then
-    self.shadow:setRGBA(nil, nil, nil, self.color.a)
-  end
+function AnimatedInteractable:moves() 
+  return true
 end
 
 -- ------------------------------------------------------------------------------------------------
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `AnimatedObject:update`. Updates fibers.
+--- Combines `JumpingObject:update` with `Interactable:update`.
 -- @override
 function AnimatedInteractable:update(dt)
-  if self.paused then
-    return
-  end
   JumpingObject.update(self, dt)
   Interactable.update(self, dt)
 end
---- Removes from draw and update list.
+--- Combines `Interactable:destroy` and `JumpingObject:destroy`.
+-- @override
 function AnimatedInteractable:destroy(permanent)
-  if self.shadow then
-    self.shadow:destroy()
-  end
-  FieldManager.characterList:removeElement(self)
-  FieldManager.characterList[self.key] = false
   JumpingObject.destroy(self)
   Interactable.destroy(self, permanent)
-end
---- Changes character's key.
--- @tparam string key New key.
-function AnimatedInteractable:setKey(key)
-  FieldManager.characterList[self.key] = nil
-  FieldManager.characterList[key] = self
-  self.key = key
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -175,7 +100,6 @@ function AnimatedInteractable:getPersistentData()
   data.animName = self.animName
   data.speed = self.speed
   data.visible = self.visible
-  data.passable = self.passable
   data.autoTurn = self.autoTurn
   data.autoAnim = self.autoAnim
   return data

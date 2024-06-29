@@ -410,5 +410,9 @@ function Field:isGrounded(x, y, h)
   end
   return false
 end
+-- For debugging.
+function Field:__tostring()
+  return 'Field: [' .. self.id .. '] ' .. self.name
+end
 
 return Field

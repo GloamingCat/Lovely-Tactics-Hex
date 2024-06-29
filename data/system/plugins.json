@@ -121,21 +121,6 @@
   },
   {
     "on": true,
-    "name": "plugins/DebugBox.lua",
-    "tags": [
-      {
-        "key": "key",
-        "value": "\"insert\""
-      },
-      {
-        "key": "mod",
-        "value": "\"lalt\""
-      }
-    ],
-    "key": ""
-  },
-  {
-    "on": true,
     "name": "plugins/SpeedButton.lua",
     "tags": [
       {
@@ -298,6 +283,25 @@
       {
         "key": "selfReflect",
         "value": "\"offensive\""
+      }
+    ],
+    "key": ""
+  },
+  {
+    "on": true,
+    "name": "plugins/Console.lua",
+    "tags": [
+      {
+        "key": "key",
+        "value": "\"insert\""
+      },
+      {
+        "key": "mod",
+        "value": "\"lalt\""
+      },
+      {
+        "key": "interface",
+        "value": "console"
       }
     ],
     "key": ""

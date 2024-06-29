@@ -53,13 +53,14 @@ function FieldManager:update(dt)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Field transition
+-- Field Loading
 -- ------------------------------------------------------------------------------------------------
 
 --- Creates field from ID.
 -- @tparam number fieldID The field's ID.
 -- @tparam[opt] table save Field's save data.
-function FieldManager:loadField(fieldID, save)
+-- @tparam[opt] string exit The key of the object that originated the exit transition.
+function FieldManager:loadField(fieldID, save, exit)
   if self.currentField then
     self:runExitScripts(exit)
     self.currentField:destroy()
@@ -79,28 +80,27 @@ function FieldManager:loadField(fieldID, save)
   collectgarbage('collect')
   return fieldData
 end
---- Loads a field from file data and replaces current. 
--- The information about the field must be stored in the transition data.
--- The loaded field will the treated as an exploration field.
--- Don't use this function if you just want to move the player to another tile in the same field.
--- @tparam table transition The transition data.
--- @tparam[opt] table save Field's save data.
--- @tparam[opt] string exit The key of the object that originated the exit transition.
-function FieldManager:loadTransition(transition, save, exit)
-  if self.currentField then
-    self:storeFieldData()
+--- Create new field camera.
+-- @tparam table data Field data.
+-- @tparam number width Screen width in pixels.
+-- @tparam number height Screen height in pixels.
+-- @tparam table images Table of background/foreground images.
+function FieldManager:initializeCamera(data, width, height, images)
+  local h = data.prefs.maxHeight
+  local l = 4 * #data.layers.terrain + #data.layers.obstacle + #data.characters
+  local mind = mathf.minDepth(data.sizeX, data.sizeY, h)
+  local maxd = mathf.maxDepth(data.sizeX, data.sizeY, h)
+  local camera = FieldCamera(mind, maxd, data.sizeX * data.sizeY * l)
+  camera:resizeCanvas(width, height)
+  camera:setXYZ(mathf.pixelCenter(data.sizeX, data.sizeY))
+  if self.renderer then
+    camera:setColor(self.renderer.color)
+  else
+    camera:setRGBA(0, 0, 0, 1)
   end
-  local fieldData = self:loadField(transition.fieldID, save)
-  FieldLoader.createTransitions(fieldData.prefs.transitions)
-  self.hud = self.hud or PlayerMenu()
-  self:playFieldBGM()
-  for fiber in self.fiberList:iterator() do
-    if fiber.data and fiber.data.block then
-      self.currentField.blockingFibers:add(fiber)
-    end
-  end
-  self:initializePlayer(transition, save)
-  self:runLoadScripts(save ~= nil)
+  camera:initializeImages(images)
+  ScreenManager:setRenderer(camera, 1)
+  self.renderer = camera
 end
 --- Plays current field's BGM, if not already playing.
 -- @tparam[opt] number time The duration of the fading transition.
@@ -124,42 +124,67 @@ function FieldManager:runLoadScripts(fromSave)
   local fibers = {}
   -- Init character
   for char in self.characterList:iterator() do
-    fibers[#fibers + 1] = self.currentField.fiberList:fork(char.onLoad, char, not fromSave)
+    fibers[#fibers + 1] = char.fiberList:forkMethod(char, 'onLoad', not fromSave)
   end
   -- Field script
-  fibers[#fibers + 1] = self.currentField.fiberList:fork(self.currentField.onLoad, self.currentField, not fromSave)
+  fibers[#fibers + 1] = self.currentField.fiberList:forkMethod(self.currentField, 'onLoad', not fromSave)
   -- Resume interact scripts
   for char in self.characterList:iterator() do
-    fibers[#fibers + 1] = self.currentField.fiberList:fork(char.onInteract, char)
+    fibers[#fibers + 1] = char.fiberList:forkMethod(char, 'onInteract')
   end
   -- Resume collider scripts
   for char in self.characterList:iterator() do
     if not fromSave then
       char:collideTile(char:getTile())
     end
-    fibers[#fibers + 1] = self.currentField.fiberList:fork(char.onCollide, char)
+    fibers[#fibers + 1] = char.fiberList:forkMethod(char, 'onCollide')
   end
 end
 --- Execute current field's load script and characters' load scripts.
 -- @tparam[opt] string exit The key of the object that originated the exit transition.
 function FieldManager:runExitScripts(exit)
   local fibers = {}
+  -- Field script
+  fibers[1] = self.currentField.fiberList:forkMethod(self.currentField, 'onExit', exit)
   -- Characters
   for char in self.characterList:iterator() do
-    fibers[#fibers + 1] = self.currentField.fiberList:fork(char.onExit, char, exit)
+    fibers[#fibers + 1] = char.fiberList:forkMethod(char, 'onExit', exit)
   end
-  -- Field script
-  fibers[#fibers + 1] = self.currentField.fiberList:fork(self.currentField.onExit, self.currentField, exit)
   -- Wait
   for _, fiber in ipairs(fibers) do
+    print(fiber)
     fiber:waitForEnd()
   end
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Field Creation (internal use only)
+-- Player Transition
 -- ------------------------------------------------------------------------------------------------
 
+--- Loads a field from file data and replaces current. 
+-- The information about the field must be stored in the transition data.
+-- The loaded field will the treated as an exploration field.
+-- Don't use this function if you just want to move the player to another tile in the same field.
+-- @tparam table transition The transition data.
+-- @tparam[opt] table save Field's save data.
+-- @tparam[opt] string exit The key of the object that originated the exit transition.
+function FieldManager:loadTransition(transition, save, exit)
+  if self.currentField then
+    self:storeFieldData()
+  end
+  print('LOAD TRANSITION', transition, save, exit)
+  local fieldData = self:loadField(transition.fieldID, save, exit)
+  FieldLoader.createTransitions(fieldData.prefs.transitions)
+  self.hud = self.hud or PlayerMenu()
+  self:playFieldBGM()
+  for fiber in self.fiberList:iterator() do
+    if fiber.data and fiber.data.block then
+      self.currentField.blockingFibers:add(fiber)
+    end
+  end
+  self:initializePlayer(transition, save)
+  self:runLoadScripts(save ~= nil)
+end
 --- Creates the Player character according to the transition.
 -- @tparam table transition The transition data.
 -- @tparam[opt] table save Current field state.
@@ -168,28 +193,6 @@ function FieldManager:initializePlayer(transition, save)
   self.renderer.focusObject = player
   self.renderer:setPosition(player.position)
   self.player = player
-end
---- Create new field camera.
--- @tparam table data Field data.
--- @tparam number width Screen width in pixels.
--- @tparam number height Screen height in pixels.
--- @tparam table images Table of background/foreground images.
-function FieldManager:initializeCamera(data, width, height, images)
-  local h = data.prefs.maxHeight
-  local l = 4 * #data.layers.terrain + #data.layers.obstacle + #data.characters
-  local mind = mathf.minDepth(data.sizeX, data.sizeY, h)
-  local maxd = mathf.maxDepth(data.sizeX, data.sizeY, h)
-  local camera = FieldCamera(mind, maxd, data.sizeX * data.sizeY * l)
-  camera:resizeCanvas(width, height)
-  camera:setXYZ(mathf.pixelCenter(data.sizeX, data.sizeY))
-  if self.renderer then
-    camera:setColor(self.renderer.color)
-  else
-    camera:setRGBA(0, 0, 0, 1)
-  end
-  camera:initializeImages(images)
-  ScreenManager:setRenderer(camera, 1)
-  self.renderer = camera
 end
 
 -- ------------------------------------------------------------------------------------------------

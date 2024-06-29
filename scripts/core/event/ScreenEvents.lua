@@ -35,6 +35,7 @@ local ScreenEvents = {}
 -- @tfield number x Tile grid x, for `focusTile`.
 -- @tfield number y Tile grid y, for `focusTile`.
 -- @tfield[opt=1] number h Tile's height, for `focusTile`.
+-- @tfield[opt=0] number time Pause time, for `focusParties`.
 
 -- ------------------------------------------------------------------------------------------------
 -- Shader Effect
@@ -100,13 +101,19 @@ function ScreenEvents:focusCharacter(args)
   FieldManager.renderer:moveToObject(char, args.speed, args.wait)
   FieldManager.renderer.focusObject = char
 end
---- Makes focus on given tile.
+--- Makes camera focus on given tile.
 -- @coroutine
 -- @tparam CameraArguments args
 function ScreenEvents:focusTile(args)
   local tile = FieldManager.currentField:getObjectTile(args.x, args.y, args.h or 1)
   FieldManager.renderer.focusObject = nil
   FieldManager.renderer:moveToTile(tile, args.speed, args.wait)
+end
+--- Makes camera focus on each party in the field.
+-- @coroutine
+-- @tparam CameraArguments args
+function ScreenEvents:focusParties(args)
+  FieldManager.renderer:showParties(args.speed, args.time)
 end
 
 -- ------------------------------------------------------------------------------------------------

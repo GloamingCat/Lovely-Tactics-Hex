@@ -1241,6 +1241,19 @@
               "name": "1",
               "tags": [],
               "key": ""
+            },
+            {
+              "global": false,
+              "block": false,
+              "wait": true,
+              "onLoad": false,
+              "onInteract": false,
+              "onCollide": false,
+              "onExit": true,
+              "description": "",
+              "name": "11",
+              "tags": [],
+              "key": ""
             }
           ],
           "replaceScripts": false,

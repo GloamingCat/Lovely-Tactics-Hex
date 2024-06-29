@@ -24,17 +24,22 @@ function Fiber:init(root, func, ...)
     self.root = root
   end
   self.interruptable = true
-  local arg = {...}
+  local n = select("#", ...)
+  local arg
   if not func then
-    table.insert(arg, 1, self)
+    arg = { self, ... }
+    n = n + 1
     func = self.execute
+  else
+    arg = {...}
   end
   self.execute = function()
-    func(unpack(arg))
+    func(unpack(arg, 1, n))
   end
   self.origin = debug.getinfo(3, "n")
   self.traceback = debug.traceback() 
   self.coroutine = coroutine.create(self.execute)
+  self.name = self.origin.name
 end
 --- Creates new Fiber from a script table.
 -- @tparam FiberList root The list this Fiber belongs to.
@@ -84,12 +89,6 @@ end
 function Fiber:running()
   return self.coroutine ~= nil
 end
---- Creates a new fiber in from the same root that executes given function.
--- @tparam function func The function of the new Fiber.
--- @treturn Fiber Newly created Fiber.
-function Fiber:fork(func, ...)
-  return Fiber(self.root, func, ...)
-end
 --- Forcefully ends this Fiber, if possible.
 function Fiber:interrupt()
   if self.interruptable then
@@ -102,16 +101,26 @@ function Fiber:finish()
 end
 
 -- ------------------------------------------------------------------------------------------------
+-- Fork
+-- ------------------------------------------------------------------------------------------------
+
+--- Delegates to `FiberList:fork`.
+function Fiber:fork(...)
+  return self.root:fork(...)
+end
+--- Delegates to `FiberList:forkMethod`.
+function Fiber:forkMethod(...)
+  return self.root:forkMethod(...)
+end
+--- Delegates to `FiberList:fork`.
+function Fiber:forkFromScript(...)
+  return self.root:forkFromScript(...)
+end
+
+-- ------------------------------------------------------------------------------------------------
 -- Auxiliary functions
 -- ------------------------------------------------------------------------------------------------
 
---- Executes this fiber until it finishes.
--- Used specially when this fiber does not have a root, 
--- so it's not updated every frame.
-function Fiber:execAll()
-  while self:update() do
-  end
-end
 --- Wait until this fiber's function finishes.
 -- Specially useful when other fiber must wait until this one finishes.
 -- @coroutine
@@ -160,7 +169,7 @@ function Fiber:invoke(time, func, ...)
 end
 -- For debugging.
 function Fiber:__tostring()
-  return 'Fiber: ' .. tostring(self.origin.name)
+  return 'Fiber: ' .. tostring(self.name)
 end
 
 return Fiber

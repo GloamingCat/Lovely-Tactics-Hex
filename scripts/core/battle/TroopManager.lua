@@ -13,7 +13,7 @@
 -- Imports
 local Animation = require('core/graphics/Animation')
 local Battler = require('core/battle/battler/Battler')
-local Character = require('core/objects/Character')
+local BattleCharacter = require('core/objects/BattleCharacter')
 local List = require('core/datastruct/List')
 local Troop = require('core/battle/Troop')
 
@@ -184,7 +184,7 @@ function TroopManager:createCharacter(tile, dir, member, party)
     scripts = {},
     tags = {} }
   charData.x, charData.y, charData.h = tile:coordinates()
-  return Character(charData)
+  return BattleCharacter(charData)
 end
 --- Removes and deletes the given character.
 -- @tparam Character char The character to be removed.

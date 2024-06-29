@@ -9,6 +9,7 @@
 
 -- Imports
 local AnimatedInteractable = require('core/objects/AnimatedInteractable')
+local BattleCharacter = require('core/objects/BattleCharacter')
 local Character = require('core/objects/Character')
 local Field = require('core/field/Field')
 local Interactable = require('core/objects/Interactable')
@@ -101,7 +102,11 @@ function FieldLoader.loadCharacters(field, instances, save)
     local save = persistentData.chars[inst.key]
     if not (save and save.deleted) then
       if (save and save.charID or inst.charID) >= 0 then
-        Character(inst, save)
+        if inst.party and inst.party >= 0 then
+          BattleCharacter(inst, save)
+        else
+          Character(inst, save)
+        end
       elseif inst.animation and inst.animation ~= '' then
         AnimatedInteractable(inst, save)
       else
@@ -121,7 +126,7 @@ function FieldLoader.createTransitions(transitions)
   local id = 0
   for _, t in ipairs(transitions) do
     for _, tile in ipairs(t.origin) do
-      FieldLoader.createTransitionTile(tile, t.destination, id)
+      FieldLoader.createTransitionTile(tile, t.destination, "Transition" .. tostring(id))
       id = id + 1
     end
   end
@@ -129,9 +134,9 @@ end
 --- Creates the interactable for a transition tile.
 -- @tparam table origin The coordinates of the origin tile (x, y, h).
 -- @tparam table destination The destination with coordinates, direction and field ID.
--- @return Interactable The transition object.
-function FieldLoader.createTransitionTile(origin, destination, i)
-  local key = "Transition" .. tostring(i)
+-- @tparam string key The key of the new object.
+-- @return Interactable The newly created transition object.
+function FieldLoader.createTransitionTile(origin, destination, key)
   local args = { fieldID = destination.fieldID,
     x = destination.x,
     y = destination.y,
@@ -144,6 +149,7 @@ function FieldLoader.createTransitionTile(origin, destination, i)
     end
   end
   local script = { func = func,
+    name = "Move To Field",
     block = true, 
     global = true,
     wait = true,
