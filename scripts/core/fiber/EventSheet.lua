@@ -161,6 +161,7 @@ function EventSheet:execute()
 end
 --- Runs the event created from the command execution.
 function EventSheet:runEvents()
+  self.startIndex = self.vars.runningIndex or 0
   if self.vars.runningIndex and not FieldManager:loadedFromSave() then
     local char = self.char and ' of character ' .. self.char.name or ''
     error('Script ' .. tostring(self.data.name) .. char .. " shouldn't be running.")
@@ -170,7 +171,7 @@ function EventSheet:runEvents()
     self.vars.runningIndex = self.vars.runningIndex + 1
     self:runCurrentEvent()
     if not self:running() or not self.vars.runningIndex then
-      return
+      break
     end
   end
   self.vars.runningIndex = nil
@@ -179,6 +180,7 @@ function EventSheet:runEvents()
   self.vars.interacting = nil
   self.vars.loading = nil
   self.vars.exit = nil
+  self.vars.destroyer = nil
 end
 --- Executes the event indicated by the current running index.
 function EventSheet:runCurrentEvent()
@@ -186,33 +188,6 @@ function EventSheet:runCurrentEvent()
   if not event.condition or event.condition(self) then
     event.execute(self, unpack(event.args))
   end
-end
---- Sets any variable needed to indicate that this script is running.
-function EventSheet:setUp()
-  if self.data then
-    if self.data.block then
-      FieldManager.currentField.blockingFibers:add(self)
-    end
-  end
-end
---- Resets any variable that indicates that this script is running.
-function EventSheet:clear()
-  if self.menu then
-    MenuManager:removeMenu(self.menu)
-    self.menu = nil
-  end
-  if self.data then
-    if self.data.block then
-      FieldManager.currentField.blockingFibers:removeElement(self)
-    end
-    self.data.running = nil
-  end
-end
---- Overrides `Fiber:finish`. 
--- @override
-function EventSheet:finish()
-  Fiber.finish(self)
-  self:clear()
 end
 --- Evaluates a raw string, replacing variable occurences and then parsing it as a Lua expression.
 -- @tparam string value The raw string.
@@ -225,6 +200,36 @@ function EventSheet:evaluate(value)
   else
     return loadformula(TextParser.evaluate(value), "script")(self)
   end
+end
+--- Sets any variable needed to indicate that this script is running.
+function EventSheet:setUp()
+  if self.data.block then
+    FieldManager.currentField.blockingFibers:add(self)
+  end
+end
+--- Resets any variable that indicates that this script is running.
+function EventSheet:clear()
+  if self.menu then
+    MenuManager:removeMenu(self.menu)
+    self.menu = nil
+  end
+  if self.data.block then
+    FieldManager.currentField.blockingFibers:removeElement(self)
+  end
+  self.data.running = nil
+end
+--- Overrides `Fiber:finish`. 
+-- @override
+function EventSheet:finish()
+  Fiber.finish(self)
+  self:clear()
+end
+--- Overrides `Fiber:printStackTrace`. 
+-- @override
+function EventSheet:printStackTrace(msg)
+  local index = tostring(self.vars and self.vars.runningIndex or nil)
+  local sindex = tostring(self.startIndex)
+  Fiber.printStackTrace(self, msg .. ' (runningIndex: ' .. index .. '-' .. sindex .. ')')
 end
 -- For debugging.
 function EventSheet:__tostring()

@@ -91,7 +91,7 @@ function BattleManager:loadBattle(state)
   self.battleFiber = _G.Fiber
   self.saveData = state
   TroopManager:reset()
-  FieldManager:loadField(self.params.fieldID or self.currentField.id)
+  FieldManager:setField(self.params.fieldID or self.currentField.id)
   -- Run battle
   while true do
     FieldManager:playFieldBGM()
@@ -101,7 +101,7 @@ function BattleManager:loadBattle(state)
     if result == self.PostDefeatChoice.CONTINUE then
       break
     elseif result == self.PostDefeatChoice.RETRY then
-      FieldManager:loadField(self.params.fieldID or self.currentField.id)
+      FieldManager:setField(self.params.fieldID or self.currentField.id)
       self.saveData = nil
     elseif result == self.PostDefeatChoice.EXIT then
       GameManager.restartRequested = true

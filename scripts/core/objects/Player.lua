@@ -28,8 +28,9 @@ local Player = class(Character)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `AnimatedInteractable:init`. 
--- @override
+--- Constructor.
+-- @tparam table transition Transition data (tile, direction and field ID).
+-- @tparam table save Save data of player character.
 function Player:init(transition, save)
   local troopData = Database.troops[TroopManager.playerTroopID]
   local leader = troopData.members[1]
@@ -52,8 +53,8 @@ function Player:init(transition, save)
 end
 --- Overrides `Character:initProperties`. 
 -- @override
-function Player:initProperties(...)
-  Character.initProperties(self, ...)
+function Player:initProperties(instData, save)
+  Character.initProperties(self, instData, save)
   self.inputDelay = 6 / 60
   self.walkSpeed = Config.player.walkSpeed
   self.dashSpeed = self.walkSpeed * Config.player.dashSpeed / 100
@@ -253,60 +254,6 @@ function Player:openMenu()
   self.menu = nil
   FieldManager.hud:show()
   FieldManager.playerInput = true
-end
-
--- ------------------------------------------------------------------------------------------------
--- Interaction
--- ------------------------------------------------------------------------------------------------
-
---- Interacts with whoever is the player looking at (if any).
--- @coroutine
--- @treturn boolean True if the character interacted with someone, false otherwise.
-function Player:interact()
-  self:playIdleAnimation()
-  local angle = self:getRoundedDirection()
-  local interacted = self:interactTile(self:getTile()) or self:interactAngle(angle)
-    or self:interactAngle(angle - 45) or self:interactAngle(angle + 45)
-  return interacted
-end
---- Tries to interact with any character in the given tile.
--- @tparam ObjectTile tile The tile where the interactable is.
--- @tparam boolean fromPath Flag to tell whether the interaction ocurred while following a Path.
--- @treturn boolean True if the character interacted with something, false otherwise.
-function Player:interactTile(tile, fromPath)
-  if not tile then
-    return false
-  end
-  local isFront = true
-  local currentTile = self:getTile()
-  if currentTile ~= tile then
-    local frontTile = self:getFrontTile()
-    isFront = frontTile and math.field.tileDistance(tile.x, tile.y, frontTile.x, frontTile.y) <= 1
-  end
-  local dir = self:shiftToRow(tile.x, tile.y) * 45
-  isFront = self:getRoundedDirection() - dir
-  local interacted = false
-  for i = #tile.characterList, 1, -1 do
-    local char = tile.characterList[i]
-    if char ~= self and 
-        not (char.approachToInteract and fromPath) and
-        (not char.faceToInteract or isFront) and
-        char:onInteract(true) then
-      interacted = true
-    end
-  end
-  return interacted
-end
---- Tries to interact with any character in the tile looked by the given direction.
--- @treturn boolean True if the character interacted with someone, false otherwise.
-function Player:interactAngle(angle)
-  local frontTiles = self:getFrontTiles(angle)
-  for i = 1, #frontTiles do
-    if self:interactTile(frontTiles[i]) then
-      return true
-    end
-  end
-  return false
 end
 
 return Player

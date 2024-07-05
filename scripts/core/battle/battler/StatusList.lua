@@ -313,7 +313,7 @@ end
 --- Calls a certain function in all statuses in the list.
 -- @tparam string name The name of the event.
 -- @param ... Other parameters to the callback.
-function StatusList:callback(name, ...)
+function StatusList:trigger(name, ...)
   local i = 1
   name = 'on' .. name
   local list = List(self)

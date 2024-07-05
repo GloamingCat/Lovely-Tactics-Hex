@@ -12,32 +12,36 @@
       "pitch": 100,
       "time": 0
     },
-    "loadScript": {
-      "global": false,
-      "block": true,
-      "wait": true,
-      "onLoad": true,
-      "onInteract": false,
-      "onCollide": false,
-      "onExit": false,
-      "description": "",
-      "name": "9",
-      "tags": [],
-      "key": ""
-    },
-    "exitScript": {
-      "global": false,
-      "block": false,
-      "wait": true,
-      "onLoad": true,
-      "onInteract": false,
-      "onCollide": false,
-      "onExit": false,
-      "description": "",
-      "name": "10",
-      "tags": [],
-      "key": ""
-    },
+    "scripts": [
+      {
+        "global": false,
+        "block": true,
+        "wait": true,
+        "onLoad": true,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": false,
+        "onDestroy": false,
+        "description": "",
+        "name": "9",
+        "tags": [],
+        "key": ""
+      },
+      {
+        "global": false,
+        "block": false,
+        "wait": true,
+        "onLoad": false,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": true,
+        "onDestroy": false,
+        "description": "",
+        "name": "10",
+        "tags": [],
+        "key": ""
+      }
+    ],
     "images": [],
     "transitions": [
       {
@@ -65,7 +69,7 @@
             "height": 2
           }
         ],
-        "fade": 30
+        "condition": ""
       },
       {
         "destination": {
@@ -92,7 +96,7 @@
             "height": 1
           }
         ],
-        "fade": 30
+        "condition": ""
       }
     ],
     "name": "Happy Fields 2",
@@ -810,6 +814,7 @@
           "onInteract": false,
           "onCollide": true,
           "onExit": false,
+          "onDestroy": false,
           "description": "",
           "name": "npc/Loot.lua",
           "tags": [

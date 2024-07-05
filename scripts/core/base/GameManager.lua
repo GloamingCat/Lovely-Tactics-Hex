@@ -25,6 +25,7 @@ local GameManager = class()
 
 --- Constructor.
 function GameManager:init()
+  self.vars = {}
   local maxWidth = 0
   local modes = love.window.getFullscreenModes(1)
   for i = 1, #modes do

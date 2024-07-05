@@ -20,13 +20,15 @@ local FiberList = class(List)
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam[opt] Interactable char The character that created this list.
+-- @tparam[opt] InteractableObject char The character that created this list.
 function FiberList:init(char)
   List.init(self)
   self.char = char
+  self.finished = false
 end
 --- Updates all Fibers.
 function FiberList:update()
+  assert(not self.finished, "Tried to update a terminated fiber list.")
   local i = 1
   while i <= self.size do
     self[i]:update()
@@ -45,6 +47,7 @@ function FiberList:destroy()
   for i = 1, self.size do
     self[i]:interrupt()
   end
+  self.finished = true
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -70,7 +73,7 @@ function FiberList:forkMethod(obj, method, ...)
 end
 --- Creates new EventSheet from a script table.
 -- @tparam table script Table with script's name and param.
--- @tparam Interactable char The interactable object associated with the event sheet.
+-- @tparam InteractableObject char The interactable object associated with the event sheet.
 -- @treturn EventSheet The newly created Fiber.
 function FiberList:forkFromScript(script, char)
   return EventSheet(self, script, char)

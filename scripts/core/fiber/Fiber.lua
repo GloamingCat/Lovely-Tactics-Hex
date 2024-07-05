@@ -54,35 +54,38 @@ end
 function Fiber:execute()
   -- Abstract.
 end
---- Resumes the coroutine and sets this fiber as the global Fiber.
+--- Resumes the coroutine with this fiber as the global Fiber.
 function Fiber:update()
   if not self.coroutine then
     return
   end
+  local previous = _G.Fiber
+  _G.Fiber = self
+  local state, msg = coroutine.resume(self.coroutine)
+  if not state then
+    -- Output error message
+    self:printStackTrace(msg)
+    if GameManager:isMobile() and not GameManager:isWeb() then
+      love.window.showMessageBox("Error", tostring(msg))
+    end
+    error("Error updating coroutine " .. tostring(self))
+  end
   if coroutine.status(self.coroutine) == 'dead' then
     self:finish()
-  else
-    local previous = _G.Fiber
-    _G.Fiber = self
-    local state, msg = coroutine.resume(self.coroutine)
-    if not state then
-      -- Output error message
-      msg = msg:gsub("%.%.%./?%w*ore%/", "scripts/core/"):gsub("%.%.%.%w*s%/", "scripts/")
-      print(msg)
-      local traceback = debug.traceback(self.coroutine)
-      traceback = traceback:gsub("%.%.%./?%w*ore%/", "scripts/core/"):gsub("%.%.%.%w*s%/", "scripts/")
-      print('Coroutine ' .. tostring(traceback))
-      local origintraceback = self.traceback
-      origintraceback = origintraceback:gsub("%.%.%./?%w*ore%/", "scripts/core/"):gsub("%.%.%.%w*s%/", "scripts/")
-      print('Origin ' .. tostring(origintraceback))
-      error("Error updating coroutine.")
-      if GameManager:isMobile() and not GameManager:isWeb() then
-        love.window.showMessageBox("Error", tostring(result))
-      end
-      self:finish()
-    end
-    _G.Fiber = previous
   end
+  _G.Fiber = previous
+end
+--- Prints the stacktrace for a given error message.
+-- @tparam string msg Error message.
+function Fiber:printStackTrace(msg)
+  msg = tostring(msg):gsub("%.%.%./?%w*ore%/", "scripts/core/"):gsub("%.%.%.%w*s%/", "scripts/")
+  print(msg)
+  local traceback = debug.traceback(self.coroutine)
+  traceback = traceback:gsub("%.%.%./?%w*ore%/", "scripts/core/"):gsub("%.%.%.%w*s%/", "scripts/")
+  print('Coroutine ' .. tostring(traceback))
+  local origintraceback = self.traceback
+  origintraceback = origintraceback:gsub("%.%.%./?%w*ore%/", "scripts/core/"):gsub("%.%.%.%w*s%/", "scripts/")
+  print('Origin ' .. tostring(origintraceback))
 end
 --- Checks if this fiber is still running.
 -- @treturn boolean False if already ended, true otherwise.

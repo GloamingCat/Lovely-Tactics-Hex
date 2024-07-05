@@ -733,57 +733,36 @@
           "events": [
             {
               "condition": "",
-              "name": "setLabel",
-              "tags": [
-                {
-                  "key": "index",
-                  "value": "-1"
-                },
-                {
-                  "key": "name",
-                  "value": "repeat"
-                }
-              ],
-              "key": ""
-            },
-            {
-              "condition": "",
-              "name": "wait",
-              "tags": [
-                {
-                  "key": "time",
-                  "value": "1"
-                }
-              ],
-              "key": ""
-            },
-            {
-              "condition": "FieldManager.renderer.color.r > 0.005",
-              "name": "jumpTo",
-              "tags": [
-                {
-                  "key": "name",
-                  "value": "repeat"
-                }
-              ],
-              "key": ""
-            },
-            {
-              "condition": "not {%onBattle}",
-              "name": "deleteChar",
+              "name": "resetChar",
               "tags": [
                 {
                   "key": "key",
-                  "value": "\"self\""
+                  "value": "self"
+                },
+                {
+                  "key": "props",
+                  "value": "true"
+                },
+                {
+                  "key": "graphics",
+                  "value": "true"
+                },
+                {
+                  "key": "tile",
+                  "value": "true"
+                },
+                {
+                  "key": "vars",
+                  "value": "false"
                 }
               ],
               "key": ""
             }
           ],
           "description": "Resets the character's position when the field is unloaded.",
-          "name": "Exit Pos Reset",
+          "name": "Pos Reset",
           "tags": [],
-          "key": "ExitPosReset"
+          "key": "PosReset"
         },
         "id": 11,
         "children": []
@@ -1381,17 +1360,6 @@
         "data": {
           "events": [
             {
-              "condition": "FieldManager.player:isBusy() and FieldManager:loadedFromSave()",
-              "name": "setEvent",
-              "tags": [
-                {
-                  "key": "index",
-                  "value": "-1"
-                }
-              ],
-              "key": ""
-            },
-            {
               "condition": "\"{%exit}\" ~= \"\"",
               "name": "turnCharTile",
               "tags": [
@@ -1440,7 +1408,7 @@
                 },
                 {
                   "key": "wait",
-                  "value": "true"
+                  "value": "false"
                 },
                 {
                   "key": "x",
@@ -2272,7 +2240,7 @@
             }
           ],
           "description": "Tests scene execution before battle.",
-          "name": "Battle Load 2",
+          "name": "Test Battle Load",
           "tags": [],
           "key": "TestBattle"
         },

@@ -12,9 +12,8 @@ local AnimatedInteractable = require('core/objects/AnimatedInteractable')
 local BattleCharacter = require('core/objects/BattleCharacter')
 local Character = require('core/objects/Character')
 local Field = require('core/field/Field')
-local Interactable = require('core/objects/Interactable')
+local InteractableObject = require('core/objects/InteractableObject')
 local Serializer = require('core/save/Serializer')
-local TagMap = require('core/datastruct/TagMap')
 local TerrainLayer = require('core/field/TerrainLayer')
 
 local FieldLoader = {}
@@ -30,35 +29,17 @@ local FieldLoader = {}
 -- @treturn table Field file data.
 function FieldLoader.loadField(id, save)
   local data = Serializer.load(Project.dataPath .. 'fields/' .. id .. '.json')
-  local prefs = save and save.prefs or data.prefs.persistent and FieldManager:getFieldSave(id).prefs or data.prefs
-  local maxH = data.prefs.maxHeight
-  local field = Field(data.id, data.prefs.name, data.sizeX, data.sizeY, maxH)
-  field.key = data.prefs.key
-  field.persistent = data.prefs.persistent
-  field.vars = prefs.vars or {}
-  field.images = prefs.images or data.prefs.images
-  field.tags = TagMap(data.prefs.tags)
-  field.loadScript = prefs.loadScript or data.prefs.loadScript
-  if field.loadScript then
-    field.loadScript = util.table.deepCopy(field.loadScript)
-    field.loadScript.vars = field.loadScript.vars or {}
-  end
-  field.exitScript = prefs.exitScript or data.prefs.exitScript
-  if field.exitScript then
-    field.exitScript = util.table.deepCopy(field.exitScript)
-    field.exitScript.vars = field.exitScript.vars or {}
-  end
-  field.bgm = prefs.bgm
-  -- Battle info
-  field.playerParty = prefs.playerParty or data.playerParty
-  field.parties = prefs.parties or data.parties
+  local field = Field(id, data.prefs, data.sizeX, data.sizeY, save)
   -- Default region
-  local defaultRegion = prefs.defaultRegion or data.prefs.defaultRegion
+  local defaultRegion = data.prefs.defaultRegion
   if defaultRegion and defaultRegion >= 0 then
     for tile in field:gridIterator() do
       tile.regionList:add(defaultRegion)
     end
   end
+  field.playerParty = data.playerParty
+  field.parties = data.parties
+  field.transitions = data.prefs.transitions
   return field, data
 end
 
@@ -110,7 +91,7 @@ function FieldLoader.loadCharacters(field, instances, save)
       elseif inst.animation and inst.animation ~= '' then
         AnimatedInteractable(inst, save)
       else
-        Interactable(inst, save)
+        InteractableObject(inst, save)
       end
     end
   end
@@ -135,7 +116,7 @@ end
 -- @tparam table origin The coordinates of the origin tile (x, y, h).
 -- @tparam table destination The destination with coordinates, direction and field ID.
 -- @tparam string key The key of the new object.
--- @return Interactable The newly created transition object.
+-- @return InteractableObject The newly created transition object.
 function FieldLoader.createTransitionTile(origin, destination, key)
   local args = { fieldID = destination.fieldID,
     x = destination.x,
@@ -160,7 +141,7 @@ function FieldLoader.createTransitionTile(origin, destination, key)
     active = true,
     x = origin.dx, y = origin.dy, h = origin.height,
     scripts = { script } }
-  return Interactable(instData)
+  return InteractableObject(instData)
 end
 
 return FieldLoader

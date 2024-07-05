@@ -95,13 +95,18 @@ function CharacterEvents:deleteChar(args)
   if not char then
     return
   end
+  local destroyer = self.char
   local fiber = self:fork(function()
     if args.time and args.time > 0 then
       self:wait(args.time)
     end
-    char:transferTile(char:originalCoordinates())
-    char:initProperties(char.data)
-    char:initScripts(char.data)
+    if args.reset then
+      char:transferTile(char:originalCoordinates())
+      char:initProperties(char.data)
+      char:initGraphics(char.data)
+      char:initScripts(char.data.scripts)
+    end
+    char.fiberList:forkMethod(char, 'onDestroy', destroyer):waitForEnd()
     char:destroy(args.permanent)
   end)
   if args.wait then
@@ -121,11 +126,14 @@ function CharacterEvents:resetChar(args)
   if args.props then
     char:initProperties(char.data)
   end
+  if args.graphics then
+    char:initGraphics(char.data)
+  end
   if args.vars then
-    char:initVariables()
+    char:resetVariables(char.data.vars)
   end
   if args.scripts then
-    char:initScripts(char.data)
+    char:initScripts(char.data.scripts)
   end
 end
 --- Changes a character's properties.

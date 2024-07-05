@@ -16,7 +16,7 @@ local copyTable = util.table.deepCopy
 local fileInfo = love.filesystem.getInfo
 local now = love.timer.getTime
 
-local saveVersion = 1
+local saveVersion = 2
 local configVersion = 1
 
 -- Class table.
@@ -82,7 +82,6 @@ function SaveManager:currentSaveData()
   save.troops = copyTable(TroopManager.troopData)
   save.playerTroopID = TroopManager.playerTroopID
   save.playerState = copyTable(FieldManager.playerState)
-  save.renderer = FieldManager.renderer:getState()
   save.battleResult = BattleManager.result
   if BattleManager.onBattle then
     save.battleState = BattleManager:getState()

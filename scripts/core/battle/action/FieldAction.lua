@@ -203,7 +203,7 @@ function FieldAction:nextTarget(input, axisX, axisY)
   if tile.ui.selectable then
     return tile
   end
-  for i = self.field.minh, self.field.maxh do
+  for i = 1, self.field.maxh do
     tile = FieldManager.currentField:getObjectTile(tile.x, tile.y, i)
     if tile.ui.selectable then
       return tile

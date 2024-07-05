@@ -24,6 +24,7 @@
       "onInteract": false,
       "onCollide": false,
       "onExit": false,
+      "onDestroy": false,
       "description": "",
       "name": "PlayerMovement.lua",
       "tags": [],

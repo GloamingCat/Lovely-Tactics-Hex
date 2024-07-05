@@ -1,7 +1,7 @@
 
 -- ================================================================================================
 
---- Stores a list of static `Obstacle`s and a list of dynamic `Interactable`s.
+--- Stores a list of static `Obstacle`s and a list of dynamic `InteractableObject`s.
 -- There's only one ObjectTile for each (i, j, height) in the field.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod ObjectTile

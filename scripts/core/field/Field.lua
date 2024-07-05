@@ -9,8 +9,10 @@
 
 -- Imports
 local FiberList = require('core/fiber/FiberList')
+local Interactable = require('core/field/Interactable')
 local List = require('core/datastruct/List')
 local ObjectLayer = require('core/field/ObjectLayer')
+local TagMap = require('core/datastruct/TagMap')
 
 -- Alias
 local copyTable = util.table.deepCopy
@@ -20,7 +22,7 @@ local pixelCenter = math.field.pixelCenter
 local pixelBounds = math.field.pixelBounds
 
 -- Class table.
-local Field = class()
+local Field = class(Interactable)
 
 -- ------------------------------------------------------------------------------------------------
 -- Tables
@@ -45,69 +47,43 @@ Field.Collision = {
 
 --- Constructor.
 -- @tparam number id Field ID.
--- @tparam string name Field name.
--- @tparam number sizeX Field width.
--- @tparam number sizeY Field length.
--- @tparam number maxH Field's maximum tile height.
-function Field:init(id, name, sizeX, sizeY, maxH)
+-- @tparam table prefs Prefs from field data file.
+-- @tparam number sizeX Maximum x coordinate.
+-- @tparam number sizeY Maximum y coordinate.
+-- @tparam[opt] table save Field save data.
+function Field:init(id, prefs, sizeX, sizeY, save)
   self.id = id
-  self.name = name
+  self.name = prefs.name
+  self.key = prefs.key
+  self.persistent = prefs.persistent
   self.sizeX = sizeX
   self.sizeY = sizeY
+  self.maxh = prefs.maxHeight
+  self.bgm = save and save.bgm or copyTable(prefs.bgm)
+  self.tags = TagMap(prefs.tags)
   self.terrainLayers = {}
   self.objectLayers = {}
-  for i = 1, maxH do
+  for i = 1, self.maxh do
     self.terrainLayers[i] = {}
     self.objectLayers[i] = ObjectLayer(sizeX, sizeY, i)
   end
-  self.minh, self.maxh = 1, maxH
   self.centerX, self.centerY = pixelCenter(sizeX, sizeY)
   self.minx, self.miny, self.maxx, self.maxy = pixelBounds(self)
-  self.fiberList = FiberList()
   self.blockingFibers = List()
-end
-
--- ------------------------------------------------------------------------------------------------
--- General
--- ------------------------------------------------------------------------------------------------
-
---- Called when this interactable is created.
--- @coroutine
--- @tparam boolean loading True if the field was loaded now, false if loaded from save.
--- @treturn boolean Whether the load scripts were executed or not.
-function Field:onLoad(loading)
-  local script = self.loadScript
-  if not script or script.name == '' then
-    return false
+  local scripts = prefs.scripts or {}
+  local loadScript = prefs.loadScript
+  if loadScript and loadScript.name ~= '' then
+    loadScript.onLoad = true
+    loadScript.onExit = false
+    scripts[#scripts + 1] = loadScript
   end
-  if script.vars.loading or loading then
-    script.vars.loading = script.vars.loading or loading
-    local fiberList = (script.global and FieldManager or self).fiberList
-    local fiber = fiberList:forkFromScript(script)
-    if script.wait then
-      fiber:waitForEnd()
-    end
+  local exitScript = prefs.exitScript
+  if exitScript and exitScript.name ~= '' then
+    exitScript.onLoad = false
+    exitScript.onExit = true
+    scripts[#scripts + 1] = exitScript
   end
-  return true
-end
---- Called when this interactable is created.
--- @coroutine
--- @tparam[opt] string exit The key of the object that originated the exit transition.
--- @treturn boolean Whether the exit scripts were executed or not.
-function Field:onExit(exit)
-  local script = self.exitScript
-  if not script or script.name == '' then
-    return false
-  end
-  if script.vars.exit or exit then
-    local fiberList = (script.global and FieldManager or self).fiberList
-    local fiber = fiberList:forkFromScript(script)
-    script.vars.exit = script.vars.exit or exit
-    if script.wait then
-      fiber:waitForEnd()
-    end
-  end
-  return true
+  Interactable.init(self, scripts, prefs.vars, save)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -118,7 +94,7 @@ end
 -- @tparam number dt The duration of the previous frame.
 function Field:update(dt)
   self.fiberList:update(dt)
-  for l = self.minh, self.maxh do
+  for l = 1, self.maxh do
     local layer = self.objectLayers[l]
     for i = 1, self.sizeX do
       for j = 1, self.sizeY do
@@ -136,26 +112,13 @@ function Field:update(dt)
     end
   end
 end
---- Gets field prefs data that are saved.
--- No deep copy is made.
--- @treturn table A new table containing the field's persistent data.
+--- Overrides `Interactable:getPersistentData`. Saves images and bgm.
+-- @override
 function Field:getPersistentData()
-  local script = self.loadScript
-  if script then
-      script = {
-        name = script.name,
-        global = script.global,
-        block = script.block,
-        wait = script.wait,
-        tags = script.tags,
-        args = script.args,
-        vars = script.vars }
-  end
-  return {
-    images = FieldManager.renderer:getImageData(),
-    loadScript = script,
-    bgm = self.bgm,
-    vars = self.vars }
+  local save = Interactable.getPersistentData(self)
+  save.bgm = self.bgm
+  
+  return save
 end
 --- Gets size in tiles.
 -- @treturn number Size X of field.
@@ -166,8 +129,8 @@ function Field:getSize()
 end
 --- Destroys fiber list and tiles.
 function Field:destroy()
-  self.fiberList:destroy()
-  for l = self.minh, self.maxh do
+  Interactable.destroy(self)
+  for l = 1, self.maxh do
     local layer = self.objectLayers[l]
     for i = 1, self.sizeX do
       for j = 1, self.sizeY do
@@ -205,7 +168,7 @@ end
 -- @treturn function The grid iterator.
 function Field:gridIterator()
   local maxl = self.maxh
-  local i, j, l = 1, 0, self.minh
+  local i, j, l = 1, 0, 1
   local layer = self.objectLayers[l]
   while layer == nil do
     l = l + 1
@@ -235,7 +198,7 @@ end
 --- Gets the tile that the mouse is over.
 -- @treturn ObjectTile The tile which the mouse cursor is over.
 function Field:getHoveredTile()
-  for l = self.maxh, self.minh, -1 do
+  for l = self.maxh, 1, -1 do
     local x, y = InputManager.mouse:fieldCoord(l)
     if not self:exceedsBorder(x, y) and self:isGrounded(x, y, l) then
       return self:getObjectTile(x, y, l)

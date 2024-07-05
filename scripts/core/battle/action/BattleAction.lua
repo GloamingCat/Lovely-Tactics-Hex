@@ -386,7 +386,7 @@ function BattleAction:rotationTiles(input)
     or mathf.tileRotations(mathf.nextCoordDir(dir + 45))
   local tile = input.user:getTile()
   local maxh = math.min(field.maxh, tile.layer.height + #self.area.grid - self.area.centerH + 1)
-  local minh = math.max(field.minh, tile.layer.height - self.area.centerH + 1) 
+  local minh = math.max(1, tile.layer.height - self.area.centerH + 1) 
   for i = #mathf.neighborShift, 1, -1 do
     local n = mathf.neighborShift[math.mod1(i - r, #mathf.neighborShift)]
     for l = maxh, minh, -1 do

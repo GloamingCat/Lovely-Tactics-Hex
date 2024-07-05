@@ -1,45 +1,46 @@
 
 -- ================================================================================================
 
---- An `Interactable` with graphics and animation. It's any field object instance that does not
--- contain a `charID`, but contains an animation.  
+--- An `InteractableObject` with graphics and animation. It's any field object instance that does
+-- not contain a `charID`, but contains an animation.  
 -- Optional additional fields in the instance data include: `name`, `transform`,
 -- `shadowID`. These fields need code to be defined.
 ---------------------------------------------------------------------------------------------------
 -- @fieldmod AnimatedInteractable
 -- @extend JumpingObject
--- @extend Interactable
+-- @extend InteractableObject
 
 -- ================================================================================================
 
 -- Imports
-local Interactable = require('core/objects/Interactable')
+local InteractableObject = require('core/objects/InteractableObject')
 local JumpingObject = require('core/objects/JumpingObject')
 
 -- Alias
 local tile2Pixel = math.field.tile2Pixel
 
 -- Class table.
-local AnimatedInteractable = class(Interactable, JumpingObject)
+local AnimatedInteractable = class(InteractableObject, JumpingObject)
 
 -- ------------------------------------------------------------------------------------------------
 -- Inititialization
 -- ------------------------------------------------------------------------------------------------
 
---- Constructor. Extends `Interactable:init`. Combines with `TransformableObject:init` and
+--- Constructor. Extends `InteractableObject:init`. Combines with `TransformableObject:init` and
 -- `AnimatedObject:initGraphics`
 -- @tparam table instData The character's instance data from field file.
 -- @tparam table save The instance's save data.
 function AnimatedInteractable:init(instData, save)
   JumpingObject.init(self, instData, nil, save)
-  Interactable.init(self, instData, save)
+  InteractableObject.init(self, instData, save)
   self:initGraphics(instData, save)
 end
---- Combines `Interactable:initProperties` and `JumpingObject:initProperties`.
+--- Combines `InteractableObject:initProperties` and `JumpingObject:initProperties`.
 -- @override
 function AnimatedInteractable:initProperties(instData, save)
-  Interactable.initProperties(self, instData, save)
-  JumpingObject.initProperties(self, instData)
+  InteractableObject.initProperties(self, instData, save)
+  assert(save == self.saveData, tostring(save) .. ' ' .. tostring(self))
+  JumpingObject.initProperties(self, instData, save)
 end
 --- Overrides `AnimatedObject:initGraphics`.
 -- Sets visibility and other graphic properties from `AnimatedObject:initGraphics`.
@@ -72,27 +73,27 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Combines `JumpingObject:update` with `Interactable:update`.
+--- Combines `JumpingObject:update` with `InteractableObject:update`.
 -- @override
 function AnimatedInteractable:update(dt)
   JumpingObject.update(self, dt)
-  Interactable.update(self, dt)
+  InteractableObject.update(self, dt)
 end
---- Combines `Interactable:destroy` and `JumpingObject:destroy`.
+--- Combines `InteractableObject:destroy` and `JumpingObject:destroy`.
 -- @override
 function AnimatedInteractable:destroy(permanent)
   JumpingObject.destroy(self)
-  Interactable.destroy(self, permanent)
+  InteractableObject.destroy(self, permanent)
 end
 
 -- ------------------------------------------------------------------------------------------------
 -- Persistent Data
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `Interactable:getPersistentData`. Includes position, direction and animation.
+--- Overrides `InteractableObject:getPersistentData`. Includes position, direction and animation.
 -- @override
 function AnimatedInteractable:getPersistentData()
-  local data = Interactable.getPersistentData(self)
+  local data = InteractableObject.getPersistentData(self)
   data.x = self.position.x
   data.y = self.position.y
   data.z = self.position.z

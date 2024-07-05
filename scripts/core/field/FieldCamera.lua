@@ -13,6 +13,8 @@ local Renderer = require('core/graphics/Renderer')
 
 -- Alias
 local pixelCenter = math.field.pixelCenter
+local minDepth = math.field.minDepth
+local maxDepth = math.field.maxDepth
 local sqrt = math.sqrt
 
 -- Class table.
@@ -22,18 +24,32 @@ local FieldCamera = class(Renderer)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `Renderer:init`.
--- @override
-function FieldCamera:init(...)
+--- Constructor. Initialized from field data.
+-- @tparam table fieldData Field data.
+-- @tparam[opt] Color.RGBA color Initial color. If nil, startss as black.
+function FieldCamera:init(fieldData, color)
+  local width = ScreenManager.canvas:getWidth()
+  local height = ScreenManager.canvas:getHeight()
+  local h = fieldData.prefs.maxHeight
+  local l = 4 * #fieldData.layers.terrain + #fieldData.layers.obstacle + #fieldData.characters
+  local mind = minDepth(fieldData.sizeX, fieldData.sizeY, h)
+  local maxd = maxDepth(fieldData.sizeX, fieldData.sizeY, h)
   self.images = {}
-  Renderer.init(self, ...)
+  Renderer.init(self, mind, maxd, fieldData.sizeX * fieldData.sizeY * l)
   self.fadeSpeed = 100 / 60
   self.cameraSpeed = 75
   self.cropMovement = true
+  self:resizeCanvas(width, height)
+  self:setXYZ(pixelCenter(fieldData.sizeX, fieldData.sizeY))
+  if color then
+    self:setColor(color)
+  else
+    self:setRGBA(0, 0, 0, 1)
+  end
 end
 --- Initializes field's foreground and background images.
 -- @tparam table images Array of field's images.
-function FieldCamera:initializeImages(images)
+function FieldCamera:addImages(images)
   for _, data in ipairs(images) do
     self:addImage(data.name, data, data.foreground, data.visible, data.glued)
   end
@@ -168,7 +184,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Fades the screen out (changes color multiplier to black). 
--- @tparam[opt] number time The duration of the fading in frames. If nil, uses default fading speed.
+-- @tparam[opt] number time The duration of the fading in frames.
+--  If nil, uses default fading speed. If 0, the change is instantaneous.
 -- @tparam[opt] boolean wait Flag to wait until the fading finishes.
 function FieldCamera:fadeout(time, wait)
   local speed = self.fadeSpeed
@@ -178,7 +195,8 @@ function FieldCamera:fadeout(time, wait)
   self:colorizeTo(0, 0, 0, 1, speed, wait)
 end
 --- Fades the screen in (changes color multiplier to white). 
--- @tparam[opt] number time The duration of the fading in frames. If nil, uses default fading speed.
+-- @tparam[opt] number time The duration of the fading in frames.
+--  If nil, uses default fading speed. If 0, the change is instantaneous.
 -- @tparam[opt] boolean wait Flag to wait until the fading finishes.
 function FieldCamera:fadein(time, wait)
   local speed = self.fadeSpeed
@@ -186,21 +204,6 @@ function FieldCamera:fadein(time, wait)
     speed = (time > 0) and (60 / time) or nil
   end
   self:colorizeTo(1, 1, 1, 1, speed, wait)
-end
-
--- ------------------------------------------------------------------------------------------------
--- Camera State
--- ------------------------------------------------------------------------------------------------
-
---- Gets the persistent data.
--- @treturn table Current camera state.
-function FieldCamera:getState()
-  return self.color
-end
---- Sets state from a previous saved one.
--- @tparam table state Saved camera state.
-function FieldCamera:setState(state)
-  self:setColor(state)
 end
 
 return FieldCamera

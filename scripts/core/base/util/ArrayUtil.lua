@@ -131,7 +131,7 @@ end
 --- Prints each element separating by given separator string and join them into a single string.
 -- @tparam table items Array of elements to be printed.
 -- @tparam string sep Separator.
--- @tparam[opt=#items] number The length of the array.
+-- @tparam[opt=#items] number size The length of the array.
 -- @treturn string String each the elements printed.
 function util.concat(items, sep, size)
   size = size or #items

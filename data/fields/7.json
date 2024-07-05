@@ -12,37 +12,41 @@
       "pitch": 100,
       "time": 0
     },
-    "loadScript": {
-      "global": false,
-      "block": true,
-      "wait": true,
-      "onLoad": true,
-      "onInteract": false,
-      "onCollide": false,
-      "onExit": false,
-      "description": "",
-      "name": "7",
-      "tags": [
-        {
-          "key": "skipParties",
-          "value": "true"
-        }
-      ],
-      "key": ""
-    },
-    "exitScript": {
-      "global": false,
-      "block": true,
-      "wait": true,
-      "onLoad": true,
-      "onInteract": false,
-      "onCollide": false,
-      "onExit": false,
-      "description": "",
-      "name": "Exit.lua",
-      "tags": [],
-      "key": ""
-    },
+    "scripts": [
+      {
+        "global": false,
+        "block": true,
+        "wait": true,
+        "onLoad": true,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": false,
+        "onDestroy": false,
+        "description": "",
+        "name": "7",
+        "tags": [
+          {
+            "key": "skipParties",
+            "value": "true"
+          }
+        ],
+        "key": ""
+      },
+      {
+        "global": false,
+        "block": true,
+        "wait": true,
+        "onLoad": false,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": true,
+        "onDestroy": false,
+        "description": "",
+        "name": "Exit.lua",
+        "tags": [],
+        "key": ""
+      }
+    ],
     "images": [],
     "transitions": [],
     "name": "Test Battle 2",

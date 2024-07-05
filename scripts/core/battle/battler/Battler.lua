@@ -276,7 +276,7 @@ function Battler:onBattleStart(char)
     self.AI:onBattleStart(self, char)
   end
   self.equipSet:addBattleStatus(char)
-  self.statusList:callback('BattleStart', char)
+  self.statusList:trigger('BattleStart', char)
 end
 --- Callback for when the battle ends.
 -- @tparam Character char The Character associated with this Battler.
@@ -284,7 +284,7 @@ function Battler:onBattleEnd(char)
   if self.AI and self.AI.onBattleEnd then
     self.AI:onBattleEnd(self, char)
   end
-  self.statusList:callback('BattleEnd', char)
+  self.statusList:trigger('BattleEnd', char)
   if Config.battle.battleEndRevive then
     self.state.hp = max(1, self.state.hp)
   end
@@ -318,18 +318,18 @@ function Battler:onTurnEnd(char)
   if AI and AI.onTurnEnd then
     AI:onTurnEnd(char)
   end
-  self.statusList:callback('TurnEnd', char)
+  self.statusList:trigger('TurnEnd', char)
 end
 --- Callback for when this battler's turn starts.
 -- @tparam Character char The Character associated with this Battler.
 function Battler:onSelfTurnStart(char)
-  self.statusList:callback('SelfTurnStart', char)
+  self.statusList:trigger('SelfTurnStart', char)
 end
 --- Callback for when this battler's turn ends.
 -- @tparam Character char The Character associated with this Battler.
 -- @tparam table result The results of the lattest turn.
 function Battler:onSelfTurnEnd(char, result)
-  self.statusList:callback('SelfTurnEnd', char, result)
+  self.statusList:trigger('SelfTurnEnd', char, result)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -340,21 +340,21 @@ end
 -- @tparam ActionInput input User's input data.
 -- @tparam Character char The Character associated with this Battler.
 function Battler:onSkillUse(input, char)
-  self.statusList:callback('SkillUse', input, char)
+  self.statusList:trigger('SkillUse', input, char)
 end
 --- Callback for when the character is about to receive a skill effect.
 -- @tparam ActionInput input User's input data.
 -- @tparam table results The results of the lattest turn.
 -- @tparam Character char The Character associated with this Battler.
 function Battler:onSkillEffect(input, results, char)
-  self.statusList:callback('SkillEffect', input, results, char)
+  self.statusList:trigger('SkillEffect', input, results, char)
 end
 --- Callback for when the character received a skill effect.
 -- @tparam ActionInput input User's input data.
 -- @tparam table results The results of the lattest turn.
 -- @tparam Character char The Character associated with this Battler.
 function Battler:onSkillResult(input, results, char)
-  self.statusList:callback('SkillResult', input, results, char)
+  self.statusList:trigger('SkillResult', input, results, char)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -366,7 +366,7 @@ end
 -- @tparam Path path The path that the battler just walked.
 function Battler:onMove(char, path)
   self.steps = math.floor(self.steps - path.totalCost)
-  self.statusList:callback('Move', char, path)
+  self.statusList:trigger('Move', char, path)
 end
 --- Callback for when the character enters the given tiles.
 -- Adds terrain statuses.

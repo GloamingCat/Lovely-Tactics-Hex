@@ -60,7 +60,7 @@ end
 -- @tparam number fieldID The field's ID.
 -- @tparam[opt] table save Field's save data.
 -- @tparam[opt] string exit The key of the object that originated the exit transition.
-function FieldManager:loadField(fieldID, save, exit)
+function FieldManager:setField(fieldID, save, exit)
   if self.currentField then
     self:runExitScripts(exit)
     self.currentField:destroy()
@@ -72,33 +72,18 @@ function FieldManager:loadField(fieldID, save, exit)
   self.characterList = List()
   local field, fieldData = FieldLoader.loadField(fieldID, save)
   self.currentField = field
-  local cameraWidth = ScreenManager.canvas:getWidth()
-  local cameraHeight = ScreenManager.canvas:getHeight()
-  self:initializeCamera(fieldData, cameraWidth, cameraHeight, field.images)
+  self:initializeCamera(fieldData, save)
   FieldLoader.mergeLayers(field, fieldData.layers)
   FieldLoader.loadCharacters(field, fieldData.characters, save)
+  fieldData = nil
   collectgarbage('collect')
-  return fieldData
 end
 --- Create new field camera.
--- @tparam table data Field data.
--- @tparam number width Screen width in pixels.
--- @tparam number height Screen height in pixels.
--- @tparam table images Table of background/foreground images.
-function FieldManager:initializeCamera(data, width, height, images)
-  local h = data.prefs.maxHeight
-  local l = 4 * #data.layers.terrain + #data.layers.obstacle + #data.characters
-  local mind = mathf.minDepth(data.sizeX, data.sizeY, h)
-  local maxd = mathf.maxDepth(data.sizeX, data.sizeY, h)
-  local camera = FieldCamera(mind, maxd, data.sizeX * data.sizeY * l)
-  camera:resizeCanvas(width, height)
-  camera:setXYZ(mathf.pixelCenter(data.sizeX, data.sizeY))
-  if self.renderer then
-    camera:setColor(self.renderer.color)
-  else
-    camera:setRGBA(0, 0, 0, 1)
-  end
-  camera:initializeImages(images)
+-- @tparam table fieldData Field data.
+-- @tparam[opt] table save Field's save data.
+function FieldManager:initializeCamera(fieldData, save)
+  local camera = FieldCamera(fieldData, self.renderer and self.renderer.color)
+  camera:addImages(save and save.images or fieldData.prefs.images)
   ScreenManager:setRenderer(camera, 1)
   self.renderer = camera
 end
@@ -117,44 +102,57 @@ function FieldManager:playFieldBGM(time, wait)
     end
   end
 end
---- Execute current field's load script and characters' load scripts.
+--- Execute current field's load script and characters' load scripts. It also resumes any interrupted character script.
 -- @tparam boolean fromSave Whether the field was load from save
 --  instead of entered from a field transition.
 function FieldManager:runLoadScripts(fromSave)
   local fibers = {}
   -- Init character
   for char in self.characterList:iterator() do
-    fibers[#fibers + 1] = char.fiberList:forkMethod(char, 'onLoad', not fromSave)
+    fibers[#fibers + 1] = char:trigger('onLoad', not fromSave)
   end
   -- Field script
-  fibers[#fibers + 1] = self.currentField.fiberList:forkMethod(self.currentField, 'onLoad', not fromSave)
-  -- Resume interact scripts
+  fibers[#fibers + 1] = self.currentField:trigger('onLoad', not fromSave)
+  -- Resume characters scripts
   for char in self.characterList:iterator() do
-    fibers[#fibers + 1] = char.fiberList:forkMethod(char, 'onInteract')
-  end
-  -- Resume collider scripts
-  for char in self.characterList:iterator() do
+    fibers[#fibers + 1] = char:trigger('onCollide')
+    fibers[#fibers + 1] = char:trigger('onInteract')
+    fibers[#fibers + 1] = char:trigger('onExit')
+    fibers[#fibers + 1] = char:trigger('onDestroy')
     if not fromSave then
       char:collideTile(char:getTile())
     end
-    fibers[#fibers + 1] = char.fiberList:forkMethod(char, 'onCollide')
   end
+  fibers[#fibers + 1] = self.currentField:trigger('onExit')
 end
 --- Execute current field's load script and characters' load scripts.
 -- @tparam[opt] string exit The key of the object that originated the exit transition.
 function FieldManager:runExitScripts(exit)
+  print('ON EXIT', GameManager.frame)
   local fibers = {}
   -- Field script
-  fibers[1] = self.currentField.fiberList:forkMethod(self.currentField, 'onExit', exit)
+  fibers[1] = self.currentField:trigger('onExit', exit)
   -- Characters
   for char in self.characterList:iterator() do
-    fibers[#fibers + 1] = char.fiberList:forkMethod(char, 'onExit', exit)
+    fibers[#fibers + 1] = char:trigger('onExit', exit)
   end
   -- Wait
   for _, fiber in ipairs(fibers) do
-    print(fiber)
     fiber:waitForEnd()
   end
+  print('ON DESTROY', GameManager.frame)
+  fibers = {}
+  local destroyer = _G.Fiber and _G.Fiber.char or exit
+  -- On Destroy
+  for char in self.characterList:iterator() do
+    fibers[#fibers + 1] = char:trigger('onDestroy', destroyer)
+  end
+  -- Wait
+  for _, fiber in ipairs(fibers) do
+    print('waiting for', fiber)
+    fiber:waitForEnd()
+  end
+  print('FINISH', GameManager.frame)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -172,9 +170,8 @@ function FieldManager:loadTransition(transition, save, exit)
   if self.currentField then
     self:storeFieldData()
   end
-  print('LOAD TRANSITION', transition, save, exit)
-  local fieldData = self:loadField(transition.fieldID, save, exit)
-  FieldLoader.createTransitions(fieldData.prefs.transitions)
+  self:setField(transition.fieldID, save, exit)
+  FieldLoader.createTransitions(self.currentField.transitions)
   self.hud = self.hud or PlayerMenu()
   self:playFieldBGM()
   for fiber in self.fiberList:iterator() do
@@ -187,8 +184,9 @@ function FieldManager:loadTransition(transition, save, exit)
 end
 --- Creates the Player character according to the transition.
 -- @tparam table transition The transition data.
--- @tparam[opt] table save Current field state.
+-- @tparam[opt] table save Field's save data.
 function FieldManager:initializePlayer(transition, save)
+  print('Has save: ', save and save.chars.player)
   local player = Player(transition, save and save.chars.player)
   self.renderer.focusObject = player
   self.renderer:setPosition(player.position)
@@ -212,18 +210,17 @@ function FieldManager:getFieldSave(id)
   return persistentData
 end
 --- Stores current field's information in the save data table.
--- @tparam[opt] Field field Field to store. If nil, uses current field.
-function FieldManager:storeFieldData(field)
-  field = field or self.currentField
-  if field.persistent then
-    local persistentData = self:getFieldSave(field.id)
+function FieldManager:storeFieldData()
+  if self.currentField.persistent then
+    local persistentData = self:getFieldSave(self.currentField.id)
     for char in self.characterList:iterator() do
       if char.persistent then
         persistentData.chars[char.key] = char:getPersistentData()
       end
     end
-    persistentData.vars = field.vars
-    persistentData.prefs = field:getPersistentData()
+    persistentData.vars = self.currentField.vars
+    persistentData.prefs = self.currentField:getPersistentData()
+    persistentData.images = self.renderer:getImageData()
   end
 end
 --- Stores a character's information in the save data table.
