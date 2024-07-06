@@ -77,7 +77,7 @@ end
 function SaveManager:currentSaveData()
   local save = { version = saveVersion }
   save.playTime = GameManager:currentPlayTime()
-  save.vars = copyTable(GameManager.vars)
+  save.vars = copyTable(Variables.vars)
   save.fields = copyTable(FieldManager.fieldData)
   save.troops = copyTable(TroopManager.troopData)
   save.playerTroopID = TroopManager.playerTroopID

@@ -33,6 +33,7 @@ function EventSheet:init(root, data, char)
   elseif tonumber(data.name) or Database.events[data.name] then
     self.sheet = Database.events[tonumber(data.name) or data.name]
     self.commands = self.processSheet
+    self.tags = Database.loadTags(self.sheet.tags)
     name = self.sheet.name
   else
     local func = require('custom/' .. data.name)
@@ -82,7 +83,7 @@ function EventSheet:addEvent(func, condition, ...)
     else
       local body = func
       func = function(script)
-        return loadfunction(TextParser.evaluate(body), 'script')(script)
+        return loadfunction(self:interpolateString(body), 'script')(script)
       end
     end
   else
@@ -187,18 +188,6 @@ function EventSheet:runCurrentEvent()
   local event = self.events[self.vars.runningIndex]
   if not event.condition or event.condition(self) then
     event.execute(self, unpack(event.args))
-  end
-end
---- Evaluates a raw string, replacing variable occurences and then parsing it as a Lua expression.
--- @tparam string value The raw string.
--- @return The evaluated expression.
-function EventSheet:evaluate(value)
-  if type(value) == 'function' then
-    return value(self)
-  elseif type(value) ~= 'string' then
-    return value
-  else
-    return loadformula(TextParser.evaluate(value), "script")(self)
   end
 end
 --- Sets any variable needed to indicate that this script is running.

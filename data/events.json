@@ -715,6 +715,22 @@
         },
         "id": 2,
         "children": []
+      },
+      {
+        "data": {
+          "events": [],
+          "description": "",
+          "name": "Loot",
+          "tags": [
+            {
+              "key": "key",
+              "value": "value"
+            }
+          ],
+          "key": ""
+        },
+        "id": 12,
+        "children": []
       }
     ]
   },
@@ -792,7 +808,7 @@
                 },
                 {
                   "key": "value",
-                  "value": "({%spawns} or 0) + 1"
+                  "value": "{%spawns} + 1"
                 }
               ],
               "key": ""
@@ -882,7 +898,16 @@
           ],
           "description": "Deletes the character if already defeated.\nSet the argument \"minSpawns\" to the number of times\nthe player should enter the field before the enemy shows up again.",
           "name": "Spawn Check",
-          "tags": [],
+          "tags": [
+            {
+              "key": "spawns",
+              "value": "0"
+            },
+            {
+              "key": "minSpawns",
+              "value": "1"
+            }
+          ],
           "key": "Spawn"
         },
         "id": 3,
@@ -935,7 +960,7 @@
                 },
                 {
                   "key": "value",
-                  "value": "GameManager.frame - ({%lastBattleTime} or -60)"
+                  "value": "GameManager.frame - {%lastBattleTime}"
                 }
               ],
               "key": ""
@@ -1289,10 +1314,187 @@
           ],
           "description": "Starts a battle encounter.",
           "name": "Mob Battle",
-          "tags": [],
+          "tags": [
+            {
+              "key": "lastBattleTime",
+              "value": "-60"
+            }
+          ],
           "key": "Battle"
         },
         "id": 1,
+        "children": []
+      },
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "",
+              "name": "setLabel",
+              "tags": [
+                {
+                  "key": "index",
+                  "value": "-1"
+                },
+                {
+                  "key": "name",
+                  "value": "loop"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "wait",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "FieldManager.player:isBusy() or not FieldManager.playerInput",
+              "name": "jumpTo",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "loop"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "({%cooldown} or 0) > 0",
+              "name": "setCharVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "cooldown"
+                },
+                {
+                  "key": "value",
+                  "value": "{%cooldown} - GameManager:frameTime() * 60"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%cooldown} > 0",
+              "name": "jumpTo",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "loop"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "moveCharPath",
+              "tags": [
+                {
+                  "key": "h",
+                  "value": "0"
+                },
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "vision",
+                  "value": "{%vision}"
+                },
+                {
+                  "key": "other",
+                  "value": "{%target}"
+                },
+                {
+                  "key": "speed",
+                  "value": "-1"
+                },
+                {
+                  "key": "distance",
+                  "value": "1"
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "0"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "stopChar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "not script.char.path",
+              "name": "wait",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "{%pause} + love.math.random(-{%pauseStd}, {%pauseStd})"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "jumpTo",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "loop"
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "Walks towards a character, constantly,\nwhile the player is free to move.",
+          "name": "Follow Character",
+          "tags": [
+            {
+              "key": "vision",
+              "value": "4"
+            },
+            {
+              "key": "pause",
+              "value": "60"
+            },
+            {
+              "key": "pauseStd",
+              "value": "0"
+            },
+            {
+              "key": "target",
+              "value": "\"player\""
+            }
+          ],
+          "key": ""
+        },
+        "id": 11,
         "children": []
       }
     ]
@@ -1364,7 +1566,7 @@
         "data": {
           "events": [
             {
-              "condition": "\"{%exit}\" ~= \"\"",
+              "condition": "",
               "name": "turnCharTile",
               "tags": [
                 {
@@ -1382,12 +1584,16 @@
                 {
                   "key": "y",
                   "value": "0"
+                },
+                {
+                  "key": "optional",
+                  "value": "true"
                 }
               ],
               "key": ""
             },
             {
-              "condition": "\"{%exit}\" ~= \"\"",
+              "condition": "",
               "name": "moveCharTile",
               "tags": [
                 {
@@ -1421,6 +1627,10 @@
                 {
                   "key": "y",
                   "value": "0"
+                },
+                {
+                  "key": "optional",
+                  "value": "true"
                 }
               ],
               "key": ""
@@ -1537,7 +1747,12 @@
           ],
           "description": "Default battle intro.",
           "name": "Battle Load",
-          "tags": [],
+          "tags": [
+            {
+              "key": "{%skipParties}",
+              "value": "false"
+            }
+          ],
           "key": "NormalBattle"
         },
         "id": 7,

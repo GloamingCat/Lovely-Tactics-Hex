@@ -148,7 +148,7 @@ function Player:refreshSpeed()
 end
   
 -- ------------------------------------------------------------------------------------------------
--- Mouse Movement
+-- Player Movement
 -- ------------------------------------------------------------------------------------------------
 
 --- Moves player to the mouse coordinate.
@@ -158,8 +158,8 @@ function Player:moveByMouse(button)
   local tile = FieldManager.currentField:getHoveredTile()
   if tile then
     if not self:tryInteract(tile) then
-      local moved = self:tryPathMovement(tile, Config.player.pathLength or 12) 
-      if not moved then
+      local found = self:computePathTo(tile, Config.player.pathLength or 12) 
+      if not found then
         self:playIdleAnimation()
       end
     end
@@ -167,21 +167,6 @@ function Player:moveByMouse(button)
     self:playIdleAnimation()
   end
 end
---- Checks if the tile is within reach to interact then interacts.
--- @tparam ObjectTile tile Selected tile.
--- @treturn boolean Whether of not the player interacted with this tile.
-function Player:tryInteract(tile)
-  local currentTile = self:getTile()
-  if math.field.tileDistance(tile.x, tile.y, currentTile.x, currentTile.y) > 1 then
-    return false
-  end
-  return self:interactTile(tile)
-end
-
--- ------------------------------------------------------------------------------------------------
--- Keyboard Movement
--- ------------------------------------------------------------------------------------------------
-
 --- Moves player depending on input.
 -- @coroutine
 -- @tparam number dx The x-axis input.
@@ -209,12 +194,27 @@ function Player:moveFromPath()
   if not self.path then
     return false
   end
-  local path = self.path
-  local walked, tile = self:consumePath()
-  if not walked and #path == 0 then
-    self:interactTile(tile, true)
+  local action, tile = self:tryPathMovement(1)
+  if action == self.Action.MOVE then
+    return not self.path:isEmpty()
+  else
+    local path = self.path
+    self.path = nil
+    if path:isEmpty() == 0 then
+      self:interactTile(tile, true)
+    end
+    return false
   end
-  return walked
+end
+--- Checks if the tile is within reach to interact then interacts.
+-- @tparam ObjectTile tile Selected tile.
+-- @treturn boolean Whether of not the player interacted with this tile.
+function Player:tryInteract(tile)
+  local currentTile = self:getTile()
+  if math.field.tileDistance(tile.x, tile.y, currentTile.x, currentTile.y) > 1 then
+    return false
+  end
+  return self:interactTile(tile)
 end
 
 -- ------------------------------------------------------------------------------------------------

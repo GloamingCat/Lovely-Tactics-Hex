@@ -73,14 +73,17 @@ GeneralEvents.VarScope = {
 function GeneralEvents:getVariable(args)
   local scope = self.VarScope[args.scope] or args.scope
   if scope == self.VarScope.global then
-    scope = GameManager.vars
+    scope = Variables.vars
   elseif scope == self.VarScope.script then
     scope = self.vars
   elseif scope == self.VarScope.field then
     scope = FieldManager.currentField.vars
   elseif scope == self.VarScope.params then
-    assert(self.args, "Script does not have parameters")
-    scope = self.args
+    if self.args and self.args[args.key] then
+      scope = self.args
+    else
+      scope = self.tags
+    end
   elseif scope == self.VarScope.object then
     assert(self.char, "Script was not called from a character")
     scope = self.char.vars
@@ -94,17 +97,16 @@ end
 function GeneralEvents:setVariable(args)
   local scope = self.VarScope[args.scope] or args.scope
   if scope == self.VarScope.global then
-    scope = GameManager.vars
+    scope = Variables.vars
   elseif scope == self.VarScope.script then
     scope = self.vars
   elseif scope == self.VarScope.field then
     scope = FieldManager.currentField.vars
-  elseif scope == self.VarScope.params then
-    assert(self.args, "Script does not have parameters")
-    scope = self.args
   elseif scope == self.VarScope.object then
     assert(self.char, "Script was not called from a character")
     scope = self.char.vars
+  elseif scope == self.VarScope.params then
+    error('Cannot modify script parameters')
   else
     return
   end
@@ -118,7 +120,7 @@ end
 --- Sets the value of a global variable.
 -- @tparam VariableArguments args
 function GeneralEvents:setGlobalVar(args)
-  GameManager.vars[args.key] = self:evaluate(args.value)
+  Variables.vars[args.key] = self:evaluate(args.value)
 end
 --- Sets the value of a global variable.
 -- @tparam VariableArguments args

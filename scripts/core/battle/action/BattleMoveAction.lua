@@ -55,9 +55,9 @@ function BattleMoveAction:moveToTile(input, nextTile)
   MoveAction.moveToTile(self, input, nextTile)
   input.user.battler:onTerrainEnter(input.user, input.user:getAllTiles())
 end
---- Overrides `MoveAction:calculatePath`. 
+--- Overrides `MoveAction:computePath`. 
 -- @override
-function BattleMoveAction:calculatePath(input)
+function BattleMoveAction:computePath(input)
   local matrix = not self:isRanged() and TurnManager:pathMatrix() or nil
   return input.path or BattleTactics.optimalPath(self, input.user, input.target, matrix)
 end

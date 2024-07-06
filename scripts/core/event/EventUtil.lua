@@ -57,7 +57,7 @@ function EventUtil:findCharacter(key, optional)
   if key == 'self' then
     return self.char
   end
-  key = TextParser.evaluate(key)
+  key = self:interpolateString(key)
   local char = FieldManager:search(key)
   assert(char or optional, 'Character not found: ' .. tostring(key))
   return char

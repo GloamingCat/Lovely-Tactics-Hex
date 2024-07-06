@@ -13,7 +13,6 @@ local TitleMenu = require ('core/gui/menu/TitleMenu')
 -- Alias
 local deltaTime = love.timer.getDelta
 local copyTable = util.table.deepCopy
-local pathAccess = util.table.access
 local now = love.timer.getTime
 
 -- Class table.
@@ -25,7 +24,6 @@ local GameManager = class()
 
 --- Constructor.
 function GameManager:init()
-  self.vars = {}
   local maxWidth = 0
   local modes = love.window.getFullscreenModes(1)
   for i = 1, #modes do
@@ -85,7 +83,7 @@ end
 -- @tparam table save A save table loaded by SaveManager.
 function GameManager:setSave(save)
   self.playTime = save.playTime
-  self.vars = copyTable(save.vars) or {}
+  Variables.vars = copyTable(save.vars) or {}
   TroopManager.troopData = copyTable(save.troops)
   TroopManager.playerTroopID = save.playerTroopID
   FieldManager.fieldData = copyTable(save.fields)
@@ -118,40 +116,6 @@ function GameManager:setConfig(config)
     self.language = config.language or 1
     Database.loadVocabFiles(self.language)
   end
-end
---- Gets the value of a variable considering the scope of execution.
--- The scope of the variable is searched in order:
--- script (local), script's character, field, game (global).
--- If still not found, it searches in the Vocab terms, using the `TableUtil.access` method.
--- @tparam string key The name of the variable.
--- @tparam Fiber script The current executing script.
--- @tparam Field field The current loaded field.
--- @return The value of the variable. 
-function GameManager:getVariable(key, script, field)
-  local value = pathAccess(Vocab, key)
-  if value == nil and script then
-    if script.args then
-      -- Params
-      value = script.args[key]
-    end
-    if value == nil then
-      -- Local
-      value = script.vars[key]
-    end
-    if value == nil and script.char and script.char.vars then
-      -- Object
-      value = script.char.vars[key]
-    end
-  end
-  if value == nil and field and field.vars then
-    -- Field
-    value = field.vars[key]
-  end
-  if value == nil and self.vars then
-    -- Global
-    value = self.vars[key]
-  end
-  return value
 end
 
 -- ------------------------------------------------------------------------------------------------

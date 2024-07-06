@@ -316,7 +316,7 @@ function BattleAction:closestSelectableTiles(input)
       local path, cost
       if self.moveAction then
         input.target = tile
-        path = self.moveAction:calculatePath(input)
+        path = self.moveAction:computePath(input)
         if not path then
           cost = 2000
         elseif not path.full then

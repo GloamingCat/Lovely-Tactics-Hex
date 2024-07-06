@@ -28,6 +28,7 @@
 util = {}
 util.table = require('core/base/util/TableUtil')
 util.array = require('core/base/util/ArrayUtil')
+Variables = require('core/base/util/Variables')
 
 -- ------------------------------------------------------------------------------------------------
 -- Database

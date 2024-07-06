@@ -22,6 +22,21 @@ local max = math.max
 local Character = class(AnimatedInteractable)
 
 -- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Collision types.
+-- @enum Collision
+-- @field BORDER Code for when a character collides with the field's borders. Equals to 0.
+-- @field TERRAIN Code for when a character collides with a non-passable terrain. Equals to 1.
+-- @field OBSTACLE Code for when a character collides with a non-passable object. Equals to 2.
+-- @field CHARACTER Code for when a character collides with another character. Equals to 3.
+Character.Action = {
+  MOVE = 1,
+  INTERACT = 2
+}
+
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
@@ -176,26 +191,26 @@ end
 --- Tries to move in a given angle.
 -- @coroutine
 -- @tparam number angle The angle in degrees to move.
--- @treturn boolean Returns false if the next angle must be tried, a number to stop trying.
---  If 0, then the path was free. If 1, there was a character in this tile.
+-- @treturn Action Returns nil if the next angle must be tried, a number to stop trying.
+--  If MOVE, then the path was free. If INTERACT, there was a character in this tile.
 function Character:tryAngleMovement(angle)  
   local frontTiles = self:getFrontTiles(angle)
   if #frontTiles == 0 then
-    return false
+    return nil
   end
   for i = 1, #frontTiles do
     local result = self:tryTileMovement(frontTiles[i])
-    if result ~= false then
+    if result then
       return result
     end
   end
-  return false
+  return nil
 end
 --- Tries to move to the given tile.
 -- @coroutine
 -- @tparam ObjectTile tile The destination tile.
--- @treturn number Returns false if the next angle must be tried, a number to stop trying.
---  If 0, then the path was free. If 1, there was a character in this tile.
+-- @treturn Action Returns nil if the next angle must be tried, a number to stop trying.
+--  If MOVE, then the path was free. If INTERACT, there was a character in this tile.
 function Character:tryTileMovement(tile)
   local ox, oy, oh = self:tileCoordinates()
   local dx, dy, dh = tile:coordinates()
@@ -207,44 +222,71 @@ function Character:tryTileMovement(tile)
   if collision == nil then
     -- Free path
     if self:applyTileMovement(tile) then
-      return 0
+      return self.Action.MOVE
     end
   end
   if self.autoAnim then
     self:playIdleAnimation()
   end
-  if collision == 3 then 
+  if collision == FieldManager.currentField.Collision.CHARACTER then 
     -- Character collision
     if not self:collideTile(tile) then
+      -- Passable character
       if self:applyTileMovement(tile) then
-        return 0
+        return self.Action.MOVE
       end
     end
-    return 1
+    return self.Action.INTERACT
   end
-  return false
+  return nil
 end
 --- Tries to walk a path to the given tile.
 -- @coroutine
 -- @tparam ObjectTile tile Destination tile.
--- @tparam number pathLength Maximum length of path.
--- @treturn boolean True if the character walked the full path.
-function Character:tryPathMovement(tile, pathLength)
+-- @tparam[opt=-1] number pathLength Maximum length of path. If -1, there's no limit.
+-- @treturn boolean Whether a full path to the destination tile could be found.
+function Character:computePathTo(tile, pathLength)
+  if pathLength == -1 then
+    pathLength = math.huge
+  end
   local input = ActionInput(MoveAction(mathf.neighborMask, pathLength), self, tile)
-  local path = input.action:calculatePath(input)
+  local path = input.action:computePath(input)
   if not (path and path.full) then
     return false
   end
   self.path = path:addStep(tile, 1):toStack()
   return true
 end
+--- Walks the next tile of the path.
+-- @coroutine
+-- @tparam[opt=1] limit The maximum number of steps to walk. If -1, there's no limit.
+-- @treturn Action Nil if blocked, MOVE if the character walked, and INTERACT encountered a character.
+-- @treturn ObjectTile The next tile in the path:
+--  If blocked, it's the front tile; If not, it's the current tile.
+function Character:tryPathMovement(limit)
+  limit = limit or 1
+  if limit == -1 then
+    limit = math.huge
+  end
+  local tile = nil
+  local action = self.Action.MOVE
+  while limit > 0 and not self.path:isEmpty() do
+    tile = self.path:pop()
+    action = self:tryTileMovement(tile)
+    if action ~= self.Action.MOVE then
+      break
+    end
+    limit = limit - 1
+  end
+  return action, tile
+end
 --- Moves to the given tile.
 -- @coroutine
 -- @tparam ObjectTile tile The destination tile.
--- @treturn number Returns false if path was blocked, true otherwise.
+-- @treturn boolean Returns false if path was blocked, true otherwise.
 function Character:applyTileMovement(tile)
   local input = ActionInput(MoveAction(mathf.centerMask, 2), self, tile)
-  local path = input.action:calculatePath(input)
+  local path = input.action:computePath(input)
   if path and path.full then
     if self.autoAnim then
       self:playMoveAnimation()
@@ -264,24 +306,6 @@ function Character:applyTileMovement(tile)
     return true
   end
   return false
-end
---- Walks the next tile of the path.
--- @coroutine
--- @treturn boolean True if character walked to the next tile, false if collided.
--- @treturn ObjectTile The next tile in the path:
---  If passable, it's the current tile;
---  If not, it's the front tile;
---  If path was empty, then nil.
-function Character:consumePath()
-  local tile = nil
-  if not self.path:isEmpty() then
-    tile = self.path:pop()
-    if self:tryTileMovement(tile) == 0 then
-      return true, tile
-    end
-  end
-  self.path = nil
-  return false, tile
 end
 
 -- ------------------------------------------------------------------------------------------------

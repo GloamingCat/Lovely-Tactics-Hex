@@ -58,7 +58,7 @@ end
 --- Overrides `BattleAction:execute`. 
 -- @override
 function MoveAction:execute(input)
-  local path = self:calculatePath(input)
+  local path = self:computePath(input)
   if path then
     local tiles = input.user:getAllTiles()
     input.user:removeFromTiles(tiles)
@@ -89,7 +89,7 @@ end
 --- Searches for the best path given the target input.
 -- @tparam ActionInput input
 -- @treturn Path Path to input target, if any.
-function MoveAction:calculatePath(input)
+function MoveAction:computePath(input)
   return input.path or BattleTactics.optimalPath(self, input.user, input.target, nil) 
 end
 

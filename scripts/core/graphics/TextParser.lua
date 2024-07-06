@@ -14,6 +14,7 @@
 -- Alias
 local insert = table.insert
 local max = math.max
+local pathAccess = util.table.access
 
 local TextParser = {}
 
@@ -54,27 +55,6 @@ TextParser.Code = {
 -- Fragments
 -- ------------------------------------------------------------------------------------------------
 
---- Replaces all in-text variables by their values.
--- The variables are evaluated recursively.
--- @tparam string text Raw text.
--- @treturn string Modified text.
-function TextParser.evaluate(text)
-  local str = ""
-  for textFragment, code in text:gmatch('([^{%%]*){(.-)}') do
-    local key = code:sub(2)
-    local value = GameManager:getVariable(key, _G.Fiber, FieldManager.currentField)
-    if value == nil then
-      print('Text variable or term not found: ' .. tostring(key))
-    end
-    local f = tostring(value)
-    str = str .. textFragment .. TextParser.evaluate(f)
-  end
-  local lastText = text:match('[^}]+$')
-  if lastText then
-    str = str .. lastText
-  end
-  return str
-end
 --- Split raw text into an array of fragments.
 -- @tparam string text Raw text.
 -- @tparam[opt] boolean plainText Flag to not parse commands.
@@ -123,9 +103,9 @@ function TextParser.parseCode(fragments, code)
     return
   end
   if t == '%' then
-    local key = code:sub(2)
-    local value = GameManager:getVariable(key, _G.Fiber, FieldManager.currentField)
-    assert(value ~= nil, 'Text variable or term not found: ' .. tostring(key))
+    local key = code:sub(2)  
+    local value = pathAccess(Vocab, key)
+    assert(value ~= nil, 'Text term not found: ' .. tostring(key))
     local f = tostring(value)
     if plainText then
       TextParser.parseFragment(fragments, f)

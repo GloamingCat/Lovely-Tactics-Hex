@@ -8,6 +8,9 @@
 
 -- ================================================================================================
 
+-- Imports
+local TextParser = require('core/graphics/TextParser')
+
 -- Class table.
 local Fiber = class()
 
@@ -169,6 +172,29 @@ function Fiber:invoke(time, func, ...)
     self:wait(time)
     func(unpack(args))
   end)
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Variable Evaluation
+-- ------------------------------------------------------------------------------------------------
+
+--- Evaluates a raw string, replacing variable occurences and then parsing it as a Lua expression.
+-- @param value The raw string or pre-evaluated value.
+-- @return The evaluated expression.
+function Fiber:evaluate(value)
+  if type(value) == 'function' then
+    return value(self)
+  elseif type(value) ~= 'string' then
+    return value
+  else
+    return loadformula(self:interpolateString(value), "script")(self)
+  end
+end
+--- Interpolates the raw string given the script's context.
+-- @tparam string str The raw string.
+-- @treturn string The interpolated string.
+function Fiber:interpolateString(str)
+  return str:interpolate(Variables, self)
 end
 -- For debugging.
 function Fiber:__tostring()

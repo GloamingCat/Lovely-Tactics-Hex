@@ -281,21 +281,21 @@ end
 -- @treturn Collision The collision type, if any.
 function Field:collisionXYZ(obj, origX, origY, origH, destX, destY, destH)
   if self:exceedsBorder(destX, destY) then
-    return 0
+    return self.Collision.BORDER
   end
   local layer = self.objectLayers[destH]
   if layer == nil then
-    return 0
+    return self.Collision.BORDER
   end
   local tile = self:getObjectTile(destX, destY, destH)
   if not tile:hasBridgeFrom(obj, origX, origY, origH) and 
       self:collidesTerrain(destX, destY, destH) then
-    return 1
+    return self.Collision.TERRAIN
   end
   if tile:collidesObstacleFrom(obj, origX, origY, origH) then
-    return 2
+    return self.Collision.OBSTACLE
   elseif tile:collidesCharacter(obj) then
-    return 3
+    return self.Collision.CHARACTER
   end
   return nil
 end

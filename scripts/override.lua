@@ -27,27 +27,46 @@ end
 -- @tparam string inputstr String to be splitted.
 -- @tparam[opt="%s+"] string sep Separator.
 -- @treturn table Array of substrings.
-function string.split(inputstr, sep)
+function string:split(sep)
   sep = sep or "%s+"
   local t, i = {}, 1
-  for str in inputstr:gmatch('([^' .. sep .. ']+)') do
+  for str in self:gmatch('([^' .. sep .. ']+)') do
     t[i] = str
     i = i + 1
   end
   return t
 end
 --- Removes spaces in the start and end of the string.
--- @tparam string inputstr String to be trimmed.
 -- @treturn string New trimmed string.
-function string.trim(inputstr)
-  return inputstr:gsub("^%s+", ""):gsub("%s+$", "")
+function string.trim(self)
+  return self:gsub("^%s+", ""):gsub("%s+$", "")
 end
 --- Checks if the first string ends with the second.
--- @tparam string inputstr String to be verified.
 -- @tparam string suffix Suffix to be looked for.
 -- @treturn boolean True if `suffix` is found at the end of `inputstr`. 
-function string.endswith(inputstr, suffix)
-  return inputstr:sub(-string.len(suffix)) == suffix
+function string.endswith(self, suffix)
+  return self:sub(-string.len(suffix)) == suffix
+end
+--- Interpolates the raw string.
+-- @tparam function getVariable Function that receives a key and returns the value.
+-- @param ... Any additional params passed to `getVariable`. 
+-- @treturn string The interpolated string.
+function string.interpolate(self, getVariable, ...)
+  local str = ""
+  for textFragment, code in self:gmatch('([^{%%]*){(.-)}') do
+    local key = code:sub(2)
+    local value = getVariable(key, ...)
+    if value == nil then
+      print('Text variable or term not found: ' .. tostring(key))
+    end
+    local f = tostring(value)
+    str = str .. textFragment .. f:interpolate(getVariable, ...)
+  end
+  local lastText = self:match('[^}]+$')
+  if lastText then
+    str = str .. lastText
+  end
+  return str
 end
 
 -- ------------------------------------------------------------------------------------------------

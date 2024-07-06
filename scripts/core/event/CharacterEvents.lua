@@ -32,8 +32,13 @@ local CharacterEvents = {}
 -- @tfield[opt=0] number y Tile y difference.
 -- @tfield[opt=0] number h Tile height difference.
 -- @tfield[opt] string other Key of a character in the tile that will be used as "origin" (added to x, y and h).
--- @tfield[opt=inf] number limit The maxium length of the path to be calculated.
 -- @tfield[opt] boolean wait Flag to wait for the movement to finish.
+
+--- Arguments for computing a path.
+-- @table PathArguments
+-- @extend TileArguments
+-- @tfield[opt=-1] number vision The maxium length of the path to be calculated.
+-- @tfield[opt=-1] number distance The maxium number of steps the character will walk.
 
 --- Common arguments for jump commands towards a tile.
 -- @table JumpArguments
@@ -295,17 +300,27 @@ function CharacterEvents:moveCharDir(args)
   end
 end
 --- Moves a path to the given tile.
--- @tparam TileArguments args
+-- @tparam PathArguments args
 function CharacterEvents:moveCharPath(args)
   local char = self:findCharacter(args.key)
-  local tile = FieldManager.currentField:getObjectTile(args.x, args.y, args.h)
-  assert(tile, 'Tile not reachable: ', args.x, args.y, args.h)
-  local action = MoveAction()
-  action.pathLimit = args.limit or math.huge
-  local input = ActionInput(action, char, tile)
-  local fiber = self:forkMethod(input.action, 'execute', input)
-  if args.wait then
-    fiber:waitForEnd()
+  local x, y, h = args.x or 0, args.y or 0, args.h or 0
+  if args.other and args.other ~= '' then
+    local other = self:findCharacter(args.other)
+    local x2, y2, h2 = other:tileCoordinates()
+    x, y, h = x + x2, y + y2, h + h2
+  end
+  local target = FieldManager.currentField:getObjectTile(x, y, h)
+  if char:computePathTo(target, args.vision or -1) then
+    local fiber = self:fork(function()
+      local action = char:tryPathMovement(args.distance or -1)
+      if action ~= char.Action.MOVE then
+        -- Interrupted
+        self.path = nil
+      end
+    end)
+    if args.wait then
+      fiber:waitForEnd()
+    end
   end
 end
 
