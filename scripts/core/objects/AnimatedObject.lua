@@ -30,6 +30,9 @@ local AnimatedObject = class(TransformableObject)
 function AnimatedObject:initGraphics(animations, initAnim, transform, sets)
   self.animName = nil
   self.transform = transform or Affine.neutralTransform
+  if self.sprite then
+    self.sprite:destroy()
+  end
   self.sprite = Sprite(FieldManager.renderer)
   if self.position then
     self.sprite:setPosition(self.position)

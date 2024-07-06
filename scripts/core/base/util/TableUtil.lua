@@ -14,39 +14,45 @@ local util = {}
 -- ------------------------------------------------------------------------------------------------
 
 --- Creates a copy of the given table.
--- @tparam table table The table with the (key, value) entries to be copied.
+-- @tparam table t The table with the (key, value) entries to be copied.
 -- @treturn table The copy of the table.
-function util.shallowCopy(table)
+function util.shallowCopy(t)
+  if t == nil then
+    return nil
+  end
   local copy = {}
-  util.shallowAdd(copy, table)
+  util.shallowAdd(copy, t)
   return copy
 end
 --- Adds the seconde table's key and values to the first one.
--- @tparam table table The table to be modified.
+-- @tparam table t The table to be modified.
 -- @tparam table entries A table of (key, value) entries to be added.
-function util.shallowAdd(table, entries)
+function util.shallowAdd(t, entries)
   for k, v in pairs(entries) do
-    table[k] = v
+    t[k] = v
   end
 end
 --- Creates a copy of the given table.
--- @tparam table table The table with the (key, value) entries to be copied.
+-- @tparam table t The table with the (key, value) entries to be copied.
 -- @treturn table The copy of the table.
-function util.deepCopy(table)
+function util.deepCopy(t)
+  if t == nil then
+    return nil
+  end
   local copy = {}
-  util.deepAdd(copy, table)
+  util.deepAdd(copy, t)
   return copy
 end
 --- Adds the seconde table's key and values to the first one.
--- @tparam table table The table to be modified.
+-- @tparam table t The table to be modified.
 -- @tparam table entries A table of (key, value) entries to be added.
-function util.deepAdd(table, entries)
+function util.deepAdd(t, entries)
   for k, v in pairs(entries) do
     local typ = type(v)
     if typ == 'table' then
-      table[k] = util.deepCopy(v)
+      t[k] = util.deepCopy(v)
     else
-      table[k] = v
+      t[k] = v
     end
   end
 end
@@ -56,8 +62,8 @@ end
 function util.join(tables)
   local new = {}
   for i = 1, #tables do
-    local table = tables[i]
-    util.shallowAdd(new, table)
+    local t = tables[i]
+    util.shallowAdd(new, t)
   end
   return new
 end

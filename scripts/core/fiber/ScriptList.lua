@@ -1,10 +1,9 @@
 
 -- ================================================================================================
 
---- Base methods for objects with load/collision/interaction/exit scripts.
+--- A `FiberList` that runs field/character scripts.
 ---------------------------------------------------------------------------------------------------
--- @fieldmod Interactable
--- @extend Object
+-- @basemod ScriptList
 
 -- ================================================================================================
 
@@ -14,33 +13,23 @@ local FiberList = require('core/fiber/FiberList')
 -- Alias
 local copyTable = util.table.deepCopy
 
--- Class table.
-local Interactable = class()
-
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Constructor. Extends `Object:init` and initialize variables, scripts, and adds the object to
--- `FieldManager`'s `updateList` and `characterList`.
--- @tparam table scripts List of scripts from instance data;
--- @tparam table vars Default variables from instance data;
--- @tparam[opt] table save Persistent data from save file. 
-function Interactable:init(scripts, vars, save)
-  self:resetVariables(save and save.vars or vars)
-  self:initScripts(scripts, save)
-  self.active = true
-end
+local ScriptList = class(FiberList)
+
 --- Initializes the script lists from instance data or save data.
--- @tparam[opt] table vars Default variables from instance data.
-function Interactable:resetVariables(vars)
-  self.vars = vars and copyTable(vars) or {}
-end
---- Initializes the script lists from instance data or save data.
--- @tparam table scripts Default scripts from instance data.
+-- @tparam table scripts Array of scripts from instante data.
+-- @tparam InteractableObject|Field object The object that owns this list.
 -- @tparam[opt] table save Persistent data from save file.
-function Interactable:initScripts(scripts, save)
-  self.fiberList = FiberList(self)
+function ScriptList:init(scripts, object, save)
+  FiberList.init(self, object)
+  self.active = true
+  if save then
+    self.active = save.active
+  end
+  self.scripts = scripts
   if save then
     self.onLoadScripts = copyTable(save.onLoadScripts or {})
     self.onCollideScripts = copyTable(save.onCollideScripts or {})
@@ -48,17 +37,26 @@ function Interactable:initScripts(scripts, save)
     self.onExitScripts = copyTable(save.onExitScripts or {})
     self.onDestroyScripts = copyTable(save.onDestroyScripts or {})
   else
-    self.onLoadScripts = {}
-    self.onCollideScripts = {}
-    self.onInteractScripts = {}
-    self.onExitScripts = {}
-    self.onDestroyScripts = {}
-    self:addScripts(scripts)
+    self:reset()
   end
+end
+--- Resets the script list to its original configuration.
+function ScriptList:reset()
+  self.onLoadScripts = {}
+  self.onCollideScripts = {}
+  self.onInteractScripts = {}
+  self.onExitScripts = {}
+  self.onDestroyScripts = {}
+  for i = 1, self.size do
+    self[i]:interrupt()
+    self[i] = nil
+  end
+  self.size = 0
+  self:addScripts(self.scripts)
 end
 --- Creates listeners from instance data.
 -- @tparam table scripts Array of script data.
-function Interactable:addScripts(scripts)
+function ScriptList:addScripts(scripts)
   local function addScript(script, list)
       script = copyTable(script)
       script.vars = script.vars or {}
@@ -87,17 +85,9 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
---- Updates fiber list.
-function Interactable:update()
-  self.fiberList:update()
-end
---- Terminates fiber list.
-function Interactable:destroy()
-  self.fiberList:destroy()
-end
 --- Gets data with fiber list's state and local variables.
 -- @treturn table State data to be saved.
-function Interactable:getPersistentData()
+function ScriptList:getPersistentData()
   local function copyScripts(scripts)
     local copy = {}
     for i = 1, #scripts do
@@ -108,7 +98,6 @@ function Interactable:getPersistentData()
   end
   return {
     active = self.active,
-    vars = copyTable(self.vars),
     onLoadScripts = copyScripts(self.onLoadScripts),
     onCollideScripts = copyScripts(self.onCollideScripts),
     onInteractScripts = copyScripts(self.onInteractScripts),
@@ -117,30 +106,29 @@ function Interactable:getPersistentData()
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Scripts
+-- Run
 -- ------------------------------------------------------------------------------------------------
 
 --- Creates a fiber to run the scripts for a given trigger type.
 -- @tparam string name Name of the trigger (starting with "on").
 -- @treturn Fiber The fiber that will execute the scripts, or nil if there's nothing to run.
-function Interactable:trigger(name, ...)
+function ScriptList:trigger(name, ...)
   local list = self[name .. "Scripts"]
-  if self.deleted or not self.active or #list == 0 then
+  if self.finished or self.char.deleted or not self.active or #list == 0 then
     return nil
   else
-    return self.fiberList:forkMethod(self, name, ...)
+    return self:forkMethod(self, name, ...)
   end
 end
 --- Called when the field is loaded.
 -- @coroutine
 -- @tparam boolean loading True if the field was loaded now, false if loaded from save.
-function Interactable:onLoad(loading)
-  print('onLoad', self.deleted, self.active, #self.onLoadScripts, loading, self)
+function ScriptList:onLoad(loading)
   for _, script in ipairs(self.onLoadScripts) do
     if script.vars.loading or loading then
       script.vars.loading = script.vars.loading or loading
       self:runScript(script)
-      if self.deleted then
+      if self.finished or self.char.deleted then
         break
       end
     end
@@ -149,13 +137,12 @@ end
 --- Called when the field is unloaded.
 -- @coroutine
 -- @tparam string exit The key of the object that originated the exit transition.
-function Interactable:onExit(exit)
-  print('onExit', self.deleted, self.active, #self.onExitScripts, exit, self)
+function ScriptList:onExit(exit)
   for _, script in ipairs(self.onExitScripts) do
     if script.vars.exit or exit then
       script.vars.exit = script.vars.exit or exit
       self:runScript(script)
-      if self.deleted then
+      if self.finished or self.char.deleted then
         break
       end
     end
@@ -164,12 +151,12 @@ end
 --- Called when a character interacts with this object.
 -- @coroutine
 -- @tparam boolean interacting True if the interaction occured now, false if loaded from save.
-function Interactable:onInteract(interacting)
+function ScriptList:onInteract(interacting)
   for _, script in ipairs(self.onInteractScripts) do
     if script.vars.interacting or interacting then
       script.vars.interacting = script.vars.interacting or interacting
       self:runScript(script)
-      if self.deleted then
+      if self.finished or self.char.deleted then
         break
       end
     end
@@ -181,13 +168,13 @@ end
 --  Nil if loaded from save.
 -- @tparam string collider Key of the character who started the collision.
 --  Nil if loaded from save.
-function Interactable:onCollide(collided, collider)
+function ScriptList:onCollide(collided, collider)
   for _, script in ipairs(self.onCollideScripts) do
     if script.vars.collider or collider then
       script.vars.collided = script.vars.collided or collided
       script.vars.collider = script.vars.collider or collider
       self:runScript(script)
-      if self.deleted then
+      if self.finished or self.char.deleted then
         break
       end
     end
@@ -196,12 +183,12 @@ end
 --- Called when the field is unloaded.
 -- @coroutine
 -- @tparam string destroyer The key of the object that originated the destroy command.
-function Interactable:onDestroy(destroyer)
+function ScriptList:onDestroy(destroyer)
   for _, script in ipairs(self.onDestroyScripts) do
     if script.vars.destroyer or destroyer then
       script.vars.destroyer = script.vars.destroyer or destroyer
       self:runScript(script)
-      if self.deleted then
+      if self.finished or self.char.deleted then
         break
       end
     end
@@ -210,19 +197,19 @@ end
 --- Creates a new event sheet from the given script data.
 -- @coroutine
 -- @tparam table script Script initialization info.
-function Interactable:runScript(script)
+function ScriptList:runScript(script)
   if script.running then
     return
   end
-  local fiberList = script.global and FieldManager.fiberList or self.fiberList
-  local fiber = fiberList:forkFromScript(script, self)
+  local fiberList = script.global and FieldManager.fiberList or self
+  local fiber = fiberList:forkFromScript(script, self.char)
   if script.wait then
     fiber:waitForEnd()
   end
 end
 -- For debugging.
-function Interactable:__tostring()
-  return 'Interactable: ' .. self.key
+function ScriptList:__tostring()
+  return 'ScriptList: ' .. tostring(self.name)
 end
 
-return Interactable
+return ScriptList

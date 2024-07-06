@@ -70,7 +70,7 @@ function Fiber:update()
     end
     error("Error updating coroutine " .. tostring(self))
   end
-  if coroutine.status(self.coroutine) == 'dead' then
+  if self.coroutine and coroutine.status(self.coroutine) == 'dead' then
     self:finish()
   end
   _G.Fiber = previous
@@ -89,7 +89,7 @@ function Fiber:printStackTrace(msg)
 end
 --- Checks if this fiber is still running.
 -- @treturn boolean False if already ended, true otherwise.
-function Fiber:running()
+function Fiber:isRunning()
   return self.coroutine ~= nil
 end
 --- Forcefully ends this Fiber, if possible.

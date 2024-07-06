@@ -16,11 +16,11 @@
 local rand = love.math.random
 
 return function(script)
-
   local vision = tonumber(script.args.vision) or 4
   local pause = tonumber(script.args.pause) or 60
   local pauseVar = tonumber(script.args.pauseVar) or 0
   while true do
+    Fiber:wait()
     if not FieldManager.player:isBusy() and FieldManager.playerInput then
       if script.char.vars.cooldown and script.char.vars.cooldown > 0 then
         script.char.vars.cooldown = script.char.vars.cooldown - GameManager:frameTime() * 60
@@ -31,6 +31,5 @@ return function(script)
         end
       end
     end
-    Fiber:wait()
   end
 end

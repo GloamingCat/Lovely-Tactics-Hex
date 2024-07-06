@@ -106,7 +106,7 @@ function Scalable:waitForScaling()
   while self.scaleTime < 1 do
     Fiber:wait()
   end
-  if fiber:running() then
+  if fiber:isRunning() then
     self.scaleFiber = nil
   end
 end

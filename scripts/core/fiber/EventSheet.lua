@@ -170,7 +170,7 @@ function EventSheet:runEvents()
   while self.vars.runningIndex < #self.events do
     self.vars.runningIndex = self.vars.runningIndex + 1
     self:runCurrentEvent()
-    if not self:running() or not self.vars.runningIndex then
+    if not self:isRunning() or not self.vars.runningIndex then
       break
     end
   end

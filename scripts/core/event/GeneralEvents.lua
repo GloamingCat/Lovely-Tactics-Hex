@@ -130,7 +130,6 @@ end
 function GeneralEvents:setCharVar(args)
   assert(self.char, "Script was not called from a character")
   self.char.vars[args.key] = self:evaluate(args.value)
-  print('setCharVar', self.char, args.key, args.value, self.char.vars[args.key])
 end
 
 -- ------------------------------------------------------------------------------------------------

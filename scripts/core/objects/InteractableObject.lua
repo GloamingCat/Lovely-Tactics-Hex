@@ -12,15 +12,15 @@
 -- ================================================================================================
 
 -- Imports
-local Interactable = require('core/field/Interactable')
 local Object = require('core/objects/Object')
+local ScriptList = require('core/fiber/ScriptList')
 
 -- Alias
 local copyTable = util.table.deepCopy
 local tileDistance = math.field.tileDistance
 
 -- Class table.
-local InteractableObject = class(Object, Interactable)
+local InteractableObject = class(Object)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -33,10 +33,14 @@ local InteractableObject = class(Object, Interactable)
 function InteractableObject:init(instData, save)
   local tile = FieldManager.currentField:getObjectTile(instData.x, instData.y, instData.h)
   Object.init(self, instData, tile, save)
-  Interactable.init(self, instData.scripts, instData.vars, save)
   FieldManager.updateList:add(self)
   FieldManager.characterList:add(self)
   FieldManager.characterList[self.key] = self
+  self.vars = copyTable(save and save.vars or instData.vars) or {}
+  self.fiberList = ScriptList(instData.scripts, self, save and save.scripts)
+  if instData.active == false and not save then
+    self.fiberList.active = false
+  end
 end
 --- Extends `Object:initProperties`.
 -- Sets generic properties, like key, passability, activeness, and persistency.
@@ -48,17 +52,7 @@ function InteractableObject:initProperties(instData, save)
   else
     self.passable = instData.passable
   end
-  if save and save.active ~= nil then
-    self.active = save.active
-  else
-    self.active = instData.active
-  end
   self.persistent = instData.persistent
-end
---- Overrides `Interactable:initScripts`.
--- @override
-function InteractableObject:initScripts(scripts, save)
-  Interactable.initScripts(self, scripts, save)
   self.faceToInteract = false
   self.approachToInteract = true
 end
@@ -77,8 +71,8 @@ function InteractableObject:collideTile(tile)
   local blocking = false
   for char in tile.characterList:iterator() do
     if char ~= self  then
-      self:trigger('onCollide', char.key, self.key)
-      char:trigger('onCollide', char.key, self.key)
+      self.fiberList:trigger('onCollide', char.key, self.key)
+      char.fiberList:trigger('onCollide', char.key, self.key)
       if not char.passable then
         blocking = true
       end
@@ -123,7 +117,7 @@ function InteractableObject:interactTile(tile, fromPath)
     if char ~= self 
         and not (char.approachToInteract and fromPath)
         and (not char.faceToInteract or isFront)
-        and char:trigger('onInteract', true) then
+        and char.fiberList:trigger('onInteract', true) then
       interacted = true
     end
   end
@@ -154,11 +148,14 @@ end
 -- General
 -- ------------------------------------------------------------------------------------------------
 
+--- Updates fiber list.
+function InteractableObject:update()
+  self.fiberList:update()
+end
 --- Overrides `Object:destroy` and `Interactable:destroy`.
 -- @override
 function InteractableObject:destroy(permanent)
   Object.destroy(self)
-  Interactable.destroy(self)
   FieldManager.updateList:removeElement(self)
   FieldManager.characterList:removeElement(self)
   FieldManager.characterList[self.key] = false
@@ -168,22 +165,25 @@ function InteractableObject:destroy(permanent)
   if self.persistent then
     FieldManager:storeCharData(FieldManager.currentField.id, self)
   end
-  print(self, 'destroyed')
+  self.fiberList:destroy()
 end
 --- Check if the character in still present in the current field's character list.
 -- @treturn boolean Whether this character was removed from the field.
 function InteractableObject:wasDestroyed()
   return not FieldManager.characterList:contains(self)
 end
---- Overrides `Interactable:getPersistentData`. Saves `deleted` and `passable` flags.
--- @override
+--- Object's persistent data. Includes properties, object variables and fiber list's data.
+-- @treturn table Save data.
 function InteractableObject:getPersistentData()
-  local save = Interactable.getPersistentData(self)
-  save.deleted = self.deleted
-  save.passable = self.passable
-  return save
+  return {
+    scripts = self.fiberList:getPersistentData(),
+    vars = copyTable(self.vars),
+    deleted = self.deleted,
+    passable = self.passable }
 end
 -- For debugging.
 function InteractableObject:__tostring()
   return 'InteractableObject (' .. self.key .. ')'
-end  return InteractableObject
+end
+
+return InteractableObject

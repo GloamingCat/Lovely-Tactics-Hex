@@ -96,7 +96,7 @@ function MenuEvents:showCredits(args)
   local titleText = createText(self.menu:windowMargin() * 2)
   local bodyText = createText(self.menu:windowMargin() * 2 + font[3])
   local fiber = self:fork(showCredits, titleText, bodyText)
-  while fiber:running() do
+  while fiber:isRunning() do
     if InputManager.keys['confirm']:isTriggered() or InputManager.keys['cancel']:isTriggered() or
         InputManager.keys['touch']:isTriggered() or InputManager.keys['mouse1']:isTriggered() then
       fiber:interrupt()

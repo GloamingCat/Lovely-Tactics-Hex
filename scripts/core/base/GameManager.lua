@@ -85,7 +85,7 @@ end
 -- @tparam table save A save table loaded by SaveManager.
 function GameManager:setSave(save)
   self.playTime = save.playTime
-  self.vars = copyTable(save.vars)
+  self.vars = copyTable(save.vars) or {}
   TroopManager.troopData = copyTable(save.troops)
   TroopManager.playerTroopID = save.playerTroopID
   FieldManager.fieldData = copyTable(save.fields)

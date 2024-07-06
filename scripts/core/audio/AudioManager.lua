@@ -314,7 +314,7 @@ function AudioManager:waitForBGMFading()
   while self.fading < 1 and self.fading > 0 do
     Fiber:wait()
   end
-  if fiber:running() then
+  if fiber:isRunning() then
     self.fadingFiber = nil
   end
 end

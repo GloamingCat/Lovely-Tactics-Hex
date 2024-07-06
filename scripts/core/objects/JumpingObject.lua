@@ -77,7 +77,7 @@ function JumpingObject:waitForJump()
   while self.gravity > 0 do
     Fiber:wait()
   end
-  if fiber:running() then
+  if fiber:isRunning() then
     self.jumpFiber = nil
   end
 end

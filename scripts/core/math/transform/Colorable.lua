@@ -164,7 +164,7 @@ function Colorable:waitForColor()
   while self.colorTime < 1 do
     Fiber:wait()
   end
-  if fiber:running() then
+  if fiber:isRunning() then
     self.colorFiber = nil
   end
 end

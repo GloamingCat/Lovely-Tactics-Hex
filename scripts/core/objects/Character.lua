@@ -29,20 +29,21 @@ local Character = class(AnimatedInteractable)
 -- Stores id, character data and adds character-specific properties to the instance data.
 -- @override
 function Character:init(instData, save)
-  -- Character data
   local charID = save and save.charID or instData.charID
   local charData = Database.characters[charID]
   assert(charData, "Character data not found: " .. tostring(charID))
-  -- General properties from character data
-  instData.name = charData.name
-  instData.collisionTiles = charData.tiles
-  instData.animations = charData.animations
-  instData.shadowID = charData.shadowID
-  instData.transform = charData.transform
   self.id = charData.id
   self.charData = charData
+  if not instData.name then
+    instData.name = charData.name
+    instData.collisionTiles = charData.tiles
+    instData.animations = charData.animations
+    instData.shadowID = charData.shadowID
+    instData.transform = charData.transform
+    util.array.addAll(instData.scripts, charData.scripts)
+  end
   AnimatedInteractable.init(self, instData, save)
-  self:addScripts(charData.scripts)
+  self.fiberList:addScripts(charData.scripts)
 end
 --- Overrides `AnimatedInteractable:initGraphics`. Creates the portrait list and shadow.
 -- @override
@@ -52,10 +53,15 @@ function Character:initGraphics(instData, save)
     self.portraits[p.name] = p
   end
   local shadowID = save and save.shadowID or instData.shadowID
+  if self.shadow then
+    self.shadow:destroy()
+  end
   if shadowID and shadowID >= 0 then
     local shadowData = Database.animations[shadowID]
     self.shadow = ResourceManager:loadSprite(shadowData, FieldManager.renderer)
     self.shadow:setXYZ(self.position:coordinates())
+  else
+    self.shadow = nil
   end
   AnimatedInteractable.initGraphics(self, instData, save)
 end

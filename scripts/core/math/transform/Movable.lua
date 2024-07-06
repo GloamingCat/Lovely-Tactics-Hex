@@ -125,7 +125,7 @@ function Movable:waitForMovement()
   while self.moveTime < 1 do
     Fiber:wait()
   end
-  if fiber:running() then
+  if fiber:isRunning() then
     self.moveFiber = nil
   end
 end

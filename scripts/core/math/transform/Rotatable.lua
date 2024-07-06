@@ -95,7 +95,7 @@ function Rotatable:waitForRotation()
   while self.rotationTime < 1 do
     Fiber:wait()
   end
-  if fiber:running() then
+  if fiber:isRunning() then
     self.rotationFiber = nil
   end
 end

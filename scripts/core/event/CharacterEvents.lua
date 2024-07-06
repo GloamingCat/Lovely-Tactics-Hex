@@ -44,14 +44,6 @@ local CharacterEvents = {}
 -- @tfield[opt=30] number gravity The deceleration, in pixels/frame².
 -- @tfield[opt] boolean wait Flag to wait for the jump to finish.
 
---- Arguments for delete commands.
--- @table DeleteArguments
--- @tfield string key They key of the character.
--- @tfield[opt] boolean optional Flag to not raise an error when the character is not found.
--- @tfield[opt] boolean permanent Flag to create the character again when field if reloaded.
--- @tfield[opt=0] number time Number of frames to wait before destroying the character.
--- @tfield[opt] boolean wait Flag to wait until the character is deleted.
-
 --- Common arguments for animation commands.
 -- @table PropArguments
 -- @tfield string key They key of the character.
@@ -63,7 +55,18 @@ local CharacterEvents = {}
 -- @tfield string key They key of the character.
 -- @tfield[opt] boolean props Flag to reset character's properties.
 -- @tfield[opt] boolean tile Flag to reset character to its original tile.
--- @tfield[opt] boolean scripts Flag to reset character's scripts variables.
+-- @tfield[opt] boolean vars Flag to reset character's variables.
+-- @tfield[opt] boolean scripts Flag to reset character's scripts.
+-- @tfield[opt] boolean graphics Flag to reset character's animation, direction and transform.
+
+--- Arguments for delete command. Extends `PropClassArguments` to include reset options.
+-- @table DeleteArguments
+-- @extend PropClassArguments
+-- @tfield string key They key of the character.
+-- @tfield[opt] boolean optional Flag to not raise an error when the character is not found.
+-- @tfield[opt] boolean permanent Flag to create the character again when field if reloaded.
+-- @tfield[opt=0] number time Number of frames to wait before destroying the character.
+-- @tfield[opt] boolean wait Flag to wait until the character is deleted.
 
 --- Common arguments for animation commands.
 -- @table AnimArguments
@@ -100,13 +103,13 @@ function CharacterEvents:deleteChar(args)
     if args.time and args.time > 0 then
       self:wait(args.time)
     end
-    if args.reset then
-      char:transferTile(char:originalCoordinates())
-      char:initProperties(char.data)
-      char:initGraphics(char.data)
-      char:initScripts(char.data.scripts)
+    if args.tile or args.props or args.graphics or args.vars or args.scripts then
+      self:resetChar(args)
     end
-    char.fiberList:forkMethod(char, 'onDestroy', destroyer):waitForEnd()
+    local onDestroyFiber = char.fiberList:trigger('onDestroy', destroyer)
+    if onDestroyFiber then
+      onDestroyFiber:waitForEnd()
+    end
     char:destroy(args.permanent)
   end)
   if args.wait then
@@ -123,6 +126,9 @@ function CharacterEvents:resetChar(args)
   if args.tile then
     char:transferTile(char:originalCoordinates())
   end
+  if args.scripts then
+    char.fiberList:reset()
+  end
   if args.props then
     char:initProperties(char.data)
   end
@@ -131,9 +137,6 @@ function CharacterEvents:resetChar(args)
   end
   if args.vars then
     char:resetVariables(char.data.vars)
-  end
-  if args.scripts then
-    char:initScripts(char.data.scripts)
   end
 end
 --- Changes a character's properties.
@@ -149,7 +152,7 @@ function CharacterEvents:setCharProperty(args)
   elseif prop == self.PropType.passable then
     char.passable = self:evaluate(args.value)
   elseif prop == self.PropType.active then
-    char.active = self:evaluate(args.value)
+    char.fiberList.active = self:evaluate(args.value)
   elseif prop == self.PropType.autoAnim then
     char.autoAnim = not self:evaluate(args.value)
   elseif prop == self.PropType.autoTurn then
@@ -187,7 +190,7 @@ function CharacterEvents:logProperties(args)
   end
   print("===> " .. tostring(char) .. " log")
   if args.props then
-    print("Active", char.active)
+    print("Active", char.fiberList.active)
     print("Passable", char.passable)
     print("Persistent", char.persistent)
     print("Variables:")

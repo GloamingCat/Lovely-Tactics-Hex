@@ -8,10 +8,9 @@
 -- ================================================================================================
 
 -- Imports
-local FiberList = require('core/fiber/FiberList')
-local Interactable = require('core/field/Interactable')
 local List = require('core/datastruct/List')
 local ObjectLayer = require('core/field/ObjectLayer')
+local ScriptList = require('core/fiber/ScriptList')
 local TagMap = require('core/datastruct/TagMap')
 
 -- Alias
@@ -22,7 +21,7 @@ local pixelCenter = math.field.pixelCenter
 local pixelBounds = math.field.pixelBounds
 
 -- Class table.
-local Field = class(Interactable)
+local Field = class()
 
 -- ------------------------------------------------------------------------------------------------
 -- Tables
@@ -83,7 +82,8 @@ function Field:init(id, prefs, sizeX, sizeY, save)
     exitScript.onExit = true
     scripts[#scripts + 1] = exitScript
   end
-  Interactable.init(self, scripts, prefs.vars, save)
+  self.vars = copyTable(save and save.vars or prefs.vars) or {}
+  self.fiberList = ScriptList(scripts, self, save and save.scripts)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -93,7 +93,6 @@ end
 --- Updates all ObjectTiles and TerrainTiles in field's layers.
 -- @tparam number dt The duration of the previous frame.
 function Field:update(dt)
-  self.fiberList:update(dt)
   for l = 1, self.maxh do
     local layer = self.objectLayers[l]
     for i = 1, self.sizeX do
@@ -111,14 +110,15 @@ function Field:update(dt)
       end
     end
   end
+  self.fiberList:update(dt)
 end
---- Overrides `Interactable:getPersistentData`. Saves images and bgm.
--- @override
+--- Field's persistent data. Includes bgm, field variables and fiber list's data.
+-- @treturn table Save data.
 function Field:getPersistentData()
-  local save = Interactable.getPersistentData(self)
-  save.bgm = self.bgm
-  
-  return save
+  return {
+    scripts = self.fiberList:getPersistentData(),
+    vars = copyTable(self.vars),
+    bgm = copyTable(self.bgm) }
 end
 --- Gets size in tiles.
 -- @treturn number Size X of field.
@@ -129,7 +129,6 @@ function Field:getSize()
 end
 --- Destroys fiber list and tiles.
 function Field:destroy()
-  Interactable.destroy(self)
   for l = 1, self.maxh do
     local layer = self.objectLayers[l]
     for i = 1, self.sizeX do
@@ -147,6 +146,7 @@ function Field:destroy()
       end
     end
   end
+  self.fiberList:destroy()
 end
 
 -- ------------------------------------------------------------------------------------------------

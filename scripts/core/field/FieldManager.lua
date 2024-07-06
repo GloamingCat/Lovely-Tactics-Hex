@@ -39,7 +39,6 @@ end
 --- Calls all the update functions.
 -- @tparam number dt The duration of the previous frame.
 function FieldManager:update(dt)
-  self.fiberList:update()
   if self.currentField then
     self.currentField:update(dt)
     for object in self.updateList:iterator() do
@@ -47,6 +46,7 @@ function FieldManager:update(dt)
     end
     self.renderer:update(dt)
   end
+  self.fiberList:update()
   if self.hud then
     self.hud:update(dt)
   end
@@ -109,50 +109,46 @@ function FieldManager:runLoadScripts(fromSave)
   local fibers = {}
   -- Init character
   for char in self.characterList:iterator() do
-    fibers[#fibers + 1] = char:trigger('onLoad', not fromSave)
+    fibers[#fibers + 1] = char.fiberList:trigger('onLoad', not fromSave)
   end
   -- Field script
-  fibers[#fibers + 1] = self.currentField:trigger('onLoad', not fromSave)
+  fibers[#fibers + 1] = self.currentField.fiberList:trigger('onLoad', not fromSave)
   -- Resume characters scripts
   for char in self.characterList:iterator() do
-    fibers[#fibers + 1] = char:trigger('onCollide')
-    fibers[#fibers + 1] = char:trigger('onInteract')
-    fibers[#fibers + 1] = char:trigger('onExit')
-    fibers[#fibers + 1] = char:trigger('onDestroy')
+    fibers[#fibers + 1] = char.fiberList:trigger('onCollide')
+    fibers[#fibers + 1] = char.fiberList:trigger('onInteract')
+    fibers[#fibers + 1] = char.fiberList:trigger('onExit')
+    fibers[#fibers + 1] = char.fiberList:trigger('onDestroy')
     if not fromSave then
       char:collideTile(char:getTile())
     end
   end
-  fibers[#fibers + 1] = self.currentField:trigger('onExit')
+  fibers[#fibers + 1] = self.currentField.fiberList:trigger('onExit')
 end
 --- Execute current field's load script and characters' load scripts.
 -- @tparam[opt] string exit The key of the object that originated the exit transition.
 function FieldManager:runExitScripts(exit)
-  print('ON EXIT', GameManager.frame)
   local fibers = {}
   -- Field script
-  fibers[1] = self.currentField:trigger('onExit', exit)
+  fibers[1] = self.currentField.fiberList:trigger('onExit', exit)
   -- Characters
   for char in self.characterList:iterator() do
-    fibers[#fibers + 1] = char:trigger('onExit', exit)
+    fibers[#fibers + 1] = char.fiberList:trigger('onExit', exit)
   end
   -- Wait
   for _, fiber in ipairs(fibers) do
     fiber:waitForEnd()
   end
-  print('ON DESTROY', GameManager.frame)
   fibers = {}
   local destroyer = _G.Fiber and _G.Fiber.char or exit
   -- On Destroy
   for char in self.characterList:iterator() do
-    fibers[#fibers + 1] = char:trigger('onDestroy', destroyer)
+    fibers[#fibers + 1] = char.fiberList:trigger('onDestroy', destroyer)
   end
   -- Wait
   for _, fiber in ipairs(fibers) do
-    print('waiting for', fiber)
     fiber:waitForEnd()
   end
-  print('FINISH', GameManager.frame)
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -186,7 +182,6 @@ end
 -- @tparam table transition The transition data.
 -- @tparam[opt] table save Field's save data.
 function FieldManager:initializePlayer(transition, save)
-  print('Has save: ', save and save.chars.player)
   local player = Player(transition, save and save.chars.player)
   self.renderer.focusObject = player
   self.renderer:setPosition(player.position)
