@@ -48,19 +48,19 @@ function string.endswith(self, suffix)
   return self:sub(-string.len(suffix)) == suffix
 end
 --- Interpolates the raw string.
--- @tparam function getVariable Function that receives a key and returns the value.
--- @param ... Any additional params passed to `getVariable`. 
+-- @tparam function varAccessor Function that receives a key and returns the value.
+-- @param ... Any additional params passed to `varAccessor`. 
 -- @treturn string The interpolated string.
-function string.interpolate(self, getVariable, ...)
+function string.interpolate(self, varAccessor, ...)
   local str = ""
   for textFragment, code in self:gmatch('([^{%%]*){(.-)}') do
     local key = code:sub(2)
-    local value = getVariable(key, ...)
+    local value = varAccessor(key, ...)
     if value == nil then
-      print('Text variable or term not found: ' .. tostring(key))
+      print('Text variable or term not found: ' .. tostring(key), ...)
     end
     local f = tostring(value)
-    str = str .. textFragment .. f:interpolate(getVariable, ...)
+    str = str .. textFragment .. f:interpolate(varAccessor, ...)
   end
   local lastText = self:match('[^}]+$')
   if lastText then

@@ -14,6 +14,9 @@ local EventUtil = require('core/event/EventUtil')
 local Fiber = require('core/fiber/Fiber')
 local TextParser = require('core/graphics/TextParser')
 
+-- Alias
+local findTag = util.array.findByKey
+
 -- Class table.
 local EventSheet = class(Fiber, EventUtil)
 
@@ -69,12 +72,11 @@ end
 --  a constant value.
 --  Can be either a constant or a function to be computed before the event executes.
 -- @param ... Any aditional argumentes to the event's function.
-function EventSheet:addEvent(func, condition, ...)
+function EventSheet:addEvent(func, condition, args)
   if condition ~= nil and type(condition) ~= 'function' then
     local value = condition
     condition = function()
-      local val = self:evaluate(value)
-      return val
+      return self:evaluate(value)
     end
   end
   if type(func) == 'string' then
@@ -91,61 +93,59 @@ function EventSheet:addEvent(func, condition, ...)
   end
   self.events[#self.events + 1] = {
     execute = func,
-    args = {...},
+    args = args,
     condition = condition
   }
 end
 --- Adds each event in the event sheet.
--- The events `setLabel`, `skipEvents`, `setEvent`, `jumpTo` and `wait` are treated
--- differently.
 function EventSheet:processSheet()
+  self.labels['start'] = 1
+  self.labels['end'] = -1
   for _, e in ipairs(self.sheet.events) do
-    local args = Database.loadTags(e.tags)
     local condition = e.condition ~= '' and e.condition or nil
     if e.name == 'setLabel' then
-      self:setLabel(args.name, args.index)
+      local name = findTag(e.tags, 'name')
+      self:setLabel(name.value)
     else
-      if e.name == 'skipEvents' then
-        args = args.events
-      elseif e.name == 'setEvent' then
-        args = args.index
-      elseif e.name == 'jumpTo' then
-        args = args.name
-      elseif e.name == 'wait' then
-        args = args.time
-      end
-      self:addEvent(e.name, condition, args)
+      self:addEvent(e.name, condition, e.tags)
     end
   end
 end
+--- Stores a label name.
+-- @tparam string name Name of the label.
+function EventSheet:setLabel(name)
+  self.labels[name] = #self.events + 1
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Flow Events
+-- ------------------------------------------------------------------------------------------------
+
 --- Changes the running index to skip a number of events.
+-- @tparam[opt] table args Argument table when called from an event sheet.
 -- @tparam number n Number of events to skip.
-function EventSheet:skipEvents(n)
+function EventSheet:skipEvents(args, n)
+  n = n or args.events
   self.vars.runningIndex = self.vars.runningIndex + n
 end
 --- Directly sets the running index.
+-- @tparam[opt] table args Argument table when called from an event sheet.
 -- @tparam number i Index of the next event.
-function EventSheet:setEvent(i)
+function EventSheet:setEvent(args, i)
+  i = i or args.index
   if i == -1 then
     self.vars.runningIndex = #self.events
   else
     self.vars.runningIndex = i - 1
   end
 end
---- Stores a label name.
--- @tparam string name Name of the label.
--- @tparam[opt=-1] number i The index that the label points to. If -1, sets as the last event.
-function EventSheet:setLabel(name, i)
-  if not i or i == -1 then
-    i = #self.events + 1
-  end
-  self.labels[name] = i
-end
 --- Sets the next event to the one pointed by the given label.
+-- @tparam[opt] table args Argument table when called from an event sheet.
 -- @tparam string name Name of the label.
-function EventSheet:jumpTo(name)
+function EventSheet:jumpTo(args, name)
+  name = name or args.name
   assert(self.labels[name], 'Label not defined: ' .. name)
-  self:setEvent(self.labels[name])
+  self:setEvent(nil, self.labels[name])
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -187,7 +187,7 @@ end
 function EventSheet:runCurrentEvent()
   local event = self.events[self.vars.runningIndex]
   if not event.condition or event.condition(self) then
-    event.execute(self, unpack(event.args))
+    event.execute(self, Database.loadTags(event.args))
   end
 end
 --- Sets any variable needed to indicate that this script is running.

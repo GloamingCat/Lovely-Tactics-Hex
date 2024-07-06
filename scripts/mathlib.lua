@@ -105,6 +105,13 @@ function math.randomExpectation(a, b)
     return 0.5
   end
 end
+--- Calculates the expectation of the default random function.
+-- @tparam number std Standard variation.
+-- @tparam[opt=0] number avg Mean.
+-- @treturn number A random number between (avg - std) and (avg + std).
+function math.variation(std, avg)
+  return (avg or 0) + math.random(-std, std)
+end
 --- Checks if two number values and pratically equal, given the defined epsilon (E).
 -- @tparam number x The first value.
 -- @tparam number y The second value.

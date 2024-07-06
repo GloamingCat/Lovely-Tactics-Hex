@@ -473,11 +473,11 @@
             },
             {
               "condition": "{%choiceInput} ~= 3",
-              "name": "setEvent",
+              "name": "jumpTo",
               "tags": [
                 {
-                  "key": "index",
-                  "value": "-1"
+                  "key": "name",
+                  "value": "end"
                 }
               ],
               "key": ""
@@ -715,22 +715,6 @@
         },
         "id": 2,
         "children": []
-      },
-      {
-        "data": {
-          "events": [],
-          "description": "",
-          "name": "Loot",
-          "tags": [
-            {
-              "key": "key",
-              "value": "value"
-            }
-          ],
-          "key": ""
-        },
-        "id": 12,
-        "children": []
       }
     ]
   },
@@ -766,11 +750,11 @@
             },
             {
               "condition": "FieldManager:loadedFromSave()",
-              "name": "setEvent",
+              "name": "jumpTo",
               "tags": [
                 {
-                  "key": "index",
-                  "value": "-1"
+                  "key": "name",
+                  "value": "end"
                 }
               ],
               "key": ""
@@ -829,12 +813,6 @@
               "key": ""
             },
             {
-              "condition": "",
-              "name": "print({%spawns}, {%minSpawns}, {%defeated})",
-              "tags": [],
-              "key": ""
-            },
-            {
               "condition": "not {%defeated}",
               "name": "setCharVar",
               "tags": [
@@ -883,17 +861,6 @@
                 }
               ],
               "key": ""
-            },
-            {
-              "condition": "{%defeated}",
-              "name": "setEvent",
-              "tags": [
-                {
-                  "key": "index",
-                  "value": "-1"
-                }
-              ],
-              "key": ""
             }
           ],
           "description": "Deletes the character if already defeated.\nSet the argument \"minSpawns\" to the number of times\nthe player should enter the field before the enemy shows up again.",
@@ -918,7 +885,7 @@
           "events": [
             {
               "condition": "",
-              "name": "wait",
+              "name": "waitFrames",
               "tags": [
                 {
                   "key": "time",
@@ -928,26 +895,14 @@
               "key": ""
             },
             {
-              "condition": "",
-              "name": "print(GameManager.frame, 'Defeated: ' .. tostring(script.char.vars.defeated))",
-              "tags": [],
-              "key": ""
-            },
-            {
               "condition": "{%defeated}",
-              "name": "setEvent",
+              "name": "jumpTo",
               "tags": [
                 {
-                  "key": "index",
-                  "value": "-1"
+                  "key": "name",
+                  "value": "end"
                 }
               ],
-              "key": ""
-            },
-            {
-              "condition": "",
-              "name": "print('Cooldown: ' .. tostring(script.char.vars.cooldown))",
-              "tags": [],
               "key": ""
             },
             {
@@ -967,11 +922,11 @@
             },
             {
               "condition": "not FieldManager.playerInput or not script:collidedWith('player') or {%deltaBattleTime} <= 60",
-              "name": "setEvent",
+              "name": "jumpTo",
               "tags": [
                 {
-                  "key": "index",
-                  "value": "-1"
+                  "key": "name",
+                  "value": "end"
                 }
               ],
               "key": ""
@@ -1038,7 +993,7 @@
             },
             {
               "condition": "",
-              "name": "wait",
+              "name": "waitFrames",
               "tags": [
                 {
                   "key": "time",
@@ -1110,7 +1065,7 @@
                 },
                 {
                   "key": "fieldID",
-                  "value": "0"
+                  "value": "{%fieldId}"
                 },
                 {
                   "key": "gameOverCondition",
@@ -1159,7 +1114,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "\"fade\""
+                  "value": "fade"
                 }
               ],
               "key": ""
@@ -1207,12 +1162,8 @@
               "name": "setLabel",
               "tags": [
                 {
-                  "key": "index",
-                  "value": "-1"
-                },
-                {
                   "key": "name",
-                  "value": "\"fade\""
+                  "value": "fade"
                 }
               ],
               "key": ""
@@ -1304,12 +1255,6 @@
                 }
               ],
               "key": ""
-            },
-            {
-              "condition": "",
-              "name": "print('Battle finished', BattleManager.result)",
-              "tags": [],
-              "key": ""
             }
           ],
           "description": "Starts a battle encounter.",
@@ -1318,6 +1263,10 @@
             {
               "key": "lastBattleTime",
               "value": "-60"
+            },
+            {
+              "key": "fieldId",
+              "value": "0"
             }
           ],
           "key": "Battle"
@@ -1330,22 +1279,7 @@
           "events": [
             {
               "condition": "",
-              "name": "setLabel",
-              "tags": [
-                {
-                  "key": "index",
-                  "value": "-1"
-                },
-                {
-                  "key": "name",
-                  "value": "loop"
-                }
-              ],
-              "key": ""
-            },
-            {
-              "condition": "",
-              "name": "wait",
+              "name": "waitFrames",
               "tags": [
                 {
                   "key": "time",
@@ -1360,13 +1294,13 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "loop"
+                  "value": "start"
                 }
               ],
               "key": ""
             },
             {
-              "condition": "({%cooldown} or 0) > 0",
+              "condition": "{%cooldown} > 0",
               "name": "setCharVar",
               "tags": [
                 {
@@ -1386,7 +1320,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "loop"
+                  "value": "start"
                 }
               ],
               "key": ""
@@ -1420,16 +1354,16 @@
                   "value": "1"
                 },
                 {
-                  "key": "wait",
-                  "value": "false"
-                },
-                {
                   "key": "x",
                   "value": "0"
                 },
                 {
                   "key": "y",
                   "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
                 }
               ],
               "key": ""
@@ -1450,14 +1384,15 @@
               "key": ""
             },
             {
-              "condition": "not script.char.path",
-              "name": "wait",
-              "tags": [
-                {
-                  "key": "time",
-                  "value": "{%pause} + love.math.random(-{%pauseStd}, {%pauseStd})"
-                }
-              ],
+              "condition": "script.char.path ~= nil",
+              "name": "script:wait(math.variation({%pauseStd}, {%pauseTime}))",
+              "tags": [],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "script.char.path = nil",
+              "tags": [],
               "key": ""
             },
             {
@@ -1466,7 +1401,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "loop"
+                  "value": "start"
                 }
               ],
               "key": ""
@@ -1480,7 +1415,7 @@
               "value": "4"
             },
             {
-              "key": "pause",
+              "key": "pauseTime",
               "value": "60"
             },
             {
@@ -1490,6 +1425,10 @@
             {
               "key": "target",
               "value": "\"player\""
+            },
+            {
+              "key": "cooldown",
+              "value": "0"
             }
           ],
           "key": ""
@@ -1566,6 +1505,17 @@
         "data": {
           "events": [
             {
+              "condition": "\"{%exit}\" == \"\"",
+              "name": "jumpTo",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "fade"
+                }
+              ],
+              "key": ""
+            },
+            {
               "condition": "",
               "name": "turnCharTile",
               "tags": [
@@ -1631,6 +1581,17 @@
                 {
                   "key": "optional",
                   "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setLabel",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "fade"
                 }
               ],
               "key": ""
@@ -1709,11 +1670,11 @@
             },
             {
               "condition": "{%skipParties} or BattleManager.saveData ~= nil",
-              "name": "setEvent",
+              "name": "jumpTo",
               "tags": [
                 {
-                  "key": "index",
-                  "value": "-1"
+                  "key": "name",
+                  "value": "end"
                 }
               ],
               "key": ""
@@ -1735,7 +1696,7 @@
             },
             {
               "condition": "",
-              "name": "wait",
+              "name": "waitFrames",
               "tags": [
                 {
                   "key": "time",
@@ -1793,11 +1754,11 @@
             },
             {
               "condition": "BattleManager.saveData ~= nil",
-              "name": "setEvent",
+              "name": "jumpTo",
               "tags": [
                 {
-                  "key": "index",
-                  "value": "-1"
+                  "key": "name",
+                  "value": "end"
                 }
               ],
               "key": ""
@@ -2448,7 +2409,7 @@
             },
             {
               "condition": "",
-              "name": "wait",
+              "name": "waitFrames",
               "tags": [
                 {
                   "key": "time",

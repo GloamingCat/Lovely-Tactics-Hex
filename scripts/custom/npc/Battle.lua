@@ -40,7 +40,7 @@ return function(script)
         fade = fade
       }
     else
-      script:skipEvents(1)
+      script:skipEvents(nil, 1)
     end
   end)
 

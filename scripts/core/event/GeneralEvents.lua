@@ -15,9 +15,10 @@ local GeneralEvents = {}
 
 --- Arguments for variable controlling.
 -- @table VariableAguments
--- @tfield string name The key of the variable.
+-- @tfield string key The key of the variable.
 -- @tfield number VarScope The scope of the variable (global/local/object).
--- @field value The new value of the variable.
+-- @field[opt] value The new value of the variable.
+-- @field[opt] store The name of the local variable to store the value of the specified variable.
 
 --- Arguments for field transition.
 -- @table TransitionArguments
@@ -67,7 +68,7 @@ GeneralEvents.VarScope = {
 -- Variable
 -- ------------------------------------------------------------------------------------------------
 
---- Sets the value of a variable.
+--- Gets the value of a variable and stores it in a local variable.
 -- @tparam VariableArguments args
 -- @return The value of the variable (nil if not found).
 function GeneralEvents:getVariable(args)
@@ -79,7 +80,7 @@ function GeneralEvents:getVariable(args)
   elseif scope == self.VarScope.field then
     scope = FieldManager.currentField.vars
   elseif scope == self.VarScope.params then
-    if self.args and self.args[args.key] then
+    if self.args and self.args[args.key] ~= nil then
       scope = self.args
     else
       scope = self.tags
@@ -90,7 +91,7 @@ function GeneralEvents:getVariable(args)
   else
     return nil
   end
-  return scope[args.key]
+  self.vars[args.store] = scope[args.key]
 end
 --- Sets the value of a variable.
 -- @tparam VariableArguments args
@@ -132,6 +133,16 @@ end
 function GeneralEvents:setCharVar(args)
   assert(self.char, "Script was not called from a character")
   self.char.vars[args.key] = self:evaluate(args.value)
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Wait
+-- ------------------------------------------------------------------------------------------------
+
+--- Wait a number of frames defined by parameter `time`.
+-- @tparam table args
+function GeneralEvents:waitFrames(args)
+  self:wait(args.time)
 end
 
 -- ------------------------------------------------------------------------------------------------

@@ -61,11 +61,7 @@ function TagMap:add(name, str)
     arr = {}
     self.tags[name] = arr
   end
-  local value = Serializer.decode(str)
-  if value == nil then
-    value = str
-  end
-  arr[#arr + 1] = value
+  arr[#arr + 1] = self:evaluate(str)
   self[name] = self[name] or value
 end
 --- Inserts a set of tag pairs.
@@ -79,16 +75,23 @@ function TagMap:addAll(tags)
       arr = {}
       self.tags[name] = arr
     end
-    local value = Serializer.decode(str)
-    if value == nil then
-      if str[1] == '{' and str[2] == '%' then
-        value = GameManager.vars[str:sub(3, -2)]
-      end
-      value = value or str
-    end
+    local value = self:evaluate(str)
     arr[#arr + 1] = value
     self[name] = self[name] or value
   end
+end
+--- Converts the string value to another type.
+-- @tparam string str The value in its original string format.
+-- @return The evaluated expression.
+function TagMap:evaluate(value)
+  if type(value) == 'string'then
+    local str = value:interpolate(Variables)
+    value = Serializer.decode(str)
+    if value == nil then
+      value = str
+    end
+  end
+  return value
 end
 
 -- ------------------------------------------------------------------------------------------------
