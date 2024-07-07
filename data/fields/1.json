@@ -1619,8 +1619,8 @@
           "onCollide": false,
           "onExit": false,
           "onDestroy": false,
-          "description": "Move Routine",
-          "name": "npc/Wanderer.lua",
+          "description": "",
+          "name": "12",
           "tags": [],
           "key": ""
         },
@@ -1675,7 +1675,7 @@
           "onExit": false,
           "onDestroy": false,
           "description": "",
-          "name": "test/Inn.lua",
+          "name": "14",
           "tags": [],
           "key": ""
         }

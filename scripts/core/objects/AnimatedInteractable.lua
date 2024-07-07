@@ -63,11 +63,7 @@ function AnimatedInteractable:initGraphics(instData, save)
     self.animation:setIndex(frame)
   end
 end
---- Overrides `Object:moves`. Returns true.
--- @override
-function AnimatedInteractable:moves() 
-  return true
-end
+
 
 -- ------------------------------------------------------------------------------------------------
 -- General
@@ -84,6 +80,21 @@ end
 function AnimatedInteractable:destroy(permanent)
   JumpingObject.destroy(self)
   InteractableObject.destroy(self, permanent)
+end
+--- Overrides `TransformableObject:addToTiles`.
+-- @override
+function AnimatedInteractable:addToTiles(...)
+  InteractableObject.addToTiles(self, ...)
+end
+--- Overrides `TransformableObject:removeFromTiles`.
+-- @override
+function AnimatedInteractable:removeFromTiles(...)
+  InteractableObject.removeFromTiles(self, ...)
+end
+--- Overrides `Object:moves`. Returns true.
+-- @override
+function AnimatedInteractable:moves() 
+  return true
 end
 
 -- ------------------------------------------------------------------------------------------------

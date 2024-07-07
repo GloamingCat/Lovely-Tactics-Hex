@@ -15,7 +15,7 @@ local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
 -- Class table.
-local DialogueWindow = class(Window)
+local DialogueWindow = class(DescriptionWindow)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
@@ -45,17 +45,13 @@ end
 -- @override
 function DialogueWindow:createContent(width, height)
   Window.createContent(self, width, height)
-  local pos = Vector(-width / 2 + self:paddingX(), -height / 2 + self:paddingY())
-  self.dialogue = Dialogue('', pos, width - self:paddingX() * 2, 'left', Fonts.menu_dialogue)
+  self.dialogue = Dialogue('', nil, nil, 'left', Fonts.menu_dialogue)
+  self.dialogue:setMaxHeight(height - self:paddingY() * 2)
+  self.text = self.dialogue
   self.content:add(self.dialogue)
   self.nameWindow = DescriptionWindow(self.menu, self.nameWidth, self.nameHeight)
   self.nameWindow:setVisible(false)
-end
---- Changes the window's size.
--- It recreates all contents.
-function DialogueWindow:resize(...)
-  DescriptionWindow.resize(self, ...)
-  self.dialogue.position = Vector(-self.width / 2 + self:paddingX(), -self.height / 2 + self:paddingY())
+  self:packToWindow()
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -113,7 +109,7 @@ function DialogueWindow:setName(text, x, y)
     local nx = (x + self.nameX) * self.width / 2
     local ny = (y + self.nameY) * self.height / 2
     self.nameWindow:updateText(text)
-    self.nameWindow:packText()
+    self.nameWindow:packToText()
     local nameX = self.position.x + nx or self.nameWindow.position.x
     local nameY = self.position.y + ny or self.nameWindow.position.y
     self.nameWindow:setVisible(true)

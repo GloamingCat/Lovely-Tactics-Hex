@@ -370,7 +370,7 @@
                 },
                 {
                   "key": "message",
-                  "value": "{%dialogues.npc.WhatDoYou}"
+                  "value": "\"{%dialogues.npc.WhatDoYou}\""
                 },
                 {
                   "key": "character",
@@ -815,6 +815,33 @@
             },
             {
               "condition": "",
+              "name": "playSFX",
+              "tags": [
+                {
+                  "key": "volume",
+                  "value": "100"
+                },
+                {
+                  "key": "name",
+                  "value": "\"buttonConfirm\""
+                },
+                {
+                  "key": "pitch",
+                  "value": "100"
+                },
+                {
+                  "key": "time",
+                  "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
               "name": "openMessageWindow",
               "tags": [
                 {
@@ -827,7 +854,7 @@
                 },
                 {
                   "key": "height",
-                  "value": "-1"
+                  "value": "60"
                 },
                 {
                   "key": "id",
@@ -843,7 +870,7 @@
                 },
                 {
                   "key": "width",
-                  "value": "-1"
+                  "value": "180"
                 },
                 {
                   "key": "x",
@@ -952,6 +979,362 @@
           "key": ""
         },
         "id": 13,
+        "children": []
+      },
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "",
+              "name": "stopChar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "turnCharTile",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "other",
+                  "value": "\"self\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "playSFX",
+              "tags": [
+                {
+                  "key": "volume",
+                  "value": "100"
+                },
+                {
+                  "key": "name",
+                  "value": "\"buttonConfirm\""
+                },
+                {
+                  "key": "pitch",
+                  "value": "100"
+                },
+                {
+                  "key": "time",
+                  "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "openDialogueWindow",
+              "tags": [
+                {
+                  "key": "alignX",
+                  "value": "0"
+                },
+                {
+                  "key": "alignY",
+                  "value": "0"
+                },
+                {
+                  "key": "height",
+                  "value": "60"
+                },
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "message",
+                  "value": "{%dialogues.npc.Inn}"
+                },
+                {
+                  "key": "name",
+                  "value": ""
+                },
+                {
+                  "key": "nameX",
+                  "value": "0"
+                },
+                {
+                  "key": "nameY",
+                  "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                },
+                {
+                  "key": "width",
+                  "value": "180"
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "60"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "openChoiceWindow",
+              "tags": [
+                {
+                  "key": "alignX",
+                  "value": "0"
+                },
+                {
+                  "key": "alignY",
+                  "value": "0"
+                },
+                {
+                  "key": "cancel",
+                  "value": "-1"
+                },
+                {
+                  "key": "height",
+                  "value": "-1"
+                },
+                {
+                  "key": "variable",
+                  "value": "\"choiceInput\""
+                },
+                {
+                  "key": "width",
+                  "value": "50"
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "-20"
+                },
+                {
+                  "key": "choices",
+                  "value": "[\"{%yes}\",\"{%no}\"]"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "closeDialogueWindow",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%choiceInput} == 2",
+              "name": "jumpTo",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "\"end\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "fadeout",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "60"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "playSFX",
+              "tags": [
+                {
+                  "key": "volume",
+                  "value": "100"
+                },
+                {
+                  "key": "name",
+                  "value": "\"heal\""
+                },
+                {
+                  "key": "pitch",
+                  "value": "100"
+                },
+                {
+                  "key": "time",
+                  "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "waitFrames",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "90"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "script:healAll { status = { 0, 1, 17, 18, 15, 16 } }",
+              "tags": [],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "fadein",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "60"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "openDialogueWindow",
+              "tags": [
+                {
+                  "key": "alignX",
+                  "value": "0"
+                },
+                {
+                  "key": "alignY",
+                  "value": "0"
+                },
+                {
+                  "key": "height",
+                  "value": "60"
+                },
+                {
+                  "key": "id",
+                  "value": "3"
+                },
+                {
+                  "key": "message",
+                  "value": "{%dialogues.npc.Healed}"
+                },
+                {
+                  "key": "name",
+                  "value": ""
+                },
+                {
+                  "key": "nameX",
+                  "value": "0"
+                },
+                {
+                  "key": "nameY",
+                  "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                },
+                {
+                  "key": "width",
+                  "value": "180"
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "0"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "playSFX",
+              "tags": [
+                {
+                  "key": "volume",
+                  "value": "100"
+                },
+                {
+                  "key": "name",
+                  "value": "\"buttonConfirm\""
+                },
+                {
+                  "key": "pitch",
+                  "value": "100"
+                },
+                {
+                  "key": "time",
+                  "value": "0"
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "closeDialogueWindow",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "3"
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "Heals party.",
+          "name": "Inn",
+          "tags": [],
+          "key": ""
+        },
+        "id": 14,
         "children": []
       }
     ]
