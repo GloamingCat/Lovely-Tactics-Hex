@@ -86,9 +86,9 @@ end
 function TagMap:evaluate(value)
   if type(value) == 'string'then
     local str = value:interpolate(Variables)
-    value = Serializer.decode(str)
-    if value == nil then
-      value = str
+    local json = Serializer.decode(str)
+    if json ~= nil then
+      value = json
     end
   end
   return value

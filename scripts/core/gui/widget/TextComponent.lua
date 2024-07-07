@@ -64,11 +64,13 @@ end
 function TextComponent:setTerm(term, fallback)
   if fallback then
     self.fallback = fallback
-    if term and term:find("%%") then    
-      self.term = term
-    else
-      print('% not found: ' .. term)
-      self.term = "{%" .. term .. "}"
+    if term then 
+      if term:find("%%") then    
+        self.term = term
+      else
+        print('% not found: ' .. term)
+        self.term = "{%" .. term .. "}"
+      end
     end
   else
     self:setText(term)

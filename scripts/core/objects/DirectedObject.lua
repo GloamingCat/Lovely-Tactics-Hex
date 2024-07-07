@@ -169,5 +169,12 @@ end
 function DirectedObject:shiftToRow(dx, dy)
   return angle2Row(self:shiftToAngle(dx, dy))
 end
+--- Gets the rounded direction given a difference in tiles.
+-- @tparam number dx The grid x difference.
+-- @tparam number dy The grid y difference.
+-- @treturn number The direction in degrees.
+function DirectedObject:shiftToDirection(dx, dy)
+  return self:shiftToRow(dx, dy) * 45
+end
 
 return DirectedObject

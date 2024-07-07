@@ -212,13 +212,10 @@ end
 -- @treturn Action Returns nil if the next angle must be tried, a number to stop trying.
 --  If MOVE, then the path was free. If INTERACT, there was a character in this tile.
 function Character:tryTileMovement(tile)
-  local ox, oy, oh = self:tileCoordinates()
-  local dx, dy, dh = tile:coordinates()
+  local collision = self:collisionXYZ(tile)
   if self.autoTurn then
-    self:turnToTile(dx, dy)
+    self:turnToTile(tile.x, tile.y)
   end
-  local collision = FieldManager.currentField:collisionXYZ(self,
-    ox, oy, oh, dx, dy, dh)
   if collision == nil then
     -- Free path
     if self:applyTileMovement(tile) then

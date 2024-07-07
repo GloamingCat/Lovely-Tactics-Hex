@@ -53,16 +53,17 @@ end
 -- @treturn string The interpolated string.
 function string.interpolate(self, varAccessor, ...)
   local str = ""
-  for textFragment, code in self:gmatch('([^{%%]*){(.-)}') do
-    local key = code:sub(2)
+  local i = 0
+  for textFragment, key in self:gmatch('([^{]*){%%([^}]-)}') do
     local value = varAccessor(key, ...)
     if value == nil then
       print('Text variable or term not found: ' .. tostring(key), ...)
     end
     local f = tostring(value)
+    i = i + #textFragment + #key + 3
     str = str .. textFragment .. f:interpolate(varAccessor, ...)
   end
-  local lastText = self:match('[^}]+$')
+  local lastText = self:sub(i + 1)
   if lastText then
     str = str .. lastText
   end

@@ -12,6 +12,7 @@
 -- Imports
 local EventUtil = require('core/event/EventUtil')
 local Fiber = require('core/fiber/Fiber')
+local TagMap = require('core/datastruct/TagMap')
 local TextParser = require('core/graphics/TextParser')
 
 -- Alias
@@ -93,9 +94,8 @@ function EventSheet:addEvent(func, condition, args)
   end
   self.events[#self.events + 1] = {
     execute = func,
-    args = args,
-    condition = condition
-  }
+    condition = condition,
+    args = args }
 end
 --- Adds each event in the event sheet.
 function EventSheet:processSheet()
@@ -187,7 +187,7 @@ end
 function EventSheet:runCurrentEvent()
   local event = self.events[self.vars.runningIndex]
   if not event.condition or event.condition(self) then
-    event.execute(self, Database.loadTags(event.args))
+    event.execute(self, TagMap(event.args))
   end
 end
 --- Sets any variable needed to indicate that this script is running.

@@ -125,28 +125,6 @@ function util.findByName(array, name)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Log
--- ------------------------------------------------------------------------------------------------
-
---- Prints each element separating by given separator string and join them into a single string.
--- @tparam table items Array of elements to be printed.
--- @tparam string sep Separator.
--- @tparam[opt=#items] number size The length of the array.
--- @treturn string String each the elements printed.
-function util.concat(items, sep, size)
-  size = size or #items
-  sep = sep or ', '
-  if size == 0 then
-    return ""
-  end
-  local str = tostring(items[1])
-  for i = 2, size do
-    str = str .. sep .. tostring(items[i])
-  end
-  return str
-end
-
--- ------------------------------------------------------------------------------------------------
 -- Array Stats
 -- ------------------------------------------------------------------------------------------------
 
@@ -190,6 +168,38 @@ end
 -- @treturn unknown The average element.
 function util.mean(array)
   return util.sum(array) / #array
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Other
+-- ------------------------------------------------------------------------------------------------
+
+--- Prints each element separating by given separator string and join them into a single string.
+-- @tparam table items Array of elements to be printed.
+-- @tparam string sep Separator.
+-- @tparam[opt=#items] number size The length of the array.
+-- @treturn string String each the elements printed.
+function util.concat(items, sep, size)
+  size = size or #items
+  sep = sep or ', '
+  if size == 0 then
+    return ""
+  end
+  local str = tostring(items[1])
+  for i = 2, size do
+    str = str .. sep .. tostring(items[i])
+  end
+  return str
+end
+--- Shuffles the elements on an array.
+-- @tparam table array Array to be shuffled.
+-- @tparam[opt=#array] number size The length of the array.
+function util.shuffle(array, size)
+  size = size or #array
+  for i = 1, size do
+    local j = math.random(1, size)
+    array[i], array[j] = array[j], array[i]
+  end
 end
 
 return util

@@ -132,5 +132,15 @@ function Object:collision(tile, dx, dy, dh)
   dest:add(orig)
   return FieldManager.currentField:collision(self, orig, dest)
 end
+--- Check if this object collides with destination tile.
+-- @tparam Tile tile The destination tile.
+-- @treturn Field.Collision The collision type.
+function Object:collisionXYZ(tile)
+  local ox, oy, oh = self:tileCoordinates()
+  local dx, dy, dh = tile:coordinates()
+  return FieldManager.currentField:collisionXYZ(self,
+    ox, oy, oh, dx, dy, dh)
+end
+
 
 return Object

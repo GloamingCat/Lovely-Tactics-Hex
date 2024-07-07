@@ -11,6 +11,9 @@
 local ActionInput = require('core/battle/action/ActionInput')
 local MoveAction = require('core/battle/action/MoveAction')
 
+-- Alias
+local rand = love.math.random
+
 local CharacterEvents = {}
 
 -- ------------------------------------------------------------------------------------------------
@@ -48,6 +51,12 @@ local CharacterEvents = {}
 --  If not specified, if uses that value of gravity instead.
 -- @tfield[opt=30] number gravity The deceleration, in pixels/frame².
 -- @tfield[opt] boolean wait Flag to wait for the jump to finish.
+
+--- Arguments for random movement.
+-- @table RandomArguments
+-- @tfield string key They key of the character.
+-- @tfield[opt] boolean blocked Flag to include tiles with obstacles.
+-- @tfield[opt] boolean wait Flag to wait for the movement to finish.
 
 --- Common arguments for animation commands.
 -- @table PropArguments
@@ -321,6 +330,43 @@ function CharacterEvents:moveCharPath(args)
     if args.wait then
       fiber:waitForEnd()
     end
+  end
+end
+--- Moves a character in a random direction.
+-- @tparam TileArguments args
+function CharacterEvents:moveCharRandom(args)
+  local char = self:findCharacter(args.key)
+  local tile = nil
+  if args.blocked or char.passable then
+    local shift = math.field.neighborShift[rand(#math.field.neighborShift)]
+    local angle = char:shiftToDirection(shift.x, shift.y) * 45
+    tile = char:getFrontTile(angle)
+  else
+    local tiles = {}
+    local shifts = math.field.neighborShift
+    for i = 1, #shifts do
+      local angle = char:shiftToDirection(shifts[i].x, shifts[i].y) * 45
+      tiles[i] = char:getFrontTile(angle)
+    end
+    util.array.shuffle(tiles)
+    for i = 1, #tiles do
+      local collision = char:collisionXYZ(tiles[i])
+      if collision == nil then
+        tile = tiles[i]
+        break
+      end
+    end
+  end
+  if tile == nil then
+    return
+  end
+  local fiber = self:fork(function()
+    if char:tryTileMovement(tile) ~= char.Action.MOVE then
+      char:playIdleAnimation()
+    end
+  end)
+  if args.wait then
+    fiber:waitForEnd()
   end
 end
 

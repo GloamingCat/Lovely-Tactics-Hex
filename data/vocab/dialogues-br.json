@@ -3,7 +3,7 @@
   
   "npc": {
     "Hi": "Oi.",
-    "CanIJoin": "Posso no juntar ao seu grupo?",
+    "CanIJoin": "Posso me juntar ao seu grupo?",
     "ThatsGood": "Que {i}ótimo!{r}{p}\nSou seu agora. {slove}",
     "ThatsBad": "Meh.{p} Mas ainda estou disponível.",
     "WhatDoYou": "O que você quer fazer?",

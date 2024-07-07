@@ -14,15 +14,15 @@
           "events": [
             {
               "condition": "",
-              "name": "playCharAnim",
+              "name": "stopChar",
               "tags": [
                 {
                   "key": "key",
-                  "value": "player"
+                  "value": "\"player\""
                 },
                 {
-                  "key": "name",
-                  "value": "Idle"
+                  "key": "wait",
+                  "value": "false"
                 }
               ],
               "key": ""
@@ -67,7 +67,11 @@
                 },
                 {
                   "key": "key",
-                  "value": "self"
+                  "value": "\"self\""
+                },
+                {
+                  "key": "speed",
+                  "value": "-1"
                 },
                 {
                   "key": "time",
@@ -366,7 +370,7 @@
                 },
                 {
                   "key": "message",
-                  "value": "\"{%dialogues.npc.WhatDoYou}\""
+                  "value": "{%dialogues.npc.WhatDoYou}"
                 },
                 {
                   "key": "character",
@@ -477,7 +481,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "end"
+                  "value": "\"end\""
                 }
               ],
               "key": ""
@@ -754,7 +758,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "end"
+                  "value": "\"end\""
                 }
               ],
               "key": ""
@@ -900,7 +904,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "end"
+                  "value": "\"end\""
                 }
               ],
               "key": ""
@@ -926,7 +930,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "end"
+                  "value": "\"end\""
                 }
               ],
               "key": ""
@@ -1294,7 +1298,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "start"
+                  "value": "\"start\""
                 }
               ],
               "key": ""
@@ -1320,7 +1324,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "start"
+                  "value": "\"start\""
                 }
               ],
               "key": ""
@@ -1401,7 +1405,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "start"
+                  "value": "\"start\""
                 }
               ],
               "key": ""
@@ -1434,6 +1438,106 @@
           "key": ""
         },
         "id": 11,
+        "children": []
+      },
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "",
+              "name": "script.char.approachToInteract = false",
+              "tags": [],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "waitFrames",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "FieldManager.player:isBusy() or script.vars.interacting",
+              "name": "jumpTo",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "\"start\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "moveCharRandom",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                },
+                {
+                  "key": "blocked",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "stopChar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "script:wait(math.variation({%pauseStd}, {%pauseTime}))",
+              "tags": [],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "jumpTo",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "\"start\""
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "",
+          "name": "Random Walk",
+          "tags": [
+            {
+              "key": "pauseTime",
+              "value": "60"
+            },
+            {
+              "key": "pauseStd",
+              "value": "0"
+            }
+          ],
+          "key": ""
+        },
+        "id": 12,
         "children": []
       }
     ]
@@ -1510,7 +1614,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "fade"
+                  "value": "\"fade\""
                 }
               ],
               "key": ""
@@ -1591,7 +1695,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "fade"
+                  "value": "\"fade\""
                 }
               ],
               "key": ""
@@ -1674,7 +1778,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "end"
+                  "value": "\"end\""
                 }
               ],
               "key": ""
@@ -1758,7 +1862,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "end"
+                  "value": "\"end\""
                 }
               ],
               "key": ""
