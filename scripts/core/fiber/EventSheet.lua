@@ -13,7 +13,7 @@
 local EventUtil = require('core/event/EventUtil')
 local Fiber = require('core/fiber/Fiber')
 local TagMap = require('core/datastruct/TagMap')
-local TextParser = require('core/graphics/TextParser')
+local Serializer = require('core/save/Serializer')
 
 -- Alias
 local findTag = util.array.findByKey
@@ -104,8 +104,8 @@ function EventSheet:processSheet()
   for _, e in ipairs(self.sheet.events) do
     local condition = e.condition ~= '' and e.condition or nil
     if e.name == 'setLabel' then
-      local name = findTag(e.tags, 'name')
-      self:setLabel(name.value)
+      local name = findTag(e.tags, 'name').value
+      self:setLabel(Serializer.decode(name) or name)
     else
       self:addEvent(e.name, condition, e.tags)
     end
@@ -165,7 +165,7 @@ function EventSheet:runEvents()
   self.startIndex = self.vars.runningIndex or 0
   if self.vars.runningIndex and not FieldManager:loadedFromSave() then
     local char = self.char and ' of character ' .. self.char.name or ''
-    error('Script ' .. tostring(self.data.name) .. char .. " shouldn't be running.")
+    print('Script ' .. tostring(self.data.name) .. char .. " shouldn't be running.")
   end
   self.vars.runningIndex = self.vars.runningIndex or 0
   while self.vars.runningIndex < #self.events do

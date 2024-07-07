@@ -46,7 +46,7 @@ function RecruitListWindow:createListButton(entry)
   end
   local button = Button(self)
   button:setIcon(battler.icon)
-  button:createText('data.battler.' .. battler.key, battler.name, 'menu_button')
+  button:createText('{%data.battler.' .. battler.key .. '}', battler.name, 'menu_button')
   button.price = price
   button.battler = battler
   if self.hire then
@@ -117,7 +117,7 @@ end
 --- Updates item description.
 -- @tparam Button button Selected button.
 function RecruitListWindow:onButtonSelect(button)
-  self.menu.descriptionWindow:updateTerm('data.battler.' .. button.battler.key .. '_desc', button.battler.description)
+  self.menu.descriptionWindow:updateTerm('{%data.battler.' .. button.battler.key .. '_desc}', button.battler.description)
 end
 
 -- ------------------------------------------------------------------------------------------------

@@ -48,7 +48,7 @@ function InventoryWindow:createListButton(itemSlot)
   local item = Database.items[itemSlot.id]
   local button = Button(self)
   button:setIcon(item.icon)
-  button:createText('data.item.' .. item.key, item.name, 'menu_default')
+  button:createText('{%data.item.' .. item.key .. '}', item.name, 'menu_default')
   button:createInfoText('x' .. itemSlot.count, nil, 'menu_default')
   button.item = item
   if item.skillID >= 0 then
@@ -83,7 +83,7 @@ end
 function InventoryWindow:onButtonSelect(button)
   if self.menu.descriptionWindow then
     if button.item then
-      self.menu.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
+      self.menu.descriptionWindow:updateTerm('{%data.item.' .. button.item.key .. '_desc}', button.item.description)
     else
       self.menu.descriptionWindow:updateText('')
     end

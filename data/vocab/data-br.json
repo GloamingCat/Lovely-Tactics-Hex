@@ -85,6 +85,8 @@
     "thunder+": "Amplificar Raio"
   },
   "battler": {
+    "Arthur": "Arthur",
+    "Merlin": "Merlin",
     "slime0": "Gosma Amiga",
     "slime0_desc": "Gosma neutra de nível 2 e sem habilidades.",
     "slime1": "Gosma",

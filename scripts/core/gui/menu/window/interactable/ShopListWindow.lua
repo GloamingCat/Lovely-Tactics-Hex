@@ -37,7 +37,7 @@ function ShopListWindow:createListButton(item)
   end
   local button = Button(self)
   button:setIcon(item.icon)
-  button:createText('data.item.' .. item.key, item.name, 'menu_button')
+  button:createText('{%data.item.' .. item.key .. '}', item.name, 'menu_button')
   if self.buy then
     button:createInfoText(price .. ' {%g}', nil, 'menu_button')
   else
@@ -102,7 +102,7 @@ end
 --- Updates item description.
 -- @tparam Button button Selected button.
 function ShopListWindow:onButtonSelect(button)
-  self.menu.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
+  self.menu.descriptionWindow:updateTerm('{%data.item.' .. button.item.key .. '_desc}', button.item.description)
 end
 
 -- ------------------------------------------------------------------------------------------------

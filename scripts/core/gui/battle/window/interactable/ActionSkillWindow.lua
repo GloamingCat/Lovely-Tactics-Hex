@@ -36,7 +36,7 @@ function ActionSkillWindow:createListButton(skill)
   -- Button
   local button = Button(self)
   button:setIcon(skill.data.icon)
-  button:createText('data.skill.' .. skill.data.key, skill.data.name, 'menu_button')
+  button:createText('{%data.skill.' .. skill.data.key .. '}', skill.data.name, 'menu_button')
   button.skill = skill
   button.description = skill.data.description
   -- Get SP cost
@@ -58,7 +58,7 @@ end
 --- Updates description when button is selected.
 -- @tparam Button button
 function ActionSkillWindow:onButtonSelect(button)
-  self.menu.descriptionWindow:updateTerm('data.skill.' .. button.skill.data.key .. '_desc', button.skill.data.description)
+  self.menu.descriptionWindow:updateTerm('{%data.skill.' .. button.skill.data.key .. '_desc}', button.skill.data.description)
 end
 --- Called when player chooses a skill.
 -- @tparam Button button

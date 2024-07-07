@@ -65,7 +65,7 @@ function EquipSlotWindow:refreshSlots()
     local term, fb = 'noEquip', ''
     if slot and slot.id >= 0 then
       local item = Database.items[slot.id]
-      term = 'data.item.' .. item.key
+      term = '{%data.item.' .. item.key .. '}'
       fb = item.name
       button.item = item
       button:setIcon(item.icon)
@@ -93,7 +93,7 @@ end
 -- @tparam Button button
 function EquipSlotWindow:onButtonSelect(button)
   if button.item then
-    self.menu.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
+    self.menu.descriptionWindow:updateTerm('{%data.item.' .. button.item.key .. '_desc}', button.item.description)
   else
     self.menu.descriptionWindow:updateText('')
   end

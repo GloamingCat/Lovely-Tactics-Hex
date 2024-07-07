@@ -31,7 +31,7 @@ function RewardEXPWindow:createContent(...)
   local y = - self.height / 2 + self:paddingY()
   local w = self.width - self:paddingX() * 2
   local title = TextComponent(Vocab.experience, Vector(x, y), w, 'center')
-  title:setTerm('experience', '')
+  title:setTerm('{%experience}', '')
   title:redraw()
   self.content:add(title)
   y = y + 20

@@ -91,9 +91,9 @@ function TurnMenu:showDescriptionWindow(window)
   if self.descriptionWindow then
     local button = window:currentWidget()
     if button.item then
-      self.descriptionWindow:updateTerm('data.item.' .. button.item.key .. '_desc', button.item.description)
+      self.descriptionWindow:updateTerm('{%data.item.' .. button.item.key .. '_desc}', button.item.description)
     elseif button.skill then
-      self.descriptionWindow:updateTerm('data.skill.' .. button.skill.data.key .. '_desc', button.skill.data.description)
+      self.descriptionWindow:updateTerm('{%data.skill.' .. button.skill.data.key .. '_desc}', button.skill.data.description)
     else
       self.descriptionWindow:updateText('')
     end

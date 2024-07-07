@@ -196,11 +196,13 @@ function Player:moveFromPath()
   end
   local action, tile = self:tryPathMovement(1)
   if action == self.Action.MOVE then
+    -- Passable
     return not self.path:isEmpty()
   else
+    -- Blocked
     local path = self.path
     self.path = nil
-    if path:isEmpty() == 0 then
+    if path:isEmpty() then
       self:interactTile(tile, true)
     end
     return false
