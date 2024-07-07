@@ -203,7 +203,12 @@ function ScriptList:runScript(script)
   if script.running then
     return
   end
-  local fiberList = script.global and FieldManager.fiberList or self
+  local fiberList = self
+  if script.global or script.scope == 2 then
+    fiberList = FieldManager.fiberList
+  elseif script.scope == 1 then
+    fiberList = FieldManager.currentField.fiberList
+  end
   local fiber = fiberList:forkFromScript(script, self.char)
   if script.wait then
     fiber:waitForEnd()

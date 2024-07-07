@@ -1200,6 +1200,7 @@
           "scripts": [
             {
               "global": false,
+              "scope": 0,
               "block": false,
               "wait": true,
               "onLoad": true,
@@ -1219,6 +1220,7 @@
             },
             {
               "global": false,
+              "scope": 0,
               "block": false,
               "wait": true,
               "onLoad": true,
@@ -1233,6 +1235,7 @@
             },
             {
               "global": false,
+              "scope": 0,
               "block": true,
               "wait": true,
               "onLoad": false,

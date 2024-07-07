@@ -18,6 +18,7 @@
     },
     "loadScript": {
       "global": false,
+      "scope": 0,
       "block": false,
       "wait": true,
       "onLoad": true,

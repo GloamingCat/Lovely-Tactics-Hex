@@ -132,7 +132,7 @@ function FieldLoader.createTransitionTile(origin, destination, key)
   local script = { func = func,
     name = "Move To Field",
     block = true, 
-    global = true,
+    scope = 2, -- Global
     wait = true,
     onCollide = true,
     vars = {} }
