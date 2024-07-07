@@ -132,7 +132,7 @@
   "no": "No",
   
   // Messages
-  "loot": "You gained {%lootq}x {%loot}!",
+  "loot": "You gained {%itemCount}x {%itemName}!",
   "rest": "Do you want to rest?"
   
 }

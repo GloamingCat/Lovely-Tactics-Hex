@@ -719,6 +719,240 @@
         },
         "id": 2,
         "children": []
+      },
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "",
+              "name": "stopChar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "not {%id}",
+              "name": "setLocalVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"id\""
+                },
+                {
+                  "key": "value",
+                  "value": "Database.items[\"{%id}\"].id"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setLocalVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"itemKey\""
+                },
+                {
+                  "key": "value",
+                  "value": "Database.items[{%id}].key"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setLocalVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"term\""
+                },
+                {
+                  "key": "value",
+                  "value": "Vocab.data.item[\"{%itemKey}\"]"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "not {%term}",
+              "name": "setLocalVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"itemName\""
+                },
+                {
+                  "key": "value",
+                  "value": "Database.items[{%id}].name"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%term}",
+              "name": "setLocalVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"itemName\""
+                },
+                {
+                  "key": "value",
+                  "value": "Vocab.data.item[\"{%itemKey}\"]"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "openMessageWindow",
+              "tags": [
+                {
+                  "key": "alignX",
+                  "value": "0"
+                },
+                {
+                  "key": "alignY",
+                  "value": "0"
+                },
+                {
+                  "key": "height",
+                  "value": "-1"
+                },
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "text",
+                  "value": "{%loot}"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                },
+                {
+                  "key": "width",
+                  "value": "-1"
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "0"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "increaseItem",
+              "tags": [
+                {
+                  "key": "value",
+                  "value": "{%itemCount}"
+                },
+                {
+                  "key": "id",
+                  "value": "{%id}"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "closeMessageWindow",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "waitFrames",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "deleteChar",
+              "tags": [
+                {
+                  "key": "graphics",
+                  "value": "false"
+                },
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "optional",
+                  "value": "false"
+                },
+                {
+                  "key": "permanent",
+                  "value": "true"
+                },
+                {
+                  "key": "props",
+                  "value": "false"
+                },
+                {
+                  "key": "scripts",
+                  "value": "false"
+                },
+                {
+                  "key": "tile",
+                  "value": "false"
+                },
+                {
+                  "key": "time",
+                  "value": "0"
+                },
+                {
+                  "key": "vars",
+                  "value": "false"
+                },
+                {
+                  "key": "wait",
+                  "value": "false"
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "Collide to get an item.",
+          "name": "Loot",
+          "tags": [
+            {
+              "key": "itemCount",
+              "value": "1"
+            }
+          ],
+          "key": ""
+        },
+        "id": 13,
+        "children": []
       }
     ]
   },

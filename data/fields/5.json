@@ -14,6 +14,7 @@
     },
     "scripts": [
       {
+        "global": false,
         "scope": 0,
         "block": true,
         "wait": true,
@@ -818,7 +819,7 @@
           "onExit": false,
           "onDestroy": false,
           "description": "",
-          "name": "npc/Loot.lua",
+          "name": "13",
           "tags": [
             {
               "key": "id",
