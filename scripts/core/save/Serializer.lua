@@ -40,7 +40,9 @@ function Serializer.decode(text)
     print(err, msg, "on: " .. tostring(text))
     return nil
   else
-    return data
+    if type(data) ~= 'number' or data == tonumber(text) then
+      return data
+    end
   end
 end
 --- Verifies that the table can be json-encoded.

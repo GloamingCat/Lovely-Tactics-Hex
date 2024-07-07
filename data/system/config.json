@@ -1,6 +1,6 @@
 {
   "name": "Example Project",
-  "fpsMax": 120,
+  "fpsMax": 90,
   "fpsMin": 15,
   "coverID": 116,
   "logoID": -1,
@@ -68,7 +68,7 @@
     "scaleType": 1,
     "mobileScaleType": 2,
     "pixelPerfect": true,
-    "vsync": false
+    "vsync": true
   },
   "animations": [
     {

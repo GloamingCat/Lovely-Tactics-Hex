@@ -737,12 +737,6 @@
           "events": [
             {
               "condition": "",
-              "name": "print(GameManager.frame, {%spawns}, {%minSpawns}, {%defeated}, FieldManager:loadedFromSave())",
-              "tags": [],
-              "key": ""
-            },
-            {
-              "condition": "",
               "name": "stopChar",
               "tags": [
                 {
@@ -836,16 +830,8 @@
               "name": "deleteChar",
               "tags": [
                 {
-                  "key": "graphics",
-                  "value": "true"
-                },
-                {
                   "key": "key",
                   "value": "\"self\""
-                },
-                {
-                  "key": "optional",
-                  "value": "false"
                 },
                 {
                   "key": "permanent",
@@ -854,14 +840,6 @@
                 {
                   "key": "scripts",
                   "value": "true"
-                },
-                {
-                  "key": "time",
-                  "value": "0"
-                },
-                {
-                  "key": "wait",
-                  "value": "false"
                 }
               ],
               "key": ""
@@ -877,6 +855,10 @@
             {
               "key": "minSpawns",
               "value": "1"
+            },
+            {
+              "key": "defeated",
+              "value": "false"
             }
           ],
           "key": "Spawn"
@@ -1107,7 +1089,7 @@
                 },
                 {
                   "key": "value",
-                  "value": "180"
+                  "value": "{%escapeCooldown}"
                 }
               ],
               "key": ""
@@ -1271,6 +1253,14 @@
             {
               "key": "fieldId",
               "value": "0"
+            },
+            {
+              "key": "escapeCooldown",
+              "value": "150"
+            },
+            {
+              "key": "defeated",
+              "value": "false"
             }
           ],
           "key": "Battle"
@@ -1347,7 +1337,7 @@
                 },
                 {
                   "key": "other",
-                  "value": "{%target}"
+                  "value": "\"{%target}\""
                 },
                 {
                   "key": "speed",
@@ -1374,6 +1364,21 @@
             },
             {
               "condition": "",
+              "name": "setLocalVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"moved\""
+                },
+                {
+                  "key": "value",
+                  "value": "script.char.path ~= nil"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
               "name": "stopChar",
               "tags": [
                 {
@@ -1388,14 +1393,8 @@
               "key": ""
             },
             {
-              "condition": "script.char.path ~= nil",
+              "condition": "{%moved}",
               "name": "script:wait(math.variation({%pauseStd}, {%pauseTime}))",
-              "tags": [],
-              "key": ""
-            },
-            {
-              "condition": "",
-              "name": "script.char.path = nil",
               "tags": [],
               "key": ""
             },
@@ -1445,8 +1444,21 @@
           "events": [
             {
               "condition": "",
-              "name": "script.char.approachToInteract = false",
-              "tags": [],
+              "name": "setCharProperty",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "prop",
+                  "value": "6"
+                },
+                {
+                  "key": "value",
+                  "value": "false"
+                }
+              ],
               "key": ""
             },
             {
@@ -1461,7 +1473,7 @@
               "key": ""
             },
             {
-              "condition": "FieldManager.player:isBusy() or script.vars.interacting",
+              "condition": "FieldManager.player:isBusy() or {%interacting}",
               "name": "jumpTo",
               "tags": [
                 {
@@ -1533,54 +1545,15 @@
             {
               "key": "pauseStd",
               "value": "0"
+            },
+            {
+              "key": "interacting",
+              "value": "false"
             }
           ],
           "key": ""
         },
         "id": 12,
-        "children": []
-      },
-      {
-        "data": {
-          "events": [
-            {
-              "condition": "not {%onBattle}",
-              "name": "resetChar",
-              "tags": [
-                {
-                  "key": "graphics",
-                  "value": "false"
-                },
-                {
-                  "key": "key",
-                  "value": "\"self\""
-                },
-                {
-                  "key": "props",
-                  "value": "false"
-                },
-                {
-                  "key": "scripts",
-                  "value": "true"
-                },
-                {
-                  "key": "tile",
-                  "value": "false"
-                },
-                {
-                  "key": "vars",
-                  "value": "false"
-                }
-              ],
-              "key": ""
-            }
-          ],
-          "description": "Reset scripts on destroy.",
-          "name": "Reset Scripts",
-          "tags": [],
-          "key": ""
-        },
-        "id": 13,
         "children": []
       }
     ]
@@ -1675,14 +1648,6 @@
                   "value": "\"{%exit}\""
                 },
                 {
-                  "key": "x",
-                  "value": "0"
-                },
-                {
-                  "key": "y",
-                  "value": "0"
-                },
-                {
                   "key": "optional",
                   "value": "true"
                 }
@@ -1694,40 +1659,20 @@
               "name": "moveCharTile",
               "tags": [
                 {
-                  "key": "h",
-                  "value": "0"
-                },
-                {
                   "key": "key",
                   "value": "\"player\""
-                },
-                {
-                  "key": "limit",
-                  "value": "-1"
                 },
                 {
                   "key": "other",
                   "value": "\"{%exit}\""
                 },
                 {
-                  "key": "speed",
-                  "value": "-1"
+                  "key": "optional",
+                  "value": "true"
                 },
                 {
                   "key": "wait",
                   "value": "false"
-                },
-                {
-                  "key": "x",
-                  "value": "0"
-                },
-                {
-                  "key": "y",
-                  "value": "0"
-                },
-                {
-                  "key": "optional",
-                  "value": "true"
                 }
               ],
               "key": ""

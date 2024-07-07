@@ -97,8 +97,10 @@ CharacterEvents.PropType = {
   passable = 0,
   active = 1,
   speed = 2,
-  autoAnim = 3,
-  autoTurn = 4
+  fixedAnim = 3,
+  fixedDir = 4,
+  faceFirst = 5,
+  approachFirst = 6
 }
 
 -- ------------------------------------------------------------------------------------------------
@@ -167,10 +169,14 @@ function CharacterEvents:setCharProperty(args)
     char.passable = self:evaluate(args.value)
   elseif prop == self.PropType.active then
     char.fiberList.active = self:evaluate(args.value)
-  elseif prop == self.PropType.autoAnim then
+  elseif prop == self.PropType.fixedAnim then
     char.autoAnim = not self:evaluate(args.value)
-  elseif prop == self.PropType.autoTurn then
+  elseif prop == self.PropType.fixedDir then
     char.autoTurn = not self:evaluate(args.value)
+  elseif prop == self.PropType.faceFirst then
+    char.faceToInteract = self:evaluate(args.value)
+  elseif prop == self.PropType.approachFirst then
+    char.approachToInteract = self:evaluate(args.value)
   end
 end
 --- Changes a character's properties.
@@ -435,11 +441,12 @@ end
 -- Animations
 -- ------------------------------------------------------------------------------------------------
 
---- Plays the idle animation.
+--- Stops movement and plays the idle animation.
 -- @tparam AnimArguments args
 function CharacterEvents:stopChar(args)
   local char = self:findCharacter(args.key)
   local animation = char:playIdleAnimation()
+  char.path = nil
   if args.wait and not animation.loop then
     self:wait(animation.duration)
   end

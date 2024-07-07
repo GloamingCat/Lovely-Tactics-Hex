@@ -137,6 +137,7 @@ end
 --- Called when the field is unloaded.
 -- @coroutine
 -- @tparam string exit The key of the object that originated the exit transition.
+--  Empty if did not come from a character script (e.g. battle transitions).
 function ScriptList:onExit(exit)
   for _, script in ipairs(self.onExitScripts) do
     if script.vars.exit or exit then
@@ -182,7 +183,8 @@ function ScriptList:onCollide(collided, collider)
 end
 --- Called when the field is unloaded.
 -- @coroutine
--- @tparam string destroyer The key of the object that originated the destroy command.
+-- @tparam string destroyer The key of the object that called the destroy method.
+--  Empty if not originated from a character (e.g. battle transitions).
 function ScriptList:onDestroy(destroyer)
   for _, script in ipairs(self.onDestroyScripts) do
     if script.vars.destroyer or destroyer then

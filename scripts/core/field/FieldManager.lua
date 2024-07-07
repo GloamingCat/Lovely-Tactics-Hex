@@ -62,7 +62,9 @@ end
 -- @tparam[opt] string exit The key of the object that originated the exit transition.
 function FieldManager:setField(fieldID, save, exit)
   if self.currentField then
-    self:runExitScripts(exit)
+    if exit then
+      self:runExitScripts(exit)
+    end
     self.currentField:destroy()
     while not self.characterList:isEmpty() do
       self.characterList[self.characterList.size]:destroy()
@@ -140,10 +142,9 @@ function FieldManager:runExitScripts(exit)
     fiber:waitForEnd()
   end
   fibers = {}
-  local destroyer = _G.Fiber and _G.Fiber.char or exit
   -- On Destroy
   for char in self.characterList:iterator() do
-    fibers[#fibers + 1] = char.fiberList:trigger('onDestroy', destroyer)
+    fibers[#fibers + 1] = char.fiberList:trigger('onDestroy', exit)
   end
   -- Wait
   for _, fiber in ipairs(fibers) do

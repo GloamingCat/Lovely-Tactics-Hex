@@ -233,8 +233,10 @@ function Character:tryTileMovement(tile)
         return self.Action.MOVE
       end
     end
+    self:adjustToTile()
     return self.Action.INTERACT
   end
+  self:adjustToTile()
   return nil
 end
 --- Tries to walk a path to the given tile.

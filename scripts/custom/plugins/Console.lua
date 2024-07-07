@@ -13,6 +13,8 @@ FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIREC
 OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
 DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
 ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+Source: https://github.com/rameshvarun/love-console
 ]]--
 
 local console = {}
@@ -198,6 +200,15 @@ local command = {
       self.cursor = self.cursor - 1
     end
 
+    -- Update completion.
+    self:update_completion()
+  end,
+  delete_forward = function(self)
+    -- Delete the character before the cursor.
+    if self.cursor < self.text:len() then
+      self.text = self.text:sub(0, self.cursor) ..
+        self.text:sub(self.cursor + 2)
+    end
     -- Update completion.
     self:update_completion()
   end,
@@ -418,11 +429,11 @@ function console.keypressed(key, scancode, isrepeat)
   elseif key == "up" then command:previous()
   elseif key == "down" then command:next()
 
-  elseif alt and key == "left" then command:backward_word()
-  elseif alt and key == "right" then command:forward_word()
+  elseif ctrl and key == "left" then command:backward_word()
+  elseif ctrl and key == "right" then command:forward_word()
 
-  elseif ctrl and key == "left" then command:beginning_of_line()
-  elseif ctrl and key == "right" then command:end_of_line()
+  elseif alt and key == "left" or key == "home" then command:beginning_of_line()
+  elseif alt and key == "right" or key == "end" then command:end_of_line()
 
   elseif key == "left" then command:backward_character()
   elseif key == "right" then command:forward_character()
@@ -435,6 +446,9 @@ function console.keypressed(key, scancode, isrepeat)
   elseif key == "-" and ctrl then
       console.FONT_SIZE = math.max(console.FONT_SIZE - 1, 1)
       console.FONT = love.graphics.newFont(console.FONT_SIZE)
+
+  elseif key == "delete" then
+    command:delete_forward()
 
   elseif key == "return" then
     console.addHistory(command.text)
@@ -492,3 +506,5 @@ function InputManager:onTextInput(txt)
     InputManager_onTextInput(self, txt)
   end
 end
+
+love.keyboard.setKeyRepeat(true)

@@ -289,7 +289,7 @@
   },
   {
     "on": true,
-    "name": "plugins/Console.lua",
+    "name": "plugins/DebugBox.lua",
     "tags": [
       {
         "key": "key",
@@ -301,9 +301,15 @@
       },
       {
         "key": "interface",
-        "value": "console"
+        "value": "menu"
       }
     ],
+    "key": ""
+  },
+  {
+    "on": true,
+    "name": "plugins/Console.lua",
+    "tags": [],
     "key": ""
   }
 ]

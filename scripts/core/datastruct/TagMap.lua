@@ -61,7 +61,8 @@ function TagMap:add(name, str)
     arr = {}
     self.tags[name] = arr
   end
-  arr[#arr + 1] = self:evaluate(str)
+  local value = self:evaluate(str)
+  arr[#arr + 1] = value
   self[name] = self[name] or value
 end
 --- Inserts a set of tag pairs.
@@ -70,24 +71,19 @@ function TagMap:addAll(tags)
   for i = 1, #tags do
     local name = tags[i].key
     local str = tags[i].value
-    local arr = self.tags[name]
-    if not arr then
-      arr = {}
-      self.tags[name] = arr
-    end
-    local value = self:evaluate(str)
-    arr[#arr + 1] = value
-    self[name] = self[name] or value
+    self:add(name, str)
   end
 end
 --- Converts the string value to another type.
 -- @tparam string str The value in its original string format.
 -- @return The evaluated expression.
 function TagMap:evaluate(value)
-  if type(value) == 'string'then
+  if type(value) == 'string' then
     local str = value:interpolate(Variables)
     local json = Serializer.decode(str)
-    if json ~= nil then
+    if json == nil then
+      value = str
+    else
       value = json
     end
   end

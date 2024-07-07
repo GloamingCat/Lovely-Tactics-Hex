@@ -29,7 +29,7 @@
       },
       {
         "global": false,
-        "block": false,
+        "block": true,
         "wait": true,
         "onLoad": false,
         "onInteract": false,

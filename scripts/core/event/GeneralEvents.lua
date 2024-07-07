@@ -123,15 +123,14 @@ end
 function GeneralEvents:setGlobalVar(args)
   Variables.vars[args.key] = self:evaluate(args.value)
 end
---- Sets the value of a global variable.
+--- Sets the value of a field variable.
 -- @tparam VariableArguments args
 function GeneralEvents:setFieldVar(args)
   FieldManager.currentField.vars[args.key] = self:evaluate(args.value)
 end
---- Sets the value of a global variable.
+--- Sets the value of a character variable.
 -- @tparam VariableArguments args
 function GeneralEvents:setCharVar(args)
-  assert(self.char, "Script was not called from a character")
   self.char.vars[args.key] = self:evaluate(args.value)
 end
 

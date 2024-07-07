@@ -96,14 +96,16 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Move to the given tile.
--- @tparam TransformableObjectTile tile Destination tile.
+-- @tparam ObjectTile tile Destination tile.
 function TransformableObject:moveToTile(tile, ...)
   local x, y, z = tile.center:coordinates()
   self:moveTo(x, y, z, ...)
 end
 --- Sets this object to the center of its current tile.
-function TransformableObject:adjustToTile()
-  local x, y, z = tile2Pixel(self:tileCoordinates())
+-- @tparam[opt] ObjectTile tile The character's tile.
+function TransformableObject:adjustToTile(tile)
+  tile = tile or self:getTile()
+  local x, y, z = tile2Pixel(tile:coordinates())
   self:setXYZ(x, y, z)
 end
 --- Overrides `Object:tileCoordinates`.

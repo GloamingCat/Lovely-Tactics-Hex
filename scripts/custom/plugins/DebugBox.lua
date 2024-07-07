@@ -22,7 +22,7 @@ local TextInputMenu = require('core/gui/common/TextInputMenu')
 local InputManager_update = InputManager.update
 
 -- Parameters
-local key = args.key
+local key = args.key or 'f1'
 local mod = args.mod
 local interface = args.interface or 'menu'
 

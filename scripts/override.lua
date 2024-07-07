@@ -41,11 +41,17 @@ end
 function string.trim(self)
   return self:gsub("^%s+", ""):gsub("%s+$", "")
 end
---- Checks if the first string ends with the second.
+--- Checks if this string ends with the given suffix.
 -- @tparam string suffix Suffix to be looked for.
--- @treturn boolean True if `suffix` is found at the end of `inputstr`. 
+-- @treturn boolean True if `suffix` is found at the end of this string. 
 function string.endswith(self, suffix)
   return self:sub(-string.len(suffix)) == suffix
+end
+--- Checks if this string starts with the given prefix.
+-- @tparam string prefix Prefix to be looked for.
+-- @treturn boolean True if `prefix` is found at the start of this string. 
+function string.startswith(self, prefix)
+  return self:sub(string.len(prefix)) == prefix
 end
 --- Interpolates the raw string.
 -- @tparam function varAccessor Function that receives a key and returns the value.
