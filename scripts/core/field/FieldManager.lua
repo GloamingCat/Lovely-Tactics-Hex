@@ -111,10 +111,10 @@ function FieldManager:runLoadScripts(fromSave)
   local fibers = {}
   -- Init character
   for char in self.characterList:iterator() do
-    fibers[#fibers + 1] = char.fiberList:trigger('onLoad', not fromSave)
+    fibers[#fibers + 1] = char.fiberList:trigger('onLoad', true)
   end
   -- Field script
-  fibers[#fibers + 1] = self.currentField.fiberList:trigger('onLoad', not fromSave)
+  fibers[#fibers + 1] = self.currentField.fiberList:trigger('onLoad', true)
   -- Resume characters scripts
   for char in self.characterList:iterator() do
     fibers[#fibers + 1] = char.fiberList:trigger('onCollide')

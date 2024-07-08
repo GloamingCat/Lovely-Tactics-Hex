@@ -124,13 +124,15 @@ end
 -- @treturn number Window width.
 -- @treturn number Window height.
 -- @treturn Vector Window center position.
-function EventUtil:getDefaultWindowArgs(id)
-  local x, y = 0, 0
-  local w, h = ScreenManager.width, ScreenManager.height / 3
+function EventUtil:getDefaultWindowArgs(id, x, y)
+  x = x or 0
+  y = y or 0
+  local w = ScreenManager.width
+  local h = ScreenManager.height / 3
   if id == 1 then -- Bottom.
-    y = ScreenManager.height / 3
+    y = y + ScreenManager.height / 3
   elseif id == 2 then -- Top.
-    y = -ScreenManager.height / 3
+    y = y - ScreenManager.height / 3
   else -- Center.
     w = ScreenManager.width * 3 / 4
   end
@@ -144,14 +146,13 @@ function EventUtil:createMessageWindow(args)
   local msgs = self.menu.messages
   local window = msgs[args.id]
   if not window then
-    window = DescriptionWindow(self.menu, self:getDefaultWindowArgs(args.id))
+    window = DescriptionWindow(self.menu, self:getDefaultWindowArgs(args.id, args.x, args.y))
     msgs[args.id] = window
   end
   window.text:setAlign(args.alignX or 'center', args.alignY or 'center')
   local w = args.width and args.width > 0
   local h = args.height and args.height > 0
   window:resize(w and args.width, h and args.height)
-  window:setXYZ(args.x, args.y)
   if window.closed then
     window:setVisible(false)
     window:show()
@@ -165,13 +166,12 @@ function EventUtil:createDialogueWindow(args)
   local dialogues = self.menu.dialogues
   local window = dialogues[args.id]
   if not window then
-    window = DialogueWindow(self.menu, self:getDefaultWindowArgs(args.id))
+    window = DialogueWindow(self.menu, self:getDefaultWindowArgs(args.id, args.x, args.y))
     dialogues[args.id] = window
   end
   local w = args.width and args.width > 0
   local h = args.height and args.height > 0
   window:resize(w and args.width, h and args.height)
-  window:setXYZ(args.x, args.y)
   if window.closed then
     window:setVisible(false)
     window:show()

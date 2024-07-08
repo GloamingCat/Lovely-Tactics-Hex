@@ -858,7 +858,7 @@
                 },
                 {
                   "key": "id",
-                  "value": "1"
+                  "value": "3"
                 },
                 {
                   "key": "text",
@@ -871,14 +871,6 @@
                 {
                   "key": "width",
                   "value": "180"
-                },
-                {
-                  "key": "x",
-                  "value": "0"
-                },
-                {
-                  "key": "y",
-                  "value": "0"
                 }
               ],
               "key": ""
@@ -904,7 +896,7 @@
               "tags": [
                 {
                   "key": "id",
-                  "value": "1"
+                  "value": "3"
                 }
               ],
               "key": ""
@@ -1066,32 +1058,12 @@
                   "value": "{%dialogues.npc.Inn}"
                 },
                 {
-                  "key": "name",
-                  "value": ""
-                },
-                {
-                  "key": "nameX",
-                  "value": "0"
-                },
-                {
-                  "key": "nameY",
-                  "value": "0"
-                },
-                {
                   "key": "wait",
                   "value": "true"
                 },
                 {
                   "key": "width",
                   "value": "180"
-                },
-                {
-                  "key": "x",
-                  "value": "0"
-                },
-                {
-                  "key": "y",
-                  "value": "60"
                 }
               ],
               "key": ""
@@ -1260,32 +1232,12 @@
                   "value": "{%dialogues.npc.Healed}"
                 },
                 {
-                  "key": "name",
-                  "value": ""
-                },
-                {
-                  "key": "nameX",
-                  "value": "0"
-                },
-                {
-                  "key": "nameY",
-                  "value": "0"
-                },
-                {
                   "key": "wait",
                   "value": "true"
                 },
                 {
                   "key": "width",
                   "value": "180"
-                },
-                {
-                  "key": "x",
-                  "value": "0"
-                },
-                {
-                  "key": "y",
-                  "value": "0"
                 }
               ],
               "key": ""

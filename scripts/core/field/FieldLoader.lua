@@ -118,18 +118,20 @@ end
 -- @tparam string key The key of the new object.
 -- @return InteractableObject The newly created transition object.
 function FieldLoader.createTransitionTile(origin, destination, key)
-  local args = { fieldID = destination.fieldID,
-    x = destination.x,
-    y = destination.y,
-    h = destination.h,
-    direction = destination.direction,
-    exit = key }
-  local func = function(script)
-    if script:collidedWith('player') then
-      script:moveToField(args)
-    end
-  end
-  local script = { func = func,
+  local args = { 
+    { key = "fieldID", value = destination.fieldID },
+    { key = "x", value = destination.x },
+    { key = "y", value = destination.y },
+    { key = "h", value = destination.h },
+    { key = "direction", value = destination.direction },
+    { key = "exit", value = key }
+  }
+   local event = {
+    name = "moveToField",
+    tags = args,
+    condition = "script:collidedWith('player')"
+  }
+  local script = { sheet = { events = { event } },
     name = "Move To Field",
     block = true, 
     scope = 2, -- Global
@@ -139,7 +141,9 @@ function FieldLoader.createTransitionTile(origin, destination, key)
   local instData = { key = key,
     passable = false,
     active = true,
-    x = origin.dx, y = origin.dy, h = origin.height,
+    x = origin.dx,
+    y = origin.dy,
+    h = origin.height,
     scripts = { script } }
   return InteractableObject(instData)
 end

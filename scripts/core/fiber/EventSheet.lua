@@ -30,20 +30,24 @@ local EventSheet = class(Fiber, EventUtil)
 -- @tparam table data Table with name (or func) and tags.
 -- @tparam[opt] Character char Character associated with this fiber.
 function EventSheet:init(root, data, char)
-  local name
+  local name = data.name
   if data.func then
     self.commands = data.func
-    name = data.name
-  elseif tonumber(data.name) or Database.events[data.name] then
-    self.sheet = Database.events[tonumber(data.name) or data.name]
+    self.tags = Database.loadTags(nil)
+  elseif data.sheet then
+    self.sheet = data.sheet
+    self.commands = self.processSheet
+    self.tags = Database.loadTags(self.sheet.tags)
+  elseif tonumber(name) or Database.events[name] then
+    self.sheet = Database.events[tonumber(name) or name]
     self.commands = self.processSheet
     self.tags = Database.loadTags(self.sheet.tags)
     name = self.sheet.name
   else
-    local func = require('custom/' .. data.name)
-    assert(func, "Could not load event sheet file: " .. tostring(data.name))
+    local func = require('custom/' .. name)
+    assert(func, "Could not load event sheet file: " .. tostring(name))
     self.commands = func
-    name = data.name
+    self.tags = Database.loadTags(nil)
   end
   self.data = data
   self.vars = data and data.vars

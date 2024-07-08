@@ -152,7 +152,7 @@ end
 -- @coroutine
 -- @tparam TransitionArguments args
 function GeneralEvents:moveToField(args)
-  local fiber = FieldManager.fiberList:forkMethod(FieldManager, 'loadTransition', args, nil, args.exit)
+  local fiber = FieldManager.fiberList:forkMethod(FieldManager, 'loadTransition', args, nil, args.exit or '')
   if args.wait then
     fiber:waitForEnd()
   end

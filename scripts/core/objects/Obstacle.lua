@@ -24,22 +24,21 @@ local Obstacle = class(TransformableObject)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Constructor. Extends `Object:init`. Combines with `TransformableObject:init`.
+--- Constructor. Extends `TransformableObject:init`. Combines with `Object:init`.
 -- @tparam table data The obstacle's data from tileset file.
 -- @tparam table tileData The data about ramp and collision.
 -- @tparam ObjectTile initTile The object this tile is in.
 -- @tparam Sprite sprite The obstacle's sprite.
 -- @tparam table group The group this obstacle is part of.
 function Obstacle:init(data, tileData, initTile, sprite, group)
-  TransformableObject.init(self, data, initTile)
-  Object.init(self, data, initTile)
-  self.type = 'obstacle'
   self.group = group
-  self.sprite = sprite
   self.collisionHeight = tileData.height
   self.ramp = tileData.mode == 1
   self.bridge = tileData.mode == 2
   self:initNeighbors(tileData.neighbors)
+  TransformableObject.init(self, data, initTile)
+  Object.init(self, data, initTile)
+  self.sprite = sprite
 end
 --- Creates neighborhood.
 -- @tparam table neighbors The table of booleans indicating passability.
