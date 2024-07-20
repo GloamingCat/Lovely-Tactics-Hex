@@ -1941,7 +1941,7 @@
                 },
                 {
                   "key": "value",
-                  "value": "script.char.path ~= nil"
+                  "value": "\"script.char.path ~= nil\""
                 }
               ],
               "key": ""

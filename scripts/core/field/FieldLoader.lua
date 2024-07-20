@@ -28,7 +28,7 @@ local FieldLoader = {}
 -- @treturn Field New empty field.
 -- @treturn table Field file data.
 function FieldLoader.getField(id, save)
-  local data = Serializer.load(Project.dataPath .. 'fields/' .. id .. '.json')
+  local data = Serializer.load(Project.dataPath .. 'fields/' .. tostring(id) .. '.json')
   local field = Field(id, data.prefs, data.sizeX, data.sizeY, save)
   -- Default region
   local defaultRegion = data.prefs.defaultRegion

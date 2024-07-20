@@ -194,6 +194,10 @@ function Player:moveFromPath()
   if not self.path then
     return false
   end
+  if self.path:isEmpty() then
+    self.path = nil
+    return false
+  end
   local action, tile = self:tryPathMovement(1)
   if action == self.Action.MOVE then
     -- Passable
