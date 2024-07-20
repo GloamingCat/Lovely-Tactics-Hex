@@ -74,13 +74,13 @@ function MemberInfo:createContent(w, h, battler)
   -- HP
   local middleLeft = Vector(topLeft.x, topLeft.y + self.nameHeight, topLeft.z)
   local txtHP = TextComponent(Vocab.hp, middleLeft, rw, 'left', small)
-  txtHP:setTerm('hp', '') 
+  txtHP:setTerm('{%hp}', '') 
   txtHP:redraw()
   self.content:add(txtHP)
   -- SP
   local bottomLeft = Vector(middleLeft.x, middleLeft.y + self.barHeight, middleLeft.z)
   local txtSP = TextComponent(Vocab.sp, bottomLeft, rw, 'left', small)
-  txtSP:setTerm('sp', '') 
+  txtSP:setTerm('{%sp}', '') 
   txtSP:redraw()
   self.content:add(txtSP)
   -- HP gauge
@@ -106,7 +106,7 @@ function MemberInfo:createContent(w, h, battler)
   -- EXP
   local bottomRight = Vector(middleRight.x, middleRight.y + self.barHeight, middleRight.z)
   local txtEXP = TextComponent('', bottomRight, rw, 'left', small)
-  txtEXP:setTerm('exp', '')
+  txtEXP:setTerm('{%exp}', '')
   txtEXP:redraw()
   self.content:add(txtEXP)
   -- EXP gauge

@@ -24,9 +24,9 @@ local BattleManager = class()
 
 --- Result codes.
 -- @enum GameOverCondition
--- @field NONE Code for no game over, regardless of battle result. Equals to 0.
--- @field LOSE Code for game over when the player party loses. Equals to 1.
--- @field NOWIN Code for game over when the player party loses or there's a draw. Equals to 2.
+-- @field NONE Code for no game over, regardless of battle result. Equals 0.
+-- @field LOSE Code for game over when the player party loses. Equals 1.
+-- @field NOWIN Code for game over when the player party loses or there's a draw. Equals 2.
 BattleManager.GameOverCondition = {
   NONE = 0,
   LOSE = 1,
@@ -34,9 +34,9 @@ BattleManager.GameOverCondition = {
 }
 --- Options for when the player loses.
 -- @enum PostDefeatChoice
--- @field CONTINUE Continue the game after defeat (only if defeat is allowed). Equals to 1.
--- @field LOSE Return to pre-battle state and start battle again. Equals to 2.
--- @field EXIT Return to title screen. Equals to 3.
+-- @field CONTINUE Continue the game after defeat (only if defeat is allowed). Equals 1.
+-- @field LOSE Return to pre-battle state and start battle again. Equals 2.
+-- @field EXIT Return to title screen. Equals 3.
 BattleManager.PostDefeatChoice = {
   CONTINUE = 1,
   RETRY = 2,
@@ -90,8 +90,10 @@ function BattleManager:loadBattle(state)
   assert(not self.battleFiber, "Two battle instances running at once.")
   self.battleFiber = _G.Fiber
   self.saveData = state
+  local fieldId = self.params.fieldID or self.currentField.id
   TroopManager:reset()
-  FieldManager:setField(self.params.fieldID or self.currentField.id)
+  FieldManager:unloadField()
+  FieldManager:loadField(fieldId)
   -- Run battle
   while true do
     FieldManager:playFieldBGM()
@@ -101,7 +103,8 @@ function BattleManager:loadBattle(state)
     if result == self.PostDefeatChoice.CONTINUE then
       break
     elseif result == self.PostDefeatChoice.RETRY then
-      FieldManager:setField(self.params.fieldID or self.currentField.id)
+      FieldManager:unloadField('')
+      FieldManager:loadField(fieldId)
       self.saveData = nil
     elseif result == self.PostDefeatChoice.EXIT then
       GameManager.restartRequested = true

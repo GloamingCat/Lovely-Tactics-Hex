@@ -50,6 +50,11 @@ function Sprite:init(renderer, texture, quad)
   self:insertSelf(1)
   self.visible = true
 end
+
+-- ------------------------------------------------------------------------------------------------
+-- General
+-- ------------------------------------------------------------------------------------------------
+
 --- Creates a deep copy of this sprite (does not clone texture).
 -- @tparam[opt] Renderer renderer The renderer of the copy.
 -- @treturn Sprite The newly created copy.
@@ -64,6 +69,18 @@ function Sprite:clone(renderer)
   copy:setRotation(self.rotation)
   copy:setVisible(self.visible)
   return copy
+end
+--- Updates transformations.
+-- @tparam number dt The duration of the previous frame.
+function Sprite:update(dt)
+  self:updateColor(dt)
+end
+--- Deletes this sprite.
+function Sprite:destroy()
+  self:removeSelf()
+  self.quad = nil
+  self.texture = nil
+  self.renderer.needsRedraw = true
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -317,7 +334,7 @@ end
 function Sprite:fadeout(time, wait)
   if time and time > 0 then
     local speed = 60 / time
-    local alpha = self.sprite.color.a
+    local alpha = self.color.a
     self:setVisible(true)
     self:colorizeTo(nil, nil, nil, 0, speed)
     self:waitForColor()
@@ -333,7 +350,7 @@ end
 function Sprite:fadein(time, wait)
   if time and time > 0 then
     local speed = 60 / time
-    local alpha = self.sprite.color.a
+    local alpha = self.color.a
     self:setVisible(true)
     self:setRGBA(nil, nil, nil, 0)
     self:colorizeTo(nil, nil, nil, alpha, speed)
@@ -412,13 +429,6 @@ end
 -- @tparam Renderer renderer The renderer that is drawing this sprite.
 function Sprite:rescale(renderer)
   -- Nothing.
-end
---- Deletes this sprite.
-function Sprite:destroy()
-  self:removeSelf()
-  self.quad = nil
-  self.texture = nil
-  self.renderer.needsRedraw = true
 end
 -- For debugging.
 function Sprite:__tostring()

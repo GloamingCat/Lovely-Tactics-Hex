@@ -36,7 +36,7 @@ end
 function RewardItemWindow:createWidgets()
   local button = Button(self)
   button:setIcon(Config.icons.money)
-  button:createText('money', '', 'menu_button')
+  button:createText('{%money}', '', 'menu_button')
   button:createInfoText(self.money .. '{%g}', '', 'menu_button')
   InventoryWindow.createWidgets(self)
 end

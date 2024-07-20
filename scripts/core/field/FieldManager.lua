@@ -56,11 +56,9 @@ end
 -- Field Loading
 -- ------------------------------------------------------------------------------------------------
 
---- Creates field from ID.
--- @tparam number fieldID The field's ID.
--- @tparam[opt] table save Field's save data.
+--- Destroys current field (if any).
 -- @tparam[opt] string exit The key of the object that originated the exit transition.
-function FieldManager:setField(fieldID, save, exit)
+function FieldManager:unloadField(exit)
   if self.currentField then
     if exit then
       self:runExitScripts(exit)
@@ -70,9 +68,15 @@ function FieldManager:setField(fieldID, save, exit)
       self.characterList[self.characterList.size]:destroy()
     end
   end
+  self.currentField = nil
+end
+--- Creates field from ID.
+-- @tparam number fieldID The field's ID.
+-- @tparam[opt] table save Field's save data.
+function FieldManager:loadField(fieldID, save)
   self.updateList = List()
   self.characterList = List()
-  local field, fieldData = FieldLoader.loadField(fieldID, save)
+  local field, fieldData = FieldLoader.getField(fieldID, save and save.state)
   self.currentField = field
   self:initializeCamera(fieldData, save)
   FieldLoader.mergeLayers(field, fieldData.layers)
@@ -166,8 +170,9 @@ end
 function FieldManager:loadTransition(transition, save, exit)
   if self.currentField then
     self:storeFieldData()
+    self:unloadField(exit)
   end
-  self:setField(transition.fieldID, save, exit)
+  self:loadField(transition.fieldID, save)
   FieldLoader.createTransitions(self.currentField.transitions)
   self.hud = self.hud or PlayerMenu()
   self:playFieldBGM()
@@ -200,7 +205,7 @@ function FieldManager:getFieldSave(id)
   id = id .. ''
   local persistentData = self.fieldData[id]
   if persistentData == nil then
-    persistentData = { chars = {}, vars = {} }
+    persistentData = { chars = {} }
     self.fieldData[id] = persistentData
   end
   return persistentData
@@ -214,8 +219,7 @@ function FieldManager:storeFieldData()
         persistentData.chars[char.key] = char:getPersistentData()
       end
     end
-    persistentData.vars = self.currentField.vars
-    persistentData.prefs = self.currentField:getPersistentData()
+    persistentData.state = self.currentField:getPersistentData()
     persistentData.images = self.renderer:getImageData()
   end
 end
@@ -233,13 +237,13 @@ function FieldManager:storePlayerState()
   end
   self.playerState.transition = { fieldID = self.currentField.id }
   local fieldData = self.currentField.persistent and self:getFieldSave(self.currentField.id)
-    or { chars = {}, vars = {} }
+    or { chars = {} }
   fieldData.chars = util.table.deepCopy(fieldData.chars)
   for char in self.characterList:iterator() do
     fieldData.chars[char.key] = char:getPersistentData()
   end
-  fieldData.vars = self.currentField.vars
-  fieldData.prefs = self.currentField:getPersistentData()
+  fieldData.state = self.currentField:getPersistentData()
+  fieldData.images = self.renderer:getImageData()
   self.playerState.field = fieldData
 end
 

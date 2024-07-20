@@ -34,9 +34,9 @@ local InputManager = class()
 
 --- The string codes for the GameKeys associated with each mouse button.
 -- @enum MouseButton
--- @field LEFT Left mouse button. Equals to `"mouse1"`.
--- @field RIGHT Right mouse button. Equals to `"mouse2"`.
--- @field MIDDLE Middle mouse button. Equals to `"mouse3"`.
+-- @field LEFT Left mouse button. Equals `"mouse1"`.
+-- @field RIGHT Right mouse button. Equals `"mouse2"`.
+-- @field MIDDLE Middle mouse button. Equals `"mouse3"`.
 InputManager.MouseButton = {
   LEFT = 'mouse1',
   RIGHT = 'mouse2',

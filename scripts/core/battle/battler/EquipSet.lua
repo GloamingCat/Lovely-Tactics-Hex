@@ -20,12 +20,12 @@ local EquipSet = class()
 
 --- The state of the slot's permissions.
 -- @enum SlotState
--- @field FREE The slot has no restrictions. Equals to 0.
+-- @field FREE The slot has no restrictions. Equals 0.
 -- @field EQUIPPED The slot can be changed but at least one of the slots of the equip type must be
---  equipped. Equals to 1.
+--  equipped. Equals 1.
 -- @field ALLEQUIPPED The slots can be changed but none of the slots of the equip type can be empty.
---  Equals to 2.
--- @field LOCKED The slot cannot be changed. Equals to 3.
+--  Equals 2.
+-- @field LOCKED The slot cannot be changed. Equals 3.
 EquipSet.SlotState = {
   FREE = 0,
   EQUIPPED = 1,

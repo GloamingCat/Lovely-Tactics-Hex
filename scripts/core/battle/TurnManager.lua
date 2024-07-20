@@ -26,11 +26,11 @@ local TurnManager = class()
 
 --- Result codes.
 -- @enum BattleResult
--- @field WIN Code for when player wins. Equals to 1.
--- @field DRAW Code for when no one wins. Equals to 0.
--- @field LOSE Code for when player loses. Equals to -1.
--- @field WALKOVER Code for when the enemy escapes. Equals to 2.
--- @field ESCAPE Code for when the player escapes. Equals to -2.
+-- @field WIN Code for when player wins. Equals 1.
+-- @field DRAW Code for when no one wins. Equals 0.
+-- @field LOSE Code for when player loses. Equals -1.
+-- @field WALKOVER Code for when the enemy escapes. Equals 2.
+-- @field ESCAPE Code for when the player escapes. Equals -2.
 TurnManager.BattleResult = {
   WIN = 1,
   DRAW = 0,

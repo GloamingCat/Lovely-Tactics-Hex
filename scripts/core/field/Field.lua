@@ -29,10 +29,10 @@ local Field = class()
 
 --- Collision types.
 -- @enum Collision
--- @field BORDER Code for when a character collides with the field's borders. Equals to 0.
--- @field TERRAIN Code for when a character collides with a non-passable terrain. Equals to 1.
--- @field OBSTACLE Code for when a character collides with a non-passable object. Equals to 2.
--- @field CHARACTER Code for when a character collides with another character. Equals to 3.
+-- @field BORDER Code for when a character collides with the field's borders. Equals 0.
+-- @field TERRAIN Code for when a character collides with a non-passable terrain. Equals 1.
+-- @field OBSTACLE Code for when a character collides with a non-passable object. Equals 2.
+-- @field CHARACTER Code for when a character collides with another character. Equals 3.
 Field.Collision = {
   BORDER = 0,
   TERRAIN = 1,

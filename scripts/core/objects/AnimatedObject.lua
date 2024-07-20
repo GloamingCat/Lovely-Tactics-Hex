@@ -151,6 +151,9 @@ function AnimatedObject:update(dt)
   if self.animation then
     self.animation:update(dt)
   end
+  if self.sprite then
+    self.sprite:update(dt)
+  end
 end
 
 -- ------------------------------------------------------------------------------------------------

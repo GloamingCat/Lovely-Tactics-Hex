@@ -26,9 +26,9 @@ local Troop = class()
 
 --- The different group types the unit can be in.
 -- @enum Group
--- @field CURRENT Group of current active battlers. Equals to 0.
--- @field BACKUP Group of backup battlers, not active in battle. Equals to 1.
--- @field HIDDEN Group of currently unaccessible battlers. Equals to 2.
+-- @field CURRENT Group of current active battlers. Equals 0.
+-- @field BACKUP Group of backup battlers, not active in battle. Equals 1.
+-- @field HIDDEN Group of currently unaccessible battlers. Equals 2.
 Troop.Group = {
   CURRENT = 0,
   BACKUP = 1,

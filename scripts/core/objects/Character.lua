@@ -25,12 +25,10 @@ local Character = class(AnimatedInteractable)
 -- Tables
 -- ------------------------------------------------------------------------------------------------
 
---- Collision types.
--- @enum Collision
--- @field BORDER Code for when a character collides with the field's borders. Equals to 0.
--- @field TERRAIN Code for when a character collides with a non-passable terrain. Equals to 1.
--- @field OBSTACLE Code for when a character collides with a non-passable object. Equals to 2.
--- @field CHARACTER Code for when a character collides with another character. Equals to 3.
+--- Indicates the next action after a collision.
+-- @enum Action
+-- @field MOVE Code to proceed with movement. Equals 1.
+-- @field INTERACT Code to interact with tile. Equals 2.
 Character.Action = {
   MOVE = 1,
   INTERACT = 2
@@ -134,6 +132,14 @@ function Character:setRGBA(...)
   AnimatedInteractable.setRGBA(self, ...)
   if self.shadow then
     self.shadow:setRGBA(nil, nil, nil, self.color.a)
+  end
+end
+--- Overrides `AnimatedInteractable:update`. Updates shadow.
+-- @override
+function Character:update(dt)
+  AnimatedInteractable.update(self, dt)
+  if self.shadow then
+    self.shadow:update(dt)
   end
 end
 --- Overrides `AnimatedInteractable:destroy`. Destroys shadow.

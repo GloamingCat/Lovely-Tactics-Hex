@@ -27,7 +27,7 @@ local FieldLoader = {}
 -- @tparam table save The field's save data.
 -- @treturn Field New empty field.
 -- @treturn table Field file data.
-function FieldLoader.loadField(id, save)
+function FieldLoader.getField(id, save)
   local data = Serializer.load(Project.dataPath .. 'fields/' .. id .. '.json')
   local field = Field(id, data.prefs, data.sizeX, data.sizeY, save)
   -- Default region
@@ -124,7 +124,7 @@ function FieldLoader.createTransitionTile(origin, destination, key)
     { key = "y", value = destination.y },
     { key = "h", value = destination.h },
     { key = "direction", value = destination.direction },
-    { key = "exit", value = key }
+    { key = "exit", value = '"' .. key .. '"' }
   }
    local event = {
     name = "moveToField",
