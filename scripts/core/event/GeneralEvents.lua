@@ -135,11 +135,11 @@ function GeneralEvents:setCharVar(args)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Wait
+-- Flow
 -- ------------------------------------------------------------------------------------------------
 
 --- Wait a number of frames defined by parameter `time`.
--- @tparam table args
+-- @tparam table args Table with a `time` field.
 function GeneralEvents:waitFrames(args)
   self:wait(args.time)
 end

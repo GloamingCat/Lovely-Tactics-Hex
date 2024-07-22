@@ -127,9 +127,11 @@ function ScriptList:onLoad(loading)
   for _, script in ipairs(self.onLoadScripts) do
     if script.vars.loading or loading then
       script.vars.loading = script.vars.loading or loading
-      self:runScript(script)
-      if self.finished or self.char.deleted then
-        break
+      if not script.running then 
+        _G.Fiber:runScript(script)
+        if self.finished or self.char.deleted then
+          break
+        end
       end
     end
   end
@@ -142,9 +144,11 @@ function ScriptList:onExit(exit)
   for _, script in ipairs(self.onExitScripts) do
     if script.vars.exit or exit then
       script.vars.exit = script.vars.exit or exit
-      self:runScript(script)
-      if self.finished or self.char.deleted then
-        break
+      if not script.running then 
+        _G.Fiber:runScript(script)
+        if self.finished or self.char.deleted then
+          break
+        end
       end
     end
   end
@@ -156,9 +160,11 @@ function ScriptList:onInteract(interacting)
   for _, script in ipairs(self.onInteractScripts) do
     if script.vars.interacting or interacting then
       script.vars.interacting = script.vars.interacting or interacting
-      self:runScript(script)
-      if self.finished or self.char.deleted then
-        break
+      if not script.running then 
+        _G.Fiber:runScript(script)
+        if self.finished or self.char.deleted then
+          break
+        end
       end
     end
   end
@@ -174,9 +180,11 @@ function ScriptList:onCollide(collided, collider)
     if script.vars.collider or collider then
       script.vars.collided = script.vars.collided or collided
       script.vars.collider = script.vars.collider or collider
-      self:runScript(script)
-      if self.finished or self.char.deleted then
-        break
+      if not script.running then 
+        _G.Fiber:runScript(script)
+        if self.finished or self.char.deleted then
+          break
+        end
       end
     end
   end
@@ -189,29 +197,13 @@ function ScriptList:onDestroy(destroyer)
   for _, script in ipairs(self.onDestroyScripts) do
     if script.vars.destroyer or destroyer then
       script.vars.destroyer = script.vars.destroyer or destroyer
-      self:runScript(script)
-      if self.finished or self.char.deleted then
-        break
+      if not script.running then 
+        _G.Fiber:runScript(script)
+        if self.finished or self.char.deleted then
+          break
+        end
       end
     end
-  end
-end
---- Creates a new event sheet from the given script data.
--- @coroutine
--- @tparam table script Script initialization info.
-function ScriptList:runScript(script)
-  if script.running then
-    return
-  end
-  local fiberList = self
-  if script.global or script.scope == 2 then
-    fiberList = FieldManager.fiberList
-  elseif script.scope == 1 then
-    fiberList = FieldManager.currentField.fiberList
-  end
-  local fiber = fiberList:forkFromScript(script, self.char)
-  if script.wait then
-    fiber:waitForEnd()
   end
 end
 -- For debugging.

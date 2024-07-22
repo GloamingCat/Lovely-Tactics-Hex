@@ -122,6 +122,23 @@ end
 function Fiber:forkFromScript(...)
   return self.root:forkFromScript(...)
 end
+--- Executes a script in a new fiber.
+-- @tparam table script Script table.
+function Fiber:runScript(script)
+  local fiberList = self.root
+  if script.global or script.scope == 2 then
+    fiberList = FieldManager.fiberList
+  elseif script.scope == 1 then
+    fiberList = FieldManager.currentField.fiberList
+  elseif script.scope == 0 then
+    fiberList = self.root.char.fiberList
+  end
+  script.vars = script.vars or {}
+  local fiber = fiberList:forkFromScript(script, self.root.char)
+  if script.wait then
+    fiber:waitForEnd()
+  end
+end
 
 -- ------------------------------------------------------------------------------------------------
 -- Auxiliary functions

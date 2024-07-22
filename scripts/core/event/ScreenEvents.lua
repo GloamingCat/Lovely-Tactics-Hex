@@ -88,9 +88,10 @@ end
 -- @coroutine
 -- @tparam FadeArguments args
 function ScreenEvents:fadein(args)
-  local time = args.time
-  if not time and args.speed then
-    time = (60 / args.speed)
+  local time = args.time or -1
+  local speed = args.speed or -1
+  if time <= 0 and speed > 0 then
+    time = (60 / speed)
   end
   FieldManager.renderer:fadein(time, args.wait)
 end
@@ -98,19 +99,21 @@ end
 -- @coroutine
 -- @tparam FadeArguments args
 function ScreenEvents:fadeout(args)
-  local time = args.time
-  if not time and args.speed then
-    time = (60 / args.speed)
+  local time = args.time or -1
+  local speed = args.speed or -1
+  if time <= 0 and speed > 0 then
+    time = (60 / speed)
   end
-  FieldManager.renderer:fadeout(args.time, args.wait)
+  FieldManager.renderer:fadeout(time, args.wait)
 end
 --- Applies a color filter to the camera.
 -- @coroutine
 -- @tparam ColorArguments args
 function ScreenEvents:colorin(args)
-  local time = args.time
-  if not time and args.speed then
-    time = (60 / args.speed)
+  local time = args.time or -1
+  local speed = args.speed or -1
+  if time <= 0 and speed > 0 then
+    time = (60 / speed)
   end
   FieldManager.renderer:colorizeTo(args.red, args.green, args.blue, 1, time, args.wait)
 end
@@ -123,9 +126,14 @@ end
 -- @coroutine
 -- @tparam CameraArguments args
 function ScreenEvents:focusCharacter(args)
-  local speed = args.speed
-  if not speed and args.time then
-    speed = (60 / args.time)
+  local time = args.time or -1
+  local speed = args.speed or -1
+  if speed < 0 then
+    if time > 0 then
+      speed = (60 / time)
+    else
+      speed = nil
+    end
   end
   local char = self:findCharacter(args.key)
   FieldManager.renderer.focusObject = nil
@@ -136,9 +144,14 @@ end
 -- @coroutine
 -- @tparam CameraArguments args
 function ScreenEvents:focusTile(args)
-  local speed = args.speed
-  if not speed and args.time then
-    speed = (60 / args.time)
+  local time = args.time or -1
+  local speed = args.speed or -1
+  if speed < 0 then
+    if time > 0 then
+      speed = (60 / time)
+    else
+      speed = nil
+    end
   end
   local tile = FieldManager.currentField:getObjectTile(args.x, args.y, args.h or 1)
   FieldManager.renderer.focusObject = nil

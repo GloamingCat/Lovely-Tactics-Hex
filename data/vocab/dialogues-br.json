@@ -17,7 +17,8 @@
   
   "scene": {
     "ThisIsA": "Isso é uma cena de teste.",
-    "DidYouLike": "Gostou?"
+    "DidYouLike": "Gostou?",
+    "SomeoneThere": "Tem alguém muito suspeito ali."
   },
 
   "battle": {

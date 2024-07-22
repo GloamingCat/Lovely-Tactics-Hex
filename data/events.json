@@ -2379,6 +2379,190 @@
         },
         "id": 7,
         "children": []
+      }
+    ]
+  },
+  {
+    "data": {
+      "events": [],
+      "description": "",
+      "name": "Scene",
+      "tags": [],
+      "key": ""
+    },
+    "id": 15,
+    "children": [
+      {
+        "data": {
+          "events": [
+            {
+              "condition": "",
+              "name": "runScript",
+              "tags": [
+                {
+                  "key": "wait",
+                  "value": "true"
+                },
+                {
+                  "key": "onCollide",
+                  "value": "false"
+                },
+                {
+                  "key": "onDestroy",
+                  "value": "false"
+                },
+                {
+                  "key": "onExit",
+                  "value": "false"
+                },
+                {
+                  "key": "onInteract",
+                  "value": "false"
+                },
+                {
+                  "key": "tags",
+                  "value": "[]"
+                },
+                {
+                  "key": "scope",
+                  "value": "0"
+                },
+                {
+                  "key": "name",
+                  "value": "\"9\""
+                },
+                {
+                  "key": "onLoad",
+                  "value": "true"
+                },
+                {
+                  "key": "block",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "{%scene1}",
+              "name": "jumpTo",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "\"end\""
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "focusCharacter",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"Shop\""
+                },
+                {
+                  "key": "speed",
+                  "value": "-1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "waitFrames",
+              "tags": [
+                {
+                  "key": "time",
+                  "value": "30"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "openDialogueWindow",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "message",
+                  "value": "\"{%dialogues.scene.SomeoneThere}\""
+                },
+                {
+                  "key": "character",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "portrait",
+                  "value": "\"BigIcon\""
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "closeDialogueWindow",
+              "tags": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "focusCharacter",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"player\""
+                },
+                {
+                  "key": "speed",
+                  "value": "-1"
+                },
+                {
+                  "key": "wait",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setGlobalVar",
+              "tags": [
+                {
+                  "key": "key",
+                  "value": "\"scene1\""
+                },
+                {
+                  "key": "value",
+                  "value": "true"
+                }
+              ],
+              "key": ""
+            }
+          ],
+          "description": "Tests scene execution on field enter.",
+          "name": "Test Scene Load",
+          "tags": [],
+          "key": ""
+        },
+        "id": 16,
+        "children": []
       },
       {
         "data": {
