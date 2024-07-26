@@ -106,15 +106,14 @@ function InteractableObject:interactTile(tile, fromPath)
   local isFront = true
   local currentTile = self:getTile()
   if currentTile ~= tile then
-    local frontTile = self:getFrontTile()
-    isFront = frontTile and tileDistance(tile.x, tile.y, frontTile.x, frontTile.y) <= 1
+    local dir = self:shiftToRow(tile.x, tile.y) * 45
+    isFront = self:getRoundedDirection() == dir
   end
-  local dir = self:shiftToRow(tile.x, tile.y) * 45
-  isFront = self:getRoundedDirection() - dir
   local interacted = false
   for i = #tile.characterList, 1, -1 do
     local char = tile.characterList[i]
     if char ~= self 
+        and (not char.passable or tile == currentTile)
         and not (char.approachToInteract and fromPath)
         and (not char.faceToInteract or isFront)
         and char.fiberList:trigger('onInteract', true) then

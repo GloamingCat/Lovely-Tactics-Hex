@@ -30,10 +30,10 @@ end
 function ShopListWindow:createListButton(item)
   local price = item.value
   item = Database.items[item.id]
-  local id = item.id
   assert(item, 'Item does not exist: ' .. tostring(id))
+  local id = item.id
   if not price or price < 0 then
-    price = item.value
+    price = item.price
   end
   local button = Button(self)
   button:setIcon(item.icon)
