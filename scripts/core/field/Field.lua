@@ -85,6 +85,21 @@ function Field:init(id, prefs, sizeX, sizeY, save)
   self.vars = copyTable(save and save.vars or prefs.vars) or {}
   self.fiberList = ScriptList(scripts, self, save and save.scripts)
 end
+--- Plays field's BGM, if not already playing.
+-- @coroutine
+-- @tparam[opt] number time The duration of the fading transition.
+-- @tparam[opt] boolean wait Flag to yield until the fading animation concludes.
+function Field:playBGM(time, wait)
+  local bgm = self.bgm
+  if not bgm or bgm.name == '' then
+    return
+  end
+  if AudioManager.BGM == nil or AudioManager.BGM.name ~= bgm.name then
+    AudioManager:playBGM(bgm, time or bgm.time, wait)
+  elseif AudioManager.pausedBGM then
+    AudioManager:resumeBGM(time or bgm.time, wait)
+  end
+end
 
 -- ------------------------------------------------------------------------------------------------
 -- General
@@ -112,6 +127,13 @@ function Field:update(dt)
   end
   self.fiberList:update(dt)
 end
+--- Gets size in tiles.
+-- @treturn number Size X of field.
+-- @treturn number Size Y of field.
+-- @treturn number Maximum height of field.
+function Field:getSize()
+  return self.sizeX, self.sizeY, self.maxh
+end
 --- Field's persistent data. Includes bgm, field variables and fiber list's data.
 -- @treturn table Save data.
 function Field:getPersistentData()
@@ -119,13 +141,6 @@ function Field:getPersistentData()
     scripts = self.fiberList:getPersistentData(),
     vars = copyTable(self.vars),
     bgm = copyTable(self.bgm) }
-end
---- Gets size in tiles.
--- @treturn number Size X of field.
--- @treturn number Size Y of field.
--- @treturn number Maximum height of field.
-function Field:getSize()
-  return self.sizeX, self.sizeY, self.maxh
 end
 --- Destroys fiber list and tiles.
 function Field:destroy()

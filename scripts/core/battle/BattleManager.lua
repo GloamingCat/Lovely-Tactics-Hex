@@ -96,7 +96,7 @@ function BattleManager:loadBattle(state)
   FieldManager:loadField(fieldId)
   -- Run battle
   while true do
-    FieldManager:playFieldBGM()
+    FieldManager.currentField:playBGM()
     self:setUp(self.saveData)
     local result = self:battleLoop()
     self:clear()

@@ -57,6 +57,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Destroys current field (if any).
+-- @coroutine
 -- @tparam[opt] string exit The key of the object that originated the exit transition.
 function FieldManager:unloadField(exit)
   if self.currentField then
@@ -93,22 +94,14 @@ function FieldManager:initializeCamera(fieldData, save)
   ScreenManager:setRenderer(camera, 1)
   self.renderer = camera
 end
---- Plays current field's BGM, if not already playing.
--- @tparam[opt] number time The duration of the fading transition.
--- @tparam[opt] boolean wait Flag to yield until the fading animation concludes.
-function FieldManager:playFieldBGM(time, wait)
-  local bgm = self.currentField.bgm
-  if bgm and bgm.name ~= '' then
-    if AudioManager.BGM == nil then
-      if AudioManager.BGM.name ~= bgm.name then
-        AudioManager:playBGM(bgm, time or bgm.time, wait)
-      elseif AudioManager.pausedBGM then
-        AudioManager:resumeBGM(time or bgm.time, wait)
-      end
-    end
-  end
-end
---- Execute current field's load script and characters' load scripts. It also resumes any interrupted character script.
+
+-- ------------------------------------------------------------------------------------------------
+-- Scripts
+-- ------------------------------------------------------------------------------------------------
+
+--- Execute current field's load script and characters' load scripts.
+-- It also resumes any interrupted character script.
+-- @coroutine
 -- @tparam boolean fromSave Whether the field was load from save
 --  instead of entered from a field transition.
 function FieldManager:runLoadScripts(fromSave)
@@ -132,6 +125,7 @@ function FieldManager:runLoadScripts(fromSave)
   fibers[#fibers + 1] = self.currentField.fiberList:trigger('onExit')
 end
 --- Execute current field's load script and characters' load scripts.
+-- @coroutine
 -- @tparam[opt] string exit The key of the object that originated the exit transition.
 function FieldManager:runExitScripts(exit)
   local fibers = {}
@@ -164,6 +158,7 @@ end
 -- The information about the field must be stored in the transition data.
 -- The loaded field will the treated as an exploration field.
 -- Don't use this function if you just want to move the player to another tile in the same field.
+-- @coroutine
 -- @tparam table transition The transition data.
 -- @tparam[opt] table save Field's save data.
 -- @tparam[opt] string exit The key of the object that originated the exit transition.
@@ -175,7 +170,7 @@ function FieldManager:loadTransition(transition, save, exit)
   self:loadField(transition.fieldID, save)
   FieldLoader.createTransitions(self.currentField.transitions)
   self.hud = self.hud or PlayerMenu()
-  self:playFieldBGM()
+  self.currentField:playBGM()
   for fiber in self.fiberList:iterator() do
     if fiber.data and fiber.data.block then
       self.currentField.blockingFibers:add(fiber)

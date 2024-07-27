@@ -48,7 +48,7 @@ end
 --- Play the BGM of current field.
 -- @tparam SoundArguments args
 function SoundEvents:playFieldBGM(args)
-  FieldManager:playFieldBGM()
+  FieldManager.currentField:playBGM()
 end
 
 return SoundEvents
