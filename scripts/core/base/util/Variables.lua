@@ -18,10 +18,10 @@ local Variables = {}
 -- ------------------------------------------------------------------------------------------------
 
 Variables.vars = {}
-function meta:__index(self, key)
+function meta:__index(key)
   return self.vars[key]
 end
-function meta:__newindex(self, key, v)
+function meta:__newindex(key, v)
   self.vars[key] = v
 end
 

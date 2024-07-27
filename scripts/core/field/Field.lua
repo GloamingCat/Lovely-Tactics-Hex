@@ -87,7 +87,7 @@ function Field:init(id, prefs, sizeX, sizeY, save)
 end
 --- Plays field's BGM, if not already playing.
 -- @coroutine
--- @tparam[opt] number time The duration of the fading transition.
+-- @tparam[opt] number time The duration of the fading transition, in frames. If nil, uses BGM's defaut time.
 -- @tparam[opt] boolean wait Flag to yield until the fading animation concludes.
 function Field:playBGM(time, wait)
   local bgm = self.bgm
