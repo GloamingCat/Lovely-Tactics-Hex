@@ -151,7 +151,7 @@ end
 function InteractableObject:update()
   self.fiberList:update()
 end
---- Overrides `Object:destroy` and `Interactable:destroy`.
+--- Overrides `Object:destroy`.
 -- @override
 function InteractableObject:destroy(permanent)
   Object.destroy(self)

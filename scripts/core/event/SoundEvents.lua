@@ -26,27 +26,31 @@ local SoundEvents = {}
 -- ------------------------------------------------------------------------------------------------
 
 --- Changes the current BGM.
--- @tparam SoundArguments args
+-- @coroutine
+-- @tparam SoundArguments args Argument table.
 function SoundEvents:playBGM(args)
   AudioManager:playBGM(args, args.time, args.wait)
 end
 --- Pauses current BGM.
--- @tparam SoundArguments args
+-- @coroutine
+-- @tparam SoundArguments args Argument table.
 function SoundEvents:pauseBGM(args)
   AudioManager:pauseBGM(args.time, args.wait)
 end
 --- Resumes current BGM.
--- @tparam SoundArguments args
+-- @coroutine
+-- @tparam SoundArguments args Argument table.
 function SoundEvents:resumeBGM(args)
   AudioManager:resumeBGM(args.time, args.wait)
 end
 --- Play a sound effect.
--- @tparam SoundArguments args
+-- @tparam SoundArguments args Argument table.
 function SoundEvents:playSFX(args)
   AudioManager:playSFX(args)
 end
 --- Play the BGM of current field.
--- @tparam SoundArguments args
+-- @coroutine
+-- @tparam SoundArguments args Argument table.
 function SoundEvents:playFieldBGM(args)
   FieldManager.currentField:playBGM(args.time, args.wait)
 end

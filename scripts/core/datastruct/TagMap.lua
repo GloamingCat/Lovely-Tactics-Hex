@@ -75,7 +75,7 @@ function TagMap:addAll(tags)
   end
 end
 --- Converts the string value to another type.
--- @tparam string str The value in its original string format.
+-- @tparam string value The value in its original string format.
 -- @return The evaluated expression.
 function TagMap:evaluate(value)
   if type(value) == 'string' then

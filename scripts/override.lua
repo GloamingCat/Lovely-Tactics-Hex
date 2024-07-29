@@ -23,8 +23,7 @@ function string.time(time)
   local hour = (time - 60 * min - sec) / 3600
   return string.format("%02d:%02d:%02d", hour, min, sec)
 end
---- Splits a string in substring by the given separator.
--- @tparam string inputstr String to be splitted.
+--- Splits the string in substring by the given separator.
 -- @tparam[opt="%s+"] string sep Separator.
 -- @treturn table Array of substrings.
 function string:split(sep)
@@ -38,26 +37,26 @@ function string:split(sep)
 end
 --- Removes spaces in the start and end of the string.
 -- @treturn string New trimmed string.
-function string.trim(self)
+function string:trim()
   return self:gsub("^%s+", ""):gsub("%s+$", "")
 end
---- Checks if this string ends with the given suffix.
+--- Checks if the string ends with the given suffix.
 -- @tparam string suffix Suffix to be looked for.
 -- @treturn boolean True if `suffix` is found at the end of this string. 
-function string.endswith(self, suffix)
+function string:endswith(suffix)
   return self:sub(-string.len(suffix)) == suffix
 end
---- Checks if this string starts with the given prefix.
+--- Checks if the string starts with the given prefix.
 -- @tparam string prefix Prefix to be looked for.
 -- @treturn boolean True if `prefix` is found at the start of this string. 
-function string.startswith(self, prefix)
+function string:startswith(prefix)
   return self:sub(string.len(prefix)) == prefix
 end
 --- Interpolates the raw string.
 -- @tparam function varAccessor Function that receives a key and returns the value.
 -- @param ... Any additional params passed to `varAccessor`. 
 -- @treturn string The interpolated string.
-function string.interpolate(self, varAccessor, ...)
+function string:interpolate(varAccessor, ...)
   local str = ""
   local i = 0
   for textFragment, key in self:gmatch('([^{]*){%%([^}]-)}') do

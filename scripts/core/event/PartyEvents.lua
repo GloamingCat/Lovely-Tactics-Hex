@@ -48,7 +48,7 @@ local PartyEvents = {}
 -- ------------------------------------------------------------------------------------------------
 
 --- Give EXP point to the members of the player's troop.
--- @tparam PartyArguments args
+-- @tparam PartyArguments args Argument table.
 function PartyEvents:increaseExp(args)
   local troop = Troop()
   for battler in troop:currentBattlers():iterator() do
@@ -65,7 +65,7 @@ function PartyEvents:increaseExp(args)
   end
 end
 --- Give money to the player's troop.
--- @tparam PartyArguments args
+-- @tparam PartyArguments args Argument table.
 function PartyEvents:increaseMoney(args)
   local save = TroopManager.troopData[TroopManager.playerTroopID .. '']
   if not save then
@@ -78,7 +78,7 @@ function PartyEvents:increaseMoney(args)
   end
 end
 --- Add an item to the player's inventory.
--- @tparam PartyArguments args
+-- @tparam PartyArguments args Argument table.
 function PartyEvents:increaseItem(args)
   local troop = Troop()
   troop.inventory:addItem(args.id, args.value)
@@ -88,7 +88,7 @@ function PartyEvents:increaseItem(args)
   end
 end
 --- Apply a skill on a party. If the party is not defined, apply it on the player troop.
--- @tparam PartyArguments args
+-- @tparam PartyArguments args Argument table.
 function PartyEvents:useSkill(args)
   local troop = TroopManager:getTroop(args.party)
   local input = ActionInput(SkillAction(arg.id))
@@ -113,7 +113,7 @@ function PartyEvents:useSkill(args)
   end
 end
 --- Heal all members' HP and SP.
--- @tparam PartyArguments args
+-- @tparam PartyArguments args Argument table.
 function PartyEvents:healAll(args)
   local troop = Troop()
   local list = args.onlyCurrent and troop:currentBattlers() or troop:visibleBattlers()
@@ -137,7 +137,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Un-hide a hidden member in the player's troop.
--- @tparam FormationArguments args
+-- @tparam FormationArguments args Argument table.
 function PartyEvents:addMember(args)
   local troop = Troop()
   if args.backup then
@@ -151,7 +151,7 @@ function PartyEvents:addMember(args)
   end
 end
 --- Remove (hide) a member from the player's troop.
--- @tparam FormationArguments args
+-- @tparam FormationArguments args Argument table.
 function PartyEvents:hideMember(args)
   local troop = Troop()
   troop:moveMember(args.key, 2)
@@ -166,7 +166,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Makes a member learn a new skill.
--- @tparam MemberArguments args
+-- @tparam MemberArguments args Argument table.
 function PartyEvents:learnSkill(args)
   local troop = Troop()
   local battler = troop.battlers[args.key]
@@ -179,7 +179,7 @@ function PartyEvents:learnSkill(args)
 end
 --- Sets a member's level. 
 -- Learns new skills if level increased, but keeps old skills if decreased.
--- @tparam MemberArguments args
+-- @tparam MemberArguments args Argument table.
 function PartyEvents:setLevel(args)
   local troop = Troop()
   local battler = troop.battlers[args.key]
@@ -197,7 +197,7 @@ function PartyEvents:setLevel(args)
   end
 end
 --- Sets that item equiped in the specified slot.
--- @tparam MemberArguments args
+-- @tparam MemberArguments args Argument table.
 function PartyEvents:setEquip(args)
   local troop = Troop()
   local battler = troop.battlers[args.key]
@@ -218,7 +218,7 @@ function PartyEvents:setEquip(args)
   end
 end
 --- Adds or remove a status effect to the given member.
--- @tparam MemberArguments args
+-- @tparam MemberArguments args Argument table.
 function PartyEvents:setStatus(args)
   local troop = Troop()
   local battler = troop.battlers[args.key]

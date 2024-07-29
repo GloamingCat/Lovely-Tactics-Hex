@@ -76,7 +76,7 @@ end
 -- @tparam function|unknown condition A condition to execute the command, either a function or
 --  a constant value.
 --  Can be either a constant or a function to be computed before the event executes.
--- @param ... Any aditional arguments to the event's function.
+-- @tparam table args The arguments table passed to the event function.
 function EventSheet:addEvent(func, condition, args)
   if condition ~= nil and type(condition) ~= 'function' then
     local value = condition
@@ -165,6 +165,7 @@ function EventSheet:execute()
   end
 end
 --- Runs the event created from the command execution.
+-- @coroutine
 function EventSheet:runEvents()
   self.startIndex = self.vars.runningIndex or 0
   if self.vars.runningIndex and not FieldManager:loadedFromSave() then
@@ -188,6 +189,7 @@ function EventSheet:runEvents()
   self.vars.destroyer = nil
 end
 --- Executes the event indicated by the current running index.
+-- @coroutine
 function EventSheet:runCurrentEvent()
   local event = self.events[self.vars.runningIndex]
   if not event.condition or event.condition(self) then

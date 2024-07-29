@@ -108,7 +108,8 @@ CharacterEvents.PropType = {
 -- ------------------------------------------------------------------------------------------------
 
 --- Destroys and removes a character from the field.
--- @tparam DeleteArguments args
+-- @coroutine
+-- @tparam DeleteArguments args Argument table.
 function CharacterEvents:deleteChar(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
@@ -133,7 +134,7 @@ function CharacterEvents:deleteChar(args)
   end
 end
 --- Changes a character's properties.
--- @tparam PropClassArguments args
+-- @tparam PropClassArguments args Argument table.
 function CharacterEvents:resetChar(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
@@ -156,7 +157,7 @@ function CharacterEvents:resetChar(args)
   end
 end
 --- Changes a character's properties.
--- @tparam PropArguments args
+-- @tparam PropArguments args Argument table.
 function CharacterEvents:setCharProperty(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
@@ -180,7 +181,8 @@ function CharacterEvents:setCharProperty(args)
   end
 end
 --- Changes a character's properties.
--- @tparam EventUtil.VisibilityArguments args
+-- @coroutine
+-- @tparam EventUtil.VisibilityArguments args Argument table.
 function CharacterEvents:setCharVisibility(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
@@ -192,7 +194,8 @@ function CharacterEvents:setCharVisibility(args)
   self:fadeSprite(char.sprite, args.visible, args.fade or args.time, args.wait)
 end
 --- Changes the properties of a character's shadow graphics.
--- @tparam EventUtil.VisibilityArguments args
+-- @coroutine
+-- @tparam EventUtil.VisibilityArguments args Argument table.
 function CharacterEvents:setShadowVisibility(args)
   local char = self:findCharacter(args.key, args.optional)
   if not char then
@@ -201,7 +204,7 @@ function CharacterEvents:setShadowVisibility(args)
   self:fadeSprite(char.shadow, args.visible, args.fade or args.time, args.wait)
 end
 --- Prints basic properties of a character.
--- @tparam PropClassArguments args
+-- @tparam PropClassArguments args Argument table.
 function CharacterEvents:logProperties(args)
   local char = self:findCharacter(args.key, true)
   if not char then
@@ -227,13 +230,17 @@ function CharacterEvents:logProperties(args)
           print("", "", k, v)
         end
       end
-    end 
+    end
     print("Load scripts:")
-    printScripts(char.loadScripts)
+    printScripts(char.fiberList.onLoadScripts)
     print("Interact scripts:")
-    printScripts(char.interactScripts)
+    printScripts(char.fiberList.onInteractScripts)
     print("Collide scripts:")
-    printScripts(char.collideScripts)
+    printScripts(char.fiberList.onCollideScripts)
+    print("Exit scripts:")
+    printScripts(char.fiberList.onExitScripts)
+    print("Destroy scripts:")
+    printScripts(char.fiberList.onDestroyScripts)
   end
   if args.tile then
     local x, y, h = char:tileCoordinates()
@@ -247,7 +254,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Moves straight to the given tile.
--- @tparam TileArguments args
+-- @coroutine
+-- @tparam TileArguments args Argument table.
 function CharacterEvents:moveCharTile(args)
   local char = self:findCharacter(args.key)
   local x, y, h = args.x or 0, args.y or 0, args.h or 0
@@ -276,7 +284,8 @@ function CharacterEvents:moveCharTile(args)
   end
 end
 --- Moves in the given direction.
--- @tparam DirArguments args
+-- @coroutine
+-- @tparam DirArguments args Argument table.
 function CharacterEvents:moveCharDir(args)
   local char = self:findCharacter(args.key)
   local angle = args.angle or 0
@@ -315,7 +324,8 @@ function CharacterEvents:moveCharDir(args)
   end
 end
 --- Moves a path to the given tile.
--- @tparam PathArguments args
+-- @coroutine
+-- @tparam PathArguments args Argument table.
 function CharacterEvents:moveCharPath(args)
   local char = self:findCharacter(args.key)
   local x, y, h = args.x or 0, args.y or 0, args.h or 0
@@ -339,7 +349,8 @@ function CharacterEvents:moveCharPath(args)
   end
 end
 --- Moves a character in a random direction.
--- @tparam TileArguments args
+-- @coroutine
+-- @tparam TileArguments args Argument table.
 function CharacterEvents:moveCharRandom(args)
   local char = self:findCharacter(args.key)
   local tile = nil
@@ -381,7 +392,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Makes character jump in place.
--- @tparam JumpArguments args
+-- @coroutine
+-- @tparam JumpArguments args Argument table.
 function CharacterEvents:jumpChar(args)
   local char = self:findCharacter(args.key)
   -- h = (-g * t) * t + g * t * t / 2
@@ -414,7 +426,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Turns character to the given tile.
--- @tparam TileArguments args
+-- @tparam TileArguments args Argument table.
 function CharacterEvents:turnCharTile(args)
   local char = self:findCharacter(args.key)
   if args.other and args.other ~= '' then
@@ -426,7 +438,7 @@ function CharacterEvents:turnCharTile(args)
   end
 end
 --- Turn character to the given direction.
--- @tparam DirArguments args
+-- @tparam DirArguments args Argument table.
 function CharacterEvents:turnCharDir(args)
   local char = self:findCharacter(args.key)
   if args.other and args.other ~= '' then
@@ -442,7 +454,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Stops movement and plays the idle animation.
--- @tparam AnimArguments args
+-- @coroutine
+-- @tparam AnimArguments args Argument table.
 function CharacterEvents:stopChar(args)
   local char = self:findCharacter(args.key)
   local animation = char:playIdleAnimation()
@@ -452,7 +465,8 @@ function CharacterEvents:stopChar(args)
   end
 end
 --- Plays the specified animation.
--- @tparam AnimArguments args
+-- @coroutine
+-- @tparam AnimArguments args Argument table.
 function CharacterEvents:playCharAnim(args)
   local char = self:findCharacter(args.key)
   local animation

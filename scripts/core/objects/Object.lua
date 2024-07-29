@@ -81,13 +81,13 @@ function Object:getAllTiles(i, j, h)
   end
 end
 --- Adds this object to the tiles it's occuping.
--- @tparam[opt] table Array of `ObjectTile`s to be added to.
+-- @tparam[opt] table tiles Array of `ObjectTile`s to be added to.
 --  If nil, add to `self:getTile()` instead.
 function Object:addToTiles(tiles)
   -- Abstract.
 end
 --- Removes this object from the tiles it's occuping.
--- @tparam[opt] table Array of `ObjectTile`s to be removed from.
+-- @tparam[opt] table tiles Array of `ObjectTile`s to be removed from.
 --  If nil, removes from `self:getTile()` instead.
 function Object:removeFromTiles(tiles)
   -- Abstract.

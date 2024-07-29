@@ -64,17 +64,20 @@ local MenuEvents = {}
 -- ------------------------------------------------------------------------------------------------
 
 --- Opens a menu.
--- @tparam MenuArguments args
+-- @coroutine
+-- @tparam MenuArguments args Argument table.
 function MenuEvents:openFieldMenu(args)
   self:openMenu(args.menu)
 end
 --- Opens the Shop Menu.
--- @tparam MenuArguments args
+-- @coroutine
+-- @tparam MenuArguments args Argument table.
 function MenuEvents:openShopMenu(args)
   self:openMenu(self.MenuType.shop, args.items, args.sell)
 end
 --- Opens the Recruit Menu.
--- @tparam MenuArguments args
+-- @coroutine
+-- @tparam MenuArguments args Argument table.
 function MenuEvents:openRecruitMenu(args)
   self:openMenu(self.MenuType.recruit, args.items, args.sell)
 end
@@ -93,7 +96,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Opens a basic window with the given text. By default, it's a single-line window.
--- @tparam MessageArguments args
+-- @tparam MessageArguments args Argument table.
 function MenuEvents:openTitleWindow(args)
   self:createMenu()
   local w = args.width and args.width > 0
@@ -118,7 +121,7 @@ function MenuEvents:openTitleWindow(args)
   end
 end
 --- Closes and destroys title window.
--- @tparam WindowArguments args
+-- @tparam WindowArguments args Argument table.
 function MenuEvents:closeTitleWindow(args)
   assert(self.menu.titleWindow, 'Title windows is not open.')
   self.menu.titleWindow:hide()
@@ -131,7 +134,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Shows a message in the given window.
--- @tparam MessageArguments args
+-- @coroutine
+-- @tparam MessageArguments args Argument table.
 function MenuEvents:openMessageWindow(args)
   self:createMessageWindow(args)
   local window = self.menu.messages[args.id]
@@ -142,7 +146,8 @@ function MenuEvents:openMessageWindow(args)
   end
 end
 --- Closes and deletes a message window.
--- @tparam WindowArguments args
+-- @coroutine
+-- @tparam WindowArguments args Argument table.
 function MenuEvents:closeMessageWindow(args)
   if self.menu and self.menu.messages then
     local window = self.menu.messages[args.id]
@@ -168,7 +173,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Shows a dialogue in the given window.
--- @tparam DialogueArguments args
+-- @coroutine
+-- @tparam DialogueArguments args Argument table.
 function MenuEvents:openDialogueWindow(args)
   self:createDialogueWindow(args)
   local window = self.menu.dialogues[args.id]
@@ -186,17 +192,23 @@ function MenuEvents:openDialogueWindow(args)
   end
 end
 --- Closes and deletes a dialogue window.
--- @tparam WindowArguments args
+-- @coroutine
+-- @tparam WindowArguments args Argument table.
 function MenuEvents:closeDialogueWindow(args)
   if self.menu and self.menu.dialogues then
     local window = self.menu.dialogues[args.id]
     if window then
-      window:hide()
-      window:removeSelf()
-      window:destroy()
-      self.menu.dialogues[args.id] = nil
-      if self.menu.activeWindow == window then
-        self.menu:setActiveWindow(nil)
+      local fiber = self:fork(function()
+        window:hide()
+        window:removeSelf()
+        window:destroy()
+        self.menu.dialogues[args.id] = nil
+        if self.menu.activeWindow == window then
+          self.menu:setActiveWindow(nil)
+        end
+      end)
+      if args.wait then
+        fiber:waitForEnd()
       end
     end
   end
@@ -207,7 +219,8 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Opens a choice window and waits for player choice before closing and deleting.
--- @tparam InputArguments args
+-- @coroutine
+-- @tparam InputArguments args Argument table.
 function MenuEvents:openChoiceWindow(args)
   self:createMenu()
   local w = args.width and args.width > 0
@@ -228,7 +241,8 @@ function MenuEvents:openChoiceWindow(args)
   end
 end
 --- Opens a password window and waits for player choice before closing and deleting.
--- @tparam InputArguments args
+-- @coroutine
+-- @tparam InputArguments args Argument table.
 function MenuEvents:openNumberWindow(args)
   self:createMenu()
   local w = args.width and args.width > 0
@@ -249,7 +263,8 @@ function MenuEvents:openNumberWindow(args)
   end
 end
 --- Opens a text window and waits for player choice before closing and deleting.
--- @tparam InputArguments args
+-- @coroutine
+-- @tparam InputArguments args Argument table.
 function MenuEvents:openStringWindow(args)
   self:createMenu()
   local w = args.width and args.width > 0

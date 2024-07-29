@@ -31,13 +31,18 @@ local ScreenEvents = {}
 -- @tfield number green Green component of the color filter.
 -- @tfield number blue Blue component of the color filter.
 
---- Arguments for camera movement. Extends `FadeArguments`.
--- @table CameraArguments
+--- Arguments for camera follow. Extends `FadeArguments`.
+-- @table CharArguments
 -- @extend FadeArguments
--- @tfield string key Character's key, for `focusCharacter`.
--- @tfield number x Tile grid x, for `focusTile`.
--- @tfield number y Tile grid y, for `focusTile`.
--- @tfield[opt=1] number h Tile's height, for `focusTile`.
+-- @tfield[opt] string key Character's key.
+
+--- Arguments for camera movement. Extends `FadeArguments`.
+-- @table TileArguments
+-- @extend FadeArguments
+-- @tfield[opt=0] number x Tile grid x. It's added to the origin tile.
+-- @tfield[opt=0] number y Tile grid y. It's added to the origin tile.
+-- @tfield[opt=0] number h Tile's height. It's added to the origin tile.
+-- @tfield[opt] string other Key of the reference character. If nil, origin is (0, 0, 0).
 
 -- ------------------------------------------------------------------------------------------------
 -- Shader Effect
@@ -45,7 +50,7 @@ local ScreenEvents = {}
 
 --- Shows the effect of a shader.
 -- @coroutine
--- @tparam FadeArguments args
+-- @tparam FadeArguments args Argument table.
 function ScreenEvents:shaderin(args)
   ScreenManager.shader = ResourceManager:loadShader(args.name)
   local speed = args.speed
@@ -66,7 +71,7 @@ function ScreenEvents:shaderin(args)
 end
 --- Hides the effect of a shader.
 -- @coroutine
--- @tparam FadeArguments args
+-- @tparam FadeArguments args Argument table.
 function ScreenEvents:shaderout(args)
   local speed = args.speed
   if not speed and args.time then
@@ -86,7 +91,7 @@ function ScreenEvents:shaderout(args)
 end
 --- Lightens the screen.
 -- @coroutine
--- @tparam FadeArguments args
+-- @tparam FadeArguments args Argument table.
 function ScreenEvents:fadein(args)
   local time = args.time or -1
   local speed = args.speed or -1
@@ -97,7 +102,7 @@ function ScreenEvents:fadein(args)
 end
 --- Darkens the screen.
 -- @coroutine
--- @tparam FadeArguments args
+-- @tparam FadeArguments args Argument table.
 function ScreenEvents:fadeout(args)
   local time = args.time or -1
   local speed = args.speed or -1
@@ -108,7 +113,7 @@ function ScreenEvents:fadeout(args)
 end
 --- Applies a color filter to the camera.
 -- @coroutine
--- @tparam ColorArguments args
+-- @tparam ColorArguments args Argument table.
 function ScreenEvents:colorin(args)
   local time = args.time or -1
   local speed = args.speed or -1
@@ -124,7 +129,7 @@ end
 
 --- Makes camera start following given character.
 -- @coroutine
--- @tparam CameraArguments args
+-- @tparam CharArguments args Argument table.
 function ScreenEvents:focusCharacter(args)
   local time = args.time or -1
   local speed = args.speed or -1
@@ -142,7 +147,7 @@ function ScreenEvents:focusCharacter(args)
 end
 --- Makes camera focus on given tile.
 -- @coroutine
--- @tparam CameraArguments args
+-- @tparam TileArguments args Argument table.
 function ScreenEvents:focusTile(args)
   local time = args.time or -1
   local speed = args.speed or -1
@@ -153,13 +158,23 @@ function ScreenEvents:focusTile(args)
       speed = nil
     end
   end
-  local tile = FieldManager.currentField:getObjectTile(args.x, args.y, args.h or 1)
+  local x = args.x or 0
+  local y = args.y or 0
+  local h = args.h or 0
+  if args.other and args.other ~= '' then
+    local char = self:findCharacter(args.other)
+    local tile = char:getTile()
+    x = x + tile.x
+    y = y + tile.y
+    h = h + tile.layer.height
+  end
+  local tile = FieldManager.currentField:getObjectTile(x, y, h)
   FieldManager.renderer.focusObject = nil
   FieldManager.renderer:moveToTile(tile, speed, args.wait)
 end
 --- Makes camera focus on each party in the field.
 -- @coroutine
--- @tparam CameraArguments args
+-- @tparam CameraArguments args Argument table.
 function ScreenEvents:focusParties(args)
   FieldManager.renderer:showParties(args.speed, args.time)
 end
@@ -170,7 +185,7 @@ end
 
 --- Setup image.
 -- @coroutine
--- @tparam EventUtil.VisibilityArguments args
+-- @tparam EventUtil.VisibilityArguments args Argument table.
 function ScreenEvents:setupImage(args)
   local name = args.name or args.key
   local img = FieldManager.renderer.images[name]

@@ -264,7 +264,7 @@ function Character:computePathTo(tile, pathLength)
 end
 --- Walks the next tile of the path.
 -- @coroutine
--- @tparam[opt=1] limit The maximum number of steps to walk. If -1, there's no limit.
+-- @tparam[opt=1] number limit The maximum number of steps to walk. If -1, there's no limit.
 -- @treturn Action Nil if blocked, MOVE if the character walked, and INTERACT encountered a character.
 -- @treturn ObjectTile The next tile in the path:
 --  If blocked, it's the front tile; If not, it's the current tile.

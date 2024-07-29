@@ -69,7 +69,7 @@ GeneralEvents.VarScope = {
 -- ------------------------------------------------------------------------------------------------
 
 --- Gets the value of a variable and stores it in a local variable.
--- @tparam VariableArguments args
+-- @tparam VariableArguments args Argument table.
 -- @return The value of the variable (nil if not found).
 function GeneralEvents:getVariable(args)
   local scope = self.VarScope[args.scope] or args.scope
@@ -94,7 +94,7 @@ function GeneralEvents:getVariable(args)
   self.vars[args.store] = scope[args.key]
 end
 --- Sets the value of a variable.
--- @tparam VariableArguments args
+-- @tparam VariableArguments args Argument table.
 function GeneralEvents:setVariable(args)
   local scope = self.VarScope[args.scope] or args.scope
   if scope == self.VarScope.global then
@@ -114,22 +114,22 @@ function GeneralEvents:setVariable(args)
   scope[args.key] = self:evaluate(args.value)
 end
 --- Sets the value of a local (script) variable.
--- @tparam VariableArguments args
+-- @tparam VariableArguments args Argument table.
 function GeneralEvents:setLocalVar(args)
   self.vars[args.key] = self:evaluate(args.value)
 end
 --- Sets the value of a global variable.
--- @tparam VariableArguments args
+-- @tparam VariableArguments args Argument table.
 function GeneralEvents:setGlobalVar(args)
   Variables.vars[args.key] = self:evaluate(args.value)
 end
 --- Sets the value of a field variable.
--- @tparam VariableArguments args
+-- @tparam VariableArguments args Argument table.
 function GeneralEvents:setFieldVar(args)
   FieldManager.currentField.vars[args.key] = self:evaluate(args.value)
 end
 --- Sets the value of a character variable.
--- @tparam VariableArguments args
+-- @tparam VariableArguments args Argument table.
 function GeneralEvents:setCharVar(args)
   self.char.vars[args.key] = self:evaluate(args.value)
 end
@@ -150,7 +150,7 @@ end
 
 --- Teleports player to other field.
 -- @coroutine
--- @tparam TransitionArguments args
+-- @tparam TransitionArguments args Argument table.
 function GeneralEvents:moveToField(args)
   local fiber = FieldManager.fiberList:forkMethod(FieldManager, 'loadTransition', args, nil, args.exit or '')
   if args.wait then
@@ -159,7 +159,7 @@ function GeneralEvents:moveToField(args)
 end
 --- Loads battle field.
 -- @coroutine
--- @tparam BattleArguments args
+-- @tparam BattleArguments args Argument table.
 function GeneralEvents:runBattle(args)
   args.gameOverCondition = args.gameOverCondition or 1
   if type(args.gameOverCondition) == 'string' then

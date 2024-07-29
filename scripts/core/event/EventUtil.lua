@@ -120,7 +120,9 @@ end
 -- @tparam number id Window ID.  
 --  For 1: bottom of the screen, full width;  
 --  For 2: top of the screen, full width;  
---  For 3+: middle of the screen, 3/4 width.  
+--  For 3+: middle of the screen, 3/4 width.
+-- @tparam[opt=0] number x Horizontal displacement from its default position.
+-- @tparam[opt=0] number y Vertical displacement from its default position.
 -- @treturn number Window width.
 -- @treturn number Window height.
 -- @treturn Vector Window center position.

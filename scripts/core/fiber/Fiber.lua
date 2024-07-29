@@ -54,6 +54,7 @@ function Fiber:fromScript(root, path, ...)
   return self(root, func, ...)
 end
 --- Functions that this fiber executes.
+-- @coroutine
 function Fiber:execute()
   -- Abstract.
 end
@@ -123,6 +124,7 @@ function Fiber:forkFromScript(...)
   return self.root:forkFromScript(...)
 end
 --- Executes a script in a new fiber.
+-- @coroutine
 -- @tparam table script Script table.
 function Fiber:runScript(script)
   local fiberList = self.root
@@ -183,9 +185,10 @@ end
 -- @tparam number time Time in frames.
 -- @tparam function func Function to be called.
 -- @param ... Function's parameters.
+-- @treturn Fiber The new fiber.
 function Fiber:invoke(time, func, ...)
   local args = {...}
-  self:fork(function()
+  return self:fork(function()
     self:wait(time)
     func(unpack(args))
   end)
