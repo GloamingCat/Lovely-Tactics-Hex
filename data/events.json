@@ -1321,7 +1321,7 @@
               "tags": [
                 {
                   "key": "name",
-                  "value": "\"end\""
+                  "value": "\"delete\""
                 }
               ],
               "key": ""
@@ -1390,6 +1390,17 @@
                 {
                   "key": "value",
                   "value": "0"
+                }
+              ],
+              "key": ""
+            },
+            {
+              "condition": "",
+              "name": "setLabel",
+              "tags": [
+                {
+                  "key": "name",
+                  "value": "\"delete\""
                 }
               ],
               "key": ""

@@ -76,12 +76,12 @@ end
 --- Creates field's characters.
 -- @tparam Field field Current field.
 -- @tparam table instances Array of character instances.
--- @tparam table save Field's save data.
-function FieldLoader.loadCharacters(field, instances, save)
-  local persistentData = save or FieldManager:getFieldSave(field.id)
-  for i, inst in ipairs(instances) do
+-- @tparam table fieldSave Field's save data.
+function FieldLoader.loadCharacters(field, instances, fieldSave)
+  local persistentData = fieldSave or FieldManager:getFieldSave(field.id)
+  for _, inst in pairs(instances) do
     local save = persistentData.chars[inst.key]
-    if not (save and save.deleted) then
+    if not ((save and save.deleted) or (fieldSave and not save)) then
       if (save and save.charID or inst.charID) >= 0 then
         if inst.party and inst.party >= 0 then
           BattleCharacter(inst, save)
