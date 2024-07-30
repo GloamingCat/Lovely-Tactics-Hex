@@ -190,7 +190,9 @@ function BattlerWindow:setPortrait(battler)
   if icon then
     local sprite = ResourceManager:loadIcon(icon, MenuManager.renderer)
     sprite.texture:setFilter('linear', 'linear')
-    sprite:applyTransformation(charData.transform)
+    if charData.transformPortraits then
+      sprite:applyTransformation(charData.transform)
+    end
     self.portrait:setSprite(sprite)
   else
     local anim = findByName(charData.animations, "Idle") or 
@@ -198,7 +200,9 @@ function BattlerWindow:setPortrait(battler)
     self.portraitAnim = ResourceManager:loadAnimation(anim.id, MenuManager.renderer)
     self.portraitAnim:setRow(6)
     self.portraitAnim.sprite:setXYZ(0, 0, 0)
-    self.portraitAnim.sprite:applyTransformation(charData.transform)
+    if charData.transformAnimations then
+      self.portraitAnim.sprite:applyTransformation(charData.transform)
+    end
     self.portrait:setSprite(self.portraitAnim.sprite)
   end
   self.portrait:updatePosition(self.position)

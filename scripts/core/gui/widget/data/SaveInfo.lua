@@ -89,15 +89,21 @@ function SaveInfo:refreshInfo(save)
   self.content[3]:setTerm(save.money .. ' {%g}', save.money .. '')
   self.content[3]:redraw()  
   self.content[4]:setTerm('{%data.field.' .. (save.field or '') .. '}', save.location)
-  self.content[4]:redraw()  
+  self.content[4]:redraw()
   local icons = {}
   for i = 1, Config.troop.maxMembers do
     if save.members[i] then
       local charData = Database.characters[save.members[i]]
-      local icon = { col = 0, row = 7,
-        id = findByName(charData.animations, "Idle").id }
+      local applyTransform = charData.transformPortraits
+      local icon = findByName(charData.portraits, "TinyIcon")
+      if not icon then
+        icon = { col = 0, row = 7, id = findByName(charData.animations, "Idle").id }
+        applyTransform = charData.transformAnimations
+      end
       local sprite = ResourceManager:loadIcon(icon, MenuManager.renderer)
-      sprite:applyTransformation(charData.transform)
+      if applyTransform then
+        sprite:applyTransformation(charData.transform)
+      end
       sprite:setCenterOffset()
       icons[i] = sprite
     else

@@ -65,14 +65,20 @@
           },
           "portraits": [
             {
+              "name": "BigIcon",
+              "id": 65,
+              "col": 0,
+              "row": 0
+            },
+            {
               "name": "SmallIcon",
               "id": 64,
               "col": 0,
               "row": 0
             },
             {
-              "name": "BigIcon",
-              "id": 65,
+              "name": "TinyIcon",
+              "id": 52,
               "col": 0,
               "row": 0
             }
@@ -178,14 +184,20 @@
           },
           "portraits": [
             {
+              "name": "BigIcon",
+              "id": 65,
+              "col": 0,
+              "row": 0
+            },
+            {
               "name": "SmallIcon",
               "id": 64,
               "col": 0,
               "row": 0
             },
             {
-              "name": "BigIcon",
-              "id": 65,
+              "name": "TinyIcon",
+              "id": 52,
               "col": 0,
               "row": 0
             }
@@ -279,14 +291,20 @@
           },
           "portraits": [
             {
+              "name": "BigIcon",
+              "id": 65,
+              "col": 0,
+              "row": 0
+            },
+            {
               "name": "SmallIcon",
               "id": 64,
               "col": 0,
               "row": 0
             },
             {
-              "name": "BigIcon",
-              "id": 65,
+              "name": "TinyIcon",
+              "id": 52,
               "col": 0,
               "row": 0
             }

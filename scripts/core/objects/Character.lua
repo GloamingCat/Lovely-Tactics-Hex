@@ -106,6 +106,24 @@ function Character:getHeight(dx, dy)
 end
 
 -- ------------------------------------------------------------------------------------------------
+-- Transform
+-- ------------------------------------------------------------------------------------------------
+
+--- Overrides `AnimatedObject:refreshTransform`.
+-- Does not apply transform if not indicated in the character data.
+-- Applies status transform, if any.
+-- @override
+function Character:refreshTransform(transform)
+  self.sprite:setTransformation(transform)
+  if self.charData.transformAnimations then
+    self.sprite:applyTransformation(self.transform)
+  end
+  if self.statusTransform then
+    self.sprite:applyTransformation(self.statusTransform)
+  end
+end
+
+-- ------------------------------------------------------------------------------------------------
 -- Shadow
 -- ------------------------------------------------------------------------------------------------
 

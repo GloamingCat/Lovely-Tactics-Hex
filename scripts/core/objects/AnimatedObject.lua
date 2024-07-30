@@ -127,11 +127,7 @@ function AnimatedObject:replayAnimation(name, row, index)
   local anim = data.animation
   self.sprite.quad = data.quad
   self.sprite:setTexture(data.texture)
-  self.sprite:setTransformation(data.transform)
-  self.sprite:applyTransformation(self.transform)
-  if self.statusTransform then
-    self.sprite:applyTransformation(self.statusTransform)
-  end
+  self:refreshTransform(data.transform)
   self.animation = anim
   anim.sprite = self.sprite
   if row then
@@ -143,6 +139,16 @@ function AnimatedObject:replayAnimation(name, row, index)
   anim.paused = false
   self.sprite.renderer.needsRedraw = true
   return anim
+end
+--- Resets the sprite transform.
+-- @tparam[opt] table transform The initial transform table (usually, from animation data).
+function AnimatedObject:refreshTransform(transform)
+  if transform then
+    self.sprite:setTransformation(transform)
+    self.sprite:applyTransformation(self.transform)
+  else
+    self.sprite:setTransformation(self.transform)
+  end
 end
 --- Overrides `Transformable:update`. Updates animation.
 -- @override

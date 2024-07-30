@@ -54,7 +54,9 @@ function MemberInfo:createContent(w, h, battler)
   if icon then
     local sprite = ResourceManager:loadIcon(icon, MenuManager.renderer)
     sprite.texture:setFilter('linear', 'linear')
-    sprite:applyTransformation(charData.transform)
+    if charData.transformPortraits then
+      sprite:applyTransformation(charData.transform)
+    end
     local x1, y1, x2, y2 = sprite:getBoundingBox()
     local iconW = x2 - x1
     self.icon = ImageComponent(sprite, Vector(0, 0, -2), iconW, h)   
@@ -68,7 +70,7 @@ function MemberInfo:createContent(w, h, battler)
   local medium = Fonts.menu_medium
   -- Name
   local txtName = TextComponent(battler.name, topLeft, rw, 'left', medium)
-  txtName:setTerm('data.battler.' .. battler.key, battler.name) 
+  txtName:setTerm('{%data.battler.' .. battler.key .. '}', battler.name) 
   txtName:redraw()
   self.content:add(txtName)
   -- HP
@@ -99,7 +101,7 @@ function MemberInfo:createContent(w, h, battler)
   txtLevel:setTerm('{%level} ' .. battler.job.level)
   txtLevel:redraw()
   local txtJob = TextComponent('', middleRight, rw, 'right', small)
-  txtJob:setTerm('data.job.' .. job.key, job.name)
+  txtJob:setTerm('{%data.job.' .. job.key .. '}', job.name)
   txtJob:redraw()
   self.content:add(txtLevel)
   self.content:add(txtJob)

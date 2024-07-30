@@ -47,7 +47,7 @@ function DialogueWindow:setPortrait(icon)
   if icon and icon.id >= 0 then
     local portrait = ResourceManager:loadIcon(icon, MenuManager.renderer)
     portrait.texture:setFilter('linear', 'linear')
-    if char then
+    if char and char.charData.transformPortraits then
       portrait:applyTransformation(char.transform)
     end
     local x1, y1, x2, y2 = portrait:getBoundingBox()
