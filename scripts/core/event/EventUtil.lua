@@ -118,9 +118,9 @@ function EventUtil:createMenu()
 end
 --- Creates a dialogue window with default size and position for given ID.
 -- @tparam number id Window ID.  
---  For 1: bottom of the screen, full width;  
+--  For 1, 4+: bottom of the screen, full width;  
 --  For 2: top of the screen, full width;  
---  For 3+: middle of the screen, 3/4 width.
+--  For 3: middle of the screen, 3/4 width.
 -- @tparam[opt=0] number x Horizontal displacement from its default position.
 -- @tparam[opt=0] number y Vertical displacement from its default position.
 -- @treturn number Window width.
@@ -131,12 +131,12 @@ function EventUtil:getDefaultWindowArgs(id, x, y)
   y = y or 0
   local w = ScreenManager.width
   local h = ScreenManager.height / 3
-  if id == 1 then -- Bottom.
-    y = y + ScreenManager.height / 3
+  if id == 3 then -- Center.
+    w = ScreenManager.width * 3 / 4
   elseif id == 2 then -- Top.
     y = y - ScreenManager.height / 3
-  else -- Center.
-    w = ScreenManager.width * 3 / 4
+  else -- Bottom.
+    y = y + ScreenManager.height / 3
   end
   return w, h, Vector(x, y)
 end

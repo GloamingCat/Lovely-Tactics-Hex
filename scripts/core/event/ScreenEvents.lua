@@ -133,7 +133,9 @@ end
 function ScreenEvents:focusCharacter(args)
   local time = args.time or -1
   local speed = args.speed or -1
-  if speed < 0 then
+  if time == 0 then
+    speed = 0
+  elseif speed < 0 then
     if time > 0 then
       speed = (60 / time)
     else
@@ -151,7 +153,9 @@ end
 function ScreenEvents:focusTile(args)
   local time = args.time or -1
   local speed = args.speed or -1
-  if speed < 0 then
+  if time == 0 then
+    speed = 0
+  elseif speed < 0 then
     if time > 0 then
       speed = (60 / time)
     else

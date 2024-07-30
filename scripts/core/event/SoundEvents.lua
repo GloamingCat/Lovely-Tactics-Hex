@@ -49,9 +49,13 @@ function SoundEvents:playSFX(args)
   AudioManager:playSFX(args)
 end
 --- Play the BGM of current field.
+-- If the `name` field is set, it will set the field's BGM to this new sound.
 -- @coroutine
 -- @tparam SoundArguments args Argument table.
 function SoundEvents:playFieldBGM(args)
+  if args.name then
+    FieldManager.currentField.bgm.name = args.name
+  end
   FieldManager.currentField:playBGM(args.time, args.wait)
 end
 
