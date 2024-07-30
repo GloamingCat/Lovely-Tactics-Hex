@@ -374,6 +374,7 @@ function console.textinput(input)
   -- Use the "~" key to enable / disable the console.
   if input == "@" then
     enabled = not enabled
+    love.keyboard.setKeyRepeat(enabled)
     return
   end
 
@@ -500,11 +501,9 @@ function InputManager:onPress(code, ...)
 end
 --- Rewrites `InputManager:onTextInput`.
 -- @rewrite
-function InputManager:onTextInput(txt)
+function InputManager:onTextInput(txt, ...)
   console.textinput(txt)
   if not enabled then
-    InputManager_onTextInput(self, txt)
+    InputManager_onTextInput(self, txt, ...)
   end
 end
-
-love.keyboard.setKeyRepeat(true)

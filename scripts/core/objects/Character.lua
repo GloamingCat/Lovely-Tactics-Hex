@@ -219,9 +219,6 @@ end
 --  If MOVE, then the path was free. If INTERACT, there was a character in this tile.
 function Character:tryAngleMovement(angle)  
   local frontTiles = self:getFrontTiles(angle)
-  if #frontTiles == 0 then
-    return nil
-  end
   for i = 1, #frontTiles do
     local result = self:tryTileMovement(frontTiles[i])
     if result then
