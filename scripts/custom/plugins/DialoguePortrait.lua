@@ -88,24 +88,31 @@ end
 function MenuEvents:openDialogueWindow(args)
   self:createDialogueWindow(args)
   local window = self.menu.dialogues[args.id]
-  if args.character then -- Change portrait
-    local portrait = nil
+  local portrait = nil
+  if args.character and args.character ~= '' then
     if type(args.character) == 'number' then
+      -- ID of character in the database
       local char = Database.characters[args.character]
       portrait = util.array.findByName(char.portraits, args.portrait)
-      args.name = args.name or Vocab.data.char[char.key] or char.name
-    elseif args.character ~= '' then -- Change to other image
+      if not args.name or args.name == '' then
+        args.name = Vocab.data.char[char.key] or char.name
+      end
+    else
+      -- Key of character in the scene
       local char = self:findCharacter(args.character)
+      print(args.character)
       portrait = { char = char, name = args.portrait }
-      args.name = args.name or Vocab.data.char[char.key] or char.name
+      if not args.name or args.name == '' then
+        args.name = Vocab.data.char[char.key] or char.name
+      end
     end
-    window:setPortrait(portrait)
-  elseif args.portrait then -- Change portrait
-    local portrait = nil
-    if args.portrait >= 0 then
-      portrait = { id = args.portrait, col = args.portraitCol or 0, row = args.portraitRow or 0 }
+  elseif args.portrait then
+    -- Specific animation
+    local anim = Database.animations[args.portrait]
+    if anim then
+      portrait = { id = anim.id, col = args.portraitCol or 0, row = args.portraitRow or 0 }
     end
-    window:setPortrait(portrait)
   end
+  window:setPortrait(portrait)
   MenuEvents_openDialogueWindow(self, args)
 end

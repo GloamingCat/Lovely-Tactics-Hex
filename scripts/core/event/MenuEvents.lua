@@ -180,7 +180,7 @@ function MenuEvents:openDialogueWindow(args)
   local window = self.menu.dialogues[args.id]
   window.result = nil
   self.menu:setActiveWindow(window)
-  local speaker = args.name ~= '' and { name = args.name, 
+  local speaker = args.name and args.name ~= '' and { name = args.name, 
     x = args.nameX, y = args.nameY }
   if args.wait then
     window:showDialogue(args.message, args.align, speaker)

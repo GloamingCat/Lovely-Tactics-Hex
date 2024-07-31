@@ -365,24 +365,60 @@
               "name": "openDialogueWindow",
               "tags": [
                 {
-                  "key": "id",
-                  "value": "1"
+                  "key": "wait",
+                  "value": "true"
                 },
                 {
                   "key": "message",
                   "value": "\"{%dialogues.npc.WhatDoYou}\""
                 },
                 {
-                  "key": "character",
-                  "value": "\"self\""
-                },
-                {
                   "key": "portrait",
                   "value": "\"BigIcon\""
                 },
                 {
-                  "key": "wait",
-                  "value": "true"
+                  "key": "character",
+                  "value": "\"self\""
+                },
+                {
+                  "key": "nameY",
+                  "value": "0"
+                },
+                {
+                  "key": "nameX",
+                  "value": "-15"
+                },
+                {
+                  "key": "name",
+                  "value": ""
+                },
+                {
+                  "key": "width",
+                  "value": "-1"
+                },
+                {
+                  "key": "x",
+                  "value": "0"
+                },
+                {
+                  "key": "y",
+                  "value": "0"
+                },
+                {
+                  "key": "alignX",
+                  "value": "0"
+                },
+                {
+                  "key": "id",
+                  "value": "1"
+                },
+                {
+                  "key": "alignY",
+                  "value": "0"
+                },
+                {
+                  "key": "height",
+                  "value": "-1"
                 }
               ],
               "key": ""
