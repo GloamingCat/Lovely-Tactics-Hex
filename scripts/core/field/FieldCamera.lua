@@ -37,7 +37,7 @@ function FieldCamera:init(fieldData, color)
   self.images = {}
   Renderer.init(self, mind, maxd, fieldData.sizeX * fieldData.sizeY * l)
   self.fadeSpeed = 100 / 60
-  self.cameraSpeed = 75
+  self.cameraSpeed = Config.screen.defaultSpeed or 75
   self.cropMovement = true
   self:resizeCanvas(width, height)
   self:setXYZ(pixelCenter(fieldData.sizeX, fieldData.sizeY))

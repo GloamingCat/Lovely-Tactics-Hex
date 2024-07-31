@@ -32,7 +32,7 @@ local JumpingObject = class(WalkingObject)
 -- @override
 function JumpingObject:initProperties(...)
   WalkingObject.initProperties(self, ...)
-  self.defaultGravity = 0.5
+  self.defaultGravity = (Config.player.gravity or 30) / 60
   self.jumpHeight = 0
   self.jumpVelocity = 0
   self.gravity = 0

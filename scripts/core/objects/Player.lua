@@ -55,15 +55,15 @@ end
 -- @override
 function Player:initProperties(instData, save)
   Character.initProperties(self, instData, save)
-  self.inputDelay = 6 / 60
+  self.walkDelay = (Config.player.walkDelay or 6) / 60
   self.walkSpeed = Config.player.walkSpeed
   self.dashSpeed = self.walkSpeed * Config.player.dashSpeed / 100
   -- Step sound
   self.stepCount = 0
-  self.freq = 16
-  self.varFreq = 0.1
-  self.varPitch = 0.1
-  self.varVolume = 0.2
+  self.freq = Config.player.stepFreq or 16
+  self.varFreq = (Config.player.stepVarFreq or 10) / 100
+  self.varPitch = (Config.player.stepVarPitch or 10) / 100
+  self.varVolume = (Config.player.stepVarVolume or 20) / 100
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -112,7 +112,7 @@ function Player:inputAxis()
   local dx = InputManager:axisX(0, 0)
   local dy = InputManager:axisY(0, 0)
   if self.pressTime then
-    if now() - self.pressTime > self.inputDelay * self.walkSpeed / self.speed then
+    if now() - self.pressTime > self.walkDelay * self.walkSpeed / self.speed then
       self.pressX = dx
       self.pressY = dy
       if dx == 0 and dy == 0 then

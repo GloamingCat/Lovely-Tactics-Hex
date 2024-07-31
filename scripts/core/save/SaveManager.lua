@@ -16,9 +16,6 @@ local copyTable = util.table.deepCopy
 local fileInfo = love.filesystem.getInfo
 local now = love.timer.getTime
 
-local saveVersion = 2
-local configVersion = 1
-
 -- Class table.
 local SaveManager = class()
 
@@ -28,6 +25,8 @@ local SaveManager = class()
 
 --- Constructor. 
 function SaveManager:init()
+  self.saveVersion = 2
+  self.configVersion = 1
   if fileInfo('saves.json') then
     self.saves = Serializer.load('saves.json')
   else
@@ -36,7 +35,7 @@ function SaveManager:init()
   if not fileInfo('saves/') then
     love.filesystem.createDirectory('saves/')
   end
-  self.maxSaves = 3
+  self.maxSaves = Config.maxSaves or 3
   self.playTime = 0
   self:loadConfig()
 end
@@ -75,7 +74,7 @@ end
 --- Creates a save table for the current game state.
 -- @treturn table Initial save.
 function SaveManager:currentSaveData()
-  local save = { version = saveVersion }
+  local save = { version = self.saveVersion }
   save.playTime = GameManager:currentPlayTime()
   save.vars = copyTable(Variables.vars)
   save.fields = copyTable(FieldManager.fieldData)
@@ -91,7 +90,7 @@ end
 --- Creates a save table for the current settings.
 -- @treturn table Initial settings.
 function SaveManager:currentConfigData()
-  local conf = { version = configVersion }
+  local conf = { version = self.configVersion }
   conf.volumeBGM = AudioManager.volumeBGM
   conf.volumeSFX = AudioManager.volumeSFX
   conf.windowScroll = MenuManager.windowScroll
@@ -135,7 +134,7 @@ end
 function SaveManager:loadConfig()
   if fileInfo('config.json') then
     self.config = Serializer.load('config.json')
-    if self.config.version == configVersion then
+    if self.config.version == self.configVersion then
       return
     end
   end
@@ -150,7 +149,7 @@ end
 -- @treturn boolean True if there at least one save with the current version.
 function SaveManager:hasSaves()
   for k, v in pairs(self.saves) do
-    if v.version == saveVersion then
+    if v.version == self.saveVersion then
       return true
     end
   end
@@ -161,7 +160,7 @@ end
 -- @treturn table Save header (nil if none).
 function SaveManager:getHeader(file)
   local save = self.saves[file]
-  if save and save.version == saveVersion then
+  if save and save.version == self.saveVersion then
     return save
   else
     return nil
@@ -186,7 +185,7 @@ function SaveManager:createHeader(save)
     money = troop.money,
     field = field.key,
     location = field.name,
-    version = save and save.version or saveVersion }
+    version = save and save.version or self.saveVersion }
 end
 --- Stores current save.
 -- @tparam string file Base file name, without the directory and extension.

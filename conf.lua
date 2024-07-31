@@ -59,7 +59,7 @@ function love.conf(t)
       Config.platform = Config.platform + 2 -- Make web
     end
   end
-  t.identity = Config.name 
+  t.identity = Config.folder or Config.name
   t.window.title = Config.name
   t.window.icon = Project.imagePath .. '/icon.png'
   t.window.fullscreentype = 'desktop'

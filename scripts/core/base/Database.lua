@@ -129,7 +129,7 @@ end
 --- Array with the names of all config files.
 -- @treturn table Directory with the config files.
 function Database.getConfigFileNames()
-  return {'attributes', 'languages', 'elements', 'regions', 'equipTypes', 'plugins'}
+  return {'attributes', 'languages', 'elements', 'regions', 'equipTypes', 'plugins', 'sounds'}
 end
 --- Loads config data and store in the Config table.
 function Database.loadConfigFiles()
