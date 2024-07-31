@@ -9,6 +9,7 @@
 -- ================================================================================================
 
 -- Imports
+local ConfirmWindow = require('core/gui/common/window/interactable/ConfirmWindow')
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
 local GoldWindow = require('core/gui/menu/window/GoldWindow')
 local Menu = require('core/gui/Menu')
@@ -25,7 +26,7 @@ local ShopMenu = class(Menu)
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
---- Overrides `Menu:init`. 
+--- Extends `Menu:init`. 
 -- @override
 -- @tparam Menu parent Parent Menu.
 -- @tparam table items Array of items to be sold.
@@ -45,6 +46,7 @@ function ShopMenu:createWindows()
   self:createListWindow()
   self:createCountWindow()
   self:createDescriptionWindow()
+  self:createConfirmWindow()
   self:setActiveWindow(self.commandWindow)
 end
 --- Creates the window with the main "buy" and "sell" commands.
@@ -88,6 +90,15 @@ function ShopMenu:createDescriptionWindow()
   local y = ScreenManager.height / 2 - height / 2 - self:windowMargin()
   self.descriptionWindow = DescriptionWindow(self, width, height, Vector(0, y))
   self.descriptionWindow:setVisible(false)
+end
+--- Creates the window to confirm buying/selling.
+function ShopMenu:createConfirmWindow()
+  self.confirmWindow = ConfirmWindow(self)
+  self.confirmWindow:setPosition(self.listWindow.position)
+  self.confirmWindow:setVisible(false)
+  local confirmButton = self.confirmWindow.confirmButton
+  confirmButton.clickSound = Config.sounds.buy or Config.sounds.buttonConfirm
+  confirmButton.confirmSound = Config.sounds.buy or Config.sounds.buttonConfirm
 end
 
 -- ------------------------------------------------------------------------------------------------

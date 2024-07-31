@@ -13,7 +13,8 @@
 local BattleAction = require('core/battle/action/BattleAction')
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
 local BattleTactics = require('core/battle/ai/BattleTactics')
-local ConfirmMenu = require('core/gui/common/ConfirmMenu')
+local ConfirmWindow = require('core/gui/common/window/interactable/ConfirmWindow')
+local Menu = require('core/gui/Menu')
 
 -- Class table.
 local EscapeAction = class(BattleAction)
@@ -57,8 +58,8 @@ end
 --- Overrides `BattleAction:onActionMenu`. 
 -- @override
 function EscapeAction:onActionMenu(input)
-  local confirm = MenuManager:showMenuForResult(ConfirmMenu(input.menu))
-  if confirm == 1 then
+  local result = MenuManager:showMenuForResult(Menu(input.menu, ConfirmWindow))
+  if result == ConfirmWindow.Result.CONFIRM then
     return self:onConfirm(input)
   else
     return self:onCancel(input)

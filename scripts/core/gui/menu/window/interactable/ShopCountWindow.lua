@@ -29,7 +29,6 @@ function ShopCountWindow:createContent(...)
   self:createValues()
   self:createIcon()
   self:createStats()
-  self.spinner.confirmSound = Config.sounds.buy or self.spinner.confirmSound
   self.spinner.bigIncrement = 5
 end
 --- Overrides `CountWindow:createWidgets`. Adds "buy" button.
@@ -37,8 +36,6 @@ end
 function ShopCountWindow:createWidgets(...)
   CountWindow.createWidgets(self, ...)
   local button = Button:fromKey(self, "buy")
-  button.confirmSound = Config.sounds.buy or button.confirmSound
-  button.clickSound = Config.sounds.buy or button.clickSound
   button.text:setAlign('center', 'center')
 end
 --- Creates the texts of each money value.
@@ -167,16 +164,22 @@ end
 
 --- Buys / sells the selected quantity.
 function ShopCountWindow:apply()
-  local troop = self.menu.troop
-  troop.money = troop.money - self.spinner.value * self.price
-  if self.buy then
-    troop.inventory:addItem(self.item.id, self.spinner.value)
+  self:hide()
+  local result = self.menu:showWindowForResult(self.menu.confirmWindow)
+  if result == self.menu.confirmWindow.Result.CONFIRM then
+    local troop = self.menu.troop
+    troop.money = troop.money - self.spinner.value * self.price
+    if self.buy then
+      troop.inventory:addItem(self.item.id, self.spinner.value)
+    else
+      troop.inventory:removeItem(self.item.id, self.spinner.value)
+      self.menu.listWindow:setSellMode()
+    end
+    self.menu.goldWindow:setGold(troop.money)
+    self:returnWindow()
   else
-    troop.inventory:removeItem(self.item.id, self.spinner.value)
-    self.menu.listWindow:setSellMode()
+    self:show()
   end
-  self.menu.goldWindow:setGold(troop.money)
-  self:returnWindow()
 end
 --- Hides this window and returns to the window with the item list.
 function ShopCountWindow:returnWindow()

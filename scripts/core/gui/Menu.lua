@@ -20,18 +20,26 @@ local Menu = class()
 
 --- Constructor.
 -- @tparam Menu parent Parent menu.
-function Menu:init(parent)
+-- @tparam[opt] class WindowClass Class of the current active window.
+-- @param ... Any additional parameters passed to the constructor of `WindowClass`.
+function Menu:init(parent, WindowClass, ...)
   self.parent = parent
   self.windowList = List()
-  self:createWindows()
+  self:createWindows(WindowClass, ...)
   self.open = false
   self.closed = true
   self.visible = false
   self.animationFibers = {}
 end
 --- Creates the Menu's windows and sets the first active window.
-function Menu:createWindows()
- -- Abstract.
+-- @tparam[opt] class WindowClass Class of the current active window.
+-- @param ... Any additional parameters passed to the constructor of `WindowClass`.
+function Menu:createWindows(WindowClass, ...)
+  if WindowClass then
+    local window = WindowClass(self, ...)
+    self:setActiveWindow(window)
+    self.name = 'Menu: ' .. tostring(window)
+  end
 end
 --- Distance between windows.
 -- @treturn number

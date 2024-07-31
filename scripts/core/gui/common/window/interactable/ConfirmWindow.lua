@@ -16,6 +16,19 @@ local GridWindow = require('core/gui/GridWindow')
 local ConfirmWindow = class(GridWindow)
 
 -- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Possible results returned by this window.
+-- @enum Result
+-- @field CANCEL Code for when the player presses the cancel button. Equals 0.
+-- @field CONFIRM Code for when the player presses the confirm button. Equals 1.
+ConfirmWindow.Result = {
+  CANCEL = 0,
+  CONFIRM = 1
+}
+
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
@@ -32,10 +45,10 @@ end
 --- Implements `GridWindow:createWidgets`.
 -- @implement
 function ConfirmWindow:createWidgets()
-  local confirmButton = Button:fromKey(self, self.confirmTerm)
-  local cancelButton = Button:fromKey(self, self.cancelTerm)
-  cancelButton.confirmSound = Config.sounds.buttonCancel
-  cancelButton.clickSound = Config.sounds.buttonCancel
+  self.confirmButton = Button:fromKey(self, self.confirmTerm)
+  self.cancelButton = Button:fromKey(self, self.cancelTerm)
+  self.cancelButton.confirmSound = Config.sounds.buttonCancel
+  self.cancelButton.clickSound = Config.sounds.buttonCancel
 end
 
 -- ------------------------------------------------------------------------------------------------
