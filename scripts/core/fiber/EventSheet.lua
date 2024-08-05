@@ -54,7 +54,7 @@ function EventSheet:init(root, data, char)
   self.args = Database.loadTags(data.tags)
   self.char = char
   if self.char then
-    self.vars.char = self.char.key
+    self.vars.key = self.char.key
   end
   if self.data then
     self.data.running = true

@@ -40,12 +40,12 @@ Database = require('core/base/Database')
 Database.loadDataFiles()
 Database.loadConfigFiles()
 Database.loadVocabFiles()
+Database.loadUIConfigFiles()
 
 -- ------------------------------------------------------------------------------------------------
 -- Configuration files
 -- ------------------------------------------------------------------------------------------------
 
-Color   = require('conf/Color')
 Fonts   = require('conf/Fonts')
 KeyMap  = require('conf/KeyMap')
 

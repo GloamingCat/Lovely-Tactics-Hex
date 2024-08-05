@@ -6,7 +6,7 @@
       "blue": 255,
       "alpha": 255
     },
-    "troops": [],
+    "battleFields": [],
     "name": "Party 0",
     "tags": [],
     "key": ""
@@ -18,7 +18,7 @@
       "blue": 0,
       "alpha": 255
     },
-    "troops": [],
+    "battleFields": [],
     "name": "Party 1",
     "tags": [],
     "key": ""
@@ -30,7 +30,7 @@
       "blue": 140,
       "alpha": 255
     },
-    "troops": [],
+    "battleFields": [],
     "name": "Forest",
     "tags": [],
     "key": ""
@@ -42,7 +42,7 @@
       "blue": 173,
       "alpha": 255
     },
-    "troops": [],
+    "battleFields": [],
     "name": "Cave",
     "tags": [],
     "key": ""
@@ -54,7 +54,7 @@
       "blue": 255,
       "alpha": 255
     },
-    "troops": [],
+    "battleFields": [],
     "name": "Ice Field",
     "tags": [],
     "key": ""

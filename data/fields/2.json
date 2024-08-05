@@ -14,7 +14,6 @@
     },
     "scripts": [
       {
-        "global": false,
         "scope": 0,
         "block": true,
         "wait": true,
@@ -28,7 +27,7 @@
         "tags": [
           {
             "key": "char",
-            "value": "Arthur"
+            "value": "\"Arthur\""
           }
         ],
         "key": ""

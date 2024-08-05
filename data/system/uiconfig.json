@@ -1,0 +1,388 @@
+{
+  "baseColors": [
+    {
+      "name": "white",
+      "color": {
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "black",
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "red",
+      "color": {
+        "red": 255,
+        "green": 0,
+        "blue": 0,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "green",
+      "color": {
+        "red": 0,
+        "green": 255,
+        "blue": 0,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "blue",
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 255,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "yellow",
+      "color": {
+        "red": 255,
+        "green": 255,
+        "blue": 0,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "magenta",
+      "color": {
+        "red": 255,
+        "green": 0,
+        "blue": 255,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "cyan",
+      "color": {
+        "red": 0,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "clear",
+      "color": {
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 0
+      }
+    },
+    {
+      "name": "babyPink",
+      "color": {
+        "red": 255,
+        "green": 140,
+        "blue": 242,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "babyBlue",
+      "color": {
+        "red": 166,
+        "green": 179,
+        "blue": 255,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "lightPurple",
+      "color": {
+        "red": 204,
+        "green": 128,
+        "blue": 230,
+        "alpha": 217
+      }
+    },
+    {
+      "name": "lightBlue",
+      "color": {
+        "red": 102,
+        "green": 102,
+        "blue": 255,
+        "alpha": 217
+      }
+    },
+    {
+      "name": "lightGreen",
+      "color": {
+        "red": 102,
+        "green": 255,
+        "blue": 102,
+        "alpha": 217
+      }
+    },
+    {
+      "name": "lightRed",
+      "color": {
+        "red": 255,
+        "green": 102,
+        "blue": 102,
+        "alpha": 217
+      }
+    },
+    {
+      "name": "lightGray",
+      "color": {
+        "red": 191,
+        "green": 191,
+        "blue": 191,
+        "alpha": 191
+      }
+    },
+    {
+      "name": "clearPurple",
+      "color": {
+        "red": 204,
+        "green": 115,
+        "blue": 204,
+        "alpha": 102
+      }
+    },
+    {
+      "name": "clearBlue",
+      "color": {
+        "red": 77,
+        "green": 77,
+        "blue": 255,
+        "alpha": 102
+      }
+    },
+    {
+      "name": "clearGreen",
+      "color": {
+        "red": 77,
+        "green": 255,
+        "blue": 77,
+        "alpha": 102
+      }
+    },
+    {
+      "name": "clearRed",
+      "color": {
+        "red": 255,
+        "green": 77,
+        "blue": 77,
+        "alpha": 102
+      }
+    },
+    {
+      "name": "clearGray",
+      "color": {
+        "red": 166,
+        "green": 166,
+        "blue": 166,
+        "alpha": 51
+      }
+    },
+    {
+      "name": "opaqueYellow",
+      "color": {
+        "red": 255,
+        "green": 255,
+        "blue": 128,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "opaqueCyan",
+      "color": {
+        "red": 128,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "opaquePink",
+      "color": {
+        "red": 255,
+        "green": 128,
+        "blue": 255,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "opaqueRed",
+      "color": {
+        "red": 255,
+        "green": 77,
+        "blue": 77,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "opaqueGreen",
+      "color": {
+        "red": 64,
+        "green": 255,
+        "blue": 89,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "opaqueBlue",
+      "color": {
+        "red": 89,
+        "green": 64,
+        "blue": 255,
+        "alpha": 255
+      }
+    },
+    {
+      "name": "opaqueGray",
+      "color": {
+        "red": 204,
+        "green": 204,
+        "blue": 204,
+        "alpha": 255
+      }
+    }
+  ],
+  "colorMap": [
+    {
+      "name": "tile_general",
+      "id": 11
+    },
+    {
+      "name": "tile_move",
+      "id": 12
+    },
+    {
+      "name": "tile_support",
+      "id": 13
+    },
+    {
+      "name": "tile_attack",
+      "id": 14
+    },
+    {
+      "name": "tile_nothing",
+      "id": 15
+    },
+    {
+      "name": "tile_general_off",
+      "id": 16
+    },
+    {
+      "name": "tile_move_off",
+      "id": 17
+    },
+    {
+      "name": "tile_support_off",
+      "id": 18
+    },
+    {
+      "name": "tile_attack_off",
+      "id": 19
+    },
+    {
+      "name": "tile_nothing_off",
+      "id": 20
+    },
+    {
+      "name": "popup_dmghp",
+      "id": 21
+    },
+    {
+      "name": "popup_dmgsp",
+      "id": 23
+    },
+    {
+      "name": "popup_healhp",
+      "id": 25
+    },
+    {
+      "name": "popup_healsp",
+      "id": 22
+    },
+    {
+      "name": "popup_miss",
+      "id": 27
+    },
+    {
+      "name": "popup_status_add",
+      "id": 0
+    },
+    {
+      "name": "popup_status_remove",
+      "id": 0
+    },
+    {
+      "name": "popup_levelup",
+      "id": 5
+    },
+    {
+      "name": "popup_exp",
+      "id": 0
+    },
+    {
+      "name": "menu_text_enabled",
+      "id": 0
+    },
+    {
+      "name": "menu_text_disabled",
+      "id": 15
+    },
+    {
+      "name": "menu_icon_enabled",
+      "id": 0
+    },
+    {
+      "name": "menu_icon_disabled",
+      "id": 15
+    },
+    {
+      "name": "barHP",
+      "id": 25
+    },
+    {
+      "name": "barSP",
+      "id": 26
+    },
+    {
+      "name": "barEXP",
+      "id": 21
+    },
+    {
+      "name": "barTC",
+      "id": 24
+    },
+    {
+      "name": "positive_bonus",
+      "id": 3
+    },
+    {
+      "name": "negative_bonus",
+      "id": 2
+    },
+    {
+      "name": "element_weak",
+      "id": 3
+    },
+    {
+      "name": "element_strong",
+      "id": 2
+    },
+    {
+      "name": "element_neutral",
+      "id": 0
+    }
+  ],
+  "baseFonts": [],
+  "fontMap": []
+}
