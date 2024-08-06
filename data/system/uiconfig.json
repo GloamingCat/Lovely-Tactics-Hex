@@ -383,6 +383,172 @@
       "id": 0
     }
   ],
-  "baseFonts": [],
-  "fontMap": []
+  "baseFonts": [
+    {
+      "name": "huge_font",
+      "font": {
+        "file": "Roboto",
+        "format": "ttf",
+        "size": 25.0
+      }
+    },
+    {
+      "name": "big_font",
+      "font": {
+        "file": "Roboto",
+        "format": "ttf",
+        "size": 20.0
+      }
+    },
+    {
+      "name": "critical_font",
+      "font": {
+        "file": "Roboto",
+        "format": "ttf",
+        "size": 17.0
+      }
+    },
+    {
+      "name": "default_font",
+      "font": {
+        "file": "Roboto",
+        "format": "ttf",
+        "size": 14.0
+      }
+    },
+    {
+      "name": "medium_font",
+      "font": {
+        "file": "Roboto",
+        "format": "ttf",
+        "size": 11.0
+      }
+    },
+    {
+      "name": "small_font",
+      "font": {
+        "file": "Roboto",
+        "format": "ttf",
+        "size": 9.0
+      }
+    },
+    {
+      "name": "tiny_font",
+      "font": {
+        "file": "Roboto",
+        "format": "ttf",
+        "size": 7.5
+      }
+    },
+    {
+      "name": "log_font",
+      "font": {
+        "file": "Roboto",
+        "format": "ttf",
+        "size": 5.0
+      }
+    }
+  ],
+  "fontMap": [
+    {
+      "name": "menu_title",
+      "id": 0
+    },
+    {
+      "name": "menu_default",
+      "id": 3
+    },
+    {
+      "name": "menu_button",
+      "id": 3
+    },
+    {
+      "name": "menu_dialogue",
+      "id": 4
+    },
+    {
+      "name": "menu_tiny",
+      "id": 6
+    },
+    {
+      "name": "menu_small",
+      "id": 5
+    },
+    {
+      "name": "menu_medium",
+      "id": 4
+    },
+    {
+      "name": "menu_big",
+      "id": 1
+    },
+    {
+      "name": "menu_huge",
+      "id": 0
+    },
+    {
+      "name": "menu_tooltip",
+      "id": 4
+    },
+    {
+      "name": "popup_dmghp",
+      "id": 3
+    },
+    {
+      "name": "popup_dmgsp",
+      "id": 3
+    },
+    {
+      "name": "popup_healhp",
+      "id": 3
+    },
+    {
+      "name": "popup_healsp",
+      "id": 3
+    },
+    {
+      "name": "popup_dmghp_crit",
+      "id": 2
+    },
+    {
+      "name": "popup_dmgsp_crit",
+      "id": 2
+    },
+    {
+      "name": "popup_healhp_crit",
+      "id": 2
+    },
+    {
+      "name": "popup_healsp_crit",
+      "id": 2
+    },
+    {
+      "name": "popup_miss",
+      "id": 3
+    },
+    {
+      "name": "popup_status_add",
+      "id": 3
+    },
+    {
+      "name": "popup_status_remove",
+      "id": 3
+    },
+    {
+      "name": "popup_levelup",
+      "id": 3
+    },
+    {
+      "name": "popup_exp",
+      "id": 4
+    },
+    {
+      "name": "log",
+      "id": 7
+    },
+    {
+      "name": "pause",
+      "id": 4
+    }
+  ]
 }

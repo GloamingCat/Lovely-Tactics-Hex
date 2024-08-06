@@ -189,11 +189,7 @@ end
 -- Colors / Fonts
 -- ------------------------------------------------------------------------------------------------
 
---- Folder containing localization files, relative to the project root.
--- It includes the path to the data folder.
--- @treturn string Directory with the vocab files.
---- Loads config data and store in the Config table.
--- @tparam[opt=1] number lang Selected language.
+--- Loads config about colors and fonts used for the UI.
 function Database.loadUIConfigFiles()
   local dir = Database.getConfigDirectory()
   local uiconfig = Serializer.load(dir .. 'uiconfig.json')
@@ -207,6 +203,17 @@ function Database.loadUIConfigFiles()
     local entry = uiconfig.colorMap[i]
     local color = uiconfig.baseColors[entry.id + 1].color
     Color[entry.name] = { r = color.red / 255, g = color.green / 255, b = color.blue / 255, a = color.alpha / 255 }
+  end
+  Fonts = {}
+  for i = 1, #uiconfig.baseFonts do
+    local entry = uiconfig.baseFonts[i]
+    local font = entry.font
+    Fonts[entry.name] = { font.file, font.format, font.size }
+  end
+  for i = 1, #uiconfig.fontMap do
+    local entry = uiconfig.fontMap[i]
+    local font = uiconfig.baseFonts[entry.id + 1].font
+    Fonts[entry.name] = { font.file, font.format, font.size }
   end
 end
 
