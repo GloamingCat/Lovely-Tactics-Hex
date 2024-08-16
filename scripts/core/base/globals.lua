@@ -6,7 +6,6 @@
 -- 
 -- * `TableUtil` and `ArrayUtil` (modules);
 -- * `Database` (module);
--- * `Color`, `Fonts` and `KeyMap` (tables);
 -- * `math.field` (`FieldMath`) module according to grid configuration;
 -- * Each plugin added in the project's configuration;
 -- * Event modules `GeneralEvents`, `MenuEvents`, `CharacterEvents`, `ScreenEvents`, `SoundEvents`, `PartyEvents`;
@@ -41,12 +40,6 @@ Database.loadDataFiles()
 Database.loadConfigFiles()
 Database.loadVocabFiles()
 Database.loadUIConfigFiles()
-
--- ------------------------------------------------------------------------------------------------
--- Configuration files
--- ------------------------------------------------------------------------------------------------
-
-KeyMap  = require('conf/KeyMap')
 
 -- ------------------------------------------------------------------------------------------------
 -- Field Math

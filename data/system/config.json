@@ -48,10 +48,9 @@
     "attSP": "sp",
     "attStep": "mov",
     "attJump": "jmp",
-    "itemSkillID": 1,
+    "charSpeed": 150,
     "battleEndRevive": false,
-    "keepParties": true,
-    "charSpeed": 150
+    "keepParties": true
   },
   "troop": {
     "initialTroopID": 0,
@@ -173,6 +172,98 @@
       "id": 34,
       "col": 3,
       "row": 1
+    }
+  ],
+  "keyMaps": [
+    {
+      "name": "main",
+      "tags": [
+        {
+          "key": "confirm",
+          "value": "z"
+        },
+        {
+          "key": "cancel",
+          "value": "x"
+        },
+        {
+          "key": "pause",
+          "value": "p"
+        },
+        {
+          "key": "dash",
+          "value": "lshift"
+        },
+        {
+          "key": "prev",
+          "value": "pagedown"
+        },
+        {
+          "key": "next",
+          "value": "pageup"
+        }
+      ],
+      "key": ""
+    },
+    {
+      "name": "alt",
+      "tags": [
+        {
+          "key": "confirm",
+          "value": "return"
+        },
+        {
+          "key": "cancel",
+          "value": "backspace"
+        },
+        {
+          "key": "pause",
+          "value": "escape"
+        },
+        {
+          "key": "dash",
+          "value": "rshift"
+        },
+        {
+          "key": "prev",
+          "value": "c"
+        },
+        {
+          "key": "next",
+          "value": "v"
+        }
+      ],
+      "key": ""
+    },
+    {
+      "name": "gamepad",
+      "tags": [
+        {
+          "key": "confirm",
+          "value": "abutton"
+        },
+        {
+          "key": "cancel",
+          "value": "ybutton"
+        },
+        {
+          "key": "pause",
+          "value": "start"
+        },
+        {
+          "key": "dash",
+          "value": "bbutton"
+        },
+        {
+          "key": "prev",
+          "value": "leftshoulder"
+        },
+        {
+          "key": "next",
+          "value": "rightshoulder"
+        }
+      ],
+      "key": ""
     }
   ]
 }

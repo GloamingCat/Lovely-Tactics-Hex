@@ -32,6 +32,24 @@ local InputManager = class()
 -- Tables
 -- ------------------------------------------------------------------------------------------------
 
+--- A key maping. Each key in the map must be assigned to a string that represents a key in the
+--  keyboard or gamepad. Check the available codes on <https://love2d.org/wiki/KeyConstant>.  
+--  Aside from these, it is also possible to assign them to `touch` and to the string values of
+--  `InputManager.MouseButton`.
+-- @table Map
+-- @field confirm Confirm selected buttons/tiles on menus and interact with NPCs.
+-- @field cancel Close/cancel menus and to open the `FieldMenu` when walking around.
+-- @field pause Pause the game.
+-- @field dash Run or accelerate value selection on spinners.
+-- @field prev Select previous menu/page and select the tile below during `ActionMenu`.
+-- @field next Select next menu/page and select the tile above during `ActionMenu`.
+
+--- The map configuration.
+-- @table MapConfig
+-- @tfield InputManager.Map main The main key map.
+-- @tfield InputManager.Map alt The alternative key map.
+-- @tfield InputManager.Map gamepad The key map for gamepad buttons.
+
 --- The string codes for the GameKeys associated with each mouse button.
 -- @enum MouseButton
 -- @field LEFT Left mouse button. Equals `"mouse1"`.
@@ -57,9 +75,17 @@ function InputManager:init()
   self.readingText = false
   self.lastKey = nil
   self.textInput = nil
+  self.keyMaps = {}
+  for _, data in ipairs(Config.keyMaps) do
+    local map = {}
+    for _, entry in ipairs(data.tags) do
+      map[entry.key] = entry.value
+    end
+    self.keyMaps[data.name] = map
+  end
   self.mouse = GameMouse()
   self.keys = {}
-  for k, v in pairs(KeyMap.main) do
+  for k, v in pairs(self.keyMaps.main) do
     self.keys[k] = GameKey()
   end
   for _, v in pairs(arrows) do
@@ -87,13 +113,13 @@ function InputManager:setArrowMap(useWASD)
   end
 end
 --- Sets keys codes for each game key.
--- @tparam KeyMap.Config conf Key configuration.
+-- @tparam MapConfig conf Key configuration.
 function InputManager:setKeyConfiguration(conf)
   self.mainMap = {}
   self.altMap = {}
   self.gamepadMap = {}
   self.keyMap = {}
-  for k, v in pairs(KeyMap.main) do
+  for k, v in pairs(self.keyMaps.main) do
     v = conf.main and conf.main[k] or v
     self.mainMap[k] = v
     if self.keys[k] then
@@ -101,14 +127,14 @@ function InputManager:setKeyConfiguration(conf)
       self.keys[k]:onRelease()
     end
   end
-  for k, v in pairs(KeyMap.alt) do
+  for k, v in pairs(self.keyMaps.alt) do
     v = conf.alt and conf.alt[k] or v
     self.altMap[k] = v
     if self.keys[k] then
       self.keyMap[v] = k
     end
   end
-  for k, v in pairs(KeyMap.gamepad) do
+  for k, v in pairs(self.keyMaps.gamepad) do
     v = conf.gamepad and conf.gamepad[k] or v
     self.gamepadMap[k] = v
     if self.keys[k] then

@@ -13,18 +13,21 @@
 -- ================================================================================================
 
 -- Imports
+local GameKey = require('core/input/GameKey')
 local GameManager = require('core/base/GameManager')
+local InputManager = require('core/input/InputManager')
 local LoadWindow = require('core/gui/menu/window/interactable/LoadWindow')
-local SaveWindow = require('core/gui/menu/window/interactable/SaveWindow')
 local PopText = require('core/graphics/PopText')
+local SaveWindow = require('core/gui/menu/window/interactable/SaveWindow')
 
 -- Rewrites
 local GameManager_checkRequests = GameManager.checkRequests
 local GameManager_updateManagers = GameManager.updateManagers
+local InputManager_init = InputManager.init
 
 -- Parameters
-KeyMap.main['save'] = args.save
-KeyMap.main['load'] = args.load
+local saveKey = args.save
+local loadKey = args.load
 
 -- ------------------------------------------------------------------------------------------------
 -- Auxiliary
@@ -43,13 +46,13 @@ local function popUp(msg)
 end
 --- Checks save/load keys.
 local function checkInput()
-  if InputManager.keys['save']:isTriggered() then
+  if _G.InputManager.keys['save']:isTriggered() then
     if not BattleManager.onBattle then
       FieldManager:storePlayerState()
     end
     SaveManager:storeSave('quick')
     popUp(Vocab.saved)
-  elseif InputManager.keys['load']:isTriggered() then
+  elseif _G.InputManager.keys['load']:isTriggered() then
     local save = SaveManager:loadSave('quick')
     _G.GameManager.loadRequested = save
     loadRequested = true
@@ -90,4 +93,19 @@ end
 -- @override
 function LoadWindow:rowCount()
   return SaveWindow.rowCount(self) + 1
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Input
+-- ------------------------------------------------------------------------------------------------
+
+--- Rewrites `InputManager:init`.
+-- Add save / load keys.
+-- @rewrite
+function InputManager:init(...)
+  InputManager_init(self, ...)
+  self.keyMaps.main.save = saveKey
+  self.keyMaps.main.load = loadKey
+  self.keys.save = GameKey()
+  self.keys.load = GameKey()
 end

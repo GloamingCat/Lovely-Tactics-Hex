@@ -161,10 +161,16 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 function love.gamepadpressed(joystick, button)
+  if #button == 1 then
+    button = button .. 'button'
+  end
   InputManager:onPress(button)
 end
 
 function love.gamepadreleased(joystick, button)
+  if #button == 1 then
+    button = button .. 'button'
+  end
   InputManager:onRelease(button)
 end
 

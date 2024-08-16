@@ -8,17 +8,20 @@
 -- ================================================================================================
 
 -- Imports
+local GameKey = require('core/input/GameKey')
 local GameManager = require('core/base/GameManager')
+local InputManager = require('core/input/InputManager')
 
 -- Rewrites
 local GameManager_init = GameManager.init
 local GameManager_updateManagers = GameManager.updateManagers
 local GameManager_draw = GameManager.draw
 local GameManager_updateProfi = GameManager.updateProfi
+local InputManager_init = InputManager.init
 
 -- Parameters
-KeyMap.main['stats'] = args.stats
-KeyMap.main['profi'] = args.profi
+local statsKey = args.stats
+local profiKey = args.profi
 local countdown = args.countdown
 
 -- ------------------------------------------------------------------------------------------------
@@ -38,10 +41,10 @@ end
 --- Rewrites `GameManager:updateManagers`.
 -- @rewrite
 function GameManager:updateManagers(dt)
-  if InputManager.keys['stats']:isTriggered() then
+  if _G.InputManager.keys['stats']:isTriggered() then
     self.statsVisible = not self.statsVisible
   end
-  if InputManager.keys['profi']:isTriggered() then
+  if _G._G.InputManager.keys['profi']:isTriggered() then
     self:toggleProfi()
   end
   if self.profiPaused and countdown then
@@ -120,7 +123,7 @@ function GameManager:printStats()
   if not FieldManager.renderer then
     return
   end
-  local tx, ty, th = InputManager.mouse:fieldCoord()
+  local tx, ty, th = _G.InputManager.mouse:fieldCoord()
   love.graphics.print('(' .. tx .. ',' .. ty .. ',' .. th .. ')', 0, y - line)
 end
 --- Updates the average graphic stats per second.
@@ -139,4 +142,19 @@ function GameManager:updateGStats()
     self.avgStats = self.stats
     self.stats = { 0, 0, 0, 0, 0, 0 }
   end
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Input
+-- ------------------------------------------------------------------------------------------------
+
+--- Rewrites `InputManager:init`.
+-- Add stats / profi keys.
+-- @rewrite
+function InputManager:init(...)
+  InputManager_init(self, ...)
+  self.keyMaps.main.stats = statsKey
+  self.keyMaps.main.profi = profiKey
+  self.keys.stats = GameKey()
+  self.keys.profi = GameKey()
 end

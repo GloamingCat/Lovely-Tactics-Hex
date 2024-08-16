@@ -363,7 +363,7 @@ function CharacterEvents:moveCharRandom(args)
     local shifts = math.field.neighborShift
     for i = 1, #shifts do
       local angle = char:shiftToDirection(shifts[i].x, shifts[i].y) * 45
-      tiles[i] = char:getFrontTile(angle)
+      tiles[#tiles + 1] = char:getFrontTile(angle)
     end
     util.array.shuffle(tiles)
     for i = 1, #tiles do

@@ -63,7 +63,7 @@ end
 -- @override
 function KeyMapWindow:show(...)
   if not self.open then
-    self.map = { main = copyTable(InputManager.mainMap),
+    self.maps = { main = copyTable(InputManager.mainMap),
       alt = copyTable(InputManager.altMap),
       gamepad = copyTable(InputManager.gamepadMap) }
     self:refreshKeys()
@@ -76,7 +76,7 @@ function KeyMapWindow:refreshKeys()
   for i = 1, #self.matrix do
     local b = self.matrix[i]
     if b.map then
-      local map = self.map[b.map]
+      local map = self.maps[b.map]
       b:createInfoText(map[b.key])
       b:updatePosition(self.position)
     end
@@ -97,7 +97,7 @@ function KeyMapWindow:onButtonConfirm(button)
     Fiber:wait()
   until InputManager.lastKey
   local code = InputManager.lastKey
-  local map = self.map[button.map]
+  local map = self.maps[button.map]
   if InputManager.arrowMap[code] or InputManager.keyMap[code] then
     code = map[button.key]
   end
@@ -110,12 +110,12 @@ function KeyMapWindow:onButtonConfirm(button)
 end
 --- Applies changes.
 function KeyMapWindow:applyConfirm()
-  InputManager:setKeyConfiguration(copyTable(self.map))
+  InputManager:setKeyConfiguration(copyTable(self.maps))
   self.result = 1
 end
 --- Sets default key map.
 function KeyMapWindow:defaultConfirm()
-  self.map = copyTable(KeyMap)
+  self.maps = copyTable(InputManager.keyMaps)
   self:refreshKeys()
 end
 
