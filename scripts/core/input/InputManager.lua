@@ -119,6 +119,7 @@ function InputManager:setKeyConfiguration(conf)
   self.altMap = {}
   self.gamepadMap = {}
   self.keyMap = {}
+  conf = conf or {}
   for k, v in pairs(self.keyMaps.main) do
     v = conf.main and conf.main[k] or v
     self.mainMap[k] = v

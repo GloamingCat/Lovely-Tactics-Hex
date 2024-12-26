@@ -123,6 +123,12 @@ function Movable:waitForMovement()
   end
   self.moveFiber = fiber
   while self.moveTime < 1 do
+    if fiber.skipped then
+      self.moveTime = 1
+      self:instantMoveTo(self.moveDestX, self.moveDestY, self.moveDestZ)
+      self.moveFiber = nil
+      return
+    end
     Fiber:wait()
   end
   if fiber:isRunning() then

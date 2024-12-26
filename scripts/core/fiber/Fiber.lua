@@ -151,7 +151,7 @@ end
 -- @coroutine
 function Fiber:waitForEnd()
   assert(coroutine.running(), 'Called by main thread.')
-  while self.coroutine do
+  while self.coroutine and not self.skipped do
     coroutine.yield()
   end
 end
@@ -164,7 +164,7 @@ function Fiber:wait(t)
   if not t then
     coroutine.yield()
   else
-    while t > 0 do
+    while t > 0 and not self.skipped do
       t = t - GameManager:frameTime() * 60
       coroutine.yield()
     end
@@ -177,7 +177,7 @@ end
 function Fiber:waitUntil(func, ...)
   assert(coroutine.running(), 'Called by main thread.')
   local args = {...}
-  while not func(unpack(args)) do
+  while not func(unpack(args)) and not self.skipped do
     coroutine.yield()
   end
 end

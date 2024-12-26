@@ -77,7 +77,7 @@ end
 --  a constant value.
 --  Can be either a constant or a function to be computed before the event executes.
 -- @tparam table args The arguments table passed to the event function.
-function EventSheet:addEvent(func, condition, args)
+function EventSheet:addEvent(func, condition, args, unskippable)
   if condition ~= nil and type(condition) ~= 'function' then
     local value = condition
     condition = function()
@@ -99,7 +99,8 @@ function EventSheet:addEvent(func, condition, args)
   self.events[#self.events + 1] = {
     execute = func,
     condition = condition,
-    args = args }
+    args = args,
+    unskippable = unskippable }
 end
 --- Adds each event in the event sheet.
 function EventSheet:processSheet()
@@ -111,7 +112,7 @@ function EventSheet:processSheet()
       local name = findTag(e.tags, 'name').value
       self:setLabel(Serializer.decode(name) or name)
     else
-      self:addEvent(e.name, condition, e.tags)
+      self:addEvent(e.name, condition, e.tags, e.unskippable)
     end
   end
 end
@@ -156,6 +157,16 @@ end
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
+--- Overrides `Fiber:update`.
+-- @override
+function EventSheet:update()
+  if self.vars.runningIndex and self.sheet.skippable then
+    if InputManager.keys["cancel"]:isTriggered() then
+      self.skipped = true
+    end
+  end
+  Fiber.update(self)
+end
 --- Implements `Fiber:execute`. Runs the script commands.
 -- @implement
 function EventSheet:execute()
@@ -192,6 +203,9 @@ end
 -- @coroutine
 function EventSheet:runCurrentEvent()
   local event = self.events[self.vars.runningIndex]
+  if event.unskippable then
+    self.skipped = false
+  end
   if not event.condition or event.condition(self) then
     event.execute(self, TagMap(event.args))
   end

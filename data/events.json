@@ -3,6 +3,7 @@
     "data": {
       "events": [],
       "description": "",
+      "skippable": false,
       "name": "NPC",
       "tags": [],
       "key": ""
@@ -14,6 +15,7 @@
           "events": [
             {
               "condition": "",
+              "unskippable": false,
               "name": "stopChar",
               "tags": [
                 {
@@ -29,6 +31,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharTile",
               "tags": [
                 {
@@ -44,6 +47,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharTile",
               "tags": [
                 {
@@ -59,6 +63,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "jumpChar",
               "tags": [
                 {
@@ -86,6 +91,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -113,6 +119,7 @@
             },
             {
               "condition": "TroopManager:getPlayerTroop():hasMember('Merlin')",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -124,6 +131,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -151,6 +159,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "openChoiceWindow",
               "tags": [
                 {
@@ -194,6 +203,7 @@
             },
             {
               "condition": "{%choiceInput} == 1",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -221,6 +231,7 @@
             },
             {
               "condition": "{%choiceInput} == 1",
+              "unskippable": false,
               "name": "addMember",
               "tags": [
                 {
@@ -232,6 +243,7 @@
             },
             {
               "condition": "{%choiceInput} == 2",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -259,6 +271,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setLabel",
               "tags": [
                 {
@@ -270,6 +283,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "closeDialogueWindow",
               "tags": [
                 {
@@ -281,6 +295,7 @@
             }
           ],
           "description": "Merlins asks if he can join the party.",
+          "skippable": false,
           "name": "Merlin",
           "tags": [],
           "key": "Merlin"
@@ -293,6 +308,7 @@
           "events": [
             {
               "condition": "",
+              "unskippable": false,
               "name": "playCharAnim",
               "tags": [
                 {
@@ -308,6 +324,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharTile",
               "tags": [
                 {
@@ -335,6 +352,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharTile",
               "tags": [
                 {
@@ -362,6 +380,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -425,6 +444,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "openChoiceWindow",
               "tags": [
                 {
@@ -468,6 +488,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "closeDialogueWindow",
               "tags": [
                 {
@@ -483,6 +504,7 @@
             },
             {
               "condition": "{%choiceInput} == 1",
+              "unskippable": false,
               "name": "openShopMenu",
               "tags": [
                 {
@@ -498,6 +520,7 @@
             },
             {
               "condition": "{%choiceInput} == 2",
+              "unskippable": false,
               "name": "openRecruitMenu",
               "tags": [
                 {
@@ -513,6 +536,7 @@
             },
             {
               "condition": "{%choiceInput} ~= 3",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -524,6 +548,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setHudVisibility",
               "tags": [
                 {
@@ -535,6 +560,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadeout",
               "tags": [
                 {
@@ -550,6 +576,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "runBattle",
               "tags": [
                 {
@@ -573,6 +600,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadein",
               "tags": [
                 {
@@ -588,6 +616,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setHudVisibility",
               "tags": [
                 {
@@ -599,6 +628,7 @@
             },
             {
               "condition": "BattleManager:playerWon()",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -626,6 +656,7 @@
             },
             {
               "condition": "BattleManager:enemyWon()",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -653,6 +684,7 @@
             },
             {
               "condition": "BattleManager:drawed()",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -680,6 +712,7 @@
             },
             {
               "condition": "BattleManager:playerEscaped()",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -707,6 +740,7 @@
             },
             {
               "condition": "BattleManager:enemyEscaped()",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -734,6 +768,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "closeDialogueWindow",
               "tags": [
                 {
@@ -749,6 +784,7 @@
             }
           ],
           "description": "Lancelot asks if the player wants to battle or shop.",
+          "skippable": false,
           "name": "Lancelot",
           "tags": [],
           "key": "Lancelot"
@@ -761,6 +797,7 @@
           "events": [
             {
               "condition": "",
+              "unskippable": false,
               "name": "stopChar",
               "tags": [
                 {
@@ -776,6 +813,7 @@
             },
             {
               "condition": "not {%id}",
+              "unskippable": false,
               "name": "setLocalVar",
               "tags": [
                 {
@@ -791,6 +829,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setLocalVar",
               "tags": [
                 {
@@ -806,6 +845,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setLocalVar",
               "tags": [
                 {
@@ -821,6 +861,7 @@
             },
             {
               "condition": "not {%term}",
+              "unskippable": false,
               "name": "setLocalVar",
               "tags": [
                 {
@@ -836,6 +877,7 @@
             },
             {
               "condition": "{%term}",
+              "unskippable": false,
               "name": "setLocalVar",
               "tags": [
                 {
@@ -851,6 +893,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "playSFX",
               "tags": [
                 {
@@ -878,6 +921,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "openMessageWindow",
               "tags": [
                 {
@@ -913,6 +957,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "increaseItem",
               "tags": [
                 {
@@ -928,6 +973,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "closeMessageWindow",
               "tags": [
                 {
@@ -939,6 +985,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "waitFrames",
               "tags": [
                 {
@@ -950,6 +997,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "deleteChar",
               "tags": [
                 {
@@ -997,6 +1045,7 @@
             }
           ],
           "description": "Collide to get an item.",
+          "skippable": false,
           "name": "Loot",
           "tags": [
             {
@@ -1014,6 +1063,7 @@
           "events": [
             {
               "condition": "",
+              "unskippable": false,
               "name": "stopChar",
               "tags": [
                 {
@@ -1029,6 +1079,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharTile",
               "tags": [
                 {
@@ -1044,6 +1095,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "playSFX",
               "tags": [
                 {
@@ -1071,6 +1123,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -1106,6 +1159,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "openChoiceWindow",
               "tags": [
                 {
@@ -1149,6 +1203,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "closeDialogueWindow",
               "tags": [
                 {
@@ -1160,6 +1215,7 @@
             },
             {
               "condition": "{%choiceInput} == 2",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -1171,6 +1227,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadeout",
               "tags": [
                 {
@@ -1186,6 +1243,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "playSFX",
               "tags": [
                 {
@@ -1213,6 +1271,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "waitFrames",
               "tags": [
                 {
@@ -1224,12 +1283,14 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "script:healAll { status = { 0, 1, 17, 18, 15, 16 } }",
               "tags": [],
               "key": ""
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadein",
               "tags": [
                 {
@@ -1245,6 +1306,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -1280,6 +1342,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "playSFX",
               "tags": [
                 {
@@ -1307,6 +1370,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "closeDialogueWindow",
               "tags": [
                 {
@@ -1318,6 +1382,7 @@
             }
           ],
           "description": "Heals party.",
+          "skippable": false,
           "name": "Inn",
           "tags": [],
           "key": ""
@@ -1331,6 +1396,7 @@
     "data": {
       "events": [],
       "description": "",
+      "skippable": false,
       "name": "System",
       "tags": [],
       "key": ""
@@ -1342,6 +1408,7 @@
           "events": [
             {
               "condition": "",
+              "unskippable": false,
               "name": "stopChar",
               "tags": [
                 {
@@ -1353,6 +1420,7 @@
             },
             {
               "condition": "FieldManager:loadedFromSave()",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -1364,6 +1432,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "resetChar",
               "tags": [
                 {
@@ -1387,6 +1456,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setCharVar",
               "tags": [
                 {
@@ -1402,6 +1472,7 @@
             },
             {
               "condition": "{%spawns} > {%minSpawns}",
+              "unskippable": false,
               "name": "setCharVar",
               "tags": [
                 {
@@ -1417,6 +1488,7 @@
             },
             {
               "condition": "not {%defeated}",
+              "unskippable": false,
               "name": "setCharVar",
               "tags": [
                 {
@@ -1432,6 +1504,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setLabel",
               "tags": [
                 {
@@ -1443,6 +1516,7 @@
             },
             {
               "condition": "{%defeated}",
+              "unskippable": false,
               "name": "deleteChar",
               "tags": [
                 {
@@ -1462,6 +1536,7 @@
             }
           ],
           "description": "Deletes the character if already defeated.\nSet the argument \"minSpawns\" to the number of times\nthe player should enter the field before the enemy shows up again.",
+          "skippable": false,
           "name": "Spawn Check",
           "tags": [
             {
@@ -1487,6 +1562,7 @@
           "events": [
             {
               "condition": "",
+              "unskippable": false,
               "name": "waitFrames",
               "tags": [
                 {
@@ -1498,6 +1574,7 @@
             },
             {
               "condition": "{%defeated}",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -1509,6 +1586,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setLocalVar",
               "tags": [
                 {
@@ -1524,6 +1602,7 @@
             },
             {
               "condition": "not FieldManager.playerInput or not script:collidedWith('player') or {%deltaBattleTime} <= 60",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -1535,6 +1614,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "playCharAnim",
               "tags": [
                 {
@@ -1550,6 +1630,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharTile",
               "tags": [
                 {
@@ -1565,6 +1646,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharTile",
               "tags": [
                 {
@@ -1580,6 +1662,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "showEmotionBalloon",
               "tags": [
                 {
@@ -1595,6 +1678,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "waitFrames",
               "tags": [
                 {
@@ -1606,6 +1690,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setHudVisibility",
               "tags": [
                 {
@@ -1617,6 +1702,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "playSFX",
               "tags": [
                 {
@@ -1644,6 +1730,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadeout",
               "tags": [
                 {
@@ -1659,6 +1746,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "runBattle",
               "tags": [
                 {
@@ -1682,6 +1770,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setLocalVar",
               "tags": [
                 {
@@ -1697,6 +1786,7 @@
             },
             {
               "condition": "{%escaped}",
+              "unskippable": false,
               "name": "setCharVar",
               "tags": [
                 {
@@ -1712,6 +1802,7 @@
             },
             {
               "condition": "{%escaped}",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -1723,6 +1814,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setCharVar",
               "tags": [
                 {
@@ -1738,6 +1830,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setCharVisibility",
               "tags": [
                 {
@@ -1761,6 +1854,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setLabel",
               "tags": [
                 {
@@ -1772,6 +1866,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadein",
               "tags": [
                 {
@@ -1787,6 +1882,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setGlobalVar",
               "tags": [
                 {
@@ -1802,6 +1898,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setHudVisibility",
               "tags": [
                 {
@@ -1813,6 +1910,7 @@
             },
             {
               "condition": "{%defeated}",
+              "unskippable": false,
               "name": "deleteChar",
               "tags": [
                 {
@@ -1860,6 +1958,7 @@
             }
           ],
           "description": "Starts a battle encounter.",
+          "skippable": false,
           "name": "Mob Battle",
           "tags": [
             {
@@ -1889,6 +1988,7 @@
           "events": [
             {
               "condition": "",
+              "unskippable": false,
               "name": "waitFrames",
               "tags": [
                 {
@@ -1900,6 +2000,7 @@
             },
             {
               "condition": "FieldManager.player:isBusy() or not FieldManager.playerInput",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -1911,6 +2012,7 @@
             },
             {
               "condition": "{%cooldown} > 0",
+              "unskippable": false,
               "name": "setCharVar",
               "tags": [
                 {
@@ -1926,6 +2028,7 @@
             },
             {
               "condition": "{%cooldown} > 0",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -1937,6 +2040,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "moveCharPath",
               "tags": [
                 {
@@ -1980,6 +2084,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setLocalVar",
               "tags": [
                 {
@@ -1995,6 +2100,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "stopChar",
               "tags": [
                 {
@@ -2010,12 +2116,14 @@
             },
             {
               "condition": "{%moved}",
+              "unskippable": false,
               "name": "script:wait(math.variation({%pauseStd}, {%pauseTime}))",
               "tags": [],
               "key": ""
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -2027,6 +2135,7 @@
             }
           ],
           "description": "Walks towards a character, constantly,\nwhile the player is free to move.",
+          "skippable": false,
           "name": "Follow Character",
           "tags": [
             {
@@ -2060,6 +2169,7 @@
           "events": [
             {
               "condition": "",
+              "unskippable": false,
               "name": "setCharProperty",
               "tags": [
                 {
@@ -2079,6 +2189,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "waitFrames",
               "tags": [
                 {
@@ -2090,6 +2201,7 @@
             },
             {
               "condition": "FieldManager.player:isBusy() or {%interacting}",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -2101,6 +2213,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "moveCharRandom",
               "tags": [
                 {
@@ -2120,6 +2233,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "stopChar",
               "tags": [
                 {
@@ -2135,12 +2249,14 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "script:wait(math.variation({%pauseStd}, {%pauseTime}))",
               "tags": [],
               "key": ""
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -2152,6 +2268,7 @@
             }
           ],
           "description": "Walk cycle for characters that follow another\ncharacter (by default, the player) around.",
+          "skippable": false,
           "name": "Random Walk",
           "tags": [
             {
@@ -2178,6 +2295,7 @@
     "data": {
       "events": [],
       "description": "",
+      "skippable": false,
       "name": "Field",
       "tags": [],
       "key": ""
@@ -2189,6 +2307,7 @@
           "events": [
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadeout",
               "tags": [
                 {
@@ -2204,6 +2323,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadein",
               "tags": [
                 {
@@ -2219,6 +2339,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setHudVisibility",
               "tags": [
                 {
@@ -2230,6 +2351,7 @@
             }
           ],
           "description": "",
+          "skippable": false,
           "name": "Field Load",
           "tags": [],
           "key": "FieldLoad"
@@ -2242,6 +2364,7 @@
           "events": [
             {
               "condition": "\"{%exit}\" == \"\"",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -2253,6 +2376,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharTile",
               "tags": [
                 {
@@ -2272,6 +2396,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "moveCharTile",
               "tags": [
                 {
@@ -2295,6 +2420,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setLabel",
               "tags": [
                 {
@@ -2306,6 +2432,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadein",
               "tags": [
                 {
@@ -2321,6 +2448,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadeout",
               "tags": [
                 {
@@ -2336,6 +2464,7 @@
             }
           ],
           "description": "",
+          "skippable": false,
           "name": "Field Exit",
           "tags": [],
           "key": "FieldExit"
@@ -2348,6 +2477,7 @@
           "events": [
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadeout",
               "tags": [
                 {
@@ -2363,6 +2493,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadein",
               "tags": [
                 {
@@ -2378,6 +2509,7 @@
             },
             {
               "condition": "{%skipParties} or BattleManager.saveData ~= nil",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -2389,6 +2521,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "focusParties",
               "tags": [
                 {
@@ -2404,6 +2537,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "waitFrames",
               "tags": [
                 {
@@ -2415,6 +2549,7 @@
             }
           ],
           "description": "Default battle intro.",
+          "skippable": false,
           "name": "Battle Load",
           "tags": [
             {
@@ -2433,6 +2568,7 @@
     "data": {
       "events": [],
       "description": "",
+      "skippable": false,
       "name": "Scene",
       "tags": [],
       "key": ""
@@ -2444,6 +2580,7 @@
           "events": [
             {
               "condition": "",
+              "unskippable": false,
               "name": "runScript",
               "tags": [
                 {
@@ -2491,6 +2628,7 @@
             },
             {
               "condition": "{%scene1}",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -2502,6 +2640,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "focusCharacter",
               "tags": [
                 {
@@ -2521,6 +2660,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "waitFrames",
               "tags": [
                 {
@@ -2532,6 +2672,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -2559,6 +2700,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "closeDialogueWindow",
               "tags": [
                 {
@@ -2570,6 +2712,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "focusCharacter",
               "tags": [
                 {
@@ -2589,6 +2732,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setGlobalVar",
               "tags": [
                 {
@@ -2604,6 +2748,7 @@
             }
           ],
           "description": "Tests scene execution on field enter.",
+          "skippable": true,
           "name": "Test Scene Load",
           "tags": [],
           "key": ""
@@ -2616,6 +2761,7 @@
           "events": [
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadeout",
               "tags": [
                 {
@@ -2631,6 +2777,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "fadein",
               "tags": [
                 {
@@ -2646,6 +2793,7 @@
             },
             {
               "condition": "BattleManager.saveData ~= nil",
+              "unskippable": false,
               "name": "jumpTo",
               "tags": [
                 {
@@ -2657,6 +2805,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -2684,6 +2833,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "closeDialogueWindow",
               "tags": [
                 {
@@ -2699,6 +2849,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "jumpChar",
               "tags": [
                 {
@@ -2726,6 +2877,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setCharProperty",
               "tags": [
                 {
@@ -2745,6 +2897,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "playCharAnim",
               "tags": [
                 {
@@ -2760,6 +2913,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "moveCharDir",
               "tags": [
                 {
@@ -2787,6 +2941,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharDir",
               "tags": [
                 {
@@ -2806,6 +2961,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "moveCharDir",
               "tags": [
                 {
@@ -2833,6 +2989,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharDir",
               "tags": [
                 {
@@ -2852,6 +3009,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "moveCharDir",
               "tags": [
                 {
@@ -2879,6 +3037,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharDir",
               "tags": [
                 {
@@ -2898,6 +3057,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "moveCharDir",
               "tags": [
                 {
@@ -2925,6 +3085,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharDir",
               "tags": [
                 {
@@ -2944,6 +3105,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "moveCharDir",
               "tags": [
                 {
@@ -2971,6 +3133,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharDir",
               "tags": [
                 {
@@ -2990,6 +3153,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "moveCharDir",
               "tags": [
                 {
@@ -3017,6 +3181,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "moveCharDir",
               "tags": [
                 {
@@ -3048,6 +3213,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "moveCharDir",
               "tags": [
                 {
@@ -3079,6 +3245,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "turnCharDir",
               "tags": [
                 {
@@ -3098,6 +3265,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "playCharAnim",
               "tags": [
                 {
@@ -3113,6 +3281,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "setCharProperty",
               "tags": [
                 {
@@ -3132,6 +3301,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "jumpChar",
               "tags": [
                 {
@@ -3159,6 +3329,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "openDialogueWindow",
               "tags": [
                 {
@@ -3186,6 +3357,7 @@
             },
             {
               "condition": "",
+              "unskippable": true,
               "name": "openChoiceWindow",
               "tags": [
                 {
@@ -3229,6 +3401,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "closeDialogueWindow",
               "tags": [
                 {
@@ -3244,6 +3417,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "playSFX",
               "tags": [
                 {
@@ -3271,6 +3445,7 @@
             },
             {
               "condition": "{%inputResult} == 1",
+              "unskippable": false,
               "name": "showEmotionBalloon",
               "tags": [
                 {
@@ -3286,6 +3461,7 @@
             },
             {
               "condition": "{%inputResult} == 2",
+              "unskippable": false,
               "name": "showEmotionBalloon",
               "tags": [
                 {
@@ -3301,6 +3477,7 @@
             },
             {
               "condition": "",
+              "unskippable": false,
               "name": "waitFrames",
               "tags": [
                 {
@@ -3312,6 +3489,7 @@
             }
           ],
           "description": "Tests scene execution before battle.",
+          "skippable": true,
           "name": "Test Battle Load",
           "tags": [],
           "key": "TestBattle"

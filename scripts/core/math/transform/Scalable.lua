@@ -104,6 +104,12 @@ function Scalable:waitForScaling()
   end
   self.scaleFiber = fiber
   while self.scaleTime < 1 do
+    if fiber.skipped then
+      self.scaleTime = 1
+      self:instantScaleTo(self.scaleDestX, self.scaleDestY)
+      self.scaleFiber = nil
+      return
+    end
     Fiber:wait()
   end
   if fiber:isRunning() then

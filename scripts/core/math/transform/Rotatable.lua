@@ -93,6 +93,12 @@ function Rotatable:waitForRotation()
   end
   self.rotationFiber = fiber
   while self.rotationTime < 1 do
+    if fiber.skipped then
+      self.rotationTime = 1
+      self:instantRotateTo(self.rotationDest)
+      self.rotationFiber = nil
+      return
+    end
     Fiber:wait()
   end
   if fiber:isRunning() then

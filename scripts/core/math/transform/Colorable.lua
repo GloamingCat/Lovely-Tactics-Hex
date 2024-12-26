@@ -162,6 +162,12 @@ function Colorable:waitForColor()
   end
   self.colorFiber = fiber
   while self.colorTime < 1 do
+    if fiber.skipped then
+      self.colorTime = 1
+      self:instantColorizeTo(self.destRed, self.destGreen, self.destBlue, self.destAlpha)
+      self.colorFiber = nil
+      return
+    end
     Fiber:wait()
   end
   if fiber:isRunning() then
