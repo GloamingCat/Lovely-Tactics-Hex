@@ -1,9 +1,10 @@
 
 -- ================================================================================================
 
---- A text sprite that is shown in the field with a pop-up animation.
+--- A text sprite that is shown with a pop-up animation.
 ---------------------------------------------------------------------------------------------------
 -- @animmod PopText
+-- @extend Text
 
 -- ================================================================================================
 
@@ -14,34 +15,36 @@ local Text = require('core/graphics/Text')
 local max = math.max
 
 -- Class table.
-local PopText = class()
+local PopText = class(Text)
 
 -- ------------------------------------------------------------------------------------------------
 -- Initialization
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor. Starts with no lines.
--- @tparam number x Origin pixel x.
--- @tparam number y Origin pixel y.
--- @tparam Renderer renderer The target renderer.
-function PopText:init(x, y, renderer)
-  self.x = x
-  self.y = y
-  self.z = renderer.minDepth
+-- @tparam FieldManager|MenuManager manager The target manager.
+-- @tparam[opt] number x Origin pixel x.
+-- @tparam[opt] number y Origin pixel y.
+function PopText:init(manager, x, y)
+  Text.init(self, "", {}, manager.renderer)
   self.text = nil
   self.lineCount = 0
   self.resources = {}
   self.width = 100
   self.align = 'center'
   self.font = nil
-  self.distance = 15
-  self.speed = 8
-  self.pause = 15
-  self.renderer = renderer
+  self.distance = 15 -- pixels
+  self.speed = 8 -- pixels / second
+  self.pause = 0.25 -- seconds
+  self.fadeDuration = 2 -- seconds
+  self.time = -1
+  manager.updateList:add(self)
+  self:setXYZ(x, y, manager.renderer.minDepth)
+  self:setVisible(false)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Lines
+-- Content
 -- ------------------------------------------------------------------------------------------------
 
 --- Adds a new line.
@@ -95,64 +98,96 @@ end
 -- Execution
 -- ------------------------------------------------------------------------------------------------
 
+--- Updates pop-up or pop-down animation.
+-- @tparam number dt The duration of the previous frame.
+function PopText:update(dt)
+  if self.time < 0 then
+    return
+  end
+  if self.time < 1 then
+    -- Moving phase
+    self.time = self.time + self.speed * dt
+    if self.time >= 1 then
+      self.time = 1
+      self.speed = self.fadeDuration / self.color.a
+    end
+    self:setXYZ(nil, self.destination - self.direction * self.time * self.distance)
+  else
+    if self.time < 1 + self.pause then
+      -- Wait phase
+      self.time = self.time + dt
+    elseif self.color.a > 0 then
+      -- Color phase
+      local a = max(self.color.a - self.speed * dt, 0)
+      self:setRGBA(nil, nil, nil, a)
+    else
+      self.destroyed = true
+      self.time = -1
+    end
+  end
+end
 --- Show the text lines.
 -- @coroutine
 -- @tparam number dir 1 to pop up, -1 to pop down.
 function PopText:pop(dir)
-  local p = {self.width, self.align}
-  local sprite = Text(self.text, p, self.renderer)
-  local y = self.y - dir * sprite:getHeight()
-  sprite:setXYZ(self.x - (self.width or 0) / 2, y, self.z)
-  local d = 0
-  while d < self.distance do
-    d = d + self.distance * self.speed * GameManager:frameTime()
-    sprite:setXYZ(nil, y - dir * d)
-    Fiber:wait()
-  end
-  Fiber:wait(self.pause)
-  local f = self.speed / 4 / sprite.color.a
-  while sprite.color.a > 0 do
-    local a = max(sprite.color.a - f * GameManager:frameTime(), 0)
-    sprite:setRGBA(nil, nil, nil, a)
-    Fiber:wait()
-  end
-  sprite:destroy()
+  self:setMaxWidth(self.width)
+  self:setAlignX(self.align)
+  self:setText(self.text)
+  self:setXYZ(self.position.x - (self.width or 0) / 2, nil)
+  self:setVisible(true)
+  self.direction = dir
+  self.time = 0
+  self.destination = self.position.y - self.direction * self:getHeight()
 end
 --- Show the text lines.
 -- @coroutine
 -- @tparam[opt] boolean wait Flag to wait until the animation finishes.
--- @treturn number The duration in frames.
+-- @treturn number The duration in frames until the animation finishes.
 function PopText:popUp(wait)
   if not self.text then
     return 0
   end
-  if not wait then
-    Fiber:forkMethod(self, 'pop', 1)
-    return 60 / self.speed + self.pause + 60 / self.speed * 4
-  else
-    self:pop(1)
+  self:pop(1)
+  if wait then
+    _G.Fiber:waitUntil(self.isFinished, self)
     return 0
+  else
+    return 60 / self.speed + self.pause + 60 / self.speed * 4
   end
 end
 --- Show the text lines.
 -- @coroutine
 -- @tparam[opt] boolean wait Flag to wait until the animation finishes.
--- @treturn number The duration in frames.
+-- @treturn number The duration in frames until the animation finishes.
 function PopText:popDown(wait)
   if not self.text then
     return 0
   end
-  if not wait then
-    Fiber:forkMethod(self, 'pop', -1)
-    return 60 / self.speed + self.pause + 60 / self.speed * 4
-  else
-    self:pop(-1)
+  self:pop(-1)
+  if wait then
+    _G.Fiber:waitUntil(self.isFinished, self)
     return 0
+  else
+    return 60 / self.speed + self.pause + 60 / self.speed * 4
   end
 end
---- Destroys the text sprite.
-function PopText:destroy()
-  self.sprite:destroy()
+--- Whether the animation finished.
+-- @treturn boolean
+function PopText:isFinished()
+  return self.color.a == 0
+end
+--- Whether the animation started but not finished.
+-- @treturn boolean
+function PopText:isPlaying()
+  return self.color.a > 0 and self.time >= 0
+end
+-- For debugging.
+function PopText:__tostring()
+  if self.text then
+    return 'PopText: "' .. self.text .. '"' 
+  else
+    return 'PopText: nil'
+  end
 end
 
 return PopText

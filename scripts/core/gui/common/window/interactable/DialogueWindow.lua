@@ -118,5 +118,9 @@ function DialogueWindow:setName(text, x, y)
     self.nameWindow:setVisible(false)
   end
 end
+-- For debugging.
+function DialogueWindow:__tostring()
+  return 'Dialogue Window: ' .. tostring(self.dialogue)
+end
 
 return DialogueWindow

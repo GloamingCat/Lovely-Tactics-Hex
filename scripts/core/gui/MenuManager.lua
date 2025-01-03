@@ -31,6 +31,7 @@ function MenuManager:init()
   self.windowColor = 100
   self.fiberList = FiberList()
   self.updateList = List()
+  self.removeCondition = function(obj) return obj.destroyed end
   ScreenManager:setRenderer(self.renderer, 2)
 end
 --- Calls all the update functions.
@@ -45,6 +46,7 @@ function MenuManager:update(dt)
   for i = 1, #self.updateList do
     self.updateList[i]:update(dt)
   end
+  self.updateList:conditionalRemove(self.removeCondition)
   self.fiberList:update()
 end
 --- Refresh Menu content.

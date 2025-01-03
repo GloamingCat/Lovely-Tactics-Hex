@@ -123,5 +123,9 @@ function TextComponent:refresh()
     self:redraw()
   end
 end
+-- For debugging.
+function TextComponent:__tostring()
+  return 'TextComponent: "' .. tostring(self.text) .. '"'
+end
 
 return TextComponent

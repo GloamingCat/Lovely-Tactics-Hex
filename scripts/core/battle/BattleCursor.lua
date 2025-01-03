@@ -57,6 +57,7 @@ function BattleCursor:destroy()
   if self.anim then
     self.anim.sprite:removeSelf()
   end
+  self.destroyed = true
 end
 
 -- ------------------------------------------------------------------------------------------------

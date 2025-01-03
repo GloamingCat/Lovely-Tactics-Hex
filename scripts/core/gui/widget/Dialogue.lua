@@ -120,5 +120,9 @@ function Dialogue:findSkipPoint(min)
     end
   end
 end
+-- For debugging.
+function Dialogue:__tostring()
+  return 'Dialogue: "' .. tostring(self.text) .. '"'
+end
 
 return Dialogue

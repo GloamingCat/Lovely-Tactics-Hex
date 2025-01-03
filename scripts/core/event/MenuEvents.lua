@@ -197,7 +197,7 @@ end
 function MenuEvents:closeDialogueWindow(args)
   if self.menu and self.menu.dialogues then
     local window = self.menu.dialogues[args.id]
-    if window then
+    if window and window.open then
       local fiber = self:fork(function()
         window:hide()
         window:removeSelf()

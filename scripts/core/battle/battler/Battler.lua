@@ -13,7 +13,6 @@ local BattlerAI = require('core/battle/ai/BattlerAI')
 local Job = require('core/battle/battler/Job')
 local EquipSet = require('core/battle/battler/EquipSet')
 local Inventory = require('core/battle/Inventory')
-local PopText = require('core/graphics/PopText')
 local SkillList = require('core/battle/battler/SkillList')
 local StatusList = require('core/battle/battler/StatusList')
 

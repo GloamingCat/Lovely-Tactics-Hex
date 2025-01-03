@@ -38,7 +38,7 @@ local loadRequested = false
 --- Show save/load messages.
 local function popUp(msg)
   MenuManager.fiberList:fork(function()
-    local popUp = PopText(ScreenManager.width / 2 - 50, ScreenManager.height / 2, MenuManager.renderer)
+    local popUp = PopText(MenuManager, ScreenManager.width / 2 - 50, ScreenManager.height / 2)
     popUp.align = 'right'
     popUp:addLine(msg, 'white', 'menu_default')
     popUp:popUp()

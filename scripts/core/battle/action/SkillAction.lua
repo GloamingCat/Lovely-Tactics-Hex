@@ -448,20 +448,20 @@ function SkillAction:singleTargetEffect(results, input, target, originTile)
     if wasAlive then
       local pos = char and char.position
       local popText = pos and
-        PopText(pos.x, pos.y - 10, FieldManager.renderer) or
-        PopText(input.targetX or 0, input.targetY or 0, MenuManager.renderer)
+        PopText(FieldManager, pos.x, pos.y - 10) or
+        PopText(MenuManager, input.targetX or 0, input.targetY or 0)
       popText:addLine(Vocab.miss, 'popup_miss', 'popup_miss')
       popText:popUp()
     end
   elseif not targetChar then
     -- Animation on menu
-    local popText = PopText(input.targetX or 0, input.targetY or 0, MenuManager.renderer)
+    local popText = PopText(MenuManager, input.targetX or 0, input.targetY or 0)
     target:popResults(popText, results, targetChar)
     BattleAnimations.menuTargetEffect(self.data, input.targetX, input.targetY)
   else
     -- Popup results
     local pos = targetChar.position
-    local popText = PopText(pos.x, pos.y - 10, FieldManager.renderer)
+    local popText = PopText(FieldManager, pos.x, pos.y - 10)
     target:popResults(popText, results, targetChar)
     BattleAnimations.targetEffect(self.data, targetChar, originTile)
     if not wasAlive then

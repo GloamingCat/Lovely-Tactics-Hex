@@ -9,10 +9,11 @@
 -- ================================================================================================
 
 -- Imports
+local FiberList = require('core/fiber/FiberList')
 local TextParser = require('core/graphics/TextParser')
 
 -- Class table.
-local Fiber = class()
+local Fiber = class(FiberList)
 
 -- ------------------------------------------------------------------------------------------------
 -- General
@@ -21,7 +22,8 @@ local Fiber = class()
 --- Constructor.
 -- @tparam FiberList root The list of fibers this Fiber belongs to.
 -- @tparam function func This fiber's function (substitutes "execute" method).
-function Fiber:init(root, func, ...)
+function Fiber:init(root, char, func, ...)
+  FiberList.init(self, char)
   if root then
     root:add(self)
     self.root = root
@@ -76,6 +78,8 @@ function Fiber:update()
   end
   if self.coroutine and coroutine.status(self.coroutine) == 'dead' then
     self:finish()
+  else 
+    FiberList.update(self)
   end
   _G.Fiber = previous
 end
@@ -104,6 +108,7 @@ function Fiber:interrupt()
 end
 --- Called when the coroutine finished executing.
 function Fiber:finish()
+  self:destroy()
   self.coroutine = nil
 end
 
@@ -111,18 +116,6 @@ end
 -- Fork
 -- ------------------------------------------------------------------------------------------------
 
---- Delegates to `FiberList:fork`.
-function Fiber:fork(...)
-  return self.root:fork(...)
-end
---- Delegates to `FiberList:forkMethod`.
-function Fiber:forkMethod(...)
-  return self.root:forkMethod(...)
-end
---- Delegates to `FiberList:fork`.
-function Fiber:forkFromScript(...)
-  return self.root:forkFromScript(...)
-end
 --- Executes a script in a new fiber.
 -- @coroutine
 -- @tparam table script Script table.
@@ -218,7 +211,14 @@ function Fiber:interpolateString(str)
 end
 -- For debugging.
 function Fiber:__tostring()
-  return 'Fiber: ' .. tostring(self.name)
+  local str = 'Fiber'
+  if self.skipped then
+    str = str .. ' (skipped)'
+  end
+  if not self.coroutine then
+    str = str .. ' (finished)'
+  end
+  return str .. ': ' .. tostring(self.name)
 end
 
 return Fiber

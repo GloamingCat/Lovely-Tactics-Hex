@@ -106,14 +106,14 @@ function SkillAction:allTargetsEffect(input, originTile)
     local nextLevel = input.user.battler.job:levelsup(maxGain)
     local pos = input.user.position
     if expPopup then
-      local popText = PopText(pos.x, pos.y - 10, FieldManager.renderer)
+      local popText = PopText(FieldManager, pos.x, pos.y - 10)
       popText:addLine('+' .. tostring(maxGain) .. ' ' .. Vocab.exp, 'popup_exp', 'popup_exp')
       wait = popText:popUp()
     end
     input.user.battler.job:addExperience(maxGain, input.user)
     if nextLevel then
       _G.Fiber:wait(wait)
-      local popText = PopText(pos.x, pos.y - 10, FieldManager.renderer)
+      local popText = PopText(FieldManager, pos.x, pos.y - 10)
       popText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
       if Config.sounds.levelup then
         AudioManager:playSFX(Config.sounds.levelup)
@@ -143,11 +143,11 @@ function SkillAction:menuTargetsEffect(input, targets)
   if maxGain > 0 then
     local nextLevel = input.user.job:levelsup(maxGain)
     if expPopup then
-      popText = popText or PopText(input.originX or 0, input.originY or 0, MenuManager.renderer)
+      popText = popText or PopText(MenuManager, input.originX or 0, input.originY or 0)
       popText:addLine('+' .. tostring(maxGain) .. ' ' .. Vocab.exp, 'popup_exp', 'popup_exp')
     end
     if nextLevel then
-      popText = popText or PopText(input.originX or 0, input.originY or 0, MenuManager.renderer)
+      popText = popText or PopText(MenuManager, input.originX or 0, input.originY or 0)
       popText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
       if Config.sounds.levelup then
         AudioManager:playSFX(Config.sounds.levelup)

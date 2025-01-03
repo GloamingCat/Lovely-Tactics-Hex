@@ -61,7 +61,7 @@ function EventSheet:init(root, data, char)
   end
   self.events = {}
   self.labels = {}
-  Fiber.init(self, root, nil)
+  Fiber.init(self, root, char, nil)
   self.name = name or self.name
   self:setUp()
 end
@@ -230,6 +230,7 @@ end
 --- Overrides `Fiber:finish`. 
 -- @override
 function EventSheet:finish()
+  print(self, 'finished')
   Fiber.finish(self)
   self:clear()
 end
@@ -242,10 +243,17 @@ function EventSheet:printStackTrace(msg)
 end
 -- For debugging.
 function EventSheet:__tostring()
+  local str = 'EventSheet'
+  if self.skipped then
+    str = str .. ' (skipped)'
+  end
+  if not self.coroutine then
+    str = str .. ' (finished)'
+  end
   if self.char then
-    return 'EventSheet: ' .. self.char.key .. ':' .. tostring(self.name)
+    return str .. ': ' .. self.char.key .. ':' .. tostring(self.name)
   else
-    return 'EventSheet: ' .. tostring(self.name)
+    return str .. ': ' .. tostring(self.name)
   end
 end
 

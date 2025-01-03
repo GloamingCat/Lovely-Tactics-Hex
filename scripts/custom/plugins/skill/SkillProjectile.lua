@@ -1,15 +1,28 @@
 
 -- ================================================================================================
 
---- Abstraction of a projectile thrown during the use of a skill.
+--- Add projectile animation for skills.
 ---------------------------------------------------------------------------------------------------
 -- @plugin SkillProjectile
+
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield number defaultSpeed The speed of a projectile if not specified. 500 by default.
+
+--- Parameters in the Animation tags.
+-- @tags Animation
+-- @tfield boolean rotate Whether the sprite should rotate according to the user's direction.
+-- @tfield number moveSpeed Projectile's speed in pixels per second.
+
+--- Parameters in the Skill tags.
+-- @tags Skill
+-- @tfield number|string projectileID The ID or key of the projectile's animation.
 
 -- ================================================================================================
 
 -- Imports
 local Animation = require('core/graphics/Animation')
-local Character = require('core/objects/Character')
+local BattleCharacter = require('core/objects/BattleCharacter')
 local BattleAnimations = require('core/battle/BattleAnimations')
 local Vector = require('core/math/Vector')
 
@@ -20,9 +33,12 @@ local nextCoordDir = math.field.nextCoordDir
 local pixel2Tile = math.field.pixel2Tile
 local tile2Pixel = math.field.tile2Pixel
 
+-- Parameters
+local defaultSpeed = args.defaultSpeed or 500
+
 -- Rewrites
 local Animation_update = Animation.update
-local Character_castSkill = Character.castSkill
+local BattleCharacter_castSkill = BattleCharacter.castSkill
 
 -- ------------------------------------------------------------------------------------------------
 -- Animation
@@ -53,13 +69,13 @@ end
 -- @coroutine
 -- @tparam Character user
 -- @tparam ObjectTile target The target tile.
--- @tparam[opt] number speed Speed in pixels per second. If nil, gets speed from tags).
+-- @tparam[opt] number speed Speed in pixels per second. If nil, gets speed from tags.
 -- @tparam[opt] boolean wait Flag to wait until the end of movement.
 -- @treturn number Duration of the movement in frames.
 function Animation:throw(user, target, speed, wait)
   self:setUser(user)
   local d = self:setTarget(target)
-  speed = speed or self.tags and self.tags.speed
+  speed = speed or self.tags and self.tags.moveSpeed
   self.moveSpeed = speed / d
   local time = d * 60 / speed
   FieldManager.updateList:add(self)
@@ -84,20 +100,20 @@ function Animation:update(dt)
 end
 
 -- ------------------------------------------------------------------------------------------------
--- Character
+-- BattleCharacter
 -- ------------------------------------------------------------------------------------------------
 
---- Rewrites `Character:castSkill`.
+--- Rewrites `BattleCharacter:castSkill`.
 -- @rewrite
-function Character:castSkill(skill, dir, target)
-  local minTime = Character_castSkill(self, skill, dir, target)
+function BattleCharacter:castSkill(skill, dir, target)
+  local minTime = BattleCharacter_castSkill(self, skill, dir, target)
   -- Projectile
   local projectileTag = util.array.findByKey(skill.tags, 'projectileID')
   if projectileTag then
     _G.Fiber:wait(minTime)
     local animID = tonumber(projectileTag.value) or projectileTag.value
     local anim = ResourceManager:loadAnimation(animID, FieldManager.renderer)
-    local speed = anim.tags and anim.tags.moveSpeed or 500
+    local speed = anim.tags and anim.tags.moveSpeed or defaultSpeed
     minTime = minTime - math.min(minTime, anim:throw(self, target, speed, true))
   end
   return minTime

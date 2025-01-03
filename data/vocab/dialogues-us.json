@@ -32,7 +32,7 @@
   "tutorial": {
     "Arrows": "Use {cbabyPink}mouse{cwhite} or {cbabyPink}arrows{cwhite} (or {cbabyPink}WASD{cwhite} if enabled) to {cbabyBlue}navigate{cwhite} the around field or menu options. Hold {cbabyPink}[Shift]{cwhite} to walk {cbabyBlue}faster{cwhite}.",
     "Z": "Use {cbabyPink}[Z]{cwhite}, {cbabyPink}[Enter]{cwhite} or the {cbabyPink}left mouse button{cwhite} to {cbabyBlue}interact{cwhite} with an NPC or {cbabyBlue}select{cwhite} an option in a menu.",
-    "X": "Use {cbabyPink}[X]{cwhite}, {cbabyPink}[Backspace]{cwhite} or the {cbabyPink}right mouse button{cwhite} to {cbabyBlue}return{cwhite}/close a menu window or open the {cbabyBlue}main menu{cwhite} when navigating the field.",
+    "X": "Use {cbabyPink}[X]{cwhite}, {cbabyPink}[Backspace]{cwhite} or the {cbabyPink}right mouse button{cwhite} to {cbabyBlue}return{cwhite}/close a menu window or open the {cbabyBlue}main menu{cwhite} when navigating the field, or to skip a cutscene.",
     "Page": "Press {cbabyPink}[N]{cwhite}/{cbabyPink}[M]{cwhite} or {cbabyPink}[Page Up]{cwhite}/{cbabyPink}[Page Down]{cwhite} to {cbabyBlue}switch{cwhite} menu screens or select a tile at a {cbabyBlue}different height{cwhite} during battle.\n ",
     
     "Skip": "Press {cbabyPink}[J]{cwhite} to {cbabyBlue}accelerate{cbabyBlue} the game.",

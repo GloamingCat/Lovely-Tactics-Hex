@@ -32,7 +32,7 @@
   "tutorial": {
     "Arrows": "Use o {cbabyPink}mouse{cwhite} ou {cbabyPink}setas{cwhite} (ou {cbabyPink}WASD{cwhite} se ativado) para {cbabyBlue}navegar{cwhite} pelo campo ou nas opções no menu. Segure {cbabyPink}[Shift]{cwhite} para {cbabyBlue}correr{cwhite}.",
     "Z": "Use {cbabyPink}[Z]{cwhite}, {cbabyPink}[Enter]{cwhite} ou o {cbabyPink}botão esquerdo do mouse{cwhite} para {cbabyBlue}interagir{cwhite} com NPCs ou {cbabyBlue}selecionar{cwhite} uma opção no menu.",
-    "X": "Use {cbabyPink}[X]{cwhite}, {cbabyPink}[Backspace]{cwhite} ou o {cbabyPink}botão direito do mouse{cwhite} para {cbabyBlue}voltar{cwhite}/fechar uma janela ou abrir o {cbabyBlue}menu principal{cwhite} quando estiver andando pelo campo.",
+    "X": "Use {cbabyPink}[X]{cwhite}, {cbabyPink}[Backspace]{cwhite} ou o {cbabyPink}botão direito do mouse{cwhite} para {cbabyBlue}voltar{cwhite}/fechar uma janela ou abrir o {cbabyBlue}menu principal{cwhite} quando estiver andando pelo campo, ou para pular uma cena de diálogo.",
     "Page": "Aperte {cbabyPink}[N]{cwhite}/{cbabyPink}[M]{cwhite} ou {cbabyPink}[Page Up]{cwhite}/{cbabyPink}[Page Down]{cwhite} para {cbabyBlue}trocar{cwhite} telas do menu ou selecionar um tile numa {cbabyBlue}altura diferente{cwhite} na batalha.\n ",
     
     "Skip": "Aperte {cbabyPink}[J]{cwhite} para {cbabyBlue}acelerar{cbabyBlue} o jogo.",

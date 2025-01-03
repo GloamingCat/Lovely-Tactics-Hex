@@ -98,7 +98,7 @@ function RewardEXPWindow:addEXP()
           if nextLevel then
             local x = self:paddingX() - self.width / 2
             local y = exp1.position.y + 8
-            local popText = PopText(x, y + 10, MenuManager.renderer)
+            local popText = PopText(MenuManager, x, y + 10)
             popText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
             popText:popUp()
             levelup = true

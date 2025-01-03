@@ -35,15 +35,17 @@ function FieldManager:init()
   self.fiberList = FiberList()
   self.fieldData = {}
   self.playerState = {}
+  self.removeCondition = function(obj) return obj.destroyed end
 end
 --- Calls all the update functions.
 -- @tparam number dt The duration of the previous frame.
 function FieldManager:update(dt)
   if self.currentField then
     self.currentField:update(dt)
-    for object in self.updateList:iterator() do
-      object:update(dt)
+    for anim in self.updateList:iterator() do
+      anim:update(dt)
     end
+    self.updateList:conditionalRemove(self.removeCondition)
     self.renderer:update(dt)
   end
   self.fiberList:update()

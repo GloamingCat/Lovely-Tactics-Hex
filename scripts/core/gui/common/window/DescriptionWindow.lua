@@ -74,7 +74,7 @@ function DescriptionWindow:packToWindow()
 end
 -- For debugging.
 function DescriptionWindow:__tostring()
-  return 'Description Window'
+  return 'Description Window: ' .. tostring(self.text)
 end
 
 return DescriptionWindow

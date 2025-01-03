@@ -81,6 +81,7 @@ function Sprite:destroy()
   self.quad = nil
   self.texture = nil
   self.renderer.needsRedraw = true
+  self.destroyed = true
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -393,6 +394,7 @@ end
 function Sprite:removeSelf()
   local depth = self.position.z + self.offsetDepth
   local list = self.renderer.layers[depth]
+  assert(list, "Sprite already removed. Depth: " .. tostring(depth))
   local n = #list
   for i = 1, n do
     if list[i] == self then
