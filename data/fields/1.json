@@ -29,9 +29,8 @@
         "key": ""
       },
       {
-        "global": false,
         "scope": 0,
-        "block": false,
+        "block": true,
         "wait": true,
         "onLoad": false,
         "onInteract": false,
@@ -69,6 +68,33 @@
             "dx": 13,
             "dy": 1,
             "height": 1
+          }
+        ],
+        "condition": ""
+      },
+      {
+        "destination": {
+          "fieldID": 4,
+          "x": 8,
+          "y": 13,
+          "h": 3,
+          "direction": 135
+        },
+        "origin": [
+          {
+            "dx": 2,
+            "dy": 1,
+            "height": 3
+          },
+          {
+            "dx": 3,
+            "dy": 1,
+            "height": 3
+          },
+          {
+            "dx": 4,
+            "dy": 1,
+            "height": 3
           }
         ],
         "condition": ""
@@ -1327,7 +1353,7 @@
           [
             7,
             7,
-            -1,
+            2,
             -1,
             -1,
             -1,
@@ -1462,8 +1488,8 @@
         "visible": true,
         "grid": [
           [
-            -1,
-            -1,
+            1,
+            3,
             -1,
             -1,
             -1,

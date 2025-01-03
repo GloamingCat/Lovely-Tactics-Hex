@@ -152,6 +152,11 @@ end
 -- @coroutine
 -- @tparam TransitionArguments args Argument table.
 function GeneralEvents:moveToField(args)
+  if FieldManager.transitioning then
+    print('Player is already on a field transition!')
+    return
+  end
+  FieldManager.transitioning = true
   local fiber = FieldManager.fiberList:forkMethod(FieldManager, 'loadTransition', args, nil, args.exit or '')
   if args.wait then
     fiber:waitForEnd()

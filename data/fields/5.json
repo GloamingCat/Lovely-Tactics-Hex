@@ -29,9 +29,8 @@
         "key": ""
       },
       {
-        "global": false,
         "scope": 0,
-        "block": false,
+        "block": true,
         "wait": true,
         "onLoad": false,
         "onInteract": false,

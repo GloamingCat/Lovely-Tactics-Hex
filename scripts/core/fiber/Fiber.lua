@@ -16,6 +16,25 @@ local TextParser = require('core/graphics/TextParser')
 local Fiber = class(FiberList)
 
 -- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- The scope in a fiber runs.
+-- @enum Scope
+-- @field OBJECT Object's (character's) root fiber list.
+-- @field FIELD Field's root fiber list.
+-- @field GLOBAL FieldManager's root fiber list.
+-- @field FIBER Root of the current running fiber (i.e. as a sibling).
+-- @field CHILD The current running fiber (i.e. as a child).
+Fiber.Scope = {
+  OBJECT = 0,
+  FIELD = 1,
+  GLOBAL = 2,
+  FIBER = 3,
+  CHILD = 4
+}
+
+-- ------------------------------------------------------------------------------------------------
 -- General
 -- ------------------------------------------------------------------------------------------------
 
@@ -121,15 +140,17 @@ end
 -- @tparam table script Script table.
 function Fiber:runScript(script)
   local fiberList = self.root
-  if script.global or script.scope == 2 then
+  if script.global or script.scope == self.Scope.GLOBAL then
     fiberList = FieldManager.fiberList
-  elseif script.scope == 1 then
+  elseif script.scope == self.Scope.FIELD then
     fiberList = FieldManager.currentField.fiberList
-  elseif script.scope == 0 then
-    fiberList = self.root.char.fiberList
+  elseif script.scope == self.Scope.OBJECT then
+    fiberList = self.char.fiberList
+  elseif script.scope == self.Scope.CHILD then
+    fiberList = self
   end
   script.vars = script.vars or {}
-  local fiber = fiberList:forkFromScript(script, self.root.char)
+  local fiber = fiberList:forkFromScript(script, self.char)
   if script.wait then
     fiber:waitForEnd()
   end

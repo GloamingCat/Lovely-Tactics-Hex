@@ -11,6 +11,7 @@
 local AnimatedInteractable = require('core/objects/AnimatedInteractable')
 local BattleCharacter = require('core/objects/BattleCharacter')
 local Character = require('core/objects/Character')
+local Fiber = require('core/fiber/Fiber')
 local Field = require('core/field/Field')
 local InteractableObject = require('core/objects/InteractableObject')
 local Serializer = require('core/save/Serializer')
@@ -107,7 +108,7 @@ function FieldLoader.createTransitions(transitions)
   local id = 0
   for _, t in ipairs(transitions) do
     for _, tile in ipairs(t.origin) do
-      FieldLoader.createTransitionTile(tile, t.destination, "Transition" .. tostring(id))
+      FieldLoader.createTransitionTile(tile, t.destination, "Transition" .. tostring(id), t.condition)
       id = id + 1
     end
   end
@@ -117,7 +118,7 @@ end
 -- @tparam table destination The destination with coordinates, direction and field ID.
 -- @tparam string key The key of the new object.
 -- @return InteractableObject The newly created transition object.
-function FieldLoader.createTransitionTile(origin, destination, key)
+function FieldLoader.createTransitionTile(origin, destination, key, condition)
   local args = { 
     { key = "fieldID", value = destination.fieldID },
     { key = "x", value = destination.x },
@@ -126,15 +127,20 @@ function FieldLoader.createTransitionTile(origin, destination, key)
     { key = "direction", value = destination.direction },
     { key = "exit", value = '"' .. key .. '"' }
   }
-   local event = {
+  if condition and condition ~= '' then
+    condition = " and (" .. condition .. ")"
+  else
+    condition = ''
+  end
+  local event = {
     name = "moveToField",
     tags = args,
-    condition = "script:collidedWith('player')"
+    condition = "script:collidedWith('player') and not FieldManager.transitioning" .. condition
   }
   local script = { sheet = { events = { event } },
     name = "Move To Field",
     block = true, 
-    scope = 2, -- Global
+    scope = Fiber.Scope.OBJECT,
     wait = true,
     onCollide = true,
     vars = {} }

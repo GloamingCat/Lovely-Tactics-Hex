@@ -230,7 +230,6 @@ end
 --- Overrides `Fiber:finish`. 
 -- @override
 function EventSheet:finish()
-  print(self, 'finished')
   Fiber.finish(self)
   self:clear()
 end

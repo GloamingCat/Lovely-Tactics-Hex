@@ -110,7 +110,6 @@ function Window:refresh()
 end
 --- Erases content.
 function Window:destroy()
-  print('Window destroyed: ' .. tostring(self))
   if self.background then
     self.background:destroy()
   end

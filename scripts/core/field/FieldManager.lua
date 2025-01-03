@@ -180,6 +180,7 @@ function FieldManager:loadTransition(transition, save, exit)
   end
   self:initializePlayer(transition, save)
   self:runLoadScripts(save ~= nil)
+  self.transitioning = false
 end
 --- Creates the Player character according to the transition.
 -- @tparam table transition The transition data.
