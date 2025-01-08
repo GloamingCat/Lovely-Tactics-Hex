@@ -19,12 +19,6 @@
         0,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
         0
       ],
       "skills": [],
@@ -34,7 +28,7 @@
       "equip": [],
       "recruit": false,
       "icon": {
-        "id": -1,
+        "id": 52,
         "col": 0,
         "row": 0
       },
@@ -242,7 +236,7 @@
       "equip": [],
       "recruit": false,
       "icon": {
-        "id": -1,
+        "id": 50,
         "col": 0,
         "row": 0
       },
@@ -774,8 +768,8 @@
       "equip": [],
       "recruit": false,
       "icon": {
-        "id": -1,
-        "col": 0,
+        "id": 36,
+        "col": 4,
         "row": 0
       },
       "description": "",
@@ -882,9 +876,9 @@
             }
           ],
           "equip": [],
-          "recruit": false,
+          "recruit": true,
           "icon": {
-            "id": -1,
+            "id": 46,
             "col": 0,
             "row": 0
           },

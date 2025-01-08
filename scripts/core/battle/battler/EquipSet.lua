@@ -1,25 +1,45 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-EquipSet
+--- Represents the equipment set of a battler.
 ---------------------------------------------------------------------------------------------------
-Represents the equipment set of a battler.
+-- @battlemod EquipSet
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Alias
 local deepCopyTable = util.table.deepCopy
 local findByKey = util.array.findByKey
 
+-- Class table.
 local EquipSet = class()
 
----------------------------------------------------------------------------------------------------
--- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(battler : Battler) This set's battler.
--- @param(save : table) Battler's save data (optional).
+--- The state of the slot's permissions.
+-- @enum SlotState
+-- @field FREE The slot has no restrictions. Equals 0.
+-- @field EQUIPPED The slot can be changed but at least one of the slots of the equip type must be
+--  equipped. Equals 1.
+-- @field ALLEQUIPPED The slots can be changed but none of the slots of the equip type can be empty.
+--  Equals 2.
+-- @field LOCKED The slot cannot be changed. Equals 3.
+EquipSet.SlotState = {
+  FREE = 0,
+  EQUIPPED = 1,
+  ALLEQUIPPED = 2,
+  LOCKED = 3
+}
+
+-- ------------------------------------------------------------------------------------------------
+-- Initialization
+-- ------------------------------------------------------------------------------------------------
+
+--- Constructor.
+-- @tparam Battler battler This set's battler.
+-- @tparam[opt] table save Battler's save data.
 function EquipSet:init(battler, save)
   self.battler = battler
   self.slots = {}
@@ -52,33 +72,34 @@ function EquipSet:init(battler, save)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Equip / Unequip
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the state of the current slot.
--- @param(slotType : table) Slot type data.
--- @param(key : string) Specific slot key.
--- @ret(number)
+--- Gets the state of the current slot.
+-- @tparam table slotType Slot type data.
+-- @tparam string key Specific slot key.
+-- @treturn SlotState The lock state of the slot.
 function EquipSet:slotState(slotType, key)
-  if self.slots[key] and self.slots[key].state ~= nil and self.slots[key].state > 0 then
-    return self.slots[key].state
+  local state = self.slots[key] and self.slots[key].state
+  if state ~= nil and state ~= self.SlotState.FREE then
+    return state
   else
     return slotType.state
   end
 end
--- Gets the ID of the current equip in the given slot.
--- @param(key : string) Slot's key.
--- @ret(number) The ID of the equip item (-1 if none).
+--- Gets the ID of the current equip in the given slot.
+-- @tparam string key Slot's key.
+-- @treturn number The ID of the equip item (-1 if none).
 function EquipSet:getEquip(key)
   assert(self.slots[key], 'Slot does not exist: ' .. tostring(key))
   return Database.items[self.slots[key].id]
 end
--- Sets the equip item in the given slot.
--- @param(key : string) Slot's key.
--- @param(item : table) Item's data from database.
--- @param(inventory : Inventory) Troop's inventory.
--- @param(character : Character) Battler's character, in case it's during battle (optional).
+--- Sets the equip item in the given slot.
+-- @tparam string key Slot's key.
+-- @tparam table item Item's data from database.
+-- @tparam Inventory inventory Troop's inventory.
+-- @tparam[opt] Character character Battler's character, in case it's during battle.
 function EquipSet:setEquip(key, item, inventory, character)
   if item then
     assert(item.slot ~= '', 'Item is not an equipment: ' .. Database.toString(item))
@@ -90,11 +111,11 @@ function EquipSet:setEquip(key, item, inventory, character)
     self.battler:refreshState()
   end
 end
--- Inserts equipment item in the given slot.
--- @param(key : string) Slot's key.
--- @param(item : table) Item's data from database.
--- @param(inventory : Inventory) Troop's inventory.
--- @param(character : Character) Battler's character, in case it's during battle (optional).
+--- Inserts equipment item in the given slot.
+-- @tparam string key Slot's key.
+-- @tparam table item Item's data from database.
+-- @tparam Inventory inventory Troop's inventory.
+-- @tparam[opt] Character character Battler's character, in case it's during battle.
 function EquipSet:equip(key, item, inventory, character)
   local slot = self.slots[key]
   -- If slot is blocked
@@ -138,10 +159,10 @@ function EquipSet:equip(key, item, inventory, character)
   slot.id = item and item.id or -1
   self:updateSlotBonus(key)
 end
--- Removes equipment item (if any) from the given slot.
--- @param(key : string) Slot's key.
--- @param(inventory : Inventory) Troop's inventory.
--- @param(character : Character) Battler's character, in case it's during battle (optional).
+--- Removes equipment item (if any) from the given slot.
+-- @tparam string key Slot's key.
+-- @tparam Inventory inventory Troop's inventory.
+-- @tparam[opt] Character character Battler's character, in case it's during battle.
 function EquipSet:unequip(key, inventory, character)
   if self.types[key] then
     for i = 1, self.types[key].count do
@@ -171,9 +192,9 @@ function EquipSet:unequip(key, inventory, character)
     end
   end
 end
--- Sets the block of all slots from the given type to the given value.
--- @param(key : string) The type of slot (includes a number if it's a specific slot).
--- @param(block : string) The name of the slot that it blocking, or nil to unblock.
+--- Sets the block of all slots from the given type to the given value.
+-- @tparam string key The type of slot (includes a number if it's a specific slot).
+-- @tparam[opt] string block The name of the slot that is blocking this equip type, or nil to unblock.
 function EquipSet:setBlock(key, block)
   if self.types[key] then
     for i = 1, self.types[key].count do
@@ -184,15 +205,15 @@ function EquipSet:setBlock(key, block)
     self.slots[key].block = block
   end
 end
--- Checks if an item may be equiped in the given slot.
--- @param(key : string) The key of the slot.
--- @param(item : table) Item data.
--- @ret(boolean) If the item may be equiped.
+--- Checks if an item may be equiped in the given slot.
+-- @tparam string key The key of the slot.
+-- @tparam table item Item data.
+-- @treturn boolean If the item may be equiped.
 function EquipSet:canEquip(key, item)
   local slotType = self.types[item.slot]
   assert(slotType, 'Slot does not exist: ' .. tostring(item.slot))
   local state = self:slotState(slotType, key)
-  if state >= 3 then
+  if state >= self.SlotState.LOCKED then
     return false
   end
   local currentItem = self:getEquip(key)
@@ -205,7 +226,7 @@ function EquipSet:canEquip(key, item)
     end
   end
   if item.allSlots then
-    if slotType.count > 1 and state == 2 then
+    if slotType.count > 1 and state == self.SlotState.ALLEQUIPPED then
       return false
     end
   end
@@ -227,9 +248,9 @@ function EquipSet:canEquip(key, item)
   end
   return true
 end
--- Checks if an slot can have its equipment item removed.
--- @param(key : string) The key of the slot.
--- @ret(boolean) True if already empty of if the item may be removed.
+--- Checks if an slot can have its equipment item removed.
+-- @tparam string key The key of the slot.
+-- @treturn boolean True if already empty of if the item may be removed.
 function EquipSet:canUnequip(key)
   if self.types[key] then
     for i = 1, self.types[key].count do
@@ -243,9 +264,9 @@ function EquipSet:canUnequip(key)
   if currentItem then
     local slot = self.types[currentItem.slot]
     local state = self:slotState(slot, key)
-    if state == 2 then
+    if state == self.SlotState.ALLEQUIPPED then
       return false
-    elseif state == 1 then
+    elseif state == self.SlotState.EQUIPPED then
       for i = 1, slot.count do
         local key2 = currentItem.slot .. i
         if key2 ~= key and self:getEquip(key2) then
@@ -258,12 +279,12 @@ function EquipSet:canUnequip(key)
   return true
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Status
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Adds all equipments' battle status.
--- @param(character : Character) Battler's character.
+--- Adds all equipments' battle status.
+-- @tparam Character character Battler's character.
 function EquipSet:addBattleStatus(character)
   for key, slot in pairs(self.slots) do
     if slot.id >= 0 then
@@ -272,10 +293,10 @@ function EquipSet:addBattleStatus(character)
     end
   end
 end
--- Adds the equip's status.
--- @param(data : table) Item's data.
--- @param(character : Character) Battler's character, in case it's during battle (optional).
--- @param(battle : boolean) True to add battle status, false to add persistent status (optional).
+--- Adds the equip's statuses, either persistent or battle-only.
+-- @tparam table data Item's data.
+-- @tparam[opt] Character character Battler's character, in case it's during battle.
+-- @tparam[opt] boolean battle True to add battle status, false to add persistent status.
 function EquipSet:addStatus(data, character, battle)
   battle = battle or false
   for i = 1, #data.equipStatus do
@@ -285,9 +306,9 @@ function EquipSet:addStatus(data, character, battle)
     end
   end
 end
--- Removes the equip's persistent status.
--- @param(data : table) item's equip data
--- @param(character : Character) battler's character, in case it's during battle (optional)
+--- Removes the equip's persistent statuses.
+-- @tparam table data Item's equip data.
+-- @tparam[opt] Character character Battler's character, in case it's during battle.
 function EquipSet:removeStatus(data, character)
   for i = 1, #data.equipStatus do
     local s = data.equipStatus[i]
@@ -297,14 +318,14 @@ function EquipSet:removeStatus(data, character)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Bonus
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets an attribute's total bonus given by the equipment.
--- @param(key : string) Attribute's key.
--- @ret(number) The total additive bonus.
--- @ret(number) The total multiplicative bonus.
+--- Gets an attribute's total bonus given by the equipment.
+-- @tparam string key Attribute's key.
+-- @treturn number The total additive bonus.
+-- @treturn number The total multiplicative bonus.
 function EquipSet:attBonus(key)
   local add, mul = 0, 0
   for k, slot in pairs(self.bonus) do
@@ -313,9 +334,9 @@ function EquipSet:attBonus(key)
   end
   return add, mul
 end
--- Gets the attack element given by the equipment.
--- @param(id : number) Element's ID.
--- @ret(number) The total bonus.
+--- Gets the attack element given by the equipment.
+-- @tparam number id Element's ID.
+-- @treturn number The total bonus.
 function EquipSet:elementAtk(id)
   local e = 0
   for _, slot in pairs(self.bonus) do
@@ -323,9 +344,9 @@ function EquipSet:elementAtk(id)
   end
   return e
 end
--- Gets the total element immunity given by the equipment.
--- @param(id : number) Element's ID.
--- @ret(number) The total bonus.
+--- Gets the total element immunity given by the equipment.
+-- @tparam number id Element's ID.
+-- @treturn number The total bonus.
 function EquipSet:elementDef(id)
   local e = 0
   for _, slot in pairs(self.bonus) do
@@ -333,9 +354,9 @@ function EquipSet:elementDef(id)
   end
   return e
 end
--- Gets element damage bonus given by the equipment.
--- @param(id : number) Element's ID.
--- @ret(number) The total bonus.
+--- Gets element damage bonus given by the equipment.
+-- @tparam number id Element's ID.
+-- @treturn number The total bonus.
 function EquipSet:elementBuff(id)
   local e = 0
   for _, slot in pairs(self.bonus) do
@@ -343,13 +364,33 @@ function EquipSet:elementBuff(id)
   end
   return e
 end
+--- Gets the total status immunity given by the equipment.
+-- @tparam number id The status's ID.
+-- @treturn number Status immunity.
+function EquipSet:statusDef(id)
+  local e = 1
+  for _, slot in pairs(self.bonus) do
+    e = e * (slot.statusDef[id] or 1)
+  end
+  return e
+end
+--- Gets the total element damage bonus given by the equipment.
+-- @tparam number id The element's ID (position in the elements database).
+-- @treturn number Element bonus.
+function EquipSet:statusBuff(id)
+  local e = 1
+  for _, slot in pairs(self.bonus) do
+    e = e * (slot.statusBuff[id] or 1)
+  end
+  return e
+end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Equip Bonus
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates the tables of equipment attribute and element bonus.
--- @param(slot : table) Slot data.
+--- Updates the tables of equipment attribute and element bonus.
+-- @tparam string key Slot's key.
 function EquipSet:updateSlotBonus(key)
   local bonus = self.bonus[key]
   if not self.bonus[key] then
@@ -359,63 +400,65 @@ function EquipSet:updateSlotBonus(key)
   local slot = self.slots[key]
   local data = slot.id >= 0 and Database.items[slot.id]
   bonus.attAdd, bonus.attMul = self:equipAttributes(data)
-  bonus.elementAtk, bonus.elementDef, bonus.elementBuff = self:equipElements(data)
+  bonus.elementAtk, bonus.elementDef, bonus.elementBuff,
+    bonus.statusDef, bonus.statusBuff = self:equipBonuses(data)
 end
--- Gets the table of equipment attribute bonus.
--- @param(equip : table) Item's equip data.
--- @ret(table) Additive bonus table.
--- @ret(table) Multiplicative bonus table.
-function EquipSet:equipAttributes(data)
+--- Gets the table of equipment attribute bonus.
+-- @tparam table equip Item's equip data.
+-- @treturn table Additive bonus table.
+-- @treturn table Multiplicative bonus table.
+function EquipSet:equipAttributes(equip)
   local add, mul = {}, {}
-  if data then
-    for i = 1, #data.equipAttributes do
-      local bonus = data.equipAttributes[i]
+  if equip then
+    for i = 1, #equip.equipAttributes do
+      local bonus = equip.equipAttributes[i]
       add[bonus.key] = (bonus.add or 0)
       mul[bonus.key] = (bonus.mul or 0) / 100
     end
   end
   return add, mul
 end
--- Gets the table of equipment element bonus.
--- @param(equip : table) Item's equip data.
--- @ret(table) Array for attack elements.
--- @ret(table) Array for element immunity.
--- @ret(table) Array for element damage.
-function EquipSet:equipElements(equip)
-  local atk, def, buff = {}, {}, {}
+--- Gets the table of equipment element bonus.
+-- @tparam table equip Item's equip data.
+-- @treturn table Array for attack elements.
+-- @treturn table Array for element immunity.
+-- @treturn table Array for element damage.
+function EquipSet:equipBonuses(equip)
+  local eatk, edef, ebuff, sdef, sbuff = {}, {}, {}, {}, {}
   if equip then
-    for i = 1, #equip.elements do
-      local b = equip.elements[i]
+    local list = equip.bonuses or equip.elements
+    for i = 1, #list do
+      local b = list[i]
       if b.type == 0 then
-        def[b.id + 1] = b.value / 100 - 1
+        edef[b.id + 1] = b.value / 100 - 1
       elseif b.type == 1 then
-        atk[b.id + 1] = b.value / 100
-      else
-        buff[b.id + 1] = b.value / 100 - 1
+        eatk[b.id + 1] = b.value / 100
+      elseif b.type == 2 then
+        ebuff[b.id + 1] = b.value / 100 - 1
+      elseif b.type == 3 then
+        sdef[b.id] = 1 - b.value / 100
+      elseif b.type == 4 then
+        sbuff[b.id] = b.value / 100 - 1
       end
     end
   end
-  return atk, def, buff
+  return eatk, edef, ebuff, sdef, sbuff
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Converting to string.
--- @ret(string) A string representation.
-function EquipSet:__tostring()
-  return 'EquipSet: ' .. tostring(self.battler)
-end
--- @ret(table) Persistent state.
+--- Persistent state.
+-- @treturn table A table containing the info about each equip type and what's equipped on their slots.
 function EquipSet:getState()
   return {
     slots = deepCopyTable(self.slots),
     types = deepCopyTable(self.types) }
 end
--- Gets the number of items of the given ID equipped.
--- @param(id : number) The ID of the equipment item.
--- @ret(number) The number of items equipped.
+--- Gets the number of items of the given ID equipped.
+-- @tparam number id The ID of the equipment item.
+-- @treturn number The number of items equipped.
 function EquipSet:getCount(id)
   local count = 0
   for _, v in pairs(self.slots) do
@@ -424,6 +467,10 @@ function EquipSet:getCount(id)
     end
   end
   return count
+end
+-- For debugging.
+function EquipSet:__tostring()
+  return 'EquipSet: ' .. tostring(self.battler)
 end
 
 return EquipSet

@@ -1,12 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-TerrainTile
+--- A cell in a `TerrainLayer`'s grid. It is composed by a set of renderers (for each corner), 
+-- with possible animation, that stores the id of the associated terrain.
 ---------------------------------------------------------------------------------------------------
-A TerrainTile is a tile composed by a set of renderers (for each corner), 
-with possible animation, that stores the id of the associated terrain.
+-- @fieldmod TerrainTile
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Animation = require('core/graphics/Animation')
@@ -24,35 +24,35 @@ origins[2] = {0.5, 0}
 origins[3] = {0, 0.5}
 origins[4] = {0.5, 0.5}
 
+-- Class table.
 local TerrainTile = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(layer : Layer) The layer that the tile is in.
--- @param(x : number) The x coordinate of the tile.
--- @param(y : number) The x coordinate of the tile.
--- @param(order : number) The rendering order for the layer.
--- @param(initialID : number) The initial terrain ID from data file.
-function TerrainTile:init(layer, x, y, order, initialID)
+--- Constructor.
+-- @tparam Layer layer The layer that the tile is in.
+-- @tparam number x The x coordinate of the tile.
+-- @tparam number y The x coordinate of the tile.
+-- @tparam number initialID The initial terrain ID from data file.
+function TerrainTile:init(layer, x, y, initialID)
   self.layer = layer
   self.x = x
   self.y = y
-  self.order = order
   self.data = Database.terrains[initialID]
   self.moveCost = 0
   self.center = Vector(math.field.tile2Pixel(self:coordinates()))
 end
--- Gets its grid coordinates.
--- @ret(number) Tile's grid x.
--- @ret(number) Tile's grid y.
--- @ret(number) Tile's height.
+--- Gets its grid coordinates.
+-- @treturn number Tile's grid x.
+-- @treturn number Tile's grid y.
+-- @treturn number Tile's height.
 function TerrainTile:coordinates()
   return self.x, self.y, self.layer.height
 end
--- Updates each animation.
+--- Updates each animation.
+-- @tparam number dt The duration of the previous frame.
 function TerrainTile:update(dt)
   if self.animations then
     for i = 1, 4 do
@@ -60,7 +60,7 @@ function TerrainTile:update(dt)
     end
   end
 end
--- Diposes of all animations.
+--- Diposes of all animations.
 function TerrainTile:destroy()
   if self.animations then
     for i = 1, 4 do
@@ -68,18 +68,13 @@ function TerrainTile:destroy()
     end
   end
 end
--- Converts to string.
--- @ret(string) The string representation.
-function TerrainTile:__tostring()
-  return 'TerrainTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ', ' .. self.layer.order .. ')' 
-end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Terrain graphics
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Sets the terrain type.
--- @param(id : number) The ID of the terrain.
+--- Sets the terrain type.
+-- @tparam number id The ID of the terrain.
 function TerrainTile:setTerrain(id)
   -- Check if it needs any change.
   if (self.data and id == self.data.id) then
@@ -91,7 +86,7 @@ function TerrainTile:setTerrain(id)
     self.layer.grid[x][y]:updateGraphics()
   end
 end
--- Updates the terrain's graphics.
+--- Updates the terrain's graphics.
 function TerrainTile:updateGraphics()
   -- Delete previous terrain's images.
   if self.quarters then
@@ -113,7 +108,7 @@ function TerrainTile:updateGraphics()
   if self.data.animID >= 0 then
     local rows = mathf.autoTileRows(self.layer, self.x, self.y, self.layer.sameType)
     local imageData = Database.animations[self.data.animID]
-    local depth = self.order + imageData.transform.offsetDepth
+    local depth = self.layer.depth + imageData.transform.offsetDepth
     self.quarters = self:createQuarters(imageData, rows, depth)
     -- Create animation.
     if imageData.cols > 1 then
@@ -126,10 +121,11 @@ function TerrainTile:updateGraphics()
     end
   end
 end
--- Creates the animations for the terrain type.
--- @param(quadData : table) The terrain's quad table.
--- @param(rows : table) The autotile row of each quarter.
--- @ret(table) Array with each quarter graphics.
+--- Creates the animations for the terrain type.
+-- @tparam table data The terrain's quad table.
+-- @tparam table rows The autotile row of each quarter.
+-- @tparam number depth The tile's depth in world coordinates.
+-- @treturn table Array with each quarter graphics.
 function TerrainTile:createQuarters(data, rows, depth)
   local texture = ResourceManager:loadTexture(data.quad.path)
   -- Create quarter renderers.
@@ -148,21 +144,21 @@ function TerrainTile:createQuarters(data, rows, depth)
   return quarters
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Move Cost
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the move cost for given character.
--- @param(char : Character)
--- @ret(number)
+--- Gets the move cost for given character.
+-- @tparam Character char
+-- @treturn number
 function TerrainTile:getMoveCost(char)
   if not char.battler or not self.jobMoveCost then
     return self.moveCost / 100
   end
   return (self.jobMoveCost[char.battler.job.id] or self.moveCost) / 100
 end
--- Sets move cost according to data.
--- @param(data : table) Terrain data from database.
+--- Sets move cost according to data.
+-- @tparam table data Terrain data from database.
 function TerrainTile:setMoveCost(data)
   if type(data) == 'number' then
     self.moveCost = data
@@ -171,6 +167,10 @@ function TerrainTile:setMoveCost(data)
     self.moveCost = data.moveCost
     self.jobMoveCost = data.jobMoveCost and Database.loadBonusTable(data.jobMoveCost)
   end
+end
+-- For debugging.
+function TerrainTile:__tostring()
+  return 'TerrainTile (' .. self.x .. ', ' ..  self.y .. ', ' .. self.layer.height .. ', ' .. self.layer.depth .. ')' 
 end
 
 return TerrainTile

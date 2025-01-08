@@ -1,40 +1,49 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Globals
+--- Creates all global variables.
+-- Global objects, tables and modules that era initialized here (in order):
+-- 
+-- * `TableUtil` and `ArrayUtil` (modules);
+-- * `Database` (module);
+-- * `math.field` (`FieldMath`) module according to grid configuration;
+-- * Each plugin added in the project's configuration;
+-- * Event modules `GeneralEvents`, `MenuEvents`, `CharacterEvents`, `ScreenEvents`, `SoundEvents`, `PartyEvents`;
+-- * `GameManager`, `ResourceManager`, `AudioManager`, `InputManager`, `SaveManager`, 
+-- `ScreenManager`, `FieldManager`, `MenuManager`, `BattleManager`, `TroopManager`, `TurnManager`
+-- (singletons).
 ---------------------------------------------------------------------------------------------------
-This module creates all global variables.
+-- @script Globals
 
-=================================================================================================]]
+-- ================================================================================================
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Util
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
+--- Global table with utility modules.
+-- @field table Module `TableUtil`
+-- @field array Module `ArrayUtil`
 util = {}
 util.table = require('core/base/util/TableUtil')
 util.array = require('core/base/util/ArrayUtil')
+Variables = require('core/base/util/Variables')
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Database
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
+--- Global table with data from the project's data folder.
+-- @table Database
 Database = require('core/base/Database')
 Database.loadDataFiles()
 Database.loadConfigFiles()
 Database.loadVocabFiles()
+Database.loadUIConfigFiles()
 
----------------------------------------------------------------------------------------------------
--- Configuration files
----------------------------------------------------------------------------------------------------
-
-Color   = require('conf/Color')
-Fonts   = require('conf/Fonts')
-KeyMap  = require('conf/KeyMap')
-
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Field Math
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 local tileW = Config.grid.tileW
 local tileH = Config.grid.tileH
@@ -53,9 +62,9 @@ else
 end
 math.field.init()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Plugins
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 for i = 1, #Config.plugins do
   local plugin = Config.plugins[i]
@@ -66,13 +75,13 @@ for i = 1, #Config.plugins do
 end
 args = nil
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Event Commands
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 -- Lists of event commands files
 local eventCommands = {}
-for i, file in ipairs({'General', 'GUI', 'Character', 'Screen', 'Sound', 'Party'}) do
+for i, file in ipairs({'General', 'Menu', 'Character', 'Screen', 'Sound', 'Party'}) do
   eventCommands[i] = require('core/event/' .. file .. 'Events')
 end
 local eventMeta = getmetatable(require('core/fiber/EventSheet')) 
@@ -90,9 +99,9 @@ function eventMeta:__index(k)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Managers
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 GameManager     = require('core/base/GameManager')()
 ResourceManager = require('core/base/ResourceManager')()
@@ -101,7 +110,7 @@ InputManager    = require('core/input/InputManager')()
 SaveManager     = require('core/save/SaveManager')()
 ScreenManager   = require('core/graphics/ScreenManager')()
 FieldManager    = require('core/field/FieldManager')()
-GUIManager      = require('core/gui/GUIManager')()
+MenuManager      = require('core/gui/MenuManager')()
 BattleManager   = require('core/battle/BattleManager')()
 TroopManager    = require('core/battle/TroopManager')()
 TurnManager     = require('core/battle/TurnManager')()

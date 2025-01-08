@@ -1,12 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-PartyWindow
+--- A button window that shows all the visibles members in the troop.
+-- It selected one of the member to manage with MemberMenu.
 ---------------------------------------------------------------------------------------------------
-A button window that shows all the visibles members in the troop.
-It selected one of the member to manage with MemberGUI.
+-- @windowmod PartyWindow
+-- @extend ListWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Button = require('core/gui/widget/control/Button')
@@ -15,41 +16,44 @@ local ListWindow = require('core/gui/common/window/interactable/ListWindow')
 local MemberInfo = require('core/gui/widget/data/MemberInfo')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local PartyWindow = class(ListWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the member list from the troop.
--- @param(troop : Troop)
-function PartyWindow:init(gui, troop)
+--- Constructor. Gets the member list from the troop.
+-- @tparam Menu menu Parent menu.
+-- @tparam Troop troop Troop with possible targets.
+-- @tparam boolean backup Flag to include backup members in the target list.
+function PartyWindow:init(menu, troop, backup)
   self.visibleRowCount = GameManager:isMobile() and 3 or 4
-  local list = troop:visibleBattlers()
+  local list = backup and troop:visibleBattlers() or troop:currentBattlers()
   self.troop = troop
-  ListWindow.init(self, gui, list)
+  ListWindow.init(self, menu, list)
 end
--- Overrides GridWindow:setProperties.
--- Initialized tooltip.
+--- Overrides `GridWindow:setProperties`. Initialized tooltip.
+-- @override
 function PartyWindow:setProperties()
   ListWindow.setProperties(self)
   self.tooltipTerm = ''
 end
--- Overrides ListWindow:createListButton.
--- Creates a button for the given member.
--- @param(battler : Battler)
--- @ret(Button)
+--- Overrides `ListWindow:createListButton`. Creates a button for the given member.
+-- @override
+-- @tparam Battler battler
+-- @treturn Button
 function PartyWindow:createListButton(battler)
   local button = Button(self)
   button.battler = battler
   return button
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Member Info
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Refresh each member info.
+--- Refresh each member info.
 function PartyWindow:refreshMembers()
   for i = 1, #self.matrix do
     local button = self.matrix[i]
@@ -63,7 +67,8 @@ function PartyWindow:refreshMembers()
     button:updatePosition(self.position)
   end
 end
--- Overrides Window:show.
+--- Overrides `Window:show`. 
+-- @override
 function PartyWindow:show(...)
   if not self.open then
     self:refreshMembers()
@@ -72,23 +77,26 @@ function PartyWindow:show(...)
   ListWindow.show(self, ...)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override
 function PartyWindow:colCount()
   return 1
 end
--- Overrides ListWindow:cellWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override
 function PartyWindow:cellWidth()
   return 240
 end
--- Overrides GridWindow:cellHeight.
+--- Overrides `GridWindow:cellHeight`. 
+-- @override
 function PartyWindow:cellHeight()
   return (ListWindow.cellHeight(self) * 2 + self:rowMargin() * 2)
 end
--- @ret(string) String representation (for debugging).
+-- For debugging.
 function PartyWindow:__tostring()
   return 'Member List Window'
 end

@@ -11,7 +11,7 @@
   "overwrite": "Overwrite",
   
   // Main Window
-  "menu": "Menu",
+  "mainMenu": "Menu",
   "inventory": "Inventory",
   "members": "Characters",
   "options": "Options",
@@ -22,6 +22,7 @@
   "quit": "Quit",
   
   // Settings
+  "language": "Language",
   "volumeBGM": "BGM Volume",
   "volumeSFX": "SFX Volume",
   "windowColor": "Window Color",
@@ -131,12 +132,7 @@
   "no": "No",
   
   // Messages
-  "loot": "You gained {%lootq}x {%loot}!",
-  "rest": "Do you want to rest?",
-  
-  // Languages
-  "language": "Language",
-  "us": "English (US)",
-  "br": "Português (BR)"
+  "loot": "You gained {%itemCount}x {%itemName}!",
+  "rest": "Do you want to rest?"
   
 }

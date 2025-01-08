@@ -1,15 +1,20 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Counter
+--- Makes a character attack back if hit.
 ---------------------------------------------------------------------------------------------------
-Makes a character attack back if hit.
+-- @plugin Counter
 
--- Battler parameters:
-The skill used when character counter-attacks is defined by <counter> tag. If not set, than this
-battler does not counter-attack.
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield number maxCounters The max number of counter-attacks alternating in a row.
 
-=================================================================================================]]
+--- Parameters in the Status tags.
+-- @tags Status
+-- @tfield string|number counterID The skill used when character counter-attacks when it has
+--  this status.
+
+-- ================================================================================================
 
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
@@ -17,15 +22,19 @@ local Battler = require('core/battle/battler/Battler')
 local SkillAction = require('core/battle/action/SkillAction')
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
 
+-- Rewrites
+local Battler_initState = Battler.initState
+local SkillAction_allTargetsEffect = SkillAction.allTargetsEffect
+
 -- Parameters
 local maxCounters = args.maxCounters or 1
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Skill Action
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides. Initializes counter attack skill.
-local Battler_initState = Battler.initState
+--- Rewrites `Battler:initState`.
+-- @rewrite
 function Battler:initState(data, save)
   Battler_initState(self, data, save)
   if self.tags.counterID then
@@ -35,12 +44,12 @@ function Battler:initState(data, save)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Skill Action
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Checks for characters that counter attack.
-local SkillAction_allTargetsEffect = SkillAction.allTargetsEffect
+--- Rewrites `SkillAction:allTargetsEffect`.
+-- @rewrite
 function SkillAction:allTargetsEffect(input, originTile)
   local allTargets = SkillAction_allTargetsEffect(self, input, originTile)
   if not self.offensive or (self.counter and self.counter >= maxCounters) then
@@ -58,11 +67,11 @@ function SkillAction:allTargetsEffect(input, originTile)
   return allTargets
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Battler
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if this character counter-attacks.
+--- Checks if this character counter-attacks.
 function Battler:counters()
   for status in self.statusList:iterator() do
     if status.tags.counter then
@@ -71,7 +80,7 @@ function Battler:counters()
   end
   return nil
 end
--- Attacks the given character.
+--- Attacks the given character.
 function Battler:counterAttack(user, target, counter)
   local skill = self.counterSkill or self:getAttackSkill()
   if self.tags.counter then

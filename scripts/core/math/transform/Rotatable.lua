@@ -1,20 +1,21 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Rotatable
+--- An object with rotation properties.
 ---------------------------------------------------------------------------------------------------
-An object with rotation properties.
+-- @basemod Rotatable
 
-=================================================================================================]]
+-- ================================================================================================
 
+-- Class table.
 local Rotatable = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Initializes all data of the object's rotation.
--- @param(r : Vector) initial position
+--- Initializes all data of the object's rotation.
+-- @tparam Vector r Initial position.
 function Rotatable:initRotation(r)
   r = r or 0
   self.rotation = r
@@ -26,17 +27,18 @@ function Rotatable:initRotation(r)
   self.cropRotation = true
   self.interruptableRotation = true
 end
--- Sets the current rotation of the object.
--- @param(r : number) Rotation in radians.
+--- Sets the current rotation of the object.
+-- @tparam number r Rotation in radians.
 function Rotatable:setRotation(r)
   self.rotation = r
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Update
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Applies speed and updates rotation.
+--- Applies speed and updates rotation.
+-- @tparam number dt The duration of the previous frame.
 function Rotatable:updateRotation(dt)
   if self.rotationTime < 1 then
     self.rotationTime = self.rotationTime + self.rotationSpeed * dt
@@ -49,10 +51,11 @@ function Rotatable:updateRotation(dt)
     end
   end
 end
--- [COROUTINE] Rotates to (sx, sy).
--- @param(r : number) initial rotation
--- @param(speed : number) the speed of the scaling (optional)
--- @param(wait : boolean) flag to wait until the scaling finishes (optional)
+--- Rotates to (sx, sy).
+-- @coroutine
+-- @tparam number r Initial rotation.
+-- @tparam[opt] number speed The speed of the scaling.
+-- @tparam[opt] boolean wait flag to wait until the scaling finishes.
 function Rotatable:rotateTo(r, speed, wait)
   if speed then
     self:gradualRotateTo(r, speed, wait)
@@ -60,17 +63,18 @@ function Rotatable:rotateTo(r, speed, wait)
     self:instantRotateTo(r)
   end
 end
--- Rotate instantly to (sx, sy).
--- @param(r : number) initial rotation
--- @ret(boolean) true if the scaling must be interrupted, nil or false otherwise
+--- Rotate instantly to (sx, sy).
+-- @tparam number r Initial rotation.
+-- @treturn boolean True if the scaling must be interrupted, nil or false otherwise.
 function Rotatable:instantRotateTo(r)
   self:setRotation(r)
   return nil
 end
--- [COROUTINE] Rotates to (sx, sy).
--- @param(r : number) initial rotation
--- @param(speed : number) the speed of the scaling (optional)
--- @param(wait : boolean) flag to wait until the scaling finishes
+--- Rotates to (sx, sy).
+-- @coroutine
+-- @tparam number r Initial rotation.
+-- @tparam[opt] number speed The speed of the scaling.
+-- @tparam[opt] boolean wait Flag to wait until the scaling finishes.
 function Rotatable:gradualRotateTo(r, speed, wait)
   self.rotationOrig = self.rotation
   self.rotationDest = r
@@ -80,7 +84,8 @@ function Rotatable:gradualRotateTo(r, speed, wait)
     self:waitForRotation()
   end
 end
--- [COROUTINE] Waits until the rotation time is 1.
+--- Waits until the rotation time is 1.
+-- @coroutine
 function Rotatable:waitForRotation()
   local fiber = _G.Fiber
   if self.rotationFiber then
@@ -90,7 +95,7 @@ function Rotatable:waitForRotation()
   while self.rotationTime < 1 do
     Fiber:wait()
   end
-  if fiber:running() then
+  if fiber:isRunning() then
     self.rotationFiber = nil
   end
 end

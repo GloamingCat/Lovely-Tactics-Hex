@@ -1,38 +1,61 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Pagination
+--- A small text showing the current page of a window.
 ---------------------------------------------------------------------------------------------------
-A small text showing the current page of a window.
+-- @uimod Pagination
+-- @extend TextComponent
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
-local SimpleText = require('core/gui/widget/SimpleText')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Vector = require('core/math/Vector')
 
-local Pagination = class(SimpleText)
+-- Class table.
+local Pagination = class(TextComponent)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(window : Window) Parent window.
--- @param(halign : string) Horizontal alignment.
--- @param(valign : string) Vertical alignment.
+--- Constructor.
+-- @tparam Window window Parent window.
+-- @tparam string halign Horizontal alignment.
+-- @tparam string valign Vertical alignment.
 function Pagination:init(window, halign, valign)
   local pos = Vector(0, 0, -10)
   pos.x = -window.width / 2 + window:paddingX()
   if valign == 'top' then
     pos.y = -window.height / 2 + window:paddingY()
   else
-    pos.y = window.height / 2 - window:paddingY() - 6
+    pos.y = window.height / 2 - window:paddingY() - self:getHeight()
   end
-  SimpleText.init(self, '', pos, window.width - window:paddingX() * 2, halign, Fonts.gui_tiny)
+  TextComponent.init(self, '', pos, window.width - window:paddingX() * 2, halign, self:getFont())
 end
--- @param(current : number) Current page.
--- @param(max : number) Total number of pages.
+
+-- ------------------------------------------------------------------------------------------------
+-- Properties
+-- ------------------------------------------------------------------------------------------------
+
+--- Font of the page number.
+-- @treturn Font.Info Font from `Fonts` table.
+function Pagination:getFont()
+  return Fonts.menu_tiny
+end
+--- The height of the component.
+-- @treturn number Height in pixels.
+function Pagination:getHeight()
+  return 6
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Page
+-- ------------------------------------------------------------------------------------------------
+
+--- Sets the current page and the total number of pages and updates the text accordingly.
+-- @tparam number current Current page.
+-- @tparam number max Total number of pages.
 function Pagination:set(current, max)
   local text = ''
   if current then

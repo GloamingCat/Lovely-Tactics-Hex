@@ -1,19 +1,31 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Conf
+--- File run before main. 
+-- Looks for the flag `-p` in the execution arguments to get the project name and loads the
+-- project's main file into the global table `Project`.  
+-- Loads the project's system configuration into the global table `Config` then sets parameters
+-- related to window and graphics. 
+-- Dependencies: `Serializer`
+-- @see Main
 ---------------------------------------------------------------------------------------------------
-File run before main. Prepares window.
+-- @script Conf
 
-=================================================================================================]]
+-- ================================================================================================
 
-io.stdout:setvbuf("no") -- File regex: "^(?:[^/]*\\s+)*(\\w+/(?:\\w|/)*.*\\.lua):([0-9]+)(:[0-9]*)?: (...*)$"
-love.filesystem.setRequirePath('scripts/?.lua;/?.lua')
+-- To better console output.
+-- File regex: "^(?:[^/]*\\s+)*(\\w+/(?:\\w|/)*.*\\.lua):([0-9]+)(:[0-9]*)?: (...*)$"
+io.stdout:setvbuf("no")
 
+-- Makes it not necessary to include the `scripts/` folder in a file's path.
+love.filesystem.setRequirePath('scripts/?.lua;/?.lua;scripts/?/init.lua;/?/init.lua')
+
+-- Loads independent modules.
 require('override')
 require('mathlib')
 require('class')
 
+-- Imports
 local Serializer = require('core/save/Serializer')
 
 function love.conf(t)
@@ -47,7 +59,7 @@ function love.conf(t)
       Config.platform = Config.platform + 2 -- Make web
     end
   end
-  t.identity = Config.name 
+  t.identity = Config.folder or Config.name
   t.window.title = Config.name
   t.window.icon = Project.imagePath .. '/icon.png'
   t.window.fullscreentype = 'desktop'

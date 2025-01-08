@@ -1,5 +1,5 @@
 {
-  "lastField": 7,
+  "lastField": 1,
   "id": -1,
   "children": [
     {
@@ -8,7 +8,7 @@
         "name": "Happy Fields 1",
         "lastLayers": [
           3,
-          0,
+          3,
           -1
         ]
       },
@@ -19,7 +19,7 @@
             "name": "Happy Fields 2",
             "lastLayers": [
               2,
-              0,
+              2,
               -1
             ]
           },
@@ -31,7 +31,7 @@
             "name": "Happy Fields 3",
             "lastLayers": [
               3,
-              0,
+              3,
               -1
             ]
           },
@@ -43,7 +43,7 @@
             "name": "Happy Fields 4",
             "lastLayers": [
               4,
-              0,
+              4,
               -1
             ]
           },
@@ -55,7 +55,7 @@
             "name": "Happy Fields 5",
             "lastLayers": [
               7,
-              2,
+              7,
               -1
             ]
           },
@@ -67,7 +67,7 @@
             "name": "Forest Battle Field",
             "lastLayers": [
               3,
-              1,
+              3,
               0
             ]
           },
@@ -81,7 +81,7 @@
         "name": "Test Battle",
         "lastLayers": [
           0,
-          1,
+          0,
           -1
         ]
       },
@@ -93,6 +93,18 @@
         "name": "Test Battle 2",
         "lastLayers": [
           3,
+          3,
+          -1
+        ]
+      },
+      "children": []
+    },
+    {
+      "id": 8,
+      "data": {
+        "name": "PathFinder Test",
+        "lastLayers": [
+          -1,
           0,
           -1
         ]

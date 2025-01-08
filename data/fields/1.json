@@ -12,18 +12,38 @@
       "pitch": 100,
       "time": 0
     },
-    "loadScript": {
-      "global": false,
-      "block": true,
-      "wait": true,
-      "onLoad": true,
-      "onInteract": false,
-      "onCollide": false,
-      "description": "",
-      "name": "Load.lua",
-      "tags": [],
-      "key": ""
-    },
+    "scripts": [
+      {
+        "global": false,
+        "scope": 0,
+        "block": true,
+        "wait": true,
+        "onLoad": true,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": false,
+        "onDestroy": false,
+        "description": "",
+        "name": "16",
+        "tags": [],
+        "key": ""
+      },
+      {
+        "global": false,
+        "scope": 0,
+        "block": false,
+        "wait": true,
+        "onLoad": false,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": true,
+        "onDestroy": false,
+        "description": "",
+        "name": "10",
+        "tags": [],
+        "key": ""
+      }
+    ],
     "images": [],
     "transitions": [
       {
@@ -51,7 +71,7 @@
             "height": 1
           }
         ],
-        "fade": 30
+        "condition": ""
       }
     ],
     "name": "Happy Fields 5",
@@ -1591,25 +1611,31 @@
       "scripts": [
         {
           "global": false,
+          "scope": 0,
           "block": false,
-          "wait": false,
+          "wait": true,
           "onLoad": true,
           "onInteract": false,
           "onCollide": false,
-          "description": "Move Routine",
-          "name": "npc/Wanderer.lua",
+          "onExit": false,
+          "onDestroy": false,
+          "description": "",
+          "name": "12",
           "tags": [],
           "key": ""
         },
         {
-          "global": true,
+          "global": false,
+          "scope": 0,
           "block": true,
           "wait": true,
           "onLoad": false,
           "onInteract": true,
           "onCollide": false,
+          "onExit": false,
+          "onDestroy": false,
           "description": "Lancelot",
-          "name": "test/Lancelot.lua",
+          "name": "2",
           "tags": [
             {
               "key": "fieldID",
@@ -1619,7 +1645,8 @@
           "key": ""
         }
       ],
-      "repeatCollisions": false
+      "replaceScripts": false,
+      "active": true
     },
     {
       "key": "Firepit",
@@ -1630,27 +1657,31 @@
       "y": 4,
       "h": 1,
       "party": -1,
-      "charID": 10,
+      "charID": -1,
       "battlerID": -1,
-      "animation": "Idle",
+      "animation": "firepit",
       "frame": 1,
       "direction": 0,
       "defaultSpeed": 100,
       "scripts": [
         {
           "global": false,
+          "scope": 0,
           "block": true,
           "wait": true,
           "onLoad": false,
           "onInteract": true,
           "onCollide": false,
+          "onExit": false,
+          "onDestroy": false,
           "description": "",
-          "name": "test/Inn.lua",
+          "name": "14",
           "tags": [],
           "key": ""
         }
       ],
-      "repeatCollisions": false
+      "replaceScripts": false,
+      "active": true
     }
   ],
   "parties": [],

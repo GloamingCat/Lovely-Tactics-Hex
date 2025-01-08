@@ -1,31 +1,34 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-TitleCommandWindow
+--- The small windows with the commands for character management.
 ---------------------------------------------------------------------------------------------------
-The small windows with the commands for character management.
+-- @windowmod TitleCommandWindow
+-- @extend GridWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Button = require('core/gui/widget/control/Button')
 local GridWindow = require('core/gui/GridWindow')
-local SettingsGUI = require('core/gui/menu/SettingsGUI')
+local SettingsMenu = require('core/gui/menu/SettingsMenu')
 
+-- Class table.
 local TitleCommandWindow = class(GridWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Buttons
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function TitleCommandWindow:init(...)
   self.speed = math.huge
   GridWindow.init(self, ...)
   self.currentCol = 1
   self.currentRow = self:loadGameEnabled() and 2 or 1
 end
--- Implements GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`.
+-- @implement
 function TitleCommandWindow:createWidgets()
   Button:fromKey(self, 'newGame')
   Button:fromKey(self, 'loadGame')
@@ -35,76 +38,79 @@ function TitleCommandWindow:createWidgets()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Confirm Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- New Game button.
+--- New Game button.
 function TitleCommandWindow:newGameConfirm()
-  self.GUI:pauseBGM()
-  self.GUI:hide()
-  self.GUI:hideCover(true, false)
-  self.GUI:hideCover(false, true)
+  self.menu:pauseBGM()
+  self.menu:hide()
+  self.menu:hideCover(true, false)
+  self.menu:hideCover(false, true)
   self.result = 1
   local save = SaveManager:loadSave()
   GameManager:setSave(save)
 end
--- Load Game button.
+--- Load Game button.
 function TitleCommandWindow:loadGameConfirm()
-  self.GUI.topText:setVisible(false)
+  self.menu.topText:setVisible(false)
   self:hide()
-  local result = self.GUI:showWindowForResult(self.GUI.loadWindow)
+  local result = self.menu:showWindowForResult(self.menu.loadWindow)
   if result ~= '' then
-    self.GUI:pauseBGM()
-    self.GUI:hide()
-    self.GUI:hideCover(false, true)
+    self.menu:pauseBGM()
+    self.menu:hide()
+    self.menu:hideCover(false, true)
     self.result = 1
     local save = SaveManager:loadSave(result)
     GameManager:setSave(save)
   else
-    self.GUI.topText:setVisible(true)
+    self.menu.topText:setVisible(true)
     self:show()
   end
 end
--- Settings button.
+--- Settings button.
 function TitleCommandWindow:configConfirm()
-  self.GUI.topText:setVisible(false)
+  self.menu.topText:setVisible(false)
   self:hide()
-  GUIManager:showGUIForResult(SettingsGUI(self.GUI))
-  self.GUI.topText:setVisible(true)
+  MenuManager:showMenuForResult(SettingsMenu(self.menu))
+  self.menu.topText:setVisible(true)
   self:show()
 end
--- Quit button.
+--- Quit button.
 function TitleCommandWindow:quitConfirm()
-  self.GUI:hide()
+  self.menu:hide()
   GameManager:quit()
 end
--- Cancel button.
+--- Cancel button.
 function TitleCommandWindow:onButtonCancel()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Enabled Conditions
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(boolean) True if Item GUI may be open, false otherwise.
+--- Whether the ItemMenu can be open.
+-- @treturn boolean True if there's a load window in the menu.
 function TitleCommandWindow:loadGameEnabled()
-  return self.GUI.loadWindow
+  return self.menu.loadWindow
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override
 function TitleCommandWindow:colCount()
   return 1
 end
--- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override
 function TitleCommandWindow:rowCount()
   return GameManager:isWeb() and 3 or 4
 end
--- @ret(string) String representation (for debugging).
+-- For debugging.
 function TitleCommandWindow:__tostring()
   return 'Title Command Window'
 end

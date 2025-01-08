@@ -1,23 +1,27 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-BetrayRule
+--- Attack the closest ally character.
+-- It changes the battler' party to the status caster's party.
+-- If no caster is found, then this rule is the same as RushRule.
 ---------------------------------------------------------------------------------------------------
-Rule to attack the closest character, changing the battler' party to the status caster's party.
-If no caster is found, then this rule is the same as RushRule.
+-- @battlemod BetrayRule
+-- @extend SkillRule
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local SkillRule = require('core/battle/ai/SkillRule')
 
+-- Class table.
 local BetrayRule = class(SkillRule)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides SkillRule:onSelect.
+--- Overrides `SkillRule:onSelect`. 
+-- @override
 function BetrayRule:onSelect(user)
   self.originalParty = user.party
   for s in user.battler.statusList:iterator() do
@@ -38,13 +42,14 @@ function BetrayRule:onSelect(user)
     user.party = self.originalParty
   end
 end
--- Override SkillRule:execute.
+--- Overrides `AIRule:execute`.
+-- @override
 function BetrayRule:execute()
   local result = SkillRule.execute(self)
   self.input.user.party = self.originalParty
   return result
 end
--- @ret(string) String identifier.
+-- For debugging.
 function BetrayRule:__tostring()
   return 'BetrayRule (' .. tostring(self.skill)  .. '): ' .. self.battler.key
 end

@@ -1,55 +1,60 @@
 [
   {
-    "rgb": {
+    "color": {
       "red": 0,
       "green": 0,
-      "blue": 255
+      "blue": 255,
+      "alpha": 255
     },
-    "troops": [],
+    "battleFields": [],
     "name": "Party 0",
     "tags": [],
     "key": ""
   },
   {
-    "rgb": {
+    "color": {
       "red": 255,
       "green": 0,
-      "blue": 0
+      "blue": 0,
+      "alpha": 255
     },
-    "troops": [],
+    "battleFields": [],
     "name": "Party 1",
     "tags": [],
     "key": ""
   },
   {
-    "rgb": {
+    "color": {
       "red": 198,
       "green": 255,
-      "blue": 140
+      "blue": 140,
+      "alpha": 255
     },
-    "troops": [],
+    "battleFields": [],
     "name": "Forest",
     "tags": [],
     "key": ""
   },
   {
-    "rgb": {
+    "color": {
       "red": 214,
       "green": 173,
-      "blue": 173
+      "blue": 173,
+      "alpha": 255
     },
-    "troops": [],
+    "battleFields": [],
     "name": "Cave",
     "tags": [],
     "key": ""
   },
   {
-    "rgb": {
+    "color": {
       "red": 166,
       "green": 255,
-      "blue": 255
+      "blue": 255,
+      "alpha": 255
     },
-    "troops": [],
+    "battleFields": [],
     "name": "Ice Field",
     "tags": [],
     "key": ""

@@ -1,13 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-GameMouse
+--- Entity that represents game's mouse.
+-- Used in `InputManager`.
 ---------------------------------------------------------------------------------------------------
-Entity that represents game's mouse.
-Buttons:
-1 => left | 2 => right | 3 => middle
+-- @iomod GameMouse
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Vector = require('core/math/Vector')
@@ -23,13 +22,14 @@ local pph = Config.grid.pixelsPerHeight
 local dph = Config.grid.depthPerHeight
 local dpy = Config.grid.depthPerY / Config.grid.tileH
 
+-- Class table.
 local GameMouse = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function GameMouse:init()
   self.hideTime = not GameManager:isMobile() and 2 or math.huge
   self.position = Vector(0, 0)
@@ -38,11 +38,11 @@ function GameMouse:init()
   self.buttons = {}
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if player is using keyboard and updates state.
+--- Checks if player is using keyboard and updates state.
 function GameMouse:update()
   self.moved = false
   if InputManager.usingKeyboard or (timer.getTime() - self.lastMove) > self.hideTime then
@@ -50,41 +50,41 @@ function GameMouse:update()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input handlers
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when player clicks.
--- @param(id : number) button type, from 1 to 3
+--- Called when player clicks.
+-- @tparam number id Button type, from 1 to 3.
 function GameMouse:onPress(id)
   if not InputManager.usingKeyboard then
     self:show()
   end
 end
--- Called when player releases button.
--- @param(id : number) button type, from 1 to 3
+--- Called when player releases button.
+-- @tparam number id Button type, from 1 to 3.
 function GameMouse:onRelease(id)
 end
--- Called when player moves cursor.
--- @param(x : number) current cursor x coordinate
--- @param(y : number) current cursor y coordinate
+--- Called when player moves cursor.
+-- @tparam number x Current cursor x coordinate.
+-- @tparam number y Current cursor y coordinate.
 function GameMouse:onMove(x, y)
   self.position:set(x, y)
   self.moved = true
   self:show()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Cursor's graphics
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows cursor.
+--- Shows cursor.
 function GameMouse:show()
   self.lastMove = timer.getTime()
   self.active = true
   love.mouse.setVisible(true)
 end
--- Hides and deactivates cursor.
+--- Hides and deactivates cursor.
 function GameMouse:hide()
   if not GameManager:isMobile() then
     self.active = false
@@ -92,15 +92,15 @@ function GameMouse:hide()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Position
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the tile that the mouse is over.
--- @param(h : number) The height of the tile layer (1 by default).
--- @ret(number) Tile x.
--- @ret(number) Tile y.
--- @ret(number) Tile height.
+--- Gets the tile that the mouse is over.
+-- @tparam[opt=1] number h The height of the tile layer.
+-- @treturn number Tile x.
+-- @treturn number Tile y.
+-- @treturn number Tile height.
 function GameMouse:fieldCoord(h)
   h = h or 1
   local pos = self.position
@@ -108,12 +108,12 @@ function GameMouse:fieldCoord(h)
   local tx, ty, th = pixel2Tile(wx, wy, -(h - 1) * (pph + dph) - wy * dpy)
   return round(tx), round(ty), round(th)
 end
--- Gets the pixel in the GUI that the mouse is over.
--- @ret(number) Pixel x.
--- @ret(number) Pixel y.
-function GameMouse:guiCoord()
+--- Gets the pixel in the Menu that the mouse is over.
+-- @treturn number Pixel x.
+-- @treturn number Pixel y.
+function GameMouse:menuCoord()
   local pos = self.position
-  local wx, wy = ScreenManager:screen2World(GUIManager.renderer, pos.x, pos.y)
+  local wx, wy = ScreenManager:screen2World(MenuManager.renderer, pos.x, pos.y)
   return round(wx), round(wy)
 end
 

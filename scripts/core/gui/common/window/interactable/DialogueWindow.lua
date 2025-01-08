@@ -1,11 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-DialogueWindow
+--- A window that shows a `Dialogue`.
 ---------------------------------------------------------------------------------------------------
-Show a dialogue.
+-- @windowmod DialogueWindow
+-- @extend Window
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
@@ -13,74 +14,77 @@ local Dialogue = require('core/gui/widget/Dialogue')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
-local DialogueWindow = class(Window)
+-- Class table.
+local DialogueWindow = class(DescriptionWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(GUI : GUI) Parent GUI.
--- @param(w : number) Width of the window.
--- @param(h : number) Height of the window.
--- @param(x : number) Pixel x of the window.
--- @param(y : number) Pixel y of the window.
-function DialogueWindow:init(GUI, w, h, x, y)
+--- Constructor.
+-- @tparam Menu menu Parent Menu.
+-- @tparam[opt] number w Width of the window.
+-- @tparam[opt] number h Height of the window.
+-- @tparam[opt] Vector pos The position of the center of the window.
+function DialogueWindow:init(menu, w, h, pos)
   self:initProperties()
-  w = w or ScreenManager.width - GUI:windowMargin()
+  w = w or ScreenManager.width - menu:windowMargin()
   h = h or ScreenManager.height / 4
-  x = x or (w - ScreenManager.width) / 2 + GUI:windowMargin()
-  y = y or (ScreenManager.height - h) / 2 - GUI:windowMargin()
-  Window.init(self, GUI, w, h, Vector(x, y))
+  pos = pos or Vector((w - ScreenManager.width) / 2 + menu:windowMargin(),
+    (ScreenManager.height - h) / 2 - menu:windowMargin())
+  Window.init(self, menu, w, h, pos)
 end
--- Sets window's properties.
+--- Sets window's properties.
 function DialogueWindow:initProperties()
   self.nameWidth = 80
   self.nameHeight = 24
+  self.nameX = -0.70
+  self.nameY = -1.25
 end
--- Overrides Window:createContent.
--- Creates a simple text for dialogue.
+--- Overrides `Window:createContent`. Creates a simple text for dialogue.
+-- @override
 function DialogueWindow:createContent(width, height)
   Window.createContent(self, width, height)
-  local pos = Vector(-width / 2 + self:paddingX(), -height / 2 + self:paddingY())
-  self.dialogue = Dialogue('', pos, width - self:paddingX() * 2, 'left', Fonts.gui_dialogue)
+  self.dialogue = Dialogue('', nil, nil, 'left', Fonts.menu_dialogue)
+  self.dialogue:setMaxHeight(height - self:paddingY() * 2)
+  self.text = self.dialogue
   self.content:add(self.dialogue)
-  self.nameWindow = DescriptionWindow(self.GUI, self.nameWidth, self.nameHeight)
+  self.nameWindow = DescriptionWindow(self.menu, self.nameWidth, self.nameHeight)
   self.nameWindow:setVisible(false)
-end
--- Changes the window's size.
--- It recreates all contents.
-function DialogueWindow:resize(...)
-  DescriptionWindow.resize(self, ...)
-  self.dialogue.position = Vector(-self.width / 2 + self:paddingX(), -self.height / 2 + self:paddingY())
+  self:packToWindow()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when player presses a mouse button.
+--- Called when player presses a mouse button.
 function DialogueWindow:onClick(button, x, y)
   self:onConfirm()
 end
--- Overrides Window:hide.
+--- Overrides `Window:hide`. 
+-- @override
 function DialogueWindow:hide(...)
   self.nameWindow:setVisible(false)
   Window.hide(self, ...)
 end
--- Overrides Window:destroy.
+--- Overrides `Window:destroy`. 
+-- @override
 function DialogueWindow:destroy(...)
   self.nameWindow:destroy()
   self.nameWindow:removeSelf()
   Window.destroy(self, ...)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Dialogue
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Shows a message and waits until player presses the confirm button.
--- @param(text : string) The message.
--- @param(speaker : table) The speaker's name and position of name box (optional).
+--- Shows a message and waits until player presses the confirm button.
+-- @coroutine
+-- @tparam string text The message.
+-- @tparam string align The text's horizontal alignment ('left', 'right' or 'center').
+-- @tparam[opt] table speaker The speaker's name and position of name box.
 function DialogueWindow:showDialogue(text, align, speaker)
   if speaker then
     self:setName(speaker.name, speaker.x, speaker.y)
@@ -88,25 +92,26 @@ function DialogueWindow:showDialogue(text, align, speaker)
   self.dialogue:setAlign(align)
   self.dialogue:show()
   self.dialogue:rollText(text)
-  self.GUI:waitForResult()
-  self.result = nil
-  Fiber:wait()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Speaker
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows the name of the speaker.
--- @param(text : string) Nil or empty to hide window, any other string to show.
+--- Shows the name of the speaker.
+-- @tparam string text The text that will appear in the window. Pass nil or empty to hide the window.
+-- @tparam[opt=0] number x The window's x position relative to the parent DialogueWindow's position, in percentage.
+-- @tparam[opt=0] number y The window's y position relative to the parent DialogueWindow's position, in percentage.
 function DialogueWindow:setName(text, x, y)
-  x = (x or -0.70) * self.width / 2
-  y = (y or -1.25) * self.height / 2
   if text and text ~= '' then
+    x = (x or 0) / 100
+    y = (y or 0) / 100
+    local nx = (x + self.nameX) * self.width / 2
+    local ny = (y + self.nameY) * self.height / 2
     self.nameWindow:updateText(text)
-    self.nameWindow:packText()
-    local nameX = x and (self.position.x + x) or self.nameWindow.position.x
-    local nameY = y and (self.position.y + y) or self.nameWindow.position.y
+    self.nameWindow:packToText()
+    local nameX = self.position.x + nx or self.nameWindow.position.x
+    local nameY = self.position.y + ny or self.nameWindow.position.y
     self.nameWindow:setVisible(true)
     self.nameWindow:setXYZ(nameX, nameY, -5)
   else

@@ -1,15 +1,17 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Pointer
+--- A sprite that points in a given direction (vertical or horizontal).
 ---------------------------------------------------------------------------------------------------
-A sprite that points in a given direction (vertical or horizontal).
+-- @animmod Pointer
+-- @extend Animation
 
--- Animation parameters:
-The amount of pixels moved in the horizontal direction is set by <dx>.
-The amount of pixels moved in the vertical direction is set by <dy>.
+--- Parameters in the Animation tags.
+-- @tags Animation 
+-- @tfield number dx The amount of pixels moved in the horizontal direction.
+-- @tfield number dy The amount of pixels moved in the vertical direction.
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Animation = require('core/graphics/Animation')
@@ -18,15 +20,18 @@ local Animation = require('core/graphics/Animation')
 local round = math.round
 local abs = math.abs
 
+-- Class table.
 local Pointer = class(Animation)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(...) parameters from Animation:init.
+--- Overrides `Animation:init`. 
+-- @override
 function Pointer:init(...)
   Animation.init(self, ...)
+
   local centerx = self.sprite.offsetX
   local centery = self.sprite.offsetY
   local dx = self.tags and tonumber(self.tags.dx) or 0
@@ -44,11 +49,12 @@ function Pointer:init(...)
   self.sprite:setOffset(round(self.minx), round(self.miny))
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Update
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Animation:update.
+--- Overrides `Animation:update`. 
+-- @override
 function Pointer:update(dt)
   Animation.update(self, dt)
   if self.paused or not self.duration or not self.timing then

@@ -1,13 +1,14 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-AIRule
+--- A rule that decides a character's action in a battle turn.
+-- It doesn't have a persistent state of its own and only keeps data that are independent from th
+-- current battle state. Instead of storing state-dependent data, it generates in run time the
+-- ActionInput to be used according to the state.
 ---------------------------------------------------------------------------------------------------
-A rule that defines a decision in the battle turn, storing only data that are independent from the 
-current battle state. Instead of storing state-dependent data, it generates in run time the
-ActionInput to be used according to the state.
+-- @battlemod AIRule
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
@@ -15,21 +16,27 @@ local ActionInput = require('core/battle/action/ActionInput')
 -- Alias
 local rand = love.math.random
 
+-- Class table.
 local AIRule = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
+--- Constructor.
+-- @tparam Battler battler The battler executing this rule.
+-- @tparam string condition The condition expression that decides if this rule should be executed now.
+-- @tparam table tags Array of tag entries.
 function AIRule:init(battler, condition, tags)
   self.battler = battler
   self.condition = condition
   self.tags = Database.loadTags(tags)
   self.input = nil
 end
--- Creates an AIRule from the given rule data.
--- @param(data : table) Rule data with path, param and condition fields.
--- @ret(AIRule)
+--- Creates an AIRule from the given rule data.
+-- @tparam table data Rule data with path, param and condition fields.
+-- @tparam Battler battler The battler executing this rule.
+-- @treturn AIRule The AI rule defined by the given data.
 function AIRule:fromData(data, battler)
   local class = self
   if data.name and data.name ~= '' then
@@ -38,41 +45,42 @@ function AIRule:fromData(data, battler)
   return class(battler, data.condition, data.tags)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if a rule can be executed.
--- @ret(boolean) 
+--- Checks whether a rule can be executed.
+-- By default, it delegates to `ActionInput:canExecute`.
+-- @treturn boolean True if there's an input and it can be executed.
 function AIRule:canExecute()
   return self.input and self.input:canExecute()
 end
--- Executes the rule.
--- @ret(table) The action result table.
+--- Executes the rule.
+-- @treturn TurnManager.ActionResult The action result table.
 function AIRule:execute()
   return self.input and self.input:execute()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Auxiliary
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Randomly returns true with a given chance.
--- @param(percent : number) Chance from 0 to 100.
--- @ret(boolean)
+--- Randomly returns true with a given chance.
+-- @tparam number percent Chance from 0 to 100.
+-- @treturn boolean True if the random value is less than or equal the given percentage.
 function AIRule:chance(percent)
-  return rand() * 100 < percent 
+  return rand() * 100 <= percent 
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Prepares the rule to be executed (or not, if it's not possible).
--- @param(user : Character)
+--- Prepares the rule to be executed (or not, if it's not possible).
+-- @tparam Character user
 function AIRule:onSelect(user)
 end
--- @ret(string) String identifier.
+-- For debugging.
 function AIRule:__tostring()
   return 'AIRule: ' .. self.battler.key
 end

@@ -1,101 +1,86 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-TextParser
+--- Module to parse a rich text string to generate table of fragments.
+-- Rich text commands appear in the text in the form of `{C}`, where `C` is the rich text code.
+-- When a command requires a parameters, just write it right after the command code, e.g. `{+10}`
+-- or `{slove}`.
+-- See `TextParser.Code` for the list of codes.
 ---------------------------------------------------------------------------------------------------
-Module to parse a rich text string to generate table of fragments.
+-- @module TextParser
 
-Rich text codes:
-{i} = set italic;
-{b} = set bold;
-{u} = set underlined;
-{+x} = increases font size by x points;
-{-x} = decreases font size by x points;
-{fx} = set font (x must be a key in the global Fonts table);
-{cx} = sets the color (x must be a key in the global Color table);
-{sx} = shows an icon image (x must be a key in the Config.icons table).
-
-=================================================================================================]]
+-- ================================================================================================
 
 -- Alias
 local insert = table.insert
 local max = math.max
+local pathAccess = util.table.access
 
 local TextParser = {}
 
----------------------------------------------------------------------------------------------------
--- Fragments
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
 
--- Split raw text into an array of fragments.
--- @param(text : string) Raw text.
--- @param(plainText : boolean) When true, will not parse commands (optional, false by default).
--- @ret(table) Array of fragments.
+--- Rich text codes.
+-- @enum Code
+-- @field i Toggles between italic and non-italic.
+-- @field b Toggles between bold and non-bold.
+-- @field u Toggles between underlined and not underlined.
+-- @field plusx Increases font text by `x` points (type it as `+x`).
+-- @field minusx Decreases font text by `x` points (type it as `-x`).
+-- @field fx Changes font to `x` (x must be a key in the global `Fonts` table).
+-- @field cx Changes text color to `x` (x must be a key in the global `Color` table).
+-- @field sx Shows sprite (dialogue-only). `x` must be a key in the `Config.icons` data table).
+-- @field ax Player an audio (dialogue-only). `x` must be a key in the `Config.sounds` data table).
+-- @field tx Waits for `x` frames before showing the rest of the text (dialogue-only).
+-- @field p Waits until the player presses a key (dialogue-only).
+TextParser.Code = {
+  i = "italic",
+  b = "bold",
+  u = "underline",
+  r = "reset",
+  ["+"] = "size",
+  ["-"] = "size",
+  f = "font",
+  c = "color",
+  s = "sprite",
+  a = "audio",
+  t = "time",
+  p = "input",
+  ["%"] = "var"
+}
+
+-- ------------------------------------------------------------------------------------------------
+-- Fragments
+-- ------------------------------------------------------------------------------------------------
+
+--- Split raw text into an array of fragments.
+-- @tparam string text Raw text.
+-- @tparam[opt] boolean plainText Flag to not parse commands.
+-- @tparam[opt={}] table fragments Array of raw fragments.
+-- @treturn table Array of fragments.
 function TextParser.parse(text, plainText, fragments)
-  local vars = Config.variables
   fragments = fragments or {}
 	if text ~= '' then 
     if plainText then
       TextParser.parseFragment(fragments, text)
       return fragments
     end
-		for textFragment, resourceKey in text:gmatch('([^{]*){(.-)}') do
+		for textFragment, code in text:gmatch('([^{]*){(.-)}') do
       TextParser.parseFragment(fragments, textFragment)
-      local t = resourceKey:sub(1, 1)
-      if t == 'i' then
-        insert(fragments, { type = 'italic' })
-      elseif t == 'b' then
-        insert(fragments, { type = 'bold' })
-      elseif t == 'r' then
-        insert(fragments, { type = 'reset' })
-      elseif t == 'u' then
-        insert(fragments, { type = 'underline' })
-      elseif t == 'f' then
-        insert(fragments, { type = 'font', value = Fonts[resourceKey:sub(2)] })
-      elseif t == '+' then
-        insert(fragments, { type = 'size', value = tonumber(resourceKey:sub(2)) })
-      elseif t == '-' then
-        insert(fragments, { type = 'size', value = -tonumber(resourceKey:sub(2)) })
-      elseif t == 'c' then
-        insert(fragments, { type = 'color', value = Color[resourceKey:sub(2)] })
-      elseif t == 's' then
-        insert(fragments, { type = 'sprite', value = Config.icons[resourceKey:sub(2)] })
-      elseif t == 'a' then
-        insert(fragments, { event = true, type = 'audio', value = Config.sounds[resourceKey:sub(2)] })
-      elseif t == 't' then
-        insert(fragments, { event = true, type = 'time', value = tonumber(resourceKey:sub(2)) })
-      elseif t == 'p' then
-        insert(fragments, { event = true, type = 'input' })
-      elseif t == '%' then
-        local key = resourceKey:sub(2)
-        local f
-        if vars[key] then
-          f = tostring(vars[key].value)
-        else
-          local value = util.table.access(Vocab, key)
-          assert(value, 'Text variable or term ' .. tostring(key) .. ' not found.')
-          f = tostring(value)
-        end
-        if plainText then
-          TextParser.parseFragment(fragments, f)
-        else
-          TextParser.parse(f, false, fragments)
-        end
-      else
-        TextParser.parseFragment(fragments, textFragment .. '{' .. resourceKey .. '}')
-        --error('Text command not identified: ' .. (t or 'nil'))
-      end
+      TextParser.parseCode(fragments, code)
 		end
-    text = text:match('[^}]+$')
-    if text then
-      TextParser.parseFragment(fragments, text)
+    local lastText = text:match('[^}]+$')
+    if lastText then
+      TextParser.parseFragment(fragments, lastText)
     end
 	end
   return fragments
 end
--- Parse and insert new fragment(s).
--- @param(fragments : table) Array of parsed fragments.
--- @param(textFragment : string) Unparsed (and unwrapped) text fragment. 
+--- Parse and insert new fragment(s).
+-- @tparam table fragments Array of parsed fragments.
+-- @tparam string textFragment Unparsed (and unwrapped) text fragment.
 function TextParser.parseFragment(fragments, textFragment)
 	-- break up fragments with newlines
 	local n = textFragment:find('\n', 1, true)
@@ -107,16 +92,63 @@ function TextParser.parseFragment(fragments, textFragment)
 	end
 	insert(fragments, textFragment)
 end
+--- Parse and insert new fragment(s) according to code.
+-- @tparam table fragments Array of parsed fragments.
+-- @tparam string code The next code inside braces.
+function TextParser.parseCode(fragments, code)
+  local t = code:sub(1, 1)
+  if not TextParser.Code[t] then
+    TextParser.parseFragment(fragments, '{' .. code .. '}')
+    --error('Text command not identified: ' .. (t or 'nil'))
+    return
+  end
+  if t == '%' then
+    local key = code:sub(2)  
+    local value = pathAccess(Vocab, key)
+    assert(value ~= nil, 'Text term not found: ' .. tostring(key))
+    local f = tostring(value)
+    if plainText then
+      TextParser.parseFragment(fragments, f)
+    else
+      TextParser.parse(f, false, fragments)
+    end
+    return
+  end
+  local fragment = { type = TextParser.Code[t] }
+  if t == 'f' then
+    fragment.value = Fonts[code:sub(2)]
+  elseif t == '+' then
+    fragment.value = tonumber(code:sub(2))
+  elseif t == '-' then
+    fragment.value = -tonumber(code:sub(2))
+  elseif t == 'c' then
+    fragment.value = Color[code:sub(2)]
+  elseif t == 's' then
+    fragment.value = Config.icons[code:sub(2)]
+  elseif t == 'a' then
+    fragment.value = Config.sounds[code:sub(2)]
+    fragment.event = true
+  elseif t == 't' then
+    fragment.value = tonumber(code:sub(2))
+    fragment.event = true
+  elseif t == 'p' then
+    fragment.event = true
+  end
+  insert(fragments, fragment)
+end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Lines
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates line list. Each line is a table containing an array of fragments, a height and a width.
+--- Creates line list. Each line is a table containing an array of fragments, a height and a width.
 -- It also contains its length for character counting.
--- @param(fragments : table) Array of fragments.
--- @ret(table) Array of lines.
--- @ret(table) Array of text events.
+-- @tparam table fragments Array of fragments.
+-- @tparam Fonts.Info initialFont The default font.
+-- @tparam[opt] number maxWidth The width limit for wrapped text.
+-- @tparam[opt=1] number scale Text's size multiplier.
+-- @treturn table Array of lines.
+-- @treturn table Array of text events.
 function TextParser.createLines(fragments, initialFont, maxWidth, scale)
   local currentFont = ResourceManager:loadFont(initialFont, scale)
   local currentFontInfo = { unpack(initialFont) }
@@ -124,6 +156,7 @@ function TextParser.createLines(fragments, initialFont, maxWidth, scale)
   local lines = { currentLine, length = 0, scale = scale }
   local events = {}
   local point = 0
+  scale = scale or 1
 	for i = 1, #fragments do
     local fragment = fragments[i]
 		if type(fragment) == 'string' then -- Piece of text
@@ -167,10 +200,10 @@ function TextParser.createLines(fragments, initialFont, maxWidth, scale)
 	end
 	return lines, events
 end
--- Cuts the text in the given character index.
--- @param(lines : table) Array of parsed lines.
--- @param(point : number) The index of the last text character.
--- @ret(table) New array of parsed lines.
+--- Cuts the text in the given character index.
+-- @tparam table lines Array of parsed lines.
+-- @tparam number point The index of the last text character.
+-- @treturn table New array of parsed lines.
 function TextParser.cutText(lines, point)
   local newLines = { length = 0 }
   for l = 1, #lines do
@@ -199,18 +232,19 @@ function TextParser.cutText(lines, point)
   return newLines
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Text Fragments
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Inserts new text fragment to the given line (may have to add new lines).
--- @param(lines : table) The array of lines.
--- @param(currentLine : table) The line of the fragment.
--- @param(fragment : string) The text fragment.
--- @param(maxWidth : number) Max width for wrapping.
--- @param(scale : number) Font scale.
--- @ret(table) The new current line.
--- @ret(number) Total length of the fragment inserted.
+--- Inserts new text fragment to the given line (may have to add new lines).
+-- @tparam table lines The array of lines.
+-- @tparam table currentLine The line of the fragment.
+-- @tparam string fragment The text fragment.
+-- @tparam Font font Font of the text in this fragment.
+-- @tparam[opt] number maxWidth The width limit for wrapped text.
+-- @tparam[opt=1] number scale Text's size multiplier.
+-- @treturn table The new current line.
+-- @treturn number Total length of the fragment inserted.
 function TextParser.addTextFragment(lines, currentLine, fragment, font, maxWidth, scale)
   if fragment == '\n' then
     -- New line
@@ -224,13 +258,14 @@ function TextParser.addTextFragment(lines, currentLine, fragment, font, maxWidth
     return currentLine, TextParser.insertFragment(lines, currentLine, fragment, font)
   end
 end
--- Wraps text fragment (may have to add new lines).
--- @param(lines : table) The array of lines.
--- @param(currentLine : table) The line of the fragment.
--- @param(fragment : string) The text fragment.
--- @param(width : number) Max width for wrapping.
--- @ret(table) The new current line.
--- @ret(number) Total length of the fragment inserted.
+--- Wraps text fragment (may have to add new lines).
+-- @tparam table lines The array of lines.
+-- @tparam table currentLine The line of the fragment.
+-- @tparam string fragment The text fragment.
+-- @tparam Font font Font of the text in this fragment.
+-- @tparam number width Max width for wrapping.
+-- @treturn table The new current line.
+-- @treturn number Total length of the fragment inserted.
 function TextParser.wrapText(lines, currentLine, fragment, font, width)
   local x = currentLine.width
   local breakPoint = nil
@@ -263,12 +298,12 @@ function TextParser.wrapText(lines, currentLine, fragment, font, width)
   end
   return currentLine, TextParser.insertFragment(lines, currentLine, fragment, font)
 end
--- Inserts a new fragment into the line.
--- @param(lines : table) Array of all lines.
--- @param(currentLine : table) The line that the fragment will be inserted.
--- @param(fragment : table | string) The fragment to insert.
--- @param(font : Font) The font of the fragment's text (in case the fragment is a string).
--- @ret(number) The length of the inserted fragment.
+--- Inserts a new fragment into the line.
+-- @tparam table lines Array of all lines.
+-- @tparam table currentLine The line that the fragment will be inserted.
+-- @tparam table|string fragment The fragment to insert.
+-- @tparam Font font The font of the fragment's text (in case the fragment is a string).
+-- @treturn number The length of the inserted fragment.
 function TextParser.insertFragment(lines, currentLine, fragment, font)
   if type(fragment) == 'string' then
     local fw = font:getWidth(fragment)

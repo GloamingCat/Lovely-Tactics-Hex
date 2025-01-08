@@ -1,121 +1,78 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Object
+--- Common functionality for interactable and transformable objects.
 ---------------------------------------------------------------------------------------------------
-A common class for obstacles and characters.
+-- @fieldmod Object
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
-local Sprite = require('core/graphics/Sprite')
-local Transformable = require('core/math/transform/Transformable')
 local Vector = require('core/math/Vector')
 
--- Alias
-local round = math.round
-local pixel2Tile = math.field.pixel2Tile
-local tile2Pixel = math.field.tile2Pixel
+-- Class table.
+local Object = class()
 
--- Constants
-local pph = Config.grid.pixelsPerHeight
-
-local Object = class(Transformable)
-
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(data : table) Data from file (obstacle or character).
-function Object:init(data, pos)
-  Transformable.init(self, pos)
+--- Constructor.
+-- @tparam table data Data from file (obstacle or character).
+-- @tparam[opt] ObjectTile tile The tile of the object.
+-- @tparam[opt] table save Save data.
+function Object:init(data, tile, save)
+  assert(not (save and save.deleted), 'Deleted object: ' .. (data.name or data.key))
+  self:initProperties(data, save)
+  self.tile = tile
+  self:addToTiles()
+end
+--- Initializes data, name, and tags.
+-- @tparam table data The info about the object's instance.
+-- @tparam[opt] table save The instance's save data.
+function Object:initProperties(data, save)
   self.data = data
-  self.name = data.name
+  self.saveData = save
+  self.name = data.name or data.key
+  self.key = data.key
   if data.tags then
     self.tags = Database.loadTags(data.tags)
   end
 end
-
----------------------------------------------------------------------------------------------------
--- General
----------------------------------------------------------------------------------------------------
-
--- Dispose sprite and remove from tiles' object lists.
-function Object:destroy()
-  if self.sprite then
-    self.sprite:destroy()
-  end
-  self:removeFromTiles()
+--- Differentiates characters/animated interactable from obstacle and basic interactables.
+-- The default value is false.
+-- @treturn boolean Whether this object contains walk/jump methods.
+function Object:moves() 
+  return false
 end
 
----------------------------------------------------------------------------------------------------
--- Sprite
----------------------------------------------------------------------------------------------------
-
--- Shows or hides sprite.
--- @param(value : boolean)
-function Object:setVisible(value)
-  if self.sprite then
-    self.sprite:setVisible(value)
-  end
-end
--- Overrides Movable:setXYZ.
--- Updates sprite's position.
-function Object:setXYZ(...)
-  Transformable.setXYZ(self, ...)
-  if self.sprite then
-    self.sprite:setXYZ(...)
-  end
-end
--- Overrides Colorable:setRGBA.
--- Updates sprite's color.
-function Object:setRGBA(...)
-  Transformable.setRGBA(self, ...)
-  if self.sprite then
-    self.sprite:setRGBA(...)
-  end
-end
-
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Tile
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the aproximate tile coordinates of this object.
--- @ret(number) Tile x.
--- @ret(number) Tile y.
--- @ret(number) Tile height.
+--- Gets the aproximate tile coordinates of this object.
+-- @treturn number Tile x.
+-- @treturn number Tile y.
+-- @treturn number Tile layer.
 function Object:tileCoordinates()
-  local i, j, h = pixel2Tile(self.position:coordinates())
-  i = round(i)
-  j = round(j)
-  h = round(h)
-  return i, j, h
+  return self.tile:coordinates()
 end
--- Converts current pixel position to tile.
--- @ret(ObjectTile) Current tile.
+--- Converts current pixel position to tile.
+-- @treturn ObjectTile Current tile.
 function Object:getTile()
-  local x, y, h = self:tileCoordinates()
-  local layer = FieldManager.currentField.objectLayers[h]
-  assert(layer, 'height out of bounds: ' .. h)
-  layer = layer.grid[x]
-  assert(layer, 'x out of bounds: ' .. x)
-  return layer[y]
+  return self.tile
 end
--- Sets object's current position to the given tile.
--- @param(tile : ObjectTile) Destination tile.
+--- Sets object's current position to the given tile.
+-- @tparam ObjectTile tile Destination tile.
 function Object:setTile(tile)
-  local x, y, z = tile.center:coordinates()
-  self:setXYZ(x, y, z)
+  self.tile = tile
 end
--- Move to the given tile.
--- @param(tile : ObjectTile) Destination tile.
-function Object:moveToTile(tile, ...)
-  local x, y, z = tile.center:coordinates()
-  self:moveTo(x, y, z, ...)
-end
--- Gets all tiles this object is occuping.
--- @ret(table) The list of tiles.
+--- Gets all tiles this object is occuping around a center tile.
+-- If any argument is nil, the center is set as the object's current tile.
+-- @tparam[opt] number i Center tile x.
+-- @tparam[opt] number j Center tile y.
+-- @tparam[opt] number h Center tile layer.
+-- @treturn table The list of tiles.
 function Object:getAllTiles(i, j, h)
   if i and j and h then
     return { FieldManager.currentField:getObjectTile(i, j, h) }
@@ -123,61 +80,71 @@ function Object:getAllTiles(i, j, h)
     return { self:getTile() }
   end
 end
--- Adds this object to the tiles it's occuping.
+--- Adds this object to the tiles it's occuping.
+-- @tparam[opt] table tiles Array of `ObjectTile`s to be added to.
+--  If nil, add to `self:getTile()` instead.
 function Object:addToTiles(tiles)
   -- Abstract.
 end
--- Removes this object from the tiles it's occuping.
-function Object:removeFromTiles()
+--- Removes this object from the tiles it's occuping.
+-- @tparam[opt] table tiles Array of `ObjectTile`s to be removed from.
+--  If nil, removes from `self:getTile()` instead.
+function Object:removeFromTiles(tiles)
   -- Abstract.
 end
--- Sets this object to the center of its current tile.
-function Object:adjustToTile()
-  local x, y, z = tile2Pixel(self:tileCoordinates())
-  self:setXYZ(x, y, z)
-end
--- Instantly moves this object to another tile.
--- @param(i : number) Tile x (optinal, current x coordinate by default).
--- @param(j : number) Tile y (optinal, current y coordinate by default).
--- @param(h : number) Tile height (optinal, current height by default).
+--- Instantly moves this object to another tile.
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number i Tile x.
+-- @tparam[opt] number j Tile y.
+-- @tparam[opt] number h Tile layer.
 function Object:transferTile(i, j, h)
-  local tile = self:getTile()
-  local x, y, z = tile2Pixel(i or tile.x, j or tile.y, h or tile.layer.height)
+  local x, y, z = self:tileCoordinates()
+  local tile = FieldManager.currentField:getObjectTile(i + x, j + y, h + z)
   self:removeFromTiles()
-  self:setXYZ(x, y, z)
+  self:setTile(tile)
   self:addToTiles()
 end
+--- Instantly moves the object to its original tile.
+function Object:resetTile()
+  self:transferTile(self:originalCoordinates())
+end
+--- Gets the coordinates of the original tile.
+-- @treturn number Tile x.
+-- @treturn number Tile y.
+-- @treturn number Tile layer.
+function Object:originalCoordinates()
+  return self.data.x, self.data.y, self.data.h
+end
+--- Dispose sprite and remove from tiles' object lists.
+function Object:destroy()
+  self:removeFromTiles()
+end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Collision
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if a tile point is colliding with something.
--- @param(tile : Tile) The origin tile.
--- @param(dx : number) The grid displacement in x axis.
--- @param(dy : number) The grid displaciment in y axis.
--- @param(dh : number) The grid height displacement.
--- @ret(number) The collision type.
+--- Checks if a tile point is colliding with something.
+-- @tparam Tile tile The origin tile.
+-- @tparam number dx The grid displacement in x axis.
+-- @tparam number dy The grid displaciment in y axis.
+-- @tparam number dh The grid height displacement.
+-- @treturn Field.Collision The collision type.
 function Object:collision(tile, dx, dy, dh)
   local orig = Vector(tile:coordinates())
   local dest = Vector(dx, dy, dh)
   dest:add(orig)
   return FieldManager.currentField:collision(self, orig, dest)
 end
--- Gets the collider's height in grid units.
--- @param(x : number) The x of the tile of check the height.
--- @param(y : number) The y of the tile of check the height.
--- @ret(number) Height in grid units.
-function Object:getHeight(x, y)
-  return 0
+--- Check if this object collides with destination tile.
+-- @tparam Tile tile The destination tile.
+-- @treturn Field.Collision The collision type.
+function Object:collisionXYZ(tile)
+  local ox, oy, oh = self:tileCoordinates()
+  local dx, dy, dh = tile:coordinates()
+  return FieldManager.currentField:collisionXYZ(self,
+    ox, oy, oh, dx, dy, dh)
 end
--- Gets the collider's height in pixels.
--- @param(x : number) The x of the tile of check the height.
--- @param(y : number) The y of the tile of check the height.
--- @ret(number) Height in pixels.
-function Object:getPixelHeight(dx, dy)
-  local h = self:getHeight(dx, dy)
-  return h * pph
-end
+
 
 return Object

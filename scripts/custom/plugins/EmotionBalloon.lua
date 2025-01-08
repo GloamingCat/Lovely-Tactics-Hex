@@ -1,28 +1,33 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-EmotionBalloon
+--- The balloon animation to show a battler's emotion. The `"balloon"` and `"emotions"` animations 
+-- must be set in the project's config.
+-- 
+-- Requires: `ChildAnimations`
 ---------------------------------------------------------------------------------------------------
-The balloon animation to show a battler's emotion. The "balloon" and "emotions" animations must be
-set in the project's config.
+-- @plugin EmotionBalloon
 
--- Requires: 
-ChildAnimations
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield[opt] number ballonY Vertical shift in pixels applied to the balloon sprite.
+-- @tfield[opt] table emotions Array of strings to set a different list of emotions, with each string 
+--  being the emotion's code. If nil, uses the set `["!", "?", "...", "@", <3"]`.
+-- @tfield[opt] table rows Array of numbers to set custom rows for each emotion. The rows should be in the
+--  same order as the emotions listed in `emotions`. If nil, uses `[0, 1, ..., #emotions - 1]`.
 
--- Plugin parameters:
-Use <balloonY> to shift the balloon sprite in pixels.
-Use <emotions> to set a different list of emotions. It should be a list of strings, with each
-string being the emotion's code.
-Use <rows> to set custons rows for each emotion. The rows should be in the same order as the
-emotions listed in <emotions>.
-
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Animation = require('core/graphics/Animation')
-local CharacterBase = require('core/objects/CharacterBase')
+local AnimatedInteractable = require('core/objects/AnimatedInteractable')
 local CharacterEvents = require('core/event/CharacterEvents')
 local ResourceManager = require('core/base/ResourceManager')
+
+-- Rewrites
+local AnimatedInteractable_setXYZ = AnimatedInteractable.setXYZ
+local AnimatedInteractable_update = AnimatedInteractable.update
+local AnimatedInteractable_destroy = AnimatedInteractable.destroy
 
 -- Parameters
 local keyToRow = {}
@@ -38,14 +43,14 @@ if args.emotions then
 end
 local balloonY = args.balloonY or 0
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- ResourceManager
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates an animation given the emotion identifier.
--- @param(emotion : number | string) Emotion's key or row number.
--- @param(renderer : Renderer)
--- @ret(Animation)
+--- Creates an animation given the emotion identifier.
+-- @tparam number|string emotion Emotion's key or row number.
+-- @tparam Renderer renderer
+-- @treturn Animation
 function ResourceManager:loadEmotionAnimation(emotion, renderer)
   -- Emotion animation
   local emotionsID = Config.animations.emotions
@@ -58,10 +63,10 @@ function ResourceManager:loadEmotionAnimation(emotion, renderer)
   anim:setRow(emotion)
   return anim
 end
--- Creates an icon animation for balloons.
--- @param(emotion : table | string) Icon data or name (from config).
--- @param(renderer : Renderer)
--- @ret(Animation)
+--- Creates an icon animation for balloons.
+-- @tparam table|string icon Icon data or name (from config).
+-- @tparam Renderer renderer
+-- @treturn Animation
 function ResourceManager:loadBalloonIconAnimation(icon, renderer)
   if type(icon) == 'string' then
     icon = Config.icons[icon]
@@ -78,26 +83,26 @@ function ResourceManager:loadBalloonIconAnimation(icon, renderer)
   return anim
 end
 
----------------------------------------------------------------------------------------------------
--- CharacterBase
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- AnimatedInteractable
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Updates balloon position when character moves.
-local CharacterBase_setXYZ = CharacterBase.setXYZ
-function CharacterBase:setXYZ(x, y, z)
-  CharacterBase_setXYZ(self, x, y, z)
+--- Rewrites `AnimatedInteractable:setXYZ`. Updates balloon position when character moves.
+-- @rewrite
+function AnimatedInteractable:setXYZ(x, y, z)
+  AnimatedInteractable_setXYZ(self, x, y, z)
   if self.balloon then
     local p = self.position
     local h = self:getPixelHeight() + (self.jumpHeight or 0) + balloonY
-    self.balloon:setXYZ(p.x, p.y - h, p.z)
-    self.balloon.children[1]:setXYZ(p.x, p.y - h, p.z - 1)
+    self.balloon.sprite:setXYZ(p.x, p.y - h, p.z)
+    self.balloon.children[1].sprite:setXYZ(p.x, p.y - h, p.z - 1)
     --self.iconAnim:setXYZ(p.x, p.y - h - self.height / 2, p.z - 1)
   end
 end
--- Override. Updates balloon animation.
-local CharacterBase_update = CharacterBase.update
-function CharacterBase:update(dt)
-  CharacterBase_update(self, dt)
+--- Rewrites `AnimatedInteractable:update`. Updates balloon animation.
+-- @rewrite
+function AnimatedInteractable:update(dt)
+  AnimatedInteractable_update(self, dt)
   if not self.paused and self.balloon then
     self.balloon:update(dt)
     if self.balloon.paused then -- Balloon animation ended
@@ -106,19 +111,17 @@ function CharacterBase:update(dt)
     end
   end
 end
--- Override. Destroys balloon with characters is destroyed.
-local CharacterBase_destroy = CharacterBase.destroy
-function CharacterBase:destroy(...)
-  CharacterBase_destroy(self, ...)
+--- Rewrites `AnimatedInteractable:destroy`. Destroys balloon object.
+-- @rewrite
+function AnimatedInteractable:destroy(...)
+  AnimatedInteractable_destroy(self, ...)
   if self.balloon then
     self.balloon:destroy()
     self.balloon = nil
   end
 end
--- Creates a balloon animation, if there is none.
--- @param(icon : table | string | number) Row number or emotion name to show emotion animation,
---  or icon or icon name to show icon animation.
-function CharacterBase:createBalloon(anim)
+--- Creates a balloon animation, if there is none.
+function AnimatedInteractable:createBalloon()
   if self.balloon then
     return
   end
@@ -129,13 +132,14 @@ function CharacterBase:createBalloon(anim)
   self.balloon.sprite:setTransformation(self.balloon.data.transform)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- CharacterEvents
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Show an emotion animation inside character's balloon.
--- @param(args.emotion : number | string) Emotion's row or key (from keyToRow custom table).
--- @param(args.loop : bool) If true, do not destroy balloon, and instead loops animation.
+--- Show an emotion animation inside character's balloon.
+-- @tparam table args
+--  args.emotion (number|string): Emotion's row or key (from keyToRow custom table).
+--  args.loop (boolean): If true, do not destroy balloon, and instead loops animation.
 function CharacterEvents:showEmotionBalloon(args)
   local character = self:findCharacter(args.key)
   character:createBalloon()
@@ -145,9 +149,10 @@ function CharacterEvents:showEmotionBalloon(args)
     AudioManager:playSFX(Config.sounds[args.emotion])
   end
 end
--- Show an emotion animation inside character's balloon.
--- @param(args.icon : table | string) Icon data or icon name (from config data).
--- @param(args.loop : bool) If true, do not destroy balloon, and instead loops animation.
+--- Show an emotion animation inside character's balloon.
+-- @tparam table args
+--  args.icon (table|string) Icon data or icon name (from config data).
+--  args.loop (boolean) If true, do not destroy balloon, and instead loops animation.
 function CharacterEvents:showIconBalloon(args)
   local character = self:findCharacter(args.key)
   character:createBalloon()

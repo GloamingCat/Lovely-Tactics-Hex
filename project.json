@@ -1,6 +1,5 @@
 {
 	"dataPath": "data/",
 	"imagePath": "images/",
-	"audioPath": "audio/",
-	"languages": ["us", "br"]
+	"audioPath": "audio/"
 }

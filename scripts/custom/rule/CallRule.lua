@@ -1,36 +1,40 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-CallRule
+--- Calls another character to the battle field.
 ---------------------------------------------------------------------------------------------------
-The rule for an AI that removes character from battle field.
+-- @battlemod CallRule
+-- @extend AIRule
 
--- Parameters:
-The <member> as a boolean formula to only consider the members that satifies it. 
-Set <reset> as true to discard any saved changes on the called member.
+--- Parameters in the Rule tags.
+-- @tags Rule
+-- @tfield string member A boolean formula to only consider the members that satifies it. 
+-- @tfield boolean reset Flag to discard any saved changes on the called member.
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
 local AIRule = require('core/battle/ai/AIRule')
 local CallAction = require('core/battle/action/CallAction')
 
+-- Class table.
 local CallRule = class(AIRule)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(...) AIRule constructor arguments.
+--- Overrides `AIRule:init`. 
+-- @override
 function CallRule:init(...)
   AIRule.init(self, ...)
   if self.tags and self.tags.member then
     self.memberCondition = loadformula('not (' .. self.tags.member .. ')', 'member')
   end
 end
--- Overrides AIRule:onSelect.
+--- Overrides `AIRule:onSelect`. 
+-- @override
 function CallRule:onSelect(user)
   local troop = TroopManager.troops[user.party]
   local backup = troop:backupBattlers()
@@ -43,7 +47,7 @@ function CallRule:onSelect(user)
     self.input.action:onSelect(self.input)
     local validTiles = 0
     for tile in FieldManager.currentField:gridIterator() do
-      if tile.gui.selectable then
+      if tile.ui.selectable then
         validTiles = validTiles + 1
         if love.math.random(validTiles) == 1 then
           self.input.target = tile
@@ -57,7 +61,7 @@ function CallRule:onSelect(user)
     end
   end
 end
--- @ret(string) String identifier.
+-- For debugging.
 function CallRule:__tostring()
   return 'CallRule: ' .. self.battler.key
 end

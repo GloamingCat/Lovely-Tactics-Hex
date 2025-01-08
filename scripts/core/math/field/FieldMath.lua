@@ -1,14 +1,14 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-FieldMath
+--- A module that provides basic field math operations. This includes tile-pixel coordinate
+-- convertion, neighbor shift, autotile rows, grid navigation/iteration, etc.
+-- This file implements only the common operations. The abstract methods must be implemented by
+-- specific field math modules for each grid type.
 ---------------------------------------------------------------------------------------------------
-A module that provides basic field math operations, like tile-pixel coordinate convertion, neighbor 
-shift, autotile rows, grid navigation/iteration, etc.
-This module implements only the common operations. The abstract methods must be implemented by
-specific field math modules for each grid type.
+-- @fieldmod FieldMath
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Vector = require('core/math/Vector')
@@ -24,11 +24,11 @@ local angle2Coord = math.angle2Coord
 
 local FieldMath = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates static fields.
+--- Creates static fields.
 function FieldMath.init()
   FieldMath.fullNeighborShift = FieldMath.createFullNeighborShift()
   FieldMath.neighborShift = FieldMath.createNeighborShift()
@@ -54,8 +54,8 @@ function FieldMath.init()
   FieldMath.diagThreshold = Config.player.diagThreshold / 100
 end
 -- A neighbor shift is a list of "offset" values in tile coordinates (x, y)
---  from the center tile to each neighbor.
--- @ret(List) The list of vectors.
+---  from the center tile to each neighbor.
+-- @treturn List The list of vectors.
 function FieldMath.createFullNeighborShift()
   local s = {}
   local function put(x, y)
@@ -72,13 +72,13 @@ function FieldMath.createFullNeighborShift()
   return s
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Neighbor
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Verifies the tile coordinate differences are one of the neighbor shifts.
--- @param(dx : number) Difference in x between the tiles.
--- @param(dy : number) Difference in y between the tiles.
+--- Verifies the tile coordinate differences are one of the neighbor shifts.
+-- @tparam number dx Difference in x between the tiles.
+-- @tparam number dy Difference in y between the tiles.
 function FieldMath.isNeighbor(dx, dy)
   for i = 1, #FieldMath.neighborShift do
     local n = FieldMath.neighborShift[i]
@@ -89,25 +89,26 @@ function FieldMath.isNeighbor(dx, dy)
   return false
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Pixel-tile convertion
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the world center of the given field.
--- @param(field : Field) Current field.
--- @ret(number) Center x.
--- @ret(number) Center y.
+--- Gets the world center of the given field.
+-- @tparam number sizeX Grid's width in tiles.
+-- @tparam number sizeY Grid's height in tiles.
+-- @treturn number Center x.
+-- @treturn number Center y.
 function FieldMath.pixelCenter(sizeX, sizeY)
   local x1, y1 = FieldMath.tile2Pixel(1, 1, 0)
   local x2, y2 = FieldMath.tile2Pixel(sizeX, sizeY, 0)
   return (x1 + x2) / 2, (y1 + y2) / 2
 end
--- Gets the world bounds of the given field.
--- @param(field : Field)
--- @ret(number) Minimum pixel x.
--- @ret(number) Minimum pixel y.
--- @ret(number) Maximum pixel x.
--- @ret(number) Maximum pixel y.
+--- Gets the world bounds of the given field.
+-- @tparam Field field The field whose sizeX, sizeY and layers will be used.
+-- @treturn number Minimum pixel x.
+-- @treturn number Minimum pixel y.
+-- @treturn number Maximum pixel x.
+-- @treturn number Maximum pixel y.
 function FieldMath.pixelBounds(field)
   local x, y = FieldMath.pixelCenter(field.sizeX, field.sizeY)
   local w = FieldMath.pixelWidth(field.sizeX, field.sizeY)
@@ -115,20 +116,20 @@ function FieldMath.pixelBounds(field)
   return x - w / 2, y - h / 2, x + w / 2, y + h / 2
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Direction-angle convertion
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 local mod = math.mod
--- Converts row [0, 7] to float angle.
--- @param(row : number) The row from 0 to 7.
--- @ret(number) The angle in radians.
+--- Converts row [0, 7] to float angle.
+-- @tparam number row The row from 0 to 7.
+-- @treturn number The angle in radians.
 function FieldMath.row2Angle(row)
   return FieldMath.dir[row + 1]
 end
--- Converts float angle to row [0, 7].
--- @param(angle : number) The angle in radians.
--- @ret(number) The row from 0 to 7.
+--- Converts float angle to row [0, 7].
+-- @tparam number angle The angle in radians.
+-- @treturn number The row from 0 to 7.
 function FieldMath.angle2Row(angle)
   angle = mod(angle, 360)
   for i = 1, 8 do
@@ -138,19 +139,19 @@ function FieldMath.angle2Row(angle)
   end
   return 0
 end
--- Gets the next coordinates given a input direction.
--- @param(direction : number) The input direction as an angle in world coordinates.
--- @ret(number) The new x.
--- @ret(number) The new y.
+--- Gets the next coordinates given a input direction.
+-- @tparam number direction The input direction as an angle in world coordinates.
+-- @treturn number The new x.
+-- @treturn number The new y.
 function FieldMath.nextCoordDir(direction)
   local dx, dy = angle2Coord(direction)
   return FieldMath.nextCoordAxis(dx, dy)
 end
 -- Gets the number of tile mask rotations is needed for the character to be looking at given
--- direction.
--- @param(dx : number) Neighbor X shift.
--- @param(dy : number) Neighbor Y shift.
--- @ret(number) Number of tile rotations (from 0 to 7). Nil if it's not possible to determine
+--- direction.
+-- @tparam number dx Neighbor X shift.
+-- @tparam number dy Neighbor Y shift.
+-- @treturn number Number of tile rotations (from 0 to 7). Nil if it's not possible to determine
 --  the rotation (when a direction does not match a neighbor tile).
 function FieldMath.tileRotations(dx, dy)
   local n = 0
@@ -164,15 +165,15 @@ function FieldMath.tileRotations(dx, dy)
   return #FieldMath.neighborShift - n
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Mask
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor a mask where the tiles in the given radius are true.
--- @param(r : number) Radius. 0 means only the center tile.
--- @param(minh : number) Minimum height distance from the center tile (usually negative).
--- @param(maxh : number) Maximum height distance from the center tile (usually positive).
--- @ret(table) The mask grid.
+--- Constructor a mask where the tiles in the given radius are true.
+-- @tparam number r Radius. 0 means only the center tile.
+-- @tparam number minh Minimum height distance from the center tile (usually negative).
+-- @tparam number maxh Maximum height distance from the center tile (usually positive).
+-- @treturn table The mask grid.
 function FieldMath.radiusMask(r, minh, maxh)
   local grid = {}
   for h = 1, maxh - minh + 1 do
@@ -192,12 +193,12 @@ function FieldMath.radiusMask(r, minh, maxh)
   end
   return grid
 end
--- Iterates over the tiles contained in the mask.
--- @param(mask : table) The mask table, with grid and center coordinates.
--- @param(x0 : number) X of the center tile in the field.
--- @param(y0 : number) Y of the center tile in the field.
--- @param(h0 : number) Height of the center tile in the field.
--- @ret(function) Iterator that return the coordinates of the tiles contained in the mask.
+--- Iterates over the tiles contained in the mask.
+-- @tparam table mask The mask table, with grid and center coordinates.
+-- @tparam number x0 X of the center tile in the field.
+-- @tparam number y0 Y of the center tile in the field.
+-- @tparam number h0 Height of the center tile in the field.
+-- @treturn function Iterator that return the coordinates of the tiles contained in the mask.
 function FieldMath.maskIterator(mask, x0, y0, h0)
   local l, i, j = 1, 1, 1
   return function()
@@ -221,10 +222,13 @@ function FieldMath.maskIterator(mask, x0, y0, h0)
     end
   end
 end
--- Rotates the content of given mask (from origin).
--- @param(time : number) The number of times to rotate it clockwise.
--- @param(mask : table) A grid mask.
--- @ret(table) A new grid for the mask, with the rotated content.
+--- Rotates the content of given mask (from origin).
+-- @tparam number times The number of times to rotate it clockwise.
+-- @tparam table mask A grid mask.
+-- @tparam number x0 A displacement in the X position.
+-- @tparam number y0 A displacement in the Y position.
+-- @tparam number h0 A displacement in the height.
+-- @treturn table A new grid for the mask, with the rotated content.
 function FieldMath.rotatedMaskIterator(times, mask, x0, y0, h0)
   local l, i, j = 1, 1, 1
   return function()

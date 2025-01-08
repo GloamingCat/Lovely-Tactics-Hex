@@ -1,0 +1,69 @@
+Remove parens: bla\((.*)\) -> bla \1
+
+Search for badly formatted params/return.
+-- @tparam\([^\)]+\)[^\n]+[^\.]\n
+
+Search for params/return with no descriptions:
+-- @tparam\([^\)]+\)\n
+
+Search for non-typed params:
+@tparam\([^\):]+\)
+
+Search for params with "unknown" type:
+@tparam\([^\)]+unknown\)
+
+Change params format with multiple types:
+@tparam\(([^:\)]+) : ([^\)]+)\)
+@tparam \1 \2
+
+Change return format
+@treturn\(([^\)]+)\)
+@treturn \1
+
+Swap type and name
+@tparam (\w+) ([\w\|]+)
+@tparam \2 \1
+
+Change header lines
+\n\-\-\-(\-+)(\n\-\- [\w\s]*)\n\-\-\-(\-+)
+\n-- \1\2\n-- \3
+
+Add plugin/script tags
+--\[\[(=+\n\n)(\w+\n)---(-*\n)([^=]*)\n=(=*)\]\]
+
+Change summary lines
+--\[\[(=+\n\n)(@(?:script|classmod|module|table|plugin|event|animmod) \w+\n)---(-*\n)([^=]*)\n=(=*)\]\]
+-- =\1-\4-- \3-- \2\n-- \5
+
+Add comments on missing lines (post summary change)
+(?s)(---? [^\n]+)\n(?!-- )([^\n]+.*)(?=\n---------)
+\1\n-- \2
+
+Add comments on missing lines (pre summary change)
+(?s)(----\n)((?:\-\- [^\n]+\n)*)((?:[^\-][^\n]+\n)+)(?=\n\=\=\=\=)
+\1\2-- \3
+
+Change coroutine tag
+--- (\[COROUTINE\] )([.\n]*)(?!-- @)((?:---? .*\n)*function \w+:)(\w+)
+to:
+--- \2-- @coroutine \4\n\3\4
+v2:
+--- (\[COROUTINE\] )(.*\n(?:\-\-.*\n)*)(?!\-\- @)(?!\-\-  )((?:---? .*\n)*function \w+:)(\w+)
+v3:
+--- (\[COROUTINE\] )([^@\n]*\n)((?:-- .*\n)*function \w+:)(\w+)
+
+Change overrides tag
+--- Overrides (\w+:\w+)\.([^@\n]*\n)((?:-- .*\n)*function \w+:)(\w+)
+--- Overrides `\1`.\2-- @override \4\n\3\4
+
+Change override (plugin) tag
+(--- Override\.)(.*\n)((?:local.*\n)*function )(\w+:)(\w+)
+--- Rewrites `\4\5`.\2-- @rewrite \5\n\3\4\5
+
+Change module:
+@(extend|classmod) (\w+Window\n)
+@\1 ui.window.\2
+
+Optional parameters:
+-- @tparam (.*) \(optional, (\d+) by default\)
+-- @tparam[opt=\2] \1

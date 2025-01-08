@@ -1,11 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Text
+--- A special type of Sprite which texture if a rendered text.
 ---------------------------------------------------------------------------------------------------
-A special type of Sprite which texture if a rendered text.
+-- @animmod Text
+-- @extend Sprite
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Sprite = require('core/graphics/Sprite')
@@ -19,35 +20,41 @@ local max = math.max
 local min = math.min
 local round = math.round
 
+-- Class table.
 local Text = class(Sprite)
 
----------------------------------------------------------------------------------------------------
--- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(text : string) The rich text.
--- @param(resources : table) Table of resources used in text.
--- @param(renderer : Renderer) The destination renderer of the sprite.
--- @param(properties : table) The table with text properties:
---  (properties[1] : number) The width of the text box;
---  (properties[2] : string) The align type (left, right or center) 
---    (optional, left by default);
---  (properties[3] : number) The initial font 
---    (if nil, uses defaultFont).
+--- Text properties. It's an array of 4 elements.
+-- @table Properties
+-- @tfield number 1 Maximum width.
+-- @tfield string 2 Hoziontal aligment (`'left'`, `'right'` or `'center'`).
+-- @tfield Fonts.Info 3 The initial font.
+-- @tfield boolean 4 Flag to indicate plain text and not parse rich text flags.
+
+-- ------------------------------------------------------------------------------------------------
+-- Initialization
+-- ------------------------------------------------------------------------------------------------
+
+--- Constructor.
+-- @tparam string text The rich text.
+-- @tparam Text.Properties properties Array with text properties.
+-- @tparam Renderer renderer The destination renderer of the sprite.
 function Text:init(text, properties, renderer)
   Sprite.init(self, renderer)
   assert(text, 'Nil text')
   self.maxWidth = properties[1]
   self.alignX = properties[2] or 'left'
   self.alignY = 'top'
-  self.defaultFont = properties[3] or Fonts.gui_default
+  self.defaultFont = properties[3] or Fonts.menu_default
   self.plainText = properties[4]
   self.wrap = false
   self:setText(text)
 end
--- Sets/changes the text content.
--- @param(text : string) The rich text.
+--- Sets/changes the text content.
+-- @tparam string text The rich text.
 function Text:setText(text)
   assert(text, 'Nil text')
   self.text = text
@@ -68,8 +75,8 @@ function Text:setText(text)
     self:recalculateBox()
   end
 end
--- Sets the point in which the text is cut (not rendered).
--- @param(cutPoint : number) The index of the last character.
+--- Sets the point in which the text is cut (not rendered).
+-- @tparam number cutPoint The index of the last character.
 function Text:setCutPoint(cutPoint)
   self.renderer.needsRedraw = true
   self.cutPoint = cutPoint
@@ -79,8 +86,8 @@ function Text:setCutPoint(cutPoint)
     self.lines = self.parsedLines
   end
 end
--- Called when the scale of screen changes.
--- @param(renderer : Renderer) The renderer that is drawing this text.
+--- Called when the scale of screen changes.
+-- @tparam Renderer renderer The renderer that is drawing this text.
 function Text:rescale(renderer)
   if not self.parsedLines then
     return
@@ -105,21 +112,44 @@ function Text:rescale(renderer)
   self:recalculateBox()
 end
 
----------------------------------------------------------------------------------------------------
--- Visibility
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- Quad
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if sprite is visible on screen.
--- @ret(boolean)
+--- Overrides `Sprite:setQuad`.
+-- @override
+function Sprite:setQuad(x, y, w, h)
+  self.renderer.needsRedraw = true
+  self.needsRecalcBox = true
+  if type(x) == 'userdata' then
+    self.quad = x
+    return
+  end
+  if self.quad then
+    self.quad:setViewport(x or 0, y or 0, 
+      w or self:getWidth(), h or self:getHeight())
+  else
+    local tw, th = self:getWidth(), self:getHeight()
+    self.quad = Quad(x or 0, y or 0, w or tw, h or th, tw, th)
+  end
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Visibility
+-- ------------------------------------------------------------------------------------------------
+
+--- Checks if sprite is visible on screen.
+-- @treturn boolean True if it's currently visible.
 function Text:isVisible()
   return self.lines and self.visible
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Bounds
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(number) The total width in world coordinates.
+--- The total width in world coordinates.
+-- @treturn number
 function Text:getWidth()
   local w = 0
   if self.parsedLines then
@@ -130,7 +160,8 @@ function Text:getWidth()
   end
   return w
 end
--- @ret(number) The total height in world coordinates.
+--- The total height in world coordinates.
+-- @treturn number
 function Text:getHeight()
   local h = 0
   if self.parsedLines then
@@ -141,20 +172,18 @@ function Text:getHeight()
   end
   return h
 end
--- Total bounds in world coordinates.
--- @ret(number) Width.
--- @ret(number) Height.
-function Text:quadBounds()
-  return self:getWidth(), self:getHeight()
+--- Overrides `Sprite:getQuadBox`. Combines the quads of all lines.
+function Text:getQuadBox()
+  return 0, 0, self:getWidth(), self:getHeight()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Alignment
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Sets maximum line width. If wrap is set as true, new lines will be created to accomodate text 
+--- Sets maximum line width. If wrap is set as true, new lines will be created to accomodate text 
 -- out of width limit. Else, the line that surpasses width limit is shrinked horizontally to fit.
--- @param(w : number) Maximum width in GUI pixel coordinates.
+-- @tparam number w Maximum width in Menu pixel coordinates.
 function Text:setMaxWidth(w)
   if self.maxWidth ~= w then
     self.maxWidth = w
@@ -163,8 +192,8 @@ function Text:setMaxWidth(w)
     end
   end
 end
--- Sets maximum text box height. It is used only to set vertical alignment.
--- @param(h : number) Maximum height in GUI pixel coordinates.
+--- Sets maximum text box height. It is used only to set vertical alignment.
+-- @tparam number h Maximum height in Menu pixel coordinates.
 function Text:setMaxHeight(h)
   if self.maxHeight ~= h then
     self.maxHeight = h
@@ -173,25 +202,25 @@ function Text:setMaxHeight(h)
     end
   end
 end
--- Sets text alingment relative to its maximum width.
--- @param(align : string) Horizontal alignment type (left, right, center).
+--- Sets text alingment relative to its maximum width.
+-- @tparam string align Horizontal alignment type (left, right, center).
 function Text:setAlignX(align)
   if self.alignX ~= align then
     self.alignX = align
     self.renderer.needsRedraw = true
   end
 end
--- Sets text alignment relative to its maximum height.
--- @param(align : string) Vertical alignment type (top, bottom, center).
+--- Sets text alignment relative to its maximum height.
+-- @tparam string align Vertical alignment type (top, bottom, center).
 function Text:setAlignY(align)
   if self.alignY ~= align then
     self.alignY = align
     self.renderer.needsRedraw = true
   end
 end
--- Gets the line offset in x according to the alignment.
--- @param(w : number) Line's width in GUI pixels.
--- @ret(number) The x offset in GUI pixels.
+--- Gets the line offset in x according to the alignment.
+-- @tparam[opt] number w Line's width in menu pixels. If nil, uses maximum width.
+-- @treturn number The x offset in menu pixels.
 function Text:alignOffsetX(w)
   w = w or self:getWidth()
   if self.maxWidth then
@@ -203,9 +232,9 @@ function Text:alignOffsetX(w)
   end
   return 0
 end
--- Gets the text box offset in y according to the alingment.
--- @param(h : number) Text's height in GUI pixels (optional, sum of all lines' heights by default).
--- @ret(number) The y offset in GUI pixels.
+--- Gets the text box offset in y according to the alignment.
+-- @tparam[opt] number h Text's height in menu pixels. If nil, uses total height.
+-- @treturn number The y offset in Menu pixels.
 function Text:alignOffsetY(h)
   h = h or self:getHeight()
   if self.maxHeight then
@@ -218,17 +247,17 @@ function Text:alignOffsetY(h)
   return 0
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Draw in screen
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when renderer is iterating through its rendering list.
--- @param(renderer : Renderer)
+--- Called when renderer is iterating through its rendering list.
+-- @tparam Renderer renderer
 function Text:draw(renderer)
   renderer:clearBatch()
   local r, g, b, a = lgraphics.getColor()
   local shader = lgraphics.getShader()
-  lgraphics.setColor(self.color.red, self.color.green, self.color.blue, self.color.alpha)
+  lgraphics.setColor(self.color.r, self.color.g, self.color.b, self.color.a)
   lgraphics.setShader()
   lgraphics.push()
   local sx = ScreenManager.scaleX * renderer.scaleX
@@ -242,25 +271,37 @@ function Text:draw(renderer)
   lgraphics.setColor(r, g, b, a)
   lgraphics.setShader(shader)
 end
--- Prints parsed lines in the current graphics context.
+--- Prints parsed lines in the current graphics context.
 -- All fragments are assumed to have pre-multiplied width/height.
--- @para(sx : number) Scale x.
--- @para(sy : number) Scale y.
+-- @tparam number sx Scale x.
+-- @tparam number sy Scale y.
 function Text:drawLines(sx, sy)
-  local w, h = self:quadBounds()
+  local _, _, _, h = self:getQuadBox()
   local y = self:alignOffsetY(h) * sy
-  local shrink = 1
+  if not self.wrap and self.maxHeight and h > self.maxHeight then
+    lgraphics.scale(1, self.maxHeight / h)
+  end
   for i, line in ipairs(self.lines) do
     y = y + line.height
+    if self.maxHeight and y > self.maxHeight then
+      break
+    end
+    local w = line.width
     local x = 0
+    local shrink = false
     if self.maxWidth and w > self.maxWidth then
-      shrink = self.maxWidth / w
+      shrink = true
+      lgraphics.push()
+      lgraphics.scale(self.maxWidth / w, 1)
     else
       shrink = 1
       x = self:alignOffsetX(w) * sx
     end
     local drawCalls = TextRenderer.drawLine(line, x, y, self.color)
     self.renderer.textDraws = self.renderer.textDraws + drawCalls
+    if shrink then
+      lgraphics.pop()
+    end
   end
 end
 

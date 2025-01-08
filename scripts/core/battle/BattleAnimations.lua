@@ -1,33 +1,35 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-BattleAnimations
+--- Module with helper functions to play battle effects.
 ---------------------------------------------------------------------------------------------------
-Module with helper functions to play battle effects.
+-- @module BattleAnimations
 
-=================================================================================================]]
+-- ================================================================================================
 
 local BattleAnimations = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Plays a battle animation.
--- @param(animID : number) the animation's ID from database
--- @param(x : number) pixel x of the animation
--- @param(y : number) pixel y of the animation
--- @param(z : number) pixel depth of the animation
--- @param(mirror : boolean) mirror the sprite in x-axis
--- @param(wait : boolean) true to wait until first loop finishes (optional)
--- @ret(Animation) the newly created animation
+--- Plays a battle animation.
+-- @coroutine
+-- @tparam MenuManager|FieldManager manager The manager that will be responsible for the animation's object.
+-- @tparam number animID The animation's ID from database.
+-- @tparam number x Pixel x of the animation.
+-- @tparam number y Pixel y of the animation.
+-- @tparam number z Pixel depth of the animation.
+-- @tparam boolean mirror mirror the sprite in x-axis.
+-- @tparam[opt] boolean wait True to wait until first loop finishes.
+-- @treturn Animation The newly created animation.
 function BattleAnimations.play(manager, animID, x, y, z, mirror, wait)
   local data = Database.animations[animID]
   local animation = ResourceManager:loadAnimation(data, manager.renderer)
   if animation.sprite then
-    animation:setXYZ(x, y, z - 10)    
+    animation.sprite:setXYZ(x, y, z - 10)    
     if mirror then
-      animation.sprite:setScale(-animation.sprite.scaleX, animation.sprite.scaleY)
+      animation.sprite:setScale(-animation.sprite.scaleX)
     end
   end
   animation:setOneshot(true)
@@ -39,91 +41,107 @@ function BattleAnimations.play(manager, animID, x, y, z, mirror, wait)
   end
   return animation
 end
--- Play animation in field.
+--- Play animation in field.
+-- @tparam number animID The animation's ID from database.
+-- @tparam number x Pixel x of the animation.
+-- @tparam number y Pixel y of the animation.
+-- @tparam number z Pixel depth of the animation.
+-- @tparam boolean mirror mirror the sprite in x-axis.
+-- @tparam[opt] boolean wait True to wait until first loop finishes.
+-- @treturn Animation The newly created animation.
 function BattleAnimations.playOnField(animID, x, y, z, mirror, wait)
   return BattleAnimations.play(FieldManager, animID, x, y, z, mirror, wait)
 end
--- Play animation in GUI.
+--- Play animation in Menu.
+--- Play animation in field.
+-- @tparam number animID The animation's ID from database.
+-- @tparam number x Pixel x of the animation.
+-- @tparam number y Pixel y of the animation.
+-- @tparam number z Pixel depth of the animation.
+-- @tparam[opt] boolean wait True to wait until first loop finishes.
+-- @treturn Animation The newly created animation.
 function BattleAnimations.playOnMenu(animID, x, y, z, wait)
-  return BattleAnimations.play(GUIManager, animID, x or 0, y or 0, z or -50, false, wait)
+  return BattleAnimations.play(MenuManager, animID, x or 0, y or 0, z or -50, false, wait)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Skill
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(skill : table) Skill data.
--- @param(pos : Vector) Animation position.
--- @param(dir : number) Looking angle.
--- @ret(number) The duration of the animation.
+--- Plays the load effect animation on the user's tile.
+-- @tparam table skill Skill data.
+-- @tparam Vector pos Animation position.
+-- @tparam number dir Looking angle.
+-- @treturn number The duration of the animation.
 function BattleAnimations.loadEffect(skill, pos, dir)
   -- Load animation (effect on tile)
-  if skill.loadAnimID >= 0 then
-    local mirror = skill.mirror and dir > 90 and dir <= 270
-    local anim = BattleAnimations.playOnField(skill.loadAnimID, 
+  if skill.animInfo.loadID >= 0 then
+    local mirror = skill.animInfo.mirror and dir > 90 and dir <= 270
+    local anim = BattleAnimations.playOnField(skill.animInfo.loadID, 
       pos.x, pos.y, pos.z - 1, mirror)
     return anim.duration
   end
   return 0
 end
--- @param(skill : table) Skill data.
--- @param(tile : ObjectTile) Target tile.
--- @param(dir : number) Looking angle.
--- @ret(number) The duration of the animation.
+--- Plays the cast effect animation on the center target tile.
+-- @tparam table skill Skill data.
+-- @tparam ObjectTile tile Target tile.
+-- @tparam number dir Looking angle.
+-- @treturn number The duration of the animation.
 function BattleAnimations.castEffect(skill, tile, dir)
   -- Cast animation (effect on tile)
-  if skill.castAnimID >= 0 then
-    local mirror = skill.mirror and dir > 90 and dir <= 270
+  if skill.animInfo.castID >= 0 then
+    local mirror = skill.animInfo.mirror and dir > 90 and dir <= 270
     local x, y, z = tile.center:coordinates()
-    local anim = BattleAnimations.playOnField(skill.castAnimID,
+    local anim = BattleAnimations.playOnField(skill.animInfo.castID,
       x, y, z - 1, mirror)
     return anim.duration
   end
   return 0
 end
--- Plays the visual effect for the skill's target.
--- @param(skill : table) Skill data.
--- @param(char : Character) Target character.
--- @param(tile : ObjectTile) Skill's origin tile.
--- @ret(number) The duration of the animation.
+--- Plays the visual effect for one of the skill's targets.
+-- @tparam table skill Skill data.
+-- @tparam Character char Target character.
+-- @tparam ObjectTile tile Skill's origin tile.
+-- @treturn number The duration of the animation.
 function BattleAnimations.targetEffect(skill, char, tile)
-  if skill.individualAnimID >= 0 then
+  if skill.animInfo.individualID >= 0 then
     local dir = char:tileToAngle(tile.x, tile.y)
     local mirror = dir > 90 and dir <= 270
     local pos = char.position
-    local anim = BattleAnimations.playOnField(skill.individualAnimID,
+    local anim = BattleAnimations.playOnField(skill.animInfo.individualID,
       pos.x, pos.y, pos.z - 10, mirror)
     return anim.duration
   end
   return 0
 end
--- Plays the visual effect for a character's death.
--- @param(char : Character) Target character.
--- @ret(number) The duration of the animation.
+--- Plays the visual effect for a character's death.
+-- @tparam Character char Target character.
+-- @treturn number The duration of the animation.
 function BattleAnimations.dieEffect(char)
-  if char.data.koAnimID and char.data.koAnimID >= 0 then
+  if char.charData.koAnimID and char.charData.koAnimID >= 0 then
     local x, y, z = char.position:coordinates()
-    local anim = BattleAnimations.playOnField(char.data.koAnimID, x, y, z)
+    local anim = BattleAnimations.playOnField(char.charData.koAnimID, x, y, z)
     return anim.duration
   end
   return 0
 end
--- Plays the visual effect for the skill's target.
--- @param(skill : table) Skill data.
--- @param(x : number) Position x of the target (in pixels).
--- @param(y : number) Position y of the target (in pixels).
--- @ret(number) The duration of the animation.
+--- Plays the visual effect for one of the skill's target over the menu.
+-- @tparam table skill Skill data.
+-- @tparam number x Position x of the target (in pixels).
+-- @tparam number y Position y of the target (in pixels).
+-- @treturn number The duration of the animation.
 function BattleAnimations.menuTargetEffect(skill, x, y)
   local t = 0
-  if skill.castAnimID >= 0 then
-    if skill.individualAnimID >= 0 then
-      t = BattleAnimations.playOnMenu(skill.castAnimID, 0, 0, -50, false).duration
+  if skill.animInfo.castID >= 0 then
+    if skill.animInfo.individualID >= 0 then
+      t = BattleAnimations.playOnMenu(skill.animInfo.castID, 0, 0, -50, false).duration
     else
-      t = BattleAnimations.playOnMenu(skill.castAnimID, x, y, -50, false).duration
+      t = BattleAnimations.playOnMenu(skill.animInfo.castID, x, y, -50, false).duration
     end
   end
-  if skill.individualAnimID >= 0 then
-    t = math.max(BattleAnimations.playOnMenu(skill.individualAnimID, x, y, -50, false).duration, t)
+  if skill.animInfo.individualID >= 0 then
+    t = math.max(BattleAnimations.playOnMenu(skill.animInfo.individualID, x, y, -50, false).duration, t)
   end
   return t
 end

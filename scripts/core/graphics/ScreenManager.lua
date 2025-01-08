@@ -1,18 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-ScreenManager
+--- Stores info about screen's transformation (translation and scale).
 ---------------------------------------------------------------------------------------------------
-ScreenManager stores info about screen's 
-transformation (translation and scale).
+-- @manager ScreenManager
 
-Scaling types:
-0 => cannot scale at all
-1 => scale only by integer scalars
-2 => scale by real scalars, but do not change width:height ratio
-3 => scale freely
-
-=================================================================================================]]
+-- ================================================================================================
 
 -- Alias
 local lgraphics = love.graphics
@@ -21,13 +14,34 @@ local round = math.round
 local min = math.min
 local rotate = math.rotate
 
+-- Rewrites
+local old_draw = love.graphics.draw
+
+-- Class table.
 local ScreenManager = class()
 
----------------------------------------------------------------------------------------------------
--- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Types of configuration for window scaling.
+-- @enum ScalingType
+-- @field NONE Cannot scale at all.
+-- @field INT Scales only by integer scalars.
+-- @field RATIO Scales by real scalars, but do not change width:height ratio.
+-- @field ANY Scales freely.
+ScreenManager.ScalingType = {
+  NONE = 0,
+  INT = 1,
+  RATIO = 2,
+  ANY = 3
+}
+
+-- ------------------------------------------------------------------------------------------------
+-- Initialization
+-- ------------------------------------------------------------------------------------------------
+
+--- Constructor.
 function ScreenManager:init()
   love.graphics.setDefaultFilter("nearest", "nearest")
   self.width = Config.screen.nativeWidth
@@ -45,29 +59,29 @@ function ScreenManager:init()
   self.drawCalls = 0
   self:clear()
 end
--- Creates the canvas, after the screen size is set.
+--- Creates the canvas, after the screen size is set.
 function ScreenManager:initCanvas()
   if not GameManager:isMobile() then
-    self.scalingType = Config.screen.scaleType or 1
+    self.scalingType = Config.screen.scaleType or self.ScalingType.INT
   else
-    self.scalingType = Config.screen.mobileScaleType or 2
+    self.scalingType = Config.screen.mobileScaleType or self.ScalingType.RATIO
   end
   local w = lgraphics.getWidth()
   local h = lgraphics.getHeight()
   self:onResize(w, h)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Draw
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides love draw to count the calls.
-local old_draw = love.graphics.draw
+--- Rewrites `love.graphics.draw`. Counts the calls for debugging reasons.
+-- @rewrite
 function love.graphics.draw(...)
   old_draw(...)
   _G.ScreenManager.drawCalls = _G.ScreenManager.drawCalls + 1
 end
--- Draws game canvas.
+--- Draws game canvas.
 function ScreenManager:draw()
   self.drawCalls = 0
   lgraphics.setCanvas(self.canvas)
@@ -82,24 +96,24 @@ function ScreenManager:draw()
   lgraphics.draw(self.canvas, self.offsetX, self.offsetY, 0, self.canvasScaleX, self.canvasScaleY)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Renderers
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Set a renderer in the given order.
--- @param(renderer : Renderer)
--- @param(i : number)
+--- Set a renderer in the given order.
+-- @tparam Renderer renderer
+-- @tparam number i
 function ScreenManager:setRenderer(renderer, i)
   self.renderers[i] = renderer
   self.rendererCount = math.max(self.rendererCount, i)
 end
--- Clears renderer list and resets shader.
+--- Clears renderer list and resets shader.
 function ScreenManager:clear()
   self.shader = nil
   self.renderers = {}
   self.rendererCount = 0
 end
--- Resizes renderers' canvases.
+--- Resizes renderers' canvases.
 function ScreenManager:refreshRenderers()
   for i = 1, self.rendererCount do
     if self.renderers[i] then
@@ -108,24 +122,24 @@ function ScreenManager:refreshRenderers()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Size
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Scales the screen (deforms both field and GUI).
--- @param(x : number) The scale factor in axis x.
--- @param(y : number) The scale factor in axis y.
--- @ret(boolean) True if the canvas size changed.
+--- Scales the screen (deforms both field and Menu).
+-- @tparam number x The scale factor in axis x.
+-- @tparam number y The scale factor in axis y.
+-- @treturn boolean True if the canvas size changed.
 function ScreenManager:setScale(x, y)
-  if self.scalingType == 0 then
+  if self.scalingType == self.ScalingType.NONE then
     return
-  elseif self.scalingType == 1 then
+  elseif self.scalingType == self.ScalingType.INT then
     local m = min(x, y)
     if m > 1 then
       m = floor(m)
     end
     x, y = m, m
-  elseif self.scalingType == 2 then
+  elseif self.scalingType == self.ScalingType.RATIO then
     local m = min(x, y)
     x, y = m, m
   end
@@ -151,24 +165,27 @@ function ScreenManager:setScale(x, y)
     return true
   end
 end
--- @ret(number) Width in world size.
+--- Width in world size.
+-- @treturn number 
 function ScreenManager:totalWidth()
   return self.scaleX * self.width * self.canvasScaleX
 end
--- @ret(number) Height in world size.
+--- Height in world size.
+-- @treturn number 
 function ScreenManager:totalHeight()
   return self.scaleY * self.height * self.canvasScaleY
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Coordinates
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Converts a screen point to a world point.
--- @param(x : number) Screen x.
--- @param(y : number) Screen y.
--- @ret(number) World x.
--- @ret(number) World y.
+--- Converts a screen point to a world point.
+-- @tparam Renderer renderer World's renderer.
+-- @tparam number x Screen x.
+-- @tparam number y Screen y.
+-- @treturn number World x.
+-- @treturn number World y.
 function ScreenManager:screen2World(renderer, x, y)
   -- Canvas center
   local ox = self.width / 2
@@ -189,11 +206,12 @@ function ScreenManager:screen2World(renderer, x, y)
   x, y = x + ox, y + oy
   return x, y
 end
--- Converts a world point to a screen point.
--- @param(x : number) World x.
--- @param(y : number) World y.
--- @ret(number) Screen x.
--- @ret(number) Screen y.
+--- Converts a world point to a screen point.
+-- @tparam Renderer renderer World's renderer.
+-- @tparam number x World x.
+-- @tparam number y World y.
+-- @treturn number Screen x.
+-- @treturn number Screen y.
 function ScreenManager:world2Screen(renderer, x, y)
   -- Canvas center
   local ox = self.width / 2
@@ -215,12 +233,12 @@ function ScreenManager:world2Screen(renderer, x, y)
   return x, y
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Window
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Sets window mode (windowed or fullscreen).
--- @param(mode : number) 0 is fullscreen, 1+ are scales for window modes.
+--- Sets window mode (windowed or fullscreen).
+-- @tparam number mode 0 is fullscreen, 1+ are scales for window modes.
 function ScreenManager:setMode(mode)
   assert(GameManager:isDesktop(), "Mode cannot be set programmatically in this platform.")
   self.mode = mode
@@ -237,9 +255,9 @@ function ScreenManager:setMode(mode)
   local w, h = love.window.getMode()
   self:onResize(w, h)
 end
--- Called window is resizes.
--- @param(w : number) New window width in pixels.
--- @param(h : number) New window height in pixels.
+--- Called window is resizes.
+-- @tparam number w New window width in pixels.
+-- @tparam number h New window height in pixels.
 function ScreenManager:onResize(w, h)
   if w > 0 and h > 0 then
     local scaleX = w / self.width
@@ -251,8 +269,8 @@ function ScreenManager:onResize(w, h)
     self:refreshRenderers()
   end
 end
--- Called when window receives/loses focus.
--- @param(f : boolean) True if screen received focus, false if lost.
+--- Called when window receives/loses focus.
+-- @tparam boolean f True if screen received focus, false if lost.
 function ScreenManager:onFocus(f)
   if f then
     ResourceManager:refreshImages()
@@ -263,7 +281,11 @@ function ScreenManager:onFocus(f)
     end
   end
 end
--- Closes game window, but keeps it running.
+--- Called when the window is minimized/maximized.
+-- @tparam boolean v True if it was minimized (hidden), false if maximized.
+function ScreenManager:onVisible(v)
+end
+--- Closes game window, but keeps it running.
 function ScreenManager:closeWindow()
   if self.closed then
     return
@@ -271,7 +293,7 @@ function ScreenManager:closeWindow()
   love.window.close()
   self.closed = true
 end
--- Reopens game window if closed.
+--- Reopens game window if closed.
 function ScreenManager:openWindow()
   if not self.closed then
     return

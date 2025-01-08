@@ -1,31 +1,36 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-FormationAction
+--- Changes the initial formation of the battlers.
+-- It is executed when players chooses "Formation" in the intro Menu.
 ---------------------------------------------------------------------------------------------------
-The BattleAction that is executed when players chooses "Formation" in the intro GUI.
+-- @battlemod FormationAction
+-- @extend CallAction
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local CallAction = require('core/battle/action/CallAction')
-local CallGUI = require('core/gui/battle/CallGUI')
+local CallMenu = require('core/gui/battle/CallMenu')
 
+-- Class table.
 local FormationAction = class(CallAction)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input callback
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:onSelect.
+--- Overrides `BattleAction:onSelect`. 
+-- @override
 function FormationAction:onSelect(input)
   self.party = input.party or TurnManager.party
   self.troop = TroopManager.troops[self.party]
   CallAction.onSelect(self, input)
 end
--- Overrides BattleAction:onConfirm.
+--- Overrides `FieldAction:onConfirm`. 
+-- @override
 function FormationAction:onConfirm(input)
-  local result = GUIManager:showGUIForResult(CallGUI(input.GUI, self.troop, input.user == nil))
+  local result = MenuManager:showMenuForResult(CallMenu(input.menu, self.troop, input.user == nil))
   if result ~= 0 then
     local char = input.target:getFirstBattleCharacter()
     if result == '' then
@@ -50,25 +55,27 @@ function FormationAction:onConfirm(input)
     TroopManager.centers = TroopManager:getPartyCenters()
     self:resetTileProperties(input)
     self:resetTileColors(input)
-    input.GUI:selectTarget(input.target)
+    input.menu:selectTarget(input.target)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Selectable Tiles
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:isSelectable.
+--- Overrides `BattleAction:isSelectable`. 
+-- @override
 function FormationAction:isSelectable(input, tile)
   return tile.party == self.party and tile.obstacleList:isEmpty() and
     not FieldManager.currentField:collidesTerrain(tile:coordinates())
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Target
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:firstTarget.
+--- Overrides `BattleAction:firstTarget`. 
+-- @override
 function FormationAction:firstTarget(input)
   local leader = self.troop:currentMembers()[1]
   local char = FieldManager:search(leader.key)

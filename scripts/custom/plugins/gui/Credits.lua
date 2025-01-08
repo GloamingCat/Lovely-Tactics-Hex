@@ -1,14 +1,24 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Credits
+--- Adds a new command to show credits.
 ---------------------------------------------------------------------------------------------------
-Adds a new command to show credits.
+-- @plugin Credits
 
-=================================================================================================]]
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield[opt=2] number speed The speed in which the text shows on screen.
+-- @tfield[opt=60] number pause The pause in frames between pages.
+-- @tfield[opt="menu_big"] string font The font name.
+-- @tfield string pages The page names, separated by spaces.
+-- @tfield string pageX For each page `pageX`, there should be a tag `pageX` that contains the text
+--  in this page. The text contains the lines separated by spaces. Each line is a term that should
+--  be present in the `Vocab.dialogues.credits` table.
+
+-- ================================================================================================
 
 -- Imports
-local GUIEvents = require('core/event/GUIEvents')
+local MenuEvents = require('core/event/MenuEvents')
 local Text = require('core/graphics/Text')
 local Vector = require('core/math/Vector')
 
@@ -19,17 +29,17 @@ for i = 1, #pages do
 end
 local speed = args.speed or 2
 local pause = args.pause or 60
-local font = args.font or Fonts.gui_big
+local font = args.font and Fonts[args.font] or Fonts.menu_big
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Auxiliary.
--- @param(y : number) Space from the top of the screen, in pixels.
+--- Auxiliary.
+-- @tparam number y Space from the top of the screen, in pixels.
 local function createText(y)
   local prop = { ScreenManager.width, 'center', font }
-  local titleText = Text('', prop, GUIManager.renderer)
+  local titleText = Text('', prop, MenuManager.renderer)
   local x = -ScreenManager.width / 2
   y = y - ScreenManager.height / 2
   titleText.wrap = true
@@ -38,13 +48,13 @@ local function createText(y)
   return titleText
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Credits animation.
--- @param(titleText : Text)
--- @param(bodyText : Text)
+--- Credits animation.
+-- @tparam Text titleText
+-- @tparam Text bodyText
 local function showCredits(titleText, bodyText)
   local previousPage = nil
   local time = 0
@@ -79,13 +89,14 @@ local function showCredits(titleText, bodyText)
     previousPage = page.name
   end
 end
--- Shows credits animation and listens to player input.
-function GUIEvents:showCredits(args)
-  self:createGUI()
-  local titleText = createText(self.gui:windowMargin() * 2)
-  local bodyText = createText(self.gui:windowMargin() * 2 + font[3])
+--- Shows credits animation and listens to player input.
+-- @coroutine
+function MenuEvents:showCredits(args)
+  self:createMenu()
+  local titleText = createText(self.menu:windowMargin() * 2)
+  local bodyText = createText(self.menu:windowMargin() * 2 + font[3])
   local fiber = self:fork(showCredits, titleText, bodyText)
-  while fiber:running() do
+  while fiber:isRunning() do
     if InputManager.keys['confirm']:isTriggered() or InputManager.keys['cancel']:isTriggered() or
         InputManager.keys['touch']:isTriggered() or InputManager.keys['mouse1']:isTriggered() then
       fiber:interrupt()

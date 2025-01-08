@@ -1,11 +1,14 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Database
+--- Loads data and configuration from the data folder.
+-- Data files and the root data folder are stored in the global `Database` table.  
+-- Data files from the "system" subfolder are stored in the global `Config` table.  
+-- Dependencies: `Serializer`, `TagMap`
 ---------------------------------------------------------------------------------------------------
-Loads data from the data folder and stores in the Database or Config global tables.
+-- @module Database
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Serializer = require('core/save/Serializer')
@@ -16,20 +19,22 @@ local copyTable = util.table.deepCopy
 
 local Database = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Database files
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(string) Folder containing all data files.
+--- Folder containing all data files.
+-- @treturn string
 function Database.getDataDirectory()
   return Project.dataPath
 end
--- @ret(table) Array with the names of all data files.
+--- Array with the names of all data files.
+-- @treturn table
 function Database.getDataFileNames()
   return {'animations', 'battlers', 'characters', 'items', 'jobs', 'obstacles',
   'skills', 'status', 'terrains', 'troops', 'events' }
 end
--- Loads all data files and store in the Database table.
+--- Loads all data files and store in the Database table.
 function Database.loadDataFiles()
   local db = Database.getDataFileNames()
   for i = 1, #db do
@@ -38,9 +43,10 @@ function Database.loadDataFiles()
     Database[file] = Database.toArray(data)
   end
 end
--- Unifies all data files in a single array.
--- @param(file : string) Database file name.
--- @ret(table) Array of data.
+--- Unifies all data files in a single array.
+-- @tparam string folder Project's data folder.
+-- @tparam string file Database file name.
+-- @treturn table Array of data.
 function Database.getRootArray(folder, file)
   local root = {}
   local files = love.filesystem.getDirectoryItems(folder)
@@ -54,10 +60,11 @@ function Database.getRootArray(folder, file)
   assert(#root > 0 or data, 'Could not load ' .. file)
   return root
 end
--- Ignores folder nodes and insert data nodes in the array in the position given by data index.
--- @param(children : table) original array of nodes
--- @param(arr : table) Final array with the data nodes (creates an empty one if nil).
--- @ret(table) The array with the data nodes.
+--- Ignores folder nodes and insert data nodes in the array in the position given by data index.
+-- @tparam table children Original array of nodes.
+-- @tparam number parentID The ID of the parent node.
+-- @tparam table arr Final array with the data nodes (creates an empty one if nil).
+-- @treturn table The array with the data nodes.
 function Database.toArray(children, parentID, arr)
   arr = arr or {}
   parentID = parentID or -1
@@ -75,9 +82,9 @@ function Database.toArray(children, parentID, arr)
   end
   return arr
 end
--- Formats data name to string.
--- @param(data : table) Some data table from database.
--- @ret(string)
+--- Formats data to string, with its id and name.
+-- @tparam table data Some data table from database.
+-- @treturn string The string and id and name.
 function Database.toString(data)
   if data then
     return '[' .. data.id .. '] "' .. data.name .. '"' 
@@ -85,11 +92,10 @@ function Database.toString(data)
     return 'NIL'
   end
 end
--- Converts from array format to tree (raw format).
+--- Converts from array format to tree (raw format).
+-- @tparam table arr Data collection in array format.
+-- @return table Data collection in original tree format.
 function Database.toTree(arr)
-  if type(arr) == 'string' then
-    arr = Database[arr]
-  end
   -- Create node for each data
   local nodes = {}
   for i, arrnode in pairs(arr) do
@@ -110,19 +116,22 @@ function Database.toTree(arr)
   return root
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Config files
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(string) Folder containing config files.
+--- Folder containing configuration files, relative to the project root.
+-- It includes the path to the data folder.
+-- @treturn string Directory with the configuration files.
 function Database.getConfigDirectory()
   return Database.getDataDirectory() .. 'system/'
 end
--- @ret(table) Array with the names of all config files.
+--- Array with the names of all config files.
+-- @treturn table Directory with the config files.
 function Database.getConfigFileNames()
-  return {'attributes', 'variables', 'elements', 'regions', 'equipTypes', 'plugins'}
+  return {'attributes', 'languages', 'elements', 'regions', 'equipTypes', 'plugins', 'sounds'}
 end
--- Loads config data and store in the Config table.
+--- Loads config data and store in the Config table.
 function Database.loadConfigFiles()
   local sys = Database.getConfigFileNames()
   for i = 1, #sys do
@@ -141,13 +150,13 @@ function Database.loadConfigFiles()
     Config.icons[icons[i].name] = icons[i]
   end
   Database.insertKeys(Config.sounds)
-  Database.insertKeys(Config.variables)
   Database.insertKeys(Config.attributes)
+  Database.insertKeys(Config.languages)
   Database.insertKeys(Config.equipTypes)
 end
--- Creates alternate keys for the data elements in the given array.
+--- Creates alternate keys for the data elements in the given array.
 -- Each element must contain a string "key" field.
--- @param(arr : table) Array with data element.
+-- @tparam table arr Array with data element.
 function Database.insertKeys(arr)
   for i = 1, #arr do
     local a = arr[i]
@@ -155,28 +164,62 @@ function Database.insertKeys(arr)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Vocab files
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(string) Database subfolder containing vocab files.
+--- Folder containing localization files, relative to the project root.
+-- It includes the path to the data folder.
+-- @treturn string Directory with the vocab files.
 function Database.getVocabDirectory()
   return Database.getDataDirectory() .. 'vocab/'
 end
--- Loads config data and store in the Config table.
--- @param(lang : string) Selected language (optional, uses first one by default).
+--- Loads config data and store in the Config table.
+-- @tparam[opt=1] number lang Selected language.
 function Database.loadVocabFiles(lang)
-  lang = Project.languages[lang or 1]
+  lang = Config.languages[lang or 1]
   local dir = Database.getVocabDirectory()
-  Vocab = Serializer.load(dir .. 'terms-' .. lang .. '.json')
-  Vocab.dialogues = Serializer.load(dir .. 'dialogues-' .. lang.. '.json')
-  Vocab.data = Serializer.load(dir .. 'data-' .. lang.. '.json')
-  Vocab.manual = Serializer.load(dir .. 'manual-' .. lang.. '.json')
+  Vocab = Serializer.load(dir .. 'terms-' .. lang.key .. '.json')
+  Vocab.dialogues = Serializer.load(dir .. 'dialogues-' .. lang.key .. '.json')
+  Vocab.data = Serializer.load(dir .. 'data-' .. lang.key .. '.json')
+  Vocab.manual = Serializer.load(dir .. 'manual-' .. lang.key .. '.json')
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- Colors / Fonts
+-- ------------------------------------------------------------------------------------------------
+
+--- Loads config about colors and fonts used for the UI.
+function Database.loadUIConfigFiles()
+  local dir = Database.getConfigDirectory()
+  local uiconfig = Serializer.load(dir .. 'uiconfig.json')
+  Color = {}
+  for i = 1, #uiconfig.baseColors do
+    local entry = uiconfig.baseColors[i]
+    local color = entry.color
+    Color[entry.name] = { r = color.red / 255, g = color.green / 255, b = color.blue / 255, a = color.alpha / 255 }
+  end
+  for i = 1, #uiconfig.colorMap do
+    local entry = uiconfig.colorMap[i]
+    local color = uiconfig.baseColors[entry.id + 1].color
+    Color[entry.name] = { r = color.red / 255, g = color.green / 255, b = color.blue / 255, a = color.alpha / 255 }
+  end
+  Fonts = {}
+  for i = 1, #uiconfig.baseFonts do
+    local entry = uiconfig.baseFonts[i]
+    local font = entry.font
+    Fonts[entry.name] = { font.file, font.format, font.size }
+  end
+  for i = 1, #uiconfig.fontMap do
+    local entry = uiconfig.fontMap[i]
+    local font = uiconfig.baseFonts[entry.id + 1].font
+    Fonts[entry.name] = { font.file, font.format, font.size }
+  end
+end
+
+-- ------------------------------------------------------------------------------------------------
 -- Cache
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 -- Cache tables
 local PatternCache = {}
@@ -187,10 +230,10 @@ local TagMapCache = {}
 --Constants
 local emptyMap = TagMap()
 
--- Gets the array of indexes for a given string.
--- @param(pattern : string) Numbers separated by spaces.
--- @param(cols : number) Number of columns. Used if pattern is empty.
--- @ret(table) Array of numbers.
+--- Gets the array of indexes for a given string.
+-- @tparam string pattern Numbers separated by spaces.
+-- @tparam number cols Number of columns. Used if pattern is empty.
+-- @treturn table Array of numbers.
 function Database.loadPattern(pattern, cols)
   if pattern and pattern ~= '' then
     local arr = PatternCache[pattern]
@@ -214,10 +257,10 @@ function Database.loadPattern(pattern, cols)
     return arr
   end
 end
--- Gets the array of animation frame times for a given string and animation length.
--- @param(duration : string) Total duration of animation or sequence of duration of each frame.
--- @param(size : number) Number of frames (animation length).
--- @ret(table) Array of numbers.
+--- Gets the array of animation frame times for a given string and animation length.
+-- @tparam string durationstr Total duration of animation or sequence of duration of each frame.
+-- @tparam number size Number of frames (animation length).
+-- @treturn table Array of numbers.
 function Database.loadDuration(durationstr, size)
   if not durationstr or durationstr == '' then
     return nil
@@ -241,9 +284,9 @@ function Database.loadDuration(durationstr, size)
   end
   return arr
 end
--- Gets the table of move costs per job ID.
--- @param(costs : table) Array of map entries.
--- @ret(table) Map table.
+--- Gets the table of move costs per job ID.
+-- @tparam table entries Array of map entries.
+-- @treturn table Map table.
 function Database.loadBonusTable(entries)
   if BonusCache[entries] then
     return BonusCache[entries]
@@ -255,9 +298,9 @@ function Database.loadBonusTable(entries)
   BonusCache[entries] = t
   return t
 end
--- Gets the map of tags of the given tag array.
--- @param(tags : table) Array of {key, value} entries.
--- @ret(TagMap) The map with the given entries.
+--- Gets the map of tags of the given tag array.
+-- @tparam table tags Array of {key, value} entries.
+-- @treturn TagMap The map with the given entries.
 function Database.loadTags(tags)
   if tags == nil or #tags == 0 then
     return emptyMap
@@ -269,7 +312,7 @@ function Database.loadTags(tags)
   end
   return map
 end
--- Clears data cache.
+--- Clears data cache.
 function Database.clearCache()
   for k in pairs(PatternCache) do
     PatternCache[k] = nil

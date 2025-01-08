@@ -1,12 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-BattleMoveAction
+--- A move action that considers information from the battle state.
+-- It is executed when players chooses the "Move" button.
 ---------------------------------------------------------------------------------------------------
-The BattleAction that is executed when players chooses the "Move" button.
-Any action used in PathFinder must inherit from this.
+-- @battlemod BattleMoveAction
+-- @extend MoveAction
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local MoveAction = require('core/battle/action/MoveAction')
@@ -16,13 +17,15 @@ local BattleTactics = require('core/battle/ai/BattleTactics')
 local max = math.max
 local mathf = math.field
 
+-- Class table.
 local BattleMoveAction = class(MoveAction)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initalization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:init.
+--- Constructor.
+-- @param ... Any arguments passed to `MoveAction:init`.
 function BattleMoveAction:init(...)
   MoveAction.init(self, ...)
   self.freeNavigation = true
@@ -30,11 +33,12 @@ function BattleMoveAction:init(...)
   self.showStepWindow = true
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:execute.
+--- Overrides `BattleAction:execute`. 
+-- @override
 function BattleMoveAction:execute(input)  
   FieldManager.renderer:moveToObject(input.user, nil, true)
   FieldManager.renderer.focusObject = input.user
@@ -43,37 +47,37 @@ function BattleMoveAction:execute(input)
   TurnManager:updatePathMatrix()
   return result
 end
--- Overrides MoveAction:moveToTile.
+--- Overrides `MoveAction:moveToTile`. 
+-- @override
 function BattleMoveAction:moveToTile(input, nextTile)
   local previousTiles = input.user:getAllTiles()
   input.user.battler:onTerrainExit(input.user, previousTiles)
   MoveAction.moveToTile(self, input, nextTile)
   input.user.battler:onTerrainEnter(input.user, input.user:getAllTiles())
 end
--- Overrides MoveAction:calculatePath.
-function BattleMoveAction:calculatePath(input)
+--- Overrides `MoveAction:computePath`. 
+-- @override
+function BattleMoveAction:computePath(input)
   local matrix = not self:isRanged() and TurnManager:pathMatrix() or nil
   return input.path or BattleTactics.optimalPath(self, input.user, input.target, matrix)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Selectable Tiles
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Tells if a tile can be chosen as target. 
--- @ret(boolean) True if can be chosen, false otherwise.
+--- Overrides `BattleAction:isSelectable`. 
+-- @override
 function BattleMoveAction:isSelectable(input, tile)
-  return tile.gui.movable
+  return tile.ui.movable
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Path Finder
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks passability between two tiles.
--- @param(initial : ObjectTile) Origin tile.
--- @param(final : ObjectTile) Destination tile.
--- @ret(boolean) True if it's passable, false otherwise.
+--- Overrides `MoveAction:isPassableBetween`. 
+-- @override
 function BattleMoveAction:isPassableBetween(initial, final, user)
   local x, y, h = initial:coordinates()
   local c = self.field:collisionXYZ(user, x, y, h, final:coordinates())
@@ -85,20 +89,18 @@ function BattleMoveAction:isPassableBetween(initial, final, user)
   local dh = final.layer.height - h
   return mindh <= dh and dh <= maxdh
 end
--- Gets the move cost between the two tiles.
--- @param(initial : ObjectTile) The initial tile.
--- @param(final : ObjectTile) The destination tile.
--- @ret(number) The move cost.
+--- Overrides `MoveAction:getDistanceBetween`. 
+-- @override
 function BattleMoveAction:getDistanceBetween(initial, final, user)
   return max(initial:getMoveCost(user), final:getMoveCost(user))
 end
--- The max distance the character can walk.
--- @ret(number) The distance in tiles (may not be integer).
+--- Overrides `MoveAction:maxDistance`. 
+-- @override
 function BattleMoveAction:maxDistance(user)
   return user.battler.steps or self.pathLimit
 end
--- @ret(string) String representation for debugging.
-function BattleMoveAction:toString()
+-- For debugging.
+function BattleMoveAction:__tostring()
   if self:isRanged() then
     return "BattleMoveAction ranged"
   else

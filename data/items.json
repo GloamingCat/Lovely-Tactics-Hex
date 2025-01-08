@@ -17,9 +17,10 @@
       "slot": "",
       "allSlots": false,
       "blocked": [],
-      "equipStatus": [],
-      "elements": [],
       "equipAttributes": [],
+      "equipStatus": [],
+      "bonuses": [],
+      "elements": [],
       "name": "Usable",
       "tags": [],
       "key": ""
@@ -53,9 +54,10 @@
           "slot": "",
           "allSlots": false,
           "blocked": [],
-          "equipStatus": [],
-          "elements": [],
           "equipAttributes": [],
+          "equipStatus": [],
+          "bonuses": [],
+          "elements": [],
           "name": "Health Potion",
           "tags": [],
           "key": "potionHP"
@@ -90,9 +92,10 @@
           "slot": "",
           "allSlots": false,
           "blocked": [],
-          "equipStatus": [],
-          "elements": [],
           "equipAttributes": [],
+          "equipStatus": [],
+          "bonuses": [],
+          "elements": [],
           "name": "Energy Potion",
           "tags": [],
           "key": "potionSP"
@@ -116,7 +119,7 @@
           "effects": [
             {
               "key": "",
-              "basicResult": "action:defaultPhysicalDamage(user, target, a, b)",
+              "basicResult": "0",
               "successRate": "100",
               "heal": true,
               "absorb": false,
@@ -127,9 +130,10 @@
           "slot": "",
           "allSlots": false,
           "blocked": [],
-          "equipStatus": [],
-          "elements": [],
           "equipAttributes": [],
+          "equipStatus": [],
+          "bonuses": [],
+          "elements": [],
           "name": "Antidote",
           "tags": [],
           "key": "antidote"
@@ -164,9 +168,10 @@
           "slot": "",
           "allSlots": false,
           "blocked": [],
-          "equipStatus": [],
-          "elements": [],
           "equipAttributes": [],
+          "equipStatus": [],
+          "bonuses": [],
+          "elements": [],
           "name": "Reviving Potion",
           "tags": [],
           "key": "potionKO"
@@ -201,9 +206,10 @@
           "slot": "",
           "allSlots": false,
           "blocked": [],
-          "equipStatus": [],
-          "elements": [],
           "equipAttributes": [],
+          "equipStatus": [],
+          "bonuses": [],
+          "elements": [],
           "name": "Apple",
           "tags": [],
           "key": "apple"
@@ -231,9 +237,10 @@
       "slot": "",
       "allSlots": false,
       "blocked": [],
-      "equipStatus": [],
-      "elements": [],
       "equipAttributes": [],
+      "equipStatus": [],
+      "bonuses": [],
+      "elements": [],
       "name": "Equip",
       "tags": [],
       "key": ""
@@ -258,14 +265,6 @@
           "slot": "hand",
           "allSlots": false,
           "blocked": [],
-          "equipStatus": [],
-          "elements": [
-            {
-              "type": 1,
-              "id": 8,
-              "value": 100
-            }
-          ],
           "equipAttributes": [
             {
               "key": "atk",
@@ -273,6 +272,15 @@
               "mul": 0
             }
           ],
+          "equipStatus": [],
+          "bonuses": [
+            {
+              "type": 1,
+              "id": 8,
+              "value": 100
+            }
+          ],
+          "elements": [],
           "name": "Sword",
           "tags": [
             {
@@ -281,15 +289,15 @@
             },
             {
               "key": "attack",
-              "value": "atk0b"
+              "value": "\"atk0b\""
             },
             {
               "key": "skill",
-              "value": "atk1b 1 atk1"
+              "value": "[\"atk1b\", 1, \"atk1\"]"
             },
             {
               "key": "skill",
-              "value": "atk2b 1 atk2"
+              "value": "[\"atk2b\", 1, \"atk2\"]"
             }
           ],
           "key": "sword"
@@ -315,19 +323,6 @@
           "slot": "hand",
           "allSlots": true,
           "blocked": [],
-          "equipStatus": [
-            {
-              "id": 25,
-              "battle": false
-            }
-          ],
-          "elements": [
-            {
-              "type": 1,
-              "id": 8,
-              "value": 100
-            }
-          ],
           "equipAttributes": [
             {
               "key": "atk",
@@ -335,6 +330,20 @@
               "mul": 0
             }
           ],
+          "equipStatus": [
+            {
+              "id": 25,
+              "battle": false
+            }
+          ],
+          "bonuses": [
+            {
+              "type": 1,
+              "id": 8,
+              "value": 100
+            }
+          ],
+          "elements": [],
           "name": "Counter Sword",
           "tags": [
             {
@@ -343,15 +352,15 @@
             },
             {
               "key": "attack",
-              "value": "atk0b"
+              "value": "\"atk0b\""
             },
             {
               "key": "skill",
-              "value": "atk1b 1 atk1"
+              "value": "[\"atk1b\", 1, \"atk1\"]"
             },
             {
               "key": "skill",
-              "value": "atk2b 1 atk2"
+              "value": "[\"atk2b\", 1, \"atk2\"]"
             }
           ],
           "key": "swordcounter"
@@ -377,8 +386,6 @@
           "slot": "hand",
           "allSlots": true,
           "blocked": [],
-          "equipStatus": [],
-          "elements": [],
           "equipAttributes": [
             {
               "key": "atk",
@@ -386,6 +393,9 @@
               "mul": 0
             }
           ],
+          "equipStatus": [],
+          "bonuses": [],
+          "elements": [],
           "name": "Spear",
           "tags": [
             {
@@ -416,8 +426,6 @@
           "slot": "hand",
           "allSlots": true,
           "blocked": [],
-          "equipStatus": [],
-          "elements": [],
           "equipAttributes": [
             {
               "key": "atk",
@@ -430,6 +438,9 @@
               "mul": 0
             }
           ],
+          "equipStatus": [],
+          "bonuses": [],
+          "elements": [],
           "name": "Staff",
           "tags": [
             {
@@ -460,8 +471,6 @@
           "slot": "head",
           "allSlots": true,
           "blocked": [],
-          "equipStatus": [],
-          "elements": [],
           "equipAttributes": [
             {
               "key": "def",
@@ -469,6 +478,9 @@
               "mul": 0
             }
           ],
+          "equipStatus": [],
+          "bonuses": [],
+          "elements": [],
           "name": "Hat",
           "tags": [
             {
@@ -499,14 +511,15 @@
           "slot": "acc",
           "allSlots": false,
           "blocked": [],
+          "equipAttributes": [],
           "equipStatus": [
             {
               "id": 7,
               "battle": false
             }
           ],
+          "bonuses": [],
           "elements": [],
-          "equipAttributes": [],
           "name": "Ribbon",
           "tags": [
             {

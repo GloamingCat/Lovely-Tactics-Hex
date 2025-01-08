@@ -1,12 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Renderer
+--- A Renderer manages a list of sprites to be rendered. 
+-- Stores them in order and draws them using a batch.
 ---------------------------------------------------------------------------------------------------
-A Renderer manages a list of sprites to be rendered. 
-Stores them in order and draws them using a batch.
+-- @animmod Renderer
+-- @extend Transformable
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local List = require('core/datastruct/List')
@@ -22,17 +23,17 @@ local setShader = love.graphics.setShader
 local blankTexture = lgraphics.newImage(love.image.newImageData(1, 1))
 local spriteShader = lgraphics.newShader('shaders/Sprite.glsl')
 
+-- Class table.
 local Renderer = class(Transformable)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(width : numbwe) Canvas width in pixels
--- @param(height : numbwe) Canvas height in pixels.
--- @param(minDepth : number) Minimum depth of a sprite.
--- @param(maxDepth : number) Maximum depth of a sprite.
--- @param(batchSize : number) Max number of sprites.
+--- Constructor.
+-- @tparam number minDepth Minimum depth of a sprite.
+-- @tparam number maxDepth Maximum depth of a sprite.
+-- @tparam number batchSize Max number of sprites.
 function Renderer:init(minDepth, maxDepth, batchSize)
   Transformable.init(self)
   self.spriteShader = spriteShader
@@ -40,7 +41,7 @@ function Renderer:init(minDepth, maxDepth, batchSize)
   self.minDepth = minDepth
   self.maxDepth = maxDepth
   self.batchSize = batchSize
-  self.spriteList = {}
+  self.layers = {}
   self.batch = lgraphics.newSpriteBatch(blankTexture, batchSize, 'dynamic')
   self.canvas = lgraphics.newCanvas(1, 1)
   self.batchHSV = {0, 1, 1}
@@ -51,9 +52,9 @@ function Renderer:init(minDepth, maxDepth, batchSize)
   self.batchDraws = 0
   self.textDraws = 0
 end
--- Resize canvas acording to the zoom.
--- @param(newW : number) New width of the canvas in pixels.
--- @param(newH : number) New height of the canvas in pixels.
+--- Resize canvas acording to the zoom.
+-- @tparam number newW New width of the canvas in pixels.
+-- @tparam number newH New height of the canvas in pixels.
 function Renderer:resizeCanvas(newW, newH)
   if newW ~= self.canvas:getWidth() or newH ~= self.canvas:getHeight() then
     assert(newW > 0 and newH > 0, "Renderer canvas dimensions are zero!")
@@ -61,7 +62,7 @@ function Renderer:resizeCanvas(newW, newH)
     self.needsRedraw = true
   end
   for i = self.minDepth, self.maxDepth do
-    local list = self.spriteList[i]
+    local list = self.layers[i]
     if list then
       for j = 1, #list do
         list[j]:rescale(self)
@@ -70,13 +71,14 @@ function Renderer:resizeCanvas(newW, newH)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Transformations
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Sets Renderer's center position in the world coordinates.
--- @param(x : number) Pixel x.
--- @param(y : number) Pixel y.
+--- Sets Renderer's center position in the world coordinates.
+-- @tparam number x Pixel x.
+-- @tparam number y Pixel y.
+-- @tparam number z Pixel z.
 function Renderer:setXYZ(x, y, z)
   x = round(x or self.position.x)
   y = round(y or self.position.y)
@@ -85,16 +87,16 @@ function Renderer:setXYZ(x, y, z)
     self.needsRedraw = true
   end
 end
--- Sets Renderer's zoom. 1 is normal.
--- @param(zoom : number) New zoom.
+--- Sets Renderer's zoom. 1 is normal.
+-- @tparam number zoom New zoom.
 function Renderer:setZoom(zoom)
   if self.scaleX ~= zoom or self.scaleY ~= zoom then
     self:setScale(zoom, zoom)
     self.needsRedraw = true
   end
 end
--- Sets Renderer's rotation.
--- @param(angle : number) Rotation in degrees.
+--- Sets Renderer's rotation.
+-- @tparam number angle Rotation in degrees.
 function Renderer:setRotation(angle)
   if angle ~= self.rotation then
     self.rotation = angle
@@ -102,11 +104,11 @@ function Renderer:setRotation(angle)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Draw
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Draws all sprites in the renderer's table.
+--- Draws all sprites in the renderer's table.
 function Renderer:draw()
   self.batchDraws = 0
   self.textDraws = 0
@@ -122,7 +124,7 @@ function Renderer:draw()
   lgraphics.draw(self.canvas, 0, 0)
   lgraphics.setColor(r, g, b, a)
 end
--- Draws all sprites in the table to the canvas.
+--- Draws all sprites in the table to the canvas.
 function Renderer:redrawCanvas()
   -- Center of the canvas
   self.toDraw = List()
@@ -153,37 +155,29 @@ function Renderer:redrawCanvas()
   self.toDraw = nil
   self.needsRedraw = false
 end
--- Draw each sprite list, ordered by depth.
+--- Draw each sprite list, ordered by depth.
 function Renderer:drawLists()
   local started = false
   for i = self.maxDepth, self.minDepth, -1 do
-    local list = self.spriteList[i]
-    if list then
+    local layer = self.layers[i]
+    if layer then
       if not started then
         self.batchTexture = blankTexture
         self.batch:setTexture(blankTexture)
         started = true
       end
       local drawList = List()
-      for _, sprite in ipairs(list) do
-        if sprite:isVisible() then
-          if sprite.needsRecalcBox then
-            sprite:recalculateBox()
-          end
-          if sprite.position.x - sprite.diag < self.maxx and 
-              sprite.position.x + sprite.diag > self.minx and
-              sprite.position.y - sprite.diag < self.maxy and 
-              sprite.position.y + sprite.diag > self.miny then
-            drawList:add(sprite)
-          end
+      for _, sprite in ipairs(layer) do
+        if sprite:isVisible() and sprite:intersects(self.minx, self.miny, self.maxx, self.maxy) then
+          drawList:add(sprite)
         end
       end
       self:drawSortedList(drawList)
     end
   end
 end
--- Draws all sprites in the same depth, sorting by texture.
--- @param(list : Sprite Table) the list of sprites to be drawn
+--- Draws all sprites in the same depth, sorting by texture.
+-- @tparam List list The list of sprites to be drawn.
 function Renderer:drawSortedList(list)
   local last = 1
   while last <= list.size do
@@ -200,22 +194,23 @@ function Renderer:drawSortedList(list)
     last = last + 1
   end
 end
--- @ret(number) Number of sprites (visible or not).
+--- Gets the number of sprites (visible or not).
+-- @treturn number The number of sprites in this Renderer.
 function Renderer:spriteCount()
   local count = 0
   for i = self.minDepth, self.maxDepth do
-    if self.spriteList[i] then
-      count = count + #self.spriteList[i]
+    if self.layers[i] then
+      count = count + #self.layers[i]
     end
   end
   return count
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Batch
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Draws current and clears.
+--- Draws current and clears.
 function Renderer:clearBatch()
   if self.batch and self.toDraw.size > 0 then
     if self.batchHSV[1] == 0 and self.batchHSV[2] == 1 and self.batchHSV[3] == 1 then
@@ -235,9 +230,9 @@ function Renderer:clearBatch()
     self.batchDraws = self.batchDraws + 1
   end
 end
--- Checks if sprite may be added to the current batch.
--- @param(sprite : Sprite)
--- @ret(boolean)
+--- Checks if sprite may be added to the current batch.
+-- @tparam Sprite sprite Sprite to check.
+-- @treturn boolean True if the sprite has the same texture and HSV as the batch.
 function Renderer:batchPossible(sprite)
   if sprite.texture ~= self.batchTexture then
     return false

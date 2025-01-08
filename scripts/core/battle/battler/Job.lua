@@ -1,26 +1,28 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Job
+--- Represents a battler's job.
 ---------------------------------------------------------------------------------------------------
-Represents a battler's job.
+-- @battlemod Job
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local List = require('core/datastruct/List')
 local SkillAction = require('core/battle/action/SkillAction')
 local SkillList = require('core/battle/battler/SkillList')
+local StatusList = require('core/battle/battler/StatusList')
 
+-- Class table.
 local Job = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(battler : Battler) The battler with this class.
--- @param(save : table) Persitent data from save.
+--- Constructor.
+-- @tparam Battler battler The battler with this class.
+-- @tparam[opt] table save Job's save data with its ID and the current level and experience points.
 function Job:init(battler, save)
   self.id = save and save.id or battler.data.jobID
   self.battler = battler
@@ -35,6 +37,8 @@ function Job:init(battler, save)
   self.attackSkill = SkillAction:fromData(jobData.attackID)
   self.allSkills = List(jobData.skills)
   self.allSkills:sort(function(a, b) return a.level < b.level end)
+  self.allStatuses = List(jobData.statuses)
+  self.allStatuses:sort(function(a, b) return a.level < b.level end)
   if save then
     self.level = save.level
     self.exp = save.exp
@@ -43,30 +47,35 @@ function Job:init(battler, save)
     self.exp = battler.data.exp + self.expCurve(self.level)
   end
   self.skillList = SkillList()
+  self.statusList = StatusList()
+  self.statusList.battler = self.battler
   self:learnSkills()
+  self:applyStatuses()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Level-up
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Increments experience and learns skill if leveled up.
--- @param(exp : number) The quantity of EXP to be added.
-function Job:addExperience(exp)
+--- Increments experience and learns skill if leveled up.
+-- @tparam number exp The quantity of EXP to be added.
+-- @tparam[opt] Character character The current battle character of the battler.
+function Job:addExperience(exp, character)
   if self.level == Config.battle.maxLevel then
     return
   end
   self.exp = self.exp + exp
   while self.exp >= self.expCurve(self.level + 1) do
     self.level = self.level + 1
-    self:learnSkills(self.level)
+    self:learnSkills()
+    self:applyStatuses(character)
     if self.level == Config.battle.maxLevel then
       self.exp = self.expCurve(self.level)
       return
     end
   end
 end
--- Learn all skills up to current level.
+--- Learn all skills up to current level.
 function Job:learnSkills()
   for i = 1, #self.allSkills do
     local skill = self.allSkills[i]
@@ -75,9 +84,19 @@ function Job:learnSkills()
     end
   end
 end
--- Checks if the class levels up with the given EXP.
--- @param(exp : number) The quantity of EXP to be added.
--- @ret(number) The new level, or nil if did not level up.
+--- Apply all statuses up to current level.
+-- @tparam[opt] Character character The current battle character of the battler.
+function Job:applyStatuses(character)
+  for i = 1, #self.allStatuses do
+    local status = self.allStatuses[i]
+    if self.level >= status.level then
+      self.statusList:addStatus(status.id, character)
+    end
+  end
+end
+--- Checks if the class levels up with the given EXP.
+-- @tparam number exp The quantity of EXP to be added.
+-- @treturn number The new level, or nil if did not level up.
 function Job:levelsup(exp)
   local level = self.level
   exp = exp + self.exp
@@ -90,9 +109,9 @@ function Job:levelsup(exp)
     return nil
   end
 end
--- Computes the EXP progress to towards the next level.
--- @ret(number) Current EXP progress.
--- @ret(number) The total EXP needed from the current level to the next.
+--- Computes the EXP progress to towards the next level.
+-- @treturn number Current EXP progress.
+-- @treturn number The total EXP needed from the current level to the next.
 function Job:nextLevelEXP()
   if self.level == Config.battle.maxLevel then
     local expMax = self.expCurve(self.level) - self.expCurve(self.level - 1)
@@ -105,22 +124,22 @@ function Job:nextLevelEXP()
   return exp, expMax
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Converting to string.
--- @ret(string) A string representation.
-function Job:__tostring()
-  return 'Job: ' .. tostring(self.battler)
-end
--- @ret(table) Persistent data table.
+--- Gets the persistent data.
+-- @treturn table Job's save data with its ID and the current level and experience points.
 function Job:getState()
   local state = {}
   state.id = self.id
   state.exp = self.exp
   state.level = self.level
   return state
+end
+-- For debugging.
+function Job:__tostring()
+  return 'Job: ' .. tostring(self.battler)
 end
 
 return Job

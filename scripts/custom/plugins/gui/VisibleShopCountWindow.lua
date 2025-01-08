@@ -1,49 +1,59 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-VisiblePartyWindow
+--- Makes the `ShopCountWindow` in the `ShopMenu` visible alongside the `ShopListWindow`.
 ---------------------------------------------------------------------------------------------------
-Makes the ShopCountWindow in the ShopGUI visible alongside the ShopListWindow.
+-- @plugin VisibleShopCountWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local ShopCountWindow = require('core/gui/menu/window/interactable/ShopCountWindow')
 local ShopListWindow = require('core/gui/menu/window/interactable/ShopListWindow')
-local ShopGUI = require('core/gui/menu/ShopGUI')
+local ShopMenu = require('core/gui/menu/ShopMenu')
 
----------------------------------------------------------------------------------------------------
--- ShopListWindow
----------------------------------------------------------------------------------------------------
-
--- Updates item description.
+-- Rewrites
 local ShopListWindow_onButtonSelect = ShopListWindow.onButtonSelect
+local ShopMenu_showShopMenu = ShopMenu.showShopMenu
+local ShopMenu_hideShopMenu = ShopMenu.hideShopMenu
+local ShopMenu_createListWindow = ShopMenu.createListWindow
+
+-- ------------------------------------------------------------------------------------------------
+-- ShopListWindow
+-- ------------------------------------------------------------------------------------------------
+
+--- Rewrites `ShopListWindow:onButtonSelect`.
+-- @rewrite
 function ShopListWindow:onButtonSelect(button)
   ShopListWindow_onButtonSelect(self, button)
-  self.GUI.countWindow:setItem(button.item, button.price)
+  self.menu.countWindow:setItem(button.item, button.price)
 end
--- Shows the window to select the quantity.
+--- Rewrites `ShopListWindow:onButtonConfirm`.
+-- @rewrite
 function ShopListWindow:onButtonConfirm(button)
-  self.GUI.countWindow:setItem(button.item, button.price)
-  self.GUI.countWindow:activate()
+  self.menu.countWindow:setItem(button.item, button.price)
+  self.menu.countWindow:activate()
 end
--- Overrides ListWindow:colCount.
+--- Rewrites `ShopListWindow:colCount`.
+-- @rewrite
 function ShopListWindow:colCount()
   return 1
 end
--- Overrides ListWindow:computeWidth.
+--- Rewrites `ShopListWindow:cellWidth`.
+-- @rewrite
 function ShopListWindow:cellWidth(width)
-  local w = (ScreenManager.width - self.GUI:windowMargin() * 3) / 2
+  local w = (ScreenManager.width - self.menu:windowMargin() * 3) / 2
   return self:computeCellWidth(w)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- ShopCountWindow
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Hides this window and returns to the window with the item list.
+--- Rewrites `ShopCountWindow:returnWindow`.
+-- @rewrite
 function ShopCountWindow:returnWindow()
-  local w = self.GUI.listWindow
+  local w = self.menu.listWindow
   w:refreshButtons()
   w:activate()
   if self.highlight then
@@ -51,31 +61,32 @@ function ShopCountWindow:returnWindow()
   end
 end
 
----------------------------------------------------------------------------------------------------
--- ShopGUI
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- ShopMenu
+-- ------------------------------------------------------------------------------------------------
 
--- Shows ShopCountWindow.
-local ShopGUI_showShopGUI = ShopGUI.showShopGUI
-function ShopGUI:showShopGUI()
-  GUIManager.fiberList:fork(self.countWindow.show, self.countWindow)
-  ShopGUI_showShopGUI(self)
+--- Rewrites `ShopMenu:showShopMenu`.
+-- @rewrite
+function ShopMenu:showShopMenu()
+  MenuManager.fiberList:forkMethod(self.countWindow, 'show')
+  ShopMenu_showShopMenu(self)
 end
--- Hides ShopCountWindow.
-local ShopGUI_hideShopGUI = ShopGUI.hideShopGUI
-function ShopGUI:hideShopGUI()
-  GUIManager.fiberList:fork(self.countWindow.hide, self.countWindow)
-  ShopGUI_hideShopGUI(self)
+--- Rewrites `ShopMenu:hideShopMenu`.
+-- @rewrite
+function ShopMenu:hideShopMenu()
+  MenuManager.fiberList:forkMethod(self.countWindow, 'hide')
+  ShopMenu_hideShopMenu(self)
 end
--- Changes the position of the ShopListWindow.
-local ShopGUI_createListWindow = ShopGUI.createListWindow
-function ShopGUI:createListWindow()
-  ShopGUI_createListWindow(self)
+--- Rewrites `ShopMenu:createListWindow`.
+-- @rewrite
+function ShopMenu:createListWindow()
+  ShopMenu_createListWindow(self)
   local x = self.listWindow.width / 2 - ScreenManager.width / 2 + self:windowMargin()
   self.listWindow:setXYZ(x)
 end
--- Changes the size and position of the ShopCountWindow. 
-function ShopGUI:createCountWindow()
+--- Rewrites `ShopMenu:createCountWindow`.
+-- @rewrite
+function ShopMenu:createCountWindow()
   local width = ScreenManager.width - self.listWindow.width - self:windowMargin() * 3
   local height = self.listWindow.height
   local x = ScreenManager.width / 2 - self:windowMargin() - width / 2

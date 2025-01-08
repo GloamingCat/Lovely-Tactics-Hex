@@ -35,7 +35,9 @@
     "atk1": "Ataque Forte",
     "atk1_desc": "Simples ataque melee, com 150% de dano e 100% de chance de sucesso.",
     "atk2": "Ataque da Morte",
-    "atk2_desc": "Ataque melee que tira 50% do HP do alvo, com 100% de chance. Só pode ser usada quando estiver com 10% do HP ou menos.",
+    "atk2_desc": "Ataque de espada que tira 50% do HP do alvo, com 100% de chance. Só pode ser usada quando estiver com 10% do HP ou menos.",
+    "atk3": "Varrida",
+    "atk3_desc": "Ataque de espada que atinge os três tiles à frente do personagem.",
     "mgk1": "Explosão Mágica",
     "mgk1_desc": "Atinge uma área de 3 tiles de diâmetro.",
     "mgk2": "Grande Explosão Mágica",
@@ -79,12 +81,14 @@
     "def+": "DEF+",
     "fire": "Elemental de Fogo",
     "ice": "Elemental de Gelo",
-    "thunder": "Elemental de Raio"
+    "thunder": "Elemental de Raio",
     "fire+": "Amplificar Fogo",
     "ice+": "Amplificar Gelo",
     "thunder+": "Amplificar Raio"
   },
   "battler": {
+    "Arthur": "Arthur",
+    "Merlin": "Merlin",
     "slime0": "Gosma Amiga",
     "slime0_desc": "Gosma neutra de nível 2 e sem habilidades.",
     "slime1": "Gosma",

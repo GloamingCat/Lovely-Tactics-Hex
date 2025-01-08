@@ -1,31 +1,51 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-HideCursorOnMobile
+--- Hides window cursor and button highlight when on mobile.
 ---------------------------------------------------------------------------------------------------
-Hides window cursor and button highlight when on mobile.
+-- @plugin HideCursorOnMobile
 
--- Plugin parameters:
-Use <cursor> and <highlight> tags to set visibility: 'hide' to always hide, 'list' to show
-on ListWindow type of window, and 'show' to always show. The default value for <highlight> is
-'hide' and for <cursor> is 'list'. 
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield Visibility cursor sets the visibility type of the button cursor. The default type is `"list"`.
+-- @tfield Visibility highlight sets the visibility type of the button highlight. The default type is `"hide"`.
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Highlight = require('core/gui/widget/Highlight')
 local WindowCursor = require('core/gui/widget/WindowCursor')
 
--- Arguments
+-- Rewrites
+local WindowCursor_setVisible = WindowCursor.setVisible
+local Highlight_setVisible = Highlight.setVisible
+
+-- Parameters
 local cursor = args.cursor or 'list'
 local hl = args.highlight or 'hide'
 
----------------------------------------------------------------------------------------------------
--- WindowCursor
----------------------------------------------------------------------------------------------------
 
--- Hide window cursor.
-local WindowCursor_setVisible = WindowCursor.setVisible
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
+
+--- Visibility types for cursors.
+-- @enum Visibility
+-- @field hide Always invisible.
+-- @field list Visible on windows of type `ListWindow` only.
+-- @field show Always visible.
+local Visibility = {
+  HIDE = 'hide',
+  LIST = 'list',
+  SHOW = 'show'
+} 
+
+-- ------------------------------------------------------------------------------------------------
+-- WindowCursor
+-- ------------------------------------------------------------------------------------------------
+
+--- Rewrites `WindowCursor:setVisible`. Hide window cursor.
+-- @rewrite
 function WindowCursor:setVisible(value)
   if cursor == 'hide' then
     value = value and InputManager:hasKeyboard()
@@ -37,12 +57,12 @@ function WindowCursor:setVisible(value)
   WindowCursor_setVisible(self, value)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Highlight
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Hide button highlight.
-local Highlight_setVisible = Highlight.setVisible
+--- Rewrites `Highlight:setVisible`. Hide button highlight.
+-- @rewrite
 function Highlight:setVisible(value)
   if hl == 'hide' then
     value = value and InputManager:hasKeyboard()

@@ -1,14 +1,16 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Text Outline
+--- Renders text with a black outline.
 ---------------------------------------------------------------------------------------------------
-Renders text with a black outline.
+-- @plugin TextOutline
 
--- Plugin parameters:
-Use <width> to set the outline thickness (in pixels).
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield[opt=1] number number The outline thickness in pixels of native resolution.
+-- @tfield[opt] string shader The text shader file.
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Text = require('core/graphics/Text')
@@ -20,48 +22,58 @@ local Quad = lgraphics.newQuad
 local max = math.max
 local round = math.round
 
+-- Rewrites
+local Text_setText = Text.setText
+local Text_rescale = Text.rescale
+local Text_setCutPoint = Text.setCutPoint
+
 -- Parameters
 local outlineSize = args.width or 1
 
 local textShader = args.shader and lgraphics.newShader('shaders/' .. args.shader)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Redraw
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
-local Text_setText = Text.setText
+--- Rewrites `Text:setText`. Sets flag to redraw buffers.
+-- @rewrite
 function Text:setText(...)
   self.bufferLines = nil
   self.needsRedraw = true
   Text_setText(self, ...)
 end
-local Text_rescale = Text.rescale
+--- Rewrites `Text:rescale`. Sets flag to redraw buffers.
+-- @rewrite
 function Text:rescale(...)
   self.needsRedraw = true
   Text_rescale(self, ...)
 end
-local Text_setCutPoint = Text.setCutPoint
+--- Rewrites `Text:setCutPoint`. Sets flag to redraw buffers.
+-- @rewrite
 function Text:setCutPoint(...)
   self.bufferLines = nil
   self.needsRedraw = true
   Text_setCutPoint(self, ...)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Visibility
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Include bufferLines.
+--- Rewrites `Text:isVisible`.
+-- @rewrite
 function Text:isVisible()
   return (self.bufferLines or self.lines) and self.visible
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Draw in screen
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when renderer is iterating through its rendering list.
--- @param(renderer : Renderer)
+--- Called when renderer is iterating through its rendering list.
+-- @tparam number sx Scale X.
+-- @tparam number sy Scale Y.
 function Text:drawLines(sx, sy)
   if self.needsRedraw then
     local drawCalls = self:redrawBuffers(sx, sy)
@@ -88,7 +100,9 @@ function Text:drawLines(sx, sy)
     self.renderer.textDraws = self.renderer.textDraws + 1
   end
 end
--- Redraws each line buffer.
+--- Redraws each line buffer.
+-- @tparam number sx Scale X.
+-- @tparam number sy Scale Y.
 function Text:redrawBuffers(sx, sy)
   lgraphics.push()
   lgraphics.origin()
@@ -104,14 +118,16 @@ function Text:redrawBuffers(sx, sy)
   return drawCalls
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Text Renderer
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates the image buffers of each line.
--- @param(lines : table) Array of parsed lines.
--- @ret(table) Array of line image buffers.
--- @ret(number) Draw calls (for debugginf).
+--- Creates the image buffers of each line.
+-- @tparam table lines Array of parsed lines.
+-- @tparam number sx Scale X.
+-- @tparam number sy Scale Y.
+-- @treturn table Array of line image buffers.
+-- @treturn number Draw calls (for debugginf).
 function TextRenderer.createLineBuffers(lines, sx, sy)
   -- Previous graphics state
   local r, g, b, a = lgraphics.getColor()
@@ -163,9 +179,11 @@ function TextRenderer.createLineBuffers(lines, sx, sy)
   lgraphics.setCanvas(canvas)
   return renderedLines, drawCalls
 end
--- Renders texture with the shader in a buffer with the correct size.
--- @param(texture : Canvas) Unshaded rendered text.
--- @ret(Canvas) Pre-shaded texture.
+--- Renders texture with the shader in a buffer with the correct size.
+-- @tparam Canvas texture Unshaded rendered text.
+-- @tparam number sx Scale X.
+-- @tparam number sy Scale Y.
+-- @treturn Canvas Pre-shaded texture.
 function TextRenderer.shadeBuffer(texture, sx, sy)
   local r, g, b, a = lgraphics.getColor()
   lgraphics.setColor(1, 1, 1, 1)

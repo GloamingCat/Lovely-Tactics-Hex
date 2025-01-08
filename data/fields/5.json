@@ -3,8 +3,8 @@
   "sizeX": 9,
   "sizeY": 9,
   "prefs": {
-    "persistent": false,
-    "defaultRegion": -1,
+    "persistent": true,
+    "defaultRegion": 0,
     "maxHeight": 2,
     "bgm": {
       "name": "fieldsTheme",
@@ -12,18 +12,38 @@
       "pitch": 100,
       "time": 0
     },
-    "loadScript": {
-      "global": false,
-      "block": false,
-      "wait": true,
-      "onLoad": true,
-      "onInteract": false,
-      "onCollide": false,
-      "description": "",
-      "name": "Load.lua",
-      "tags": [],
-      "key": ""
-    },
+    "scripts": [
+      {
+        "global": false,
+        "scope": 0,
+        "block": true,
+        "wait": true,
+        "onLoad": true,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": false,
+        "onDestroy": false,
+        "description": "",
+        "name": "9",
+        "tags": [],
+        "key": ""
+      },
+      {
+        "global": false,
+        "scope": 0,
+        "block": false,
+        "wait": true,
+        "onLoad": false,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": true,
+        "onDestroy": false,
+        "description": "",
+        "name": "10",
+        "tags": [],
+        "key": ""
+      }
+    ],
     "images": [],
     "transitions": [
       {
@@ -51,7 +71,7 @@
             "height": 2
           }
         ],
-        "fade": 30
+        "condition": ""
       },
       {
         "destination": {
@@ -78,7 +98,7 @@
             "height": 1
           }
         ],
-        "fade": 30
+        "condition": ""
       }
     ],
     "name": "Happy Fields 2",
@@ -762,61 +782,15 @@
       "y": 5,
       "h": 1,
       "party": -1,
-      "charID": 0,
+      "charID": 10,
       "battlerID": -1,
       "animation": "Idle",
       "frame": 1,
       "direction": 225,
       "defaultSpeed": 60,
-      "scripts": [
-        {
-          "global": false,
-          "block": false,
-          "wait": false,
-          "onLoad": true,
-          "onInteract": false,
-          "onCollide": false,
-          "description": "Move Routine",
-          "name": "npc/Stalker.lua",
-          "tags": [],
-          "key": ""
-        },
-        {
-          "global": false,
-          "block": false,
-          "wait": false,
-          "onLoad": true,
-          "onInteract": false,
-          "onCollide": false,
-          "description": "Spawn Verification",
-          "name": "npc/BattleSetup.lua",
-          "tags": [
-            {
-              "key": "resetPos",
-              "value": "true"
-            }
-          ],
-          "key": ""
-        },
-        {
-          "global": false,
-          "block": true,
-          "wait": true,
-          "onLoad": false,
-          "onInteract": false,
-          "onCollide": true,
-          "description": "Battle on Collision",
-          "name": "npc/Battle.lua",
-          "tags": [
-            {
-              "key": "fieldID",
-              "value": "0"
-            }
-          ],
-          "key": ""
-        }
-      ],
-      "repeatCollisions": false
+      "scripts": [],
+      "replaceScripts": false,
+      "active": true
     },
     {
       "key": "Apple",
@@ -836,13 +810,16 @@
       "scripts": [
         {
           "global": false,
+          "scope": 0,
           "block": true,
           "wait": true,
           "onLoad": false,
           "onInteract": false,
           "onCollide": true,
+          "onExit": false,
+          "onDestroy": false,
           "description": "",
-          "name": "npc/Loot.lua",
+          "name": "13",
           "tags": [
             {
               "key": "id",
@@ -852,7 +829,8 @@
           "key": ""
         }
       ],
-      "repeatCollisions": false
+      "replaceScripts": false,
+      "active": true
     }
   ],
   "parties": [],

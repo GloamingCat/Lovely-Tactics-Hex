@@ -1,15 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-SkillProjectile
+--- Abstraction of a projectile thrown during the use of a skill.
 ---------------------------------------------------------------------------------------------------
-Abstraction of a projectile thrown during the use of a skill.
+-- @plugin SkillProjectile
 
--- Skill parameters:
-Set <projectileID> tag as projectile animation ID or key.
-Must be an animation with "Projectile" script.
-
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Animation = require('core/graphics/Animation')
@@ -24,37 +20,42 @@ local nextCoordDir = math.field.nextCoordDir
 local pixel2Tile = math.field.pixel2Tile
 local tile2Pixel = math.field.tile2Pixel
 
----------------------------------------------------------------------------------------------------
--- Animation
----------------------------------------------------------------------------------------------------
+-- Rewrites
+local Animation_update = Animation.update
+local Character_castSkill = Character.castSkill
 
--- Sets origin position.
--- @param(user : Character)
+-- ------------------------------------------------------------------------------------------------
+-- Animation
+-- ------------------------------------------------------------------------------------------------
+
+--- Sets origin position.
+-- @tparam Character user
 function Animation:setUser(user)
   self.userHeight = user:getHeight(0, 0) / 2
   local di, dj = nextCoordDir(user:getRoundedDirection())
   local i, j, h = user:getTile():coordinates()
   local x, y, z = tile2Pixel(i + di, j + dj, h + self.userHeight)
   local row = self.tags and self.tags.rotate and user.animation.row or 0
-  self:setXYZ(x, y, z)
+  self.sprite:setXYZ(x, y, z)
   self.origin = Vector(x, y, z)
   self:setRow(row)
 end
--- Sets target position.
--- @param(target : ObjectTile)
--- @ret(number) The distance from the current position to the target position.
+--- Sets target position.
+-- @tparam ObjectTile target
+-- @treturn number The distance from the current position to the target position.
 function Animation:setTarget(target)
   local i, j, h = target:coordinates()
   self.target = Vector(tile2Pixel(i, j, h + (self.userHeight or 0)))
   self.moveTime = 0
   return self.sprite.position:distance2DTo(self.target:coordinates())
 end
--- [COROUTINE] Starts the movement towards the target tile.
--- @param(user : Character)
--- @param(target : ObjectTile) The target tile.
--- @param(speed : number) Speed in pixels per second (optional if speed is set in tags).
--- @param(wait : boolean) True to wait until the end of movement (false by default).
--- @ret(number) Duration of the movement in frames.
+--- Starts the movement towards the target tile.
+-- @coroutine
+-- @tparam Character user
+-- @tparam ObjectTile target The target tile.
+-- @tparam[opt] number speed Speed in pixels per second. If nil, gets speed from tags).
+-- @tparam[opt] boolean wait Flag to wait until the end of movement.
+-- @treturn number Duration of the movement in frames.
 function Animation:throw(user, target, speed, wait)
   self:setUser(user)
   local d = self:setTarget(target)
@@ -72,9 +73,8 @@ function Animation:throw(user, target, speed, wait)
   end
   return time
 end
--- Overrides Animation:update.
--- Updates sprite position.
-local Animation_update = Animation.update
+--- Rewrites `Animation:update`.
+-- @rewrite
 function Animation:update(dt)
   Animation_update(self, dt)
   if self.moveSpeed then
@@ -83,12 +83,12 @@ function Animation:update(dt)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Character
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides. Change throw projectile after cast animation.
-local Character_castSkill = Character.castSkill
+--- Rewrites `Character:castSkill`.
+-- @rewrite
 function Character:castSkill(skill, dir, target)
   local minTime = Character_castSkill(self, skill, dir, target)
   -- Projectile

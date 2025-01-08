@@ -1,29 +1,36 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-DialoguePortrait
+--- Indents the dialogue text to fit the speaker's portrait, shown above window.
 ---------------------------------------------------------------------------------------------------
-Indents the dialogue text to fit the speaker's portrait, shown above window.
+-- @plugin DialoguePortrait
 
--- Plugin parameters:
-Use <indent> to fix an indentation length instead of using portrait's width.
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield number indent Fixes an indentation length `indent` instead of using portrait's width.
 
-=================================================================================================]]
+-- ================================================================================================
+
+-- Imports
+local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')
+local MenuEvents = require('core/event/MenuEvents')
+local ImageComponent = require('core/gui/widget/ImageComponent')
+local Vector = require('core/math/Vector')
+
+-- Rewrites
+local DialogueWindow_showDialogue = DialogueWindow.showDialogue
+local DialogueWindow_setName = DialogueWindow.setName
+local MenuEvents_openDialogueWindow = MenuEvents.openDialogueWindow
 
 -- Parameters
 local indent = args.indent
 
--- Imports
-local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')
-local GUIEvents = require('core/event/GUIEvents')
-local SimpleImage = require('core/gui/widget/SimpleImage')
-
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- DialogueWindow
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows the portrait of the speaker.
--- @param(icon : table) Table with id, col and row values. It may also contain char and name 
+--- Shows the portrait of the speaker.
+-- @tparam table icon Table with id, col and row values. It may also contain char and name 
 --   values, which indicates a portrait of the given character.
 function DialogueWindow:setPortrait(icon)
   if self.portrait then
@@ -38,25 +45,24 @@ function DialogueWindow:setPortrait(icon)
     icon = char.portraits[icon.name]
   end
   if icon and icon.id >= 0 then
-    local portrait = ResourceManager:loadIcon(icon, GUIManager.renderer)
+    local portrait = ResourceManager:loadIcon(icon, MenuManager.renderer)
     portrait.texture:setFilter('linear', 'linear')
-    if char then
-      portrait:applyTransformation(char.data.transform)
+    if char and char.charData.transformPortraits then
+      portrait:applyTransformation(char.transform)
     end
-    local ox, oy = portrait.offsetX, portrait.offsetY
-    portrait:setOffset(0, 0)
-    local x, y, w, h = portrait:totalBounds()
-    x = -self.width / 2 + x + w / 2 + self:paddingX() - ox
-    y = self.height / 2 - h / 2 - self:paddingY() - oy
-    portrait:setOffset(ox, oy)
-    self.portrait = SimpleImage(portrait, x - w / 2, y - h / 2, 1)
+    local x1, y1, x2, y2 = portrait:getBoundingBox()
+    local w = x2 - x1
+    local h = y2 - y1
+    local x = -self.width / 2 + w / 2 + self:paddingX()
+    local y = self.height / 2 - h / 2 - self:paddingY()
+    self.portrait = ImageComponent(portrait, Vector(x, y))
     self.portrait:updatePosition(self.position)
     self.content:add(self.portrait)
     self.indent = (indent or w) / self.width * 2
   end
 end
--- Override. Adjusts text position and width.
-local DialogueWindow_showDialogue = DialogueWindow.showDialogue
+--- Rewrites `DialogueWindow:showDialogue`.
+-- @rewrite
 function DialogueWindow:showDialogue(...)
   local x = self.portrait and (self.indent * self.width / 2) or 0
   self.dialogue:setMaxWidth(self.width - self:paddingX() * 2 - x)
@@ -64,40 +70,49 @@ function DialogueWindow:showDialogue(...)
   self.dialogue:updatePosition(self.position)
   DialogueWindow_showDialogue(self, ...)
 end
--- Override. Adjusts name window position.
-local DialogueWindow_setName = DialogueWindow.setName
+--- Rewrites `DialogueWindow:setName`.
+-- @rewrite
 function DialogueWindow:setName(text, x, ...)
-  x = (x or -0.7) + (self.indent or 0)
+  if self.indent then
+    x = (x or 0) + self.indent * 100
+  end
   DialogueWindow_setName(self, text, x, ...)
 end
 
----------------------------------------------------------------------------------------------------
--- GUIEvents
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- MenuEvents
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Sets portrait.
-local GUIEvents_showDialogue = GUIEvents.showDialogue
-function GUIEvents:showDialogue(args)
-  self:openDialogueWindow(args)
-  local window = self.gui.dialogues[args.id]
-  if args.character then -- Change portrait
-    local portrait = nil
+--- Rewrites `MenuEvents:openDialogueWindow`.
+-- @rewrite
+function MenuEvents:openDialogueWindow(args)
+  self:createDialogueWindow(args)
+  local window = self.menu.dialogues[args.id]
+  local portrait = nil
+  if args.character and args.character ~= '' then
     if type(args.character) == 'number' then
+      -- ID of character in the database
       local char = Database.characters[args.character]
       portrait = util.array.findByName(char.portraits, args.portrait)
-      args.name = args.name or Vocab.data.char[char.key] or char.name
-    elseif args.character ~= '' then -- Change to other image
+      if not args.name or args.name == '' then
+        args.name = Vocab.data.char[char.key] or char.name
+      end
+    else
+      -- Key of character in the scene
       local char = self:findCharacter(args.character)
+      print(args.character)
       portrait = { char = char, name = args.portrait }
-      args.name = args.name or Vocab.data.char[char.key] or char.name
+      if not args.name or args.name == '' then
+        args.name = Vocab.data.char[char.key] or char.name
+      end
     end
-    window:setPortrait(portrait)
-  elseif args.portrait then -- Change portrait
-    local portrait = nil
-    if args.portrait >= 0 then
-      portrait = { id = args.portrait, col = args.portraitCol or 0, row = args.portraitRow or 0 }
+  elseif args.portrait then
+    -- Specific animation
+    local anim = Database.animations[args.portrait]
+    if anim then
+      portrait = { id = anim.id, col = args.portraitCol or 0, row = args.portraitRow or 0 }
     end
-    window:setPortrait(portrait)
   end
-  GUIEvents_showDialogue(self, args)
+  window:setPortrait(portrait)
+  MenuEvents_openDialogueWindow(self, args)
 end

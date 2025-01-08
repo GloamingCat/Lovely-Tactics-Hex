@@ -1,36 +1,63 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-TurnManager
+--- Provides methods for battle's turn management.
+-- At the end of each turn, an `ActionResult` table must be returned by either the Menu (player) or
+-- the AI (enemies). 
 ---------------------------------------------------------------------------------------------------
-Provides methods for battle's turn management.
-At the end of each turn, a "battle result" table must be returned by either the GUI (player) or
-the AI (enemies). 
-This table must include the following entries:
-* <endTurn> tells turn manager to pass turn to next party.
-* <endCharacterTurn> tells the turn window to close and pass turn to the next character.
-* <characterIndex> indicates the next turn's character (from same party).
-* <executed> is true if the chosen action was entirely executed (usually true, unless it was a move
-action to an unreachable tile, or the action could not be executed for some reason).
-* <escaped> is true if all members of the current party have escaped.
+-- @manager TurnManager
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
 local PathFinder = require('core/battle/ai/PathFinder')
-local BattleGUI = require('core/gui/battle/BattleGUI')
+local TurnMenu = require('core/gui/battle/TurnMenu')
 
 -- Alias
 local indexOf = util.arrayIndexOf
 
+-- Class table.
 local TurnManager = class()
 
----------------------------------------------------------------------------------------------------
--- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Result codes.
+-- @enum BattleResult
+-- @field WIN Code for when player wins. Equals 1.
+-- @field DRAW Code for when no one wins. Equals 0.
+-- @field LOSE Code for when player loses. Equals -1.
+-- @field WALKOVER Code for when the enemy escapes. Equals 2.
+-- @field ESCAPE Code for when the player escapes. Equals -2.
+TurnManager.BattleResult = {
+  WIN = 1,
+  DRAW = 0,
+  LOSE = -1,
+  WALKOVER = 2,
+  ESCAPE = -2
+}
+--- Info table returned when a BattleAction is concluded.
+-- @tfield boolean endTurn Tells the TurnManager to pass turn to next party.
+-- @tfield boolean endCharacterTurn Tells the TurnWindow to close and pass turn to the next character.
+-- @tfield number|nil characterIndex Indicates the next turn's character (from same party).
+-- @tfield boolean executed Is true if the chosen action was entirely executed (usually true, unless it was a
+--  move action to an unreachable tile, or the action could not be executed for some reason).
+-- @tfield boolean escaped Is true if all members of the current party have escaped.
+TurnManager.ActionResult = {
+  endTurn = false,
+  endCharacterTurn = true,
+  characterIndex = nil,
+  executed = true,
+  escaped = false
+}
+
+-- ------------------------------------------------------------------------------------------------
+-- Initialization
+-- ------------------------------------------------------------------------------------------------
+
+--- Constructor.
 function TurnManager:init()
   self.turnCharacters = nil
   self.initialTurnCharacters = nil
@@ -39,8 +66,8 @@ function TurnManager:init()
   self.party = nil
   self.finishTime = 20
 end
--- Sets starting party.
--- @param(state : table) Data about turn state for when the game is loaded mid-battle (optional).
+--- Sets starting party.
+-- @tparam[opt] table state Data about turn state for when the game is loaded mid-battle.
 function TurnManager:setUp(state)
   if state then
     self.party = state.party
@@ -57,30 +84,33 @@ function TurnManager:setUp(state)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Turn Info
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the current selected character.
+--- Gets the current selected character.
+-- @treturn Character Current character.
 function TurnManager:currentCharacter()
   return self.turnCharacters and self.turnCharacters[self.characterIndex]
 end
--- Gets the current turn's troop.
+--- Gets the current turn's troop.
+-- @treturn Troop Current troop.
 function TurnManager:currentTroop()
   return TroopManager.troops and TroopManager.troops[self.party]
 end
--- Gets the path matrix of the current character.
+--- Gets the path matrix of the current character.
+-- @treturn Matrix3 Current character's path matrix.
 function TurnManager:pathMatrix()
   return self.pathMatrixes and self.pathMatrixes[self.characterIndex]
 end
--- Recalculates the distance matrix.
+--- Recalculates the distance matrix.
 function TurnManager:updatePathMatrix()
   local moveAction = BattleMoveAction()
   local path = PathFinder.dijkstra(moveAction, self:currentCharacter())
   self.pathMatrixes[self.characterIndex] = path
 end
--- Gets the current battle state to save the game mid-battle.
--- @ret(table) Turn state data.
+--- Gets the current battle state to save the game mid-battle.
+-- @treturn table Turn state data.
 function TurnManager:getState()
   if not self.initialTurnCharacters then
     return nil
@@ -96,25 +126,27 @@ function TurnManager:getState()
     initialCharacters = initialCharacters }
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Executes turn and returns when the turn finishes.
--- @ret(number) Result code (nil if battle is still running).
--- @ret(number) The party that won or escaped (nil if battle is still running).
+--- Executes turn and returns when the turn finishes.
+-- @coroutine
+-- @tparam boolean skipStart True to skip any `onTurnStart` callbacks.
+-- @treturn number Result code (nil if battle is still running).
+-- @treturn number The party that won or escaped (nil if battle is still running).
 function TurnManager:runTurn(skipStart)
   local winner = TroopManager:winnerParty()
   if winner then
     if winner == TroopManager.playerParty then
       -- Player wins.
-      return 1, winner
+      return self.BattleResult.WIN, winner
     elseif winner == -1 then
       -- Draw.
-      return 0, -1
+      return self.BattleResult.DRAW, -1
     else
       -- Enemy wins.
-      return -1, winner
+      return self.BattleResult.LOSE, winner
     end
   end
   self:startTurn(skipStart)
@@ -128,17 +160,18 @@ function TurnManager:runTurn(skipStart)
     local winner = TroopManager:winnerParty()
     if winner then
       if self.party == TroopManager.playerParty then
-        return -2, winner
+        return self.BattleResult.ESCAPE, winner
       else
-        return 2, winner
+        return self.BattleResult.WALKOVER, winner
       end
     end
   end
   self:endTurn(result)
   self.turns = self.turns + 1
 end
--- [COROUTINE] Runs the player's turn.
--- @ret(table) The action result table of the turn.
+--- Runs the player's turn.
+-- @coroutine
+-- @treturn ActionResult result Result info for the current turn.
 function TurnManager:runPlayerTurn()
   while true do
     if #self.turnCharacters == 0 then
@@ -152,7 +185,7 @@ function TurnManager:runPlayerTurn()
     end
     self:characterTurnStart()
     local AI = self:currentCharacter().battler:getAI()
-    local result = AI and AI:runTurn() or GUIManager:showGUIForResult(BattleGUI(nil))
+    local result = AI and AI:runTurn() or MenuManager:showMenuForResult(TurnMenu(nil))
     if result.characterIndex then
       self.characterIndex = result.characterIndex
     else
@@ -167,10 +200,10 @@ function TurnManager:runPlayerTurn()
     end
   end
 end
--- Gets the next active character in the current party.
--- @param(i : number) 1 or -1 to indicate direction.
--- @param(controllable : boolean) True to exclude NPC, false to ONLY include NPC (nil by default).
--- @ret(number) Next character index, or nil if there's no active character.
+--- Gets the next active character in the current party.
+-- @tparam number i 1 or -1 to indicate direction.
+-- @tparam[opt=nil] boolean controllable True to exclude NPC, false to ONLY include NPC. If nil, includes all.
+-- @treturn number Next character index, or nil if there's no active character.
 function TurnManager:nextCharacterIndex(i, controllable)
   i = i or 1
   local count = #self.turnCharacters
@@ -188,7 +221,8 @@ function TurnManager:nextCharacterIndex(i, controllable)
   end
   return index
 end
--- @ret(boolean) Whether there are characters on battle that can act, either by input or AI.
+--- Whether there are characters on battle that can act, either by input or AI.
+-- @treturn boolean True if there's at least one active character that hasn't made an action yet.
 function TurnManager:hasActiveCharacters()
   for i = 1, #self.turnCharacters do
     if self.turnCharacters[i].battler:isActive() then
@@ -198,11 +232,12 @@ function TurnManager:hasActiveCharacters()
   return false
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Party Turn
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Prepares for turn.
+--- Prepares for turn.
+-- @tparam boolean skipStart True to skip any `onTurnStart` callbacks.
 function TurnManager:startTurn(skipStart)
   while #self.turnCharacters == 0 do
     self:nextParty()
@@ -222,14 +257,14 @@ function TurnManager:startTurn(skipStart)
     end
   end
 end
--- Closes turn.
--- @param(char : Character) The character of the turn.
+--- Closes turn.
+-- @tparam ActionResult result Result info for the current turn.
 function TurnManager:endTurn(result)
   for char in TroopManager.characterList:iterator() do
     char.battler:onTurnEnd(char)
   end
 end
--- Gets the next party.
+--- Sets the next party.
 function TurnManager:nextParty()
   self.party = math.mod(self.party + 1, TroopManager.partyCount)
   self.turnCharacters = {}
@@ -241,19 +276,19 @@ function TurnManager:nextParty()
   self.characterIndex = self:nextCharacterIndex(nil, false) or self:nextCharacterIndex(nil, true)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Character Turn
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when a character is selected so it's their turn.
+--- Called when a character is selected so it's their turn.
 function TurnManager:characterTurnStart()
   local char = self:currentCharacter()
   char.battler:onSelfTurnStart(char)
   self:updatePathMatrix()
   FieldManager.renderer:moveToObject(char, nil, true)
 end
--- Called the character's turn ended
--- @param(result : table) The action result returned by the BattleAction (or wait action).
+--- Called the character's turn ended
+-- @tparam ActionResult result Result info for the current turn.
 function TurnManager:characterTurnEnd(result)
   local char = self:currentCharacter()
   char.battler:onSelfTurnEnd(char, result)

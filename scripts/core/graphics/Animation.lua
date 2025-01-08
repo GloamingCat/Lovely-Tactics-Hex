@@ -1,29 +1,28 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Animation
+--- A frame-by-frame animation associated with a Sprite. 
+-- It updates the quad of the associated Sprite, assuming that the texture of the sprite 
+-- is a spritesheet.
 ---------------------------------------------------------------------------------------------------
-An Animation updates the quad of the associated Sprite, assuming that the texture of the sprite 
-is a spritesheet.
+-- @animmod Animation
 
-=================================================================================================]]
-
--- Imports
-local Sprite = require('core/graphics/Sprite')
+-- ================================================================================================
 
 -- Alias
 local mod = math.mod
 local mod1 = math.mod1
-local Quad = love.graphics.newQuad
 
+-- Class table.
 local Animation = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(sprite : Sprite) The sprite that this animation if associated to.
+--- Constructor.
+-- @tparam Sprite sprite The sprite that this animation if associated to.
+-- @tparam[opt] table data The animation's data from data.
 function Animation:init(sprite, data)
   self.sprite = sprite
   self.data = data
@@ -67,9 +66,9 @@ function Animation:init(sprite, data)
     self.paused = true
   end
 end
--- Creates a clone of this animation.
--- @param(sprite : Sprite) The sprite of the animation, if cloned too (optional).
--- @ret(Animation) Clone of the given animation.
+--- Creates a clone of this animation.
+-- @tparam[opt] Sprite sprite The sprite of the animation, if cloned too.
+-- @treturn Animation Clone of the given animation.
 function Animation:clone(sprite)
   local anim = self(sprite or self.sprite, self.data)
   anim.col = self.col
@@ -84,8 +83,8 @@ function Animation:clone(sprite)
   anim.duration = self.duration
   return anim
 end
--- Initializes frame pattern and timing.
--- @param(data : table) Animation data.
+--- Initializes frame pattern and timing.
+-- @tparam table data Animation data.
 function Animation:initPattern(data)
   -- Pattern
   self.introPattern = Database.loadPattern(data.introPattern, self.colCount)
@@ -105,9 +104,9 @@ function Animation:initPattern(data)
     self.duration = 0
   end
 end
--- Sets the time for each frame. 
--- @param(timing : table) Array of frame times, one element per frame.
--- @param(pattern : table) Array of frame columns, one element por frame.
+--- Sets the time for each frame. 
+-- @tparam table timing Array of frame times, one element per frame.
+-- @tparam table pattern Array of frame columns, one element por frame.
 function Animation:setFrames(timing, pattern)
   if not timing or #timing == 0 then
     self.timing = nil
@@ -124,11 +123,12 @@ function Animation:setFrames(timing, pattern)
   self.pattern = pattern
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Update
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Increments the frame count and automatically changes que sprite.
+--- Increments the frame count and automatically changes que sprite.
+-- @tparam number dt The duration of the previous frame.
 function Animation:update(dt)
   if self.paused or not self.duration or not self.timing or self.destroyed then
     return
@@ -140,7 +140,7 @@ function Animation:update(dt)
     self:nextFrame()
   end
 end
--- Sets to next frame.
+--- Sets to next frame.
 function Animation:nextFrame()
   local lastIndex = self.pattern and #self.pattern or self.colCount
   if self.index < lastIndex then
@@ -149,7 +149,7 @@ function Animation:nextFrame()
     self:onEnd()
   end
 end
--- What happens when the animations finishes.
+--- What happens when the animations finishes.
 function Animation:onEnd()
   if self.loop then
     self:nextCol()
@@ -165,16 +165,16 @@ function Animation:onEnd()
     end
   end
 end
--- Sets to the next column.
+--- Sets to the next column.
 function Animation:nextCol()
   self:setIndex(self.index + 1)
 end
--- Sets to the next row.
+--- Sets to the next row.
 function Animation:nextRow()
   self:setRow(self.row + 1)
 end
--- Sets the frame counter.
--- @param(i : number) Number of the frame, from 1 to #pattern.
+--- Sets the frame counter.
+-- @tparam number i Number of the frame, from 1 to #pattern.
 function Animation:setIndex(i)
   if self.pattern then
     self.index = mod1(i, #self.pattern)
@@ -184,12 +184,12 @@ function Animation:setIndex(i)
     self:setCol(self.index - 1)
   end
 end
--- Calls the animation events in the current time (e.g. audio).
+--- Calls the animation events in the current time (e.g. audio).
 function Animation:callEvents()
   self:playAudio()
   self.lastEventTime = self.time
 end
--- Plays the audio in the current index, if any.
+--- Plays the audio in the current index, if any.
 function Animation:playAudio()
   if self.audio then
     for i = 1, #self.audio do
@@ -201,7 +201,7 @@ function Animation:playAudio()
   end
 end
 -- Changes the column of the current quad
--- @param(col : number) The column number, starting from 0.
+-- @tparam number col The column number, starting from 0.
 function Animation:setCol(col)
   col = mod(col, self.colCount)
   if self.col ~= col then
@@ -212,8 +212,8 @@ function Animation:setCol(col)
     self.sprite.renderer.needsRedraw = true
   end
 end
--- Changes the row of the current quad
--- @param(row : number) The row number, starting from 0.
+--- Changes the row of the current quad
+-- @tparam number row The row number, starting from 0.
 function Animation:setRow(row)
   row = mod(row, self.rowCount)
   if self.row ~= row then
@@ -225,11 +225,12 @@ function Animation:setRow(row)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(number) Total time relatie to current loop/pattern (instead of current frame).
+--- Gets Total time relatie to current loop/pattern (instead of current frame).
+-- @treturn number
 function Animation:getLoopTime()
   local t = self.time
   for i = 1, self.index - 1 do
@@ -237,7 +238,7 @@ function Animation:getLoopTime()
   end
   return t
 end
--- Sets animation to its starting point.
+--- Sets animation to its starting point.
 function Animation:reset()
   self.time = 0
   self.loop = false
@@ -249,11 +250,12 @@ function Animation:reset()
   end
   self:setIndex(1)
 end
--- Makes the animation self-destroy when it ends.
+--- Makes the animation self-destroy when it ends.
+-- @tparam boolean value
 function Animation:setOneshot(value)
   self.oneshot = value
 end
--- Destroy this animation.
+--- Destroy this animation.
 function Animation:destroy()
   if self.destroyed then
     return
@@ -263,58 +265,13 @@ function Animation:destroy()
   end
   self.destroyed = true
 end
--- String representation.
--- @ret(string)
+-- For debugging.
 function Animation:__tostring()
   local id = ''
   if self.data then
     id = ' (' .. self.data.id .. ')'
   end
   return 'Animation' .. id
-end
-
----------------------------------------------------------------------------------------------------
--- Visibility
----------------------------------------------------------------------------------------------------
-
--- Sets the sprite's visibility.
--- @param(value : boolean)
-function Animation:setVisible(value)
-  if self.sprite then
-    self.sprite:setVisible(value)
-  end
-end
--- Sets this animation as visible.
-function Animation:show()
-  if self.sprite then
-    self.sprite:setVisible(true)
-  end
-end
--- Sets this animation as invisible.
-function Animation:hide()
-  if self.sprite then
-    self.sprite:setVisible(false)
-  end
-end
-
----------------------------------------------------------------------------------------------------
--- Transform
----------------------------------------------------------------------------------------------------
-
-function Animation:setXYZ(...)
-  if self.sprite then
-    self.sprite:setXYZ(...)
-  end
-end
-function Animation:setTransformation(...)
-  if self.sprite then
-    self.sprite:setTransformation(...)
-  end
-end
-function Animation:applyTransformation(...)
-  if self.sprite then
-    self.sprite:applyTransformation(...)
-  end
 end
 
 return Animation

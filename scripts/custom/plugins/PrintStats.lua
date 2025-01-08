@@ -1,26 +1,35 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-PrintStats
+--- Print game statistics for debugging.
 ---------------------------------------------------------------------------------------------------
-Print game statistics for debugging.
+-- @plugin PrintStats
 
-=================================================================================================]]
-
--- Parameters
-KeyMap.main['stats'] = args.stats
-KeyMap.main['profi'] = args.profi
-local countdown = args.countdown
+-- ================================================================================================
 
 -- Imports
+local GameKey = require('core/input/GameKey')
 local GameManager = require('core/base/GameManager')
+local InputManager = require('core/input/InputManager')
 
----------------------------------------------------------------------------------------------------
--- General
----------------------------------------------------------------------------------------------------
-
--- Override. Initializes stats tables.
+-- Rewrites
 local GameManager_init = GameManager.init
+local GameManager_updateManagers = GameManager.updateManagers
+local GameManager_draw = GameManager.draw
+local GameManager_updateProfi = GameManager.updateProfi
+local InputManager_init = InputManager.init
+
+-- Parameters
+local statsKey = args.stats
+local profiKey = args.profi
+local countdown = args.countdown
+
+-- ------------------------------------------------------------------------------------------------
+-- General
+-- ------------------------------------------------------------------------------------------------
+
+--- Rewrites `GameManager:init`.
+-- @rewrite
 function GameManager:init()
   GameManager_init(self)
   self.profiPaused = false
@@ -29,13 +38,13 @@ function GameManager:init()
   self.avgStats = {}
   self.stats = { 0, 0, 0, 0, 0, 0 }
 end
--- Override. Checks for stats toggle input.
-local GameManager_updateManagers = GameManager.updateManagers
+--- Rewrites `GameManager:updateManagers`.
+-- @rewrite
 function GameManager:updateManagers(dt)
-  if InputManager.keys['stats']:isTriggered() then
+  if _G.InputManager.keys['stats']:isTriggered() then
     self.statsVisible = not self.statsVisible
   end
-  if InputManager.keys['profi']:isTriggered() then
+  if _G._G.InputManager.keys['profi']:isTriggered() then
     self:toggleProfi()
   end
   if self.profiPaused and countdown then
@@ -45,8 +54,8 @@ function GameManager:updateManagers(dt)
   end
   GameManager_updateManagers(self, dt)
 end
--- Override. Prints stats.
-local GameManager_draw = GameManager.draw
+--- Rewrites `GameManager:draw`.
+-- @rewrite
 function GameManager:draw()
   GameManager_draw(self)
   if self.statsVisible then
@@ -65,18 +74,17 @@ function GameManager:draw()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Stats
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Pauses default ProFi behavior if it was activated by button.
-local GameManager_updateProfi = GameManager.updateProfi
+--- Pauses default ProFi behavior if it was activated by button.
 function GameManager:updateProfi()
   if not self.profiPaused and self.keepProfi then
     GameManager_updateProfi(self)
   end
 end
--- Activate/deactivate ProFi by button.
+--- Activate/deactivate ProFi by button.
 function GameManager:toggleProfi()
   if not PROFI then
     self.keepProfi = false
@@ -93,11 +101,11 @@ function GameManager:toggleProfi()
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Stats
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Prints FPS and draw call counts on the screen.
+--- Prints FPS and draw call counts on the screen.
 function GameManager:printStats()
   local tab = 60 * ScreenManager.scaleX
   local line = 6 * ScreenManager.scaleY
@@ -115,10 +123,10 @@ function GameManager:printStats()
   if not FieldManager.renderer then
     return
   end
-  local tx, ty, th = InputManager.mouse:fieldCoord()
+  local tx, ty, th = _G.InputManager.mouse:fieldCoord()
   love.graphics.print('(' .. tx .. ',' .. ty .. ',' .. th .. ')', 0, y - line)
 end
--- Updates the average graphic stats per second.
+--- Updates the average graphic stats per second.
 function GameManager:updateGStats()
   local gstats = love.graphics.getStats()
   local fps = love.timer.getFPS()
@@ -128,10 +136,25 @@ function GameManager:updateGStats()
     self.stats[3] = self.stats[3] + FieldManager.renderer.batchDraws
     self.stats[5] = self.stats[5] + FieldManager.renderer.textDraws
   end
-  self.stats[4] = self.stats[4] + GUIManager.renderer.batchDraws
-  self.stats[6] = self.stats[6] + GUIManager.renderer.textDraws
+  self.stats[4] = self.stats[4] + MenuManager.renderer.batchDraws
+  self.stats[6] = self.stats[6] + MenuManager.renderer.textDraws
   if self.frame % 60 == 0 then
     self.avgStats = self.stats
     self.stats = { 0, 0, 0, 0, 0, 0 }
   end
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Input
+-- ------------------------------------------------------------------------------------------------
+
+--- Rewrites `InputManager:init`.
+-- Add stats / profi keys.
+-- @rewrite
+function InputManager:init(...)
+  InputManager_init(self, ...)
+  self.keyMaps.main.stats = statsKey
+  self.keyMaps.main.profi = profiKey
+  self.keys.stats = GameKey()
+  self.keys.profi = GameKey()
 end

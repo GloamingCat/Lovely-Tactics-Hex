@@ -1,41 +1,47 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Component
+--- Base for a generic Menu component node.
 ---------------------------------------------------------------------------------------------------
-Base for a generic GUI component node.
+-- @uimod Component
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local List = require('core/datastruct/List')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local Component = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialize
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(position : Vector) The component's position relative to its parent.
--- @param(...) Aditional arguments passed to Component:createContent.
+--- Constructor.
+-- @tparam Vector position The component's position relative to its parent.
+-- @param ... Aditional arguments passed to Component:createContent.
 function Component:init(position, ...)
   self.visible = true
   self.content = List()
   self.position = position or Vector(0, 0, 0)
+  self:setProperties()
   self:createContent(...)
 end
--- Creates child content.
+--- Sets general properties.
+function Component:setProperties(...)
+  -- Abstract.
+end
+--- Creates child content.
 function Component:createContent(...)
   -- Abstract.
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates child content.
+--- Updates child content.
 function Component:update(...)
   for child in self.content:iterator() do
     if child.update then
@@ -43,7 +49,7 @@ function Component:update(...)
     end
   end
 end
--- Destroys child content.
+--- Destroys child content.
 function Component:destroy(...)
   for child in self.content:iterator() do
     if child.destroy then
@@ -53,12 +59,12 @@ function Component:destroy(...)
   self.content:clear()
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Visibility
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Changes child content's visibility.
--- @param(value : boolean)
+--- Changes child content's visibility.
+-- @tparam boolean value
 function Component:setVisible(value, ...)
   for child in self.content:iterator() do
     if child.setVisible then
@@ -67,15 +73,22 @@ function Component:setVisible(value, ...)
   end
   self.visible = value
 end
--- Shows child content.
+--- Checks for visibility.
+-- @treturn boolean True if it's currently visible.
+function Component:isVisible()
+  return self.visible
+end
+--- Shows child content.
+-- @coroutine
 function Component:show(...)
   self:setVisible(true, ...)
 end
--- Hides child content.
+--- Hides child content.
+-- @coroutine
 function Component:hide(...)
   self:setVisible(false, ...)
 end
--- Refreshes content.
+--- Refreshes content.
 function Component:refresh()
   for child in self.content:iterator() do
     if child.refresh then
@@ -83,7 +96,22 @@ function Component:refresh()
     end
   end
 end
--- Updates child content position.
+
+-- ------------------------------------------------------------------------------------------------
+-- Position
+-- ------------------------------------------------------------------------------------------------
+
+--- Sets the position relative to window's center.
+-- @tparam number x Pixel x.
+-- @tparam number y Pixel y.
+-- @tparam number z Depth.
+function Component:setRelativeXYZ(x, y, z)
+  local pos = self.position
+  pos.x = pos.x or x
+  pos.y = pos.y or y
+  pos.z = pos.z or z
+end
+--- Updates child content position.
 function Component:updatePosition(parentPosition, ...)
   if parentPosition then
     parentPosition = parentPosition + self.position

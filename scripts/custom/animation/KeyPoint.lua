@@ -1,34 +1,59 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-KeyPoint
+--- Rigged-like animation using interpolation of transformation key points.
+-- 
+-- All keypoints are defined by the `kp` tag in the animation's data.  
+-- The value of the `kp` must be of the format `TIME FIELD X [Y Z W]`, where:
+--
+--  * `TIME` is the time stamp in frames;
+--  * `FIELD` is one of the string keys from `Field` table (note: it's case sensitive);
+--  * Values `X` to `W` are the target values and should be numbers.
 ---------------------------------------------------------------------------------------------------
-Rigged-like animation using transformation key points.
+-- @animmod KeyPoint
+-- @extend Animation
 
--- Animation parameters:
-All keypoints are defined by <kp> tag.
-The value of the <kp> must of the following format:
-  TIME FIELD X [Y Z W]
-Where TIME is the time stamp in frames, FIELD is either Offset (3 values), Scale (2 values), 
-Rotation (1 value), RGBA (4 values) or HSV (3 values), and values X to W are the target values.
+--- Parameters in the Animation tags.
+-- @tags Animation
+-- @tfield string kp A key point. Can have multiple `kp` entries in the animation's tags.
 
-Notes:
- - FIELD is case-sensitive.
- - Scale and RGBA values are in 0-1 range, as well as saturation and brightness.
- - Rotation is in radians.
-
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Animation = require('core/graphics/Animation')
 
+-- Class table.
 local KeyPoint = class(Animation)
 
----------------------------------------------------------------------------------------------------
--- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
 
--- @param(...) parameters from Animation:init.
+--- The string codes for each field type.
+-- @enum Field
+-- @field Offset Change in the x, y and depth offsets of the sprite (3 values). Neutral is `0 0 0`.
+-- @field Scale Change in scale x and y (2 values). Neutral is `1 1` (0-1 scale).
+-- @field Rotation Change in rotation, in degrees (1 value). Neutral is `0` (0-360 scale).
+-- @field RGBA Change in color (4 values). Neutral is `1 1 1 1` (0-1 scale).
+-- @field HSV Change in HSV modifiers. Neutral is `0 1 1` (0-360 scale for hue, 0-1 scale for
+--  value and saturation).
+-- @field QUAD The quad rectangle of the sprite (4 values). It's defined by the left x, the top
+-- y, the width and the height in pixels.
+KeyPoint.Field = {
+  OFFSET = 'Offset',
+  SCALE = "Scale",
+  ROTATION = "Rotation",
+  RGBA = "RGBA",
+  HSV = "HSV",
+  QUAD = "Quad"
+}
+
+-- ------------------------------------------------------------------------------------------------
+-- Initialization
+-- ------------------------------------------------------------------------------------------------
+
+--- Overrides `Animation:init`.
+-- @override
 function KeyPoint:init(...)
   Animation.init(self, ...)
   self.keyPoints = {}
@@ -39,10 +64,10 @@ function KeyPoint:init(...)
     self:addKeyPoint(unpack(kp))
   end
 end
--- Adds a new transformation key point.
--- @param(t : number | string) Time in frames.
--- @param(field : string) Transformation field (see instructions above).
--- @param(...) Target values.
+--- Adds a new transformation key point.
+-- @tparam number|string t Time in frames.
+-- @tparam string field Transformation field (see instructions above).
+-- @param ... Target values.
 function KeyPoint:addKeyPoint(t, field, ...)
   local params = {...}
   for i = 1, #params do
@@ -51,17 +76,17 @@ function KeyPoint:addKeyPoint(t, field, ...)
   local layer = self.keyPoints[field]
   if not layer then
     layer = {}
-    if field == 'Offset' then
+    if field == self.Field.OFFSET then
       layer[0] = { self.sprite.offsetX, self.sprite.offsetY, self.sprite.offsetDepth }
-    elseif field == 'Scale' then
+    elseif field == self.Field.SCALE then
       layer[0] = { self.sprite.scaleX, self.sprite.scaleY }
-    elseif field == 'Rotation' then
+    elseif field == self.Field.ROTATION then
       layer[0] = { self.sprite.rotation }
-    elseif field == 'RGBA' then
+    elseif field == self.Field.RGBA then
       layer[0] = { self.sprite:getRGBA() }
-    elseif field == 'HSV' then
+    elseif field == self.Field.HSV then
       layer[0] = { self.sprite:getHSV() }
-    elseif field == 'Quad' then
+    elseif field == self.Field.QUAD then
       layer[0] = { self.sprite.quad:getViewport() }
     else
       print('Unknown tranformation field: ' .. field)
@@ -72,11 +97,12 @@ function KeyPoint:addKeyPoint(t, field, ...)
   layer[tonumber(t)] = params
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Update
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Animation:update.
+--- Overrides `Animation:update`. 
+-- @override
 function KeyPoint:update(dt)
   Animation.update(self, dt)
   if self.paused or not self.duration or not self.timing then
@@ -98,11 +124,11 @@ function KeyPoint:update(dt)
     end
   end
 end
--- Changes the current values for the given by interpolations two key points.
--- @param(f : string) Transformation field name.
--- @param(t1 : number) Time of previous key point in frames.
--- @param(t2 : number) Time of next key point in frames.
--- @param(loopTime : number) Current time relative to the whole loop/pattern.
+--- Changes the current values for the given by interpolations two key points.
+-- @tparam string f Transformation field name.
+-- @tparam number t1 Time of previous key point in frames.
+-- @tparam number t2 Time of next key point in frames.
+-- @tparam number loopTime Current time relative to the whole loop/pattern.
 function KeyPoint:interpolate(f, t1, t2, loopTime)
   local orig = self.keyPoints[f][t1]
   local dest = self.keyPoints[f][t2]

@@ -1,34 +1,36 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-MemberInfoWindow
+--- A window that shows HP and MP of a troop member.
 ---------------------------------------------------------------------------------------------------
-A window that shows HP and MP of a troop member.
+-- @windowmod MemberInfoWindow
+-- @extend Window
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local MemberInfo = require('core/gui/widget/data/MemberInfo')
 local Pagination = require('core/gui/widget/Pagination')
-local SimpleText = require('core/gui/widget/SimpleText')
+local TextComponent = require('core/gui/widget/TextComponent')
 local Vector = require('core/math/Vector')
 local Window = require('core/gui/Window')
 
+-- Class table.
 local MemberInfoWindow = class(Window)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(member : Battler) The initial member.
--- @param(...) Other default parameters from Window:init.
+--- Constructor.
+-- @tparam Battler member The initial member.
+-- @param ... Other default parameters from Window:init.
 function MemberInfoWindow:init(member, ...)
   self.member = member
   Window.init(self, ...)
 end
--- Overrides Window:createContent.
--- Creates the content of the initial member.
+--- Overrides `Window:createContent`. Creates the content of the initial member.
+-- @override
 function MemberInfoWindow:createContent(...)
   Window.createContent(self, ...)
   self.page = Pagination(self)
@@ -36,11 +38,12 @@ function MemberInfoWindow:createContent(...)
   self:setBattler(self.member)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Member
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(member : Battler) Changes the member info to another member's.
+--- Changes the member info to another member's.
+-- @tparam Battler battler The new member.
 function MemberInfoWindow:setBattler(battler)
   self.member = battler
   if self.info then
@@ -56,12 +59,7 @@ function MemberInfoWindow:setBattler(battler)
     self.info:hide()
   end
 end
-
----------------------------------------------------------------------------------------------------
--- Properties
----------------------------------------------------------------------------------------------------
-
--- @ret(string) String representation (for debugging).
+-- For debugging.
 function MemberInfoWindow:__tostring()
   return 'Member Info Window'
 end

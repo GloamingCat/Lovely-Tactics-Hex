@@ -1,17 +1,19 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-EquipSkills
+--- Add skills and change attack skill when item is equipped.
 ---------------------------------------------------------------------------------------------------
-Add skills and change attack skill when item is equipped.
+-- @plugin EquipSkills
 
--- Item parameters:
-Set <attack> to a skill's ID or key to set it as the attack skill of the item.
-Add a <skill> tag with a skill's ID or key to make it available for the character with this item
-equipped. You may also add a second number to indicate a minimum level, and a third to replace
-another skill.
+--- Parameters in the Item tags.
+-- @tags Item
+-- @tfield[opt] string|number attack The ID or key of new attack skill of the character when it
+--  equips this item.
+-- @tfield string|number|table skill The ID or key of a skill that will be available for the 
+--  character with this item equipped. You may also add a second number (and make it a `table`)
+--  to indicate a minimum level, and a third to replace another skill instead of just adding it.
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Battler = require('core/battle/battler/Battler')
@@ -19,18 +21,24 @@ local EquipSet = require('core/battle/battler/EquipSet')
 local SkillAction = require('core/battle/action/SkillAction')
 local SkillList = require('core/battle/battler/SkillList')
 
----------------------------------------------------------------------------------------------------
--- EquipSet
----------------------------------------------------------------------------------------------------
-
--- Override. Creates the list of skills 
+-- Rewrites
 local EquipSet_init = EquipSet.init
+local EquipSet_updateSlotBonus = EquipSet.updateSlotBonus
+local Battler_getAttackSkill = Battler.getAttackSkill
+local Battler_getSkillList = Battler.getSkillList
+
+-- ------------------------------------------------------------------------------------------------
+-- EquipSet
+-- ------------------------------------------------------------------------------------------------
+
+--- Rewrites `EquipSet:init`.
+-- @rewrite
 function EquipSet:init(...)
   self.skills = {}
   EquipSet_init(self, ...)
 end
--- Override. Updates the skills for each slot.
-local EquipSet_updateSlotBonus = EquipSet.updateSlotBonus
+--- Rewrites `EquipSet:updateSlotBonus`.
+-- @rewrite
 function EquipSet:updateSlotBonus(key)
   EquipSet_updateSlotBonus(self, key)
   if not self.battler then
@@ -43,27 +51,32 @@ function EquipSet:updateSlotBonus(key)
     return
   end
   self.skills[key] = SkillList()
-  for i, tag in ipairs(data.tags) do 
-    if tag.key == 'skill' then
-      local skill = tag.value:split()
-      local lvl = tonumber(skill[2]) or 1
-      local replace = tonumber(skill[3]) or skill[3]
-      skill = self.skills[key]:learn(tonumber(skill[1]) or skill[1])
+  local tags = Database.loadTags(data.tags)
+  if tags and tags.skill then
+    for _, tag in ipairs(tags:getAll('skill')) do
+      local skill, lvl, replace = tag, 1, nil
+      if type(skill) == 'table' then
+        skill = tag[1]
+        lvl = tag[2]
+        replace = tag[3]
+      end
+      skill = self.skills[key]:learn(skill)
       skill.minLevel = lvl
       skill.replace = replace
-    elseif tag.key == 'attack' then
-      local skill = Database.skills[tonumber(tag.value) or tag.value]
-      self.skills[key][0] = SkillAction:fromData(skill.id)
     end
+  end
+  if tags and tags.attack then
+    local skill = Database.skills[tags.attack]
+    self.skills[key][0] = SkillAction:fromData(skill.id)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Battler
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Adds equip skills.
-local Battler_getSkillList = Battler.getSkillList
+--- Rewrites `Battler:getSkillList`.
+-- @rewrite
 function Battler:getSkillList()
   local list = Battler_getSkillList(self)
   for k, skills in pairs(self.equipSet.skills) do
@@ -82,8 +95,8 @@ function Battler:getSkillList()
   end
   return list
 end
--- Override. Check if there's an equip attack skill.
-local Battler_getAttackSkill = Battler.getAttackSkill
+--- Rewrites `Battler:getAttackSkill`.
+-- @rewrite
 function Battler:getAttackSkill()
   for k, skills in pairs(self.equipSet.skills) do
     if skills[0] then

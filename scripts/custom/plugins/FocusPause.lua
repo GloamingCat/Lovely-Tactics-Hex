@@ -1,29 +1,34 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-FocusPause
+--- Pauses game when window loses focus.
 ---------------------------------------------------------------------------------------------------
-Pauses game when window loses focus.
+-- @plugin FocusPause
 
--- Plugin parameters:
-If the audio should be paused too, then set <pauseAudio> to true.
-Set <fullscreen> to true to pause when it's not fullscreen (mobile only).
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield boolean pauseAudio Flag to pause the audio too.
+-- @tfield boolean fullscreen Flag to pause when it's not fullscreen (mobile only).
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local ScreenManager = require('core/graphics/ScreenManager')
+
+-- Rewrites
+local ScreenManager_onFocus = ScreenManager.onFocus
+local ScreenManager_onResize = ScreenManager.onResize
 
 -- Parameters
 local pauseAudio = args.pauseAudio
 local fullscreen = args.fullscreen
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- ScreenManager
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Pause when window loses focus.
-local ScreenManager_onFocus = ScreenManager.onFocus
+--- Rewrites `ScreenManager:onFocus`. Pause when window loses focus.
+-- @rewrite
 function ScreenManager:onFocus(f)
   ScreenManager_onFocus(self, f)
   self.focus = f
@@ -32,8 +37,7 @@ function ScreenManager:onFocus(f)
   end
   GameManager:setPaused(not f, pauseAudio, true)
 end
--- Pause if on mobile and minimized.
-local ScreenManager_onResize = ScreenManager.onResize
+--- Pause if on mobile and minimized.
 function ScreenManager:onResize(...)
   ScreenManager_onResize(self, ...)
   if not GameManager:isMobile() then

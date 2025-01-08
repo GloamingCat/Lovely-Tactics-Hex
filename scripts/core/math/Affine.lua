@@ -1,28 +1,66 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Affine
+--- This module implements some functions to calculate affine transformations.
 ---------------------------------------------------------------------------------------------------
-This module implements some functions to calculate affine transformations.
+-- @module Affine
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Alias
 local min = math.min
 local max = math.max
 local rotate = math.rotate
+local copy = util.table.shallowCopy
 
 local Affine = {}
 
----------------------------------------------------------------------------------------------------
--- Image Bounds
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
 
--- Transforms the bounding vertexes of the given transformable.
--- @param(t : Transformable)
--- @param(w : number) the width of the original rectangle
--- @param(h : number) the height of the original rectangle
--- @ret(table) an array of points (x in odd positions, y in even positions)
+--- A transform table.
+-- @table Transform
+-- @tfield[opt=0] number offsetX Center pixel x of the quad, relative to top left corner.
+-- @tfield[opt=0] number offsetY Center pixel y of the quad, relative to top left corner.
+-- @tfield[opt=0] number offsetDepth Value added to sprite's depth;
+-- @tfield[opt=100] number scaleX Scale multiplier for the X axis (in percentage).
+-- @tfield[opt=100] number scaleY Scale multiplier for the Y axis (in percentage).
+-- @tfield[opt=0] number rotation Angle in degrees (from 0 to 360).
+-- @tfield[opt=255] number red Red color component (from 0 to 255).
+-- @tfield[opt=255] number green Green color component (from 0 to 255).
+-- @tfield[opt=255] number blue Blue color component (from 0 to 255).
+-- @tfield[opt=255] number alpha Alpha color component (from 0 to 255).
+-- @tfield[opt=0] number hue Hue offset (from 0 to 360).
+-- @tfield[opt=100] number saturation Saturation multiplier (in percentage).
+-- @tfield[opt=100] number brightness Color value multiplier (in percentage).
+Affine.neutralTransform = {
+  -- Space
+  offsetX = 0,
+  offsetY = 0,
+  offsetDepth = 0,
+  scaleX = 100,
+  scaleY = 100,
+  rotation = 0,
+  -- Color
+  red = 255,
+  green = 255,
+  blue = 255,
+  alpha = 255,
+  hue = 0,
+  saturation = 100,
+  brightness = 100
+}
+
+-- ------------------------------------------------------------------------------------------------
+-- Image Bounds
+-- ------------------------------------------------------------------------------------------------
+
+--- Transforms the bounding vertexes of the given transformable.
+-- @tparam Transformable t
+-- @tparam number w The width of the original rectangle.
+-- @tparam number h The height of the original rectangle.
+-- @treturn table An array of points (x in odd positions, y in even positions).
 function Affine.getTransformedPoints(t, w, h)
   local p = {0, 0, w, 0, 0, h, w, h}
   for i = 1, #p, 2 do
@@ -40,14 +78,14 @@ function Affine.getTransformedPoints(t, w, h)
   end
   return p
 end
--- Gets the rectangle the represents the final bounding box of the given transformable.
--- @param(t : Transformable)
--- @param(w : number) The width of the original rectangle.
--- @param(h : number) The height of the original rectangle.
--- @ret(number) The x of the new rectangle.
--- @ret(number) The y of the new rectangle.
--- @ret(number) The width of the new rectangle.
--- @ret(number) The height of the new rectangle.
+--- Gets the rectangle the represents the final bounding box of the given transformable.
+-- @tparam Transformable t
+-- @tparam number w The width of the original rectangle.
+-- @tparam number h The height of the original rectangle.
+-- @treturn number The x of the new rectangle.
+-- @treturn number The y of the new rectangle.
+-- @treturn number The width of the new rectangle.
+-- @treturn number The height of the new rectangle.
 function Affine.getBoundingBox(t, w, h)
   local p = Affine.getTransformedPoints(t, w, h)
   local minx, maxx, miny, maxy = p[1], p[1], p[2], p[2]
@@ -57,34 +95,18 @@ function Affine.getBoundingBox(t, w, h)
     miny = min(miny, p[i + 1])
     maxy = max(maxy, p[i + 1])
   end
-  return minx, miny, maxx - minx, maxy - miny
+  return minx, miny, maxx, maxy
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Transform
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Creates a neutral transform. Optionally, applies a list of transformations.
--- @param(t : table) Initial transform table. If nil, a neutral transform is used (optinal).
--- @param(transformations : array) Array of transformations with type and value (optinal).
+--- Creates a neutral transform. Optionally, applies a list of transformations.
+-- @tparam[opt] Transform t Initial transform table. If nil, a neutral transform is used.
+-- @tparam[opt] array transformations Array of transformations with type and value.
 function Affine.createTransform(t, transformations)
-  t = t or {
-    -- Space
-    offsetX = 0,
-    offsetY = 0,
-    offsetDepth = 0,
-    scaleX = 100,
-    scaleY = 100,
-    rotation = 0,
-    -- Color
-    red = 255,
-    green = 255,
-    blue = 255,
-    alpha = 255,
-    hue = 0,
-    saturation = 100,
-    brightness = 100
-  }
+  t = t or copy(Affine.neutralTransform)
   if transformations then
     local fields = { "offsetX", "offsetY", "offsetDepth", "scaleX", "scaleY", "rotation",
       "red", "green", "blue", "alpha", "hue", "saturation", "brightness" }
@@ -92,22 +114,22 @@ function Affine.createTransform(t, transformations)
       local field = fields[ti.type + 1]
       if ti.type <= 2 or ti.type == 5 or ti.type == 10 then
         -- Offset, rotation, hue
-        t[field] = ti.value + (ti.override and 0 or t[field])
+        t[field] = ti.value + (ti.override and 0 or t[field] or 0)
       elseif ti.type > 5 and ti.type < 10 then
         -- RGBA
-        t[field] = ti.value / 255 * (ti.override and 255 or t[field])
+        t[field] = ti.value / 255 * (ti.override and 255 or t[field] or 255)
       else
         -- Scale, saturation, brightness
-        t[field] = ti.value / 100 * (ti.override and 100 or t[field])
+        t[field] = ti.value / 100 * (ti.override and 100 or t[field] or 100)
       end
     end
   end
   return t
 end
--- Combines two transform tables (order does not matter).
--- @param(t1 : table) First transform table.
--- @param(t1 : table) Second transform table.
--- @ret(table) New transform table.
+--- Combines two transform tables (order does not matter).
+-- @tparam Transform t1 First transform table.
+-- @tparam Transform t2 Second transform table.
+-- @treturn Transform New transform table.
 function Affine.combineTransforms(t1, t2)
   local t = {
     -- Space
@@ -127,6 +149,25 @@ function Affine.combineTransforms(t1, t2)
     brightness = t1.brightness * t2.brightness / 100
   }
   return t
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Rotation
+-- ------------------------------------------------------------------------------------------------
+
+--- Rotates a transformable around a point.
+-- @tparam Transformable t
+-- @tparam number x Target point x.
+-- @tparam number y Target point y.
+-- @tparam number r Rotation angle in degrees.
+-- @treturn number The transformable's new position x.
+-- @treturn number The transformable's new position y.
+-- @treturn number The transformable's new offset x.
+-- @treturn number The transformable's new offset y.
+-- @treturn number The transformable's new rotation.
+function Affine.rotateAround(t, x, y, r)
+  -- TODO
+  return t.position.x, t.position.y, t.offsetX, t.offsetY, t.rotation
 end
 
 return Affine

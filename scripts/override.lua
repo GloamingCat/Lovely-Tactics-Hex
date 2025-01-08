@@ -1,64 +1,98 @@
 
----------------------------------------------------------------------------------------------------
--- String
----------------------------------------------------------------------------------------------------
+-- ================================================================================================
 
--- Formats a string to time.
--- @param(time : number) Time in seconds.
+--- Overrides a few functions from standard libraries.
+---------------------------------------------------------------------------------------------------
+-- @script Override
+
+-- ================================================================================================
+
+-- Rewrites
+local old_require = require
+local old_loadstring = loadstring
+
+-- ------------------------------------------------------------------------------------------------
+-- String
+-- ------------------------------------------------------------------------------------------------
+
+--- Formats a string to time.
+-- @tparam number time Time in seconds.
 function string.time(time)
   local sec = time % 60
-  local min = (time - sec) / 60
-  local hour = (time - 60 * min - sec) / 60 
+  local min = ((time - sec) / 60) % 60
+  local hour = (time - 60 * min - sec) / 3600
   return string.format("%02d:%02d:%02d", hour, min, sec)
 end
--- Splits a string in substring by the given separator.
--- @param(inputstr : string) String to be splitted.
--- @param(sep : string) Separator (optional, black spaces by default).
--- @ret(table) Array of substrings.
-function string.split(inputstr, sep)
+--- Splits the string in substring by the given separator.
+-- @tparam[opt="%s+"] string sep Separator.
+-- @treturn table Array of substrings.
+function string:split(sep)
   sep = sep or "%s+"
   local t, i = {}, 1
-  for str in inputstr:gmatch('([^' .. sep .. ']+)') do
+  for str in self:gmatch('([^' .. sep .. ']+)') do
     t[i] = str
     i = i + 1
   end
   return t
 end
--- Removes spaces in the start and end of the string.
--- @param(inputstr : string) String to be trimmed.
--- @ret(string) New trimmed string.
-function string.trim(inputstr)
-  return inputstr:gsub("^%s+", ""):gsub("%s+$", "")
+--- Removes spaces in the start and end of the string.
+-- @treturn string New trimmed string.
+function string:trim()
+  return self:gsub("^%s+", ""):gsub("%s+$", "")
 end
--- Checks if first string ends with the second.
--- @param(inputstr : string)
--- @param(suffix : string)
--- @ret(boolean)
-function string.endswith(inputstr, suffix)
-  return inputstr:sub(-string.len(suffix)) == suffix
+--- Checks if the string ends with the given suffix.
+-- @tparam string suffix Suffix to be looked for.
+-- @treturn boolean True if `suffix` is found at the end of this string. 
+function string:endswith(suffix)
+  return self:sub(-string.len(suffix)) == suffix
+end
+--- Checks if the string starts with the given prefix.
+-- @tparam string prefix Prefix to be looked for.
+-- @treturn boolean True if `prefix` is found at the start of this string. 
+function string:startswith(prefix)
+  return self:sub(string.len(prefix)) == prefix
+end
+--- Interpolates the raw string.
+-- @tparam function varAccessor Function that receives a key and returns the value.
+-- @param ... Any additional params passed to `varAccessor`. 
+-- @treturn string The interpolated string.
+function string:interpolate(varAccessor, ...)
+  local str = ""
+  local i = 0
+  for textFragment, key in self:gmatch('([^{]*){%%([^}]-)}') do
+    local value = varAccessor(key, ...)
+    if value == nil then
+      print('Text variable or term not found: ' .. tostring(key), ...)
+    end
+    local f = tostring(value)
+    i = i + #textFragment + #key + 3
+    str = str .. textFragment .. f:interpolate(varAccessor, ...)
+  end
+  local lastText = self:sub(i + 1)
+  if lastText then
+    str = str .. lastText
+  end
+  return str
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Require
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Lua's default require function to ignore ".lua" extension.
-local old_require = require
+--- Rewrites `require`. Changes Lua's default require function to ignore ".lua" extension.
+-- @rewrite
 require = function(path)
-  return old_require(string.gsub(path, '.lua', ''))
+  return old_require(string.gsub(path, '%.lua', ''))
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Function Cache
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 local FunctionCache = {}
 
--- Overrides Lua's native function to store string in cache if already compiled.
--- @param(str : string) the string chunk
--- @param(...) any other parameters to the original loadstring function
--- @ret(function) the function that executes the chunk in the string
-local old_loadstring = loadstring
+--- Rewrites `loadstring`. Changes Lua's native function to store string in cache if already compiled.
+-- @rewrite
 function loadstring(str, ...)
   local func = FunctionCache[str]
   if func then
@@ -66,32 +100,41 @@ function loadstring(str, ...)
   else
     local err
     func, err = old_loadstring(str, ...)
-    assert(func, err)
     FunctionCache[str] = func
-    return func
+    return func, err
   end
 end
--- Creates a function with the given body and the given parameters.
--- @param(body : string) the code of the body
--- @param(param : string) the list of parameters separated by comma (without parens)
-function loadfunction(body, param)
+--- Creates a function with the given body and the given parameters.
+-- @tparam string body The code of the body.
+-- @tparam string param The list of parameters separated by comma (without parens).
+-- @tparam[opt] boolean unsafe Flag to indice that the text is not always a Lua expression,
+--  and in case it isn't, return nil.
+function loadfunction(body, param, unsafe)
+  local func, err
   if param and param ~= '' then
     local funcString = 
       'function(' .. param .. ') ' ..
         body ..
       ' end'
-    return loadstring('return ' .. funcString)()
+    func, err = loadstring('return ' .. funcString)
+    if func then
+      func = func()
+    end
   else
-    return loadstring(body)
+    func, err = loadstring(body)
   end
+  assert(func or unsafe, err)
+  return func
 end
--- Generates a function from a formula in string.
--- @param(formula : string) the formula expression
--- @param(param : string) the param needed for the function (optional)
--- @ret(function) the function that evaluates the formulae
-function loadformula(formula, param)
+--- Generates a function from a formula in string.
+-- @tparam string formula The formula expression.
+-- @tparam[opt] string param The param needed for the function.
+-- @tparam[opt] boolean unsafe Flag to indice that the text is not always a Lua expression,
+--  and in case it isn't, return nil.
+-- @treturn function The function that evaluates the formula.
+function loadformula(formula, param, unsafe)
   if formula == '' or not formula then
     formula = 'nil'
   end
-  return loadfunction('return ' .. formula, param)
+  return loadfunction('return ' .. formula, param, unsafe)
 end

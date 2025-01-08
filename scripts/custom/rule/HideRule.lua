@@ -1,11 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-HideRule
+--- Moves to the tile with less close enemies.
 ---------------------------------------------------------------------------------------------------
-The rule for an AI that moves to the tile with less close enemies.
+-- @battlemod HideRule
+-- @extend AIRule
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local ActionInput = require('core/battle/action/ActionInput')
@@ -13,13 +14,15 @@ local AIRule = require('core/battle/ai/AIRule')
 local BattleMoveAction = require('core/battle/action/BattleMoveAction')
 local BattleTactics = require('core/battle/ai/BattleTactics')
 
+-- Class table.
 local HideRule = class(AIRule)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides AIRule:onSelect.
+--- Overrides `AIRule:onSelect`. 
+-- @override
 function HideRule:onSelect(user)
   user = user or TurnManager:currentCharacter()
   self.input = ActionInput(BattleMoveAction(), user)
@@ -31,6 +34,10 @@ function HideRule:onSelect(user)
   else
     self.input.target = queue:front()
   end
+end
+-- For debugging.
+function HideRule:__tostring()
+  return 'HideRule: ' .. self.battler.key
 end
 
 return HideRule

@@ -1,43 +1,48 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-SpriteGrid
+--- A group of sprites created from a 9-sliced skin.
+-- Each animation frame should contain within itself all 9 slices.
 ---------------------------------------------------------------------------------------------------
-A group of sprites created from a 9-sliced skin.
-Each animation frame should contain within itself all 9 slices.
+-- @animmod SpriteGrid
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Sprite = require('core/graphics/Sprite')
-local Vector = require('core/math/Vector')
 
 -- Alias
 local Quad = love.graphics.newQuad
 local floor = math.floor
+local rotate = math.rotate
 
+-- Class table.
 local SpriteGrid = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(skin : table) Skin's animation data.
-function SpriteGrid:init(skin, relativePos)
+--- Constructor.
+-- @tparam table skin Skin's animation data.
+function SpriteGrid:init(skin)
   self.skin = skin
-  self.position = relativePos or Vector(0, 0)
 end
--- Creates sprites and skinData.
--- @param(renderer : Renderer) The renderer of the sprites.
--- @param(width : number) The width of the final image.
--- @param(height : number) The height of the final image.
+--- Creates sprites and skinData.
+-- @tparam Renderer renderer The renderer of the sprites.
+-- @tparam number width The width of the final image.
+-- @tparam number height The height of the final image.
 function SpriteGrid:createGrid(renderer, width, height)
   local skin = self.skin.quad
   local w = skin.width / 3
   local h = skin.height / 3
   local mw = width - 2 * w
   local mh = height - 2 * h
+  if self.skinData then
+    self:destroy()
+  end
+  self.width = width
+  self.height = height
   self.skinData = {}
   local texture = ResourceManager:loadTexture(skin.path)
   local x, y, ox, oy, sx, sy
@@ -90,76 +95,95 @@ function SpriteGrid:createGrid(renderer, width, height)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Updates each slice animation.
+--- Updates each slice animation.
+-- @tparam number dt The duration of the previous frame.
 function SpriteGrid:update(dt)
   for i = 1, 9 do
     self.slices[i]:update(dt)
   end
 end
--- Updates position and scale according to the given parent transformable.
--- @param(t : Transformable)
-function SpriteGrid:updateTransform(t)
-  local pos = t.position + self.position
-  for i = 1, 9 do
-    local sprite = self.slices[i].sprite
-    sprite:setPosition(pos)
-    sprite:setOffset(self.skinData[i].x, self.skinData[i].y)
-    sprite:setScale(self.skinData[i].sx * t.scaleX, self.skinData[i].sy * t.scaleY)
-  end
-end
--- Sets the RGBA values of each slice.
--- @param(r : number) Red component (optional, current by default).
--- @param(g : number) Green component (optional, current by default).
--- @param(b : number) Blue component (optional, current by default).
--- @param(a : number) Blpha component (optional, current by default).
-function SpriteGrid:setRGBA(r, g, b, a)
-  for i = 1, 9 do
-    self.slices[i].sprite:setRGBA(r, g, b, a)
-  end
-end
--- Sets the HSV values of each slice.
--- @param(h : number) Hue component (optional, current by default).
--- @param(s : number) Saturation component (optional, current by default).
--- @param(v : number) Value/brightness component (optional, current by default).
-function SpriteGrid:setHSV(h, s, v)
-  for i = 1, 9 do
-    self.slices[i].sprite:setHSV(h, s, v)
-  end
-end
--- Destroys all slices.
+--- Destroys all slices.
 function SpriteGrid:destroy()
   for i = 1, 9 do
     self.slices[i]:destroy()
   end
 end
--- Sets each slice visibility.
--- @param(value : boolean) True to show, false to hide.
+--- Sets each slice visibility.
+-- @tparam boolean value True to show, false to hide.
 function SpriteGrid:setVisible(value)
   self.visible = value
   for i = 1, 9 do
-    self.slices[i]:setVisible(value)
+    self.slices[i].sprite:setVisible(value)
   end
 end
--- Makes visible.
-function SpriteGrid:show()
-  self:setVisible(true)
-end
--- Makes invisible.
-function SpriteGrid:hide()
-  self:setVisible(false)
-end
--- Updates each slice position.
--- @param(pos : Vector) Parent position.
-function SpriteGrid:updatePosition(pos)
-  pos = pos + self.position
+
+-- ------------------------------------------------------------------------------------------------
+-- Transform
+-- ------------------------------------------------------------------------------------------------
+
+--- Updates position and scale according to the given parent transformable.
+-- @tparam Transformable t
+function SpriteGrid:updateTransform(t)
   for i = 1, 9 do
     local sprite = self.slices[i].sprite
-    sprite:setPosition(pos)
+    sprite:setXYZ(t.position.x - t.offsetX * t.scaleX, 
+                  t.position.y - t.offsetY * t.scaleY,
+                  t.position.z + t.offsetDepth)
+    sprite:setOffset(self.skinData[i].x, self.skinData[i].y)
+    sprite:setScale(self.skinData[i].sx * t.scaleX, self.skinData[i].sy * t.scaleY)
+    if t.rotation ~= 0 then
+      local x, y, ox, oy, r = Affine.rotateAround(sprite, t.position.x, t.position.y, t.rotation)
+      sprite:setXYZ(x, y)
+      sprite:setOffset(x, y)
+      sprite:setRotation(r)
+    end
   end
+end
+--- Updates each slice position.
+-- @tparam[opt] number x The pixel x of the center of the rectangle.
+-- @tparam[opt] number y The pixel y of the center of the rectangle.
+-- @tparam[opt] number z The pixel depth of the rectangle.
+function SpriteGrid:setXYZ(x, y, z)
+  for i = 1, 9 do
+    self.slices[i].sprite:setXYZ(x, y, z)
+  end
+end
+--- Sets the RGBA values of each slice.
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number r Red component.
+-- @tparam[opt] number g Green component.
+-- @tparam[opt] number b Blue component.
+-- @tparam[opt] number a Blpha component.
+function SpriteGrid:setRGBA(r, g, b, a)
+  for i = 1, 9 do
+    self.slices[i].sprite:setRGBA(r, g, b, a)
+  end
+end
+--- Sets the HSV values of each slice.
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number h Hue component.
+-- @tparam[opt] number s Saturation component.
+-- @tparam[opt] number v Value/brightness component.
+function SpriteGrid:setHSV(h, s, v)
+  for i = 1, 9 do
+    self.slices[i].sprite:setHSV(h, s, v)
+  end
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- Bounds
+-- ------------------------------------------------------------------------------------------------
+
+function SpriteGrid:getQuadBox(...)
+  return 0, 0, self.width, self.height
+end
+
+function SpriteGrid:setQuad(...)
+  -- TODO
 end
 
 return SpriteGrid

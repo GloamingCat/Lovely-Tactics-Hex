@@ -1,25 +1,55 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Party Events
+--- Party-related functions that are loaded from the EventSheet.
 ---------------------------------------------------------------------------------------------------
-Functions that are loaded from the EventSheet.
+-- @module PartyEvents
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
+local ActionInput = require('core/battle/action/ActionInput')
 local Battler = require('core/battle/battler/Battler')
+local SkillAction = require('core/battle/action/SkillAction')
+local TargetMenu = require('core/gui/common/TargetMenu')
 local Troop = require('core/battle/Troop')
 
-local EventSheet = {}
+local PartyEvents = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- Arguments
+-- ------------------------------------------------------------------------------------------------
+
+--- Common arguments.
+-- @table PartyArguments
+-- @tfield number value Value to be added/subtracted.
+-- @tfield number|string id ID or key of the item to be added, for `increaseItem`, or the skill to
+--  be used, for `useSkill`.
+-- @tfield boolean onlyCurrent True to ignore backup and members, for `increaseExp`
+--  or `healAll`.
+
+--- Common formation arguments.
+-- @table FormationArguments
+-- @tfield string key The key of the member to be moved.
+-- @tfield number x Member's grid X (if nil, it's added to backup list).
+-- @tfield number y Member's grid Y (if nil, it's added to backup list).
+-- @tfield boolean backup Flag to add member to the backup list.
+
+--- Member arguments.
+-- @table MemberArguments
+-- @tfield string key The key of the member to be modified.
+-- @tfield number|string id ID or key of the skill/item.
+-- @tfield number level Member's new level, for `setLevel`.
+-- @tfield string slot The key of the equip slot, for `setEquip`.
+-- @tfield boolean store Flag to store previous equipped item in party's inventory.
+
+-- ------------------------------------------------------------------------------------------------
 -- Party
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(args.value : number) Value to be added to each battler's exp.
--- @param(args.onlyCurrent : boolean) True to ignore backup and members (false by default).
-function EventSheet:increaseExp(args)
+--- Give EXP point to the members of the player's troop.
+-- @tparam PartyArguments args Argument table.
+function PartyEvents:increaseExp(args)
   local troop = Troop()
   for battler in troop:currentBattlers():iterator() do
     battler.job:addExperience(args.value)
@@ -34,8 +64,9 @@ function EventSheet:increaseExp(args)
     FieldManager.hud:refreshSave(true)
   end
 end
--- @param(args.value : number) Value to be added to the party's money.
-function EventSheet:increaseMoney(args)
+--- Give money to the player's troop.
+-- @tparam PartyArguments args Argument table.
+function PartyEvents:increaseMoney(args)
   local save = TroopManager.troopData[TroopManager.playerTroopID .. '']
   if not save then
     TroopManager:saveTroop(Troop())
@@ -46,9 +77,9 @@ function EventSheet:increaseMoney(args)
     FieldManager.hud:refreshSave(true)
   end
 end
--- @param(args.id : number) ID of the item to be added.
--- @param(args.value : number) Quantity to be added.
-function EventSheet:increaseItem(args)
+--- Add an item to the player's inventory.
+-- @tparam PartyArguments args Argument table.
+function PartyEvents:increaseItem(args)
   local troop = Troop()
   troop.inventory:addItem(args.id, args.value)
   TroopManager:saveTroop(troop)
@@ -56,9 +87,34 @@ function EventSheet:increaseItem(args)
     FieldManager.hud:refreshSave(true)
   end
 end
--- Heal all members' HP and SP.
--- @param(args.onlyCurrent : boolean) True to ignore backup members (false by default).
-function EventSheet:healAll(args)
+--- Apply a skill on a party. If the party is not defined, apply it on the player troop.
+-- @tparam PartyArguments args Argument table.
+function PartyEvents:useSkill(args)
+  local troop = TroopManager:getTroop(args.party)
+  local input = ActionInput(SkillAction(arg.id))
+  input.user = args.user and troop.battlers[args.user]
+  input.target = args.target and troop.battlers[args.target]
+  if not input.target then
+    if input.action:isArea() then
+      -- All members
+      input.targets = args.backup and troop:visibleBattlers() or troop:currentBattlers()
+      input.action:menuUse(input)
+    elseif input.action:isRanged() or not input.user then
+      local menu = TargetMenu(self.menu, troop, input, args.backup)
+      MenuManager:showMenuForResult(menu)
+    else
+      input.target = input.user
+      input.action:menuUse(input)
+    end
+  end
+  TroopManager:saveTroop(troop)
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
+end
+--- Heal all members' HP and SP.
+-- @tparam PartyArguments args Argument table.
+function PartyEvents:healAll(args)
   local troop = Troop()
   local list = args.onlyCurrent and troop:currentBattlers() or troop:visibleBattlers()
   for battler in list:iterator() do
@@ -76,15 +132,13 @@ function EventSheet:healAll(args)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Formation
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(args.key : string) New member's key.
--- @param(args.x : number) Member's grid X (if nil, it's added to backup list).
--- @param(args.y : number) Member's grid Y (if nil, it's added to backup list).
--- @param(args.backup : number) If true, add member to the backup list.
-function EventSheet:addMember(args)
+--- Un-hide a hidden member in the player's troop.
+-- @tparam FormationArguments args Argument table.
+function PartyEvents:addMember(args)
   local troop = Troop()
   if args.backup then
     troop:moveMember(args.key, 1)
@@ -96,8 +150,9 @@ function EventSheet:addMember(args)
     FieldManager.hud:refreshSave(true)
   end
 end
--- @param(args.key : string) Member's key.
-function EventSheet:hideMember(args)
+--- Remove (hide) a member from the player's troop.
+-- @tparam FormationArguments args Argument table.
+function PartyEvents:hideMember(args)
   local troop = Troop()
   troop:moveMember(args.key, 2)
   TroopManager:saveTroop(troop, true)
@@ -106,16 +161,13 @@ function EventSheet:hideMember(args)
   end
 end
 
----------------------------------------------------------------------------------------------------
--- Battler
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- Member
+-- ------------------------------------------------------------------------------------------------
 
--- General parameters:
--- @param(args.key : string) The key of the member to be modified.
-
--- Makes a member learn a new skill.
--- @param(args.id : number) Skill's ID.
-function EventSheet:learnSkill(args)
+--- Makes a member learn a new skill.
+-- @tparam MemberArguments args Argument table.
+function PartyEvents:learnSkill(args)
   local troop = Troop()
   local battler = troop.battlers[args.key]
   assert(battler, "No battler with key: " .. tostring(args.key))
@@ -125,10 +177,10 @@ function EventSheet:learnSkill(args)
     FieldManager.hud:refreshSave(true)
   end
 end
--- Sets a member's level. 
+--- Sets a member's level. 
 -- Learns new skills if level increased, but keeps old skills if decreased.
--- @param(args.level : number) Member's new level.
-function EventSheet:setLevel(args)
+-- @tparam MemberArguments args Argument table.
+function PartyEvents:setLevel(args)
   local troop = Troop()
   local battler = troop.battlers[args.key]
   assert(battler, "No battler with key: " .. tostring(args.key))
@@ -144,11 +196,9 @@ function EventSheet:setLevel(args)
     FieldManager.hud:refreshSave(true)
   end
 end
--- Sets that item equiped in the specified slot.
--- @param(args.id : number) Item ID.
--- @param(args.slot : string) Slot key.
--- @oaram(args.store : boolean) Flag to store previous equipped item in party's inventory.
-function EventSheet:setEquip(args)
+--- Sets that item equiped in the specified slot.
+-- @tparam MemberArguments args Argument table.
+function PartyEvents:setEquip(args)
   local troop = Troop()
   local battler = troop.battlers[args.key]
   assert(battler, "No battler with key: " .. tostring(args.key))
@@ -158,9 +208,27 @@ function EventSheet:setEquip(args)
   assert(item.slot:contains(args.slot), "Item " .. Database.toString(item)
     .. " is not of slot type " .. args.slot)
   if args.store then
-    battler.equipSet.setEquip(args.slot, item, troop.inventory)
+    battler.equipSet:setEquip(args.slot, item, troop.inventory)
   else
-    battler.equipSet.setEquip(args.slot, item)
+    battler.equipSet:setEquip(args.slot, item)
+  end
+  TroopManager:saveTroop(troop)
+  if FieldManager.hud then
+    FieldManager.hud:refreshSave(true)
+  end
+end
+--- Adds or remove a status effect to the given member.
+-- @tparam MemberArguments args Argument table.
+function PartyEvents:setStatus(args)
+  local troop = Troop()
+  local battler = troop.battlers[args.key]
+  assert(battler, "No battler with key: " .. tostring(args.key))
+  local status = Database.status[args.id]
+  assert(status, "Status does not exist: " .. tostring(args.id))
+  if args.remove then
+    battler.statusList:removeStatus(status)
+  else
+    battler.statusList:addStatus(status)
   end
   TroopManager:saveTroop(troop)
   if FieldManager.hud then
@@ -168,4 +236,4 @@ function EventSheet:setEquip(args)
   end
 end
 
-return EventSheet
+return PartyEvents

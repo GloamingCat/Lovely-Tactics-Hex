@@ -1,11 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-SaveWindow
+--- Window that shows the list of save slots.
 ---------------------------------------------------------------------------------------------------
-Window that shows the list of save slots.
+-- @windowmod SaveWindow
+-- @extend GridWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Button = require('core/gui/widget/control/Button')
@@ -14,38 +15,42 @@ local GridWindow = require('core/gui/GridWindow')
 local SaveInfo = require('core/gui/widget/data/SaveInfo')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local SaveWindow = class(GridWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
+--- Overrides `Window:init`.
+-- @override
 function SaveWindow:init(...)
   GridWindow.init(self, ...)
-  self.confirmWindow = ConfirmWindow(self.GUI, 'overwrite')
+  self.confirmWindow = ConfirmWindow(self.menu, 'overwrite')
   self.confirmWindow:setXYZ(0, 0, -50)
   self.confirmWindow:setVisible(false)
   local button = self.confirmWindow.matrix[1]
   button.confirmSound = Config.sounds.save or button.confirmSound
   button.clickSound = button.confirmSound
 end
--- Overrides GridWindow:setProperties.
+--- Overrides `GridWindow:setProperties`. 
+-- @override
 function SaveWindow:setProperties()
   GridWindow.setProperties(self)
   self.tooltipTerm = 'saveSlot'
   self.fixedTooltip = true
 end
--- Overrides GridWindow:createWidgets.
+--- Implements `GridWindow:createWidgets`. 
+-- @implement
 function SaveWindow:createWidgets()
   for i = 1, SaveManager.maxSaves do
-    self:createSaveButton(i .. '', Vocab.saveName .. ' ' .. i)
+    self:createSaveButton(i .. '')
   end
 end
--- Creates a button for the given save file.
--- @param(file : string) Name of the file (without .save extension).
--- @param(name : string) Name of the button that will be shown.
--- @ret(Button) Newly created button.
-function SaveWindow:createSaveButton(file, name)
+--- Creates a button for the given save file.
+-- @tparam string file Name of the file (without .save extension).
+-- @treturn Button Newly created button.
+function SaveWindow:createSaveButton(file)
   local button = Button(self)
   local w, h = self:cellWidth(), self:cellHeight()
   button.saveInfo = SaveInfo(nil, w - self:paddingX(), h)
@@ -58,17 +63,18 @@ function SaveWindow:createSaveButton(file, name)
   return button
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Saves
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Refresh each member info.
+--- Refresh each member info.
 function SaveWindow:refreshSave(button)
   button.saveInfo:refreshInfo(SaveManager:getHeader(button.file))
   button:updatePosition(self.position)
   button:refreshEnabled()
 end
--- Overrides Window:show.
+--- Overrides `Window:show`. 
+-- @override
 function SaveWindow:show(...)
   if not self.open then
     for button in self.matrix:iterator() do
@@ -79,14 +85,14 @@ function SaveWindow:show(...)
   GridWindow.show(self, ...)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- When player chooses a file to load.
+--- When player chooses a file to load.
 function SaveWindow:onButtonConfirm(button)
   if SaveManager:getHeader(button.file) then
-    local result = self.GUI:showWindowForResult(self.confirmWindow)
+    local result = self.menu:showWindowForResult(self.confirmWindow)
     if result == 0 then
       return
     end
@@ -95,32 +101,36 @@ function SaveWindow:onButtonConfirm(button)
   SaveManager:storeSave(button.file)
   self.result = button.file
 end
--- When player cancels the load action.
+--- When player cancels the load action.
 function SaveWindow:onButtonCancel()
   self.result = ''
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override
 function SaveWindow:colCount()
   return 1
 end
--- Overrides GridWindow:rowCount.
+--- Overrides `GridWindow:rowCount`. 
+-- @override
 function SaveWindow:rowCount()
   return math.min(SaveManager.maxSaves, GameManager:isMobile() and 3 or 4)
 end
--- Overrides ListWindow:cellWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override
 function SaveWindow:cellWidth()
   return GridWindow.cellWidth(self) * 2
 end
--- Overrides GridWindow:cellHeight.
+--- Overrides `GridWindow:cellHeight`. 
+-- @override
 function SaveWindow:cellHeight()
   return (GridWindow.cellHeight(self) * 2 + self:rowMargin() * 2) - 4
 end
--- @ret(string) String representation (for debugging).
+-- For debugging.
 function SaveWindow:__tostring()
   return 'Save Window'
 end

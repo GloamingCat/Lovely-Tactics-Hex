@@ -1,93 +1,100 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Colorable
+--- An object with color properties.
 ---------------------------------------------------------------------------------------------------
-An object with color properties.
+-- @basemod Colorable
 
-=================================================================================================]]
+-- ================================================================================================
 
+-- Class table.
 local Colorable = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Initalizes color.
--- @param(color : table) A color table containing {red, green, blue, alpha} components (optional).
+--- Initalizes color.
+-- @tparam[opt] Color.RGBA color A color table containing `r`, `g`, `b` and `a` components.
+-- @tparam[opt] Color.HSV hsv A color table containing `h`, `s`, and `v` components.
 function Colorable:initColor(color, hsv)
-  color = color or { red = 1, green = 1, blue = 1, alpha = 1 }
+  color = color or { r = 1, g = 1, b = 1, a = 1 }
   self.hsv = hsv or { h = 0, s = 1, v = 1 }
   self.color = color
   self.colorSpeed = 0
-  self.origRed = color.red
-  self.origGreen = color.green
-  self.origBlue = color.blue
-  self.destRed = color.red
-  self.destGreen = color.green
-  self.destBlue = color.blue
+  self.origRed = color.r
+  self.origGreen = color.g
+  self.origBlue = color.b
+  self.origAlpha = color.a
+  self.destRed = color.r
+  self.destGreen = color.g
+  self.destBlue = color.b
+  self.destAlpha = color.a
   self.colorTime = 1
   self.colorFiber = nil
   self.cropColor = true
   self.interruptableColor = true
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- RGBA & HSV
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets each RGBA component.
--- @ret(number) Red component.
--- @ret(number) Green component.
--- @ret(number) Blue component.
--- @ret(number) Alpha component.
+--- Gets each RGBA component.
+-- @treturn number Red component.
+-- @treturn number Green component.
+-- @treturn number Blue component.
+-- @treturn number Alpha component.
 function Colorable:getRGBA()
-  return self.color.red, self.color.green, self.color.blue, self.color.alpha
+  return self.color.r, self.color.g, self.color.b, self.color.a
 end
--- Sets color's RGBA. If a component parameter is nil, it will not be changed.
--- @param(r : number) Red component (optional, current by default).
--- @param(g : number) Green component (optional, current by default).
--- @param(b : number) Blue component (optional, current by default).
--- @param(a : number) Blpha component (optional, current by default).
+--- Sets color's RGBA. If a component parameter is nil, it will not be changed.
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number r Red component.
+-- @tparam[opt] number g Green component.
+-- @tparam[opt] number b Blue component.
+-- @tparam[opt] number a Blpha component.
 function Colorable:setRGBA(r, g, b, a)
-  self.color.red = r or self.color.red
-  self.color.green = g or self.color.green
-  self.color.blue = b or self.color.blue
-  self.color.alpha = a or self.color.alpha
+  self.color.r = r or self.color.r
+  self.color.g = g or self.color.g
+  self.color.b = b or self.color.b
+  self.color.a = a or self.color.a
 end
--- Gets each HSV component.
--- @ret(number) Hue component.
--- @ret(number) Saturation component.
--- @ret(number) Value/brightness component.
+--- Gets each HSV component.
+-- @treturn number Hue component.
+-- @treturn number Saturation component.
+-- @treturn number Value/brightness component.
 function Colorable:getHSV()
   return self.hsv.h, self.hsv.s, self.hsv.v
 end
--- Sets color's HSV. If a component parameter is nil, it will not be changed.
--- @param(h : number) Hue component (optional, current by default).
--- @param(s : number) Saturation component (optional, current by default).
--- @param(v : number) Value/brightness component (optional, current by default).
+--- Sets color's HSV. If a component parameter is nil, it will not be changed.
+-- If an argument is nil, the field is left unchanged.
+-- @tparam[opt] number h Hue component.
+-- @tparam[opt] number s Saturation component.
+-- @tparam[opt] number v Value/brightness component.
 function Colorable:setHSV(h, s, v)
   self.hsv.h = h or self.hsv.h
   self.hsv.s = s or self.hsv.s
   self.hsv.v = v or self.hsv.v
 end
--- Sets color's RGBA. If a component parameter is nil, it will not be changed.
--- @param(rgba : table) A table containing {red, green, blue, alpha} components (optional).
--- @param(hsv : table) A table containing {hue, saturation, value} components (optional).
+--- Sets color's RGBA. If a component parameter is nil, it will not be changed.
+-- @tparam[opt] Color.RGBA rgba A color table containing `r`, `g`, `b` and `a` components.
+-- @tparam[opt] Color.HSV hsv A color table containing `h`, `s`, and `v` components.
 function Colorable:setColor(rgba, hsv)
   if rgba then
-    self:setRGBA(rgba.red, rgba.green, rgba.blue, rgba.alpha)
+    self:setRGBA(rgba.r, rgba.g, rgba.b, rgba.a)
   end
   if hsv then
     self:setHSV(hsv.h, hsv.s, hsv.v)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Update
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Applies color speed and updates color.
+--- Applies color speed and updates color.
+-- @tparam number dt The duration of the previous frame.
 function Colorable:updateColor(dt)
   if self.colorTime < 1 then
     self.colorTime = self.colorTime + self.colorSpeed * dt
@@ -103,13 +110,14 @@ function Colorable:updateColor(dt)
     end
   end
 end
--- [COROUTINE] Moves to (x, y).
--- @param(r : number) Red component.
--- @param(g : number) Green component.
--- @param(b : number) Blue component.
--- @param(a : number) Alpha component.
--- @param(speed : number) The speed of the colorizing (optional, instant by default).
--- @param(wait : boolean) Flag to wait until the colorizing finishes (optional, false by default).
+--- Moves to (x, y).
+-- @coroutine
+-- @tparam number r Red component.
+-- @tparam number g Green component.
+-- @tparam number b Blue component.
+-- @tparam number a Alpha component.
+-- @tparam[opt=0] number speed The speed of the colorizing. If 0, the change is instantaneous.
+-- @tparam[opt] boolean wait Flag to wait until the colorizing finishes.
 function Colorable:colorizeTo(r, g, b, a, speed, wait)
   if speed and speed > 0 then
     self:gradualColorizeTo(r, g, b, a, speed, wait)
@@ -117,23 +125,24 @@ function Colorable:colorizeTo(r, g, b, a, speed, wait)
     self:instantColorizeTo(r, g, b, a)
   end
 end
--- Colorizes instantly the object.
--- @param(r : number) Red component.
--- @param(g : number) Green component.
--- @param(b : number) Blue component.
--- @param(a : number) Alpha component.
--- @ret(boolean) True if the colorizing must be interrupted, nil or false otherwise.
+--- Colorizes instantly the object.
+-- @tparam number r Red component.
+-- @tparam number g Green component.
+-- @tparam number b Blue component.
+-- @tparam number a Alpha component.
+-- @treturn boolean True if the colorizing must be interrupted, nil or false otherwise.
 function Colorable:instantColorizeTo(r, g, b, a)
   self:setRGBA(r, g, b, a)
   return nil
 end
--- [COROUTINE] Moves gradually (through updateMovement) to the given point.
--- @param(r : number) Red component.
--- @param(g : number) Green component.
--- @param(b : number) Blue component.
--- @param(a : number) Alpha component.
--- @param(speed : number) The speed of the colorizing.
--- @param(wait : boolean) Flag to wait until the colorizing finishes (optional, false by default).
+--- Moves gradually (through updateMovement) to the given point.
+-- @coroutine
+-- @tparam number r Red component.
+-- @tparam number g Green component.
+-- @tparam number b Blue component.
+-- @tparam number a Alpha component.
+-- @tparam number speed The speed of the colorizing.
+-- @tparam[opt] boolean wait Flag to wait until the colorizing finishes.
 function Colorable:gradualColorizeTo(r, g, b, a, speed, wait)
   self.origRed, self.origGreen, self.origBlue, self.origAlpha = self:getRGBA()
   self.destRed, self.destGreen, self.destBlue, self.destAlpha = 
@@ -144,7 +153,8 @@ function Colorable:gradualColorizeTo(r, g, b, a, speed, wait)
     self:waitForColor()
   end
 end
--- [COROUTINE] Waits until the move time is 1.
+--- Waits until the move time is 1.
+-- @coroutine
 function Colorable:waitForColor()
   local fiber = _G.Fiber
   if self.colorFiber then
@@ -154,11 +164,12 @@ function Colorable:waitForColor()
   while self.colorTime < 1 do
     Fiber:wait()
   end
-  if fiber:running() then
+  if fiber:isRunning() then
     self.colorFiber = nil
   end
 end
--- @ret(boolean) If color animation if still on going.
+--- Whether the color animation is still on going.
+-- @treturn boolean False if it stopped changing color.
 function Colorable:colorizing()
   return self.colorTime < 1
 end

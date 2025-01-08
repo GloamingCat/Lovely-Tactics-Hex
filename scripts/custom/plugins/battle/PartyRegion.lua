@@ -1,15 +1,24 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-PartyRegion
+--- Sets custom party tiles in a battle field.
 ---------------------------------------------------------------------------------------------------
-Sets custom party tiles in a battle field.
+-- @plugin PartyRegion
 
--- Plugin parameters:
-party1, party2 ... partyN: the region ID's associated with each field party.
-Set <override> to completely override old method, instead of merging.
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield number partyX The parameters `party1`, `party2` ... `partyN` are the region ID's
+--  associated with each field party `X`. 
+-- @tfield boolean override Flag to completely override old method for setting player tiles,
+--  instead of merging.
 
-=================================================================================================]]
+-- ================================================================================================
+
+-- Imports
+local TroopManager = require('core/battle/TroopManager')
+
+-- Rewrites
+local TroopManager_setPartyTiles = TroopManager.setPartyTiles
 
 -- Parameters
 local regionIDs = {}
@@ -22,15 +31,12 @@ do
 end
 local merge = args.override ~= true
 
--- Imports
-local TroopManager = require('core/battle/TroopManager')
-
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- TroopManager
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Override. Checks for tile regions.
-local TroopManager_setPartyTiles = TroopManager.setPartyTiles
+--- Rewrites `TroopManager:setPartyTiles`.
+-- @rewrite
 function TroopManager:setPartyTiles()
   if merge then
     TroopManager_setPartyTiles(self)

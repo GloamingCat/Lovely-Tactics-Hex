@@ -1,11 +1,11 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-PopText
+--- A text sprite that is shown in the field with a pop-up animation.
 ---------------------------------------------------------------------------------------------------
-A text sprite that is shown in the field with a pop-up animation.
+-- @animmod PopText
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Text = require('core/graphics/Text')
@@ -13,16 +13,17 @@ local Text = require('core/graphics/Text')
 -- Alias
 local max = math.max
 
+-- Class table.
 local PopText = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor. Starts with no lines.
--- @param(x : number) origin pixel x
--- @param(y : number) origin pixel y
--- @param(z : number) origin pixel z (depth)
+--- Constructor. Starts with no lines.
+-- @tparam number x Origin pixel x.
+-- @tparam number y Origin pixel y.
+-- @tparam Renderer renderer The target renderer.
 function PopText:init(x, y, renderer)
   self.x = x
   self.y = y
@@ -39,14 +40,14 @@ function PopText:init(x, y, renderer)
   self.renderer = renderer
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Lines
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Adds a new line.
--- @param(text : string) the text content
--- @param(color : table) the text color (red/green/blue/alpha table)
--- @param(font : Font) the text font
+--- Adds a new line.
+-- @tparam string text The text content.
+-- @tparam string color The name of the text color.
+-- @tparam string font The name of the text font.
 function PopText:addLine(text, color, font)
   text = '{c' .. color .. '}{f' .. font .. '}' .. text
   local l = self.lineCount
@@ -56,20 +57,20 @@ function PopText:addLine(text, color, font)
   self.lineCount = l + 1
   self.text = text
 end
--- Add a line to show damage.
--- @param(points : table) result data from skill
+--- Add a line to show damage.
+-- @tparam table points Result data from skill.
 function PopText:addDamage(points)  
   local popupName = 'popup_dmg' .. points.key
   self:addLine(points.value, popupName, popupName)
 end
--- Add a line to show heal.
--- @param(points : table) result data from skill
+--- Add a line to show heal.
+-- @tparam table points Result data from skill.
 function PopText:addHeal(points)
   local popupName = 'popup_heal' .. points.key
   self:addLine(points.value, popupName, popupName)
 end
--- Add a line to show a status addition.
--- @param(s : Status) The added status. 
+--- Add a line to show a status addition.
+-- @tparam Status s The added status.
 function PopText:addStatus(s)
   local popupName = 'popup_status_add' .. s.data.id
   local color = Color[popupName] and popupName or 'popup_status_add'
@@ -77,8 +78,8 @@ function PopText:addStatus(s)
   local name = Vocab.data.status[s.data.key] or s.data.name
   self:addLine('+' .. name, color, font)
 end
--- Add lines to show status removal.
--- @param(all : table) Array of Status objects.
+--- Add lines to show status removal.
+-- @tparam table all Array of Status objects.
 function PopText:removeStatus(all)
   for i = 1, #all do
     local s = all[i]
@@ -90,12 +91,13 @@ function PopText:removeStatus(all)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Execution
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- [COROUTINE] Show the text lines.
--- @param(dir : number) 1 to pop up, -1 to pop down.
+--- Show the text lines.
+-- @coroutine
+-- @tparam number dir 1 to pop up, -1 to pop down.
 function PopText:pop(dir)
   local p = {self.width, self.align}
   local sprite = Text(self.text, p, self.renderer)
@@ -108,47 +110,47 @@ function PopText:pop(dir)
     Fiber:wait()
   end
   Fiber:wait(self.pause)
-  local f = self.speed / 4 / sprite.color.alpha
-  while sprite.color.alpha > 0 do
-    local a = max(sprite.color.alpha - f * GameManager:frameTime(), 0)
+  local f = self.speed / 4 / sprite.color.a
+  while sprite.color.a > 0 do
+    local a = max(sprite.color.a - f * GameManager:frameTime(), 0)
     sprite:setRGBA(nil, nil, nil, a)
     Fiber:wait()
   end
   sprite:destroy()
 end
--- [COROUTINE] Show the text lines.
--- @param(wait : boolean) True if the execution should wait until the animation finishes 
---  (optional, false by default).
--- @ret(number) The duration in frames.
+--- Show the text lines.
+-- @coroutine
+-- @tparam[opt] boolean wait Flag to wait until the animation finishes.
+-- @treturn number The duration in frames.
 function PopText:popUp(wait)
   if not self.text then
     return 0
   end
   if not wait then
-    Fiber:fork(self.pop, self, 1)
+    Fiber:forkMethod(self, 'pop', 1)
     return 60 / self.speed + self.pause + 60 / self.speed * 4
   else
     self:pop(1)
     return 0
   end
 end
--- [COROUTINE] Show the text lines.
--- @param(wait : boolean) True if the execution should wait until the animation finishes 
---  (optional, false by default).
--- @ret(number) The duration in frames.
+--- Show the text lines.
+-- @coroutine
+-- @tparam[opt] boolean wait Flag to wait until the animation finishes.
+-- @treturn number The duration in frames.
 function PopText:popDown(wait)
   if not self.text then
     return 0
   end
   if not wait then
-    Fiber:fork(self.pop, self, -1)
+    Fiber:forkMethod(self, 'pop', -1)
     return 60 / self.speed + self.pause + 60 / self.speed * 4
   else
     self:pop(-1)
     return 0
   end
 end
--- Destroys the text sprite.
+--- Destroys the text sprite.
 function PopText:destroy()
   self.sprite:destroy()
 end

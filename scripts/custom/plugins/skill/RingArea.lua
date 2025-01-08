@@ -1,42 +1,62 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-RingArea
+--- Allows a battle action to use a ring area instead of a grid mask.
+-- A ring is defined by the minimum distance, or the radius of the smallest circle - `near`
+-- value -, and the maximum distance, or the radius of the largest circle - `far` value.
+-- The ring is the set of tiles within these limits.  
+-- It is also possible to define the maximum and minimum height differences, `minh` and `maxh`.  
+-- The `cast_` tags refer to the range of the skill, i. e. the distance between the user and the
+-- center target tile, and the `effect_` tags refer to the effect area, i. e. the distance between
+-- the center target tile and the target character around it.
+--
+-- Notes:
+-- 
+--  * If no `cast_` tag is found in the skill, then the default cast mask is used. The same for
+--  the `effect_` tags.
+--  * If `near` is bigger than `far` value, the set is empty.
+--  * If `far` and `near` are the same value `X`, the ring is the set of tiles that distantiates
+--  from the center by exactly `X`.
+--  * If `far` and `near` are `0`, the set contains only the center tile.
 ---------------------------------------------------------------------------------------------------
-Allows a battle action to use a ring area instead of a grid mask. A ring is defined by the minimum 
-distance, or the radius of the smallest circle - <near> value -, and the maximum distance, or the 
-radius of the largest circle - <far> value. The ring is the set of tiles within these limits.
-It is also possible to define the maximum and minimum height differences, <minh> and <maxh>.
+-- @plugin RingArea
 
--- Skill parameters:
-The range of the skill is defined by <cast_far>, <cast_near>, <cast_minh> and <cast_maxh>.
-The effect area of the skill is defined by <effect_far>, <effect_near>, <effect_minh> and 
-<effect_maxh>.
-If no <cast_> tag is defined, then the default cast mask is used. The same for the <effect_> tags.
+--- Parameters in the Skill tags.
+-- @tags Skill
+-- @tfield number cast_far The maximum distance for the range of the skill.
+-- @tfield number cast_near The minimum distance for the range of the skill.
+-- @tfield number cast_maxh The maximum height different for the range of the skill.
+-- @tfield number cast_minh The minimum height different for the range of the skill.
+-- @tfield number effect_far The maximum distance from the target tile for the effect area of the skill.
+-- @tfield number effect_near The minimum distance from the target tile for the effect area of the skill.
+-- @tfield number effect_maxh The maximum height different from the target tile for the effect area of the skill.
+-- @tfield number effect_minh The minimum height different from the target tile for the effect area of the skill.
+-- @tfield boolean wholeField Flag to make the skill affect the whole field.
 
-Notes:
-* If <near> is bigger than <far> value, the set is empty.
-* If <far> and <near> are the same value X, the ring is the set of tiles that distantiates from
-the center by exactly X.
-* If <far> and <near> are 0, the set contains only the center tile.
-
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
+local BattleAction = require('core/battle/action/BattleAction')
 local FieldAction = require('core/battle/action/FieldAction')
 local SkillAction = require('core/battle/action/SkillAction')
-local ActionGUI = require('core/gui/battle/ActionGUI')
+local ActionMenu = require('core/gui/battle/ActionMenu')
 
 -- Alias
 local mathf = math.field
 
----------------------------------------------------------------------------------------------------
--- SkillAction
----------------------------------------------------------------------------------------------------
-
--- Constructor.
--- Creates ring masks if parameters are set in the tags.
+-- Rewrites
 local SkillAction_init = SkillAction.init
+local FieldAction_resetAffectedTiles = FieldAction.resetAffectedTiles
+local FieldAction_isSelectable = FieldAction.isSelectable
+local FieldAction_isArea = FieldAction.isArea
+local FieldAction_getAreaTiles = FieldAction.getAreaTiles
+
+-- ------------------------------------------------------------------------------------------------
+-- SkillAction
+-- ------------------------------------------------------------------------------------------------
+
+--- Rewrites `SkillAction:init`. Creates ring masks if parameters are set in the tags.
+-- @rewrite
 function SkillAction:init(...)
   SkillAction_init(self, ...)
   local t = self.tags
@@ -53,23 +73,23 @@ function SkillAction:init(...)
     self.moveAction.range = self.range
   end
 end
--- Overrides to create Range window.
-local SkillAction_onActionGUI = SkillAction.onActionGUI
-function SkillAction:onActionGUI(input)
-  SkillAction_onActionGUI(self, input)
+--- Overrides `BattleAction:onActionMenu`.
+-- @override
+function SkillAction:onActionMenu(input)
+  BattleAction.onActionMenu(self, input)
   local far = self.tags.cast_far
   local near = self.tags.cast_near
   if not self.showStepWindow and self:isLongRanged() and (far or near) then
     far = far or 1
     near = near or 1
-    input.GUI:createPropertyWindow('range', near > 1 and (near .. '-' .. far) or far):show()
+    input.menu:createPropertyWindow('range', near > 1 and (near .. '-' .. far) or far):show()
   end
 end
--- Creates a mask for the ring format.
--- @param(far : number) The radius of the largest circle (maximum distance).
--- @param(near : number) The radius of the smallest circle (minimum distance).
--- @param(minh : number) Minimum height difference (usually negative).
--- @param(minh : number) Minimum height difference (usually positive).
+--- Creates a mask for the ring format.
+-- @tparam number far The radius of the largest circle (maximum distance).
+-- @tparam number near The radius of the smallest circle (minimum distance).
+-- @tparam number minh Minimum height difference (usually negative).
+-- @tparam number maxh Minimum height difference (usually positive).
 function SkillAction:createRingMask(far, near, minh, maxh)
   far = far or 0
   near = near or 0
@@ -88,29 +108,29 @@ function SkillAction:createRingMask(far, near, minh, maxh)
     centerY = far + 1 }
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- FieldAction
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(boolean) True if skill's area represents whole field.
+--- Checks whether the skill's area represents whole field or not.
+-- @treturn boolean True if it should affect the whole field.
 function FieldAction:wholeField()
   return self.area == nil
 end
--- Override. All tiles are affected if marked as whole field.
-local FieldAction_resetAffectedTiles = FieldAction.resetAffectedTiles
+--- Rewrites `FieldAction:resetAffectedTiles`.
+-- @rewrite
 function FieldAction:resetAffectedTiles(input)
   if self:wholeField() then
     local affectedTiles = self:getAllAffectedTiles(input)
     for i = 1, #affectedTiles do
-      affectedTiles[i].gui.affected = true
+      affectedTiles[i].ui.affected = true
     end
   else
     return FieldAction_resetAffectedTiles(self, input)
   end
 end
--- Override.
--- Only one tile (user's tile) is selectable if the skill affects the whole field.
-local FieldAction_isSelectable = FieldAction.isSelectable
+--- Rewrites `FieldAction:isSelectable`.
+-- @rewrite
 function FieldAction:isSelectable(input, tile)
   if self:wholeField() then
     -- User only
@@ -119,17 +139,16 @@ function FieldAction:isSelectable(input, tile)
     return FieldAction_isSelectable(self, input, tile)
   end
 end
--- Override. Returns true if marked as whole field.
-local FieldAction_isArea = FieldAction.isArea
+--- Rewrites `FieldAction:isArea`.
+-- @rewrite
 function FieldAction:isArea()
   if self:wholeField() then
     return true
   end
   return FieldAction_isArea(self)
 end
--- Override.
--- Returns all field tiles if area is nil.
-local FieldAction_getAreaTiles = FieldAction.getAreaTiles
+--- Rewrites `FieldAction:getAreaTiles`.
+-- @rewrite
 function FieldAction:getAreaTiles(input, centerTile)
   if self:wholeField() then
     local tiles = {}

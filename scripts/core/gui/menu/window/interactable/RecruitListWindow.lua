@@ -1,27 +1,32 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-RecruitListWindow
+--- Window with the list of items available to hire.
 ---------------------------------------------------------------------------------------------------
-Window with the list of items available to hire.
+-- @windowmod RecruitListWindow
+-- @extend ListWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Button = require('core/gui/widget/control/Button')
 local ListWindow = require('core/gui/common/window/interactable/ListWindow')
 
+-- Class table.
 local RecruitListWindow = class(ListWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
-function RecruitListWindow:init(gui)
+--- Constructor.
+-- @tparam RecruitMenu menu Parent Menu.
+function RecruitListWindow:init(menu)
   self.visibleRowCount = 4
-  ListWindow.init(self, gui, {})
+  ListWindow.init(self, menu, {})
 end
--- Implements ListWindow:createListButton.
+--- Implements `ListWindow:createListButton`.
+-- @implement
 function RecruitListWindow:createListButton(entry)
   local battler, price, char, member
   if self.hire then
@@ -29,72 +34,73 @@ function RecruitListWindow:createListButton(entry)
     assert(char, 'Character does not exist: ' .. tostring(entry.id))
     battler = Database.battlers[char.battlerID]
     assert(battler, 'Character does not have a battler: ' .. tostring(char.id))
-    price = entry.price or battler.money
+    price = entry.value or battler.money
   else
-    member = self.GUI.troop.members[entry.key]
+    member = self.menu.troop.members[entry.key]
     assert(member, 'Member not in troop: ' .. entry.key)
-    battler = self.GUI.troop.battlers[entry.key]
-    assert(member, 'Member has no battler: ' .. entry.key)
+    battler = self.menu.troop.battlers[entry.key]
+    assert(battler, 'Member has no battler: ' .. entry.key)
     battler = battler.data
+    assert(battler, 'Battler has no data: ' .. tostring(battler))
     price = -(math.floor(battler.money / 2))
   end
   local button = Button(self)
-  local icon = battler.icon and battler.icon.id >= 0 and 
-    ResourceManager:loadIconAnimation(battler.icon, GUIManager.renderer)
-  if icon then
-    button:createIcon(icon)
-  end
-  button:createText('data.battler.' .. battler.key, battler.name, 'gui_button')
+  button:setIcon(battler.icon)
+  button:createText('{%data.battler.' .. battler.key .. '}', battler.name, 'menu_button')
   button.price = price
   button.battler = battler
   if self.hire then
     button.char = char
-    button:createInfoText(price .. ' {%g}', nil, 'gui_button')
+    button:createInfoText(price .. ' {%g}', nil, 'menu_button')
   else
     button.member = member
-    button:createInfoText(-price .. ' {%g}', nil, 'gui_button')
+    button:createInfoText(-price .. ' {%g}', nil, 'menu_button')
   end
   return button
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Mode
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Use this window to hire items.
+--- Use this window to hire battlers.
 function RecruitListWindow:setHireMode()
   self.hire = true
-  self:refreshButtons(self.GUI.chars)
+  self:refreshButtons(self.menu.chars)
 end
--- Use this window to sell items.
+--- Use this window to dismiss battlers.
 function RecruitListWindow:setDismissMode()
   self.hire = false
-  self:refreshButtons(self.GUI.troop:visibleMembers())
+  self:refreshButtons(self.menu.troop:visibleMembers())
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Enable Conditions
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @ret(boolean) True if at least one item of this type can be bought.
+--- In hire mode, checks if at least one battler of this type can be recruited.
+-- In dismiss mode, checks if the battler is dismissable.
+-- @tparam Button button Button to check, containing the battler's information.
+-- @treturn boolean Whether the hire/dismiss button should be enabled.
 function RecruitListWindow:buttonEnabled(button)
   if self.hire then
-    return self.GUI.troop.money >= button.price
+    return self.menu.troop.money >= button.price
   else
     return button.battler.recruit
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Confirm Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Shows the window to select the quantity.
+--- Shows the window to select the quantity.
+-- @tparam Button button Selected button.
 function RecruitListWindow:onButtonConfirm(button)
-  local w = self.GUI.countWindow
-  local w2 = self.GUI.descriptionWindow
+  local w = self.menu.countWindow
+  local w2 = self.menu.descriptionWindow
   self:hide()
-  _G.Fiber:fork(w2.hide, w2)
+  _G.Fiber:forkMethod(w2, 'hide')
   w:show()
   if self.hire then
     w:setChar(button.char, button.price)
@@ -103,24 +109,27 @@ function RecruitListWindow:onButtonConfirm(button)
   end
   w:activate()
 end
--- Closes hire GUI.
+--- Closes hire Menu.
+-- @tparam Button button Selected button.
 function RecruitListWindow:onButtonCancel(button)
-  self.GUI:hideRecruitGUI()
+  self.menu:hideRecruitMenu()
 end
--- Updates item description.
+--- Updates item description.
+-- @tparam Button button Selected button.
 function RecruitListWindow:onButtonSelect(button)
-  self.GUI.descriptionWindow:updateTerm('data.battler.' .. button.battler.key .. '_desc', button.battler.description)
+  self.menu.descriptionWindow:updateTerm('{%data.battler.' .. button.battler.key .. '_desc}', button.battler.description)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Confirm Callbacks
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides ListWindow:cellWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override
 function RecruitListWindow:cellWidth()
   return ListWindow.cellWidth(self) * 4 / 5
 end
--- @ret(string) String representation (for debugging).
+-- For debugging.
 function RecruitListWindow:__tostring()
   return 'Recruit List Window'
 end

@@ -1,22 +1,25 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-RushRule
+--- Attacks the closest character.
 ---------------------------------------------------------------------------------------------------
-Rule to attack the closest character.
+-- @battlemod RushRule
+-- @extend SkillRule
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local SkillRule = require('core/battle/ai/SkillRule')
 
+-- Class table.
 local RushRule = class(SkillRule)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides SkillRule:onSelect.
+--- Overrides `SkillRule:onSelect`. 
+-- @override
 function RushRule:onSelect(...)
   SkillRule.onSelect(self, ...)
   self:selectClosestTarget()
@@ -24,7 +27,7 @@ function RushRule:onSelect(...)
     self.input = nil
   end
 end
--- @ret(string) String identifier.
+-- For debugging.
 function RushRule:__tostring()
   return 'RushRule (' .. tostring(self.skill)  .. '): ' .. self.battler.key
 end

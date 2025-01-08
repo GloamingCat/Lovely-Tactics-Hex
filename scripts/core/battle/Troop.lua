@@ -1,11 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Troop
+--- Contains information about the units and their respective `Battler`s.
+-- It manipulates the matrix of units to be instatiated in the beginning of the battle.
 ---------------------------------------------------------------------------------------------------
-Manipulates the matrix of battler IDs to the instatiated in the beginning of the battle.
+-- @battlemod Troop
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Battler = require('core/battle/battler/Battler')
@@ -16,15 +17,51 @@ local List = require('core/datastruct/List')
 local mod = math.mod
 local copyTable = util.table.deepCopy
 
+-- Class table.
 local Troop = class()
 
----------------------------------------------------------------------------------------------------
--- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- Tables
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor. 
--- @param(data : table) Troop's data from database.
--- @param(party : number) The number of the field party spot this troops was spawned in.
+--- The different group types the unit can be in.
+-- @enum Group
+-- @field CURRENT Group of current active battlers. Equals 0.
+-- @field BACKUP Group of backup battlers, not active in battle. Equals 1.
+-- @field HIDDEN Group of currently unaccessible battlers. Equals 2.
+Troop.Group = {
+  CURRENT = 0,
+  BACKUP = 1,
+  HIDDEN = 2
+}
+
+--- A troop unit entry.
+-- @table Unit
+-- @tfield string key The unit's identified. It must be unique within the troop.
+-- @tfield number|string battlerID The ID or key of the unit's battler data.
+-- @tfield number|string charID The ID or key of the unit's character data.
+-- @tfield Group list The identifier of the group this unit is currently in.
+-- @tfield[opt] number x The unit's x position in the troop grid (if unit is active).
+-- @tfield[opt] number y The unit's y position in the troop grid (if unit is active.
+-- @tfield[opt] table state The unit's persistent data (if the battler is persistent).
+Troop.emptyUnit = {
+  key = "",
+  battlerID = -1,
+  charID = -1,
+  list = 0,
+  x = 1,
+  y = 1,
+  state = nil,
+}
+
+-- ------------------------------------------------------------------------------------------------
+-- Initialization
+-- ------------------------------------------------------------------------------------------------
+
+--- Constructor. 
+-- @tparam table data Troop's data from database.
+-- @tparam number party The number of the field party spot this troops was spawned in.
+-- @tparam table save Troop's save data.
 function Troop:init(data, party, save)
   data = data or Database.troops[TroopManager.playerTroopID]
   self.data = data
@@ -45,8 +82,8 @@ function Troop:init(data, party, save)
     self.AI = require('custom/' .. data.ai)
   end
 end
--- Creates battler for each member data in the given list that is not hidden.
--- @param(members : table) An array of member data.
+--- Creates battler for each member data in the given list that is not hidden.
+-- @tparam table members An array of `Unit` entries.
 function Troop:initBattlers(members)
   self.members = List(copyTable(members))
   self.battlers = {}
@@ -60,13 +97,13 @@ function Troop:initBattlers(members)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Member Lists
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Checks if a member with the given key exists and is not hidden.
--- @param(string) Member's key.
--- @ret(boolean) True if the current or backup list has a member with given key.
+--- Checks if a member with the given key exists and is not hidden.
+-- @tparam string key Member's key.
+-- @treturn boolean True if the current or backup list has a member with given key.
 function Troop:hasMember(key)
   local list = List()
   for member in self.members:iterator() do
@@ -76,43 +113,48 @@ function Troop:hasMember(key)
   end
   return false
 end
--- @ret(List) List of all members in the current party grid.
+--- Creates a list with all members in the current party grid.
+-- @treturn List List of `Unit` entries.
 function Troop:currentMembers()
   local list = List()
   for member in self.members:iterator() do
-    if member.list == 0 then
+    if member.list == self.Group.CURRENT then
       list:add(member)
     end
   end
   return list
 end
--- @ret(List) List of backup members.
+--- Creates a list with all backup members.
+-- @treturn List List of `Unit` entries.
 function Troop:backupMembers()
   local list = List()
   for member in self.members:iterator() do
-    if member.list == 1 then
+    if member.list == self.Group.BACKUP then
       list:add(member)
     end
   end
   return list
 end
--- @ret(List) List of all hidden members.
+--- Creates a list with all hidden members.
+-- @treturn List List of `Unit` entries.
 function Troop:hiddenMembers()
   local list = List()
   for member in self.members:iterator() do
-    if member.list == 2 then
+    if member.list == self.Group.HIDDEN then
       list:add(member)
     end
   end
   return list
 end
--- @ret(List) List of all visible (current and backup) members.
+--- Creates a list with all visible (current and backup) members.
+-- @treturn List List of `Unit` entries.
 function Troop:visibleMembers()
   local list = List(self.members)
   list:removeAll(self:hiddenMembers())
   return list
 end
--- @ret(List) List of all battlers in the current party grid.
+--- Creates a list with all battlers in the current party grid
+-- @treturn List List of `Battler`.
 function Troop:currentBattlers()
   local list = self:currentMembers()
   for i = 1, #list do
@@ -120,7 +162,8 @@ function Troop:currentBattlers()
   end
   return list
 end
--- @ret(List) List of all backup battlers.
+--- Creates a list with all backup battlers.
+-- @treturn List List of `Battler`.
 function Troop:backupBattlers()
   local list = self:backupMembers()
   for i = 1, #list do
@@ -128,7 +171,8 @@ function Troop:backupBattlers()
   end
   return list
 end
--- @ret(List) List of all visible (current and backup) battlers.
+--- Creates a list with all visible (current and backup) battlers.
+-- @treturn List List of `Battler`.
 function Troop:visibleBattlers()
   local list = self:visibleMembers()
   for i = 1, #list do
@@ -136,8 +180,9 @@ function Troop:visibleBattlers()
   end
   return list
 end
--- @param(number : string) The battler's key or ID in the database.
--- @ret(number) The number of members in the party with the given battler ID.
+--- Counts the number of units that have Battlers of the given ID.
+-- @tparam string id The battler's key or ID in the database.
+-- @treturn number The number of members in the party with the given battler ID.
 function Troop:battlerCount(id)
   local count = 0
   local battler = Database.battlers[id]
@@ -148,30 +193,30 @@ function Troop:battlerCount(id)
   end
   return count
 end
--- Adds a new member to the troop.
--- @param(member : table) Member data.
--- @param(battler : Battler) Member's battler (optional).
+--- Adds a new member to the troop. It is put initially in the backup group.
+-- @tparam table member The troop unit data of the character.
+-- @tparam[opt] Battler battler Member's battler.
 function Troop:addMember(member, battler)
   self.members[member.key] = member
   self.members:add(member)
   self.battlers[member.key] = battler
-  member.list = 1
+  member.list = self.Group.BACKUP
   member.x = 1
   member.y = 1
 end
--- Deletes a member completely.
--- @param(key : string) Member's key.
+--- Deletes a member completely.
+-- @tparam string key Member's key.
 function Troop:removeMember(key)
   util.array.remove(self.members, self.members[key])
   self.members[key] = nil
   self.battlers[key] = nil
 end
--- Moves a member to another list.
--- @param(key : string) Member's key.
--- @param(list : number) List type. 0 is current, 1 is backup, 2 is hidden.
--- @param(x : number) Grid-x position of the member (optional).
--- @param(y : number) Grid-y position of the member (optional).
--- @ret(Battle) The called member.
+--- Moves a member to another list.
+-- @tparam string key Member's key.
+-- @tparam Group list Group in which to put this unit in.
+-- @tparam[opt] number x Grid-x position of the member.
+-- @tparam[opt] number y Grid-y position of the member.
+-- @treturn Battle The called member.
 function Troop:moveMember(key, list, x, y)
   assert(self.members[key], 'Member ' .. tostring(key) .. ' not in ' .. tostring(self))
   local member = self.members[key]
@@ -181,18 +226,18 @@ function Troop:moveMember(key, list, x, y)
   return member
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Rotation
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Sets the troop rotation (and adapts the ID matrix).
--- @param(r : number) New rotation.
+--- Sets the troop rotation (and adapts the ID matrix).
+-- @tparam number r New rotation, from 0 (default rotation) to 3 (270-degree turn).
 function Troop:setRotation(r)
   for i = mod(r - self.rotation, 4), 1, -1 do
     self:rotate()
   end
 end
--- Rotates by 90.
+--- Rotates by 90.
 function Troop:rotate()
   for member in self.members:iterator() do
     local i, j = member.x, member.y
@@ -201,25 +246,55 @@ function Troop:rotate()
   self.rotation = mod(self.rotation + 1, 4)
   self.sizeX, self.sizeY = self.sizeY, self.sizeX
 end
--- @ret(number) Character direction in degrees.
+--- Gets the direction the characters are facing when the troop is not rotated.
+-- @treturn number Character direction in degrees.
 function Troop:getCharacterDirection()
   local baseDirection = math.field.baseDirection() -- Characters' direction at rotation 0.
   return mod(baseDirection + self.rotation * 90, 360)
 end
 
----------------------------------------------------------------------------------------------------
--- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- Level
+-- ------------------------------------------------------------------------------------------------
 
--- Converting to string.
--- @ret(string) A string representation.
-function Troop:__tostring()
-  local party = self.party and ' (party ' .. self.party .. ')' or ''
-  return 'Troop ' .. self.data.id .. ': ' .. self.data.name .. party
+--- Computes the average level among visible members.
+-- @treturn number Troop's average level.
+function Troop:getLevel()
+  local level = 0
+  local list = self:visibleBattlers()
+  for i = 1, #list do
+    level = level + list[i].job.level
+  end
+  return level / #list
 end
--- Creates the table to represent troop's persistent data.
--- @param(characters : List) List of field characters to store position (optional).
--- @ret(table) Table with persistent data.
+--- Computes the higher level among visible members.
+-- @treturn number Troop's highest level.
+function Troop:getMaxLevel()
+  local level = 0
+  local list = self:visibleBattlers()
+  for i = 1, #list do
+    level = math.max(level, list[i].job.level)
+  end
+  return level
+end
+--- Computes the minimum level among visible members.
+-- @treturn number Troop's lowest level.
+function Troop:getMinLevel()
+  local level = math.huge
+  local list = self:visibleBattlers()
+  for i = 1, #list do
+    level = math.min(level, list[i].job.level)
+  end
+  return level
+end
+
+-- ------------------------------------------------------------------------------------------------
+-- General
+-- ------------------------------------------------------------------------------------------------
+
+--- Creates the table to represent troop's persistent data.
+-- @tparam boolean saveFormation Flag to include current formation in the persistent data.
+-- @treturn table Table with persistent data.
 function Troop:getState(saveFormation)
   local data = {}
   data.money = self.money
@@ -235,14 +310,10 @@ function Troop:getState(saveFormation)
   end
   return data
 end
--- @ret(number) The higher level among visible members.
-function Troop:getLevel()
-  local level = 0
-  local list = self:visibleBattlers()
-  for i = 1, #list do
-    level = math.max(level, list[i].job.level)
-  end
-  return level
+-- For debugging.
+function Troop:__tostring()
+  local party = self.party and ' (party ' .. self.party .. ')' or ''
+  return 'Troop ' .. self.data.id .. ': ' .. self.data.name .. party
 end
 
 return Troop

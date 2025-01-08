@@ -1,11 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-ActionItemWindow
+--- The window that is open to choose an item from character's inventory.
 ---------------------------------------------------------------------------------------------------
-The GUI that is open to choose an item from character's inventory.
+-- @windowmod ActionItemWindow
+-- @extend ActionWindow
+-- @extend InventoryWindow
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local ActionWindow = require('core/gui/battle/window/interactable/ActionWindow')
@@ -14,63 +16,67 @@ local InventoryWindow = require('core/gui/common/window/interactable/InventoryWi
 local ItemAction = require('core/battle/action/ItemAction')
 local Vector = require('core/math/Vector')
 
+-- Class table.
 local ActionItemWindow = class(ActionWindow, InventoryWindow)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(gui : GUI) /parent GUI.
--- @param(itemList : ItemList) Available items.
--- @param(maxHeight : number) The height of the space available for the window (in pixels).
-function ActionItemWindow:init(gui, inventory, itemList, maxHeight)
-  local y = self:fitOnTop(maxHeight) + gui:windowMargin()
-  InventoryWindow.init(self, gui, nil, inventory, itemList, nil, nil, Vector(0, y, 0))
+--- Constructor.
+-- @tparam Menu menu Parent Menu.
+-- @tparam Inventory inventory Troop's inventory.
+-- @tparam table itemList List of available items.
+-- @tparam number maxHeight The height of the space available for the window (in pixels).
+function ActionItemWindow:init(menu, inventory, itemList, maxHeight)
+  local y = self:fitOnTop(maxHeight) + menu:windowMargin()
+  InventoryWindow.init(self, menu, nil, inventory, itemList, nil, nil, Vector(0, y, 0))
 end
--- Creates a button from an item ID.
--- @param(id : number) The item ID.
+--- Creates a button from an item ID.
+-- @tparam table itemSlot The item slot with ID and quantity.
 function ActionItemWindow:createListButton(itemSlot)
   local button = InventoryWindow.createListButton(self, itemSlot)
   button.skill = ItemAction:fromData(button.item.skillID, button.item)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input handlers
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when player chooses an item.
--- @param(button : Button)
+--- Called when player chooses an item.
+-- @tparam Button button
 function ActionItemWindow:onButtonConfirm(button)
   self:selectAction(button.skill)
 end
--- Called when player cancels.
--- @param(button : Button)
+--- Called when player cancels.
+-- @tparam Button button
 function ActionItemWindow:onButtonCancel(button)
-  self.GUI:hideDescriptionWindow()
-  self:changeWindow(self.GUI.turnWindow)
+  self.menu:hideDescriptionWindow()
+  self:changeWindow(self.menu.turnWindow)
 end
--- Tells if an item can be used.
--- @param(button : Button)
--- @ret(boolean)
+--- Tells if an item can be used.
+-- @tparam Button button Button to check, with the item's information.
+-- @treturn boolean True if the item button should be enabled.
 function ActionItemWindow:buttonEnabled(button)
   local user = TurnManager:currentCharacter()
   return button.skill:canBattleUse(user) and self:skillActionEnabled(button.skill)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides GridWindow:colCount.
+--- Overrides `GridWindow:colCount`. 
+-- @override
 function ActionItemWindow:colCount()
   return 1
 end
--- Overrides ListWindow:cellWidth.
+--- Overrides `ListWindow:cellWidth`. 
+-- @override
 function ActionItemWindow:cellWidth()
   return 200
 end
--- @ret(string) String representation (for debugging).
+-- For debugging.
 function ActionItemWindow:__tostring()
   return 'Battle Item Window'
 end

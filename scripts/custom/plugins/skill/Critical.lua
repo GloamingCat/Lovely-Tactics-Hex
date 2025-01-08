@@ -1,36 +1,45 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Critical
+--- Doubles damage for critical hits.
 ---------------------------------------------------------------------------------------------------
-Doubles damage for critical hits.
+-- @plugin Critical
 
--- Plugin parameters:
-The attribute used to calculate the chance of critical hit is given by <attName>.
-When critical hit occurs, the base result is multiplied by <ratio>.
-When critical hit occurs, an SFX may be played, with its path, volume and pitch being defined by
-<sound>, <volume> and <pitch>, respectively.
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield string attName The attribute used to calculate the chance of a critical hit.
+-- @tfield number ratio The multiplier of the base damage when a critical hit occurs.
+-- @tfield[opt] string sound The name of the SFX played when a critical hit occurs.
+-- @tfield[opt] number pitch The pitch of the SFX played when a critical hit occurs.
+-- @tfield[opt] number volume The volume of the SFX played when a critical hit occurs.
 
--- Skill parameters:
-If the skill allows critical hit to occur, then the tag <critical> must be set.
+--- Parameters in the Skill tags.
+-- @tags Skill
+-- @tfield boolean critical Flag to allow a critical hit to occur when this skill is used.
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Battler = require('core/battle/battler/Battler')
 local PopText = require('core/graphics/PopText')
 local SkillAction = require('core/battle/action/SkillAction')
 
+-- Rewrites
+local SkillAction_calculateEffectResults = SkillAction.calculateEffectResults
+local PopText_addDamage = PopText.addDamage
+local PopText_addHeal = PopText.addHeal
+local Battler_popResults = Battler.popResults
+
 -- Parameters
 local attName = args.attName
 local ratio = args.ratio or 2
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Rate
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Calculates critical hit rate.
-local SkillAction_calculateEffectResults = SkillAction.calculateEffectResults
+--- Rewrites `SkillAction:calculateEffectResults`. Calculates critical hit rate.
+-- @rewrite
 function SkillAction:calculateEffectResults(user, target)
   local results = SkillAction_calculateEffectResults(self, user, target)
    if self.tags.critical then
@@ -47,12 +56,12 @@ function SkillAction:calculateEffectResults(user, target)
   return results
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Pop-up
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Changes font and show text when critical.
-local PopText_addDamage = PopText.addDamage
+--- Rewrites `PopText:addDamage`. Changes font and show text when critical.
+-- @rewrite
 function PopText:addDamage(points)  
   local crit = points.critical and '_crit' or ''
   local popupName = 'popup_dmg' .. points.key
@@ -61,8 +70,8 @@ function PopText:addDamage(points)
   end
   self:addLine(points.value, popupName, popupName .. crit)
 end
--- Changes font and show text when critical.
-local PopText_addHeal = PopText.addHeal
+--- Rewrites `PopText:addHeal`. Changes font and show text when critical.
+-- @rewrite
 function PopText:addHeal(points)
   local crit = points.critical and '_crit' or ''
   local popupName = 'popup_heal' .. points.key
@@ -72,12 +81,12 @@ function PopText:addHeal(points)
   self:addLine(points.value, popupName, popupName .. crit)
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Sound
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Plays sound before pop-up.
-local Battler_popResults = Battler.popResults
+--- Rewrites `Battler:popResults`. Plays sound before pop-up.
+-- @rewrite
 function Battler:popResults(popText, results, character)
   if Config.sounds.critical and results.critical then
     AudioManager:playSFX(Config.sounds.critical)

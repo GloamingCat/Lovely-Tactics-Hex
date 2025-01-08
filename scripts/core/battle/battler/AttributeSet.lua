@@ -1,23 +1,25 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-AttributeSet
+--- Represents a set of battler attributes, stored by key.
 ---------------------------------------------------------------------------------------------------
-Represents a set of battler attributes, stored by key.
+-- @battlemod AttributeSet
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Alias
 local copyTable = util.table.shallowCopy
 
+-- Class table.
 local AttributeSet = class()
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(battler : Battler) the battler with this attribute set
+--- Constructor.
+-- @tparam Battler battler The battler with this attribute set.
+-- @tparam table save The attribute set's save data.
 function AttributeSet:init(battler, save)
   self.battler = battler
   self.jobBase = {}
@@ -43,9 +45,9 @@ function AttributeSet:init(battler, save)
   end
   self.bonus = true
 end
--- Converts array of attributes to a map.
--- @param(att : table) Array of attributes, in the order defined by system configurations.
--- @ret(table) A map of attribute values by their keys.
+--- Converts array of attributes to a map.
+-- @tparam table atts Array of attributes, in the order defined by system configurations.
+-- @treturn table A map of attribute values by their keys.
 function AttributeSet:toMap(atts)
   local t = {}
   for i, att in ipairs(Config.attributes) do
@@ -54,12 +56,14 @@ function AttributeSet:toMap(atts)
   return t
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Attribute Values
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(key : string) attribute's key
--- @ret(number) the basic attribute value, without volatile bonus
+--- Computes the base value of attributes from its formula plus the base valus from the job and
+-- battler data.
+-- @tparam string key Attribute's key.
+-- @treturn number The basic attribute value, without volatile bonus.
 function AttributeSet:getBase(key)
   local base = self.jobBase[key] + self.battlerBase[key]
   if self.formula[key] then
@@ -67,10 +71,11 @@ function AttributeSet:getBase(key)
   end
   return base
 end
--- @param(key : string) attribute's key
--- @param(base : number) attribute's basic value
--- @param(battler : Battler) battler that contains the bonus information
--- @ret(number) the basic + the bonus value
+--- Computes the new value of the attribute added by its bonuses.
+-- @tparam string key Attribute's key.
+-- @tparam number base Attribute's basic value.
+-- @tparam Battler battler Battler that contains the bonus information.
+-- @treturn number The basic + the bonus value.
 function AttributeSet:getBonus(key, base, battler)
   local add, mul = 0, 1
   if battler.statusList then
@@ -86,18 +91,18 @@ function AttributeSet:getBonus(key, base, battler)
   return add + base * mul
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Converting to string.
--- @ret(string) A string representation.
-function AttributeSet:__tostring()
-  return 'AttributeSet: ' .. tostring(self.battler)
-end
--- @ret(table) persistent state of the battler's attributes
+--- Persistent state of the battler's attributes.
+-- @treturn table Array with the base values of each attribute.
 function AttributeSet:getState()
   return copyTable(self.battlerBase)
+end
+-- For debugging.
+function AttributeSet:__tostring()
+  return 'AttributeSet: ' .. tostring(self.battler)
 end
 
 return AttributeSet

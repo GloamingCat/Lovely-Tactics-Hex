@@ -1,12 +1,12 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-DefaultAI
+--- Default troop AI. Manages the action for each member in order.
+-- If a battler does not have an AI, it is ignored and does nothing.
 ---------------------------------------------------------------------------------------------------
-Default troop AI. Manages the action for each member in order.
-If a battler does not have an AI, it is ignored and does nothing.
+-- @event DefaultAI
 
-=================================================================================================]]
+-- ================================================================================================
 
 return function (troop)
   TurnManager.characterIndex = 1

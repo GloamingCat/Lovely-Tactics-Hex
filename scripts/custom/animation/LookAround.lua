@@ -1,16 +1,19 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-LookAround
+--- An animation that randomly switches to another row at consistent intervals.
 ---------------------------------------------------------------------------------------------------
-An animation that randomly switches row.
+-- @animmod LookAround
+-- @extend Animation
 
--- Animation parameters:
-* <freq> is the frequency (in frames) in which the row is switched. By default, it's the duration 
-of the animation.
-* <rows> is an optional list of possible rows (by default, any row).
+--- Parameters in the Animation tags.
+-- @tags Animation 
+-- @tfield[opt] number freq The duration (in frames) before switching to another row. If nil, sets
+--  the total duration of the animation / 60.
+-- @tfield[opt] sring rows A string containing the possible rows, separated by space. If nil, uses
+--  all rows from the spritesheet.
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Animation = require('core/graphics/Animation')
@@ -18,13 +21,15 @@ local Animation = require('core/graphics/Animation')
 -- Alias
 local rand = love.math.random
 
+-- Class table.
 local LookAround = class(Animation)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Animation:init.
+--- Overrides `Animation:init`. 
+-- @override
 function LookAround:init(...)
   Animation.init(self, ...)
   self.rows = {}
@@ -45,7 +50,8 @@ function LookAround:init(...)
   end
   self.lookTime = 0
 end
--- Overrides Animation:update.
+--- Overrides `Animation:update`. 
+-- @override
 function LookAround:update(dt)
   Animation.update(self, dt)
   self.lookTime = self.lookTime + dt
@@ -54,7 +60,7 @@ function LookAround:update(dt)
     self:setRandomRow()
   end
 end
--- Selects a random row different from the current one.
+--- Selects a random row different from the current one.
 function LookAround:setRandomRow()
   local r = rand(#self.rows - 1)
   if self.rows[r] == self.row then

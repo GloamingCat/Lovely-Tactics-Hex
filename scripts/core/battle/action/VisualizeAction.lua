@@ -1,23 +1,26 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-VisualizeAction
+--- Navigates around the field to check battlers' attributes.
+-- It is executed when players chooses the "Inspect" button during battle.
 ---------------------------------------------------------------------------------------------------
-The BattleAction that is executed when players cancels in the Turn Window.
+-- @battlemod VisualizeAction
+-- @extend BattleAction
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local BattleAction = require('core/battle/action/BattleAction')
-local VisualizeGUI = require('core/gui/battle/VisualizeGUI')
+local VisualizeMenu = require('core/gui/battle/VisualizeMenu')
 
+-- Class table.
 local VisualizeAction = class(BattleAction)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Constructor.
 function VisualizeAction:init()
   BattleAction.init(self, '')
   self.freeNavigation = true
@@ -27,36 +30,39 @@ function VisualizeAction:init()
   self.allParties = true
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Event handlers
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:execute.
+--- Overrides `BattleAction:execute`. 
+-- @override
 function VisualizeAction:execute(input)
   local character = input.target:getFirstBattleCharacter()
   FieldManager.renderer:moveToTile(input.target)
-  GUIManager:showGUIForResult(VisualizeGUI(input.GUI, character))
-  if input.GUI then
-    input.GUI:startGridSelecting(input.target)
+  MenuManager:showMenuForResult(VisualizeMenu(input.menu, character))
+  if input.menu then
+    input.menu:startGridSelecting(input.target)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Tile Properties
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:resetTileColors.
+--- Overrides `BattleAction:resetTileColors`. 
+-- @override
 function VisualizeAction:resetTileColors(input)
   for tile in self.field:gridIterator() do
-    tile.gui:setColor('')
+    tile.ui:setColor('')
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Selectable Tiles
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides BattleAction:isSelectable.
+--- Overrides `BattleAction:isSelectable`. 
+-- @override
 function VisualizeAction:isSelectable(input, tile)
   return tile:getFirstBattleCharacter() ~= nil
 end

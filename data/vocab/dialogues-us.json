@@ -16,36 +16,46 @@
   },
   
   "scene": {
-    "ThisIsA": "This is a test cutscene."
+    "ThisIsA": "This is a test cutscene.",
+    "DidYouLike": "Did you like it?",
+    "SomeoneThere": "There's someone suspicious over there."
   },
   
+  "battle": {
+    "Won": "You won!",
+    "Lost": "You lost...",
+    "Draw": "Draw.",
+    "Escape": "You escaped!",
+    "Walkover": "The enemy escaped..."
+  },
+
   "tutorial": {
-    "Arrows": "Use {cbabypink}mouse{cwhite} or {cbabypink}arrows{cwhite} (or {cbabypink}WASD{cwhite} if enabled) to {cbabyblue}navigate{cwhite} the around field or menu options. Hold {cbabypink}[Shift]{cwhite} to walk {cbabyblue}faster{cwhite}.",
-    "Z": "Use {cbabypink}[Z]{cwhite}, {cbabypink}[Enter]{cwhite} or the {cbabypink}left mouse button{cwhite} to {cbabyblue}interact{cwhite} with an NPC or {cbabyblue}select{cwhite} an option in a menu.",
-    "X": "Use {cbabypink}[X]{cwhite}, {cbabypink}[Backspace]{cwhite} or the {cbabypink}right mouse button{cwhite} to {cbabyblue}return{cwhite}/close a menu window or open the {cbabyblue}main menu{cwhite} when navigating the field.",
-    "Page": "Press {cbabypink}[N]{cwhite}/{cbabypink}[M]{cwhite} or {cbabypink}[Page Up]{cwhite}/{cbabypink}[Page Down]{cwhite} to {cbabyblue}switch{cwhite} menu screens or select a tile at a {cbabyblue}different height{cwhite} during battle.\n ",
+    "Arrows": "Use {cbabyPink}mouse{cwhite} or {cbabyPink}arrows{cwhite} (or {cbabyPink}WASD{cwhite} if enabled) to {cbabyBlue}navigate{cwhite} the around field or menu options. Hold {cbabyPink}[Shift]{cwhite} to walk {cbabyBlue}faster{cwhite}.",
+    "Z": "Use {cbabyPink}[Z]{cwhite}, {cbabyPink}[Enter]{cwhite} or the {cbabyPink}left mouse button{cwhite} to {cbabyBlue}interact{cwhite} with an NPC or {cbabyBlue}select{cwhite} an option in a menu.",
+    "X": "Use {cbabyPink}[X]{cwhite}, {cbabyPink}[Backspace]{cwhite} or the {cbabyPink}right mouse button{cwhite} to {cbabyBlue}return{cwhite}/close a menu window or open the {cbabyBlue}main menu{cwhite} when navigating the field.",
+    "Page": "Press {cbabyPink}[N]{cwhite}/{cbabyPink}[M]{cwhite} or {cbabyPink}[Page Up]{cwhite}/{cbabyPink}[Page Down]{cwhite} to {cbabyBlue}switch{cwhite} menu screens or select a tile at a {cbabyBlue}different height{cwhite} during battle.\n ",
     
-    "Skip": "Press {cbabypink}[J]{cwhite} to {cbabyblue}accelerate{cbabyblue} the game.",
-    "Save": "Press {cbabypink}F1{cwhite}/{cbabypink}F5{cwhite} to {cbabyblue}quick save{cwhite}/load (only when no menu is open).",
-    "Debug": "Press {cbabypink}[ESC]{cwhite} to open a {cbabyblue}debug window{cwhite} (only when no menu is open).",
-    "Kill": "Keep pressing {cbabypink}[K]{cwhite} during the change of turns in battle to automatically {cbabyblue}kill all enemies{cwhite}.",
-    "Lose": "Keep pressing {cbabypink}[L]{cwhite} during the change of turns in battle to automatically {cbabyblue}kill all allies{cwhite}."
+    "Skip": "Press {cbabyPink}[J]{cwhite} to {cbabyBlue}accelerate{cbabyBlue} the game.",
+    "Save": "Press {cbabyPink}F1{cwhite}/{cbabyPink}F5{cwhite} to {cbabyBlue}quick save{cwhite}/load (only when no menu is open).",
+    "Debug": "Press {cbabyPink}[ESC]{cwhite} to open a {cbabyBlue}debug window{cwhite} (only when no menu is open).",
+    "Kill": "Keep pressing {cbabyPink}[K]{cwhite} during the change of turns in battle to automatically {cbabyBlue}kill all enemies{cwhite}.",
+    "Lose": "Keep pressing {cbabyPink}[L]{cwhite} during the change of turns in battle to automatically {cbabyBlue}kill all allies{cwhite}."
   },
   
   "credits": {
     "Game": "\nProgramming, Game Design",
     "Art": "\nVisual Art",
-    "Chars": "\n{fgui_button}Characters, UI and ugly scenary tiles:",
-    "Scenary": "\n{fgui_button}Pretty scenary tiles:",
+    "Chars": "\n{fmenu_button}Characters, UI and ugly scenary tiles:",
+    "Scenary": "\n{fmenu_button}Pretty scenary tiles:",
     "Sound": "\nSound",
-    "Music": "\n{fgui_button}Music:",
-    "SFX": "\n{fgui_button}Sound effects:",
+    "Music": "\n{fmenu_button}Music:",
+    "SFX": "\n{fmenu_button}Sound effects:",
     
-    "GloamingCatMain": "\n{fgui_button}GloamingCat",
-    "GloamingCat": "{fgui_dialogue}GloamingCat\n",
-    "Bibi": "{fgui_dialogue}Alex dos Ventos",
-    "Musicians": "{fgui_dialogue}Generated with Melody Raiser 1999\n",
-    "SFXDesigners": "{fgui_dialogue}Generated with Bfxr"
+    "GloamingCatMain": "\n{fmenu_button}GloamingCat",
+    "GloamingCat": "{fmenu_dialogue}GloamingCat\n",
+    "Bibi": "{fmenu_dialogue}Alex dos Ventos",
+    "Musicians": "{fmenu_dialogue}Generated with Melody Raiser 1999\n",
+    "SFXDesigners": "{fmenu_dialogue}Generated with Bfxr"
   }
   
 }

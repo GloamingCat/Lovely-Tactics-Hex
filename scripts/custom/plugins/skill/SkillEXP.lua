@@ -1,19 +1,20 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-SkillEXP
+--- Characters receive EXP for each action and can level-up mid-battle.
 ---------------------------------------------------------------------------------------------------
-Characters receive EXP for each action and can level-up mid-battle.
+-- @plugin SkillEXP
 
--- Plugin parameters:
-<battleOnly> When true, characters will only receive EXP during a battle.
-<expPopup> When true, a pop-up will show the gained EXP every time an action is executed.
-<defaultExp> Default skill EXP when not defined.
-<missExp> Multiplier for when the skill did not succeed.
-<levelDiff> Aditional exp per level difference between user and target.
-<enemyExp> When true enemies also receive experience.
+--- Plugin parameters.
+-- @tags Plugin
+-- @tfield boolean battleOnly Flag to make characters only receive EXP during a battle.
+-- @tfield boolean expPopup Flag to show a pop-up with the gained EXP every time an action is executed.
+-- @tfield number defaultExp Default skill EXP when not defined.
+-- @tfield number missExp Multiplier for when the skill did not succeed.
+-- @tfield number levelDiff Aditional exp per level difference between user and target.
+-- @tfield boolean enemyExp Flag to make enemies also receive experience.
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local BattleManager = require('core/battle/BattleManager')
@@ -21,6 +22,10 @@ local Inventory = require('core/battle/Inventory')
 local SkillAction = require('core/battle/action/SkillAction')
 local Character = require('core/objects/Character')
 local PopText = require('core/graphics/PopText')
+
+-- Rewrites
+local SkillAction_allTargetsEffect = SkillAction.allTargetsEffect
+local SkillAction_menuTargetsEffect = SkillAction.menuTargetsEffect
 
 -- Parameters
 local battleOnly = args.battleOnly
@@ -30,11 +35,12 @@ local missExp = args.missExp or 1
 local levelDiff = args.levelDiff or 0
 local enemyExp = args.enemyExp
 
----------------------------------------------------------------------------------------------------
--- RewardGUI
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
+-- RewardMenu
+-- ------------------------------------------------------------------------------------------------
 
--- Removes EXP rewards for each enemy.
+--- Rewrites `BattleManager:getBattleRewards`. Removes EXP rewards for each enemy.
+-- @rewrite
 function BattleManager:getBattleRewards(winnerParty)
   local r = { exp = {},
     items = Inventory(),
@@ -64,11 +70,11 @@ function BattleManager:getBattleRewards(winnerParty)
   return r
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- SkillAction
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Gets the EXP optained from the action.
+--- Gets the EXP optained from the action.
 function SkillAction:expGain(user, target, results)
   local gain = (self.tags.exp or defaultExp) + (target.job.level - user.job.level) * levelDiff
   if #results.points == 0 and #results.status == 0 then
@@ -78,8 +84,8 @@ function SkillAction:expGain(user, target, results)
   end
   return gain
 end
--- Override. Gives EXP if target if killed and user is from the player's party.
-local SkillAction_allTargetsEffect = SkillAction.allTargetsEffect
+--- Rewrites `SkillAction:allTargetsEffect`.
+-- @rewrite
 function SkillAction:allTargetsEffect(input, originTile)
   if not enemyExp and input.user.party ~= TroopManager.playerParty then
     return SkillAction_allTargetsEffect(self, input, originTile)
@@ -104,7 +110,7 @@ function SkillAction:allTargetsEffect(input, originTile)
       popText:addLine('+' .. tostring(maxGain) .. ' ' .. Vocab.exp, 'popup_exp', 'popup_exp')
       wait = popText:popUp()
     end
-    input.user.battler.job:addExperience(maxGain)
+    input.user.battler.job:addExperience(maxGain, input.user)
     if nextLevel then
       _G.Fiber:wait(wait)
       local popText = PopText(pos.x, pos.y - 10, FieldManager.renderer)
@@ -117,8 +123,8 @@ function SkillAction:allTargetsEffect(input, originTile)
   end
   return allTargets
 end
--- Override.
-local SkillAction_menuTargetsEffect = SkillAction.menuTargetsEffect
+--- Rewrites `SkillAction:menuTargetsEffect`.
+-- @rewrite
 function SkillAction:menuTargetsEffect(input, targets)
   if battleOnly then
     return SkillAction_menuTargetsEffect(self, input, targets)
@@ -137,17 +143,17 @@ function SkillAction:menuTargetsEffect(input, targets)
   if maxGain > 0 then
     local nextLevel = input.user.job:levelsup(maxGain)
     if expPopup then
-      popText = popText or PopText(input.originX or 0, input.originY or 0, GUIManager.renderer)
+      popText = popText or PopText(input.originX or 0, input.originY or 0, MenuManager.renderer)
       popText:addLine('+' .. tostring(maxGain) .. ' ' .. Vocab.exp, 'popup_exp', 'popup_exp')
     end
     if nextLevel then
-      popText = popText or PopText(input.originX or 0, input.originY or 0, GUIManager.renderer)
+      popText = popText or PopText(input.originX or 0, input.originY or 0, MenuManager.renderer)
       popText:addLine('Level ' .. nextLevel .. '!', 'popup_levelup', 'popup_levelup')
       if Config.sounds.levelup then
         AudioManager:playSFX(Config.sounds.levelup)
       end
     end
-    input.user.job:addExperience(maxGain)
+    input.user.job:addExperience(maxGain, input.user)
     if popText then
       popText:popUp()
     end

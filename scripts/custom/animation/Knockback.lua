@@ -1,14 +1,17 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-Knockback
+--- The animation of knockback when a characters receives damage.
+-- It moves the character backwards and then moves back to its tile.
 ---------------------------------------------------------------------------------------------------
-The animation of knockback when a characters receives damage.
+-- @animmod Knockback
+-- @extend Animation
 
--- Animation parameters:
-The length of the step in pixels is defined by <step> tag. The default is 12.
+--- Parameters in the Animation tags.
+-- @tags Animation
+-- @tfield[opt=12] number step length of the step in pixels.
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Animation = require('core/graphics/Animation')
@@ -22,13 +25,15 @@ local row2Angle = math.field.row2Angle
 -- Constants
 local defaultStep = 12
 
+-- Class table.
 local Knockback = class(Animation)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
+--- Overrides `Animation:init`. 
+-- @override
 function Knockback:init(...)
   Animation.init(self, ...)
   self.knockTime = 0
@@ -38,7 +43,8 @@ function Knockback:init(...)
     self.step = defaultStep
   end
 end
--- Overrides Animation:setRow.
+--- Overrides `Animation:setRow`. 
+-- @override
 function Knockback:setRow(row)
   Animation.setRow(self, row)
   local dx, dy = angle2Coord(row2Angle(row))
@@ -49,11 +55,12 @@ function Knockback:setRow(row)
   self.knockSpeed = 60 / self.duration * 2
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Update movement
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides Animation:update.
+--- Overrides `Animation:update`. 
+-- @override
 function Knockback:update(dt)
   Animation.update(self, dt)
   self:updateTime(dt)
@@ -63,11 +70,12 @@ function Knockback:update(dt)
   end
   self:updatePosition()
 end
--- Increments time.
+--- Increments time.
+-- @tparam number dt The duration of the previous frame.
 function Knockback:updateTime(dt)
   self.knockTime = self.knockTime + dt * self.knockSpeed
 end
--- Sets position according to time.
+--- Sets position according to time.
 function Knockback:updatePosition()
   local x = self.origX * (1 - self.knockTime) + self.destX * self.knockTime
   local y = self.origY * (1 - self.knockTime) + self.destY * self.knockTime

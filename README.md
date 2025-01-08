@@ -47,10 +47,10 @@ This should run the game.
 
 ## How to Play
 
-* Use arrow keys or mouse to navigate around the field or GUI;
+* Use arrow keys or mouse to navigate around the field or Menu;
 * Press shift to walk faster;
-* Press Z/Enter/Space to confirm a GUI selection or interact with NPCs;
-* Press X/Backspace/ESC to cancel a GUI selection;
+* Press Z/Enter/Space to confirm a Menu selection or interact with NPCs;
+* Press X/Backspace/ESC to cancel a Menu selection;
 * Press a cancel button in field to show the Field Menu;
 * Collide with green jellies to start a battle;
 * For debugging:

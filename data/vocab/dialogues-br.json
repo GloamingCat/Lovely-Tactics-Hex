@@ -3,7 +3,7 @@
   
   "npc": {
     "Hi": "Oi.",
-    "CanIJoin": "Posso no juntar ao seu grupo?",
+    "CanIJoin": "Posso me juntar ao seu grupo?",
     "ThatsGood": "Que {i}ótimo!{r}{p}\nSou seu agora. {slove}",
     "ThatsBad": "Meh.{p} Mas ainda estou disponível.",
     "WhatDoYou": "O que você quer fazer?",
@@ -16,36 +16,46 @@
   },
   
   "scene": {
-    "ThisIsA": "Isso é uma cena de teste."
+    "ThisIsA": "Isso é uma cena de teste.",
+    "DidYouLike": "Gostou?",
+    "SomeoneThere": "Tem alguém muito suspeito ali."
   },
-  
+
+  "battle": {
+    "Won": "Você ganhou!",
+    "Lost": "Você perdeu...",
+    "Draw": "Deu empate.",
+    "Escape": "Você escapou!",
+    "Walkover": "O inimigo escapou..."
+  },
+
   "tutorial": {
-    "Arrows": "Use o {cbabypink}mouse{cwhite} ou {cbabypink}setas{cwhite} (ou {cbabypink}WASD{cwhite} se ativado) para {cbabyblue}navegar{cwhite} pelo campo ou nas opções no menu. Segure {cbabypink}[Shift]{cwhite} para {cbabyblue}correr{cwhite}.",
-    "Z": "Use {cbabypink}[Z]{cwhite}, {cbabypink}[Enter]{cwhite} ou o {cbabypink}botão esquerdo do mouse{cwhite} para {cbabyblue}interagir{cwhite} com NPCs ou {cbabyblue}selecionar{cwhite} uma opção no menu.",
-    "X": "Use {cbabypink}[X]{cwhite}, {cbabypink}[Backspace]{cwhite} ou o {cbabypink}botão direito do mouse{cwhite} para {cbabyblue}voltar{cwhite}/fechar uma janela ou abrir o {cbabyblue}menu principal{cwhite} quando estiver andando pelo campo.",
-    "Page": "Aperte {cbabypink}[N]{cwhite}/{cbabypink}[M]{cwhite} ou {cbabypink}[Page Up]{cwhite}/{cbabypink}[Page Down]{cwhite} para {cbabyblue}trocar{cwhite} telas do menu ou selecionar um tile numa {cbabyblue}altura diferente{cwhite} na batalha.\n ",
+    "Arrows": "Use o {cbabyPink}mouse{cwhite} ou {cbabyPink}setas{cwhite} (ou {cbabyPink}WASD{cwhite} se ativado) para {cbabyBlue}navegar{cwhite} pelo campo ou nas opções no menu. Segure {cbabyPink}[Shift]{cwhite} para {cbabyBlue}correr{cwhite}.",
+    "Z": "Use {cbabyPink}[Z]{cwhite}, {cbabyPink}[Enter]{cwhite} ou o {cbabyPink}botão esquerdo do mouse{cwhite} para {cbabyBlue}interagir{cwhite} com NPCs ou {cbabyBlue}selecionar{cwhite} uma opção no menu.",
+    "X": "Use {cbabyPink}[X]{cwhite}, {cbabyPink}[Backspace]{cwhite} ou o {cbabyPink}botão direito do mouse{cwhite} para {cbabyBlue}voltar{cwhite}/fechar uma janela ou abrir o {cbabyBlue}menu principal{cwhite} quando estiver andando pelo campo.",
+    "Page": "Aperte {cbabyPink}[N]{cwhite}/{cbabyPink}[M]{cwhite} ou {cbabyPink}[Page Up]{cwhite}/{cbabyPink}[Page Down]{cwhite} para {cbabyBlue}trocar{cwhite} telas do menu ou selecionar um tile numa {cbabyBlue}altura diferente{cwhite} na batalha.\n ",
     
-    "Skip": "Aperte {cbabypink}[J]{cwhite} para {cbabyblue}acelerar{cbabyblue} o jogo.",
-    "Save": "Aperte {cbabypink}F1{cwhite}/{cbabypink}F5{cwhite} para salvar/carregar o {cbabyblue}salvo rápido{cwhite} (apenas quando não tem menu aberto).",
-    "Debug": "Aperte {cbabypink}[ESC]{cwhite} abrir uma {cbabyblue}janela de debug{cwhite} (apenas quando não tem menu aberto).",
-    "Kill": "Segure {cbabypink}[K]{cwhite} durante a mudança de turnos na batalha para {cbabyblue}matar todos os inimigos{cwhite} automaticamente.",
-    "Lose": "Segure {cbabypink}[L]{cwhite} durante a mudança de turnos na batalha para {cbabyblue}matar todos os aliados{cwhite} automaticamente."
+    "Skip": "Aperte {cbabyPink}[J]{cwhite} para {cbabyBlue}acelerar{cbabyBlue} o jogo.",
+    "Save": "Aperte {cbabyPink}F1{cwhite}/{cbabyPink}F5{cwhite} para salvar/carregar o {cbabyBlue}salvo rápido{cwhite} (apenas quando não tem menu aberto).",
+    "Debug": "Aperte {cbabyPink}[ESC]{cwhite} abrir uma {cbabyBlue}janela de debug{cwhite} (apenas quando não tem menu aberto).",
+    "Kill": "Segure {cbabyPink}[K]{cwhite} durante a mudança de turnos na batalha para {cbabyBlue}matar todos os inimigos{cwhite} automaticamente.",
+    "Lose": "Segure {cbabyPink}[L]{cwhite} durante a mudança de turnos na batalha para {cbabyBlue}matar todos os aliados{cwhite} automaticamente."
   },
   
   "credits": {
     "Game": "\nProgramação, Design de Jogo",
     "Art": "\nArte Visual",
-    "Chars": "\n{fgui_button}Personagens, menus e tiles de cenários feios:",
-    "Scenary": "\n{fgui_button}Tiles de cenário bonitos:",
+    "Chars": "\n{fmenu_button}Personagens, menus e tiles de cenários feios:",
+    "Scenary": "\n{fmenu_button}Tiles de cenário bonitos:",
     "Sound": "\nSons",
-    "Music": "\n{fgui_button}Música:",
-    "SFX": "\n{fgui_button}Efeitos Sonoros:",
+    "Music": "\n{fmenu_button}Música:",
+    "SFX": "\n{fmenu_button}Efeitos Sonoros:",
     
-    "GloamingCatMain": "\n{fgui_button}GloamingCat",
-    "GloamingCat": "{fgui_dialogue}GloamingCat\n",
-    "Bibi": "{fgui_dialogue}Alex dos Ventos",
-    "Musicians": "{fgui_dialogue}Gerados com Melody Raiser 1999\n",
-    "SFXDesigners": "{fgui_dialogue}Gerados com Bfxr"
+    "GloamingCatMain": "\n{fmenu_button}GloamingCat",
+    "GloamingCat": "{fmenu_dialogue}GloamingCat\n",
+    "Bibi": "{fmenu_dialogue}Alex dos Ventos",
+    "Musicians": "{fmenu_dialogue}Gerados com Melody Raiser 1999\n",
+    "SFXDesigners": "{fmenu_dialogue}Gerados com Bfxr"
   }
   
 }

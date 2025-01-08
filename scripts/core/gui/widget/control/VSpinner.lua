@@ -1,33 +1,32 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-VSpinner
+--- A spinner for choosing a numeric value.
 ---------------------------------------------------------------------------------------------------
-A spinner for choosing a numeric value.
+-- @uimod VSpinner
+-- @extend GridWidget
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local Vector = require('core/math/Vector')
 local Sprite = require('core/graphics/Sprite')
-local SimpleText = require('core/gui/widget/SimpleText')
-local SimpleImage = require('core/gui/widget/SimpleImage')
+local TextComponent = require('core/gui/widget/TextComponent')
+local ImageComponent = require('core/gui/widget/ImageComponent')
 local GridWidget = require('core/gui/widget/control/GridWidget')
 
--- Alias
-local Image = love.graphics.newImage
-
+-- Class table.
 local VSpinner = class(GridWidget)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Constructor.
--- @param(window  : GridWindow) the window this spinner belongs to.
--- @param(minValue : number) Minimum value.
--- @param(maxValue : number) Maximum value.
--- @param(initValue : number) Initial value.
+--- Constructor.
+-- @tparam GridWindow window The window this spinner belongs to.
+-- @tparam number minValue Minimum value.
+-- @tparam number maxValue Maximum value.
+-- @tparam number initValue Initial value.
 function VSpinner:init(window, minValue, maxValue, initValue)
   self.enabled = true
   GridWidget.init(self, window)
@@ -39,22 +38,20 @@ function VSpinner:init(window, minValue, maxValue, initValue)
   self.maxValue = maxValue or math.huge
   self:initContent(initValue or 0, self.window:cellWidth(), self.window:cellHeight())
 end
--- Creates arrows and value test.
+--- Creates arrows and value test.
 function VSpinner:initContent(initValue, w, h, x, y)
   x, y = x or 0, y or 0
   local animID = Config.animations.arrow
   -- Left arrow
-  local downArrowSprite = ResourceManager:loadIcon({id = animID, col = 1, row = 0}, GUIManager.renderer)
-  local dw, dh = downArrowSprite:quadBounds()
-  self.downArrow = SimpleImage(downArrowSprite, x + (w - dw) / 2, y + h - dh)
+  local downArrowSprite = ResourceManager:loadIcon({id = animID, col = 1, row = 0}, MenuManager.renderer)
+  self.downArrow = ImageComponent(downArrowSprite, Vector(x + w / 2, y))
   -- Right arrow
-  local upArrowSprite = ResourceManager:loadIcon({id = animID, col = 0, row = 1}, GUIManager.renderer)
-  local uw, uh = upArrowSprite:quadBounds()
-  self.upArrow = SimpleImage(upArrowSprite, x + (w - uw) / 2, y)
+  local upArrowSprite = ResourceManager:loadIcon({id = animID, col = 0, row = 1}, MenuManager.renderer)
+  self.upArrow = ImageComponent(upArrowSprite, Vector(x + w / 2, y + h))
   -- Value text in the middle
   self.value = initValue
   local textPos = Vector(x, y)
-  self.valueText = SimpleText(tostring(initValue), textPos, w, 'center', Fonts.gui_button)
+  self.valueText = TextComponent(tostring(initValue), textPos, w, 'center', Fonts.menu_button)
   self.valueText.sprite.maxHeight = h
   self.valueText.sprite.alignY = 'center'
   -- Add to content list
@@ -68,17 +65,17 @@ function VSpinner:initContent(initValue, w, h, x, y)
   self.y = y
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Input Handlers
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Called when player presses arrows on this spinner.
+--- Called when player presses arrows on this spinner.
 function VSpinner.onMove(window, self, dx, dy)
   if dy ~= 0 then
     self:changeValue(dx, -dy)
   end
 end
--- Called when player presses a mouse button.
+--- Called when player presses a mouse button.
 function VSpinner.onClick(window, self, x, y)
   local pos = self:relativePosition()
   x, y = x - pos.x, y - pos.y
@@ -94,14 +91,14 @@ function VSpinner.onClick(window, self, x, y)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Value
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Changes the current value according to input.
--- @param(dx : number) Input axis X.
--- @param(dy : number) Input axis Y.
-function VSpinner:changeValue(dx, dy, click)
+--- Changes the current value according to input.
+-- @tparam number dx Input axis X.
+-- @tparam number dy Input axis Y.
+function VSpinner:changeValue(dx, dy)
   dy = dy * self:multiplier()
   local value = math.min(self.maxValue, math.max(self.minValue, self.value + dy))
   if self.enabled then
@@ -114,8 +111,8 @@ function VSpinner:changeValue(dx, dy, click)
     end
   end
 end
--- Changes the current value.
--- @param(value : number) new value, assuming it is inside limit bounds
+--- Changes the current value.
+-- @tparam number value New value, assuming it is inside limit bounds.
 function VSpinner:setValue(value)
   if self.value ~= value then
     self.value = value
@@ -123,8 +120,8 @@ function VSpinner:setValue(value)
     self.valueText:redraw()
   end
 end
--- The values the multiplies the change input.
--- @ret(number)
+--- The values the multiplies the change input.
+-- @treturn number
 function VSpinner:multiplier()
   return InputManager.keys['dash']:isPressing()
       and self.bigIncrement or 1

@@ -5,25 +5,49 @@
   "prefs": {
     "persistent": false,
     "defaultRegion": -1,
-    "maxHeight": 4,
+    "maxHeight": 3,
     "bgm": {
       "name": "bossTheme",
       "volume": 100,
       "pitch": 100,
       "time": 0
     },
-    "loadScript": {
-      "global": false,
-      "block": true,
-      "wait": true,
-      "onLoad": true,
-      "onInteract": false,
-      "onCollide": false,
-      "description": "",
-      "name": "test/Scene.lua",
-      "tags": [],
-      "key": ""
-    },
+    "scripts": [
+      {
+        "scope": 0,
+        "block": true,
+        "wait": true,
+        "onLoad": true,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": false,
+        "onDestroy": false,
+        "description": "",
+        "name": "8",
+        "tags": [
+          {
+            "key": "char",
+            "value": "\"Arthur\""
+          }
+        ],
+        "key": ""
+      },
+      {
+        "global": false,
+        "scope": 0,
+        "block": false,
+        "wait": true,
+        "onLoad": false,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": true,
+        "onDestroy": false,
+        "description": "",
+        "name": "10",
+        "tags": [],
+        "key": ""
+      }
+    ],
     "images": [],
     "transitions": [],
     "name": "Test Battle",

@@ -684,5 +684,35 @@
     },
     "id": 52,
     "children": []
+  },
+  {
+    "data": {
+      "image": {
+        "id": 34,
+        "col": 2,
+        "row": 3
+      },
+      "transform": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "offsetDepth": 4,
+        "scaleX": 200,
+        "scaleY": 120,
+        "rotation": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255,
+        "hue": 0,
+        "saturation": 100,
+        "brightness": 100
+      },
+      "tiles": [],
+      "name": "Portal",
+      "tags": [],
+      "key": "portal"
+    },
+    "id": 9,
+    "children": []
   }
 ]

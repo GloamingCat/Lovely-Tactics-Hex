@@ -1,11 +1,13 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-SkillList
+--- A special kind of list that provides functions to manage battler's list of skills.
+-- Each element of this list is a `SkillAction`.
 ---------------------------------------------------------------------------------------------------
-A special kind of list that provides functions to manage battler's list of skills.
+-- @battlemod SkillList
+-- @extend List
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local SkillAction = require('core/battle/action/SkillAction')
@@ -15,15 +17,17 @@ local List = require('core/datastruct/List')
 local copyTable = util.copyTable
 local rand = love.math.random
 
+-- Class table.
 local SkillList = class(List)
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Initialization
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Overrides List:init.
--- @param(battler : Battler)
--- @param(save : table)
+--- Overrides `List:init`. 
+-- @override
+-- @tparam Battler battler
+-- @tparam[opt] table save Array with `SkillAction`s or skill IDs from save data.
 function SkillList:init(battler, save)
   List.init(self)
   self.battler = battler
@@ -37,12 +41,13 @@ function SkillList:init(battler, save)
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Check / Change
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- @param(id : number | string) Skill's ID or key.
--- @ret(number) The position of the skill if found, nil if not found.
+--- Checks whether the skill is present in this list.
+-- @tparam number|string id Skill's ID or key.
+-- @treturn number The position of the skill if found, nil if not found.
 function SkillList:containsSkill(id)
   local data = Database.skills[id]
   for i = 1, self.size do
@@ -52,7 +57,9 @@ function SkillList:containsSkill(id)
   end
   return nil
 end
--- @param(skill : number | string | SkillAction) The skill or the skill's ID or key.
+--- Add a skill to the list if not already present.
+-- @tparam number|string|SkillAction skill The skill or the skill's ID or key.
+-- @treturn SkillAction The newly added skill or nil if the skill as already present.
 function SkillList:learn(skill)
   local id = skill
   if type(skill) == 'number' or type(skill) == 'string' then
@@ -66,23 +73,20 @@ function SkillList:learn(skill)
     return skill
   end
 end
--- @param(list : table) Array of skill IDs. 
+--- Adds a set of skills of this list.
+-- @tparam table list Array of skill IDs or keys.
 function SkillList:learnAll(list)
   for i = 1, #list do
     self:learn(list[i])
   end
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- General
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Converting to string.
--- @ret(string) A string representation.
-function SkillList:__tostring()
-  return 'SkillList: ' .. tostring(self.battler)
-end
--- @ret(table) Array with skills' IDs.
+--- Gets the persistent data.
+-- @treturn table Array with skill IDs.
 function SkillList:getState()
   local state = {}
   for i = 1, self.size do
@@ -90,13 +94,19 @@ function SkillList:getState()
   end
   return state
 end
--- @ret(SkillList)
+--- Creates a shallow copy of this list, with the same battler.
+-- @treturn SkillList A copy of the list.
 function SkillList:clone()
   return SkillList(self.battler, self)
 end
--- @ret(List)
+--- Creates a copy of this list as a List type.
+-- @treturn List A list of `SkillAction`s.
 function SkillList:toList()
   return List(self)
+end
+-- For debugging.
+function SkillList:__tostring()
+  return tostring(self.battler) .. ' Skill' .. getmetatable(List).__tostring(self)
 end
 
 return SkillList

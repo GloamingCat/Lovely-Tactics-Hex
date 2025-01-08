@@ -1,13 +1,16 @@
 
---[[===============================================================================================
+-- ================================================================================================
 
-PathFinder
+--- A module with graph algorithms used for grids during battle.
+-- Some parts of the algorithm used abstract functions from `MoveAction` class, so any action used
+-- in this module must inherit from this class and implement all methods.
+--
+-- Dependencies: `List`, `Matrix3`, `Path`, `PriorityQueue`
+-- @see BattleTactics
 ---------------------------------------------------------------------------------------------------
-A module with graph algorithms used for grids during battle.
-Some parts of the algorithm used abstract functions from MoveAction class, so any action used in 
-this module must inherit from this class.
+-- @module PathFinder
 
-=================================================================================================]]
+-- ================================================================================================
 
 -- Imports
 local List = require('core/datastruct/List')
@@ -23,24 +26,24 @@ local floor = math.floor
 
 local PathFinder = {}
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- All destinations
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Calculates the path matrix from the initial tile.
--- @param(action : MoveAction) the move action that implements these methods:
---    isPassableBetween(initial, final)
---    getDistanceBetween(initial, final)
---    isStandable(tile)
--- @param(initial : Tile) the start tile (optional)
--- @ret(Matrix) the path matrix
+--- Computes the path matrix from the initial tile.
+-- @tparam MoveAction action The move action.
+-- @tparam Character user The character that will follow this path.
+-- @tparam[opt] ObjectTile initial The start tile. If nil, use `user:getTile()`.
+-- @tparam[opt] number w Grid's width. If nil, use the width of current field.
+-- @tparam[opt] number h Grid's height. If nil, use the height of current field.
+-- @tparam[opt] number d Grid's depth. If nil, use the depth of current field.
+-- @treturn Matrix3 The path matrix.
 function PathFinder.dijkstra(action, user, initial, w, h, d)
   user = user or TurnManager:currentCharacter()
   initial = initial or user:getTile()
   if not w or not h or not d then
     w, h, d = FieldManager.currentField:getSize()
   end
-  
   local md = floor(action:maxDistance(user))  
   local matrix = Matrix3(w, h, d)
   matrix:set(Path(initial), initial:coordinates())
@@ -65,26 +68,24 @@ function PathFinder.dijkstra(action, user, initial, w, h, d)
       matrix:set(nil, path.lastStep:coordinates())
     end
   end
-  --matrix:set(nil, initial.x, initial.y)
   return matrix
 end
 
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Single destination
----------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
--- Search for a path from the initial until action:isFinal returns true.
--- @param(action : MoveAction) the move action that implements these methods:
---    isPassableBetween(initial, final, user) : boolean
---    isStandable(tile, user) : boolean
---    isFinal(tile, final, user) : boolean
---    getDistanceBetween(initial, final, user) : number
---    estimateCost(initial, final, user) : number
--- @param(user : Character)
--- @param(target : ObjectTile)
--- @param(initial : ObjectTile) the start tile (optional)
--- @oaram(ignoreDistance : boolean) flag to ignore maximum distance (false by default)
--- @ret(Path) the path is some was founded, nil if none
+--- Computes the path between two tiles with the lowest cost.
+-- The search ends when action:isFinal returns true.
+-- @tparam MoveAction action The move action.
+-- @tparam Character user The character that will follow this path.
+-- @tparam ObjectTile target The tile that would be final if reachable.
+-- @tparam[opt] ObjectTile initial The start tile. If nil, use `user:getTile()`.
+-- @tparam[opt] boolean ignoreDistance Flag to ignore maximum distance.
+-- @tparam[opt] number w Grid's width. If nil, use the width of current field.
+-- @tparam[opt] number h Grid's height. If nil, use the height of current field.
+-- @tparam[opt] number d Grid's depth. If nil, use the depth of current field.
+-- @treturn Path The best path or nil if the target is unreachable.
 function PathFinder.findPath(action, user, target, initial, ignoreDistance, w, h, d)
   initial = initial or user:getTile()
   if not w or not h or not d then
@@ -118,24 +119,23 @@ function PathFinder.findPath(action, user, target, initial, ignoreDistance, w, h
   end
   return nil
 end
--- Search for a path from the initial until run out of steps.
+--- Computes the path that gets the closest to the target tile.
+-- The search ends when it reaches the maximum distance.
 -- Assumes that the destination will never be reached.
--- @param(action : MoveAction) the move action that implements these methods:
---    isPassableBetween(initial, final, user) : boolean
---    isStandable(tile, user) : boolean
---    getDistanceBetween(initial, final, user) : number
---    estimateCost(initial, final, user) : number
--- @param(user : Character)
--- @param(target : ObjectTile)
--- @param(initial : ObjectTile) the start tile (optional)
--- @oaram(ignoreDistance : boolean) flag to ignore maximum distance (false by default)
--- @ret(Path) the path is some was founded, nil if none
+-- @tparam MoveAction action The move action.
+-- @tparam Character user The character that will follow this path.
+-- @tparam ObjectTile target The tile that would be final if reachable.
+-- @tparam[opt] ObjectTile initial The start tile. If nil, use `user:getTile()`.
+-- @tparam[opt] boolean ignoreDistance Flag to ignore maximum distance.
+-- @tparam[opt] number w Grid's width. If nil, use the width of current field.
+-- @tparam[opt] number h Grid's height. If nil, use the height of current field.
+-- @tparam[opt] number d Grid's depth. If nil, use the depth of current field.
+-- @treturn Path The best path or nil if the character can't move.
 function PathFinder.findPathToUnreachable(action, user, target, initial, ignoreDistance, w, h, d)
   initial = initial or user:getTile()
   if not w or not h or not d then
     w, h, d = FieldManager.currentField:getSize()
   end
-  
   local queue = PriorityQueue()
   queue:enqueue (Path(initial), 0)
   local closedTiles = Matrix3(w, h, d, false)

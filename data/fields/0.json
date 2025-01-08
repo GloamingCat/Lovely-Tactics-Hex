@@ -5,25 +5,45 @@
   "prefs": {
     "persistent": false,
     "defaultRegion": -1,
-    "maxHeight": 4,
+    "maxHeight": 3,
     "bgm": {
       "name": "battleTheme",
       "volume": 100,
       "pitch": 100,
       "time": 0
     },
-    "loadScript": {
-      "global": false,
-      "block": true,
-      "wait": true,
-      "onLoad": true,
-      "onInteract": false,
-      "onCollide": false,
-      "description": "",
-      "name": "",
-      "tags": [],
-      "key": ""
-    },
+    "scripts": [
+      {
+        "global": false,
+        "scope": 0,
+        "block": true,
+        "wait": true,
+        "onLoad": true,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": false,
+        "onDestroy": false,
+        "description": "",
+        "name": "7",
+        "tags": [],
+        "key": ""
+      },
+      {
+        "global": false,
+        "scope": 0,
+        "block": false,
+        "wait": true,
+        "onLoad": false,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": true,
+        "onDestroy": false,
+        "description": "",
+        "name": "10",
+        "tags": [],
+        "key": ""
+      }
+    ],
     "images": [],
     "transitions": [],
     "name": "Forest Battle Field",

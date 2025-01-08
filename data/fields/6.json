@@ -12,18 +12,38 @@
       "pitch": 100,
       "time": 0
     },
-    "loadScript": {
-      "global": false,
-      "block": true,
-      "wait": true,
-      "onLoad": true,
-      "onInteract": false,
-      "onCollide": false,
-      "description": "",
-      "name": "Load.lua",
-      "tags": [],
-      "key": ""
-    },
+    "scripts": [
+      {
+        "global": false,
+        "scope": 0,
+        "block": true,
+        "wait": true,
+        "onLoad": true,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": false,
+        "onDestroy": false,
+        "description": "",
+        "name": "9",
+        "tags": [],
+        "key": ""
+      },
+      {
+        "global": false,
+        "scope": 0,
+        "block": true,
+        "wait": true,
+        "onLoad": false,
+        "onInteract": false,
+        "onCollide": false,
+        "onExit": true,
+        "onDestroy": false,
+        "description": "",
+        "name": "10",
+        "tags": [],
+        "key": ""
+      }
+    ],
     "images": [],
     "transitions": [
       {
@@ -51,7 +71,7 @@
             "height": 1
           }
         ],
-        "fade": 30
+        "condition": ""
       },
       {
         "destination": {
@@ -78,7 +98,7 @@
             "height": 1
           }
         ],
-        "fade": 30
+        "condition": ""
       }
     ],
     "name": "Happy Fields 1",
@@ -816,35 +836,37 @@
       "scripts": [
         {
           "global": false,
+          "scope": 0,
           "block": false,
-          "wait": false,
+          "wait": true,
           "onLoad": true,
           "onInteract": false,
           "onCollide": false,
+          "onExit": false,
+          "onDestroy": false,
           "description": "Move Routine",
-          "name": "npc/Wanderer.lua",
+          "name": "12",
           "tags": [],
           "key": ""
         },
         {
           "global": false,
+          "scope": 0,
           "block": true,
           "wait": true,
           "onLoad": false,
           "onInteract": true,
           "onCollide": false,
+          "onExit": false,
+          "onDestroy": false,
           "description": "",
-          "name": "EventSheet.lua",
-          "tags": [
-            {
-              "key": "sheet",
-              "value": "\"Merlin\""
-            }
-          ],
+          "name": "0",
+          "tags": [],
           "key": ""
         }
       ],
-      "repeatCollisions": false
+      "replaceScripts": false,
+      "active": true
     }
   ],
   "parties": [],

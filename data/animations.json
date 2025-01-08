@@ -182,7 +182,7 @@
             "brightness": 100
           },
           "introPattern": "1 2 3 2 1 0",
-          "introDuration": "4 4 24 4 4 24",
+          "introDuration": "4 4 40 4 4 40",
           "loopPattern": "",
           "loopDuration": "",
           "audio": [],
@@ -221,7 +221,7 @@
             "brightness": 100
           },
           "introPattern": "0 1 2 3 4 0",
-          "introDuration": "12 4 4 4 8 32",
+          "introDuration": "12 4 4 4 24 48",
           "loopPattern": "",
           "loopDuration": "",
           "audio": [],
@@ -230,6 +230,45 @@
           "key": ""
         },
         "id": 191,
+        "children": []
+      },
+      {
+        "data": {
+          "script": "",
+          "quad": {
+            "path": "icon.png",
+            "x": 0,
+            "y": 0,
+            "width": 24,
+            "height": 24
+          },
+          "rows": 1,
+          "cols": 1,
+          "transform": {
+            "offsetX": 12,
+            "offsetY": 12,
+            "offsetDepth": 0,
+            "scaleX": 400,
+            "scaleY": 400,
+            "rotation": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 255,
+            "hue": 0,
+            "saturation": 100,
+            "brightness": 100
+          },
+          "introPattern": "",
+          "introDuration": "",
+          "loopPattern": "",
+          "loopDuration": "",
+          "audio": [],
+          "name": "Cover",
+          "tags": [],
+          "key": ""
+        },
+        "id": 116,
         "children": []
       }
     ]
@@ -2242,8 +2281,8 @@
           "rows": 1,
           "cols": 1,
           "transform": {
-            "offsetX": 0,
-            "offsetY": 0,
+            "offsetX": 70,
+            "offsetY": 70,
             "offsetDepth": 0,
             "scaleX": 25,
             "scaleY": 25,
@@ -2281,8 +2320,8 @@
           "rows": 1,
           "cols": 1,
           "transform": {
-            "offsetX": 0,
-            "offsetY": 0,
+            "offsetX": 100,
+            "offsetY": 125,
             "offsetDepth": 0,
             "scaleX": 50,
             "scaleY": 50,
@@ -2852,7 +2891,7 @@
           "audio": [],
           "name": "Firepit",
           "tags": [],
-          "key": ""
+          "key": "firepit"
         },
         "id": 66,
         "children": []
@@ -3058,16 +3097,16 @@
           "script": "",
           "quad": {
             "path": "Character/Template/Default.png",
-            "x": 24,
-            "y": 192,
-            "width": 24,
-            "height": 32
+            "x": 27,
+            "y": 228,
+            "width": 18,
+            "height": 18
           },
           "rows": 1,
           "cols": 1,
           "transform": {
-            "offsetX": 0,
-            "offsetY": 0,
+            "offsetX": 9,
+            "offsetY": 9,
             "offsetDepth": 0,
             "scaleX": 100,
             "scaleY": 100,
@@ -3198,7 +3237,7 @@
               },
               "introPattern": "",
               "introDuration": "",
-              "loopPattern": "1 2 1 0",
+              "loopPattern": "0 1 2 1",
               "loopDuration": "28",
               "audio": [],
               "name": "Walk",
@@ -3237,7 +3276,7 @@
               },
               "introPattern": "",
               "introDuration": "",
-              "loopPattern": "1 2 1 0",
+              "loopPattern": "0 1 2 1",
               "loopDuration": "21",
               "audio": [],
               "name": "Dash",
@@ -3931,11 +3970,11 @@
     "data": {
       "script": "",
       "quad": {
-        "path": "",
+        "path": "Terrain/HexV.png",
         "x": 0,
         "y": 0,
-        "width": 0,
-        "height": 0
+        "width": 468,
+        "height": 198
       },
       "rows": 0,
       "cols": 0,
@@ -4283,11 +4322,11 @@
     "data": {
       "script": "",
       "quad": {
-        "path": "",
+        "path": "Terrain/HexH.png",
         "x": 0,
         "y": 0,
-        "width": 0,
-        "height": 0
+        "width": 360,
+        "height": 234
       },
       "rows": 0,
       "cols": 0,
@@ -4635,11 +4674,11 @@
     "data": {
       "script": "",
       "quad": {
-        "path": "",
+        "path": "Terrain/ort.png",
         "x": 0,
         "y": 0,
-        "width": 0,
-        "height": 0
+        "width": 384,
+        "height": 144
       },
       "rows": 0,
       "cols": 0,
@@ -4987,11 +5026,11 @@
     "data": {
       "script": "",
       "quad": {
-        "path": "",
+        "path": "Terrain/iso.png",
         "x": 0,
         "y": 0,
-        "width": 0,
-        "height": 0
+        "width": 432,
+        "height": 108
       },
       "rows": 0,
       "cols": 0,
