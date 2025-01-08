@@ -8,7 +8,7 @@ The Lovely Tactics Hex project is a framework for development of tactical role-p
 The main games used as inspiration for this project are Final Fantasy Tactics Advance (for GBA), Jeanne D'arc, and Trails in the Sky (both for PSP).
 The "Hex" in the name is because the battle grid is hexagonal, but isometric and orthogonal tiles are also available.
 
-Project's repository: https://gitlab.com/GloamingCat/Lovely-Tactics-Hex
+Project's repository: https://github.com/GloamingCat/Lovely-Tactics-Hex
 
 <p style="text-align: center;">
 <img width=400 src="https://66.media.tumblr.com/939e12a4f0b1fb41464b8389c2e7cbf8/tumblr_pvkjjmKqRP1x9yfk6o4_1280.png">
@@ -60,7 +60,7 @@ This should run the game.
 
 ## Editor
 
-I am also working on a complementary project, which is an editor for the json files - database, settings and fields. It's still in a very early stage, but it can be already found here: https://gitlab.com/GloamingCat/LTH-Editor.
+I am also working on a complementary project, which is an editor for the json files - database, settings and fields. It's still in a very early stage, but it can be already found here: https://github.com/GloamingCat/LTH-Editor.
 
 <p style="text-align: center;">
   <img height=220 src="https://66.media.tumblr.com/eaac8ab6d9f2f4be8dae3abbaaa44c65/tumblr_pkuy0poEfV1x9yfk6o1_1280.jpg">

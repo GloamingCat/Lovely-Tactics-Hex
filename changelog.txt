@@ -1,0 +1,56 @@
+# Version v0.2
+
+API changes:
+- Added parameters dt in update methods.
+- Added enums for legibility.
+- Added method Animation:isVisible.
+- Added method GameManager:getVariable.
+- Added methods TextParser.evaluate and EventSheet:evaluate.
+- Renamed: escapeEnabled -> not disableEscape (from BattleManager).
+- Renamed: intro -> not skipIntro (from BattleManager).
+- Renamed: hideChar -> setCharVisibility (from CharEvents).
+- Changed the format of arguments in the JobEquips plugin.
+- Command openRecruitMenu now uses the same arguments as openShopMenu.
+- Removed animation's Component methods and accessed sprite directly instead.
+- Moved the code from custom/EventSheet.lua to EventSheet:processSheet.
+- Merged startBattle and finishBattle into runBattle (from GeneralEvents).
+- Merged Button:changeIcon and Button:setIcon.
+
+New features:
+- New field: Job.statuses for passive skills.
+- New field: Character.scripts for default character scripts.
+- New fields: Equip statusDef/statusBuff for status-related effects when item is equipped.
+- New field: Interactable.active for object deactivation without deletion.
+- New config option: Config.player.loadScript for custom player behavior.
+- When a tag's value is "{%var}", its value on the TagMap is automatically set as GameManager:getVariable("var").
+
+Bug fixes:
+- Fixed ChildAnimations bug.
+
+Method/field renaming:
+- Troop:getLevel -> Troop:getMaxLevel
+- initializeGUI -> initializeUI
+- ObjectTile.gui -> ObjectTile.ui
+- setKeyMap -> setKeyConfiguration
+- Color.RGBA (red, green, blue, alpha) -> (r, g, b, a)
+- status.elements -> status.bonuses
+- item.elements -> item.bonuses
+- Skill.[user*Anim, *animID, *Time, mirror, stepOnCast] moved to Skill.animInfo
+- TextInputWindow.emptyAllowed -> minLength, maxLength
+- EventUtil.open[Dialogue, Message]Window -> create[Dialogue, Message]Window
+- MenuEvents.show[Dialogue, Message] -> open[Dialogue, Message]Window
+- Character:tryPathMovement -> Character:computePathTo
+- Character:consumePath -> Character:tryPathMovement
+- MoveAction:calculatePath -> MoveAction:computePath
+
+Class renaming
+- FieldHUD -> PlayerMenu
+- MenuTargetGUI -> TargetMenu
+- BattleGUI -> TurnMenu
+- TileGUI -> TileUI
+- *GUI* -> *Menu*
+- SimpleText -> TextComponent
+- SimpleImage -> ImageComponent
+- CharacterBase -> AnimatedInteractable
+- Object split into Object and TransformableObject
+- Character split into Character and BattleCharacter
