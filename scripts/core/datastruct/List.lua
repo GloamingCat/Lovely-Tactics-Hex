@@ -38,7 +38,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Insert new element to the list.
--- @tparam unknown element The new element.
+-- @param element The new element.
 -- @tparam[opt] number pos The position to insert the element. If nil, appends to end.
 function List:add(element, pos)
   assert(element, 'Element cannot be nil')
@@ -64,7 +64,7 @@ end
 
 --- Removes the element in the given position.
 -- @tparam number pos The position index.
--- @treturn unknown The removed element.
+-- @return The removed element.
 function List:remove(pos)
   local element = remove(self, pos)
   if element then
@@ -73,7 +73,7 @@ function List:remove(pos)
   end
 end
 --- Removes given element from the list.
--- @tparam unknown element Element to remove.
+-- @param element Element to remove.
 -- @treturn boolean True if the element was found, false otherwise.
 function List:removeElement(element)
   assert(element, 'Element cannot be nil')
@@ -123,7 +123,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Searchs for the element in the list.
--- @tparam unknown element The element to search for.
+-- @param element The element to search for.
 -- @treturn number The index of the element in the list (nil if not in the list).
 function List:indexOf(element)
   if not element then
@@ -137,7 +137,7 @@ function List:indexOf(element)
   return nil
 end
 --- Checks if given element is in the list.
--- @tparam unknown element The element to check.
+-- @param element The element to check.
 -- @treturn boolean Whether if it's in the list or not.
 function List:contains(element)
   return self:indexOf(element) ~= nil

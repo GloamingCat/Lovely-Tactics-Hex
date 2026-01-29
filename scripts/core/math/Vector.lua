@@ -92,11 +92,17 @@ function Vector:len2D()
   return len2D(self.x, self.y, self.z)
 end
 --- Calculates the distance from this point to the given one.
+-- @tparam number x The x coordinate of the point.
+-- @tparam number y The y coordinate of the point.
+-- @tparam number z The z coordinate of the point.
 -- @treturn number The distance between the two points.
 function Vector:distanceTo(x, y, z)
   return len(x - self.x, y - self.y, z - self.z)
 end
 --- Calculates the distance from this point to the given one in a 2D world.
+-- @tparam number x The x coordinate of the point.
+-- @tparam number y The y coordinate of the point.
+-- @tparam number z The z coordinate of the point.
 -- @treturn number The distance between the two points.
 function Vector:distance2DTo(x, y, z)
   return len2D(x - self.x, y - self.y, z - self.z)

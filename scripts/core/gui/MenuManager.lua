@@ -70,7 +70,7 @@ end
 --- Shows Menu and waits until returns a result.
 -- @coroutine
 -- @tparam Menu newMenu The Menu object to be added and shown.
--- @treturn unknown Any result returned by the Menu after it's closed.
+-- @return Any result returned by the Menu after it's closed.
 function MenuManager:showMenuForResult(newMenu)
   self:showMenu(newMenu)
   local result = newMenu:waitForResult()

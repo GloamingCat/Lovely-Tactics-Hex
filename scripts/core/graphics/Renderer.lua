@@ -10,6 +10,7 @@
 -- ================================================================================================
 
 -- Imports
+local Colorable = require('core/math/transform/Colorable')
 local List = require('core/datastruct/List')
 local Transformable = require('core/math/transform/Transformable')
 
@@ -51,8 +52,9 @@ function Renderer:init(minDepth, maxDepth, batchSize)
   self.maxy = math.huge
   self.batchDraws = 0
   self.textDraws = 0
+  self.background = Colorable({r=0, g=0, b=0, a=0})
 end
---- Resize canvas acording to the zoom.
+--- Resizes canvas acording to the zoom.
 -- @tparam number newW New width of the canvas in pixels.
 -- @tparam number newH New height of the canvas in pixels.
 function Renderer:resizeCanvas(newW, newH)
@@ -72,13 +74,23 @@ function Renderer:resizeCanvas(newW, newH)
 end
 
 -- ------------------------------------------------------------------------------------------------
+-- Background
+-- ------------------------------------------------------------------------------------------------
+
+--- Overrides `Transformable:update`. Updates background.
+-- @override
+function Renderer:update(dt)
+  Transformable.update(self, dt)
+  self.background:update(dt)
+end
+
+-- ------------------------------------------------------------------------------------------------
 -- Transformations
 -- ------------------------------------------------------------------------------------------------
 
---- Sets Renderer's center position in the world coordinates.
--- @tparam number x Pixel x.
--- @tparam number y Pixel y.
--- @tparam number z Pixel z.
+--- Overrides `Movable:setXYZ`. Triggers redraw.
+-- Sets Renderer's center position in the world coordinates.
+-- @override
 function Renderer:setXYZ(x, y, z)
   x = round(x or self.position.x)
   y = round(y or self.position.y)
@@ -87,19 +99,19 @@ function Renderer:setXYZ(x, y, z)
     self.needsRedraw = true
   end
 end
---- Sets Renderer's zoom. 1 is normal.
+--- Overrides `Rotatable:setRotation`. Triggers redraw.
+-- @override
+function Renderer:setRotation(angle)
+  if angle ~= self.rotation then
+    self.rotation = angle
+    self.needsRedraw = true
+  end
+end
+--- Sets Renderer's zoom. 1 is normal. Triggers redraw.
 -- @tparam number zoom New zoom.
 function Renderer:setZoom(zoom)
   if self.scaleX ~= zoom or self.scaleY ~= zoom then
     self:setScale(zoom, zoom)
-    self.needsRedraw = true
-  end
-end
---- Sets Renderer's rotation.
--- @tparam number angle Rotation in degrees.
-function Renderer:setRotation(angle)
-  if angle ~= self.rotation then
-    self.rotation = angle
     self.needsRedraw = true
   end
 end
@@ -117,6 +129,10 @@ function Renderer:draw()
   end
   local r, g, b, a = lgraphics.getColor()
   lgraphics.setShader()
+  if self.background.color.a > 0 then
+    lgraphics.setColor(self.background:getRGBA())
+    lgraphics.rectangle('fill', 0, 0, self.canvas:getWidth(), self.canvas:getHeight())
+  end
   lgraphics.setColor(self:getRGBA())
   if self.spriteShader then
     self.spriteShader:send('phsv', {self:getHSV()})

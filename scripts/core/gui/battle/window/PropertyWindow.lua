@@ -48,7 +48,7 @@ function PropertyWindow:createContent(width, height)
 end
 --- Sets content.
 -- @tparam string term Property label.
--- @tparam unknown value Property value.
+-- @param value Property value. It will be converted to `string`.
 function PropertyWindow:setProperty(term, value)
   self.txtLabel:setTerm('{%' .. term .. '}:', term .. ':')
   self.txtLabel:redraw()

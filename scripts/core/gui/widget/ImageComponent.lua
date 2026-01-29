@@ -28,7 +28,6 @@ local ImageComponent = class(Component)
 -- @tparam[opt] Vector position The position of the top-left corner inside parent.
 -- @tparam[opt] number w Maximun width of the image.
 -- @tparam[opt] number h Maximun height of the image.
--- @tparam[opt=Vector(0,0,0)] The relative position of the component.
 -- @param ... Any other parameters passed to the `Component:createContent` method.
 function ImageComponent:init(img, position, w, h, ...)
   self.width = w
@@ -156,7 +155,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Sets sprite's color.
--- @tparam Color.RGBA color New color.
+-- @tparam Colorable.RGBA color New color.
 function ImageComponent:setColor(color)
   if self.sprite then
     self.sprite:setRGBA(color.r, color.g, color.b, color.a)

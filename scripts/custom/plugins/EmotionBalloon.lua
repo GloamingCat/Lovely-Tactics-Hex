@@ -12,9 +12,9 @@
 -- @tags Plugin
 -- @tfield[opt] number ballonY Vertical shift in pixels applied to the balloon sprite.
 -- @tfield[opt] table emotions Array of strings to set a different list of emotions, with each string 
---  being the emotion's code. If nil, uses the set `["!", "?", "...", "@", <3"]`.
+--  being the emotion's code. If nil, uses the list `{"!", "?", "...", "@", <3"}`.
 -- @tfield[opt] table rows Array of numbers to set custom rows for each emotion. The rows should be in the
---  same order as the emotions listed in `emotions`. If nil, uses `[0, 1, ..., #emotions - 1]`.
+--  same order as the emotions listed in `emotions`. If nil, uses `{0, 1, ..., #emotions - 1}`.
 
 -- ================================================================================================
 
@@ -65,8 +65,8 @@ function ResourceManager:loadEmotionAnimation(emotion, renderer)
 end
 --- Creates an icon animation for balloons.
 -- @tparam table|string icon Icon data or name (from config).
--- @tparam Renderer renderer
--- @treturn Animation
+-- @tparam Renderer renderer Where the sprite is rendered.
+-- @treturn Animation The animation with the icon sprite.
 function ResourceManager:loadBalloonIconAnimation(icon, renderer)
   if type(icon) == 'string' then
     icon = Config.icons[icon]

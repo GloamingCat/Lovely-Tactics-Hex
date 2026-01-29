@@ -14,31 +14,32 @@ local ScreenEvents = {}
 -- ------------------------------------------------------------------------------------------------
 
 --- Arguments for fading effects.
--- @table FadeArguments
+-- @table CameraArguments
 -- @tfield[opt=0] number time Duration of effect in frames (of pause time, for `focusParties`).
 -- @tfield[opt] number speed Camera movement speed.
 -- @tfield[opt] boolean wait Flag to wait until effect is finished.
 
---- Arguments for shader effect. Extends `FadeArguments`.
+--- Arguments for shader effect. Extends `CameraArguments`.
 -- @table ShadeArguments
--- @extend FadeArguments
+-- @extend CameraArguments
 -- @tfield string name Shader's file name.
 
---- Arguments for color filter. Extends `FadeArguments`.
+--- Arguments for color filter and tint. Extends `CameraArguments`.
 -- @table ColorArguments
--- @extend FadeArguments
+-- @extend CameraArguments
 -- @tfield number red Red component of the color filter.
 -- @tfield number green Green component of the color filter.
 -- @tfield number blue Blue component of the color filter.
+-- @tfield[opt=1] number alpha Alpha component of the color filter.
 
---- Arguments for camera follow. Extends `FadeArguments`.
+--- Arguments for camera follow. Extends `CameraArguments`.
 -- @table CharArguments
--- @extend FadeArguments
+-- @extend CameraArguments
 -- @tfield[opt] string key Character's key.
 
---- Arguments for camera movement. Extends `FadeArguments`.
+--- Arguments for camera movement. Extends `CameraArguments`.
 -- @table TileArguments
--- @extend FadeArguments
+-- @extend CameraArguments
 -- @tfield[opt=0] number x Tile grid x. It's added to the origin tile.
 -- @tfield[opt=0] number y Tile grid y. It's added to the origin tile.
 -- @tfield[opt=0] number h Tile's height. It's added to the origin tile.
@@ -50,7 +51,7 @@ local ScreenEvents = {}
 
 --- Shows the effect of a shader.
 -- @coroutine
--- @tparam FadeArguments args Argument table.
+-- @tparam CameraArguments args Argument table.
 function ScreenEvents:shaderin(args)
   ScreenManager.shader = ResourceManager:loadShader(args.name)
   local speed = args.speed
@@ -71,7 +72,7 @@ function ScreenEvents:shaderin(args)
 end
 --- Hides the effect of a shader.
 -- @coroutine
--- @tparam FadeArguments args Argument table.
+-- @tparam CameraArguments args Argument table.
 function ScreenEvents:shaderout(args)
   local speed = args.speed
   if not speed and args.time then
@@ -91,7 +92,7 @@ function ScreenEvents:shaderout(args)
 end
 --- Lightens the screen.
 -- @coroutine
--- @tparam FadeArguments args Argument table.
+-- @tparam CameraArguments args Argument table.
 function ScreenEvents:fadein(args)
   local time = args.time or -1
   local speed = args.speed or -1
@@ -102,7 +103,7 @@ function ScreenEvents:fadein(args)
 end
 --- Darkens the screen.
 -- @coroutine
--- @tparam FadeArguments args Argument table.
+-- @tparam CameraArguments args Argument table.
 function ScreenEvents:fadeout(args)
   local time = args.time or -1
   local speed = args.speed or -1
@@ -111,7 +112,7 @@ function ScreenEvents:fadeout(args)
   end
   FieldManager.renderer:fadeout(time, args.wait)
 end
---- Applies a color filter to the camera.
+--- Applies a color filter (multipling mode) to the camera.
 -- @coroutine
 -- @tparam ColorArguments args Argument table.
 function ScreenEvents:colorin(args)
@@ -120,7 +121,20 @@ function ScreenEvents:colorin(args)
   if time <= 0 and speed > 0 then
     time = (60 / speed)
   end
-  FieldManager.renderer:colorizeTo(args.red, args.green, args.blue, 1, time, args.wait)
+  FieldManager.renderer:colorizeTo(args.red, args.green, args.blue, args.alpha or 1,
+    time, args.wait)
+end
+--- Applies a color tint (additive mode) to the camera.
+-- @coroutine
+-- @tparam ColorArguments args Argument table.
+function ScreenEvents:tint(args)
+  local time = args.time or -1
+  local speed = args.speed or -1
+  if time <= 0 and speed > 0 then
+    time = (60 / speed)
+  end
+  FieldManager.renderer:tint(args.red, args.green, args.blue, args.alpha or 1,
+    time, args.wait)
 end
 
 -- ------------------------------------------------------------------------------------------------

@@ -40,7 +40,9 @@ Fiber.Scope = {
 
 --- Constructor.
 -- @tparam FiberList root The list of fibers this Fiber belongs to.
--- @tparam function func This fiber's function (substitutes "execute" method).
+-- @tparam[opt] InteractableObject char The character that created this list.
+-- @tparam[opt] function func This fiber's function.
+--  If nil, the method `execute` will be used.
 function Fiber:init(root, char, func, ...)
   FiberList.init(self, char)
   if root then

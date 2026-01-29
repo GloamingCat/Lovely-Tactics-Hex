@@ -125,7 +125,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Checks if a tile point is colliding with something.
--- @tparam Tile tile The origin tile.
+-- @tparam ObjectTile tile The origin tile.
 -- @tparam number dx The grid displacement in x axis.
 -- @tparam number dy The grid displaciment in y axis.
 -- @tparam number dh The grid height displacement.
@@ -137,7 +137,7 @@ function Object:collision(tile, dx, dy, dh)
   return FieldManager.currentField:collision(self, orig, dest)
 end
 --- Check if this object collides with destination tile.
--- @tparam Tile tile The destination tile.
+-- @tparam ObjectTile tile The destination tile.
 -- @treturn Field.Collision The collision type.
 function Object:collisionXYZ(tile)
   local ox, oy, oh = self:tileCoordinates()

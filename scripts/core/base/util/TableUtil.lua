@@ -69,7 +69,7 @@ function util.join(tables)
 end
 --- Iterates a numeric table in order.
 -- @tparam table t A table with numeric keys.
--- @treturn func Iterator of <key, value, position of key>.
+-- @treturn function Iterator of <key, value, position of key>.
 function util.sortedIterator(t)
   local keys = {}
   for k, v in pairs(t) do
@@ -95,7 +95,7 @@ end
 --- Accesses a deep-located value in a path.
 -- @tparam table root Root path when path is empty.
 -- @tparam string path Fields to be accessed, separated by dots.
--- @treturn unknown The value if found, nil otherwise.
+-- @return The value if found, nil otherwise.
 function util.access(root, path)
   if path == '' or path:endswith('.') then
     return nil

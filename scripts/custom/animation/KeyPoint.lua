@@ -4,7 +4,7 @@
 --- Rigged-like animation using interpolation of transformation key points.
 -- 
 -- All keypoints are defined by the `kp` tag in the animation's data.  
--- The value of the `kp` must be of the format `TIME FIELD X [Y Z W]`, where:
+-- The value of the `kp` must be of the format `TIME FIELD [X Y Z W]`, where:
 --
 --  * `TIME` is the time stamp in frames;
 --  * `FIELD` is one of the string keys from `Field` table (note: it's case sensitive);
@@ -30,14 +30,14 @@ local KeyPoint = class(Animation)
 -- ------------------------------------------------------------------------------------------------
 
 --- The string codes for each field type.
--- @enum Field
+-- @enum KpField
 -- @field Offset Change in the x, y and depth offsets of the sprite (3 values). Neutral is `0 0 0`.
 -- @field Scale Change in scale x and y (2 values). Neutral is `1 1` (0-1 scale).
 -- @field Rotation Change in rotation, in degrees (1 value). Neutral is `0` (0-360 scale).
 -- @field RGBA Change in color (4 values). Neutral is `1 1 1 1` (0-1 scale).
 -- @field HSV Change in HSV modifiers. Neutral is `0 1 1` (0-360 scale for hue, 0-1 scale for
 --  value and saturation).
--- @field QUAD The quad rectangle of the sprite (4 values). It's defined by the left x, the top
+-- @field Quad The quad rectangle of the sprite (4 values). It's defined by the left x, the top
 -- y, the width and the height in pixels.
 KeyPoint.Field = {
   OFFSET = 'Offset',

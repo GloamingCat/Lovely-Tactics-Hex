@@ -15,7 +15,6 @@ local Renderer = require('core/graphics/Renderer')
 local pixelCenter = math.field.pixelCenter
 local minDepth = math.field.minDepth
 local maxDepth = math.field.maxDepth
-local sqrt = math.sqrt
 
 -- Class table.
 local FieldCamera = class(Renderer)
@@ -26,7 +25,7 @@ local FieldCamera = class(Renderer)
 
 --- Constructor. Initialized from field data.
 -- @tparam table fieldData Field data.
--- @tparam[opt] Color.RGBA color Initial color. If nil, startss as black.
+-- @tparam[opt] Colorable.RGBA color Initial color. If nil, starts as black.
 function FieldCamera:init(fieldData, color)
   local width = ScreenManager.canvas:getWidth()
   local height = ScreenManager.canvas:getHeight()
@@ -36,7 +35,7 @@ function FieldCamera:init(fieldData, color)
   local maxd = maxDepth(fieldData.sizeX, fieldData.sizeY, h)
   self.images = {}
   Renderer.init(self, mind, maxd, fieldData.sizeX * fieldData.sizeY * l)
-  self.fadeSpeed = 100 / 60
+  self.fadeSpeed = 2 -- From 0 to 1 in half a second
   self.cameraSpeed = Config.screen.defaultSpeed or 75
   self.cropMovement = true
   self:resizeCanvas(width, height)
@@ -85,7 +84,7 @@ function FieldCamera:setXYZ(x, y, ...)
 end
 --- Add a background or foreground image.
 -- @tparam string name Image's identifier.
--- @tparam data icon Image's animation ID, column and row.
+-- @tparam table icon Image's animation data table with `id`, `col` and `row`.
 -- @tparam boolean foreground True if image appears above field, false if behind..
 -- @tparam boolean visible True if initialize visible..
 -- @tparam boolean glued True if image follows camera..
@@ -128,7 +127,8 @@ end
 --- Moves camera to the given tile.
 -- @coroutine
 -- @tparam ObjectTile tile The destionation tile.
--- @tparam[opt=cameraSpeed] number speed The speed of the movement.
+-- @tparam[opt] number speed The speed of the movement, in pixels per second.
+--  When nil, the default camera speed is used.
 -- @tparam[opt] boolean wait Flag to wait until the move finishes.
 function FieldCamera:moveToTile(tile, speed, wait)
   local x, y = tile.center:coordinates()
@@ -137,15 +137,17 @@ end
 --- Movec camera to the given object.
 -- @coroutine
 -- @tparam Object obj The destination object.
--- @tparam[opt=cameraSpeed] number speed The speed of the movement.
+-- @tparam[opt] number speed The speed of the movement, in pixels per second.
+--  When nil, the default camera speed is used.
 -- @tparam[opt] boolean wait Flag to wait until the move finishes.
 function FieldCamera:moveToObject(obj, speed, wait)
   self:moveToPoint(obj.position.x, obj.position.y, speed, wait)
 end
 --- Moves camera to the given pixel point.
 -- @tparam number x The pixel x.
--- @tparam nubmer y The pixel y.
--- @tparam[opt=cameraSpeed] number speed The speed of the movement, in pixels per second.
+-- @tparam number y The pixel y.
+-- @tparam[opt] number speed The speed of the movement, in pixels per second.
+--  When nil, the default camera speed is used.
 -- @tparam[opt] boolean wait Flag to wait until the move finishes.
 function FieldCamera:moveToPoint(x, y, speed, wait)
   self.focusObject = nil
@@ -154,7 +156,7 @@ function FieldCamera:moveToPoint(x, y, speed, wait)
   else
     local dx = self.position.x - x
     local dy = self.position.y - y
-    local distance = sqrt(dx * dx + dy * dy)
+    local distance = math.sqrt(dx * dx + dy * dy)
     speed = ((speed or self.cameraSpeed) + distance * 3) / distance
     if distance < 0.2 then
       return
@@ -183,7 +185,8 @@ end
 -- Camera Color
 -- ------------------------------------------------------------------------------------------------
 
---- Fades the screen out (changes color multiplier to black). 
+--- Fades the screen out (changes color multiplier to black).
+-- @coroutine
 -- @tparam[opt] number time The duration of the fading in frames.
 --  If nil, uses default fading speed. If 0, the change is instantaneous.
 -- @tparam[opt] boolean wait Flag to wait until the fading finishes.
@@ -192,9 +195,11 @@ function FieldCamera:fadeout(time, wait)
   if time then
     speed = (time > 0) and (60 / time) or nil
   end
+  self.background:colorizeTo(nil, nil, nil, 0, speed, false)
   self:colorizeTo(0, 0, 0, 1, speed, wait)
 end
---- Fades the screen in (changes color multiplier to white). 
+--- Fades the screen in (changes color multiplier to white).
+-- @coroutine
 -- @tparam[opt] number time The duration of the fading in frames.
 --  If nil, uses default fading speed. If 0, the change is instantaneous.
 -- @tparam[opt] boolean wait Flag to wait until the fading finishes.
@@ -203,7 +208,28 @@ function FieldCamera:fadein(time, wait)
   if time then
     speed = (time > 0) and (60 / time) or nil
   end
+  self.background:colorizeTo(nil, nil, nil, 1, speed, false)
   self:colorizeTo(1, 1, 1, 1, speed, wait)
+end
+--- Tints the screen in additive mode. 
+-- The RGB components will be the background's color, 
+-- and the alpha will be subtracted from the renderer's current alpha. 
+-- Nil color components are kept unchanged.
+-- @tparam number r Tint's red component.
+-- @tparam number g Tint's green component.
+-- @tparam number b Tint's blue component.
+-- @tparam[opt=1] number a Tint's alpha component.
+-- @tparam[opt] number time The duration of the fading in frames.
+--  If nil, uses default fading speed. If 0, the change is instantaneous.
+-- @tparam[opt] boolean wait Flag to wait until the fading finishes.
+function FieldCamera:tint(r, g, b, a, time, wait)
+  local speed = self.fadeSpeed
+  if time then
+    speed = (time > 0) and (60 / time) or nil
+  end
+  a = a or 1
+  self.background:setRGBA(r, g, b, 1)
+  self:colorizeTo(nil, nil, nil, math.max(self.color.a - a, 0), speed, wait)
 end
 
 return FieldCamera

@@ -11,6 +11,7 @@
 -- ================================================================================================
 
 -- Imports
+local ButtonWindow = require('core/gui/common/window/interactable/ButtonWindow')
 local DescriptionWindow = require('core/gui/common/window/DescriptionWindow')
 local DialogueWindow = require('core/gui/common/window/interactable/DialogueWindow')
 local FieldMenu = require('core/gui/menu/FieldMenu')
@@ -32,13 +33,15 @@ local EventUtil = class()
 -- @enum MenuType
 -- @field field Field menu.
 -- @field save Save menu.
+-- @field shop Shop menu.
+-- @field recruit Shop menu.
 EventUtil.MenuType = {
   field = 0,
   save = 1,
   shop = 2,
   recruit = 3
 }
---- Common arguments for character setup.
+--- Common arguments for character or image setup.
 -- @table VisibilityArguments
 -- @tfield string key They key of the object.
 -- @tfield boolean visible Object's new visibility.
@@ -52,7 +55,7 @@ EventUtil.MenuType = {
 --- Searches for the character with the given key.
 -- @tparam string key Character's key.
 -- @tparam[opt] boolean optional Flag to not throw error if not found.
--- @treturn Character Character with given key, nil if optional and not found.
+-- @treturn `Character` Character with given key, nil if optional and not found.
 function EventUtil:findCharacter(key, optional)
   if key == 'self' then
     return self.char
@@ -113,7 +116,18 @@ function EventUtil:createMenu()
     self.menu.name = "Event Menu from " .. tostring(self)
     self.menu.dialogues = {}
     self.menu.messages = {}
+    self:createSkipButtonWindow()
     MenuManager:showMenu(self.menu)
+  end
+end
+--- Creates the window with the skip button. 
+function EventUtil:createSkipButtonWindow()
+  if self.data and self.data.skippable then
+    -- TODO: test
+    local window = ButtonWindow(self, 'skip', 'center', 60)
+    window:setXYZ((ScreenManager.width - window.width) / 2, (window.height - ScreenManager.height) / 2)
+    window.matrix[1].clickSound = nil
+    self.skipButtonWindow = window
   end
 end
 --- Creates a dialogue window with default size and position for given ID.
@@ -140,7 +154,7 @@ function EventUtil:getDefaultWindowArgs(id, x, y)
   end
   return w, h, Vector(x, y)
 end
---- Opens a new message window and stores in the given ID.
+--- Opens a new message window and stores it in the given ID.
 -- @coroutine
 -- @tparam WindowArguments args Argument table.
 function EventUtil:createMessageWindow(args)
@@ -160,7 +174,7 @@ function EventUtil:createMessageWindow(args)
     window:show()
   end
 end
---- Opens a new dialogue window and stores in the given ID.
+--- Opens a new dialogue window and stores it in the given ID.
 -- @coroutine
 -- @tparam WindowArguments args Argument table.
 function EventUtil:createDialogueWindow(args)
@@ -184,7 +198,7 @@ end
 -- @coroutine
 -- @tparam MenuType menu The menu type (field, save, shop, recruit).
 -- @tparam[opt] table items An array of {id, price} entries.
--- @tparam[opt] boolean sell Flag to indicaque that the player can also dismiss/sell in this menu.
+-- @tparam[opt] boolean sell When true, the player can also dismiss/sell in this menu.
 function EventUtil:openMenu(menu, items, sell)
   self.vars.hudOpen = FieldManager.hud.visible
   FieldManager.hud:hide()

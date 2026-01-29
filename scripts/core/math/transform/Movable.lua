@@ -76,6 +76,7 @@ function Movable:moving()
   return self.moveTime < 1
 end
 --- Moves to (x, y, z).
+-- If an argument is nil, the field is left unchanged.
 -- @coroutine
 -- @tparam number x The pixel x.
 -- @tparam number y The pixel y.
@@ -89,7 +90,8 @@ function Movable:moveTo(x, y, z, speed, wait)
     self:instantMoveTo(x, y, z)
   end
 end
---- Moves instantly a character to a point, if possible.
+--- Moves instantly a character to the point, if possible.
+-- If an argument is nil, the field is left unchanged.
 -- @tparam number x The pixel x.
 -- @tparam number y The pixel y.
 -- @tparam number z The pixel depth.
@@ -98,7 +100,8 @@ function Movable:instantMoveTo(x, y, z)
   self:setXYZ(x, y, z)
   return false
 end
---- Moves gradativaly (through updateMovement) to the given point.
+--- Moves gradually (through `updateMovement`) to the given point until interrupted.
+-- If an argument is nil, the field is left unchanged.
 -- @coroutine
 -- @tparam number x The pixel x.
 -- @tparam number y The pixel y.

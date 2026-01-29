@@ -24,17 +24,17 @@ local TextParser = {}
 
 --- Rich text codes.
 -- @enum Code
--- @field i Toggles between italic and non-italic.
--- @field b Toggles between bold and non-bold.
--- @field u Toggles between underlined and not underlined.
--- @field plusx Increases font text by `x` points (type it as `+x`).
--- @field minusx Decreases font text by `x` points (type it as `-x`).
--- @field fx Changes font to `x` (x must be a key in the global `Fonts` table).
--- @field cx Changes text color to `x` (x must be a key in the global `Color` table).
--- @field sx Shows sprite (dialogue-only). `x` must be a key in the `Config.icons` data table).
--- @field ax Player an audio (dialogue-only). `x` must be a key in the `Config.sounds` data table).
--- @field tx Waits for `x` frames before showing the rest of the text (dialogue-only).
--- @field p Waits until the player presses a key (dialogue-only).
+-- @field italic `{i}` Toggles between italic and non-italic.
+-- @field bold `{b}` Toggles between bold and non-bold.
+-- @field underline `{u}` Toggles between underlined and not underlined.
+-- @field size `{+x}`/`{-x}` Increases/decreases font text by `x` points.
+-- @field font `{fx}` Changes font. `x` must be a key in the global `Fonts` table.
+-- @field color `{cx}` Changes text color. `x` must be a key in the global `Color` table.
+-- @field sprite `{sx}` Shows sprite. `x` must be a key in the `Config.icons` data table).
+-- @field var `{%x}` Inserts a variable. `x` must be the name of a variable accessible from the `Variables` table.
+-- @field audio `{ax}` (dialogue-only) Play an audio. `x` must be a key in the `Config.sounds` data table.
+-- @field time `{tx}` (dialogue-only) Waits for `x` frames before showing the rest of the text.
+-- @field input `{p}` (dialogue-only) Waits until the player presses a key.
 TextParser.Code = {
   i = "italic",
   b = "bold",
@@ -58,7 +58,7 @@ TextParser.Code = {
 --- Split raw text into an array of fragments.
 -- @tparam string text Raw text.
 -- @tparam[opt] boolean plainText Flag to not parse commands.
--- @tparam[opt={}] table fragments Array of raw fragments.
+-- @tparam[opt] table fragments Array of raw fragments. If nil, create a new one.
 -- @treturn table Array of fragments.
 function TextParser.parse(text, plainText, fragments)
   fragments = fragments or {}
@@ -144,7 +144,7 @@ end
 --- Creates line list. Each line is a table containing an array of fragments, a height and a width.
 -- It also contains its length for character counting.
 -- @tparam table fragments Array of fragments.
--- @tparam Fonts.Info initialFont The default font.
+-- @tparam Text.Font initialFont The default font.
 -- @tparam[opt] number maxWidth The width limit for wrapped text.
 -- @tparam[opt=1] number scale Text's size multiplier.
 -- @treturn table Array of lines.

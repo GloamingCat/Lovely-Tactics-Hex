@@ -52,12 +52,12 @@ local MenuEvents = {}
 -- @tfield boolean wait Flag to wait for player input.
 
 --- Arguments for choice/number/input commands.
--- @table InputCommands
+-- @table InputArguments
 -- @extend WindowArguments
 -- @tfield table choices Array with the name of each choice, for `openChoiceWindow`.
 -- @tfield number length Number of digits for number input, for `openNumberWindow`.
 -- @tfield boolean emptyAllowed Whether it is allowed to leave the text empty, for `openStringWindow`
--- @tfield unknown cancelValue Value/index returned when player presses a cancel button.
+-- @field cancelValue Value/index returned when player presses a cancel button.
 
 -- ------------------------------------------------------------------------------------------------
 -- Menu

@@ -63,7 +63,7 @@ end
 --- Ignores folder nodes and insert data nodes in the array in the position given by data index.
 -- @tparam table children Original array of nodes.
 -- @tparam number parentID The ID of the parent node.
--- @tparam table arr Final array with the data nodes (creates an empty one if nil).
+-- @tparam[opt] table arr Final array with the data nodes (creates an empty one if nil).
 -- @treturn table The array with the data nodes.
 function Database.toArray(children, parentID, arr)
   arr = arr or {}

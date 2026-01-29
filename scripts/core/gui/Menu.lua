@@ -88,7 +88,7 @@ function Menu:setActiveWindow(window)
 end
 --- Waits until Menu closes and returns a result.
 -- @coroutine
--- @treturn The result of Menu (will never be nil).
+-- @return The result of Menu (will never be nil).
 function Menu:waitForResult()
   if self.activeWindow then
     self.activeWindow:checkInput()
@@ -106,7 +106,7 @@ end
 --- Waits until window closes and returns a result.
 -- @coroutine
 -- @tparam Window window The new active window.
--- @treturn The result of window (will never be nil).
+-- @return The result of window (will never be nil).
 function Menu:showWindowForResult(window)
   assert(window.menu == self, "Can't show window from another Menu!")
   local previous = self.activeWindow

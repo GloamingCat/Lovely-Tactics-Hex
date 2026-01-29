@@ -8,7 +8,7 @@
 
 -- ================================================================================================
 
-return function (troop)
+return function(troop)
   TurnManager.characterIndex = 1
   while #TurnManager.turnCharacters > 0 do
     TurnManager:characterTurnStart()

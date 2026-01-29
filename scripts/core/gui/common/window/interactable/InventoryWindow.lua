@@ -27,7 +27,8 @@ local InventoryWindow = class(ListWindow)
 -- @tparam Menu menu Parent Menu.
 -- @tparam Battler user The user of the items.
 -- @tparam Inventory inventory Inventory with the list of items.
--- @tparam[opt=inventory] table itemList Array with item slots that are going to be shown.
+-- @tparam[opt] table itemList Array with item slots that are going to be shown.
+--  When nil, `inventory` will be used.
 -- @tparam[opt] number w Window's width. If nil, fits to col count.
 -- @tparam[opt] number h Window's height If nil, fits to row count.
 -- @tparam[opt] Vector pos Position of the window's center. If nil, sets at the center of the screen.

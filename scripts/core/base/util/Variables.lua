@@ -3,7 +3,7 @@
 
 --- Accessor for game variables.
 ---------------------------------------------------------------------------------------------------
--- @module Variables
+-- @script Variables
 
 -- ================================================================================================
 
@@ -33,8 +33,10 @@ end
 -- The scope of the variable is searched in order:
 -- Vocab, script (local, character, args, tags), field, game (global).
 -- @tparam string key The name of the variable.
--- @tparam[opt] Fiber script The current executing script.
--- @tparam[opt] Field field The current loaded field.
+-- @tparam[opt] Fiber script The scope script.
+--  When nil, assumes it's the current executing fiber.
+-- @tparam[opt] Field field The scope field.
+--  When nil, assumes it's the current loaded field.
 -- @return The value of the variable.
 function meta:__call(key, script, field)
   script = script or _G.Fiber

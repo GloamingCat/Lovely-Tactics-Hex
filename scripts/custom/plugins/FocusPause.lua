@@ -37,7 +37,8 @@ function ScreenManager:onFocus(f)
   end
   GameManager:setPaused(not f, pauseAudio, true)
 end
---- Pause if on mobile and minimized.
+--- Rewrites `ScreenManager:onResize`. Pause if on mobile and minimized.
+-- @rewrite
 function ScreenManager:onResize(...)
   ScreenManager_onResize(self, ...)
   if not GameManager:isMobile() then

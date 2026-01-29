@@ -25,10 +25,10 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Adds new element at the top of the stack.
--- @tparam unknown elem The new element to push to the top of the stack.
-function Stack:push(elem)
+-- @param element The new element to push to the top of the stack.
+function Stack:push(element)
   self.size = self.size + 1
-  self[self.size] = elem
+  self[self.size] = element
 end
 --- Adds new elements at the top of the stack.
 -- @tparam table arr Array of new elements to push to the top of the stack.
@@ -39,12 +39,12 @@ function Stack:pushAll(arr)
   self.size = self.size + #arr
 end
 --- Gets the element in the top of the stack (does not remove it).
--- @treturn unknown The element at the top of the stack.
+-- @return The element at the top of the stack.
 function Stack:peek()
   return self[self.size]
 end
 --- Removes the element in the top of the stack (throws error if stack is empty).
--- @treturn unknown The element popped from the top of the stack.
+-- @return The element popped from the top of the stack.
 function Stack:pop()
   assert(self.size > 0, "Attempt to pop an empty stack")
   local elem = self[self.size]
@@ -58,11 +58,11 @@ function Stack:isEmpty()
   return self.size == 0
 end
 --- Removes the especified element from the stack.
--- @tparam unknown e The element to be removed.
+-- @param element The element to be removed.
 -- @treturn boolean Whether the element was present or not.
-function Stack:removeElement(e)
+function Stack:removeElement(element)
   for i = 1, self.size do
-    if self[i] == e then
+    if self[i] == element then
       table.remove(self, i)
       self.size = self.size - 1
       return true

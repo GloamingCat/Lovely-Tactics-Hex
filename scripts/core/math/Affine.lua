@@ -57,7 +57,7 @@ Affine.neutralTransform = {
 -- ------------------------------------------------------------------------------------------------
 
 --- Transforms the bounding vertexes of the given transformable.
--- @tparam Transformable t
+-- @tparam Transformable t The transformable object.
 -- @tparam number w The width of the original rectangle.
 -- @tparam number h The height of the original rectangle.
 -- @treturn table An array of points (x in odd positions, y in even positions).
@@ -79,7 +79,7 @@ function Affine.getTransformedPoints(t, w, h)
   return p
 end
 --- Gets the rectangle the represents the final bounding box of the given transformable.
--- @tparam Transformable t
+-- @tparam Transformable t The transformable object.
 -- @tparam number w The width of the original rectangle.
 -- @tparam number h The height of the original rectangle.
 -- @treturn number The x of the new rectangle.
@@ -104,7 +104,7 @@ end
 
 --- Creates a neutral transform. Optionally, applies a list of transformations.
 -- @tparam[opt] Transform t Initial transform table. If nil, a neutral transform is used.
--- @tparam[opt] array transformations Array of transformations with type and value.
+-- @tparam[opt] table transformations Array of transformations with type and value.
 function Affine.createTransform(t, transformations)
   t = t or copy(Affine.neutralTransform)
   if transformations then

@@ -153,7 +153,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Gets the cell shown in the given position.
--- @treturn Widget
+-- @treturn GridWidget The widget in the given cell (or nil, if none).
 function GridWindow:getCell(x, y)
   if x < 1 or x > self:colCount() or y < 1 or y > self:rowCount() then
     return nil

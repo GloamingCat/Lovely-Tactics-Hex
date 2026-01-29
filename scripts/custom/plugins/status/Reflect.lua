@@ -46,7 +46,7 @@ local selfReflect = args.selfReflect or SelfReflection.NONE
 
 --- Skill tags.
 -- @tags Skill
--- @tfield booelan reflectable Only the skills with this tag can be reflected.
+-- @tfield boolean reflectable Only the skills with this tag can be reflected.
 
 --- Status tags.
 -- @tags Status

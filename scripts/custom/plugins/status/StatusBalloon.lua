@@ -81,7 +81,7 @@ function BattleCursor:setCharacter(char)
   end
 end
 --- Translates cursor to above the balloon.
--- @tparam Balloon balloon Character's balloon.
+-- @tparam Animation balloon Character's balloon.
 function BattleCursor:addBalloonHeight(balloon)
   local sprite = self.anim.sprite
   local _, y1, _, y2 = balloon.sprite:getBoundingBox()

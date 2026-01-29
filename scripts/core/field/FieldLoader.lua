@@ -56,7 +56,7 @@ function FieldLoader.mergeLayers(field, layers)
     local list = field.terrainLayers[layerData.info.height]
     assert(list, "Terrain layers out of height limits: " .. layerData.info.height)
     local order = #list
-    local layer = TerrainLayer(layerData, field.sizeX, field.sizeY, -order)
+    local layer = TerrainLayer(layerData, field.sizeX, field.sizeY, order)
     list[order + 1] = layer
   end
   for i, layerData in ipairs(layers.obstacle) do
@@ -117,6 +117,7 @@ end
 -- @tparam table origin The coordinates of the origin tile (x, y, h).
 -- @tparam table destination The destination with coordinates, direction and field ID.
 -- @tparam string key The key of the new object.
+-- @tparam[opt=''] string condition Condition to transition, as a boolean formula.
 -- @return InteractableObject The newly created transition object.
 function FieldLoader.createTransitionTile(origin, destination, key, condition)
   local args = { 

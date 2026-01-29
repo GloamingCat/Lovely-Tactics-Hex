@@ -66,7 +66,7 @@ function EquipItemWindow:setBattler(member)
 end
 --- Sets the selected slot. 
 -- @tparam string key Key of the specific slot.
--- @tparam data slot Info about the slot.
+-- @tparam table slot Data table with the slot's info from `Config.equipTypes`.
 function EquipItemWindow:setSlot(key, slot)
   self.slotKey = key
   self.slotType = slot

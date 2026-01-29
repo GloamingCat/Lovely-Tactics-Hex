@@ -21,7 +21,7 @@ local Serializer = {}
 -- ------------------------------------------------------------------------------------------------
 
 --- Converts any object to a serialized string.
--- @tparam unknown data Any object to be encoded into a string.
+-- @param data Any object to be encoded into a string.
 -- @treturn string A string codification of the object.
 function Serializer.encode(data)
   -- TODO: exceptions
@@ -30,7 +30,7 @@ function Serializer.encode(data)
 end
 --- Parses a serialized string to an object.
 -- @tparam string text The string codification of the object.
--- @treturn The object that the string represents.
+-- @return The object that the string represents.
 function Serializer.decode(text)
   if type(text) ~= 'string' then
     return text
@@ -66,7 +66,7 @@ end
 
 --- Decodes the content of a given file.
 -- @tparam string path The path to the file.
--- @treturn The decoded object stored in the file.
+-- @return The decoded object stored in the file.
 function Serializer.load(path)
   local text = readFile(path)
   assert(text, "Could not load " .. path)
@@ -76,7 +76,7 @@ function Serializer.load(path)
 end
 --- Encodes the content into a given file.
 -- @tparam string path The path to the file.
--- @tparam unknown data Any object to be encoded and stored.
+-- @param data Any object to be encoded and stored.
 -- @treturn string A string codification of the object.
 function Serializer.store(path, data)
   local text = Serializer.encode(data)

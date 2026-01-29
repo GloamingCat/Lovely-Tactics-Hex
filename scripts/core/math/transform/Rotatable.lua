@@ -70,7 +70,7 @@ function Rotatable:instantRotateTo(r)
   self:setRotation(r)
   return nil
 end
---- Rotates to (sx, sy).
+--- Rotates to (sx, sy) gradually (through `updateRotation`), until interrupted.
 -- @coroutine
 -- @tparam number r Initial rotation.
 -- @tparam[opt] number speed The speed of the scaling.

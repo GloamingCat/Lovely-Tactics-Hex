@@ -101,7 +101,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Sets the color of the bar.
--- @tparam Color.RGBA color New color.
+-- @tparam Colorable.RGBA color New color.
 function Bar:setColor(color)
   self.bar.sprite:setColor(color)
 end

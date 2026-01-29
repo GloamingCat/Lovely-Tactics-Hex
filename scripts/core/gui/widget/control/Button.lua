@@ -56,11 +56,12 @@ function Button:fromKey(window, key)
   return button
 end
 --- Creates the main text.
--- @tparam string term The text term to be localized.
--- @tparam[opt] string fallback If no localization is found, use this text.
+-- @tparam string term The localization term.
+-- @tparam[opt] string fallback The text shown if localization fails.
+--  When nil, the fallback is `term` itself.
 -- @tparam[opt] string fontName The text's font, from `Fonts` folder.
 -- @tparam[opt="left"] string align The text's horizontal alignment.
--- @tparam[opt=inf] number w The text's maximum width, in pixels.
+-- @tparam[opt] number w The text's maximum width, in pixels. When nil, there is no maximum width.
 -- @tparam[opt] Vector pos The text's top left.
 function Button:createText(term, fallback, fontName, align, w, pos)
   if self.text then
@@ -84,11 +85,12 @@ function Button:createText(term, fallback, fontName, align, w, pos)
   return self.text
 end
 --- Creates the secondary text.
--- @tparam string term The text term to be localized.
--- @tparam[opt] string fallback If no localization is found, use this text.
--- @tparam[opt=menu_button] string fontName The text's font, from `Fonts` folder.
+-- @tparam string term The localization term.
+-- @tparam[opt] string fallback The text shown if localization fails.
+--  When nil, the fallback is `term` itself.
+-- @tparam[opt="menu_button"] string fontName The text's font, from `Fonts` folder.
 -- @tparam[opt="right"] string align The text's horizontal alignment.
--- @tparam[opt=inf] number w The text's maximum width, in pixels.
+-- @tparam[opt] number w The text's maximum width, in pixels. When nil, there is no maximum width.
 -- @tparam[opt] Vector pos The text's top left.
 function Button:createInfoText(term, fallback, fontName, align, w, pos)
   if self.infoText then

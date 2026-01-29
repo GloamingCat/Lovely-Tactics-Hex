@@ -14,7 +14,7 @@ local GeneralEvents = {}
 -- ------------------------------------------------------------------------------------------------
 
 --- Arguments for variable controlling.
--- @table VariableAguments
+-- @table VariableArguments
 -- @tfield string key The key of the variable.
 -- @tfield number VarScope The scope of the variable (global/local/object).
 -- @field[opt] value The new value of the variable.

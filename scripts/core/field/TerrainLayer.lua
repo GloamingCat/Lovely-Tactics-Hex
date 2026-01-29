@@ -22,15 +22,22 @@ local TerrainLayer = class()
 -- @tparam table data The layer's data from field's file.
 -- @tparam number sizeX The field's grid width.
 -- @tparam number sizeY The field's grid height.
--- @tparam number depth The rendering depth for the layer.
---  (used for correct depth when there are more than one layer with same height).
-function TerrainLayer:init(data, sizeX, sizeY, depth)
+-- @tparam number index The index of the layer in the list of layers with the same height
+--  (used for correct rendering depth).
+-- @tparam number[opt=0] depth The initial depth of the tiles.
+function TerrainLayer:init(data, sizeX, sizeY, index, depth)
   self.grid = {}
-  self.depth = depth
+  self.index = index
   self.height = data.info.height
   self.sizeX = sizeX
   self.sizeY = sizeY
   self.noAuto = data.info.noAuto
+  self.bg = data.info.bg
+  if self.bg then
+    self.depth = math.field.maxDepth(sizeX, sizeY, self.height) -- TODO: test
+  else
+    self.depth = -index
+  end
   -- Initializes all tiles
   for i = 1, sizeX do
     self.grid[i] = {}
@@ -42,16 +49,14 @@ function TerrainLayer:init(data, sizeX, sizeY, depth)
   -- Sets tiles' terrains
   for i = 1, sizeX do
     for j = 1, sizeY do
-      local id = data.grid[i][j]
-      self.grid[i][j].data = nil
-      self.grid[i][j]:setTerrain(id)
+      self.grid[i][j]:refreshTerrain(false)
     end
   end
 end
 
--- ------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 -- Auto Tile
--- ------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------
 
 --- Checks if two grid cells have the same terrain type (for auto tiling).
 -- @tparam number i1 Grid x of first cell.

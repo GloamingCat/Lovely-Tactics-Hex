@@ -29,7 +29,7 @@ local Transformable = class(Movable, Scalable, Rotatable, Colorable)
 -- @tparam[opt=1] number initScaleX Initial horizontal scale multiplier.
 -- @tparam[opt=1] number initScaleY Initial vertical scale multiplier.
 -- @tparam[opt=0] number initRot Initial rotation, in degrees.
--- @tparam[opt] Color.RGBA initColor Initial color. The default value is `Color.white`.
+-- @tparam[opt] Colorable.RGBA initColor Initial color. The default value is `Color.white`.
 function Transformable:init(initPos, initScaleX, initScaleY, initRot, initColor)
   self:initMovement(initPos)
   self:initScale(initScaleX, initScaleY)

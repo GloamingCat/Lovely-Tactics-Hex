@@ -71,13 +71,13 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Adds an event to the execution list.
--- @tparam functtion|string func The function to be executed, the name of the event, or the
+-- @tparam function|string func The function to be executed, the name of the event, or the
 --  the function's code.
--- @tparam function|unknown condition A condition to execute the command, either a function or
---  a constant value.
---  Can be either a constant or a function to be computed before the event executes.
--- @tparam table args The arguments table passed to the event function.
-function EventSheet:addEvent(func, condition, args, unskippable)
+-- @tparam[opt] table args The arguments table passed to the event function.
+-- @param[opt] condition A condition to execute the command.
+--  Can be either a constant value or a `function` to be computed before the event executes.
+-- @tparam[opt] boolean unskippable When true, the skip command will stop at this command.
+function EventSheet:addEvent(func, args, condition, unskippable)
   if condition ~= nil and type(condition) ~= 'function' then
     local value = condition
     condition = function()
@@ -102,7 +102,7 @@ function EventSheet:addEvent(func, condition, args, unskippable)
     args = args,
     unskippable = unskippable }
 end
---- Adds each event in the event sheet.
+--- Adds each event in the event sheet and sets the indexes of each label.
 function EventSheet:processSheet()
   self.labels['start'] = 1
   self.labels['end'] = -1
@@ -112,7 +112,7 @@ function EventSheet:processSheet()
       local name = findTag(e.tags, 'name').value
       self:setLabel(Serializer.decode(name) or name)
     else
-      self:addEvent(e.name, condition, e.tags, e.unskippable)
+      self:addEvent(e.name, e.tags, condition, e.unskippable)
     end
   end
 end
@@ -126,31 +126,31 @@ end
 -- Flow Events
 -- ------------------------------------------------------------------------------------------------
 
---- Changes the running index to skip a number of events.
--- @tparam[opt] table args Argument table when called from an event sheet.
--- @tparam number n Number of events to skip.
-function EventSheet:skipEvents(args, n)
-  n = n or args.events
-  self.vars.runningIndex = self.vars.runningIndex + n
-end
 --- Directly sets the running index.
--- @tparam[opt] table args Argument table when called from an event sheet.
--- @tparam number i Index of the next event.
-function EventSheet:setEvent(args, i)
-  i = i or args.index
+-- @tparam number|table args Index of the next event.
+--  If it's an argument table, this should be the field `args.index`.
+function EventSheet:setEvent(args)
+  local i = type(args) == 'table' and args.index or args
   if i == -1 then
     self.vars.runningIndex = #self.events
   else
     self.vars.runningIndex = i - 1
   end
 end
+--- Changes the running index to skip a number of events.
+-- @tparam number|table args Number of events to skip.
+--  If it's an argument table, this should be the field `args.events`.
+function EventSheet:skipEvents(args)
+  local n = type(args) == 'table' and args.events or args 
+  self.vars.runningIndex = self.vars.runningIndex + n
+end
 --- Sets the next event to the one pointed by the given label.
--- @tparam[opt] table args Argument table when called from an event sheet.
--- @tparam string name Name of the label.
-function EventSheet:jumpTo(args, name)
-  name = name or args.name
+-- @tparam string|table args Name of the label.
+--  If it's an argument table, this should be the field `args.name`.
+function EventSheet:jumpTo(args)
+  local name = type(args) == 'table' and args.name or args 
   assert(self.labels[name], 'Label not defined: ' .. name)
-  self:setEvent(nil, self.labels[name])
+  self:setEvent(self.labels[name])
 end
 
 -- ------------------------------------------------------------------------------------------------
@@ -161,7 +161,7 @@ end
 -- @override
 function EventSheet:update()
   if self.vars.runningIndex and self.sheet.skippable then
-    if InputManager.keys["cancel"]:isTriggered() then
+    if InputManager.keys["next"]:isTriggered() then
       self.skipped = true
     end
   end
@@ -214,6 +214,9 @@ end
 function EventSheet:setUp()
   if self.data.block then
     FieldManager.currentField.blockingFibers:add(self)
+  end
+  if self.data.skippable then
+    self:createMenu()
   end
 end
 --- Resets any variable that indicates that this script is running.

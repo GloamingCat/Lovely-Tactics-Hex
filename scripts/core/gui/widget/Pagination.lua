@@ -39,7 +39,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Font of the page number.
--- @treturn Font.Info Font from `Fonts` table.
+-- @treturn Text.Font The font key.
 function Pagination:getFont()
   return Fonts.menu_tiny
 end

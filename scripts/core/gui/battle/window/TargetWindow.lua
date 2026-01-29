@@ -33,6 +33,7 @@ function TargetWindow:init(Menu)
       -ScreenManager.height / 2 + h / 2 + margin))
 end
 --- Initializes name and status texts.
+-- @override
 function TargetWindow:createContent(width, height)
   Window.createContent(self, width, height)
   local font = Fonts.menu_small
@@ -65,7 +66,7 @@ end
 --- Creates texts for the given state variable.
 -- @tparam string name The name of the variable.
 -- @tparam Vector pos The position of the text.
--- @tparam width w The max width of the text.
+-- @tparam number w The max width of the text.
 -- @tparam table barColor The RGBA table for the bar color.
 function TargetWindow:addStateVariable(name, pos, w, barColor)
   local textName = TextComponent('', pos, w, 'left', Fonts.menu_small)

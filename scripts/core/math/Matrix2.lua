@@ -17,7 +17,7 @@ local Matrix2 = class()
 --- Constructor.
 -- @tparam number width The number of columns.
 -- @tparam number height The number of lines.
--- @tparam[opt] unknown startValue The initial value of every element.
+-- @param[opt] startValue The initial value of every element.
 function Matrix2:init(width, height, startValue)
   self.width = width
   self.height = height
@@ -45,14 +45,14 @@ end
 --- Gets the element at line i and column j.
 -- @tparam number i Column number.
 -- @tparam number j Line number.
--- @treturn unknown The current value at that position.
+-- @return The current value at that position.
 function Matrix2:get(i, j)
   if i >= 1 and i <= self.width and j >= 1 and j <= self.height then
     return self[(j - 1) * self.width + i]
   end
 end
 --- Sets the element at line i and column j.
--- @tparam unknown value The new value at that position.
+-- @param value The new value at that position.
 -- @tparam number i Column number.
 -- @tparam number j Line number.
 function Matrix2:set(value, i, j)

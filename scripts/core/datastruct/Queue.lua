@@ -26,9 +26,9 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Adds new element at the end back of the queue.
--- @tparam unknown elem The new element to be added at the end of the queue.
-function Queue:push(elem)
-  self[self.back] = elem
+-- @param element The new element to be added at the end of the queue.
+function Queue:push(element)
+  self[self.back] = element
   self.back = self.back + 1
 end
 --- Adds new elements at the end back of the queue.
@@ -39,8 +39,8 @@ function Queue:pushAll(arr)
   end
   self.back = self.back + #arr
 end
---- Removes elements from the front of the queue.
--- @treturn unknown The element removed.
+--- Removes an element from the front of the queue.
+-- @return The element removed.
 function Queue:pop()
   assert(not self:isEmpty())
   local ret = self[self.front]

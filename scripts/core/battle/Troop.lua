@@ -216,7 +216,7 @@ end
 -- @tparam Group list Group in which to put this unit in.
 -- @tparam[opt] number x Grid-x position of the member.
 -- @tparam[opt] number y Grid-y position of the member.
--- @treturn Battle The called member.
+-- @treturn Battler The called member.
 function Troop:moveMember(key, list, x, y)
   assert(self.members[key], 'Member ' .. tostring(key) .. ' not in ' .. tostring(self))
   local member = self.members[key]

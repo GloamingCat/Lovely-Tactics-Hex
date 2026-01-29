@@ -60,6 +60,7 @@ function Scalable:updateScaling(dt)
   end
 end
 --- Scales to (sx, sy).
+-- If an argument is nil, the field is left unchanged.
 -- @coroutine
 -- @tparam number sx Initial axis-x scale.
 -- @tparam number sy Initial axis-y scale.
@@ -73,6 +74,7 @@ function Scalable:scaleTo(sx, sy, speed, wait)
   end
 end
 --- Scale instantly to (sx, sy).
+-- If an argument is nil, the field is left unchanged.
 -- @tparam number sx Initial axis-x scale.
 -- @tparam number sy Initial axis-y scale.
 -- @treturn boolean True if the scaling must be interrupted, nil or false otherwise.
@@ -80,7 +82,8 @@ function Scalable:instantScaleTo(sx, sy)
   self:setScale(sx, sy)
   return nil
 end
---- Scales to (sx, sy).
+--- Scales to (sx, sy) gradually (through `updateScaling`) until interrupted.
+-- If an argument is nil, the field is left unchanged.
 -- @coroutine
 -- @tparam number sx Initial axis-x scale.
 -- @tparam number sy Initial axis-y scale.

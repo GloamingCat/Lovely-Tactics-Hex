@@ -61,7 +61,7 @@ function BattlerAI:applyRules(char)
   return BattleAction():execute({})
 end
 --- Evaluates a given expression.
--- @tparam ActionRule rule Argument passed to the condition.
+-- @tparam AIRule rule Argument passed to the condition.
 -- @tparam string condition Boolean expression.
 -- @tparam Character char The character executing this script.
 -- @treturn boolean The value of the expression.
@@ -76,7 +76,7 @@ end
 --- Shows the cursor over a character.
 -- @coroutine
 -- @tparam Character char The character the cursor will point to.
--- @tparam[opt=30] The time in frames to wait.
+-- @tparam[opt=30] number time The time in frames to wait.
 function BattlerAI:showCursor(char, time)
   FieldManager.renderer:moveToObject(char, nil, true)
   local cursor = BattleCursor()

@@ -27,8 +27,8 @@ local TileUI = class()
 
 --- Constructor.
 -- @tparam ObjectTile tile The tile this object belongs to.
--- @tparam data baseAnim The animation data for the tile's base image.
--- @tparam data highlightAnim The animation data for the tile's selection highlight.
+-- @tparam boolean baseAnim If true, it shows the tile frame.
+-- @tparam boolean highlightAnim If true, it shows a highlighted frame when the hovered.
 function TileUI:init(tile, baseAnim, highlightAnim)
   local x, y, z = tile.center:coordinates()
   if baseAnim and Config.animations.tile >= 0 then

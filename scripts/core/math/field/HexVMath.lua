@@ -153,7 +153,7 @@ end
 -- @tparam table grid The grid of tiles.
 -- @tparam number i The x coordinate of the tile.
 -- @tparam number j The y coordinate of the tile.
--- @tparam funcion sameType A function that verifies if two tiles are from the same type.
+-- @tparam function sameType A function that verifies if two tiles are from the same type.
 --  This function must receive the grid, the x and y of the first tile and x and y of the 
 ---  second tile.
 -- @treturn table An array of 4 elements, one number for each quarter.

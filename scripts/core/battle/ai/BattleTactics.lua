@@ -55,7 +55,8 @@ end
 -- @tparam ActionInput input Input data with the action.
 -- @tparam function isValid Checks if a tile is valid (can be put in the queue).
 -- @tparam function evaluate Gets the evaluation of a tile.
--- @tparam[opt=ascendig] function order Comparison function to the priority queue.
+-- @tparam[opt] function order Comparison function to the priority queue.
+--  When nil, uses `PriorityQueue.ascending` by default.
 -- @treturn PriorityQueue Queue of tiles sorted by priority.
 function BattleTactics.optimalTiles(user, input, isValid, evaluate, order)
   order = order or PriorityQueue.ascending
@@ -102,7 +103,8 @@ end
 -- @tparam Character user The turn's character.
 -- @tparam ActionInput input Input data with the action.
 -- @tparam function getDistance The distance calculator given the party and the tile.
--- @tparam[opt=descending] function order The comparison function for distances.
+-- @tparam[opt] function order The comparison function for distances.
+--  When nil, uses `PriorityQueue.descending` by default.
 -- @treturn PriorityQueue
 function BattleTactics.bestDistance(user, input, getDistance, order)
   local evaluate = function(tile)

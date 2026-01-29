@@ -19,7 +19,7 @@ local Path = class()
 -- ------------------------------------------------------------------------------------------------
 
 --- Constructor.
--- @tparam unknown lastStep The last node of the path.
+-- @param lastStep The last node of the path.
 -- @tparam[opt] Path previousPath The path to the last node.
 -- @tparam[opt] number totalCost The total cost of the path.
 function Path:init(lastStep, previousPath, totalCost)
@@ -34,7 +34,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Creates a new path with a new last node.
--- @tparam unknown step The new step.
+-- @param step The new step.
 -- @tparam number cost The cost of the movement to this node.
 -- @treturn Path The new path.
 function Path:addStep(step, cost)

@@ -78,7 +78,7 @@ function TileGraphic:setVisible(value)
   self.bottomAnim.sprite:setVisible(value)
 end
 --- Sets sprites's color.
--- @tparam Color.RGBA color Color table.
+-- @tparam Colorable.RGBA color Color table.
 function TileGraphic:setColor(color)
   self.topAnim.sprite:setColor(color)
   self.bottomAnim.sprite:setColor(color)

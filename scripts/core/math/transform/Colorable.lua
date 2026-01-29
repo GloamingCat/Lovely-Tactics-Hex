@@ -2,6 +2,8 @@
 -- ================================================================================================
 
 --- An object with color properties.
+-- RGBA components are in range [0, 1], as well as saturation and value.
+-- Hue is in range [0, 360].
 ---------------------------------------------------------------------------------------------------
 -- @basemod Colorable
 
@@ -11,12 +13,44 @@
 local Colorable = class()
 
 -- ------------------------------------------------------------------------------------------------
--- Initialization
+-- Tables
 -- ------------------------------------------------------------------------------------------------
 
+--- The RGBA table format.
+-- @table RGBA
+-- @tfield[opt=1] number r Red color component (from 0 to 1).
+-- @tfield[opt=1] number g Green color component (from 0 to 1).
+-- @tfield[opt=1] number b Blue color component (from 0 to 1).
+-- @tfield[opt=1] number a Alpha color component (from 0 to 1).
+Colorable.neutralRGBA = {
+  red = 1,
+  green = 1,
+  blue = 1,
+  alpha = 1
+}
+--- The HSV table format.
+-- @table HSV
+-- @tfield[opt=0] number hue Hue offset (from 0 to 360).
+-- @tfield[opt=1] number saturation Saturation multiplier (in percentage).
+-- @tfield[opt=1] number brightness Color value multiplier (in percentage).
+Colorable.neutralHSV = {
+  hue = 0,
+  saturation = 1,
+  brightness = 1
+}
+
+-- ------------------------------------------------------------------------------------------------
+-- Initialization
+-- ------------------------------------------------------------------------------------------------
+--- Constructor.
+-- @tparam[opt] RGBA color A color table containing `r`, `g`, `b` and `a` components.
+-- @tparam[opt] HSV hsv A color table containing `h`, `s`, and `v` components.
+function Colorable:init(color, hsv)
+  self:initColor(color, hsv)
+end
 --- Initalizes color.
--- @tparam[opt] Color.RGBA color A color table containing `r`, `g`, `b` and `a` components.
--- @tparam[opt] Color.HSV hsv A color table containing `h`, `s`, and `v` components.
+-- @tparam[opt] RGBA color A color table containing `r`, `g`, `b` and `a` components.
+-- @tparam[opt] HSV hsv A color table containing `h`, `s`, and `v` components.
 function Colorable:initColor(color, hsv)
   color = color or { r = 1, g = 1, b = 1, a = 1 }
   self.hsv = hsv or { h = 0, s = 1, v = 1 }
@@ -78,8 +112,8 @@ function Colorable:setHSV(h, s, v)
   self.hsv.v = v or self.hsv.v
 end
 --- Sets color's RGBA. If a component parameter is nil, it will not be changed.
--- @tparam[opt] Color.RGBA rgba A color table containing `r`, `g`, `b` and `a` components.
--- @tparam[opt] Color.HSV hsv A color table containing `h`, `s`, and `v` components.
+-- @tparam[opt] RGBA rgba A color table containing `r`, `g`, `b` and `a` components.
+-- @tparam[opt] HSV hsv A color table containing `h`, `s`, and `v` components.
 function Colorable:setColor(rgba, hsv)
   if rgba then
     self:setRGBA(rgba.r, rgba.g, rgba.b, rgba.a)
@@ -95,22 +129,29 @@ end
 
 --- Applies color speed and updates color.
 -- @tparam number dt The duration of the previous frame.
+function Colorable:update(dt)
+  self:updateColor(dt)
+end
+--- Applies color speed and updates color.
+-- @tparam number dt The duration of the previous frame.
 function Colorable:updateColor(dt)
   if self.colorTime < 1 then
     self.colorTime = self.colorTime + self.colorSpeed * dt
     if self.colorTime > 1 and self.cropColor then
       self.colorTime = 1
     end
-    local r = self.origRed * (1 - self.colorTime) + self.destRed * self.colorTime
-    local g = self.origGreen * (1 - self.colorTime) + self.destGreen * self.colorTime
-    local b = self.origBlue * (1 - self.colorTime) + self.destBlue * self.colorTime
-    local a = self.origAlpha * (1 - self.colorTime) + self.destAlpha * self.colorTime
+    local t = self.colorTime
+    local r = self.destRed and (self.origRed * (1 - t) + self.destRed * t)
+    local g = self.destGreen and (self.origGreen * (1 - t) + self.destGreen * t)
+    local b = self.destBlue and (self.origBlue * (1 - t) + self.destBlue * t)
+    local a = self.destAlpha and (self.origAlpha * (1 - t) + self.destAlpha * t)
     if self:instantColorizeTo(r, g, b, a) and self.interruptableColor then
       self.colorTime = 1
     end
   end
 end
---- Moves to (x, y).
+--- Colorizes to color (r, g, b, a).
+-- Nil color components are kept unchanged.
 -- @coroutine
 -- @tparam number r Red component.
 -- @tparam number g Green component.
@@ -125,7 +166,8 @@ function Colorable:colorizeTo(r, g, b, a, speed, wait)
     self:instantColorizeTo(r, g, b, a)
   end
 end
---- Colorizes instantly the object.
+--- Colorizes the object instantly to color (r, g, b, a).
+-- Nil color components are kept unchanged.
 -- @tparam number r Red component.
 -- @tparam number g Green component.
 -- @tparam number b Blue component.
@@ -135,7 +177,8 @@ function Colorable:instantColorizeTo(r, g, b, a)
   self:setRGBA(r, g, b, a)
   return nil
 end
---- Moves gradually (through updateMovement) to the given point.
+--- Colorizes the object to color (r, g, b, a) gradually (through `updateColor`), until interrupted.
+-- Nil color components are kept unchanged.
 -- @coroutine
 -- @tparam number r Red component.
 -- @tparam number g Green component.
@@ -145,8 +188,7 @@ end
 -- @tparam[opt] boolean wait Flag to wait until the colorizing finishes.
 function Colorable:gradualColorizeTo(r, g, b, a, speed, wait)
   self.origRed, self.origGreen, self.origBlue, self.origAlpha = self:getRGBA()
-  self.destRed, self.destGreen, self.destBlue, self.destAlpha = 
-    r or self.origRed, g or self.origGreen, b or self.origBlue, a or self.origAlpha
+  self.destRed, self.destGreen, self.destBlue, self.destAlpha = r, g, b, a
   self.colorTime = 0
   self.colorSpeed = speed
   if wait then

@@ -24,6 +24,7 @@ local PriorityQueue = class()
 
 --- Constructor.
 -- @tparam[opt] function comp The function that compares two pairs.
+--  When nil, uses `ascending` by default.
 function PriorityQueue:init(comp)
   self.comp = comp or self.ascending
   self.size = 0
@@ -34,10 +35,14 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Default compare function for ascending orders (lower value first).
+-- @param a First element.
+-- @param b Second element.
 function PriorityQueue.ascending(a, b)
   return a[2] < b[2]
 end
 --- Default compare function for descending orders (higher value first).
+-- @param a First element.
+-- @param b Second element.
 function PriorityQueue.descending(a, b)
   return a[2] > b[2]
 end
@@ -47,7 +52,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Adds new pair to the queue.
--- @tparam unknown element The new element to add.
+-- @param element The new element to add.
 -- @tparam number v The priority of the element.
 function PriorityQueue:enqueue(element, v)
   local new = {element, v}
@@ -62,7 +67,7 @@ function PriorityQueue:enqueue(element, v)
   end
 end
 --- Removes the front pair.
--- @treturn unknown The element removed.
+-- @return The element removed.
 -- @treturn number The key/priority of the element removed.
 function PriorityQueue:dequeue()
   assert(self.size > 0, 'Priority queue is empty!')
@@ -101,7 +106,7 @@ function PriorityQueue:dequeue()
   return pair[1], pair[2]
 end
 --- Gets the element with the highest priority.
--- @treturn unknown The front element.
+-- @return The front element.
 -- @treturn number The key/priority of the front element.
 function PriorityQueue:front()
   assert(self.size > 0, 'Priority queue is empty!')

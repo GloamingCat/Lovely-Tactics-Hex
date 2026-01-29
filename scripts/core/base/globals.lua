@@ -5,6 +5,7 @@
 -- Global objects, tables and modules that era initialized here (in order):
 -- 
 -- * `TableUtil` and `ArrayUtil` (modules);
+-- * `Variables` (module);
 -- * `Database` (module);
 -- * `math.field` (`FieldMath`) module according to grid configuration;
 -- * Each plugin added in the project's configuration;
@@ -27,6 +28,13 @@
 util = {}
 util.table = require('core/base/util/TableUtil')
 util.array = require('core/base/util/ArrayUtil')
+
+-- ------------------------------------------------------------------------------------------------
+-- Varibales
+-- ------------------------------------------------------------------------------------------------
+
+--- Global callable table with the game's state variables.
+-- @table Variables
 Variables = require('core/base/util/Variables')
 
 -- ------------------------------------------------------------------------------------------------
@@ -110,7 +118,7 @@ InputManager    = require('core/input/InputManager')()
 SaveManager     = require('core/save/SaveManager')()
 ScreenManager   = require('core/graphics/ScreenManager')()
 FieldManager    = require('core/field/FieldManager')()
-MenuManager      = require('core/gui/MenuManager')()
+MenuManager     = require('core/gui/MenuManager')()
 BattleManager   = require('core/battle/BattleManager')()
 TroopManager    = require('core/battle/TroopManager')()
 TurnManager     = require('core/battle/TurnManager')()

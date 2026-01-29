@@ -23,9 +23,9 @@ local TextComponent = class(ImageComponent)
 --- Constructor.
 -- @tparam string text The text content (not rich text).
 -- @tparam[opt] Vector position Position relative to its window. If nil, sets at the center of the window.
--- @tparam[opt=inf] number width The max width for text box.
+-- @tparam[opt] number width The maximum width for text box. When nil, there is no maximum width.
 -- @tparam[opt="left"] string align Alignment inside the box.
--- @tparam[opt=menu_default] Fonts.Info font Font of the text.
+-- @tparam[opt="menu_default"] string font The font key.
 -- @tparam[opt] boolean plainText Flag to disable text commands.
 function TextComponent:init(text, position, width, align, font, plainText)
   assert(text, 'Nil text')
@@ -60,12 +60,13 @@ function TextComponent:getText()
 end
 --- Changes text content from a given localization term (must be redrawn later).
 -- @tparam string term The localization term.
--- @tparam[opt=term] string fallback The text shown if localization fails.
+-- @tparam[opt] string fallback The text shown if localization fails.
+--  When nil, the fallback is `term` itself.
 function TextComponent:setTerm(term, fallback)
   if fallback then
     self.fallback = fallback
     if term then 
-      if term:find("%%") then    
+      if term:find("%%") then
         self.term = term
       else
         print('% not found: ' .. term)

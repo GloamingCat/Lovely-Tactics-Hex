@@ -28,10 +28,16 @@ local Text = class(Sprite)
 -- ------------------------------------------------------------------------------------------------
 
 --- Text properties. It's an array of 4 elements.
+-- @table Font
+-- @tfield string file Base filename of the font.
+-- @tfield string format Font's file extension.
+-- @tfield number size The size of the font.
+
+--- Text properties. It's an array of 4 elements.
 -- @table Properties
 -- @tfield number 1 Maximum width.
 -- @tfield string 2 Hoziontal aligment (`'left'`, `'right'` or `'center'`).
--- @tfield Fonts.Info 3 The initial font.
+-- @tfield Text.Font 3 The initial font.
 -- @tfield boolean 4 Flag to indicate plain text and not parse rich text flags.
 
 -- ------------------------------------------------------------------------------------------------
@@ -40,7 +46,7 @@ local Text = class(Sprite)
 
 --- Constructor.
 -- @tparam string text The rich text.
--- @tparam Text.Properties properties Array with text properties.
+-- @tparam Properties properties Array with text properties.
 -- @tparam Renderer renderer The destination renderer of the sprite.
 function Text:init(text, properties, renderer)
   Sprite.init(self, renderer)

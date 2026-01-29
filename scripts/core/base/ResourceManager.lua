@@ -168,7 +168,7 @@ end
 -- ------------------------------------------------------------------------------------------------
 
 --- Uses LÖVE's newFont to load a new font's data, or gets it from the cache.
--- @tparam Fonts.Info data Array with options in order: name, format, size, italic, bold.
+-- @tparam Text.Font data Text properties specifying the font.
 -- @tparam number scale Size multiplier.
 -- @treturn Font Font data.
 function ResourceManager:loadFont(data, scale)

@@ -15,7 +15,7 @@ local util = {}
 
 --- Creates a new array of given size with all elements starting with the given value.
 -- @tparam number size Size of the array.
--- @tparam unknown value Initial value of all elements.
+-- @param value Initial value of all elements.
 -- @treturn table The newly created array.
 function util.new(size, value)
   local a = {}
@@ -54,7 +54,7 @@ end
 --- Inserts an element at the given position. Shifts remaining elements accordingly.
 -- @tparam table array Array to be modified.
 -- @tparam number index Position of the inserted element.
--- @tparam unknown element Element to be added.
+-- @param element Element to be added.
 function util.insert(array, index, element)
   for i = #array, index, -1 do
     array[i + 1] = array[i]
@@ -63,7 +63,7 @@ function util.insert(array, index, element)
 end
 --- Removes the element. Shifts remaining elements accordingly.
 -- @tparam table array Array to be modified.
--- @tparam unknown element Element to be removed.
+-- @param element Element to be removed.
 -- @treturn number Index of the removed element (nil if not found).
 function util.remove(array, element)
   local i = util.indexOf(array, element)
@@ -73,7 +73,7 @@ function util.remove(array, element)
   return i
 end
 --- Puts the element into an array if it's not already an array.
--- @tparam unknown element
+-- @param element The element to be inserted in the array (if not already an array).
 -- @treturn table `element` if it's an array, or a new array with `element` otherwise.
 function util.toArray(element)
   if element == nil then
@@ -91,11 +91,11 @@ end
 
 --- Gets the index of the given element in the given array.
 -- @tparam table array The array potencionally with the given element.
--- @tparam unknown el The element to be searched.
+-- @param element The element to be searched.
 -- @treturn number The index of the element if found (nil if not found).
-function util.indexOf(array, el)
+function util.indexOf(array, element)
   for i = 1, #array do
-    if array[i] == el then
+    if array[i] == element then
       return i
     end
   end
@@ -130,7 +130,7 @@ end
 
 --- Sums all the elements in a array of numbers (or objects with the + operator).
 -- @tparam table array Array containing the population.
--- @treturn unknown The sum of all elements.
+-- @return The sum of all elements.
 function util.sum(array)
   local s = 0
   for i = 1, #array do
@@ -140,7 +140,7 @@ function util.sum(array)
 end
 --- Multiples all the elements in a array of numbers (or objects with the * operator).
 -- @tparam table array Array containing the population.
--- @treturn unknown The product of all elements.
+-- @return The product of all elements.
 function util.mul(array)
   local m = 1
   for i = 1, #array do
@@ -150,7 +150,7 @@ function util.mul(array)
 end
 --- Gets the maximum element from an array of numbers (or objects with the > operator).
 -- @tparam table array Array containing the population.
--- @treturn unknown The maximum element.
+-- @return The maximum element.
 function util.max(array)
   if #array == 0 then
     return nil
@@ -165,7 +165,7 @@ function util.max(array)
 end
 --- Gets the mean value from an array of numbers (or objects with + and / operators).
 -- @tparam table array Array containing the population.
--- @treturn unknown The average element.
+-- @return The average element.
 function util.mean(array)
   return util.sum(array) / #array
 end
@@ -177,7 +177,7 @@ end
 --- Prints each element separating by given separator string and join them into a single string.
 -- @tparam table items Array of elements to be printed.
 -- @tparam string sep Separator.
--- @tparam[opt=#items] number size The length of the array.
+-- @tparam[opt] number size The length of the array. When nil, defaults to `#items`.
 -- @treturn string String each the elements printed.
 function util.concat(items, sep, size)
   size = size or #items
@@ -193,7 +193,7 @@ function util.concat(items, sep, size)
 end
 --- Shuffles the elements on an array.
 -- @tparam table array Array to be shuffled.
--- @tparam[opt=#array] number size The length of the array.
+-- @tparam[opt] number size The length of the array. When nil, default to `#array`.
 function util.shuffle(array, size)
   size = size or #array
   for i = 1, size do

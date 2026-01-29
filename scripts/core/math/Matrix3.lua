@@ -18,7 +18,7 @@ local Matrix3 = class()
 -- @tparam number width The number of lines.
 -- @tparam number height The number of columns.
 -- @tparam number depth The number of layers.
--- @tparam[opt] unknown startValue The initial value of every element.
+-- @param[opt] startValue The initial value of every element.
 function Matrix3:init(width, height, depth, startValue)
   depth = depth or 1
   self.width = width
@@ -37,13 +37,13 @@ end
 -- @tparam number i Line.
 -- @tparam number j Column.
 -- @tparam number k Depth.
--- @treturn unknown The current value at that position.
+-- @return The current value at that position.
 function Matrix3:get(i, j, k)
   k = k or 1
   return self[(k - 1) * (self.height * self.width) + (j - 1) * self.width + i]
 end
 --- Sets the element at line i, column j and depth k.
--- @tparam unknown value The new value at that position.
+-- @param value The new value at that position.
 -- @tparam number i Line.
 -- @tparam number j Column.
 -- @tparam number k Depth.

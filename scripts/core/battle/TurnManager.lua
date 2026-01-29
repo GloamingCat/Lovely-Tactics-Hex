@@ -41,7 +41,7 @@ TurnManager.BattleResult = {
 --- Info table returned when a BattleAction is concluded.
 -- @tfield boolean endTurn Tells the TurnManager to pass turn to next party.
 -- @tfield boolean endCharacterTurn Tells the TurnWindow to close and pass turn to the next character.
--- @tfield number|nil characterIndex Indicates the next turn's character (from same party).
+-- @tfield[opt] number characterIndex Indicates the next turn's character (from same party).
 -- @tfield boolean executed Is true if the chosen action was entirely executed (usually true, unless it was a
 --  move action to an unreachable tile, or the action could not be executed for some reason).
 -- @tfield boolean escaped Is true if all members of the current party have escaped.
@@ -133,7 +133,7 @@ end
 --- Executes turn and returns when the turn finishes.
 -- @coroutine
 -- @tparam boolean skipStart True to skip any `onTurnStart` callbacks.
--- @treturn number Result code (nil if battle is still running).
+-- @treturn number The result code (nil if battle is still running).
 -- @treturn number The party that won or escaped (nil if battle is still running).
 function TurnManager:runTurn(skipStart)
   local winner = TroopManager:winnerParty()
@@ -202,7 +202,7 @@ function TurnManager:runPlayerTurn()
 end
 --- Gets the next active character in the current party.
 -- @tparam number i 1 or -1 to indicate direction.
--- @tparam[opt=nil] boolean controllable True to exclude NPC, false to ONLY include NPC. If nil, includes all.
+-- @tparam[opt] boolean controllable True to exclude NPC, false to ONLY include NPC. If nil, includes all.
 -- @treturn number Next character index, or nil if there's no active character.
 function TurnManager:nextCharacterIndex(i, controllable)
   i = i or 1

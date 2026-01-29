@@ -22,8 +22,8 @@ local RewardItemWindow = class(InventoryWindow)
 
 --- Constructor.
 -- @tparam Menu menu Parent Menu.
--- @tparam width w The width of the window.
--- @tparam height h The height of the window.
+-- @tparam number w The width of the window.
+-- @tparam number h The height of the window.
 -- @tparam Vector pos The position of the window's center.
 function RewardItemWindow:init(menu, w, h, pos)
   self.noCursor = true
