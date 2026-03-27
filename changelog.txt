@@ -1,4 +1,9 @@
-# Version v0.2
+# Version 0.2.1
+
+Bug fixes:
+- Fixed InputManager error when no config file is found.
+
+# Version 0.2
 
 API changes:
 - Added parameters dt in update methods.

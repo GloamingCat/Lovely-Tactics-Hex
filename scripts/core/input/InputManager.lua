@@ -115,6 +115,7 @@ end
 --- Sets keys codes for each game key.
 -- @tparam MapConfig conf Key configuration.
 function InputManager:setKeyConfiguration(conf)
+  conf = conf or {}
   self.mainMap = {}
   self.altMap = {}
   self.gamepadMap = {}
@@ -413,3 +414,4 @@ function InputManager:onAxisMove(axis, value)
 end
 
 return InputManager
+

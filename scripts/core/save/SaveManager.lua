@@ -27,10 +27,13 @@ local SaveManager = class()
 function SaveManager:init()
   self.saveVersion = 2
   self.configVersion = 1
+  print('Save directory: ' .. love.filesystem.getSaveDirectory())
   if fileInfo('saves.json') then
     self.saves = Serializer.load('saves.json')
+    print(tostring(#self.saves) .. ' game saves in the save list.')
   else
     self.saves = {}
+    print('Save list file not found. Creating empty save list.')
   end
   if not fileInfo('saves/') then
     love.filesystem.createDirectory('saves/')
@@ -138,6 +141,7 @@ function SaveManager:loadConfig()
       return
     end
   end
+  print('Compatible config file not found. Creating empty config table.')
   self.config = self:newConfig()
 end
 
